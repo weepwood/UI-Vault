@@ -4,7 +4,7 @@ import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { escapeHtml, resolveAsset } from './core/render.js';
 import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from './core/workbench.js';
-import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
+import { applyPreviewLayout } from './core/preview.js';
 import { initSettings } from './core/settings.js';
 import {createViewportSwitcher} from './ui/viewport-switcher.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
@@ -142,8 +142,7 @@ function resizePreview(){
   applyPreviewLayout(stage,iframe,state.previewSize);
 }
 function selectPreviewSize(mode){
-  if(!Object.hasOwn(PREVIEW_WIDTHS,mode)||state.active?.source!=='local')return;
-  changePreviewMode(state,mode);
+  if(state.active?.source!=='local'||!changePreviewMode(state,mode))return;
   stage.dataset.size=state.previewSize;
   deviceSwitcher?.sync();
   resizePreview();
