@@ -38,19 +38,18 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(app,/projectRowMarkup\(asset,favorites,state.labels/);
   assert.doesNotMatch(app,/drawer\.classList|overlay\.classList|openDetail\(/);
 });
-test('左侧目录条目有项目文字、可访问的选择状态与独立收藏按钮',()=>{
+test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',()=>{
   const row=projectRowMarkup(base,new Set(['sample-asset']),labels,true);
   assert.match(row,/project-item is-selected/);
   assert.match(row,/aria-current="true"/);
   assert.match(row,/data-open="sample-asset"/);
-  assert.match(row,/data-favorite="sample-asset"/);
-  assert.match(row,/aria-pressed="true"/);
-  assert.match(row,/lucide\.svg#heart/);
+  assert.match(row,/class="project-row-icon project-row-emoji"/);
+  assert.doesNotMatch(row,/data-favorite|project-star/);
   assert.match(row,/布局模板/);
   assert.match(row,/可运行网页/);
-  const selected=projectRowMarkup(base,new Set(),labels,false);
-  assert.match(selected,/aria-current="false"/);
-  assert.match(selected,/aria-pressed="false"/);
+  const unselected=projectRowMarkup(base,new Set(),labels,false);
+  assert.match(unselected,/aria-current="false"/);
+  assert.doesNotMatch(unselected,/data-favorite|project-star/);
 });
 test('本地项目直接显示真实 iframe，使用沙箱和 GitHub Pages 子路径',()=>withBaseURI(()=>{
   const result=projectPreviewMarkup(base);
