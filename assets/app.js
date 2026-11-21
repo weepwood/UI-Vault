@@ -5,6 +5,7 @@ import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { escapeHtml, resolveAsset } from './core/render.js';
 import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from './core/workbench.js';
 import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
+import { initSettings } from './core/settings.js';
 
 const categoryIconById=Object.freeze({
   style:'palette',component:'component',effect:'zap',
@@ -22,7 +23,7 @@ const state={
 };
 const favorites=loadFavorites();
 let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
-let sortDropdown,tagDropdown;
+let sortDropdown,tagDropdown,settingsManager;
 const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
 
 function notify(message){
@@ -149,8 +150,8 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
   const same=state.active?.id===asset.id;
   if(!same){
     state.active=asset;
-    state.previewSize='fluid';
-    stage.dataset.size='fluid';
+    state.previewSize=settingsManager?.get().preview||'fluid';
+    stage.dataset.size=state.previewSize;
     stage.innerHTML=projectPreviewMarkup(asset);
     $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源');
     $('#preview-title').textContent=asset.title;
@@ -170,7 +171,7 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
     $('#source-repo').href=codeUrl;
     $('#preview-info').disabled=false;
     viewport.hidden=asset.source!=='local';
-    for(const button of viewport.querySelectorAll('[data-preview-size]'))button.setAttribute('aria-pressed',String(button.dataset.previewSize==='fluid'));
+    for(const button of viewport.querySelectorAll('[data-preview-size]'))button.setAttribute('aria-pressed',String(button.dataset.previewSize===state.previewSize));
     const openUrl=asset.source==='local'?resolveAsset(asset.preview):asset.siteUrl||asset.url||asset.originRepo;
     $('#preview-open').href=openUrl||'https://github.com/weepwood/UI-Vault';
     $('#preview-open').hidden=!openUrl;
@@ -391,7 +392,7 @@ const SHELL_REQUIRED_IDS=[
   'dialog-overview','dialog-source','dialog-close','preview-info','source-code','source-status',
   'source-repo','source-copy','preview-open','preview-favorite','preview-copy-link',
   'results-count','results-status','empty','empty-message','reset-filters','clear-filters',
-  'sidebar-dismiss'
+  'sidebar-dismiss','settings-open','settings-dialog','settings-close','settings-reset'
 ];
 function verifyWorkbenchShell(){
   const missing=SHELL_REQUIRED_IDS.filter(id=>!document.getElementById(id));
@@ -425,6 +426,10 @@ function verifyWorkbenchShell(){
 async function init(){
   if(!verifyWorkbenchShell())return;
   libraryRail.inert=isMobile();
+  settingsManager=initSettings({
+    onPreviewChange:mode=>{if(state.active?.source==='local')selectPreviewSize(mode);},
+    onNotice:notify
+  });
   initEvents();
   if(typeof ResizeObserver!=='undefined'){
     previewResizeObserver=new ResizeObserver(resizePreview);
