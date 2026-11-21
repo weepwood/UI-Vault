@@ -117,6 +117,15 @@
     .hint{display:none}
   }
   @media(prefers-reduced-motion:reduce){.showcase-tab,.dialog-open{transition:none!important}}
+
+  /* Keep failure UI compact inside the pill; expose retry as a separate control. */
+  .dialog-retry{display:none;align-items:center;height:34px;padding:0 12px;border:1px solid #3d4961;border-radius:7px;background:#1a2333;color:#d2dbea;font-size:12px}
+  .dialog-mode.fallback .dialog-retry{display:inline-flex}
+  .dialog-mode.fallback #status{display:none!important}
+  .dialog-mode.fallback .orb-retry{display:none!important}
+  .dialog-mode.fallback .orb-loading{gap:0;padding:6px}
+  .dialog-mode.fallback .orb-loading-label{font-size:clamp(10px,1.5vw,12px);line-height:1.5;color:#9ba6b9;width:100%;text-align:center}
+  @media(max-width:620px){.dialog-mode.fallback .orb-loading-label{font-size:10px}}
 </style>
 </head>
 <body>
@@ -171,6 +180,7 @@
         </select>
       </label>
       <button class="dialog-open" id="dialog-open" type="button">弹出对话框</button>
+      <button class="dialog-retry" id="dialog-retry" type="button">重试渲染</button>
     </div>
   </main>
   <dialog class="thinking-modal" id="thinking-modal" aria-label="液态玻璃思考对话框">
@@ -343,7 +353,7 @@
       device?.destroy();
       document.body.classList.add("fallback");
       document.querySelector("#engine").textContent = "渲染不可用";
-      loadingLabel.textContent = "当前环境无法启动 WebGPU";
+      loadingLabel.textContent = "WebGPU 不可用";
       loadingTrack.removeAttribute("aria-valuenow");
       status.hidden = false;
       status.textContent = "浏览器或图形设备不支持此效果，请尝试更新浏览器。";
@@ -620,7 +630,11 @@
         tab.tabIndex = selected ? 0 : -1;
       }
       viewport.setAttribute("aria-labelledby", mode === "dialog" ? "tab-dialog" : "tab-orb");
-      if (updateHash) history.replaceState(null, "", mode === "dialog" ? "#dialog" : "#orb");
+      if (updateHash) {
+        // Sandboxed iframe 文档可能拥有 opaque origin；避免 History API 访问失败影响 UI 操作。
+        try { history.replaceState(null, "", mode === "dialog" ? "#dialog" : "#orb"); }
+        catch { /* 保留当前选项卡状态，无需刷新或改写地址 */ }
+      }
       requestDraw();
     }
     function setDialogSize(value) {
@@ -657,6 +671,7 @@
     document.querySelector("#dialog-size").addEventListener("change", event => setDialogSize(event.target.value));
     dialogText.addEventListener("input", event => setDialogText(event.target.value));
     document.querySelector("#dialog-open").addEventListener("click", openThinkingDialog);
+    document.querySelector("#dialog-retry").addEventListener("click", () => location.reload());
     modalClose.addEventListener("click", () => modal.close());
     modal.addEventListener("click", event => { if (event.target === modal) modal.close(); });
     modal.addEventListener("close", restorePresentation);
