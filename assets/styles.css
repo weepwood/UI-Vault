@@ -123,11 +123,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .project-row-copy { min-width: 0; display: grid; gap: 2px; }
 .project-row-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 620; }
 .project-row-subtitle { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); font-size: 10px; }
-.project-star { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 34px; margin: auto 5px auto 0; border: 0; border-radius: 6px; color: var(--subtle); background: transparent; }
-.project-star:hover { background: #dfe8eb; }
-.project-star .ui-icon { width: 16px; height: 16px; }
-.project-star[aria-pressed="true"] { color: var(--accent); }
-.project-star[aria-pressed="true"] .ui-icon { fill: currentColor; }
 .empty-list { padding: 35px 14px; text-align: center; color: var(--muted); font-size: 12px; }
 .empty-list button { border: 1px solid var(--line); background: var(--surface); padding: 8px 12px; border-radius: 6px; color: var(--accent); }
 .sidebar-footer { border-top: 1px solid var(--line); padding: 12px 4px; display: flex; align-items: center; justify-content: space-between; gap: 9px; }
@@ -379,7 +374,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 }
 .project-panel .project-row-title { font-size: 12px; }
 .project-panel .project-row-subtitle { font-size: 10px; }
-.project-panel .project-star { margin-right: 2px; }
 @media(max-width:1250px) and (min-width:761px) {
   :root { --navigation-width: 204px; --directory-width: 275px; }
   .library-rail .sidebar { padding-right: 9px; padding-left: 9px; }
@@ -395,7 +389,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .library-rail .brand-type small { font-size: 9px; }
   .library-rail .sidebar-footer a { font-size: 10px; }
   .project-panel .project-row-icon { width: 27px; height: 27px; flex-basis: 27px; }
-  .project-panel .project-star { width: 26px; flex-basis: 26px; }
 }
 @media(max-width:760px) {
   .app-shell { grid-template-columns: minmax(0,1fr); }
@@ -498,7 +491,6 @@ html[data-theme="dark"] .project-item.is-selected .project-row-icon { color:var(
 html[data-theme="dark"] .select-trigger:hover,
 html[data-theme="dark"] .select-field.has-filter .select-trigger { background:var(--canvas);border-color:var(--line); }
 html[data-theme="dark"] .select-popover { border-color:var(--line); }
-html[data-theme="dark"] .project-star:hover { background:var(--line); }
 html[data-theme="dark"] .preview-stage,
 html[data-theme="dark"] .preview-stage[data-size] { background:#10161c; }
 html[data-theme="dark"] :is(.meta-grid>div,.tag-list span,.source-view) { background:var(--canvas);color:var(--text);border-color:var(--line); }
@@ -569,15 +561,18 @@ html[data-motion="reduced"] *,html[data-motion="reduced"] *::before,html[data-mo
 @media(max-width:360px) { .settings-grid { grid-template-columns:1fr; } }
 
 /* 侧栏底部设置入口，独立于预览工具栏。 */
-.library-rail .sidebar-footer { display:flex;flex-direction:column;align-items:stretch;gap:8px;margin-top:auto;flex:none; }
-.sidebar-settings { display:flex;align-items:center;justify-content:flex-start;gap:9px;width:100%;min-height:36px;padding:8px 10px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--text);text-align:left;font-size:12px; }
-.sidebar-settings::after { content:"设置"; }
+.library-rail .sidebar-footer { display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:8px;margin-top:auto;flex:none; }
+.sidebar-settings { display:flex;align-items:center;justify-content:flex-start;gap:9px;flex:1;min-width:0;min-height:36px;padding:8px 10px;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--text);text-align:left;font-size:12px; }
 .sidebar-settings:hover { background:var(--accent-soft);color:var(--accent); }
 .sidebar-settings .ui-icon { width:17px;height:17px; }
-.sidebar-footer-links { display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px; }
+.sidebar-footer-links { display:flex;align-items:center;justify-content:flex-end;flex:none; }
+.library-rail .sidebar-footer .sidebar-github { display:grid;place-items:center;flex:none;width:36px;height:36px;min-height:36px;padding:0;border:1px solid transparent;border-radius:7px;background:transparent;color:var(--text); }
+.library-rail .sidebar-footer .sidebar-github:hover { background:var(--accent-soft);color:var(--accent); }
+.library-rail .sidebar-footer .sidebar-github .ui-icon { width:18px;height:18px; }
+.project-row-emoji { font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;font-size:19px;line-height:1; }
 @media(max-width:480px) {
   .library-rail .sidebar-footer { display:flex;position:sticky;bottom:0;z-index:2;background:var(--sidebar);padding:5px 2px 7px;margin-top:4px; }
-  .library-rail .sidebar-footer-links { display:none; }
+  .library-rail .sidebar-footer-links { display:flex; }
   .sidebar-settings { min-height:32px;padding:5px 9px; }
 }
 /* 与排序和标签完全相同的下拉菜单结构与交互。 */
