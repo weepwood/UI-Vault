@@ -89,8 +89,10 @@ function toggleFavorite(id){
   save();
   if(state.favoritesOnly) {
     render();
-    const navButton=document.querySelector('[data-favorites]');
-    if(navButton)navButton.focus();
+    if(!state.active) {
+      const navButton=document.querySelector('[data-favorites]');
+      if(navButton)navButton.focus();
+    }
   } else {
     // 不重建画廊：保留正在运行的 iframe 和被点击按钮的键盘焦点。
     for(const button of gallery.querySelectorAll('[data-favorite]')) {
@@ -183,10 +185,19 @@ async function copyCode(id){
     notify('独立 Demo 源码已复制');
   }catch{notify('复制失败，请通过 GitHub 查看源码');}
 }
-function openMobile(){sidebar.classList.add('is-open');shade.hidden=false;}
+function openMobile(){
+  sidebar.classList.add('is-open');
+  shade.hidden=false;
+  $('#main').inert=true;
+  const first=sidebar.querySelector('.nav-button');
+  if(first)first.focus();
+}
 function closeMobile(){
-  const shouldReturnFocus=sidebar.classList.contains('is-open')&&sidebar.contains(document.activeElement);
-  sidebar.classList.remove('is-open');shade.hidden=true;
+  const wasOpen=sidebar.classList.contains('is-open');
+  const shouldReturnFocus=wasOpen&&sidebar.contains(document.activeElement);
+  sidebar.classList.remove('is-open');
+  shade.hidden=true;
+  if(!state.active)$('#main').inert=false;
   if(shouldReturnFocus)$('#menu-toggle').focus();
 }
 function initEvents(){
