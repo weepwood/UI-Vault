@@ -75,7 +75,7 @@ test('液态玻璃使用可移植的 Canvas 像素采样，避免 CSS/SVG 位移
  assert.match(html,/const chroma=edge/);
  assert.match(html,/ctx\.putImageData\(image,0,0\)/);
  assert.match(html,/setPointerCapture/);
- assert.match(html,/data\.dragX/);
+ assert.match(html,/dataset\.dragX/);
  assert.doesNotMatch(html,/<filter id="glass-refract"/);
  assert.match(html,/data-wallpaper-option="grid"/);
  assert.match(html,/prefers-reduced-motion/);
