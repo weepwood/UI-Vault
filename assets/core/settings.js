@@ -1,3 +1,5 @@
+import { enhanceSelect, closeDropdowns } from './dropdown.js';
+
 // UI Vault 设置中心：独立于资源目录和收藏状态，静态部署无需后端。
 export const SETTINGS_KEY='ui-vault:preferences:v1';
 export const DEFAULT_SETTINGS=Object.freeze({
@@ -37,7 +39,26 @@ export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
   let values=loadSettings();
   const dialog=document.getElementById('settings-dialog');
   const controls=[...dialog.querySelectorAll('[data-setting]')];
-  const sync=()=>controls.forEach(control=>{control.value=values[control.dataset.setting];});
+  // 设置菜单与项目排序、标签筛选使用同一套增强下拉组件。
+  const selectIcons={
+    theme:{system:'monitor',light:'palette',dark:'palette'},
+    accent:{blue:'palette',teal:'palette',violet:'palette'},
+    font:{yuan:'file-text',system:'file-text',serif:'file-text'},
+    fontSize:{'12':'file-text','13':'file-text','14':'file-text','15':'file-text'},
+    density:{comfortable:'list-todo',compact:'list-todo'},
+    sidebar:{standard:'panel-right',narrow:'panel-right'},
+    motion:{system:'zap',reduced:'zap'},
+    preview:{fluid:'maximize-2',mobile:'smartphone',tablet:'tablet',desktop:'monitor'}
+  };
+  const dropdowns=controls.map(select=>{
+    const wrapper=document.createElement('div');
+    wrapper.className='select-field settings-select';
+    select.id='settings-'+select.dataset.setting;
+    select.before(wrapper);
+    wrapper.append(select);
+    return enhanceSelect(select,{icon:'settings',icons:selectIcons[select.dataset.setting]});
+  });
+  const sync=()=>controls.forEach((control,index)=>{control.value=values[control.dataset.setting];dropdowns[index].sync();});
   const apply=()=>{applySettings(values);sync();};
   const persist=()=>{
     try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(values));}
@@ -46,12 +67,13 @@ export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
   const open=()=>{
     const active=document.activeElement;
     if(active instanceof HTMLElement)dialog.dataset.returnFocus=active.id||'settings-open';
-    sync();dialog.showModal();
+    closeDropdowns();sync();dialog.showModal();
   };
   document.querySelectorAll('[data-open-settings]').forEach(button=>button.addEventListener('click',open));
   document.getElementById('settings-close').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
   dialog.addEventListener('close',()=>{
+    closeDropdowns();
     const target=document.getElementById(dialog.dataset.returnFocus);
     target?.focus({preventScroll:true});
   });
