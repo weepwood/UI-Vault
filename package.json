@@ -1,7 +1,7 @@
 {
   "name": "ui-vault",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.4.0",
   "type": "module",
   "description": "个人 UI 设计资产与 Demo 展厅",
   "scripts": {
@@ -13,7 +13,8 @@
     "validate": "node scripts/validate.mjs",
     "test": "node --test tests/*.test.mjs",
     "build": "node scripts/build.mjs",
-    "check": "node scripts/validate.mjs && node --test tests/*.test.mjs && node scripts/build.mjs && node scripts/check-dist.mjs"
+    "check": "node scripts/validate.mjs && node --test tests/*.test.mjs && node scripts/design-audit.mjs && node scripts/build.mjs && node scripts/check-dist.mjs",
+    "design:audit": "node scripts/design-audit.mjs"
   },
   "engines": {
     "node": ">=22"

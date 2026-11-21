@@ -19,6 +19,8 @@ jobs:
         run: node scripts/validate.mjs
       - name: 单元测试
         run: node --test tests/*.test.mjs
+      - name: 设计规范与文字对比度检查
+        run: node scripts/design-audit.mjs
       - name: JavaScript 语法检查
         run: |
           find assets scripts tests -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
