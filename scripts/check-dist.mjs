@@ -33,8 +33,8 @@ const reactBundle=await readFile(join(out,'assets/react-workbench.js'),'utf8');
 assert.ok(reactBundle.length>30_000,'React 组件 bundle 缺失或异常短');
 assert.ok(!/from ['"]react(?:-dom)?(?:\/[^'"]+)?['"]/.test(reactBundle),'React 运行时不应依赖浏览器裸模块导入');
 
-assert.match(entry,new RegExp('from [\\\x27"][.]/core/workbench[.]js[?]v='+jsFingerprint),'入口模块没有版本化工作台依赖');
-assert.match(entry,new RegExp('from [\\\x27"][.]/core/dropdown[.]js[?]v='+jsFingerprint),'入口模块没有版本化下拉菜单依赖');
+assert.ok(entry.includes("mountWorkbench"),'主入口必须启动 React 工作台');
+assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'React 组件版本必须与 HTML 一致');
 const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
 assert.match(core,new RegExp('from [\\\x27"][.]/icons[.]js[?]v='+jsFingerprint),'子模块没有使用同一版本标记');
 const versionedCSS=await readFile(join(out,`assets/styles.${cssFingerprint}.css`),'utf8');
