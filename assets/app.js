@@ -12,7 +12,7 @@ const categoryIconById=Object.freeze({
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');
 const sidebar=$('#sidebar'),shade=$('#mobile-shade'),stage=$('#preview-stage'),toast=$('#toast');
-const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls');
+const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls'),infoDialog=$('#project-dialog');
 const state={
   assets:[],categories:[],labels:{all:'全部资源'},
   category:'all',tag:'',query:'',sort:'featured',
@@ -20,7 +20,7 @@ const state={
   active:null,previewSize:'fluid'
 };
 const favorites=loadFavorites();
-let toastTimeout,previewResizeObserver;
+let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
 const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
 
 function notify(message){
@@ -128,14 +128,14 @@ function clearSelection(){
   $('#preview-kind').textContent='项目目录';
   $('#preview-title').textContent='没有匹配的项目';
   $('#preview-subtitle').textContent='清除筛选条件以继续浏览。';
-  $('#location-label').textContent='未选中项目';
   $('#preview-favorite').disabled=true;
   $('#preview-copy-link').disabled=true;
   $('#preview-open').hidden=true;
   viewport.hidden=true;
-  $('#project-notes').hidden=true;
-  $('#preview-label').textContent='网页效果';
-  $('#preview-status').textContent='当前筛选无结果';
+  $('#preview-info').disabled=true;
+  if(infoDialog.open)infoDialog.close();
+  sourceLoadKey++;
+  sourceLoadedId=null;
   stage.replaceChildren();
   stage.innerHTML='<div class="preview-placeholder">'+iconMarkup('search')+'<p>左侧没有匹配项。请更换搜索关键词或点击“重置筛选”。</p></div>';
 }
@@ -150,13 +150,20 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
     $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':'外部资源');
     $('#preview-title').textContent=asset.title;
     $('#preview-subtitle').textContent=asset.subtitle||asset.description;
-    $('#location-label').textContent=asset.title;
-    $('#notes-caption').textContent=(asset.tags||[]).slice(0,3).join(' · ');
+    if(infoDialog.open)infoDialog.close();
+    sourceLoadKey++;
+    sourceLoadedId=null;
+    $('#dialog-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本地 Demo':'外部项目');
+    $('#dialog-title').textContent=asset.title;
     $('#project-info').innerHTML=projectInfoMarkup(asset,state.labels);
-    $('#project-notes').hidden=false;
-    $('#preview-label').textContent=asset.source==='local'?'实时交互预览':asset.siteUrl?'外部站点预览':'来源与设计记录';
-    $('#preview-status').textContent=asset.source==='local'?'本地 Demo · 可以直接操作网页':asset.siteUrl
-      ?'外部网页 · 如遇嵌入限制请在原站打开':'外部项目索引 · 暂无可嵌入的网页';
+    $('#source-code').textContent='';
+    $('#source-status').textContent=asset.source==='local'?'选择“源代码”查看本地 Demo 实现':'外部项目：通过 GitHub 查看原始源码';
+    $('#source-copy').disabled=true;
+    const codeUrl=asset.source==='local'&&asset.code
+      ?'https://github.com/weepwood/UI-Vault/blob/main/'+asset.code.split('/').map(encodeURIComponent).join('/')
+      :asset.sourceUrl||asset.url||asset.originRepo||'https://github.com/weepwood/UI-Vault';
+    $('#source-repo').href=codeUrl;
+    $('#preview-info').disabled=false;
     viewport.hidden=asset.source!=='local';
     for(const button of viewport.querySelectorAll('[data-preview-size]'))button.setAttribute('aria-pressed',String(button.dataset.previewSize==='fluid'));
     const openUrl=asset.source==='local'?resolveAsset(asset.preview):asset.siteUrl||asset.url||asset.originRepo;
@@ -218,6 +225,57 @@ async function copySource(id){
     await copyText(await response.text(),'单文件 Demo 源码已复制');
   }catch{notify('源码读取失败，请在 GitHub 打开对应文件');}
 }
+function openProjectDialog(){
+  if(!state.active)return;
+  setInfoTab('overview');
+  if(typeof infoDialog.showModal==='function')infoDialog.showModal();
+  else {notify('当前浏览器不支持原生项目说明弹窗');}
+}
+function setInfoTab(tab){
+  if(tab!=='overview'&&tab!=='source')return;
+  for(const button of infoDialog.querySelectorAll('[data-info-tab]')){
+    const selected=button.dataset.infoTab===tab;
+    button.setAttribute('aria-selected',String(selected));
+    button.tabIndex=selected?0:-1;
+  }
+  $('#dialog-overview').hidden=tab!=='overview';
+  $('#dialog-source').hidden=tab!=='source';
+  if(tab==='source')void loadProjectSource();
+}
+async function loadProjectSource(){
+  const asset=state.active;
+  if(!asset||sourceLoadedId===asset.id)return;
+  const key=++sourceLoadKey;
+  const sourceCode=$('#source-code'),status=$('#source-status'),copy=$('#source-copy');
+  copy.disabled=true;
+  if(asset.source!=='local'||!asset.code){
+    sourceCode.textContent='此项目的源代码保存在原始仓库中。请使用上方的 GitHub 源码链接查看。';
+    status.textContent='外部项目 · 不复制第三方源代码';
+    return;
+  }
+  if(asset.copyable===false){
+    sourceCode.textContent='这是多文件项目，无法将整个项目作为单文件展示。请在 GitHub 查看完整源码及相关资源。';
+    status.textContent='多文件 Demo · 请在 GitHub 查看';
+    return;
+  }
+  sourceCode.textContent='正在加载本地 Demo 源码…';
+  status.textContent='正在读取源码';
+  try{
+    const response=await fetch(resolveAsset(asset.code),{cache:'no-cache'});
+    if(!response.ok)throw Error('HTTP '+response.status);
+    const result=await response.text();
+    if(key!==sourceLoadKey||state.active?.id!==asset.id)return;
+    sourceCode.textContent=result;
+    sourceLoadedId=asset.id;
+    status.textContent='源代码 · '+result.split('\n').length+' 行';
+    copy.disabled=false;
+  }catch(error){
+    if(key!==sourceLoadKey||state.active?.id!==asset.id)return;
+    sourceCode.textContent='无法加载源代码，请使用 GitHub 链接查看完整文件。';
+    status.textContent='源码加载失败';
+    console.warn('UI Vault 源码加载失败:',error);
+  }
+}
 function changeFilter(kind,value){
   if(kind==='category'){
     state.category=value;state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;
@@ -262,6 +320,31 @@ function initEvents(){
   });
   $('#preview-favorite').addEventListener('click',()=>{if(state.active)toggleFavorite(state.active.id);});
   $('#preview-copy-link').addEventListener('click',copyLink);
+  $('#preview-info').addEventListener('click',openProjectDialog);
+  $('#dialog-close').addEventListener('click',()=>infoDialog.close());
+  $('#source-copy').addEventListener('click',()=>{
+    if(sourceLoadedId===state.active?.id)void copyText($('#source-code').textContent,'项目源码已复制');
+  });
+  infoDialog.addEventListener('click',event=>{
+    // 仅点在原生对话框外部背景时关闭，内容区内的点击保留。
+    if(event.target!==infoDialog)return;
+    const box=infoDialog.getBoundingClientRect();
+    if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)infoDialog.close();
+  });
+  infoDialog.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+    const active=event.target.closest('[data-info-tab]');
+    if(!active)return;
+    event.preventDefault();
+    const target=event.key==='Home'?'overview':event.key==='End'?'source':
+      active.dataset.infoTab==='overview'?'source':'overview';
+    setInfoTab(target);
+    infoDialog.querySelector('[data-info-tab="'+target+'"]').focus();
+  });
+  infoDialog.addEventListener('click',event=>{
+    const tab=event.target.closest('[data-info-tab]');
+    if(tab)setInfoTab(tab.dataset.infoTab);
+  });
   $('#project-info').addEventListener('click',event=>{
     const copy=event.target.closest('[data-copy]');
     if(copy){void copySource(copy.dataset.copy);return;}
@@ -296,9 +379,10 @@ async function loadJSON(path){
 const SHELL_REQUIRED_IDS=[
   'sidebar','mobile-shade','gallery','search','sort','tag-filter','preview-stage',
   'toast','menu-toggle','viewport-controls','category-nav','total-count','curated-count',
-  'imported-count','favorite-count','workbench-count','preview-kind','preview-title',
-  'preview-subtitle','location-label','notes-caption','project-info','project-notes',
-  'preview-label','preview-status','preview-open','preview-favorite','preview-copy-link',
+  'imported-count','favorite-count','preview-kind','preview-title',
+  'preview-subtitle','project-info','project-dialog','dialog-title','dialog-kind',
+  'dialog-overview','dialog-source','dialog-close','preview-info','source-code','source-status',
+  'source-repo','source-copy','preview-open','preview-favorite','preview-copy-link',
   'results-count','results-status','empty','empty-message','reset-filters','clear-filters',
   'sidebar-dismiss'
 ];
@@ -349,7 +433,6 @@ async function init(){
     $('#curated-count').textContent=items.filter(a=>a.curated===true).length;
     $('#imported-count').textContent=items.filter(a=>a.originRepo).length;
     $('#favorite-count').textContent=favorites.size;
-    $('#workbench-count').textContent=items.filter(a=>a.source==='local').length+' 个本地 Demo / '+items.length+' 个项目';
     const deepLink=new URL(window.location.href).searchParams.get('asset');
     const preferred=items.find(a=>a.id===deepLink)||
       items.find(a=>a.source==='local'&&a.curated===true)||
@@ -361,7 +444,6 @@ async function init(){
     $('#results-status').textContent='项目数据加载失败';
     $('#empty').hidden=false;
     $('#empty-message').textContent='项目加载失败，请检查网络连接和静态站点构建。';
-    $('#preview-status').textContent='项目目录加载失败';
     console.error('UI Vault:',error);
   }
 }
