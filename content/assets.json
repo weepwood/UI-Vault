@@ -2480,18 +2480,24 @@
   {
     "id": "glass-panel",
     "title": "柔光玻璃卡片",
-    "subtitle": "Soft Glass Surface",
-    "description": "透光面板、柔和光晕与精细边框，演示清晰可读的玻璃拟态层次。",
+    "subtitle": "Glass Material Lab",
+    "description": "同页对照 Windows Mica / Acrylic、macOS Vibrancy、柔光玻璃与两种液态折射材质，支持深浅色、背景与实时参数调节，并可复制 CSS。",
     "type": "component",
     "source": "local",
     "tags": [
       "Glass",
       "玻璃拟态",
+      "Mica",
+      "Acrylic",
+      "Vibrancy",
+      "Liquid Glass",
       "Card"
     ],
     "technologies": [
       "HTML",
-      "CSS"
+      "CSS",
+      "JavaScript",
+      "SVG"
     ],
     "preview": "demos/components/glass-panel/index.html",
     "code": "demos/components/glass-panel/index.html",
@@ -2499,7 +2505,12 @@
     "cover": "glass",
     "featured": true,
     "created": "2026-11-21",
-    "copyable": true
+    "copyable": true,
+    "reuseNotes": [
+      "对比 6 种材质：柔光、Windows Mica / Acrylic、macOS Vibrancy、液态透镜与凝胶。",
+      "各效果是 Web 独立原创近似，不调用 Windows 或 macOS 的原生材质 API。",
+      "调参、背景/深浅色切换、CSS 复制、来源链接均在同一独立 Demo 页面。"
+    ]
   },
   {
     "id": "gpui-kit-demo",
