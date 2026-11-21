@@ -16,13 +16,13 @@ test('Topbar 包含项目名称、分类、设备模式与全部操作，预览�
  assert.doesNotMatch(html,/本地 Demo · 可以直接操作网页|9 个本地 Demo \/ 35 个项目/);
 });
 test('源码和说明只在原生资料弹窗显示，不占预览区高度',async()=>{
- const [html,css]=await Promise.all(['index.html','assets/styles.css'].map(read));
+ const [html,css,dialogCss]=await Promise.all(['index.html','assets/styles.css','assets/ui/dialog.css'].map(read));
  assert.match(html,/<dialog id="project-dialog" class="project-dialog" aria-labelledby="dialog-title">/);
  assert.match(html,/id="dialog-overview".*role="tabpanel"/);
  assert.match(html,/id="dialog-source".*role="tabpanel"/);
  assert.match(html,/id="source-code"/);
  assert.match(html,/id="source-copy" disabled/);
- assert.match(css,/\.project-dialog::backdrop/);
+ assert.match(dialogCss,/\.project-dialog::backdrop/);
  assert.match(css,/\.preview-stage\s*\{[^}]*flex:1 1 0/);
  assert.doesNotMatch(css,/\.workbench-footer/);
 });
