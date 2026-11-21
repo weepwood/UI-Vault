@@ -429,11 +429,16 @@ def verify_glass_materials(browser, origin):
             page.locator("#theme-toggle").click()
             page.locator("#reset").click()
             assert page.locator("#blur").input_value() == "16", "重置未恢复参数"
+            page.locator('[data-wallpaper-option="grid"]').click()
             # 复制完整 HTML 的按钮应可操作；沙箱环境不保证 Clipboard API 写入权限。
             assert page.locator("#copy-full").is_enabled()
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "横向溢出"
             OUTPUT.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(OUTPUT / ("glass-materials-" + name + ".png")), full_page=True, animations="disabled")
+            if name == "desktop":
+                page.locator('[data-view="native"]').click()
+                page.screenshot(path=str(OUTPUT / "glass-materials-native-desktop.png"), full_page=True, animations="disabled")
+                page.locator('[data-view="compare"]').click()
             assert not errors, name + ": 玻璃材质脚本错误: " + "; ".join(errors)
         finally:
             context.close()

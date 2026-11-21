@@ -167,7 +167,7 @@ body[data-theme="dark"] .sources__links a{color:#a1d6ed}
 .view-switcher button{min-width:70px}
 .scene{background-size:100% 100%;background-position:0 0}
 body[data-wallpaper="grid"] .scene{--scene-art:repeating-linear-gradient(90deg,#47647955 0px,#47647955 1px,transparent 1px,transparent 26px),repeating-linear-gradient(0deg,#47647945 0px,#47647945 1px,transparent 1px,transparent 26px),linear-gradient(130deg,#eee8df,#91b0c2);background-size:100% 100%}
-body[data-wallpaper="lines"] .scene{--scene-art:repeating-linear-gradient(117deg,transparent 0px,transparent 21px,#17334ca8 22px,#17334ca8 24px,transparent 25px,transparent 62px),repeating-linear-gradient(0deg,#f6ede855 0px,#f6ede855 16px,#648fbaa8 17px,#648fbaa8 21px,transparent 22px,transparent 52px),linear-gradient(120deg,#f8e7d7,#a3c7d9 57%,#7c97b7);background-size:100% 100%}
+body[data-wallpaper="lines"] .scene{--scene-art:repeating-linear-gradient(117deg,transparent 0px,transparent 21px,#17334c92 22px,#17334ca8 24px,transparent 25px,transparent 62px),repeating-linear-gradient(0deg,#f6ede855 0px,#f6ede855 16px,#648fba88 17px,#648fbaa8 21px,transparent 22px,transparent 52px),linear-gradient(120deg,#f8e7d7,#a3c7d9 57%,#7c97b7);background-size:100% 100%}
 body[data-wallpaper="texture"] .scene{--scene-art:radial-gradient(circle at 8px 10px,#f8ffff 0px,#f8ffff 3px,transparent 3.5px),repeating-linear-gradient(36deg,#1c4c715c 0px,#1c4c715c 3px,transparent 3px,transparent 17px),linear-gradient(140deg,#b5c2d8,#e1e6db 52%,#92adad);background-size:34px 34px,100% 100%,100% 100%}
 body[data-wallpaper="color"] .scene{--scene-art:radial-gradient(ellipse 35% 54% at 23% 29%,#fff2d6 0%,#ffb58d 45%,transparent 99%),radial-gradient(ellipse 50% 45% at 82% 40%,#a1baff 0%,#8f8be1 40%,transparent 99%),radial-gradient(ellipse 70% 70% at 45% 105%,#64c5b7 0%,transparent 90%),linear-gradient(125deg,#e2d3ee,#9ac3c8);background-size:100% 100%}
 .material{background:rgba(255,255,255,var(--mat-tint,.34));backdrop-filter:blur(var(--mat-blur,16px)) saturate(128%);-webkit-backdrop-filter:blur(var(--mat-blur,16px)) saturate(128%)}
@@ -235,9 +235,21 @@ body[data-wallpaper="texture"] .refraction {
   background:rgba(97,126,151,calc((1 - var(--mat-tint,.96)) * .40));
 }
 @media(prefers-reduced-motion:reduce){.mat-gel .pick:hover .material{transform:none}}
+
+/* Liquid Lens/Gel: 仅在内容下缘做局部可读性衰减，避免高对比条纹直接穿过字形。 */
+.mat-liquid .material::before,.mat-gel .material::before{
+  content:"";position:absolute;inset:38% 0 0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,transparent,rgba(236,247,254,.38) 38%,rgba(236,247,254,.76));
+  border-radius:inherit;
+}
+.mat-liquid .material__bottom,.mat-gel .material__bottom{text-shadow:0 1px 2px #ffffff9c}
+body[data-theme="dark"] .mat-liquid .material::before,body[data-theme="dark"] .mat-gel .material::before{
+  background:linear-gradient(to bottom,transparent,rgba(19,35,50,.42) 38%,rgba(19,35,50,.78));
+}
+body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .mat-gel .material__bottom{text-shadow:0 1px 2px #0a1927a8}
 </style>
 </head>
-<body data-theme="light" data-wallpaper="lines" data-mode="compare" data-optics="loading">
+<body data-theme="light" data-wallpaper="grid" data-mode="compare" data-optics="loading">
 <svg class="svg-filters" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
 <defs>
 <filter id="glass-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feImage id="refraction-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lens-shape"/><feDisplacementMap id="refraction-scale" in="SourceGraphic" in2="lens-shape" scale="19" xChannelSelector="R" yChannelSelector="G"/></filter>
@@ -253,7 +265,7 @@ body[data-wallpaper="texture"] .refraction {
 </div>
 <div class="toolbar"><div class="switcher view-switcher" role="group" aria-label="展示方式"><button type="button" data-view="compare" aria-pressed="true">统一对比</button><button type="button" data-view="native" aria-pressed="false">使用场景</button></div><div class="switcher" role="group" aria-label="预览背景">
 <button type="button" data-wallpaper-option="color" aria-pressed="false">彩色背景</button>
-<button type="button" data-wallpaper-option="grid" aria-pressed="false">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="true">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
+<button type="button" data-wallpaper-option="grid" aria-pressed="true">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="false">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">深色模式</button></div></header>
 <p class="tuning-hint" id="selected-hint">正在调整「柔光玻璃」的独立参数。选择另一种材质后，滑块会切换到它自己的设置。</p><div class="adjustments" aria-label="所选材质独立参数">
 <div class="control"><label for="blur">模糊</label><input id="blur" type="range" min="0" max="50" value="16" step="1"><output id="blur-value" for="blur">16 px</output></div>
