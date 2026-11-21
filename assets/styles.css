@@ -45,7 +45,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .brand-type small { font-size: 10px; color: var(--muted); margin-top: 2px; }
 .nav-block { margin-bottom: 24px; }
 .nav-label { padding: 0 12px; margin: 0 0 8px; font-size: 11px; color: var(--subtle); font-weight: 600; display: flex; justify-content: space-between; }
-.nav-label-suffix { color: #a2afb2; font-weight: 400; }
+.nav-label-suffix { color: var(--subtle); font-weight: 400; }
 .nav-button { width: 100%; border: 0; border-radius: 7px; background: transparent; color: var(--text); display: flex; align-items: center; text-align: left; gap: 11px; padding: 9px 12px; font-size: 13px; transition: background .12s,color .12s; }
 .nav-button:hover { background: #edf1f1; }
 .nav-button.is-active { background: var(--accent-soft); color: var(--accent); font-weight: 650; }
@@ -86,7 +86,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .search-field { border: 1px solid var(--line); background: var(--surface); border-radius: var(--radius-md); height: 44px; padding: 0 13px; display: flex; align-items: center; gap: 11px; flex: 1; min-width: 0; color: var(--muted); }
 .search-field:focus-within { border-color: #8caabb; box-shadow: 0 0 0 3px #dfeaf1; }
 .search-field input { border: 0; outline: 0; background: transparent; flex: 1; min-width: 0; color: var(--ink); font-size: 13px; }
-.search-field input::placeholder { color: #89969a; }
+.search-field input::placeholder { color: var(--muted); }
 .search-field kbd { border: 1px solid var(--line); color: var(--subtle); border-radius: 5px; padding: 3px 5px; font-size: 11px; white-space: nowrap; }
 .toolbar-actions { display: flex; gap: 10px; }
 .toolbar select { background: var(--surface); color: var(--text); border: 1px solid var(--line); border-radius: var(--radius-md); height: 44px; padding: 0 12px; min-width: 112px; font-size: 12px; }
@@ -117,7 +117,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .reference-cover { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: flex-start; justify-content: space-between; padding: clamp(16px,2.5vw,28px); background: #e9edee; }
 .reference-cover .reference-overline { display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: 11px; color: #5a666c; }
 .reference-cover .reference-name { color: #2c3c44; font-size: clamp(17px,2vw,26px); font-weight: 700; letter-spacing: -.045em; line-height: 1.25; max-width: 90%; overflow-wrap: anywhere; }
-.reference-cover .reference-origin { font: 11px/1.5 ui-monospace,"SFMono-Regular",Consolas,monospace; color: #63757d; overflow-wrap: anywhere; }
+.reference-cover .reference-origin { font: 11px/1.5 ui-monospace,"SFMono-Regular",Consolas,monospace; color: #52636b; overflow-wrap: anywhere; }
 .card-visual[data-cover="mosaic"] .reference-cover { background: #e2e7e7; }
 .card-visual[data-cover="native"] .reference-cover { background: #e1e7e8; }
 .card-visual[data-cover="motion"] .reference-cover { background: #e5ebee; }

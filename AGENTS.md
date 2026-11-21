@@ -46,3 +46,9 @@ npm run check
 - 提交 UI 前检查桌面、平板、手机布局，键盘导航、可见焦点、长文本、空态和 prefers-reduced-motion。
 - 不把静态语法或构建成功称为视觉验收；没有看过实际渲染时明确说明。
 - 不自动安装第三方设计 Skills 或组件库；若决定使用，先检查版本、依赖和许可证。
+
+## 开源 UI 设计审查步骤（v0.4）
+
+对于任何会影响展厅的前端 PR，按 [docs/OPEN-SOURCE-DESIGN-WORKFLOW.md](docs/OPEN-SOURCE-DESIGN-WORKFLOW.md) 逐项自查：先以 Anthropic Frontend Design 澄清产品场景，再用 Impeccable / better-interface 评审层级与文案；随后用 better-accessibility / better-colors 处理键盘与颜色对比；最后用 Emil Kowalski 的 remove-animations 思路只保留有意义的动画，并按 Vercel Web Interface Guidelines 核对状态和错误处理。
+
+新的 UI 改动需运行 `npm run check`（包含 `design:audit`）。若没有做实际截图，就不能声称已经视觉验收。外部 Skills 是可选开发工具，不应作为页面运行时依赖，也不应无授权复制其源码。

@@ -12,7 +12,7 @@ UI Vault 是用于**查找、查看、复制、比较 UI 资产**的资料库，
 | 操作表面 | #ffffff |
 | 主文字 | #20282d |
 | 正文 | #40494d |
-| 次级信息 | #697478 |
+| 次级信息 | #637074 |
 | 边框 | #dfe4e5 |
 | 交互强调 | #315e80 |
 | 选中背景 | #e7eff4 |
@@ -50,3 +50,14 @@ UI Vault 是用于**查找、查看、复制、比较 UI 资产**的资料库，
 必须从页面实际用途出发，而不是仅靠「高级感」「炫酷」之类形容词。静态检查只能发现局部模板痕迹，不等于完成视觉验收。
 
 详细参考：docs/AI-DESIGN-RESEARCH.md。
+
+## v0.4 交互评审补充
+
+- 资产详情内本地 Demo 提供自适应、手机 390px、平板 768px、桌面 1280px 预览。使用 CSS transform 缩放 iframe，不改变 Demo 源码。
+- 详情支持复制可分享的资源链接（查询参数 `?asset=<id>`），加载时自动打开对应资产。
+- 常规收藏操作不得重建全部卡片或使已运行的 Demo iframe 重新加载；筛选态移除资源时应恢复可访问的焦点。
+- 搜索和分类通过 `aria-pressed`、结果数播报及清晰的空状态反馈变化。
+- 普通文字的语义色配色必须满足 WCAG AA 4.5:1；执行 `npm run design:audit`。卡片真实渲染、设备断点与特殊色块需人工复核。
+- 设计动效审查：用户触发的反馈可保留；不要自动为每个卡片添加进场效果。对话框打开关闭与缩放动效均应可中断，尊重 `prefers-reduced-motion`。
+
+本次设计方法取材于 Impeccable、Jakub Krehel Skills、Emil Kowalski Skills、Vercel Web Interface Guidelines、Anthropic Frontend Design。使用原则与链接见 [docs/OPEN-SOURCE-DESIGN-WORKFLOW.md](docs/OPEN-SOURCE-DESIGN-WORKFLOW.md)。

@@ -46,3 +46,16 @@ node scripts/check-dist.mjs
 构建产物为 `dist/`，使用发布白名单，避免公开 `catalog/`、`scripts/`、`tests/` 等内部目录。保持资产 ID、原有 `demos/.../index.html` 路径和浏览器收藏兼容。
 
 首次 Pages 启用如未完成，请在 Settings → Pages → Build and deployment → Source 选择 **GitHub Actions**。
+
+## 设计质量检查（v0.4）
+
+在 Impeccable、Jakub Krehel Skills、Emil Kowalski Skills、Anthropic Frontend Design 和 Vercel Web Interface Guidelines 的原则下，补充了响应式 Demo 预览、收藏交互稳定性及颜色对比度检查。
+
+```bash
+npm run design:audit    # 自动检查语义色对比度与基础交互规范
+npm run check           # 完整 CI 等价检查
+```
+
+新增加的资产详情支持手机 / 平板 / 桌面预览宽度以及直达资源链接。详见 [开源设计工程工作流](docs/OPEN-SOURCE-DESIGN-WORKFLOW.md)。
+
+这些方法已直接落实到仓库代码与审查规范，但没有将第三方 Skills 源码打包进产品。
