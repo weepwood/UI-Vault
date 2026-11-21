@@ -78,3 +78,6 @@ npm run check           # 完整 CI 等价检查
 ## 图标系统
 
 主站使用 [Lucide](https://lucide.dev/) 本地 SVG sprite，不通过 CDN 加载，也不依赖第三方 npm 包。侧栏、搜索、收藏、详情预览、操作按钮及站点标识使用一致的线性图标；已独立实现的 Demo 保留各自设计风格。参见 [图标规范与许可](docs/ICONOGRAPHY.md)。
+
+
+**独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与柔光玻璃卡片已采用内嵌官方 Lucide SVG；各 Demo 自包含，支持逐项手工调整。Frame Lab、Emboss Lab 和极光背景保持原有独立设计。详见 [图标规范](docs/ICONOGRAPHY.md)。
