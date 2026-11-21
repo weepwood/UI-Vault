@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="data:,">
+  <title>Thinking 玻璃球对话框 · UI-Vault</title>
+  <link rel="stylesheet" href="./dialog.css">
+  <style>
+    :root{color-scheme:dark;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC",sans-serif}
+    *{box-sizing:border-box}
+    html,body{min-height:100%;margin:0;background:#050710;color:#edf0f7}
+    button,input{font:inherit}
+    button{cursor:pointer}
+    button:focus-visible,input:focus-visible{outline:2px solid #adbaff;outline-offset:3px}
+    .workarea{min-height:100dvh;padding:clamp(24px,5vw,60px);display:flex;flex-direction:column;align-items:flex-start;gap:25px}
+    .title{margin:0;font-size:clamp(22px,3vw,32px);font-weight:620;letter-spacing:-.03em}
+    .intro{max-width:510px;margin:10px 0 0;color:#98a2b7;font-size:13px;line-height:1.8}
+    .field{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
+    .field label{font-size:12px;color:#a8b1c4}
+    .field input{width:min(330px,70vw);padding:10px 12px;border-radius:8px;border:1px solid #32394b;background:#101622;color:#e8e9f0}
+    .actions{display:flex;flex-wrap:wrap;gap:9px}
+    .actions button{border:1px solid #313c56;border-radius:8px;padding:9px 13px;background:#192133;color:#edf1fd;font-size:13px}
+    .actions button:first-child{background:#dfe7fb;border-color:#dfe7fb;color:#182238}
+    .actions button:hover{filter:brightness(1.12)}
+    .tip{color:#818fa8;font-size:12px;line-height:1.8}
+    code{padding:2px 5px;background:#151e30;border-radius:4px;color:#c4d3f6;font-size:12px}
+    @media(max-width:440px){.workarea{padding:24px 17px}.field{align-items:flex-start;flex-direction:column}.field input{width:min(100%,340px)}}
+  </style>
+</head>
+<body>
+  <main class="workarea">
+    <div>
+      <h1 class="title">玻璃球思考对话框</h1>
+      <p class="intro">参考提供的深色胶囊设计。加载时显示渐变进度条，首帧完成后才展示 WebGPU 玻璃球；不再预先绘制假的圆形占位。</p>
+    </div>
+    <div class="field">
+      <label for="dialog-label">显示文字</label>
+      <input id="dialog-label" type="text" value="Thinking..." maxlength="48" autocomplete="off">
+    </div>
+    <div class="actions">
+      <button type="button" id="dialog-open">打开对话框</button>
+      <button type="button" id="dialog-idle">静置</button>
+      <button type="button" id="dialog-thinking">思考</button>
+      <button type="button" id="dialog-retry">重新加载</button>
+    </div>
+    <p class="tip">Esc、关闭按钮或点击遮罩可关闭。开发者可通过 <code>window.thinkingDialog</code> 调用 show / close / setText / setState / retry / destroy。</p>
+  </main>
+  <script type="module">
+    import { createLiquidOrbDialog } from './dialog.js';
+    const thinkingDialog = createLiquidOrbDialog({ text: 'Thinking...', startOpen: true });
+    Object.defineProperty(window, 'thinkingDialog', { value: thinkingDialog });
+    document.querySelector('#dialog-open').addEventListener('click', () => thinkingDialog.show());
+    document.querySelector('#dialog-idle').addEventListener('click', () => { thinkingDialog.setState('idle'); thinkingDialog.show(); });
+    document.querySelector('#dialog-thinking').addEventListener('click', () => { thinkingDialog.setState('thinking'); thinkingDialog.show(); });
+    document.querySelector('#dialog-retry').addEventListener('click', () => { thinkingDialog.retry(); thinkingDialog.show(); });
+    document.querySelector('#dialog-label').addEventListener('input', event => thinkingDialog.setText(event.target.value || 'Thinking...'));
+  </script>
+</body>
+</html>
