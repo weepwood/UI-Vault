@@ -46,8 +46,10 @@ test('移动端两栏一起收起/打开，并正确同步惰性焦点',async()=
  assert.match(css,/\.library-rail\.is-open/);
  assert.match(css,/@media\(max-width:480px\)/);
  assert.match(css,/grid-template-rows:\s*minmax\(0, auto\) minmax\(0,1fr\)/);
- assert.match(app,/libraryRail\.classList\.toggle\('is-open',visible\)/);
- assert.match(app,/libraryRail\.inert=isMobile\(\)&&!visible/);
- assert.match(app,/\$\('#main'\)\.inert=visible/);
+ const mobile=await read('assets/ui/mobile-navigation.js');
+ assert.match(app,/mobileNavigation=createMobileNavigation\(/);
+ assert.ok(mobile.includes("rail.classList.toggle('is-open',visible)"));
+ assert.ok(mobile.includes('rail.inert=mobile&&!visible'));
+ assert.ok(mobile.includes("main.inert=visible||getView()==='settings'"));
  assert.doesNotMatch(app,/sidebar\.classList\.toggle/);
 });
