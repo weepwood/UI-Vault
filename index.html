@@ -13,7 +13,8 @@
 <body>
 <a class="skip-link" href="#main">跳转到预览工作区</a>
 <div class="app-shell">
-  <aside class="sidebar" id="sidebar" aria-label="项目目录">
+  <div class="library-rail" id="library-rail">
+  <aside class="sidebar" id="sidebar" aria-label="导航与分类">
     <div class="sidebar-heading">
       <a class="brand" href="./" aria-label="UI Vault 首页"><span class="brand-mark"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg></span><span class="brand-type"><strong>UI Vault</strong><small>设计资料库</small></span></a>
       <button class="sidebar-dismiss" id="sidebar-dismiss" type="button" aria-label="关闭项目目录"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#x"></use></svg></button>
@@ -28,6 +29,12 @@
       <button type="button" class="filter-button" data-imported="toggle" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#git-branch"></use></svg><span>跨仓资源</span><span class="filter-count" id="imported-count">—</span></button>
     </nav>
     <div class="category-section"><div class="section-row"><span>项目分类</span><button type="button" class="text-reset" id="reset-filters" hidden>重置筛选</button></div><nav id="category-nav" class="category-nav" aria-label="项目分类"></nav></div>
+    <div class="sidebar-footer">
+      <a href="https://github.com/weepwood/UI-Vault/blob/main/docs/ADDING-DEMO.md" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#plus"></use></svg><span>新增项目</span></a>
+      <a href="https://github.com/weepwood/UI-Vault" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#code-xml"></use></svg><span>GitHub</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#external-link"></use></svg></a>
+    </div>
+  </aside>
+  <section class="project-panel" id="project-panel" aria-label="项目目录">
     <div class="list-controls">
       <div class="section-row"><span>项目目录 <span class="result-count" id="results-count">—</span></span><select id="sort" aria-label="项目排序"><option value="featured">精选优先</option><option value="newest">最新添加</option><option value="az">名称排序</option></select></div>
       <label class="tag-select-label">标签 <select id="tag-filter" aria-label="按标签筛选"><option value="">全部标签</option></select></label>
@@ -37,16 +44,13 @@
       <div id="gallery" class="project-list" role="list" aria-label="可浏览项目"></div>
       <div id="empty" class="empty-list" hidden><p id="empty-message">没有找到匹配的项目。</p><button type="button" id="clear-filters">显示全部项目</button></div>
     </div>
-    <div class="sidebar-footer">
-      <a href="https://github.com/weepwood/UI-Vault/blob/main/docs/ADDING-DEMO.md" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#plus"></use></svg><span>新增项目</span></a>
-      <a href="https://github.com/weepwood/UI-Vault" target="_blank" rel="noopener noreferrer"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#code-xml"></use></svg><span>GitHub</span><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#external-link"></use></svg></a>
-    </div>
-  </aside>
+  </section>
+  </div>
   <div class="mobile-shade" id="mobile-shade" hidden></div>
   <main class="main" id="main">
     <header class="topbar" aria-label="项目预览工具栏">
       <div class="topbar-project">
-        <button id="menu-toggle" class="menu-toggle" type="button" aria-label="打开项目目录" aria-expanded="false" aria-controls="sidebar"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#menu"></use></svg></button>
+        <button id="menu-toggle" class="menu-toggle" type="button" aria-label="打开项目目录" aria-expanded="false" aria-controls="library-rail"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#menu"></use></svg></button>
         <div class="project-identity">
           <span class="topbar-kind" id="preview-kind">选择项目</span>
           <h1 id="preview-title">正在加载项目…</h1>
