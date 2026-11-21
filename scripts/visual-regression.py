@@ -77,11 +77,14 @@ def compare(name, actual, expected):
     return f"{name}: MAE {mae:.2f}，变化比例 {ratio:.1%}，尺寸 {newsize[0]}×{newsize[1]}"
 
 
-def capture(page, mode):
+def capture(page, mode, theme):
     if mode in ("mobile-rail", "mobile-dialog"):
         page.locator("#menu-toggle").click()
     first = page.locator(".project-item").first
     first.wait_for(state="visible", timeout=30000)
+    # DOMContentLoaded 之后主站模块可能仍在初始化，过早写入深色主题会被设置管理器覆盖。
+    # 等项目目录就绪后再固定主题，确保与生产端同一时序、同一截图状态。
+    page.evaluate("(theme) => {document.documentElement.dataset.theme = theme;}", theme)
     page.evaluate("document.fonts.ready")
     # 有限等待使字体加载及 HTML 初始化稳定；不依赖固定动画时长。
     page.add_style_tag(content="*, *::before, *::after { animation:none!important; transition:none!important; caret-color:transparent!important; }")
@@ -142,9 +145,7 @@ def capture_all(browser, origin, directory):
         page = context.new_page()
         try:
             page.goto(origin, wait_until="domcontentloaded", timeout=45000)
-            if theme == "dark":
-                page.evaluate("document.documentElement.dataset.theme = 'dark'")
-            image_bytes = capture(page, mode)
+            image_bytes = capture(page, mode, theme)
             file = directory / f"{name}.png"
             file.write_bytes(image_bytes)
             with Image.open(io.BytesIO(image_bytes)) as img:
@@ -186,19 +187,13 @@ def main():
                     except AssertionError as exc:
                         failures.append(str(exc))
                 if args.bootstrap:
-                    # 对照截图已人工核实：旧站移动端深色 Dialog 错误地回退为浅色。
-                    # 只在生成初始基线时接受这一项修正；日常 CI 不存在例外规则。
-                    known_change = "mobile-dialog-dark"
-                    remaining = [reason for reason in failures if not reason.startswith(known_change + ":")]
-                    if len(remaining) != len(failures):
-                        print("ACCEPTED_VISUAL_CHANGE: 移动端深色 Dialog 修正为与桌面一致的深色主题")
+                    # 初始化仅用于人工审核并输出固定的测试基线，不自动改写仓库。
                     print("VISUAL_BASELINE_JSON=" + json.dumps({
                         "version": 1,
                         "browser": "playwright-chromium-linux",
                         "grid": list(GRID),
                         "cases": current
                     }, ensure_ascii=False, separators=(",", ":")), flush=True)
-                    failures = remaining
                 if failures:
                     raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
