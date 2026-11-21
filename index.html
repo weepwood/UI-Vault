@@ -30,7 +30,7 @@
     </nav>
     <div class="category-section"><div class="section-row"><span>项目分类</span><button type="button" class="text-reset" id="reset-filters" hidden>重置筛选</button></div><nav id="category-nav" class="category-nav" aria-label="项目分类"></nav></div>
     <div class="sidebar-footer">
-      <a id="settings-open" class="sidebar-settings" href="./settings.html" aria-label="打开设置页面" title="设置"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#settings"></use></svg><span>设置</span></a>
+      <a id="settings-open" class="sidebar-settings" href="./?view=settings" aria-label="打开工作台设置" title="设置" aria-current="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#settings"></use></svg><span>设置</span></a>
     </div>
   </aside>
   <section class="project-panel" id="project-panel" aria-label="项目目录">
@@ -75,6 +75,36 @@
     </header>
     <section id="preview-stage" class="preview-stage" aria-label="所选项目的网页效果"><div class="preview-placeholder"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg><p>请选择一个项目开始预览</p></div></section>
   </main>
+  <section id="settings-view" class="settings-view settings-main" data-settings-page aria-label="工作台设置" hidden>
+    <header class="settings-header">
+      <button type="button" class="settings-mobile-menu menu-toggle" id="settings-menu-toggle" aria-controls="library-rail" aria-expanded="false" aria-label="打开导航菜单"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#menu"></use></svg></button>
+      <div>
+        <p class="settings-eyebrow">UI VAULT / PREFERENCES</p>
+        <h1 id="settings-title">设置</h1>
+        <p class="settings-intro">自定义工作台的外观和浏览方式，修改后立即保存。</p>
+      </div>
+    </header>
+    <div class="settings-scroll">
+      <section id="appearance" class="settings-section" aria-labelledby="appearance-title"><div class="settings-section-heading"><h2 id="appearance-title">外观</h2><p>工作台主题与界面强调色，不影响独立 Demo 的视觉效果。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">主题</span><select data-setting="theme" aria-label="主题"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label><label class="setting-field"><span class="setting-label">强调色</span><select data-setting="accent" aria-label="强调色"><option value="blue">经典蓝</option><option value="teal">青绿</option><option value="violet">紫罗兰</option></select></label></div></section>
+      <section id="interface" class="settings-section" aria-labelledby="interface-title"><div class="settings-section-heading"><h2 id="interface-title">界面</h2><p>调整项目列表的信息密度和导航栏所占空间。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">列表密度</span><select data-setting="density" aria-label="列表密度"><option value="comfortable">舒适</option><option value="compact">紧凑</option></select></label><label class="setting-field"><span class="setting-label">侧栏宽度</span><select data-setting="sidebar" aria-label="侧栏宽度"><option value="standard">标准</option><option value="narrow">窄侧栏</option></select></label></div></section>
+      <section id="typography" class="settings-section" aria-labelledby="typography-title"><div class="settings-section-heading"><h2 id="typography-title">字体</h2><p>字体设置仅作用于 UI-Vault 工作台，不覆盖外部网站。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">字体家族</span><select data-setting="font" aria-label="字体家族"><option value="yuan">霞鹜 975 圆体</option><option value="system">系统无衬线</option><option value="serif">系统衬线</option></select></label><label class="setting-field"><span class="setting-label">基础字号</span><select data-setting="fontSize" aria-label="基础字号"><option value="12">小 · 12px</option><option value="13">默认 · 13px</option><option value="14">中 · 14px</option><option value="15">大 · 15px</option></select></label></div></section>
+      <section id="preview" class="settings-section" aria-labelledby="preview-title"><div class="settings-section-heading"><h2 id="preview-title">浏览体验</h2><p>设置打开本站 Demo 时的默认预览方式。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">默认预览尺寸</span><select data-setting="preview" aria-label="默认预览尺寸"><option value="fluid">自适应</option><option value="mobile">手机</option><option value="tablet">平板</option><option value="desktop">桌面</option></select><small>只对本站 Demo 设备预览生效</small></label><label class="setting-field"><span class="setting-label">界面动效</span><select data-setting="motion" aria-label="界面动效"><option value="system">跟随系统</option><option value="reduced">减少动态效果</option></select></label></div></section>
+      <section id="about" class="settings-section" aria-labelledby="about-title">
+        <div class="settings-section-heading"><h2 id="about-title">关于</h2><p>项目仓库与开源代码。</p></div>
+        <div class="settings-grid settings-grid--full">
+          <a class="settings-repo-link" href="https://github.com/weepwood/UI-Vault" target="_blank" rel="noopener noreferrer" aria-label="打开 UI Vault GitHub 仓库">
+            <span class="settings-repo-icon"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#github"></use></svg></span>
+            <span class="settings-repo-text"><strong>GitHub</strong><small>weepwood/UI-Vault</small></span>
+            <svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#external-link"></use></svg>
+          </a>
+        </div>
+      </section>
+    </div>
+    <footer class="settings-footer">
+      <p>设置保存在当前浏览器，返回工作台后自动生效。</p>
+      <button type="button" id="settings-reset" class="settings-reset">恢复默认设置</button>
+    </footer>
+  </section>
 </div>
 <dialog id="project-dialog" class="project-dialog" aria-labelledby="dialog-title">
   <div class="dialog-shell">
@@ -98,6 +128,7 @@
     </section>
   </div>
 </dialog>
+<span class="sr-only" id="settings-status" role="status" aria-live="polite"></span>
 <div class="toast" role="status" aria-live="polite" id="toast"></div>
 </body>
 </html>
