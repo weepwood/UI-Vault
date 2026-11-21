@@ -26,17 +26,21 @@ test('源码和说明只在原生资料弹窗显示，不占预览区高度',asy
  assert.match(css,/\.preview-stage\s*\{[^}]*flex:1 1 0/);
  assert.doesNotMatch(css,/\.workbench-footer/);
 });
-test('项目说明弹窗支持原生关闭、键盘切换及源码懒加载',async()=>{
- const app=await read('assets/app.js');
+test('项目说明 Dialog 由独立控制器管理关闭、标签页、源码请求与焦点',async()=>{
+ const [app,dialog]=await Promise.all(['assets/app.js','assets/ui/project-dialog.js'].map(read));
  for(const fragment of [
-   "infoDialog.showModal()","infoDialog.close()","function setInfoTab(tab)",
-   "function loadProjectSource()","sourceLoadedId","sourceLoadKey",
-   "data-info-tab","aria-selected","ArrowLeft","ArrowRight",
-   "event.target!==infoDialog","$('#preview-info').disabled=false",
- ])
-  assert.ok(app.includes(fragment),'缺少交互：'+fragment);
+   'createProjectDialog({','projectDialog.setAsset(asset,state.labels)',
+   'projectDialog.reset()','onCopyText:copyText'
+ ])assert.ok(app.includes(fragment),'工作台未接入项目详情控制器：'+fragment);
+ for(const fragment of [
+   'root.showModal()','root.close()','function setTab(tab)',
+   'async function loadSource()','new AbortController()',
+   "listen(root,'cancel'","listen(root,'close'",
+   "listen(root,'keydown'","'ArrowLeft'","'ArrowRight'",
+   "event.target===root","nodes.copy.disabled=false"
+ ])assert.ok(dialog.includes(fragment),'项目详情组件缺少交互：'+fragment);
+ assert.doesNotMatch(app,/sourceLoadKey|sourceLoadedId|setInfoTab\(/);
  const select=app.slice(app.indexOf('function selectAsset('),app.indexOf('function toggleFavorite('));
  assert.doesNotMatch(select,/preview-status|workbench-count|project-notes|location-label/);
- const init=app.slice(app.indexOf('async function init()'));
- assert.doesNotMatch(init,/\$\('#workbench-count'\)|\$\('#preview-status'\)/);
+ assert.doesNotMatch(app.slice(app.indexOf('async function init()')),/\$\('#workbench-count'\)|\$\('#preview-status'\)/);
 });
