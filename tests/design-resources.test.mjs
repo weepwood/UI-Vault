@@ -16,7 +16,7 @@ test('设计资源栏目完整登记且资源原站为安全 HTTPS',async()=>{
   const script=await readFile(join(ROOT,'assets/design-resources/catalog.js'),'utf8');
   vm.runInNewContext(script,ctx,{timeout:1000});
   const records=Array.from(ctx.window.UI_VAULT_DESIGN_RESOURCES);
-  assert.ok(records.length>=20,'设计资源数量不应少于 20');
+  assert.ok(records.length>=30,'设计资源数量不应少于 30');
   assert.equal(new Set(records.map(x=>x.id)).size,records.length);
   for(const resource of records) {
     assert.match(resource.id,/^[a-z0-9]+(?:-[a-z0-9]+)*$/);

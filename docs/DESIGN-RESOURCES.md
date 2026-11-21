@@ -24,6 +24,10 @@
 6. 不从外部 URL 运行代码，不自动安装 Skills；外部内容与仓库的许可分别处理。
 7. 运行 `npm run catalog:sync` 和 `npm run check`，验收索引搜索/筛选/空态/外链/键盘/移动端。
 
+## 资源分类与初期收录
+
+初期收录 **30 条**（其中 10 条设计网站），例如 AI for UI、Jakub Krehel、Vercel 指南、Mobbin、Recent、Landdding、60fps、Footer Design、Iconly 等。
+
 ## 链接
 - [独立资源索引](https://weepwood.github.io/UI-Vault/?asset=design-resource-library)
 - [AI UI Skills 手册](https://weepwood.github.io/UI-Vault/?asset=design-skill-handbook)

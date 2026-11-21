@@ -352,5 +352,133 @@ window.UI_VAULT_DESIGN_RESOURCES = [
       "灵感"
     ],
     "badge": "组件网站"
+  },
+  {
+    "id": "landdding",
+    "title": "Landdding · Landing Page Gallery",
+    "kind": "site",
+    "topic": "网页设计",
+    "source": "Landdding",
+    "url": "https://landdding.com/",
+    "summary": "分类浏览真实落地页和网站模板的设计画廊。",
+    "usage": "研究网站首屏、排版层级、内容模块与转化路径。",
+    "tags": [
+      "Landing Page",
+      "排版",
+      "灵感"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "recent",
+    "title": "Recent · Design Inspiration",
+    "kind": "site",
+    "topic": "网页设计",
+    "source": "Recent",
+    "url": "https://recent.design/",
+    "summary": "持续整理网站与数字产品的设计案例。",
+    "usage": "寻找当前网页的视觉方向，分析布局和结构。",
+    "tags": [
+      "Web",
+      "视觉",
+      "灵感"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "60fps",
+    "title": "60fps · UI Motion Inspiration",
+    "kind": "site",
+    "topic": "动效",
+    "source": "60fps",
+    "url": "https://60fps.design/",
+    "summary": "移动端与网页交互动画案例索引。",
+    "usage": "对照真实交互设计动画轨迹、时长和反馈。",
+    "tags": [
+      "动画",
+      "微交互",
+      "灵感"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "motionin",
+    "title": "Motion in Design",
+    "kind": "site",
+    "topic": "动效",
+    "source": "Motion in Design",
+    "url": "https://motionin.design/",
+    "summary": "交互式 Web 模块与动画样例展示。",
+    "usage": "分析复杂动画结构，复用设计思路而非无授权复制资产。",
+    "tags": [
+      "动效",
+      "交互",
+      "Web"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "footer-design",
+    "title": "Footer Design",
+    "kind": "site",
+    "topic": "网页设计",
+    "source": "Footer Design",
+    "url": "https://www.footer.design/",
+    "summary": "专门展示网站页脚设计案例的画廊。",
+    "usage": "设计网站结尾的导航、联系信息和内容层级。",
+    "tags": [
+      "Footer",
+      "排版",
+      "网页"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "iconly",
+    "title": "Iconly · Icon Inspiration",
+    "kind": "site",
+    "topic": "图标",
+    "source": "Iconly",
+    "url": "https://iconly.design/",
+    "summary": "整理真实 App、游戏和网站图标的视觉案例。",
+    "usage": "研究图标的识别性、比例和视觉风格。",
+    "tags": [
+      "图标",
+      "视觉",
+      "App"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "on-design",
+    "title": "on.design",
+    "kind": "site",
+    "topic": "网页设计",
+    "source": "on.design",
+    "url": "https://on.design/?view=feed",
+    "summary": "设计师作品、网页及视觉设计社区画廊。",
+    "usage": "研究不同类型网站的信息呈现与细节。",
+    "tags": [
+      "社区",
+      "Web",
+      "灵感"
+    ],
+    "badge": "设计网站"
+  },
+  {
+    "id": "mobbin",
+    "title": "Mobbin",
+    "kind": "site",
+    "topic": "产品体验",
+    "source": "Mobbin",
+    "url": "https://mobbin.com/",
+    "summary": "已发布移动端与 Web 产品的界面和流程参考库。",
+    "usage": "研究真实产品中的复杂导航、页面状态和用户流程。",
+    "tags": [
+      "App",
+      "UI",
+      "流程"
+    ],
+    "badge": "设计网站"
   }
 ];
