@@ -34,14 +34,16 @@ export function detailMarkup(a,favorites,labels) {
   const safe=escapeHtml, local=a.source==='local',liked=favorites.has(a.id);
   const repoURL=local?'https://github.com/weepwood/UI-Vault/blob/main/'+a.code.split('/').map(encodeURIComponent).join('/'):a.url;
   const canCopy=local&&a.copyable!==false;
+  const viewportControl = local ? '<div class="preview-toolbar"><span>预览宽度</span><div class="preview-options" role="group" aria-label="预览尺寸"><button type="button" data-preview-size="fluid" aria-pressed="true">自适应</button><button type="button" data-preview-size="mobile" aria-pressed="false">手机</button><button type="button" data-preview-size="tablet" aria-pressed="false">平板</button><button type="button" data-preview-size="desktop" aria-pressed="false">桌面</button></div></div>' : '';
   return '<span class="detail-eyebrow">'+safe(labels[a.type]||a.type)+' · '+(local?'本站 Demo':'外部参考')+'</span>'+
     '<h2 class="detail-title">'+safe(a.title)+'</h2><p class="detail-subtitle">'+safe(a.subtitle||'')+'</p>'+
-    '<div class="detail-preview">'+visual(a,true)+'</div><p class="detail-copy">'+safe(a.description)+'</p>'+
+    viewportControl+'<div class="detail-preview" '+(local?'data-preview-container="true"':'')+'>'+visual(a,true)+'</div><p class="detail-copy">'+safe(a.description)+'</p>'+
     '<div class="detail-tags">'+a.tags.map(t=>'<span class="detail-tag">'+safe(t)+'</span>').join('')+'</div>'+
     '<div class="detail-actions">'+
       (canCopy?'<button class="detail-button primary" type="button" data-copy="'+safe(a.id)+'">复制 Demo 源码</button>':'')+
       (local?'<button class="detail-button" type="button" data-preview="'+safe(a.id)+'">单独打开预览 ↗</button>':
         '<a class="detail-button primary" target="_blank" rel="noopener noreferrer" href="'+safe(a.url)+'">打开原始仓库 ↗</a>')+
+      '<button class="detail-button" type="button" data-copy-link="true">复制资源链接</button>'+
       '<button class="detail-button" type="button" data-detail-favorite="'+safe(a.id)+'" aria-pressed="'+liked+'">'+(liked?'♥ 已收藏':'♡ 收藏')+'</button></div>'+
     '<div class="details-label">资源信息</div><div class="details-grid">'+
       '<div><small>资产类型</small><span>'+safe(labels[a.type]||a.type)+'</span></div>'+

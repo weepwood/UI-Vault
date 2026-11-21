@@ -1,14 +1,15 @@
 import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { cardMarkup, detailMarkup, escapeHtml, resolveAsset } from './core/render.js';
+import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
 
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),tags=$('#tag-row'),sort=$('#sort');
 const drawer=$('#detail-drawer'),overlay=$('#drawer-overlay'),detail=$('#drawer-content');
 const sidebar=$('#sidebar'),shade=$('#mobile-shade'),toast=$('#toast');
-const state={assets:[],categories:[],labels:{all:'探索设计资产'},category:'all',tag:'',query:'',sort:'featured',favoritesOnly:false,active:null};
+const state={assets:[],categories:[],labels:{all:'探索设计资产'},category:'all',tag:'',query:'',sort:'featured',favoritesOnly:false,active:null,previewSize:'fluid'};
 const favorites=loadFavorites();
-let toastTimeout,overlayTimeout,lastFocus,previewObserver;
+let toastTimeout,overlayTimeout,lastFocus,previewObserver,detailResizeObserver;
 
 function notify(message){
   clearTimeout(toastTimeout);toast.textContent=message;toast.classList.add('show');
@@ -28,7 +29,11 @@ function nav() {
   if(marker)marker.textContent='01 / '+String(state.categories.length).padStart(2,'0');
 }
 function navState(){
-  document.querySelectorAll('[data-category]').forEach(el=>el.classList.toggle('is-active',!state.favoritesOnly&&el.dataset.category===state.category));
+  document.querySelectorAll('[data-category]').forEach(el=>{
+    const active=!state.favoritesOnly&&el.dataset.category===state.category;
+    el.classList.toggle('is-active',active);
+    el.setAttribute('aria-pressed',String(active));
+  });
   const favorite=$('[data-favorites]');
   favorite.classList.toggle('is-active',state.favoritesOnly);
   favorite.setAttribute('aria-pressed',String(state.favoritesOnly));
@@ -36,8 +41,8 @@ function navState(){
 }
 function tagsState(){
   const popular=popularTags(state.assets,10,state.tag);
-  tags.innerHTML='<button type="button" class="tag-chip '+(!state.tag?'is-active':'')+'" data-tag="">全部标签</button>'+
-    popular.map(t=>'<button type="button" class="tag-chip '+(t===state.tag?'is-active':'')+'" data-tag="'+escapeHtml(t)+'">'+escapeHtml(t)+'</button>').join('');
+  tags.innerHTML='<button type="button" class="tag-chip '+(!state.tag?'is-active':'')+'" aria-pressed="'+(!state.tag)+'" data-tag="">全部标签</button>'+
+    popular.map(t=>'<button type="button" class="tag-chip '+(t===state.tag?'is-active':'')+'" aria-pressed="'+(t===state.tag)+'" data-tag="'+escapeHtml(t)+'">'+escapeHtml(t)+'</button>').join('');
 }
 function observePreviews(){
   previewObserver?.disconnect();
@@ -58,7 +63,17 @@ function observePreviews(){
 function render(){
   const items=filterAssets(state.assets,state,favorites);
   gallery.innerHTML=items.map(a=>cardMarkup(a,favorites,state.labels)).join('');
-  $('#empty').hidden=items.length>0;
+  const empty=items.length===0;
+  $('#empty').hidden=!empty;
+  const untouched=!state.favoritesOnly && state.category==='all' && !state.tag && !state.query.trim();
+  const filtered=!untouched || state.sort!=='featured';
+  $('#reset-filters').hidden=!filtered;
+  $('#results-status').textContent='当前显示 '+items.length+' 条资源';
+  if(empty){
+    $('#empty-title').textContent=state.favoritesOnly&&!state.query&&!state.tag ? '还没有收藏资源' : '没有匹配的资源';
+    $('#empty-message').textContent=state.favoritesOnly&&!state.query&&!state.tag ? '打开任意资源，点击收藏按钮，即可在这里快速找到。' : '试试其他关键词，或清除筛选条件。';
+    $('#clear-filters').textContent='查看全部资源';
+  }
   $('#results-count').textContent=String(items.length).padStart(2,'0');
   const heading=$('#catalog-title').firstChild;
   heading.textContent=state.favoritesOnly?'我的收藏 ':state.labels[state.category]+' ';
@@ -71,12 +86,27 @@ function reset(){
 function toggleFavorite(id){
   if(favorites.has(id)){favorites.delete(id);notify('已从收藏移除');}
   else {favorites.add(id);notify('已加入我的收藏');}
-  save();render();
+  save();
+  if(state.favoritesOnly) {
+    render();
+    const navButton=document.querySelector('[data-favorites]');
+    if(navButton)navButton.focus();
+  } else {
+    // 不重建画廊：保留正在运行的 iframe 和被点击按钮的键盘焦点。
+    for(const button of gallery.querySelectorAll('[data-favorite]')) {
+      if(button.dataset.favorite!==id)continue;
+      const liked=favorites.has(id);
+      button.setAttribute('aria-pressed',String(liked));
+      button.setAttribute('aria-label',(liked?'取消收藏':'收藏')+state.assets.find(a=>a.id===id)?.title);
+      button.textContent=liked?'♥':'♡';
+    }
+  }
   if(state.active?.id===id){
     const button=detail.querySelector('[data-detail-favorite]');
     if(button){button.textContent=favorites.has(id)?'♥ 已收藏':'♡ 收藏';button.setAttribute('aria-pressed',String(favorites.has(id)));}
   }
 }
+
 async function loadSource(asset) {
   try {
     const result=await fetch(resolveAsset(asset.code));
@@ -87,12 +117,24 @@ async function loadSource(asset) {
     if(state.active?.id===asset.id&&$('#source-code'))$('#source-code').textContent='无法加载 Demo 源码，请使用 GitHub 链接查看。';
   }
 }
+function resizeDetailPreview(){
+  const area=detail.querySelector('[data-preview-container]');
+  const frame=area?.querySelector('iframe.detail-frame');
+  if(area&&frame)applyPreviewLayout(area,frame,state.previewSize);
+}
+function selectPreviewSize(mode){
+  if(!Object.hasOwn(PREVIEW_WIDTHS,mode))return;
+  state.previewSize=mode;
+  for(const button of detail.querySelectorAll('[data-preview-size]'))button.setAttribute('aria-pressed',String(button.dataset.previewSize===mode));
+  resizeDetailPreview();
+}
 function openDetail(id){
   const asset=state.assets.find(a=>a.id===id);
   if(!asset)return;
   if(state.active)return;
   lastFocus=document.activeElement;
   state.active=asset;
+  state.previewSize='fluid';
   detail.innerHTML=detailMarkup(asset,favorites,state.labels);
   $('#drawer-index').textContent=id.toUpperCase();
   clearTimeout(overlayTimeout);
@@ -105,11 +147,22 @@ function openDetail(id){
   sidebar.inert=true;
   document.body.style.overflow='hidden';
   $('#drawer-close').focus();
-  if(asset.source==='local'&&asset.copyable!==false)loadSource(asset);
+  if(asset.source==='local') {
+    if(asset.copyable!==false)loadSource(asset);
+    const area=detail.querySelector('[data-preview-container]');
+    if(area) {
+      if(typeof ResizeObserver!=='undefined') {
+        detailResizeObserver=new ResizeObserver(resizeDetailPreview);
+        detailResizeObserver.observe(area);
+      }
+      requestAnimationFrame(resizeDetailPreview);
+    }
+  }
 }
 function closeDetail(){
   if(!state.active)return;
   state.active=null;
+  detailResizeObserver?.disconnect();detailResizeObserver=undefined;
   drawer.classList.remove('is-open');
   drawer.setAttribute('aria-hidden','true');
   overlay.classList.remove('is-visible');
@@ -131,7 +184,11 @@ async function copyCode(id){
   }catch{notify('复制失败，请通过 GitHub 查看源码');}
 }
 function openMobile(){sidebar.classList.add('is-open');shade.hidden=false;}
-function closeMobile(){sidebar.classList.remove('is-open');shade.hidden=true;}
+function closeMobile(){
+  const shouldReturnFocus=sidebar.classList.contains('is-open')&&sidebar.contains(document.activeElement);
+  sidebar.classList.remove('is-open');shade.hidden=true;
+  if(shouldReturnFocus)$('#menu-toggle').focus();
+}
 function initEvents(){
   gallery.addEventListener('click',e=>{
     const fav=e.target.closest('[data-favorite]');
@@ -151,9 +208,20 @@ function initEvents(){
   search.addEventListener('input',e=>{state.query=e.target.value;render();});
   sort.addEventListener('change',e=>{state.sort=e.target.value;render();});
   $('#clear-filters').addEventListener('click',reset);
+  $('#reset-filters').addEventListener('click',reset);
   $('#drawer-close').addEventListener('click',closeDetail);
   overlay.addEventListener('click',closeDetail);
   detail.addEventListener('click',e=>{
+    const viewport=e.target.closest('[data-preview-size]');
+    if(viewport){selectPreviewSize(viewport.dataset.previewSize);return;}
+    const linkButton=e.target.closest('[data-copy-link]');
+    if(linkButton){
+      const url=new URL(window.location.href);
+      url.searchParams.set('asset',state.active?.id||'');
+      url.hash='';
+      navigator.clipboard.writeText(url.href).then(()=>notify('资源链接已复制')).catch(()=>notify('无法复制链接'));
+      return;
+    }
     const copy=e.target.closest('[data-copy]');if(copy){copyCode(copy.dataset.copy);return;}
     const preview=e.target.closest('[data-preview]');
     if(preview){
@@ -201,6 +269,8 @@ async function init(){
     $('#metric-external').textContent=String(items.filter(a=>a.source==='external').length).padStart(2,'0');
     $('#total-count').textContent=items.length;
     render();
+    const deepLink=new URL(window.location.href).searchParams.get('asset');
+    if(deepLink&&state.assets.some(a=>a.id===deepLink))openDetail(deepLink);
   }catch(error){
     gallery.innerHTML='<div class="empty-state" style="grid-column:1/-1"><h3>资源加载失败</h3><p>请确认使用 HTTP 服务访问，并检查资产生成与发布流程。</p></div>';
     console.error('UI Vault:',error);
