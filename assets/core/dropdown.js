@@ -31,6 +31,7 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
   menu.hidden=true;
 
   const options=()=>Array.from(menu.querySelectorAll('[role="option"]'));
+  const iconFor=value=>Object.hasOwn(icons,value)?icons[value]:icon;
   function focusOption(index){
     const items=options();
     if(!items.length)return;
@@ -51,7 +52,7 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
       const leading=document.createElement('span');
       leading.className='select-option-icon';
       leading.setAttribute('aria-hidden','true');
-      leading.innerHTML=iconMarkup(icons[option.value]||icon);
+      leading.innerHTML=iconMarkup(iconFor(option.value));
       const text=document.createElement('span');
       text.className='select-option-text';
       text.textContent=option.textContent;
@@ -66,7 +67,7 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
   function sync(){
     const selected=select.selectedOptions[0]||select.options[0];
     if(!selected)return;
-    trigger.querySelector('.select-leading').innerHTML=iconMarkup(icons[selected.value]||icon);
+    trigger.querySelector('.select-leading').innerHTML=iconMarkup(iconFor(selected.value));
     trigger.querySelector('.select-value').textContent=selected.textContent;
     trigger.setAttribute('aria-label',label+'：'+selected.textContent);
     host.classList.toggle('has-filter',select.id==='tag-filter'&&select.value!=='');
