@@ -38,7 +38,8 @@ test('三个尺寸档位响应容器宽度，默认不是巨型对话框', () =>
   assert.match(source,/--pill-height:248px/);
   assert.match(source,/@media\(max-width:620px\)/);
   assert.match(source,/@media\(max-width:390px\)/);
-  assert.match(source,/white-space:nowrap;text-overflow:ellipsis;overflow:hidden/);
+  assert.match(source,/white-space:nowrap/);
+  assert.match(source,/text-overflow:ellipsis;overflow:hidden/);
 });
 test('嵌入渲染模式保持可用，旧对话框资产深链接不丢失', () => {
   assert.match(source,/get\("embed"\) === "1"/);
