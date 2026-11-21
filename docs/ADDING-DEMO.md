@@ -1,5 +1,16 @@
 # 如何向 UI Vault 添加设计与 Demo
 
+## 一键生成 Demo 脚手架
+
+```bash
+node scripts/new-demo.mjs components magnetic-button 磁吸按钮
+node scripts/new-demo.mjs effects glass-hover 玻璃悬停效果
+node scripts/new-demo.mjs layouts compact-dashboard 紧凑工作台
+node scripts/new-demo.mjs experiments canvas-study 画布实验
+```
+
+命令会创建 `demos/<类别>/<slug>/index.html` 并向 `content/assets.json` 自动登记元数据。它只生成可运行的初始模板，不代表最终 Demo 已经完成；需要补充介绍、标签和交互。
+
 ## 新增本仓 Demo（推荐）
 
 1. 使用小写英文 slug，例如 `liquid-nav`、`soft-card`、`dashboard-shell`。
