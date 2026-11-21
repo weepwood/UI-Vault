@@ -94,3 +94,8 @@ npm run check           # 完整 CI 等价检查
 - 仍为纯静态项目；手工精调 Demo 完全独立，入口 URL 与单文件复制逻辑不变。
 
 [双栏工作台技术说明](docs/TWO-PANE-WORKBENCH.md)。
+
+
+### GitHub Pages 资源缓存与错配防护
+
+静态构建自动为主站 CSS、JS 入口生成一致的内容指纹，并为 JS 模块依赖附加相同版本；避免旧 HTML、新 CSS 和新 JavaScript 混用造成的初始化异常。运行时也会检查双栏工作台所需节点，发现旧版缓存时只触发一次受控恢复。详情见 [双栏工作台缓存兼容说明](docs/TWO-PANE-WORKBENCH.md)。

@@ -35,3 +35,20 @@ UI-Vault 的核心任务从“收藏卡片后打开侧边抽屉”变为“从�
 4. 预览尺寸切换不会重置正在操作的 Demo 状态；选择另一项目才重载。
 5. 站点不存在、数据为空和第三方嵌入失败均有真实说明，不虚构内容。
 6. 执行 `npm run check` 并确认 Pages 发布；浏览器截图及逐设备视觉验收是独立后续步骤。
+
+
+## GitHub Pages HTML/JS/CSS 缓存错配修复（2026-11-21）
+
+### 问题
+
+页面升级到常驻左右双栏时，HTML 用到 `#sidebar` 和 `#preview-stage` 等节点，旧版 HTML 与新版 JS/CSS 经 CDN 或浏览器缓存混用后，可能出现 `Cannot set properties of null (setting 'inert')`，导致初始化中断；即使 JS 没有报错，旧 HTML + 新 CSS 也会造成布局错乱。单纯通过 CI 检查源码语法或静态 HTML 无法发现这种跨版本错配。
+
+### 处理
+
+- `scripts/build.mjs` 对主站 `index.html`、CSS 和全部 Web 资产计算 SHA-256 指纹，发布时写入 `assets/styles.<指纹>.css` 与 `assets/app.<指纹>.js`，并将 ES Module 的本地导入也统一加上该指纹。
+- 源仓库保留稳定 `assets/app.js` 和 `assets/styles.css`，方便本地开发和兼容旧引用；发布后的新 HTML **只引用带指纹的新文件**。
+- `app.js` 在运行前验证当前 HTML 是否具备全部必需的主站节点，并在 `DOMContentLoaded` 后初始化。如果缺少节点，在 UI-Vault 主站 URL 上添加一次恢复查询参数并重新请求 HTML；同版本仍异常时显示可操作的重新加载提示，绝不继续调用空节点的 `inert`。
+- `scripts/check-dist.mjs` 校验发布 HTML、指纹化文件和模块依赖的版本一致性；CI 发现错误会阻止部署。
+- `Permissions policy violation: unload is not allowed` 通常是外部浏览器脚本/第三方页面尝试监听 unload 引发的浏览器权限提示，与 `sidebar === null` 不是同一类错误。不要为消除提示而放宽预览 iframe 沙箱安全。
+
+如已打开页面长期不刷新，旧 HTML 仍可能留在标签页内。使用强制刷新（Windows/Linux `Ctrl+Shift+R`，macOS `Cmd+Shift+R`）或新建标签访问带不同查询参数的同一站点即可获取新入口；此操作无需清理站点收藏。
