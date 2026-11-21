@@ -20,7 +20,7 @@
       <button class="sidebar-dismiss" id="sidebar-dismiss" type="button" aria-label="关闭项目目录"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#x"></use></svg></button>
     </div>
     <div class="library-search">
-      <label class="search-field"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#search"></use></svg><input id="search" type="search" autocomplete="off" placeholder="搜索项目、标签、技术栈" aria-label="搜索项目" aria-keyshortcuts="Control+K Meta+K"><kbd>⌘ K</kbd></label>
+      <label class="search-field"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#search"></use></svg><input id="search" type="search" autocomplete="off" placeholder="搜索项目、标签、技术栈" aria-label="搜索项目" aria-keyshortcuts="Control+K Meta+K"></label>
     </div>
     <nav class="quick-filters" aria-label="快速筛选">
       <button type="button" class="filter-button is-active" data-category="all" aria-pressed="true"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg><span>全部资源</span><span class="filter-count" id="total-count">—</span></button>
@@ -34,9 +34,15 @@
     </div>
   </aside>
   <section class="project-panel" id="project-panel" aria-label="项目目录">
-    <div class="list-controls">
-      <div class="section-row"><span>项目目录 <span class="result-count" id="results-count">—</span></span><div class="select-field select-field--sort"><select id="sort" aria-label="项目排序"><option value="featured">精选优先</option><option value="newest">最新添加</option><option value="az">名称排序</option></select></div></div>
-      <div class="tag-select-label"><span id="tag-filter-label">标签</span><div class="select-field select-field--tag"><select id="tag-filter" aria-label="按标签筛选"><option value="">全部标签</option></select></div></div>
+    <div class="list-controls" role="group" aria-label="项目排序与标签筛选">
+      <div class="section-row project-controls-heading">
+        <span class="project-controls-label">项目目录 <span class="result-count" id="results-count" aria-label="当前项目数量">—</span></span>
+        <div class="select-field select-field--sort"><select id="sort" aria-label="项目排序"><option value="featured">精选优先</option><option value="newest">最新添加</option><option value="az">名称排序</option></select></div>
+      </div>
+      <div class="tag-select-label">
+        <span id="tag-filter-label">标签</span>
+        <div class="select-field select-field--tag"><select id="tag-filter" aria-label="按标签筛选"><option value="">全部标签</option></select></div>
+      </div>
     </div>
     <p id="results-status" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
     <div class="project-scroll">
