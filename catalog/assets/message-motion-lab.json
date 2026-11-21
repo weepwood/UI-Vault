@@ -1,0 +1,44 @@
+{
+  "id": "message-motion-lab",
+  "title": "消息动效 · 飞入、回复与反应",
+  "subtitle": "Motion Lab 手势与时间曲线研究 / 独立实现",
+  "description": "实际发送消息、切换会话、右滑回复、切换表情反应；可调节缓动曲线、时长及减少动态效果偏好。",
+  "type": "effect",
+  "source": "local",
+  "tags": [
+    "手工精选",
+    "可精调",
+    "消息",
+    "Motion",
+    "手势"
+  ],
+  "technologies": [
+    "HTML",
+    "CSS",
+    "Web Animations API",
+    "JavaScript"
+  ],
+  "preview": "demos/curated/message-motion-lab/index.html",
+  "code": "demos/curated/message-motion-lab/index.html",
+  "license": "参考本人公开 Motion-Lab 的研究思路，独立实现的无后端交互实验",
+  "cover": "motion",
+  "featured": true,
+  "created": "2026-11-21",
+  "copyable": true,
+  "curated": true,
+  "curationStage": "draft",
+  "tuningGuide": "docs/CURATED-LABS.md",
+  "tuningPoints": [
+    "发送飞入的位置和时长",
+    "手势回复阈值与可中断性",
+    "缓动曲线与低功耗策略",
+    "动效减弱和屏幕阅读器体验"
+  ],
+  "originRepo": "https://github.com/weepwood/Motion-Lab",
+  "sourceUrl": "https://github.com/weepwood/Motion-Lab/blob/main/src/motion.ts",
+  "reuseNotes": [
+    "参考消息从输入框到目标位置的 FLIP/WAAPI 动效",
+    "参考拖动回复、反应反馈和时间参数调节",
+    "全部操作在页面内存中，无聊天账户或第三方 API"
+  ]
+}

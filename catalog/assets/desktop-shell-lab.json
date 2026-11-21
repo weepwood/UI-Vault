@@ -1,0 +1,43 @@
+{
+  "id": "desktop-shell-lab",
+  "title": "Desktop Shell · 分栏与命令面板",
+  "subtitle": "Tauri Desktop Kit + S2U 交互研究 / 独立实现",
+  "description": "可拖动两侧分隔条、键盘调节栏宽；支持布局显隐、主题与密度设置，并使用 Ctrl/⌘+K 调出可搜索的命令面板。",
+  "type": "layout",
+  "source": "local",
+  "tags": [
+    "手工精选",
+    "可精调",
+    "多栏布局",
+    "命令面板",
+    "桌面"
+  ],
+  "technologies": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+  ],
+  "preview": "demos/curated/desktop-shell-lab/index.html",
+  "code": "demos/curated/desktop-shell-lab/index.html",
+  "license": "参考本人公开 Tauri-Desktop-Kit 与 s2u 交互方案，重新构建的独立静态实验",
+  "cover": "editor",
+  "featured": true,
+  "created": "2026-11-21",
+  "copyable": true,
+  "curated": true,
+  "curationStage": "draft",
+  "tuningGuide": "docs/CURATED-LABS.md",
+  "tuningPoints": [
+    "多栏尺寸与缩放阈值",
+    "鼠标/键盘分隔条行为",
+    "命令面板可访问性与焦点恢复",
+    "深浅主题及移动端侧栏"
+  ],
+  "originRepo": "https://github.com/weepwood/Tauri-Desktop-Kit",
+  "sourceUrl": "https://github.com/weepwood/Tauri-Desktop-Kit/blob/main/packages/shell/src/DesktopShell.vue",
+  "reuseNotes": [
+    "参考 Tauri 工作区的独立 Shell 和可调面板",
+    "借鉴 s2u 的快捷命令筛选与键盘导航",
+    "页面展示模拟数据，不执行文件或系统操作"
+  ]
+}

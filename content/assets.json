@@ -111,6 +111,49 @@
     ]
   },
   {
+    "id": "desktop-shell-lab",
+    "title": "Desktop Shell · 分栏与命令面板",
+    "subtitle": "Tauri Desktop Kit + S2U 交互研究 / 独立实现",
+    "description": "可拖动两侧分隔条、键盘调节栏宽；支持布局显隐、主题与密度设置，并使用 Ctrl/⌘+K 调出可搜索的命令面板。",
+    "type": "layout",
+    "source": "local",
+    "tags": [
+      "手工精选",
+      "可精调",
+      "多栏布局",
+      "命令面板",
+      "桌面"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "preview": "demos/curated/desktop-shell-lab/index.html",
+    "code": "demos/curated/desktop-shell-lab/index.html",
+    "license": "参考本人公开 Tauri-Desktop-Kit 与 s2u 交互方案，重新构建的独立静态实验",
+    "cover": "editor",
+    "featured": true,
+    "created": "2026-11-21",
+    "copyable": true,
+    "curated": true,
+    "curationStage": "draft",
+    "tuningGuide": "docs/CURATED-LABS.md",
+    "tuningPoints": [
+      "多栏尺寸与缩放阈值",
+      "鼠标/键盘分隔条行为",
+      "命令面板可访问性与焦点恢复",
+      "深浅主题及移动端侧栏"
+    ],
+    "originRepo": "https://github.com/weepwood/Tauri-Desktop-Kit",
+    "sourceUrl": "https://github.com/weepwood/Tauri-Desktop-Kit/blob/main/packages/shell/src/DesktopShell.vue",
+    "reuseNotes": [
+      "参考 Tauri 工作区的独立 Shell 和可调面板",
+      "借鉴 s2u 的快捷命令筛选与键盘导航",
+      "页面展示模拟数据，不执行文件或系统操作"
+    ]
+  },
+  {
     "id": "editor-shell",
     "title": "编辑器布局原型",
     "subtitle": "Editor Workbench",
@@ -431,6 +474,49 @@
     ]
   },
   {
+    "id": "gr8r-task-workbench",
+    "title": "任务工作台 · 组件与状态精调",
+    "subtitle": "Gr8r Studio UI 交互摘录 / 独立实现",
+    "description": "可切换深浅主题、强调色、圆角和信息密度；真实操作任务创建、完成筛选以及列表与看板切换。",
+    "type": "layout",
+    "source": "local",
+    "tags": [
+      "手工精选",
+      "可精调",
+      "任务管理",
+      "主题",
+      "交互状态"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "preview": "demos/curated/gr8r-task-workbench/index.html",
+    "code": "demos/curated/gr8r-task-workbench/index.html",
+    "license": "本人公开 gr8r-studio-ui 的设计方法衍生；本 Demo 为独立实现，不包含外部项目素材",
+    "cover": "warm",
+    "featured": true,
+    "created": "2026-11-21",
+    "copyable": true,
+    "curated": true,
+    "curationStage": "draft",
+    "tuningGuide": "docs/CURATED-LABS.md",
+    "tuningPoints": [
+      "语义色与暗色对比",
+      "列表与看板信息密度",
+      "任务创建、完成和筛选的状态反馈",
+      "移动端检查器布局"
+    ],
+    "originRepo": "https://github.com/weepwood/gr8r-studio-ui",
+    "sourceUrl": "https://github.com/weepwood/gr8r-studio-ui/blob/main/demo/demo.js",
+    "reuseNotes": [
+      "借鉴任务状态和列表/看板切换的交互组织",
+      "将 gr8r 主题、强调色和密度变成独立实验的可调 Token",
+      "不复制 gr8r 组件实现，便于后续逐项精调"
+    ]
+  },
+  {
     "id": "graphboard-workspace",
     "title": "GraphBoard GraphQL 项目工作台",
     "subtitle": "跨仓库设计资产",
@@ -516,6 +602,50 @@
       "适合作为指标、日志、设置等基础页面参考"
     ],
     "siteUrl": "https://weepwood.github.io/kumo-demo/"
+  },
+  {
+    "id": "message-motion-lab",
+    "title": "消息动效 · 飞入、回复与反应",
+    "subtitle": "Motion Lab 手势与时间曲线研究 / 独立实现",
+    "description": "实际发送消息、切换会话、右滑回复、切换表情反应；可调节缓动曲线、时长及减少动态效果偏好。",
+    "type": "effect",
+    "source": "local",
+    "tags": [
+      "手工精选",
+      "可精调",
+      "消息",
+      "Motion",
+      "手势"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "Web Animations API",
+      "JavaScript"
+    ],
+    "preview": "demos/curated/message-motion-lab/index.html",
+    "code": "demos/curated/message-motion-lab/index.html",
+    "license": "参考本人公开 Motion-Lab 的研究思路，独立实现的无后端交互实验",
+    "cover": "motion",
+    "featured": true,
+    "created": "2026-11-21",
+    "copyable": true,
+    "curated": true,
+    "curationStage": "draft",
+    "tuningGuide": "docs/CURATED-LABS.md",
+    "tuningPoints": [
+      "发送飞入的位置和时长",
+      "手势回复阈值与可中断性",
+      "缓动曲线与低功耗策略",
+      "动效减弱和屏幕阅读器体验"
+    ],
+    "originRepo": "https://github.com/weepwood/Motion-Lab",
+    "sourceUrl": "https://github.com/weepwood/Motion-Lab/blob/main/src/motion.ts",
+    "reuseNotes": [
+      "参考消息从输入框到目标位置的 FLIP/WAAPI 动效",
+      "参考拖动回复、反应反馈和时间参数调节",
+      "全部操作在页面内存中，无聊天账户或第三方 API"
+    ]
   },
   {
     "id": "motion-lab",
