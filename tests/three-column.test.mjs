@@ -36,7 +36,10 @@ test('中间项目列表独立滚动且只使用一次过滤状态',async()=>{
  assert.match(css,/\.project-panel \.project-scroll\s*\{[^}]*flex:\s*1 1 0/);
  assert.match(css,/\.project-panel \.project-scroll\s*\{[^}]*overscroll-behavior:\s*contain/);
  assert.match(app,/function filteredItems\(\)\{return filterAssets\(state\.assets,state,favorites\);\}/);
- assert.match(app,/gallery\.innerHTML=items\.map\(asset=>projectRowMarkup/);
+ assert.match(app,/renderReactList\(items\)/);
+ const react=await read('src/react-workbench.jsx');
+ assert.match(react,/function ProjectRow|export function ProjectRow/);
+ assert.match(react,/key=\{asset.id\}/);
  assert.match(app,/stage\.innerHTML=projectPreviewMarkup\(asset\)/);
 });
 test('移动端两栏一起收起/打开，并正确同步惰性焦点',async()=>{
