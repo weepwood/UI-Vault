@@ -41,7 +41,7 @@ async function copyTree(relativeDir,extensions) {
     else throw new Error('公开资源目录包含不允许发布的文件：'+rel);
   }
 }
-for(const rel of ['index.html','favicon.svg','content/assets.json','content/categories.json'])await copy(rel);
+for(const rel of ['index.html','settings.html','favicon.svg','content/assets.json','content/categories.json'])await copy(rel);
 await copyTree('assets',webAssets);
 await copyTree('content/tokens',tokenAssets);
 const included=new Set();
@@ -66,19 +66,22 @@ console.log('构建完成：只发布 '+included.size+' 个声明的 Demo/封面
  * 保留 dist/assets/app.js 及 styles.css 供旧入口兼容；新入口一律使用指纹文件名。
  */
 const hash=createHash('sha256');
-for(const relative of ['index.html',...versionedAssets.sort()]){
+for(const relative of ['index.html','settings.html',...versionedAssets.sort()]){
   hash.update(relative+'\0');
   hash.update(await readFile(resolve(out,relative)));
 }
 const assetRevision=hash.digest('hex').slice(0,16);
-const htmlPath=resolve(out,'index.html');
-let html=await readFile(htmlPath,'utf8');
-if(!html.includes('href="./assets/styles.css"')||!html.includes('src="./assets/app.js"')){
-  throw new Error('入口 HTML 缺少可以版本化的 CSS/JS 资源引用');
+// 工作台和独立设置页共享相同指纹，避免静态部署期间入口与模块版本混用。
+for(const [filename,entryName] of [['index.html','app'],['settings.html','settings-page']]){
+  const htmlPath=resolve(out,filename);
+  let html=await readFile(htmlPath,'utf8');
+  if(!html.includes('href="./assets/styles.css"')||!html.includes('src="./assets/'+entryName+'.js"')){
+    throw new Error(filename+' 缺少可版本化的 CSS/JS 资源引用');
+  }
+  html=html.replace('href="./assets/styles.css"',`href="./assets/styles.${assetRevision}.css"`);
+  html=html.replace('src="./assets/'+entryName+'.js"',`src="./assets/${entryName}.${assetRevision}.js"`);
+  await writeFile(htmlPath,html,'utf8');
 }
-html=html.replace('href="./assets/styles.css"',`href="./assets/styles.${assetRevision}.css"`);
-html=html.replace('src="./assets/app.js"',`src="./assets/app.${assetRevision}.js"`);
-await writeFile(htmlPath,html,'utf8');
 await copyFile(resolve(out,'assets/styles.css'),resolve(out,`assets/styles.${assetRevision}.css`));
 
 // 保持依赖图中的所有 JS 模块使用本次构建的相同指纹；源仓库代码保持原样。
@@ -89,8 +92,9 @@ function withRevision(importSource){
 for(const relative of versionedAssets.filter(path=>/\.(?:js|mjs)$/.test(path))){
   const source=await readFile(resolve(out,relative),'utf8');
   const updated=withRevision(source);
-  if(relative==='assets/app.js'){
-    await writeFile(resolve(out,`assets/app.${assetRevision}.js`),updated,'utf8');
+  if(relative==='assets/app.js'||relative==='assets/settings-page.js'){
+    const entryName=relative.split('/').pop().slice(0,-3);
+    await writeFile(resolve(out,`assets/${entryName}.${assetRevision}.js`),updated,'utf8');
   }else if(updated!==source){
     await writeFile(resolve(out,relative),updated,'utf8');
   }
