@@ -11,7 +11,7 @@
 
 主站保持原生 ES Modules，不引入 React。筛选/当前项目/设备模式的状态转换位于 `assets/core/workbench-state.js`；设备菜单交互位于 `assets/ui/viewport-switcher.js`；搜索、按钮、通知和下拉基础 CSS 位于 `assets/ui/controls.css`、`assets/ui/dropdown.css`。现有 `assets/app.js` 仍负责页面装载、URL 和 iframe 生命周期，Demo 路径与收藏数据协议保持不变。
 
-详见 [工作台模块化设计与验收](docs/WORKBENCH-MODULES.md)。
+详见 [工作台模块化设计与验收](docs/WORKBENCH-MODULES.md)。项目行、项目详情 Dialog 与预览工具栏已拆分至 `assets/ui/` 中对应的独立 CSS；[组件 CSS 和浏览器视觉回归指南](docs/CSS-MODULES-VISUAL.md) 记录了可复用边界与九组 Chromium 截图基线。
 
 ## Workbench UI 组件展厅
 

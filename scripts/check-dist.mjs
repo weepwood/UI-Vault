@@ -5,7 +5,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','assets/ui/controls.css','assets/ui/dropdown.css','content/assets.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);}
   if(a.coverImage)paths.push(a.coverImage);
@@ -33,7 +33,7 @@ assert.match(entry,new RegExp('from [\\\x27"][.]/core/dropdown[.]js[?]v='+jsFing
 const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
 assert.match(core,new RegExp('from [\\\x27"][.]/icons[.]js[?]v='+jsFingerprint),'子模块没有使用同一版本标记');
 const versionedCSS=await readFile(join(out,`assets/styles.${cssFingerprint}.css`),'utf8');
-for(const componentPath of ['./ui/controls.css','./ui/dropdown.css']){
+for(const componentPath of ['./ui/controls.css','./ui/dropdown.css','./ui/project-row.css','./ui/dialog.css','./ui/preview-toolbar.css']){
   assert.ok(versionedCSS.includes('@import url("'+componentPath+'")'),'主站 CSS 缺少共享组件引用：'+componentPath);
 }
 for(const modulePath of ['./core/workbench-state.js','./core/workbench-router.js','./ui/viewport-switcher.js','./ui/project-dialog.js','./ui/mobile-navigation.js']){

@@ -1,0 +1,24 @@
+/* Workbench ProjectRow：列表行、项目选中态、稳定 emoji。布局覆写仍由页面维护。 */
+.project-list { display: grid; gap: 3px; align-content: start; }
+.project-item { display: flex; align-items: stretch; min-width: 0; border-radius: 8px; }
+.project-item:hover { background: #f0f2f1; }
+.project-item.is-selected { background: var(--accent-soft); }
+.project-row { display: flex; flex: 1; min-width: 0; align-items: center; gap: 10px; text-align: left; border: 0; border-radius: 8px; background: transparent; padding: 11px 10px; color: var(--ink); }
+.project-row-icon { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); }
+.project-item.is-selected .project-row-icon { border-color: #bdd2dd; color: var(--accent); background: #fff; }
+.project-row-icon .ui-icon { width: 17px; height: 17px; }
+.project-row-copy { min-width: 0; display: grid; gap: 2px; }
+.project-row-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 620; }
+.project-row-subtitle { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); font-size: 10px; }
+
+/* Emoji 与项目两行文字同高，不再渲染外框、底色或阴影。 */
+.project-panel .project-row-icon.project-row-emoji {
+  display:grid;place-items:center;align-self:center;
+  width:34px;height:34px;flex:0 0 34px;
+  padding:0;border:0;border-radius:0;background:transparent;box-shadow:none;
+  color:inherit;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+  font-size:26px;line-height:1;
+}
+html[data-theme="dark"] .project-panel .project-item.is-selected .project-row-emoji {
+  border:0;background:transparent;color:inherit;
+}

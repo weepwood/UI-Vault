@@ -9,7 +9,8 @@ permissions:
 jobs:
   validate:
     name: 元数据校验、测试与静态构建
-    runs-on: ubuntu-latest
+    # 固定 Chromium 截图所需的 Linux 字体/图形环境，避免 ubuntu-latest 升级导致像素基线漂移。
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -37,6 +38,20 @@ jobs:
         run: npm run build
       - name: 发布目录检查
         run: node scripts/check-dist.mjs
+      - name: 安装 Chromium 视觉回归环境
+        run: |
+          python -m pip install -r scripts/requirements-visual.txt
+          python -m playwright install chromium --with-deps
+      - name: Chromium 视觉回归（只读仓库基线）
+        run: python scripts/visual-regression.py
+      - name: 上传视觉回归截图（成功或失败均保留）
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-vault-visual-${{ github.run_id }}
+          path: visual-output/
+          if-no-files-found: ignore
+          retention-days: 10
       - name: 上传已验证的站点产物
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
