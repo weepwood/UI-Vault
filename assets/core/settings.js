@@ -35,11 +35,34 @@ export function applySettings(settings){
   root.style.colorScheme=theme;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#171c21':'#f5f6f5');
 }
-// 首页只读取/应用设置；独立 settings.html 才初始化可编辑的下拉控件。
+// 设置与工作台共用文档与偏好：仅设置工作区拥有编辑控件。
 export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
   let values=loadSettings();
   const page=document.querySelector('[data-settings-page]');
   const controls=page?[...page.querySelectorAll('[data-setting]')]:[];
+  // 设置内部分类导航不会创建新页面或打断工作台的实时预览。
+  const sectionButtons=page?[...page.querySelectorAll('[data-settings-section]')]:[];
+  const sectionViews=sectionButtons.map(button=>document.getElementById(button.dataset.settingsSection));
+  function showSettingsSection(id,{focus=false}={}){
+    const index=sectionButtons.findIndex(button=>button.dataset.settingsSection===id);
+    if(index<0)return;
+    closeDropdowns();
+    sectionButtons.forEach((button,i)=>{
+      const active=i===index;
+      button.classList.toggle('is-active',active);
+      if(active)button.setAttribute('aria-current','page');
+      else button.removeAttribute('aria-current');
+      sectionViews[i].hidden=!active;
+    });
+    const section=sectionViews[index];
+    const title=section.querySelector('.settings-section-heading h2')?.textContent||'设置';
+    const description=section.querySelector('.settings-section-heading p')?.textContent||'';
+    const heading=document.getElementById('settings-title');
+    heading.textContent=title;
+    document.getElementById('settings-description').textContent=description;
+    page.querySelector('.settings-scroll')?.scrollTo({top:0,behavior:'instant'});
+    if(focus)heading.focus({preventScroll:true});
+  }
   const selectIcons={
     theme:{system:'monitor',light:'palette',dark:'palette'},
     accent:{blue:'palette',teal:'palette',violet:'palette'},
@@ -73,6 +96,11 @@ export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
     catch{notify('当前浏览器无法持久保存设置，刷新后可能恢复默认值');}
   };
   if(page){
+    page.querySelector('.settings-category-nav')?.addEventListener('click',event=>{
+      const button=event.target.closest('[data-settings-section]');
+      if(button&&page.contains(button))showSettingsSection(button.dataset.settingsSection);
+    });
+    showSettingsSection('appearance');
     page.addEventListener('change',event=>{
       const control=event.target.closest('[data-setting]');
       if(!control||!page.contains(control))return;
