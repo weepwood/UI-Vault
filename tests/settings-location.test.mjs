@@ -11,6 +11,12 @@ test('设置入口只出现在侧栏底部而非顶部工具栏',()=>{
   assert.ok(footer>0 && button>footer && button<topbar);
   assert.equal(html.match(/id="settings-open"/g)?.length,1);
   assert.match(html,/<div class="sidebar-footer-links">/);
+  const sidebar=html.slice(footer,topbar);
+  const github=sidebar.indexOf('class="sidebar-github"');
+  assert.ok(github>sidebar.indexOf('id="settings-open"'),'GitHub 按钮必须在设置右边');
+  assert.match(sidebar,/aria-label="在 GitHub 打开 UI-Vault 仓库"/);
+  assert.match(sidebar,/lucide\\.svg#github/);
+  assert.doesNotMatch(sidebar,/ADDING-DEMO\\.md|新增项目|<span>GitHub<\\/span>/);
 });
 test('设置与项目目录共用下拉组件',()=>{
   const settings=read('assets/core/settings.js');
