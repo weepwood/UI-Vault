@@ -6,6 +6,7 @@ import { escapeHtml, resolveAsset } from './core/render.js';
 import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from './core/workbench.js';
 import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
 import { initSettings } from './core/settings.js';
+import {createViewportSwitcher} from './ui/viewport-switcher.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
   setCatalogQuery,setCatalogSort,setCatalogTag,hasActiveCatalogFilters,
   activateAsset,deactivateAsset,changePreviewMode} from './core/workbench-state.js';
@@ -18,13 +19,12 @@ const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');
 const libraryRail=$('#library-rail'),shade=$('#mobile-shade'),stage=$('#preview-stage'),toast=$('#toast');
 const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls'),infoDialog=$('#project-dialog');
-const viewportTrigger=$('#viewport-current'),viewportOptions=$('#viewport-options');
 const settingsMenuToggle=$('#settings-menu-toggle'),settingsView=$('#settings-view');
 const settingsLink=$('#settings-open'),shell=$('.app-shell');
 const state=createWorkbenchState();
 const favorites=loadFavorites();
 let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
-let sortDropdown,tagDropdown,settingsManager,settingsActive=false,viewportExpanded=false;
+let sortDropdown,tagDropdown,settingsManager,deviceSwitcher,settingsActive=false;
 const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
 
 function notify(message){
@@ -141,37 +141,11 @@ function resizePreview(){
   if(!iframe||iframe.dataset.previewFrame!=='local')return;
   applyPreviewLayout(stage,iframe,state.previewSize);
 }
-// 设备菜单始终只占当前选中项的宽度，完整选项悬浮展开，不挤压顶栏。
-function setViewportMenuOpen(open,{focusOption=false}={}){
-  viewportExpanded=Boolean(open&&!viewport.hidden);
-  viewportOptions.hidden=!viewportExpanded;
-  viewport.classList.toggle('is-expanded',viewportExpanded);
-  viewportTrigger.setAttribute('aria-expanded',String(viewportExpanded));
-  if(!viewportExpanded&&viewportOptions.contains(document.activeElement)){
-    viewportTrigger.focus({preventScroll:true});
-  }
-  if(focusOption&&viewportExpanded){
-    const current=viewportOptions.querySelector('[aria-pressed="true"]')||
-      viewportOptions.querySelector('[data-preview-size]');
-    current?.focus({preventScroll:true});
-  }
-}
-function syncViewportCurrent(){
-  const buttons=[...viewportOptions.querySelectorAll('[data-preview-size]')];
-  for(const button of buttons)button.setAttribute('aria-pressed',String(button.dataset.previewSize===state.previewSize));
-  const selected=buttons.find(button=>button.dataset.previewSize===state.previewSize);
-  if(!selected)return;
-  const icon=selected.querySelector('.ui-icon');
-  const name=selected.querySelector('span')?.textContent||'自适应';
-  if(icon)$('#viewport-current-icon').replaceChildren(icon.cloneNode(true));
-  $('#viewport-current-label').textContent=name;
-  viewportTrigger.setAttribute('aria-label','当前预览：'+name+'，选择设备');
-}
 function selectPreviewSize(mode){
   if(!Object.hasOwn(PREVIEW_WIDTHS,mode)||state.active?.source!=='local')return;
   changePreviewMode(state,mode);
   stage.dataset.size=state.previewSize;
-  syncViewportCurrent();
+  deviceSwitcher?.sync();
   resizePreview();
 }
 function buildAssetURL(id){
@@ -196,7 +170,7 @@ function clearSelection(){
   $('#preview-copy-link').disabled=true;
   $('#preview-open').hidden=true;
   viewport.hidden=true;
-  setViewportMenuOpen(false);
+  deviceSwitcher?.close();
   $('#preview-info').disabled=true;
   if(infoDialog.open)infoDialog.close();
   sourceLoadKey++;
@@ -229,8 +203,8 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
     $('#source-repo').href=codeUrl;
     $('#preview-info').disabled=false;
     viewport.hidden=asset.source!=='local';
-    setViewportMenuOpen(false);
-    syncViewportCurrent();
+    deviceSwitcher?.close();
+    deviceSwitcher?.sync();
     const openUrl=asset.source==='local'?resolveAsset(asset.preview):asset.siteUrl||asset.url||asset.originRepo;
     $('#preview-open').href=openUrl||'https://github.com/weepwood/UI-Vault';
     $('#preview-open').hidden=!openUrl;
@@ -367,44 +341,10 @@ function initEvents(){
   tagFilter.addEventListener('change',event=>{leaveSettingsForLibrary();setCatalogTag(state,event.target.value);renderList();});
   $('#reset-filters').addEventListener('click',reset);
   $('#clear-filters').addEventListener('click',reset);
-  // 鼠标悬停展开；触摸点击当前设备也能展开，选中后恢复单项显示。
-  viewport.addEventListener('pointerenter',event=>{
-    if(event.pointerType==='mouse')setViewportMenuOpen(true);
-  });
-  viewport.addEventListener('pointerleave',event=>{
-    if(event.pointerType==='mouse')setViewportMenuOpen(false);
-  });
-  viewportTrigger.addEventListener('click',()=>setViewportMenuOpen(!viewportExpanded));
-  viewportOptions.addEventListener('click',event=>{
-    const button=event.target.closest('[data-preview-size]');
-    if(!button||!viewportOptions.contains(button))return;
-    selectPreviewSize(button.dataset.previewSize);
-    setViewportMenuOpen(false);
-    viewportTrigger.focus({preventScroll:true});
-  });
-  viewport.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&viewportExpanded){
-      event.preventDefault();
-      event.stopPropagation();
-      setViewportMenuOpen(false);
-      viewportTrigger.focus({preventScroll:true});
-      return;
-    }
-    if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
-    if(!viewport.contains(event.target))return;
-    event.preventDefault();
-    if(!viewportExpanded){setViewportMenuOpen(true,{focusOption:true});return;}
-    const buttons=[...viewportOptions.querySelectorAll('[data-preview-size]')];
-    const index=buttons.indexOf(document.activeElement);
-    const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:
-      (index+(event.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;
-    buttons[next]?.focus({preventScroll:true});
-  });
-  viewport.addEventListener('focusout',event=>{
-    if(!viewport.contains(event.relatedTarget)&&!viewport.matches(':hover'))setViewportMenuOpen(false);
-  });
-  document.addEventListener('pointerdown',event=>{
-    if(viewportExpanded&&!viewport.contains(event.target))setViewportMenuOpen(false);
+  deviceSwitcher=createViewportSwitcher({
+    root:viewport,
+    getMode:()=>state.previewSize,
+    onSelect:selectPreviewSize
   });
   $('#preview-favorite').addEventListener('click',()=>{if(state.active)toggleFavorite(state.active.id);});
   $('#preview-copy-link').addEventListener('click',copyLink);
