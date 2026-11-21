@@ -15,7 +15,7 @@ function visual(a,detail=false) {
   // 本仓 Demo 依旧优先运行真实界面，避免展示伪造的装饰封面。
   if(a.source==='local') {
     if(a.coverImage&&!detail) return '<img class="asset-cover-image" src="'+safe(resolveAsset(a.coverImage))+'" alt="" loading="lazy">';
-    return '<iframe class="'+(detail?'detail-frame':'card-preview')+'" '+(detail?'src':'data-src')+'="'+safe(resolveAsset(a.preview))+'" loading="lazy" sandbox="allow-scripts" referrerpolicy="no-referrer" '+(detail?'':'tabindex="-1"')+' title="'+safe(a.title)+(detail?' 互动预览':' 预览')+'"></iframe>';
+    return '<iframe class="'+(detail?'detail-frame':'card-preview')+'" '+(detail?'src':'data-src')+'="'+safe(resolveAsset(a.preview))+'" loading="lazy" sandbox="'+(a.type==='resource'?'allow-scripts allow-popups allow-popups-to-escape-sandbox':'allow-scripts')+'" referrerpolicy="no-referrer" '+(detail?'':'tabindex="-1"')+' title="'+safe(a.title)+(detail?' 互动预览':' 预览')+'"></iframe>';
   }
   if(a.coverImage) return '<img class="asset-cover-image" src="'+safe(resolveAsset(a.coverImage))+'" alt="">';
   return referenceVisual(a);

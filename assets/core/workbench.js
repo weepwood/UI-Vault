@@ -55,7 +55,7 @@ export function projectPreviewMarkup(asset) {
   const title=safe(asset.title);
   if(asset.source==='local') {
     return '<iframe class="live-frame" data-preview-frame="local" title="'+title+' 的可交互预览"'+
-      ' src="'+safe(resolveAsset(asset.preview))+'" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe>';
+      ' src="'+safe(resolveAsset(asset.preview))+'" sandbox="'+(asset.type==='resource'?'allow-scripts allow-popups allow-popups-to-escape-sandbox':'allow-scripts')+'" referrerpolicy="no-referrer"></iframe>';
   }
   if(asset.siteUrl) {
     return '<iframe class="live-frame" data-preview-frame="external" title="'+title+' 的外部网站"'+
