@@ -385,6 +385,60 @@ def verify_liquid_orb_unified(browser, origin):
     print("液态玻璃单页回归通过：桌面/移动端尺寸、同一 Canvas、模态焦点、旧链接及沙箱预览。")
 
 
+
+def verify_glass_materials(browser, origin):
+    """玻璃材质独立页面：结构、参数隔离、光学位移图、移动端和真实截图。"""
+    for name, width, height in [("desktop", 1440, 1000), ("mobile", 390, 844)]:
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            device_scale_factor=1,
+            color_scheme="light",
+            reduced_motion="reduce",
+            locale="zh-CN",
+        )
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        try:
+            page.goto(origin + "demos/components/glass-panel/index.html", wait_until="domcontentloaded")
+            page.locator(".sample").first.wait_for(state="visible")
+            assert page.locator(".sample").count() == 6, "玻璃材质数量不正确"
+            page.wait_for_function("document.body.dataset.optics === 'ready'", timeout=15000)
+            for id in ["refraction-map", "gel-map"]:
+                val = page.locator("#" + id).get_attribute("href")
+                assert val and val.startswith("data:image/png;base64,"), "轮廓折射图未生成：" + id
+            assert page.locator("#distortion").is_disabled(), "普通玻璃不应开放折射调节"
+            page.locator('[data-material="liquid"]').click()
+            assert page.locator("#distortion").is_enabled(), "液态材质未启用折射滑块"
+            page.locator("#blur").evaluate("(el) => {el.value = '11'; el.dispatchEvent(new Event('input', {bubbles: true}));}")
+            assert page.locator("#blur").input_value() == "11"
+            page.locator('[data-material="gel"]').click()
+            assert page.locator("#blur").input_value() == "4", "材质间模糊参数发生串扰"
+            page.locator('[data-material="liquid"]').click()
+            assert page.locator("#blur").input_value() == "11", "返回材料后独立参数丢失"
+            page.locator('[data-view="native"]').click()
+            assert page.locator("body").get_attribute("data-mode") == "native"
+            assert page.locator(".native-context").first.is_visible(), "场景模式未展示模拟窗口"
+            page.locator('[data-view="compare"]').click()
+            assert page.locator("body").get_attribute("data-mode") == "compare"
+            page.locator('[data-wallpaper-option="texture"]').click()
+            assert page.locator("body").get_attribute("data-wallpaper") == "texture"
+            page.locator('[data-wallpaper-option="lines"]').click()
+            page.locator("#theme-toggle").click()
+            assert page.locator("body").get_attribute("data-theme") == "dark"
+            page.locator("#theme-toggle").click()
+            page.locator("#reset").click()
+            assert page.locator("#blur").input_value() == "16", "重置未恢复参数"
+            # 复制完整 HTML 的按钮应可操作；沙箱环境不保证 Clipboard API 写入权限。
+            assert page.locator("#copy-full").is_enabled()
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "横向溢出"
+            OUTPUT.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(OUTPUT / ("glass-materials-" + name + ".png")), full_page=True, animations="disabled")
+            assert not errors, name + ": 玻璃材质脚本错误: " + "; ".join(errors)
+        finally:
+            context.close()
+    print("玻璃材质回归通过：六材质、SVG 轮廓图、独立参数、背景/场景、移动端与截图。")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -428,6 +482,7 @@ def main():
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
                 verify_liquid_orb_unified(browser, local)
+                verify_glass_materials(browser, local)
             finally:
                 browser.close()
     finally:

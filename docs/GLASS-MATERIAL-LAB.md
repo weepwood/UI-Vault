@@ -42,3 +42,27 @@
 - ResizeObserver 只负责重新对齐 SVG 作用的背景副本；指针高光仅使用 CSS 变量，不做重排驱动的弹性形变。
 - 在不支持 backdrop-filter 的浏览器中退化为实色背景；系统设置减少动效时取消变形和 hover 位移。
 - 变更后运行 npm run check 与独立 Demo 的浏览器交互测试；CI 的视觉基线不自动保证新 Demo 的视觉效果。
+
+
+## v2 · 视觉差异与可验证的折射
+
+优化来自截图反馈：六卡共用柔和渐变，使背景模糊和液态折射都难以辨认；统一透明度又抹平了 Mica/Acrylic/Vibrancy 的差别。
+
+- **统一对比 / 使用场景**：对比模式确保六种材质处于相同背景；使用场景模式用可辨认的窗口、菜单、侧栏、悬浮控件模拟承载结构。窗口内容属于演示 DOM，液态折射只针对场景背景图案，不宣称折射任意 DOM。
+- **背景选择**：高对比线条、纹理、网格、渐变。线条验证镜片边缘偏移，纹理验证细节损失，柔和渐变仅用于氛围。
+- **独立参数**：每个材质保存自己的模糊、着色与折射强度。Mica 没有模糊和折射参数，其他非液态材质不显示可编辑折射。
+- **轮廓折射**：在 Canvas 2D 为圆角矩形生成 signed-distance field (SDF) 的渐变位移图；R/G 编码 X/Y 法向位移，中心接近中性 128/128，边缘非线性增强。该图通过 SVG feImage 传给 feDisplacementMap，只在面板尺寸变化时重新计算；滑块更新滤镜 scale。
+- **独立高光**：镜面光、高光与材质染色分层。鼠标高光只更新 CSS 变量；Gel 按压时用可中断的圆角变形反馈。
+- **坐标一致性**：ResizeObserver 对齐背景副本与外部场景；不再使用会让液态背景副本错位的 translate/rotate hover。纹理多层 background-size 均采用同一场景坐标。
+- **源码复用**：CSS 片段仅是材质参数摘要；液态材质包含运行时 SDF 生成逻辑，使用“复制完整 HTML”才能完整复现。
+
+运行检验：npm run check；CI 的 Chromium 测试新增桌面/移动端独立 Demo 截图、轮廓图生成、材质参数隔离、背景/场景/深色模式、横向溢出等检查。Safari、Firefox 的 SVG 滤镜表现还需单独视觉验证，不能以 Chromium 测试代替。
+
+系统规范与实现参考：
+- https://learn.microsoft.com/en-us/windows/apps/design/style/mica
+- https://learn.microsoft.com/en-us/windows/apps/design/style/acrylic
+- https://developer.apple.com/design/human-interface-guidelines/materials
+- https://github.com/gentpan/liquidglass
+- https://github.com/nordify/css-liquid-glass
+
+此演示使用本仓库原创代码，只借鉴设计原则，不复制外部源文件与素材。

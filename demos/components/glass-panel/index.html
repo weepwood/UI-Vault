@@ -224,6 +224,17 @@ body[data-theme="dark"] .copy-full{background:#314c5a;color:#f0f9fc;border-color
 @media(max-width:680px){.view-switcher{margin-right:0}.scene{height:238px}body[data-mode="native"] .mat-mica .material{width:calc(100% - 30px)}}
 @media(prefers-reduced-motion:reduce){.mat-gel .material,.mat-liquid .material{transition:none!important}.mat-gel .pick:hover .material,.mat-gel.is-pressing .material{border-radius:35px 51px 32px 46px / 33px 32px 46px 40px}}
 
+
+/* 必须使用与场景一致的每层尺寸和坐标原点，纹理点阵才能在透镜内外连续。 */
+body[data-wallpaper="texture"] .refraction {
+  background-size:34px 34px,var(--scene-w,370px) var(--scene-h,238px),var(--scene-w,370px) var(--scene-h,238px);
+  background-position:var(--offset-x,0px) var(--offset-y,0px);
+}
+.mat-mica .material::after {
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;
+  background:rgba(97,126,151,calc((1 - var(--mat-tint,.96)) * .40));
+}
+@media(prefers-reduced-motion:reduce){.mat-gel .pick:hover .material{transform:none}}
 </style>
 </head>
 <body data-theme="light" data-wallpaper="lines" data-mode="compare">
@@ -241,8 +252,8 @@ body[data-theme="dark"] .copy-full{background:#314c5a;color:#f0f9fc;border-color
 <p class="intro">在同一组背景和内容上，对比 Windows 与 macOS 的经典毛玻璃，以及带有折射、边缘高光的液态玻璃。点击任意样式查看实现与适用场景。</p>
 </div>
 <div class="toolbar"><div class="switcher view-switcher" role="group" aria-label="展示方式"><button type="button" data-view="compare" aria-pressed="true">统一对比</button><button type="button" data-view="native" aria-pressed="false">使用场景</button></div><div class="switcher" role="group" aria-label="预览背景">
-<button type="button" data-wallpaper-option="color" aria-pressed="true">彩色背景</button>
-<button type="button" data-wallpaper-option="grid" aria-pressed="false">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="false">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
+<button type="button" data-wallpaper-option="color" aria-pressed="false">彩色背景</button>
+<button type="button" data-wallpaper-option="grid" aria-pressed="false">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="true">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">深色模式</button></div></header>
 <p class="tuning-hint" id="selected-hint">正在调整「柔光玻璃」的独立参数。选择另一种材质后，滑块会切换到它自己的设置。</p><div class="adjustments" aria-label="所选材质独立参数">
 <div class="control"><label for="blur">模糊</label><input id="blur" type="range" min="0" max="50" value="16" step="1"><output id="blur-value" for="blur">16 px</output></div>

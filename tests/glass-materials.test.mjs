@@ -44,3 +44,21 @@ test('材质展示说明准确地区分 Mica 和 Acrylic，且保留来源与非
   assert.match(page,/data-wallpaper-option="color"/);
   assert.match(page,/data-wallpaper-option="grid"/);
 });
+
+test('第二版材质实验室包含高对比背景、场景模式与独立参数',async()=>{
+ const html=await read('demos/components/glass-panel/index.html');
+ for(const value of ['data-wallpaper-option="lines"','data-wallpaper-option="texture"','data-view="compare"','data-view="native"','id="copy-full"','id="selected-hint"','data-optics="loading"','id="refraction-map"','id="gel-map"']){
+   assert.ok(html.includes(value),value);
+ }
+ assert.equal((html.match(/class="native-context"/g)||[]).length,6);
+ assert.match(html,/function signedDistance\(/);
+ assert.match(html,/function bakeContourMap\(/);
+ assert.match(html,/Object\.fromEntries\(Object\.entries\(defaults\)/);
+ assert.match(html,/new ResizeObserver\(scheduleAlign\)/);
+ assert.match(html,/toDataURL\('image\/png'\)/);
+ assert.match(html,/prefers-reduced-motion/);
+ assert.match(html,/copy-full/);
+ assert.match(html,/fetch\(location\.href/);
+ assert.match(html,/window\.addEventListener\('resize',scheduleAlign/);
+ assert.match(html,/body\[data-wallpaper="texture"\] \.refraction/);
+});
