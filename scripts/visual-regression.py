@@ -404,16 +404,59 @@ def verify_glass_materials(browser, origin):
             page.locator(".sample").first.wait_for(state="visible")
             assert page.locator(".sample").count() == 6, "玻璃材质数量不正确"
             page.wait_for_function("document.body.dataset.optics === 'ready'", timeout=15000)
-            for id in ["refraction-map", "gel-map"]:
-                val = page.locator("#" + id).get_attribute("href")
-                assert val and val.startswith("data:image/png;base64,"), "轮廓折射图未生成：" + id
+            for kind in ["liquid", "gel"]:
+                canvas = page.locator(".mat-" + kind + " canvas.refraction")
+                assert canvas.count() == 1, "缺少真实折射层: " + kind
+                metrics = canvas.evaluate("""el => {
+                    const c = el.getContext('2d');
+                    const d = c.getImageData(0,0,el.width,el.height).data;
+                    let lo=255, hi=0;
+                    for(let i=0;i<d.length;i+=32){lo=Math.min(lo,d[i]);hi=Math.max(hi,d[i]);}
+                    return {w:el.width,h:el.height,rendered:el.dataset.rendered,
+                        edge:+el.dataset.edgePixels,contrast:hi-lo};
+                }""")
+                assert metrics["rendered"] == "true", "Canvas 像素采样未运行：" + kind
+                assert metrics["w"] > 100 and metrics["h"] > 70, "镜片像素尺寸异常"
+                assert metrics["edge"] > 300, "缺少轮廓折射带"
+                assert metrics["contrast"] > 40, "镜片中缺少可辨识背景纹理"
+            assert page.locator(".mat-liquid .scene").evaluate("(el)=>el.style.backgroundImage.includes('data:image/png')"), "折射层与背景非同源画布"
             assert page.locator("#distortion").is_disabled(), "普通玻璃不应开放折射调节"
             page.locator('[data-material="liquid"]').click()
             assert page.locator("#distortion").is_enabled(), "液态材质未启用折射滑块"
+
+            lens = page.locator(".mat-liquid canvas.refraction")
+            previous = lens.evaluate("""el => {
+                const ctx=el.getContext('2d');
+                window.__glassTestPixels = new Uint8ClampedArray(ctx.getImageData(0,0,el.width,el.height).data);
+                return +el.dataset.revision;
+            }""")
+            page.locator("#distortion").evaluate("""el => {
+                el.value='0';el.dispatchEvent(new Event('input',{bubbles:true}));
+            }""")
+            page.wait_for_function("""before => Number(document.querySelector('.mat-liquid canvas.refraction').dataset.revision) > before""", arg=previous)
+            # 对比默认折射与关闭折射后像素；仅确认绘制非空不足以证明视觉折射。
+            delta = lens.evaluate("""el => {
+                const a=window.__glassTestPixels,b=el.getContext('2d').getImageData(0,0,el.width,el.height).data;
+                let sum=0,n=0;for(let i=0;i<Math.min(a.length,b.length);i+=16){sum+=Math.abs(a[i]-b[i]);n++;}
+                return sum/Math.max(1,n);
+            }""")
+            assert delta > 1, f"折射滑块没有产生可测量的像素变化：{delta:.3f}"
+            page.locator("#distortion").evaluate("""el => {
+                el.value='35';el.dispatchEvent(new Event('input',{bubbles:true}));
+            }""")
+            previous_box = page.locator(".mat-liquid .material").bounding_box()
+            if name == "desktop":
+                x = previous_box["x"] + previous_box["width"] / 2
+                y = previous_box["y"] + previous_box["height"] / 2
+                page.mouse.move(x,y);page.mouse.down()
+                page.mouse.move(x+18,y+10,steps=4);page.mouse.up()
+                new_box = page.locator(".mat-liquid .material").bounding_box()
+                assert new_box["x"] > previous_box["x"] + 6, "拖动液态镜片没有移动实际位置"
+
             page.locator("#blur").evaluate("(el) => {el.value = '11'; el.dispatchEvent(new Event('input', {bubbles: true}));}")
             assert page.locator("#blur").input_value() == "11"
             page.locator('[data-material="gel"]').click()
-            assert page.locator("#blur").input_value() == "4", "材质间模糊参数发生串扰"
+            assert page.locator("#blur").input_value() == "0", "材质间模糊参数发生串扰"
             page.locator('[data-material="liquid"]').click()
             assert page.locator("#blur").input_value() == "11", "返回材料后独立参数丢失"
             page.locator('[data-view="native"]').click()
@@ -429,7 +472,8 @@ def verify_glass_materials(browser, origin):
             page.locator("#theme-toggle").click()
             page.locator("#reset").click()
             assert page.locator("#blur").input_value() == "16", "重置未恢复参数"
-            page.locator('[data-wallpaper-option="grid"]').click()
+            page.locator('.mat-liquid .material').evaluate("el => {el.style.translate = '';delete el.dataset.dragX;delete el.dataset.dragY;}")
+            page.locator('[data-wallpaper-option="lines"]').click()
             # 复制完整 HTML 的按钮应可操作；沙箱环境不保证 Clipboard API 写入权限。
             assert page.locator("#copy-full").is_enabled()
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "横向溢出"
@@ -442,7 +486,7 @@ def verify_glass_materials(browser, origin):
             assert not errors, name + ": 玻璃材质脚本错误: " + "; ".join(errors)
         finally:
             context.close()
-    print("玻璃材质回归通过：六材质、SVG 轮廓图、独立参数、背景/场景、移动端与截图。")
+    print("玻璃材质回归通过：Canvas 真正像素折射、六材质、独立参数、背景/场景、移动端与截图。")
 
 def verify_rare_interactions(browser, origin):
     """Rare UI 启发的原创 Demo：桌面和手机均须完整交互，不依赖外部组件源码。"""

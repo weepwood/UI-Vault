@@ -247,14 +247,54 @@ body[data-theme="dark"] .mat-liquid .material::before,body[data-theme="dark"] .m
   background:linear-gradient(to bottom,transparent,rgba(19,35,50,.42) 38%,rgba(19,35,50,.78));
 }
 body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .mat-gel .material__bottom{text-shadow:0 1px 2px #0a1927a8}
+
+/* TUNING v3 · 液态玻璃双层合成。以原始像素采样代替不稳定的 CSS/SVG 背景副本。 */
+.mat-liquid .material,.mat-gel .material{
+  background:rgba(242,248,253,.075)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  border:1px solid rgba(255,255,255,.83);
+  box-shadow:0 20px 38px rgba(23,52,73,.25), inset 0 1px 0 rgba(255,255,255,.9),
+    inset 2px 3px 4px rgba(255,255,255,.40),inset -2px -3px 5px rgba(20,69,95,.23);
+}
+.mat-liquid .material{border-radius:27px}
+.mat-gel .material{border-radius:35px 51px 32px 46px/33px 32px 46px 40px}
+.mat-liquid .material>.refraction,.mat-gel .material>.refraction{
+  position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;
+  opacity:1!important;filter:none!important;background:none!important;
+  pointer-events:none;border-radius:inherit;
+}
+body[data-optics="ready"] .mat-liquid .refraction,body[data-optics="ready"] .mat-gel .refraction{filter:none!important}
+.mat-liquid .material::after,.mat-gel .material::after{
+  border-radius:inherit;z-index:1;opacity:1;
+  background:radial-gradient(ellipse 27% 35% at var(--pointer-x,24%) var(--pointer-y,17%),rgba(255,255,255,.27),transparent 95%),
+    linear-gradient(136deg,rgba(255,255,255,.44),transparent 20%,transparent 78%,rgba(175,221,248,.16));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.88),inset 0 7px 8px -8px white,
+    inset 2px 0 5px -4px rgba(255,255,255,.98),inset -3px -4px 6px -5px rgba(30,79,109,.6);
+}
+.mat-gel .material::after{
+  background:radial-gradient(ellipse 30% 40% at var(--pointer-x,27%) var(--pointer-y,15%),rgba(255,255,255,.34),transparent 88%),
+    linear-gradient(136deg,rgba(255,255,255,.48),transparent 19%,transparent 76%,rgba(191,216,253,.21));
+}
+body[data-theme="dark"] .mat-liquid .material,body[data-theme="dark"] .mat-gel .material{
+  background:rgba(28,42,62,.085)!important;
+  border-color:rgba(240,249,255,.78);color:#f3fbff;
+}
+.mat-liquid .material__bottom,.mat-gel .material__bottom{
+  text-shadow:0 1px 1px rgba(245,251,255,.48);
+}
+.mat-liquid .scene,.mat-gel .scene{--glass-photo:1}
+.mat-liquid .pick,.mat-gel .pick{touch-action:none}
+.mat-liquid .pick:focus-visible,.mat-gel .pick:focus-visible{outline-offset:-4px}
+.mat-liquid.is-dragging .material,.mat-gel.is-dragging .material{transition:none!important;cursor:grabbing}
+.mat-liquid .pick:hover .material,.mat-gel .pick:hover .material{transform:none}
+.mat-gel .pick:hover .material,.mat-gel .pick:focus-visible .material{border-radius:46px 33px 46px 34px/43px 45px 31px 35px}
+.mat-gel.is-pressing .material{border-radius:28px 52px 32px 56px/45px 29px 50px 30px}
+@media(prefers-reduced-motion:reduce){.mat-liquid .material,.mat-gel .material{transition:none!important}.mat-gel .pick:hover .material{border-radius:35px 51px 32px 46px/33px 32px 46px 40px}}
+
 </style>
 </head>
-<body data-theme="light" data-wallpaper="grid" data-mode="compare" data-optics="loading">
-<svg class="svg-filters" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
-<defs>
-<filter id="glass-refract" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feImage id="refraction-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="lens-shape"/><feDisplacementMap id="refraction-scale" in="SourceGraphic" in2="lens-shape" scale="19" xChannelSelector="R" yChannelSelector="G"/></filter>
-<filter id="glass-gel" x="0" y="0" width="100%" height="100%" color-interpolation-filters="sRGB"><feImage id="gel-map" x="0" y="0" width="100%" height="100%" preserveAspectRatio="none" result="gel-shape"/><feDisplacementMap id="gel-scale" in="SourceGraphic" in2="gel-shape" scale="26" xChannelSelector="R" yChannelSelector="G"/></filter>
-</defs></svg>
+<body data-theme="light" data-wallpaper="lines" data-mode="compare" data-optics="loading">
+
 <main class="app">
 <header class="top"><div>
 <div class="eyebrow"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
@@ -265,12 +305,12 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
 </div>
 <div class="toolbar"><div class="switcher view-switcher" role="group" aria-label="展示方式"><button type="button" data-view="compare" aria-pressed="true">统一对比</button><button type="button" data-view="native" aria-pressed="false">使用场景</button></div><div class="switcher" role="group" aria-label="预览背景">
 <button type="button" data-wallpaper-option="color" aria-pressed="false">彩色背景</button>
-<button type="button" data-wallpaper-option="grid" aria-pressed="true">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="false">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
+<button type="button" data-wallpaper-option="grid" aria-pressed="false">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="true">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">深色模式</button></div></header>
 <p class="tuning-hint" id="selected-hint">正在调整「柔光玻璃」的独立参数。选择另一种材质后，滑块会切换到它自己的设置。</p><div class="adjustments" aria-label="所选材质独立参数">
 <div class="control"><label for="blur">模糊</label><input id="blur" type="range" min="0" max="50" value="16" step="1"><output id="blur-value" for="blur">16 px</output></div>
 <div class="control"><label for="tint">材质浓度</label><input id="tint" type="range" min="5" max="100" value="34" step="1"><output id="tint-value" for="tint">34%</output></div>
-<div class="control"><label for="distortion">折射</label><input id="distortion" type="range" min="0" max="48" value="19" step="1"><output id="distortion-value" for="distortion">19</output></div>
+<div class="control"><label for="distortion">折射</label><input id="distortion" type="range" min="0" max="55" value="19" step="1"><output id="distortion-value" for="distortion">19</output></div>
 <button type="button" class="reset" id="reset"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
   <path d="M3 3v5h5" /></svg> 恢复</button>
 </div>
@@ -288,12 +328,12 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
 <article class="sample mat-vibrancy" data-kind="vibrancy"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="vibrancy" aria-pressed="false" aria-label="查看 macOS Vibrancy 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
   <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
   <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">侧边栏</span><span class="material__name">模糊与鲜活感</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>macOS · Vibrancy</h3><span class="sample__tag">系统材质近似</span></div><p>较高饱和度的磨砂玻璃，适合背景层。</p></div></article>
-<article class="sample mat-liquid" data-kind="liquid"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="liquid" aria-pressed="false" aria-label="查看液态透镜材质"><span class="material"><span class="refraction" aria-hidden="true"></span><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+<article class="sample mat-liquid" data-kind="liquid"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="liquid" aria-pressed="false" aria-label="查看并拖动液态透镜材质"><span class="material"><canvas class="refraction" aria-hidden="true"></canvas><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
   <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
-  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">悬浮工具</span><span class="material__name">玻璃透镜</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Lens</h3><span class="sample__tag">光学折射</span></div><p>SVG 位移让底层图案发生真实像素偏移。</p></div></article>
-<article class="sample mat-gel" data-kind="gel"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="gel" aria-pressed="false" aria-label="查看液态凝胶材质"><span class="material"><span class="refraction" aria-hidden="true"></span><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">悬浮工具</span><span class="material__name">玻璃透镜</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Lens</h3><span class="sample__tag">拖动观察折射</span></div><p>Canvas 像素重采样产生可观察的边缘折射。</p></div></article>
+<article class="sample mat-gel" data-kind="gel"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="gel" aria-pressed="false" aria-label="查看并拖动液态凝胶材质"><span class="material"><canvas class="refraction" aria-hidden="true"></canvas><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
   <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
-  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">流动表面</span><span class="material__name">柔韧的光泽</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Gel</h3><span class="sample__tag">柔性轮廓</span></div><p>自由形态边缘、较强折射与指针高光。</p></div></article>
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">流动表面</span><span class="material__name">柔韧的光泽</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Gel</h3><span class="sample__tag">拖动与按压</span></div><p>自由形态边缘、较强折射与指针高光。</p></div></article>
 </section>
 <section class="inspector" aria-label="选中材质说明">
 <div><h2 id="detail-title"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg> 柔光玻璃</h2><p id="detail-description">适用于内容卡片与轻量浮层。使用半透明底色和模糊形成柔和层次，优先保证文本可读。</p><small id="detail-note">网页实现为独立 CSS 示例，可使用复制按钮提取当前参数；不是操作系统 API。</small><div class="notice">浏览器 Demo 不调用 Windows Composition 或 macOS AppKit。Mica、Acrylic、Vibrancy 为外观近似；液态折射只针对本演示中可复用的背景图层。</div></div>
@@ -312,7 +352,7 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
 <a href="https://github.com/IshiakiZ/liquid-glass-web" target="_blank" rel="noopener noreferrer">liquid-glass-web · MIT</a>
 <a href="https://github.com/gentpan/liquidglass" target="_blank" rel="noopener noreferrer">gentpan · 跨浏览器折射思路</a>
 </nav>
-<p>为避免跨站依赖，本页字体、SVG 与脚本均内置，支持直接在 UI-Vault 预览。液态材质的参数 CSS 需配合轮廓位移图；“复制完整 HTML”才包含完整运行时。</p>
+<p>为避免跨站依赖，本页字体、SVG 与脚本均内置，支持直接在 UI-Vault 预览。液态材质的参数 CSS 需配合 Canvas 轮廓折射；“复制完整 HTML”才包含完整运行时。</p>
 </footer>
 </main>
 <script>
@@ -331,8 +371,8 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
     mica:{blur:0,tint:96,distortion:0},
     acrylic:{blur:27,tint:62,distortion:0},
     vibrancy:{blur:18,tint:47,distortion:0},
-    liquid:{blur:7,tint:16,distortion:19},
-    gel:{blur:4,tint:20,distortion:26}
+    liquid:{blur:0,tint:12,distortion:35},
+    gel:{blur:0,tint:16,distortion:43}
   };
   const values=Object.fromEntries(Object.entries(defaults).map(([key,v])=>[key,{...v}]));
   const details={
@@ -340,14 +380,14 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
     mica:{title:'Windows · Mica',description:'Mica 是面向长寿命窗口的不透明桌面壁纸染色材质；这里模拟窗口底色，而非实时模糊背后内容。',note:'Mica 的染色由系统主题与壁纸决定。网页无法直接读取系统壁纸，也不会调用 Windows App SDK。'},
     acrylic:{title:'Windows · Acrylic',description:'Acrylic 用于菜单或临时浮层，以较强模糊、染色与微弱噪点区别于不透明窗口底层。',note:'噪点仅作为材质提示，不应让细微文字变得粗糙。'},
     vibrancy:{title:'macOS · Vibrancy',description:'传统 macOS 材质强调与侧边栏或浮层下方内容的融合。这一方案使用独立的饱和度、染色与模糊参数。',note:'实际系统中的 NSVisualEffectView 会根据 Material、Blending Mode 和系统设置调整显示。'},
-    liquid:{title:'Liquid · Lens',description:'轮廓驱动的透镜：由圆角矩形的有符号距离场生成位移图，使折射集中在边缘，中心保留相对清晰的背景。',note:'SVG feImage + feDisplacementMap 作用于复制的场景渐变层，不是真正的光线追踪，也不折射任意 DOM。'},
-    gel:{title:'Liquid · Gel',description:'凝胶材质采用不同的边缘弯曲、柔性轮廓与指针高光。按下卡片可观察边缘轮廓的变形。',note:'为避免频繁合成，仅在尺寸变化时重建位移图；按压通过 border-radius 动画模拟。'}
+    liquid:{title:'Liquid · Lens',description:'轮廓驱动的透镜：由圆角矩形的有符号距离场生成位移图，使折射集中在边缘，中心保留相对清晰的背景。',note:'Canvas 2D 在本地生成同源背景并逐像素重采样，不依赖 SVG 滤镜；不是真实光线追踪，也不折射任意 DOM。'},
+    gel:{title:'Liquid · Gel',description:'凝胶材质采用不同的边缘弯曲、柔性轮廓与指针高光。按下卡片可观察边缘轮廓的变形。',note:'Canvas 只在镜片移动、尺寸或参数改变时重绘；支持在场景内拖动镜片，方便观察背景弯曲。'}
   };
   const code=document.getElementById('css-source');
   const status=document.getElementById('status');
   const hint=document.getElementById('selected-hint');
-  let selected='soft',frame=0,hasMaps=false;
-  const mapSizes=new Map();
+  let selected='soft',frame=0;
+  
   const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
   const toAlpha=value=>(value/100).toFixed(2);
   function recipe(){
@@ -356,7 +396,7 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
     if(name==='mica')return '.mica-window {\n  /* 不透明窗口背景：Mica 外观近似 */\n  background: linear-gradient(145deg,#e8edf0f4,#dce4e9f7 64%,#d6e0e5fa);\n  backdrop-filter: none;\n  border: 1px solid #ffffffa6;\n  border-radius: 12px;\n}';
     if(name==='acrylic')return '.acrylic-menu {\n  background: rgba(234,244,252,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(135%);\n  border: 1px solid #ffffffb5;\n  /* 叠加低对比 SVG 噪点纹理 */\n}';
     if(name==='vibrancy')return '.vibrancy-sidebar {\n  background: rgba(235,240,251,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(195%) brightness(1.04);\n  border: 1px solid #ffffff9c;\n  /* AppKit 的 NSVisualEffectView 不能由 CSS 直接调用 */\n}';
-    if(name==='liquid'||name==='gel')return '.liquid-'+name+' {\n  background: rgba(230,244,255,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(112%);\n  border: 1px solid #ffffffb8;\n}\n.liquid-'+name+' .scene-copy {\n  /* 当前边缘折射强度 '+p.distortion+'px。需同时复制轮廓 SDF 位移图、SVG 滤镜和背景对齐逻辑。 */\n  filter: url(#'+(name==='gel'?'glass-gel':'glass-refract')+');\n}\n/* 点击“复制完整 HTML”获取所有依赖；此片段只是参数摘要。 */';
+    if(name==='liquid'||name==='gel')return '/* Canvas 2D 背景采样方案（完整算法包含在“复制完整 HTML”中） */\n.liquid-'+name+' {\n  background: rgba(242,248,253,'+toAlpha(p.tint)+');\n  backdrop-filter: none;\n  border: 1px solid rgba(255,255,255,.83);\n  border-radius: '+(name==='gel'?'35px 51px 32px 46px':'27px')+';\n}\n/* 法线位移幅度：'+p.distortion+'px；镜片背景来自同源 Canvas 场景贴图。 */';
     return '.soft-glass {\n  background: rgba(249,253,255,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(128%);\n  border: 1px solid #ffffffa5;\n  box-shadow: 0 15px 40px #27425c33, inset 0 1px 0 #fffd;\n}';
   }
   function setControlState(){
@@ -367,7 +407,7 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
       el.disabled=disabled;
       el.closest('.control').classList.toggle('is-disabled',disabled);
     });
-    hint.textContent='正在调整「'+details[selected].title+'」的独立参数。'+(selected==='mica'?'Mica 不使用实时模糊或折射。':!['liquid','gel'].includes(selected)?'仅液态材质支持边缘折射。':'位移场由轮廓驱动，修改折射强度不会重建位移图。');
+    hint.textContent='正在调整「'+details[selected].title+'」的独立参数。'+(selected==='mica'?'Mica 不使用实时模糊或折射。':!['liquid','gel'].includes(selected)?'仅液态材质支持边缘折射。':'拖动镜片观察背景线条弯曲；Canvas 将根据折射强度重新采样真实像素。');
     updateOutputs();
   }
   function updateOutputs(){
@@ -379,8 +419,7 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
     const sample=document.querySelector('.sample[data-kind="'+name+'"]'),p=values[name];
     sample.style.setProperty('--mat-blur',p.blur+'px');
     sample.style.setProperty('--mat-tint',toAlpha(p.tint));
-    if(name==='liquid')document.getElementById('refraction-scale').setAttribute('scale',p.distortion);
-    if(name==='gel')document.getElementById('gel-scale').setAttribute('scale',p.distortion);
+    if(name==='liquid'||name==='gel')scheduleAlign();
   }
   function selectMaterial(name){
     if(!details[name])return;
@@ -397,59 +436,150 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
     code.textContent=recipe();
     status.textContent='';
   }
+  // Each sample uses the exact same painted scene (not a separately approximated CSS snapshot).
+  // Sampling in pixel space produces deterministic refraction in Chromium, Safari and Firefox.
+  const sceneCache=new Map();
+  const liquidKinds=['liquid','gel'];
+  let opticsDraws=0;
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  function drawSceneTexture(width,height,wallpaper){
+    const key=wallpaper+':'+width+'x'+height;
+    if(sceneCache.has(key))return sceneCache.get(key);
+    const canvas=document.createElement('canvas');
+    canvas.width=width;canvas.height=height;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    if(!ctx)return null;
+    const w=width,h=height;
+    const gradient=ctx.createLinearGradient(0,0,w,h);
+    gradient.addColorStop(0,wallpaper==='texture'?'#d3dbdf':'#f5e4dc');
+    gradient.addColorStop(.50,wallpaper==='color'?'#aaa5dc':'#c8d9da');
+    gradient.addColorStop(1,wallpaper==='color'?'#6cbeb3':'#89b1bc');
+    ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
+    const peach=ctx.createRadialGradient(w*.22,h*.27,4,w*.22,h*.27,w*.47);
+    peach.addColorStop(0,'rgba(255,177,135,.82)');peach.addColorStop(1,'rgba(255,177,135,0)');
+    ctx.fillStyle=peach;ctx.fillRect(0,0,w,h);
+    const blue=ctx.createRadialGradient(w*.86,h*.31,2,w*.86,h*.31,w*.59);
+    blue.addColorStop(0,'rgba(106,132,214,.72)');blue.addColorStop(1,'rgba(106,132,214,0)');
+    ctx.fillStyle=blue;ctx.fillRect(0,0,w,h);
+    if(wallpaper==='grid'||wallpaper==='lines'){
+      const step=wallpaper==='grid'?24:32;
+      ctx.beginPath();
+      for(let x=0;x<=w;x+=step){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,h);}
+      for(let y=0;y<=h;y+=step){ctx.moveTo(0,y+.5);ctx.lineTo(w,y+.5);}
+      ctx.strokeStyle=wallpaper==='lines'?'rgba(32,67,88,.35)':'rgba(43,80,92,.23)';
+      ctx.lineWidth=1;ctx.stroke();
+      if(wallpaper==='lines'){
+        ctx.beginPath();
+        for(let n=-h;n<w+h;n+=86){ctx.moveTo(n,0);ctx.lineTo(n+h*.5,h);}
+        ctx.strokeStyle='rgba(28,67,100,.65)';ctx.lineWidth=3;ctx.stroke();
+        // 保留直线校验折射，避免大圆环被误认成镜片自带的装饰。
+      }
+    } else if(wallpaper==='texture'){
+      for(let y=10;y<h;y+=26)for(let x=10;x<w;x+=26){
+        ctx.fillStyle='rgba(248,253,255,.78)';ctx.beginPath();ctx.arc(x,y,3.4,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='rgba(33,85,118,.55)';ctx.fillRect(x+7,y+8,9,2);
+      }
+      ctx.beginPath();ctx.moveTo(0,h*.64);ctx.lineTo(w,h*.22);
+      ctx.lineWidth=6;ctx.strokeStyle='rgba(52,101,135,.65)';ctx.stroke();
+    }else{
+      ctx.beginPath();ctx.arc(w*.63,h*.38,h*.25,0,Math.PI*2);
+      ctx.lineWidth=8;ctx.strokeStyle='rgba(246,250,255,.46)';ctx.stroke();
+      ctx.beginPath();ctx.moveTo(0,h*.79);ctx.lineTo(w,h*.31);
+      ctx.lineWidth=3;ctx.strokeStyle='rgba(37,85,107,.26)';ctx.stroke();
+    }
+    const texture={canvas,pixels:ctx.getImageData(0,0,w,h).data,width:w,height:h,dataUrl:canvas.toDataURL('image/png')};
+    if(sceneCache.size>20)sceneCache.clear();
+    sceneCache.set(key,texture);
+    return texture;
+  }
   function signedDistance(x,y,w,h,r){
     const qx=Math.abs(x-w/2)-(w/2-r),qy=Math.abs(y-h/2)-(h/2-r);
     return Math.hypot(Math.max(qx,0),Math.max(qy,0))+Math.min(Math.max(qx,qy),0)-r;
   }
-  function bakeContourMap(width,height,kind){
-    // R/G 均以 128 表示“无位移”；只有距离轮廓内侧 rim 像素内产生偏移。
-    const w=Math.max(1,Math.round(width)),h=Math.max(1,Math.round(height));
-    const canvas=document.createElement('canvas');
+  function bilinear(src,x,y,channel){
+    const px=clamp(x,0,src.width-1),py=clamp(y,0,src.height-1);
+    const x0=Math.floor(px),y0=Math.floor(py),x1=Math.min(src.width-1,x0+1),y1=Math.min(src.height-1,y0+1);
+    const fx=px-x0,fy=py-y0,w=src.width,data=src.pixels;
+    const a=data[(y0*w+x0)*4+channel],b=data[(y0*w+x1)*4+channel];
+    const c=data[(y1*w+x0)*4+channel],d=data[(y1*w+x1)*4+channel];
+    return (a+(b-a)*fx)*(1-fy)+(c+(d-c)*fx)*fy;
+  }
+  function paintLiquid(kind,texture){
+    const sample=document.querySelector('.sample[data-kind="'+kind+'"]');
+    if(!sample||!texture)return false;
+    const panel=sample.querySelector('.material'),scene=sample.querySelector('.scene');
+    const canvas=panel.querySelector('canvas.refraction');
+    const bounds=panel.getBoundingClientRect(),surface=scene.getBoundingClientRect();
+    if(bounds.width<40||bounds.height<40||surface.width<40)return false;
+    const dpr=Math.min(window.devicePixelRatio||1,1.45);
+    const w=Math.round(bounds.width*dpr),h=Math.round(bounds.height*dpr);
+    if(w*h>380000)return false;
     canvas.width=w;canvas.height=h;
     const ctx=canvas.getContext('2d',{willReadFrequently:true});
-    if(!ctx)return '';
-    const image=ctx.createImageData(w,h),data=image.data;
-    const radius=kind==='gel'?32:27,rim=Math.min(w,h)*(kind==='gel'?.30:.23);
-    const sign=kind==='gel'?1:-1;
-    for(let y=0;y<h;y++)for(let x=0;x<w;x++){
-      const d=signedDistance(x+.5,y+.5,w,h,radius),o=(y*w+x)*4;
-      let dx=0,dy=0;
-      if(d<=0&&d>-rim){
-        const gx=signedDistance(x+1.5,y+.5,w,h,radius)-signedDistance(x-.5,y+.5,w,h,radius);
-        const gy=signedDistance(x+.5,y+1.5,w,h,radius)-signedDistance(x+.5,y-.5,w,h,radius);
-        const len=Math.hypot(gx,gy)||1;
-        const t=1+d/rim;
-        const easing=t*t*(3-2*t);
-        dx=gx/len*easing*sign;dy=gy/len*easing*sign;
+    if(!ctx)return false;
+    const image=ctx.createImageData(w,h),dst=image.data;
+    const scaleX=texture.width/surface.width,scaleY=texture.height/surface.height;
+    const radius=(kind==='gel'?35:27)*dpr;
+    const rim=(kind==='gel'?41:32)*dpr;
+    const power=values[kind].distortion;
+    const bx=(bounds.left-surface.left),by=(bounds.top-surface.top);
+    const refraction=power*dpr;
+    let changed=0;
+    for(let y=0;y<h;y++){
+      for(let x=0;x<w;x++){
+        const o=(y*w+x)*4;
+        const dx=x+.5,dy=y+.5;
+        const d=signedDistance(dx,dy,w,h,radius);
+        if(d>1){dst[o+3]=0;continue;}
+        const gX=signedDistance(dx+1,dy,w,h,radius)-signedDistance(dx-1,dy,w,h,radius);
+        const gY=signedDistance(dx,dy+1,w,h,radius)-signedDistance(dx,dy-1,w,h,radius);
+        const norm=Math.hypot(gX,gY)||1,nx=gX/norm,ny=gY/norm;
+        const t=clamp(-d/rim,0,1);
+        const curve=1-t*t*(3-2*t);
+        const edge=curve*curve;
+        const magnify=kind==='gel'?.055:.035;
+        const shift=refraction*edge;
+        const sx=(bx+(dx-(dx-w*.5)*magnify*(1-edge)+nx*shift)/dpr)*scaleX;
+        const sy=(by+(dy-(dy-h*.5)*magnify*(1-edge)+ny*shift)/dpr)*scaleY;
+        const chroma=edge*1.6*dpr;
+        const r=bilinear(texture,sx-nx*chroma,sy-ny*chroma,0);
+        const g=bilinear(texture,sx,sy,1);
+        const b=bilinear(texture,sx+nx*chroma,sy+ny*chroma,2);
+        const light=edge*(.16+.35*Math.max(0,-nx*.5-ny*.86));
+        const shade=edge*.22*Math.max(0,nx*.43+ny*.9);
+        const intensity=1-shade;
+        dst[o]=clamp(r*intensity+(255-r)*light,0,255);
+        dst[o+1]=clamp(g*intensity+(255-g)*light,0,255);
+        dst[o+2]=clamp(b*intensity+(255-b)*light,0,255);
+        dst[o+3]=255;
+        if(edge>.25)changed++;
       }
-      data[o]=Math.max(0,Math.min(255,Math.round(128+dx*126)));
-      data[o+1]=Math.max(0,Math.min(255,Math.round(128+dy*126)));
-      data[o+2]=128;data[o+3]=255;
     }
     ctx.putImageData(image,0,0);
-    return canvas.toDataURL('image/png');
+    canvas.dataset.rendered='true';
+    canvas.dataset.edgePixels=String(changed);
+    canvas.dataset.revision=String(++opticsDraws);
+    return true;
   }
   function alignAndBake(){
-    let ready=true;
-    for(const kind of ['liquid','gel']){
-      const layer=document.querySelector('.mat-'+kind+' .refraction'),scene=layer.closest('.scene'),panel=layer.closest('.material');
-      const a=scene.getBoundingClientRect(),b=panel.getBoundingClientRect();
-      if(b.width<10||b.height<10||a.width<10){ready=false;continue;}
-      layer.style.setProperty('--scene-w',a.width+'px');
-      layer.style.setProperty('--scene-h',a.height+'px');
-      layer.style.setProperty('--offset-x',(a.left-b.left)+'px');
-      layer.style.setProperty('--offset-y',(a.top-b.top)+'px');
-      const w=Math.round(b.width),h=Math.round(b.height),key=kind+':'+w+'x'+h;
-      if(!mapSizes.has(key)){
-        const url=bakeContourMap(w,h,kind);
-        if(!url){ready=false;continue;}
-        mapSizes.set(key,url);
-        if(mapSizes.size>8)mapSizes.delete(mapSizes.keys().next().value);
+    const wallpaper=body.dataset.wallpaper;
+    const base=new Map();
+    for(const sample of samples){
+      const scene=sample.querySelector('.scene'),bounds=scene.getBoundingClientRect();
+      const w=Math.max(1,Math.round(bounds.width)),h=Math.max(1,Math.round(bounds.height));
+      const key=w+'x'+h;
+      let tex=base.get(key);
+      if(!tex){tex=drawSceneTexture(w,h,wallpaper);base.set(key,tex);}
+      if(!tex)continue;
+      scene.style.backgroundImage='url("'+tex.dataUrl+'")';
+      scene.style.backgroundSize='100% 100%';
+      if(liquidKinds.includes(sample.dataset.kind)){
+        paintLiquid(sample.dataset.kind,tex);
       }
-      const filterImage=document.getElementById(kind==='gel'?'gel-map':'refraction-map');
-      if(filterImage.getAttribute('href')!==mapSizes.get(key))filterImage.setAttribute('href',mapSizes.get(key));
     }
-    if(ready){hasMaps=true;body.dataset.optics='ready';}
+    if(liquidKinds.every(kind=>document.querySelector('.mat-'+kind+' canvas.refraction').dataset.rendered==='true')){
+      body.dataset.optics='ready';
+    }
   }
   function scheduleAlign(){
     if(frame)return;
@@ -470,6 +600,41 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
       panel.style.removeProperty('--pointer-x');panel.style.removeProperty('--pointer-y');
       sample.classList.remove('is-pressing');
     });
+    if(liquidKinds.includes(sample.dataset.kind)){
+      let dragging=null;
+      pick.addEventListener('pointerdown',event=>{
+        if(event.pointerType==='mouse'&&event.button!==0)return;
+        const rect=panel.getBoundingClientRect();
+        if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)return;
+        dragging={id:event.pointerId,lastX:event.clientX,lastY:event.clientY,moved:false};
+        pick.setPointerCapture(event.pointerId);
+      });
+      pick.addEventListener('pointermove',event=>{
+        if(!dragging||dragging.id!==event.pointerId)return;
+        const sceneRect=sample.querySelector('.scene').getBoundingClientRect();
+        const rect=panel.getBoundingClientRect();
+        const changeX=clamp(event.clientX-dragging.lastX,sceneRect.left+6-rect.left,sceneRect.right-6-rect.right);
+        const changeY=clamp(event.clientY-dragging.lastY,sceneRect.top+6-rect.top,sceneRect.bottom-6-rect.bottom);
+        if(Math.abs(changeX)+Math.abs(changeY)>0){
+          const x=(parseFloat(panel.dataset.dragX)||0)+changeX;
+          const y=(parseFloat(panel.dataset.dragY)||0)+changeY;
+          panel.dataset.dragX=String(x);panel.dataset.dragY=String(y);
+          panel.style.translate=x+'px '+y+'px';
+          dragging.moved=true;
+          sample.classList.add('is-dragging');
+          scheduleAlign();
+        }
+        dragging.lastX=event.clientX;dragging.lastY=event.clientY;
+      });
+      const endDrag=()=>{
+        if(!dragging)return;
+        sample.classList.remove('is-dragging');dragging=null;
+        scheduleAlign();
+      };
+      pick.addEventListener('pointerup',endDrag);
+      pick.addEventListener('pointercancel',endDrag);
+      pick.addEventListener('lostpointercapture',endDrag);
+    }
     if(sample.dataset.kind==='gel'){
       pick.addEventListener('pointerdown',()=>{if(!reduceMotion.matches)sample.classList.add('is-pressing');});
       ['pointerup','pointercancel','blur'].forEach(event=>pick.addEventListener(event,()=>sample.classList.remove('is-pressing')));
@@ -541,12 +706,12 @@ body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .m
       }
     }catch{/* 脱机页面改为复制当前 HTML。 */}
     const ok=await copyText(html);
-    status.textContent=ok?'完整可运行 HTML 已复制（包括 SVG 位移图生成逻辑）':'复制失败，请通过项目源代码获取完整 HTML';
+    status.textContent=ok?'完整可运行 HTML 已复制（包括 Canvas 折射与背景绘制逻辑）':'复制失败，请通过项目源代码获取完整 HTML';
   });
   if(typeof ResizeObserver==='function'){
     const observer=new ResizeObserver(scheduleAlign);
+    samples.forEach(sample=>observer.observe(sample.querySelector('.scene')));
     samples.filter(sample=>['liquid','gel'].includes(sample.dataset.kind)).forEach(sample=>observer.observe(sample.querySelector('.material')));
-    samples.filter(sample=>['liquid','gel'].includes(sample.dataset.kind)).forEach(sample=>observer.observe(sample.querySelector('.scene')));
   }
   window.addEventListener('resize',scheduleAlign,{passive:true});
   selectMaterial('soft');
