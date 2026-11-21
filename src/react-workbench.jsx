@@ -70,9 +70,13 @@ function QuickFilters({state,onFilter}){
       count:state.assets.filter(a=>a.originRepo).length,selected:state.importedOnly}
   ];
   const countIds={category:'total-count',curatedOnly:'curated-count',favoritesOnly:'favorite-count',importedOnly:'imported-count'};
+  const dataAttrs={
+    category:{'data-category':'all'},curatedOnly:{'data-curated':'toggle'},
+    favoritesOnly:{'data-favorites':'toggle'},importedOnly:{'data-imported':'toggle'}
+  };
   return <>{options.map(item=><button type="button" key={item.key}
     className={'filter-button'+(state.view!=='settings'&&item.selected?' is-active':'')}
-    {...(item.key==='category'?{'data-category':'all'}:{['data-'+item.key.replace('Only','').replace('curated','curated').replace('imported','imported').replace('favorites','favorites')]:'toggle'})}
+    {...dataAttrs[item.key]}
     aria-pressed={String(state.view!=='settings'&&item.selected)}
     onClick={()=>onFilter(item.key,item.value)}>
     <UIIcon name={item.icon}/><span>{item.label}</span>
