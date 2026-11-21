@@ -30,10 +30,7 @@
     </nav>
     <div class="category-section"><div class="section-row"><span>项目分类</span><button type="button" class="text-reset" id="reset-filters" hidden>重置筛选</button></div><nav id="category-nav" class="category-nav" aria-label="项目分类"></nav></div>
     <div class="sidebar-footer">
-      <button type="button" id="settings-open" data-open-settings class="sidebar-settings" aria-haspopup="dialog" aria-controls="settings-dialog" aria-label="打开设置" title="打开工作台设置"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="./assets/icons/lucide.svg#settings"></use></svg><span>设置</span></button>
-      <div class="sidebar-footer-links">
-        <a class="sidebar-github" href="https://github.com/weepwood/UI-Vault" target="_blank" rel="noopener noreferrer" aria-label="在 GitHub 打开 UI-Vault 仓库" title="GitHub"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#github"></use></svg></a>
-      </div>
+      <a id="settings-open" class="sidebar-settings" href="./settings.html" aria-label="打开设置页面" title="设置"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#settings"></use></svg><span>设置</span></a>
     </div>
   </aside>
   <section class="project-panel" id="project-panel" aria-label="项目目录">
@@ -99,21 +96,6 @@
       </div>
       <pre class="source-view"><code id="source-code">选择“源代码”查看项目实现。</code></pre>
     </section>
-  </div>
-</dialog>
-<dialog id="settings-dialog" class="settings-dialog" aria-labelledby="settings-title">
-  <div class="settings-shell">
-    <header class="settings-header">
-      <div><p class="settings-eyebrow">UI VAULT / PREFERENCES</p><h2 id="settings-title">设置</h2><p class="settings-intro">自定义工作台的外观与浏览体验</p></div>
-      <button type="button" id="settings-close" class="dialog-close" aria-label="关闭设置"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="./assets/icons/lucide.svg#x"></use></svg></button>
-    </header>
-    <div class="settings-scroll">
-    <section class="settings-section"><div class="settings-section-heading"><h3>外观</h3><p>界面配色与强调色，不改变被嵌入的独立站点。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">主题</span><select data-setting="theme" aria-label="主题"><option value="system">跟随系统</option><option value="light">浅色</option><option value="dark">深色</option></select></label><label class="setting-field"><span class="setting-label">强调色</span><select data-setting="accent" aria-label="强调色"><option value="blue">经典蓝</option><option value="teal">青绿</option><option value="violet">紫罗兰</option></select></label></div></section>
-    <section class="settings-section"><div class="settings-section-heading"><h3>界面</h3><p>控制目录占用空间与信息密度。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">列表密度</span><select data-setting="density" aria-label="列表密度"><option value="comfortable">舒适</option><option value="compact">紧凑</option></select></label><label class="setting-field"><span class="setting-label">侧栏宽度</span><select data-setting="sidebar" aria-label="侧栏宽度"><option value="standard">标准</option><option value="narrow">窄侧栏</option></select></label></div></section>
-    <section class="settings-section"><div class="settings-section-heading"><h3>字体</h3><p>仅应用于 UI-Vault 管理界面。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">字体家族</span><select data-setting="font" aria-label="字体家族"><option value="yuan">霞鹜 975 圆体</option><option value="system">系统无衬线</option><option value="serif">系统衬线</option></select></label><label class="setting-field"><span class="setting-label">基础字号</span><select data-setting="fontSize" aria-label="基础字号"><option value="12">小 · 12px</option><option value="13">默认 · 13px</option><option value="14">中 · 14px</option><option value="15">大 · 15px</option></select></label></div></section>
-    <section class="settings-section"><div class="settings-section-heading"><h3>浏览体验</h3><p>控制预览初始状态与动画偏好。</p></div><div class="settings-grid"><label class="setting-field"><span class="setting-label">默认预览尺寸</span><select data-setting="preview" aria-label="默认预览尺寸"><option value="fluid">自适应</option><option value="mobile">手机</option><option value="tablet">平板</option><option value="desktop">桌面</option></select><small>仅对本站 Demo 的设备预览生效</small></label><label class="setting-field"><span class="setting-label">界面动效</span><select data-setting="motion" aria-label="界面动效"><option value="system">跟随系统</option><option value="reduced">减少动态效果</option></select></label></div></section>
-    </div>
-    <footer class="settings-footer"><p>设置自动保存在当前浏览器，不会同步到其他设备。</p><button type="button" id="settings-reset" class="settings-reset">恢复默认设置</button></footer>
   </div>
 </dialog>
 <div class="toast" role="status" aria-live="polite" id="toast"></div>
