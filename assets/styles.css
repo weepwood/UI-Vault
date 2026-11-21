@@ -1001,3 +1001,64 @@ html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--ta
   .project-panel .list-controls .select-field--sort { flex-basis:119px;width:119px; }
   .project-panel .tag-select-label .select-field { min-width:0; }
 }
+
+
+/* 设备预览切换：分段式工具栏，按实际预览栏宽度响应，避免全局屏宽误判。 */
+.main { container-name: preview-toolbar;container-type:inline-size; }
+.topbar-tools { gap:9px; }
+.viewport-controls {
+  display:inline-flex;align-items:center;gap:2px;
+  flex:none;padding:3px;border:1px solid var(--line);
+  border-radius:10px;background:var(--canvas);
+}
+.viewport-controls button {
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:6px;min-width:34px;height:32px;
+  padding:0 10px;border:1px solid transparent;
+  border-radius:7px;background:transparent;color:var(--muted);
+  font-size:11px;font-weight:550;line-height:1;white-space:nowrap;
+  transition:background-color .15s ease,color .15s ease,border-color .15s ease;
+}
+.viewport-controls button .ui-icon { width:16px;height:16px; }
+.viewport-controls button span { display:inline; }
+.viewport-controls button:hover {
+  background:var(--surface);color:var(--ink);
+}
+.viewport-controls button[aria-pressed="true"] {
+  background:var(--accent-soft);border-color:var(--line);
+  color:var(--accent);font-weight:700;
+}
+.viewport-controls button[aria-pressed="true"]:hover { background:var(--accent-soft); }
+.viewport-controls button:focus-visible {
+  outline:2px solid var(--focus);outline-offset:2px;position:relative;z-index:1;
+}
+html[data-theme="dark"] .viewport-controls { border-color:var(--line);background:var(--canvas); }
+html[data-theme="dark"] .viewport-controls button:hover { background:var(--surface); }
+html[data-theme="dark"] .viewport-controls button[aria-pressed="true"] { border-color:var(--line);background:var(--accent-soft); }
+@container preview-toolbar (max-width:900px) {
+  .viewport-controls button { padding:0 8px; }
+  .viewport-controls button span { display:none; }
+  .viewport-controls button[aria-pressed="true"] span { display:inline; }
+}
+@container preview-toolbar (max-width:520px) {
+  .topbar { flex-wrap:wrap;row-gap:5px;padding:7px 12px; }
+  .topbar-project { flex:1 0 100%;min-height:28px; }
+  .topbar-tools { width:100%;justify-content:space-between;gap:8px; }
+  .topbar-separator { display:none; }
+  .viewport-controls { min-width:0; }
+  .viewport-controls button { min-width:32px;padding:0 7px;height:31px; }
+  .topbar-actions { gap:4px; }
+  .topbar-actions :is(.info-action,.square-action,.open-action) {
+    width:31px;height:31px;min-width:31px;padding:0;
+  }
+  .topbar-actions :is(.info-action,.open-action) span { display:none; }
+}
+@container preview-toolbar (max-width:375px) {
+  .viewport-controls { gap:0;padding:2px; }
+  .viewport-controls button { min-width:30px;padding:0 5px;height:30px; }
+  .viewport-controls button[aria-pressed="true"] span { display:none; }
+  .topbar-actions { gap:2px; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .viewport-controls button { transition:none; }
+}
