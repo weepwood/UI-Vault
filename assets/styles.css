@@ -208,3 +208,13 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
   .preview-options { max-width: 100%; }
   .toolbar-actions { flex-wrap: wrap; }
 }
+
+/* 跨仓库资源卡片的溯源资料：不复制大型项目，只链接关键源码。 */
+.detail-resource-notes { margin: 24px 0 0; padding: 19px 20px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--sidebar); }
+.detail-resource-notes h3 { font-size: 13px; line-height: 1.5; margin: 0 0 10px; font-weight: 680; }
+.detail-resource-notes ul { margin: 0; padding-left: 21px; font-size: 12px; color: var(--text); line-height: 1.85; }
+.detail-resource-notes li+li { margin-top: 5px; }
+.detail-origin-links { display: flex; gap: 9px 17px; flex-wrap: wrap; margin: 15px 0 0; padding-top: 12px; border-top: 1px solid var(--line); }
+.detail-origin-links a { font-size: 12px; color: var(--accent); font-weight: 600; padding: 5px 0; }
+.detail-origin-links a:hover { text-decoration: underline; text-underline-offset: 3px; }
+@media (max-width:630px) { .detail-resource-notes { padding: 16px; } }

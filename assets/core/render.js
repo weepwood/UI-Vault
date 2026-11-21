@@ -34,6 +34,16 @@ export function detailMarkup(a,favorites,labels) {
   const safe=escapeHtml, local=a.source==='local',liked=favorites.has(a.id);
   const repoURL=local?'https://github.com/weepwood/UI-Vault/blob/main/'+a.code.split('/').map(encodeURIComponent).join('/'):a.url;
   const canCopy=local&&a.copyable!==false;
+  const sourceLinks=[
+    ...(a.originRepo?[{label:'原始项目',href:a.originRepo}]:[]),
+    ...(a.sourceUrl?[{label:'关键源码',href:a.sourceUrl}]:[]),
+    ...(a.siteUrl?[{label:'在线演示',href:a.siteUrl}]:[])
+  ];
+  const notesBlock=(a.reuseNotes?.length||sourceLinks.length)?
+    '<section class="detail-resource-notes" aria-label="跨仓库资源信息">'+
+      (a.reuseNotes?.length?'<h3>可借鉴的设计点</h3><ul>'+a.reuseNotes.map(note=>'<li>'+safe(note)+'</li>').join('')+'</ul>':'')+
+      (sourceLinks.length?'<div class="detail-origin-links">'+sourceLinks.map(link=>'<a href="'+safe(link.href)+'" target="_blank" rel="noopener noreferrer">'+safe(link.label)+' ↗</a>').join('')+'</div>':'')+
+    '</section>':'';
   const viewportControl = local ? '<div class="preview-toolbar"><span>预览宽度</span><div class="preview-options" role="group" aria-label="预览尺寸"><button type="button" data-preview-size="fluid" aria-pressed="true">自适应</button><button type="button" data-preview-size="mobile" aria-pressed="false">手机</button><button type="button" data-preview-size="tablet" aria-pressed="false">平板</button><button type="button" data-preview-size="desktop" aria-pressed="false">桌面</button></div></div>' : '';
   return '<span class="detail-eyebrow">'+safe(labels[a.type]||a.type)+' · '+(local?'本站 Demo':'外部参考')+'</span>'+
     '<h2 class="detail-title">'+safe(a.title)+'</h2><p class="detail-subtitle">'+safe(a.subtitle||'')+'</p>'+
@@ -53,5 +63,5 @@ export function detailMarkup(a,favorites,labels) {
     (local?'<div class="details-label">源代码 <a href="'+safe(repoURL)+'" target="_blank" rel="noopener noreferrer" style="float:right;color:var(--accent)">在 GitHub 中查看 ↗</a></div>'+
       (canCopy?'<pre class="source-code" id="source-code">正在读取源码…</pre>':
         '<p class="detail-note">此 Demo 依赖多文件或构建工具，请通过 GitHub 查看完整实现。</p>'):
-      '<p class="detail-note">本条目是原始仓库的设计索引。具体授权、运行方式与更新记录请以源项目为准。</p>');
+      '<p class="detail-note">本条目是原始仓库的设计索引。具体授权、运行方式与更新记录请以源项目为准。</p>')+notesBlock;
 }

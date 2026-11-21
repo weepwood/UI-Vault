@@ -41,6 +41,14 @@ export function checkEntry(entry, categories, fileName='') {
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
+  for(const key of ['originRepo','sourceUrl','siteUrl']){
+    if(entry[key]===undefined)continue;
+    try{const parsed=new URL(entry[key]);if(parsed.protocol!=='https:'||!parsed.hostname)throw Error();}
+    catch{errors.push(where+': '+key+' 必须为有效 HTTPS 地址');}
+  }
+  if(entry.reuseNotes!==undefined && (!Array.isArray(entry.reuseNotes) || entry.reuseNotes.length>8 ||
+    !entry.reuseNotes.every(x=>isText(x)&&x.length<=400))) errors.push(where+': reuseNotes 必须是最多 8 条非空文字');
+
   if(entry.source==='local') {
     if(!safeRelativePath(entry.preview,'demos/')) errors.push(where+': preview 必须指向 demos/ 下的文件');
     if(!safeRelativePath(entry.code,'demos/')) errors.push(where+': code 必须指向 demos/ 下的文件');

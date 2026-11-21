@@ -1,5 +1,5 @@
 export function assetSearchText(asset) {
-  return [asset.title,asset.subtitle,asset.description,...(asset.tags||[]),...(asset.technologies||[])].join(' ').toLocaleLowerCase();
+  return [asset.title,asset.subtitle,asset.description,asset.originRepo,asset.sourceUrl,...(asset.reuseNotes||[]),...(asset.tags||[]),...(asset.technologies||[])].filter(Boolean).join(' ').toLocaleLowerCase();
 }
 export function filterAssets(assets,{category='all',tag='',query='',favoritesOnly=false,sort='featured'}={},favorites=new Set()) {
   const term=query.trim().toLocaleLowerCase();
