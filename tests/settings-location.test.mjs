@@ -43,8 +43,10 @@ test('导航在项目和设置视图间原位切换，支持浏览器历史记�
   const css=read('assets/styles.css');
   assert.match(app,/function setWorkbenchView\(mode/);
   assert.match(app,/historyMode:'push'/);
-  assert.match(app,/window[.]addEventListener\('popstate'/);
-  assert.match(app,/searchParams[.]set\('view','settings'\)/);
+  const router=read('assets/core/workbench-router.js');
+  assert.match(app,/router[.]subscribe/);
+  assert.ok(router.includes("host.addEventListener('popstate'"));
+  assert.ok(router.includes("url.searchParams.set('view','settings')"));
   assert.match(css,/[.]app-shell[.]is-settings[\s\S]*?grid-template-columns:var\(--navigation-width\) minmax\(0,1fr\)/);
   assert.match(css,/[.]app-shell[.]is-settings [.]library-rail [.]project-panel \{ display:none; \}/);
 });

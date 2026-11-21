@@ -6,13 +6,13 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
 test('搜索框不显示快捷键标识，但仍可通过原快捷键聚焦',()=>{
   const html=read('index.html');
-  const app=read('assets/app.js');
+  const mobile=read('assets/ui/mobile-navigation.js');
   const search=html.slice(html.indexOf('<div class="library-search">'),html.indexOf('</div>',html.indexOf('<div class="library-search">')));
   assert.match(search,/id="search"/);
   assert.match(search,/aria-keyshortcuts="Control[+]K Meta[+]K"/);
   assert.doesNotMatch(search,/<kbd|⌘ K/);
-  assert.match(app,/event[.]metaKey\|\|event[.]ctrlKey/);
-  assert.match(app,/search[.]focus\(\)/);
+  assert.match(mobile,/event[.]metaKey\|\|event[.]ctrlKey/);
+  assert.match(mobile,/search[.]focus\(\)/);
 });
 
 test('项目目录、结果数量、排序和标签筛选结构完整',()=>{

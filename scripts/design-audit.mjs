@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ROOT } from './lib/catalog.mjs';
 import { auditContrast } from './lib/contrast.mjs';
-const [css,html,app]=await Promise.all([
-  'assets/styles.css','index.html','assets/app.js'
+const [css,html,app,mobile]=await Promise.all([
+  'assets/styles.css','index.html','assets/app.js','assets/ui/mobile-navigation.js'
 ].map(p=>readFile(join(ROOT,p),'utf8')));
 const errors=[];
 for(const row of auditContrast(css)){
@@ -18,7 +18,7 @@ const obligations=[
   [css.includes('focus-visible'),'缺少可见键盘焦点'],
   [html.includes('id="library-rail"')&&html.includes('id="sidebar"')&&html.includes('id="project-panel"')&&html.includes('id="preview-stage"'),'缺少导航、项目目录与网页预览三栏结构'],
   [css.includes('var(--navigation-width) + var(--directory-width)')&&css.includes('.library-rail'),'缺少三栏布局样式'],
-  [app.includes('libraryRail.inert')&&app.includes('libraryRail.classList'),'移动端双目录栏的操作与无障碍保护缺失'],
+  [mobile.includes('rail.inert')&&mobile.includes("rail.classList.toggle('is-open'"),'移动端双目录栏的操作与无障碍保护缺失'],
   [!html.includes('id="detail-drawer"'),'不应保留弹出式网页详情'],
   [html.includes('<dialog id="project-dialog"')&&html.includes('id="preview-info"'),'项目说明与源码未使用独立弹窗'],
   [!html.includes('id="project-notes"')&&!html.includes('id="preview-status"')&&!html.includes('id="workbench-count"'),'不应继续显示底部说明与统计栏'],
