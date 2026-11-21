@@ -198,14 +198,7 @@ function toggleFavorite(id){
   if(favorites.has(id)){favorites.delete(id);notify('已从收藏中移除');}
   else {favorites.add(id);notify('已加入收藏');}
   save();
-  // 只改变必要的 DOM，不替换正在运行中的 iframe。
-  for(const button of gallery.querySelectorAll('[data-favorite]')){
-    if(button.dataset.favorite!==id)continue;
-    const liked=favorites.has(id);
-    button.setAttribute('aria-pressed',String(liked));
-    button.setAttribute('aria-label',(liked?'取消收藏 ':'收藏 ')+asset.title);
-    button.innerHTML=iconMarkup('heart');
-  }
+  // 列表不显示爱心，保留顶部工具栏收藏按钮与原有收藏筛选。
   if(state.active?.id===id){
     const control=$('#preview-favorite');
     control.setAttribute('aria-pressed',String(favorites.has(id)));
@@ -302,8 +295,6 @@ function initEvents(){
   sortDropdown=enhanceSelect(sort,{icon:'arrow-up-down',icons:{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}});
   tagDropdown=enhanceSelect(tagFilter,{icon:'bookmark'});
   gallery.addEventListener('click',event=>{
-    const fav=event.target.closest('[data-favorite]');
-    if(fav){toggleFavorite(fav.dataset.favorite);return;}
     const button=event.target.closest('[data-open]');
     if(!button)return;
     const asset=state.assets.find(x=>x.id===button.dataset.open);
