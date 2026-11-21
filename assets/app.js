@@ -16,7 +16,7 @@ import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilt
 
 const categoryIconById=Object.freeze({
   style:'palette',component:'component',effect:'zap',
-  layout:'panels-top-left',demo:'play',reference:'bookmark'
+  layout:'panels-top-left',demo:'play',resource:'book-open',reference:'bookmark'
 });
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');

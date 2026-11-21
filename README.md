@@ -27,6 +27,13 @@
 - [独立 HTML](demos/experiments/ui-foundation-kit/index.html)：自包含 Demo，可离线打开。
 - 从仓库根目录运行 `node --test tests/ui-foundation-kit.test.mjs` 检查 Token 构建；项目根目录 `npm run check` 也包含此项测试。
 
+## 设计资源栏目
+
+- [设计网站、Skills 与规范导航](https://weepwood.github.io/UI-Vault/?asset=design-resource-library)：搜索和筛选可核实来源的设计资料。
+- [AI UI Skills 使用手册](https://weepwood.github.io/UI-Vault/?asset=design-skill-handbook)：何时使用各类设计 Skill、安装方式及实际任务模板。
+- [资料维护说明](docs/DESIGN-RESOURCES.md)：新增与维护规则；资源数据在 `assets/design-resources/catalog.js`，不复制第三方站点素材。
+- [Skills Markdown 手册](docs/UI-SKILLS-HANDBOOK.md)：可直接在 GitHub 中编辑。
+
 ## 快速开始
 
 需要 Node 22+；不依赖第三方 npm 包。
