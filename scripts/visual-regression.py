@@ -78,6 +78,8 @@ def compare(name, actual, expected):
 
 
 def capture(page, mode):
+    if mode in ("mobile-rail", "mobile-dialog"):
+        page.locator("#menu-toggle").click()
     first = page.locator(".project-item").first
     first.wait_for(state="visible", timeout=30000)
     page.evaluate("document.fonts.ready")
@@ -86,7 +88,6 @@ def capture(page, mode):
     assert first.count() > 0, "未加载项目行"
     if mode in ("row", "mobile-rail"):
         if mode == "mobile-rail":
-            page.locator("#menu-toggle").click()
             assert page.locator("#library-rail").evaluate("(el)=>el.classList.contains('is-open')"), "手机导航未展开"
             return page.locator("#library-rail").screenshot(animations="disabled")
         icon = first.locator(".project-row-emoji")
@@ -100,7 +101,6 @@ def capture(page, mode):
         return target.screenshot(animations="disabled")
     if mode in ("dialog", "mobile-dialog"):
         if mode == "mobile-dialog":
-            page.locator("#menu-toggle").click()
             page.locator(".project-row").first.click()
         page.locator("#preview-info").click()
         dialog = page.locator("#project-dialog")
