@@ -433,7 +433,7 @@ def verify_glass_materials(browser, origin):
             page.locator("#distortion").evaluate("""el => {
                 el.value='0';el.dispatchEvent(new Event('input',{bubbles:true}));
             }""")
-            page.wait_for_function("""before => Number(document.querySelector('.mat-liquid canvas.refraction').dataset.revision) > before""", previous)
+            page.wait_for_function("""before => Number(document.querySelector('.mat-liquid canvas.refraction').dataset.revision) > before""", arg=previous)
             # 对比默认折射与关闭折射后像素；仅确认绘制非空不足以证明视觉折射。
             delta = lens.evaluate("""el => {
                 const a=window.__glassTestPixels,b=el.getContext('2d').getImageData(0,0,el.width,el.height).data;
