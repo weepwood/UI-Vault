@@ -150,6 +150,9 @@ function setViewportMenuOpen(open,{focusOption=false}={}){
   viewportOptions.hidden=!viewportExpanded;
   viewport.classList.toggle('is-expanded',viewportExpanded);
   viewportTrigger.setAttribute('aria-expanded',String(viewportExpanded));
+  if(!viewportExpanded&&viewportOptions.contains(document.activeElement)){
+    viewportTrigger.focus({preventScroll:true});
+  }
   if(focusOption&&viewportExpanded){
     const current=viewportOptions.querySelector('[aria-pressed="true"]')||
       viewportOptions.querySelector('[data-preview-size]');
