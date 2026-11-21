@@ -32,3 +32,26 @@ test('既有清单同步且 Demo 存在',async()=>{
   assert.ok(c.items.filter(x=>x.source==='local').length>=4);
   assert.equal(await readFile(join(ROOT,'content/assets.json'),'utf8'),c.manifest);
 });
+
+test('手工精调元数据必须为本地 Demo、指定有效阶段与安全指南',()=>{
+  const entry={...base,curated:true,curationStage:'draft',tuningGuide:'docs/CURATED-LABS.md',tuningPoints:['交互状态','对比度']};
+  assert.deepEqual(checkEntry(entry,cats,'sample-button.json'),[]);
+  assert.ok(checkEntry({...entry,source:'external',url:'https://example.com'},cats).some(x=>x.includes('手工精选')));
+  assert.ok(checkEntry({...entry,curationStage:'done'},cats).some(x=>x.includes('手工精调状态')));
+  assert.ok(checkEntry({...entry,tuningGuide:'docs/../secret.md'},cats).some(x=>x.includes('tuningGuide')));
+  assert.ok(checkEntry({...entry,tuningPoints:[]},cats).some(x=>x.includes('tuningPoints')));
+});
+test('三份手工精选 Demo 均在独立目录且带人工精调说明',async()=>{
+  const result=await inspectCatalog();
+  assert.deepEqual(result.errors,[]);
+  const curated=result.items.filter(x=>x.curated);
+  const ids=['desktop-shell-lab','gr8r-task-workbench','message-motion-lab'];
+  assert.deepEqual(curated.map(x=>x.id).sort(),ids.sort());
+  for(const a of curated){
+    assert.equal(a.source,'local');assert.equal(a.copyable,true);
+    assert.equal(a.curationStage,'draft');
+    assert.equal(a.tuningGuide,'docs/CURATED-LABS.md');
+    assert.match(a.preview,/^demos\/curated\/[a-z-]+\/index\.html$/);
+    assert.ok(a.tuningPoints.length>1);
+  }
+});

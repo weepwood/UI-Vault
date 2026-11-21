@@ -35,3 +35,12 @@
 - [ ] 如使用外部开源设计方法，记录参考项目与对应的具体修改
 
 可参考 [docs/OPEN-SOURCE-DESIGN-WORKFLOW.md](../docs/OPEN-SOURCE-DESIGN-WORKFLOW.md)。
+
+## 手工精选 Demo（如适用）
+
+- [ ] 源 GitHub 文件已核对，出处与许可证记录清楚
+- [ ] 确认是独立可操作的实现，而不是将外部项目当作静态图片
+- [ ] 本轮只修改一个实验的目标部分，其他实验不受影响
+- [ ] 更新 CSS 中的 TUNING 说明和 `tuningPoints`
+- [ ] 已验证触控、键盘、窄屏、减少动画与状态中断
+- [ ] 只有经过人工评审才修改 `curationStage` 状态

@@ -54,3 +54,13 @@ npm run check
 新的 UI 改动需运行 `npm run check`（包含 `design:audit`）。若没有做实际截图，就不能声称已经视觉验收。外部 Skills 是可选开发工具，不应作为页面运行时依赖，也不应无授权复制其源码。
 
 当新增 `originRepo` 资产时，必须保证跨仓筛选可检索，且一条资产具有真实可访问的主要源码链接和具体复用说明。
+
+## 手工精选 UI 实验：优先级高于批量导入
+
+用户明确要求未来一个个精调，因此涉及跨仓 UI **落实**时：
+- 不要使用自动仓库抓取、批量生成、自动更新镜像的方案。
+- 人工审阅源仓库具体文件，然后在 `demos/curated/<id>/` 独立实现一个实际可交互的样例；每次只处理范围明确的 UI。
+- 每个实验在 CSS 顶部标记 `TUNING`，写清主题 Token/布局阈值和可用的交互，并保留来源文档。
+- 仅经过人工审查的本地 Demo 可以设置 `curated:true`，并填写 `curationStage`、`tuningPoints`、`tuningGuide`。
+- `draft`、`refining`、`stable` 必须由用户实际评审后变更，不能被自动构建任务升级。
+- 先修改单个实验，避免全站或其他实验同步变化。详细见 [docs/CURATED-LABS.md](docs/CURATED-LABS.md)。

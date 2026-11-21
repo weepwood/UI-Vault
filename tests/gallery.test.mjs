@@ -30,3 +30,12 @@ test('跨仓资料可通过 originRepo 独立过滤并搜索复用要点',()=>{
  assert.deepEqual(filterAssets(a,{importedOnly:true}).map(x=>x.id),['external']);
  assert.deepEqual(filterAssets(a,{query:'可复用网格'}).map(x=>x.id),['external']);
 });
+
+test('手工精选筛选仅返回人工创建的 curated 实验',()=>{
+  const records=[
+    {id:'curated',title:'手工',description:'独立交互',type:'layout',tags:['精调'],technologies:['HTML'],created:'2026-11-21',featured:false,curated:true},
+    {id:'external',title:'外部',description:'链接',type:'layout',tags:['参考'],technologies:['Vue'],created:'2026-11-21',featured:false,curated:false}
+  ];
+  assert.deepEqual(filterAssets(records,{curatedOnly:true}).map(x=>x.id),['curated']);
+  assert.deepEqual(filterAssets(records,{query:'手工',curatedOnly:true}).map(x=>x.id),['curated']);
+});

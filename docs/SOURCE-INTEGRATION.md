@@ -36,3 +36,15 @@
 - `sourceUrl`：已经核实存在的主要代码文件或设计 Token 文档。
 - `siteUrl`：来源项目说明的公开演示网址，不能据此保证实时可用。
 - `reuseNotes`：具体可借鉴的设计与交互原则，不能混同于授权即可复制。
+
+## 2026-11-21 · 手工精选交互实验
+
+依据用户后续要求，新增的不是外部仓库批量索引，而是三个独立可运行的小范围重实现：
+
+| 独立实验 | 研究来源 | 本仓可调内容 |
+| --- | --- | --- |
+| [任务工作台](../demos/curated/gr8r-task-workbench/index.html) | [gr8r-studio-ui 的示例逻辑](https://github.com/weepwood/gr8r-studio-ui/blob/main/demo/demo.js) | 主题、强调色、密度、圆角，任务状态和看板 |
+| [桌面 Shell](../demos/curated/desktop-shell-lab/index.html) | [Tauri DesktopShell](https://github.com/weepwood/Tauri-Desktop-Kit/blob/main/packages/shell/src/DesktopShell.vue) + [S2U 命令面板](https://github.com/weepwood/s2u/blob/master/src/components/CommandPalette.vue) | 分栏宽度、面板显隐、主题、命令菜单与键盘操作 |
+| [消息动效](../demos/curated/message-motion-lab/index.html) | [Motion-Lab 的动效研究](https://github.com/weepwood/Motion-Lab/blob/main/src/motion.ts) | 消息动画、时长、缓动、手势回复和反应 |
+
+以上页面由本轮在 UI-Vault 内独立实现；不是对原仓库 UI 的像素级复制，也未迁入其第三方依赖、真实数据或服务逻辑。每个实验以后单独精调，不自动覆盖。详见 [手工精调说明](CURATED-LABS.md)。
