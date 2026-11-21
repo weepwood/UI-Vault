@@ -123,7 +123,7 @@ def capture(page, mode):
         return page.screenshot(
             animations="disabled",
             clip={"x": x, "y": y, "width": min(230, vp["width"] - x), "height": min(216, vp["height"] - y)},
-            mask=page.locator("iframe.live-frame"),
+            mask=[page.locator("iframe.live-frame")],
         )
     raise ValueError(f"未知截图场景：{mode}")
 
