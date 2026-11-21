@@ -24,16 +24,17 @@ test('设置视图内部为两栏：分类导航与当前分类详情',()=>{
   assert.match(view,/class="settings-repo-link"/);
 });
 
-test('分类按钮切换不会卸载工作台的 iframe，也不打开新页面',()=>{
-  const settings=read('assets/core/settings.js');
-  const app=read('assets/app.js');
-  assert.match(settings,/function showSettingsSection\(id/);
-  assert.match(settings,/sectionViews\[i\][.]hidden=!active/);
-  assert.match(settings,/button[.]setAttribute\('aria-current','page'\)/);
-  assert.match(settings,/showSettingsSection\(button[.]dataset[.]settingsSection\)/);
-  assert.doesNotMatch(settings,/window[.]location[.]assign\(/);
-  assert.match(app,/settingsView[.]hidden=!next/);
-  assert.match(app,/function setWorkbenchView\(mode/);
+test('设置分类由 React 状态切换，预览保持挂载',()=>{
+ const settings=read('src/components/SettingsPanel.jsx');
+ const react=read('src/react-workbench.jsx');
+ const preview=read('src/components/PreviewFrame.jsx');
+ assert.match(settings,/const \[section,setSection\]=useState\('appearance'\)/);
+ assert.match(settings,/setSection\(id\)/);
+ assert.match(settings,/hidden={!active}/);
+ assert.match(settings,/aria-current={section===page.id/);
+ assert.match(react,/nodes[.]settings[.]hidden=!settingsActive/);
+ assert.match(preview,/memo\(PreviewContent/);
+ assert.doesNotMatch(settings,/window[.]location[.]assign/);
 });
 
 test('设置面板响应式、下拉交互与实时预览样式齐全',()=>{
