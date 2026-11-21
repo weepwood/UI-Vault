@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Vault Asset Metadata",
+  "description": "独立资产 JSON 规范；以 scripts/lib/catalog.mjs 运行时验证为最终依据",
+  "type": "object",
+  "required": [
+    "id",
+    "title",
+    "description",
+    "type",
+    "source",
+    "tags",
+    "technologies",
+    "license",
+    "featured",
+    "created"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "必须在 content/categories.json 中登记"
+    },
+    "source": {
+      "enum": [
+        "local",
+        "external"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
+    "technologies": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "preview": {
+      "$ref": "#/$defs/demoPath"
+    },
+    "code": {
+      "$ref": "#/$defs/demoPath"
+    },
+    "url": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "cover": {
+      "enum": [
+        "warm",
+        "glass",
+        "aurora",
+        "editor",
+        "style",
+        "mosaic",
+        "motion",
+        "native"
+      ]
+    },
+    "coverImage": {
+      "type": "string",
+      "pattern": "^media/[a-zA-Z0-9_./-]+$"
+    },
+    "copyable": {
+      "type": "boolean"
+    },
+    "publish": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/demoPath"
+      },
+      "uniqueItems": true
+    },
+    "featured": {
+      "type": "boolean"
+    },
+    "created": {
+      "type": "string",
+      "format": "date"
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "const": "local"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "required": [
+          "preview",
+          "code"
+        ],
+        "not": {
+          "required": [
+            "url"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source": {
+            "const": "external"
+          }
+        },
+        "required": [
+          "source"
+        ]
+      },
+      "then": {
+        "required": [
+          "url"
+        ],
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "preview"
+              ]
+            },
+            {
+              "required": [
+                "code"
+              ]
+            },
+            {
+              "properties": {
+                "copyable": {
+                  "const": true
+                }
+              },
+              "required": [
+                "copyable"
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "demoPath": {
+      "type": "string",
+      "pattern": "^demos/[a-zA-Z0-9_./-]+$"
+    }
+  },
+  "additionalProperties": true
+}
