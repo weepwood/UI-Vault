@@ -118,7 +118,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .reference-cover .reference-overline { display: flex; align-items: center; justify-content: space-between; width: 100%; font-size: 11px; color: #5a666c; }
 .reference-cover .reference-name { color: #2c3c44; font-size: clamp(17px,2vw,26px); font-weight: 700; letter-spacing: -.045em; line-height: 1.25; max-width: 90%; overflow-wrap: anywhere; }
 .reference-cover .reference-origin { font: 11px/1.5 ui-monospace,"SFMono-Regular",Consolas,monospace; color: #63757d; overflow-wrap: anywhere; }
-.reference-cover::before { content: ""; position: absolute; right: 25px; top: 52px; width: 52px; height: 52px; border: 1px solid #cad5d9; border-radius: 7px; transform: rotate(6deg); opacity: .7; pointer-events: none; }
 .card-visual[data-cover="mosaic"] .reference-cover { background: #e2e7e7; }
 .card-visual[data-cover="native"] .reference-cover { background: #e1e7e8; }
 .card-visual[data-cover="motion"] .reference-cover { background: #e5ebee; }
@@ -163,7 +162,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 @media(max-width:880px) {
   .app-shell { grid-template-columns: 1fr; }
   .sidebar { position: fixed; top: 0; bottom: 0; left: 0; width: 246px; transform: translateX(-102%); transition: transform .2s; box-shadow: 12px 0 30px #17232813; }
-  .sidebar.is-open { transform: translateX(0); }
+  .sidebar.is-open { transform: translateX(0); visibility: visible; }
+  .sidebar:not(.is-open) { visibility: hidden; }
   .mobile-shade { position: fixed; inset: 0; z-index: 19; background: #101a1f62; }
   .menu-toggle { display: inline-block; }
   .intro { padding-top: 34px; }
