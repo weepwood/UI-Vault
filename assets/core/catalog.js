@@ -1,11 +1,12 @@
 export function assetSearchText(asset) {
   return [asset.title,asset.subtitle,asset.description,asset.originRepo,asset.sourceUrl,...(asset.reuseNotes||[]),...(asset.tags||[]),...(asset.technologies||[])].filter(Boolean).join(' ').toLocaleLowerCase();
 }
-export function filterAssets(assets,{category='all',tag='',query='',favoritesOnly=false,importedOnly=false,sort='featured'}={},favorites=new Set()) {
+export function filterAssets(assets,{category='all',tag='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured'}={},favorites=new Set()) {
   const term=query.trim().toLocaleLowerCase();
   return assets.filter(a=>(category==='all'||a.type===category) &&
     (!favoritesOnly||favorites.has(a.id)) &&
     (!importedOnly||Boolean(a.originRepo)) &&
+    (!curatedOnly||a.curated===true) &&
     (!tag||a.tags.includes(tag)) &&
     (!term||assetSearchText(a).includes(term)))
     .sort((a,b)=> sort==='az' ? a.title.localeCompare(b.title,'zh-CN') :

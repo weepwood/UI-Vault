@@ -46,6 +46,14 @@ export function checkEntry(entry, categories, fileName='') {
     try{const parsed=new URL(entry[key]);if(parsed.protocol!=='https:'||!parsed.hostname)throw Error();}
     catch{errors.push(where+': '+key+' 必须为有效 HTTPS 地址');}
   }
+  if(entry.curated!==undefined && typeof entry.curated!=='boolean')errors.push(where+': curated 必须是布尔值');
+  if(entry.curated){
+    if(entry.source!=='local')errors.push(where+': 手工精选必须是本仓库可运行的 local Demo');
+    if(!['draft','refining','stable'].includes(entry.curationStage))errors.push(where+': 未知的手工精调状态');
+    if(!safeRelativePath(entry.tuningGuide,'docs/'))errors.push(where+': tuningGuide 必须是 docs/ 下的安全相对路径');
+    if(!Array.isArray(entry.tuningPoints)||entry.tuningPoints.length<1||entry.tuningPoints.length>8||
+      !entry.tuningPoints.every(x=>isText(x)&&x.length<=200))errors.push(where+': tuningPoints 必须是 1–8 条具体精调目标');
+  }
   if(entry.reuseNotes!==undefined && (!Array.isArray(entry.reuseNotes) || entry.reuseNotes.length>8 ||
     !entry.reuseNotes.every(x=>isText(x)&&x.length<=400))) errors.push(where+': reuseNotes 必须是最多 8 条非空文字');
 
@@ -100,6 +108,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
       }
     }
     if(entry.coverImage && safeRelativePath(entry.coverImage,'media/') && !(await safeExistingFile(entry.coverImage))) errors.push(entry.id+': 找不到封面图片 '+entry.coverImage);
+    if(entry.curated && safeRelativePath(entry.tuningGuide,'docs/') && !(await safeExistingFile(entry.tuningGuide)))errors.push(entry.id+': 找不到精调指南 '+entry.tuningGuide);
   }
   const manifest=formatManifest(items);
   if(checkGenerated) {

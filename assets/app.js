@@ -7,7 +7,7 @@ const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),tags=$('#tag-row'),sort=$('#sort');
 const drawer=$('#detail-drawer'),overlay=$('#drawer-overlay'),detail=$('#drawer-content');
 const sidebar=$('#sidebar'),shade=$('#mobile-shade'),toast=$('#toast');
-const state={assets:[],categories:[],labels:{all:'探索设计资产'},category:'all',tag:'',query:'',sort:'featured',favoritesOnly:false,importedOnly:false,active:null,previewSize:'fluid'};
+const state={assets:[],categories:[],labels:{all:'探索设计资产'},category:'all',tag:'',query:'',sort:'featured',favoritesOnly:false,importedOnly:false,curatedOnly:false,active:null,previewSize:'fluid'};
 const favorites=loadFavorites();
 let toastTimeout,overlayTimeout,lastFocus,previewObserver,detailResizeObserver;
 
@@ -30,7 +30,7 @@ function nav() {
 }
 function navState(){
   document.querySelectorAll('[data-category]').forEach(el=>{
-    const active=!state.favoritesOnly&&el.dataset.category===state.category;
+    const active=!state.favoritesOnly&&!state.importedOnly&&!state.curatedOnly&&el.dataset.category===state.category;
     el.classList.toggle('is-active',active);
     el.setAttribute('aria-pressed',String(active));
   });
@@ -40,6 +40,9 @@ function navState(){
   const imported=$('[data-imported]');
   imported.classList.toggle('is-active',state.importedOnly);
   imported.setAttribute('aria-pressed',String(state.importedOnly));
+  const curated=$('[data-curated]');
+  curated.classList.toggle('is-active',state.curatedOnly);
+  curated.setAttribute('aria-pressed',String(state.curatedOnly));
   $('#favorite-count').textContent=favorites.size;
 }
 function tagsState(){
@@ -68,7 +71,7 @@ function render(){
   gallery.innerHTML=items.map(a=>cardMarkup(a,favorites,state.labels)).join('');
   const empty=items.length===0;
   $('#empty').hidden=!empty;
-  const untouched=!state.favoritesOnly && !state.importedOnly && state.category==='all' && !state.tag && !state.query.trim();
+  const untouched=!state.favoritesOnly && !state.importedOnly && !state.curatedOnly && state.category==='all' && !state.tag && !state.query.trim();
   const filtered=!untouched || state.sort!=='featured';
   $('#reset-filters').hidden=!filtered;
   $('#results-status').textContent='当前显示 '+items.length+' 条资源';
@@ -79,11 +82,11 @@ function render(){
   }
   $('#results-count').textContent=String(items.length).padStart(2,'0');
   const heading=$('#catalog-title').firstChild;
-  heading.textContent=state.favoritesOnly?'我的收藏 ':state.importedOnly?'跨仓资源 ':state.labels[state.category]+' ';
+  heading.textContent=state.favoritesOnly?'我的收藏 ':state.curatedOnly?'手工精调 ':state.importedOnly?'跨仓资源 ':state.labels[state.category]+' ';
   navState();tagsState();observePreviews();
 }
 function reset(){
-  state.category='all';state.tag='';state.query='';state.favoritesOnly=false;state.importedOnly=false;state.sort='featured';
+  state.category='all';state.tag='';state.query='';state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;state.sort='featured';
   search.value='';sort.value='featured';render();
 }
 function toggleFavorite(id){
@@ -215,10 +218,11 @@ function initEvents(){
     if(!c)return;
     if(!Object.hasOwn(state.labels,c.dataset.category))return;
     state.category=c.dataset.category;
-    state.favoritesOnly=false;state.importedOnly=false;state.tag='';render();closeMobile();
+    state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;state.tag='';render();closeMobile();
   });
-  $('[data-favorites]').addEventListener('click',()=>{state.favoritesOnly=!state.favoritesOnly;state.importedOnly=false;render();closeMobile();});
-  $('[data-imported]').addEventListener('click',()=>{state.importedOnly=!state.importedOnly;state.favoritesOnly=false;state.category='all';state.tag='';render();closeMobile();});
+  $('[data-favorites]').addEventListener('click',()=>{state.favoritesOnly=!state.favoritesOnly;state.importedOnly=false;state.curatedOnly=false;render();closeMobile();});
+  $('[data-imported]').addEventListener('click',()=>{state.importedOnly=!state.importedOnly;state.favoritesOnly=false;state.curatedOnly=false;state.category='all';state.tag='';render();closeMobile();});
+  $('[data-curated]').addEventListener('click',()=>{state.curatedOnly=!state.curatedOnly;state.favoritesOnly=false;state.importedOnly=false;state.category='all';state.tag='';render();closeMobile();});
   tags.addEventListener('click',e=>{const chip=e.target.closest('[data-tag]');if(chip){state.tag=chip.dataset.tag;render();}});
   search.addEventListener('input',e=>{state.query=e.target.value;render();});
   sort.addEventListener('change',e=>{state.sort=e.target.value;render();});
@@ -284,6 +288,7 @@ async function init(){
     $('#metric-external').textContent=String(items.filter(a=>a.source==='external').length).padStart(2,'0');
     $('#total-count').textContent=items.length;
     $('#imported-count').textContent=items.filter(a=>a.originRepo).length;
+    $('#curated-count').textContent=items.filter(a=>a.curated===true).length;
     render();
     const deepLink=new URL(window.location.href).searchParams.get('asset');
     if(deepLink&&state.assets.some(a=>a.id===deepLink))openDetail(deepLink);

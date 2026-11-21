@@ -129,6 +129,32 @@
         "minLength": 1,
         "maxLength": 400
       }
+    },
+    "curated": {
+      "type": "boolean",
+      "description": "仅标记人工逐个维护的本地交互实验"
+    },
+    "curationStage": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "refining",
+        "stable"
+      ]
+    },
+    "tuningGuide": {
+      "type": "string",
+      "pattern": "^docs/[a-zA-Z0-9_/.-]+\\.md$"
+    },
+    "tuningPoints": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 200
+      }
     }
   },
   "allOf": [
