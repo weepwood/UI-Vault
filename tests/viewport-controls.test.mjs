@@ -29,17 +29,24 @@ test('悬浮选项不改变工具栏占用宽度，并支持窄屏和深色主�
   assert.match(css,/prefers-reduced-motion:reduce/);
 });
 
-test('鼠标悬停展开，点击设备选中并收起；键盘及触屏可操作',()=>{
+test('设备组件独立管理悬停、键盘和焦点，工作台仅传递状态回调',()=>{
   const app=read('assets/app.js');
-  assert.match(app,/viewport[.]addEventListener\('pointerenter'/);
-  assert.match(app,/viewport[.]addEventListener\('pointerleave'/);
-  assert.match(app,/viewportTrigger[.]addEventListener\('click'/);
-  assert.match(app,/viewportOptions[.]addEventListener\('click'/);
-  assert.match(app,/setViewportMenuOpen\(false\)/);
-  assert.match(app,/selectPreviewSize\(button[.]dataset[.]previewSize\)/);
-  assert.match(app,/viewport[.]addEventListener\('keydown'/);
-  assert.match(app,/\['ArrowDown','ArrowUp','Home','End'\]/);
-  assert.match(app,/if\(event[.]key==='Escape'&&viewportExpanded\)/);
-  assert.match(app,/syncViewportCurrent\(\)/);
-  assert.match(app,/setAttribute\('aria-pressed',String\(button[.]dataset[.]previewSize===state[.]previewSize\)\)/);
+  const component=read('assets/ui/viewport-switcher.js');
+  assert.match(app,/import \{createViewportSwitcher\} from '[.]\/ui\/viewport-switcher[.]js'/);
+  assert.match(app,/deviceSwitcher=createViewportSwitcher\(/);
+  assert.match(app,/getMode:\(\)=>state[.]previewSize/);
+  assert.match(app,/onSelect:selectPreviewSize/);
+  assert.match(app,/deviceSwitcher[?][.]close\(\)/);
+  assert.match(app,/deviceSwitcher[?][.]sync\(\)/);
+  assert.match(component,/listen\(root,'pointerenter'/);
+  assert.match(component,/listen\(root,'pointerleave'/);
+  assert.match(component,/listen\(trigger,'click'/);
+  assert.match(component,/listen\(options,'click'/);
+  assert.match(component,/onSelect\(mode\)/);
+  assert.match(component,/listen\(root,'keydown'/);
+  assert.match(component,/\['ArrowDown','ArrowUp','Home','End'\]/);
+  assert.match(component,/event[.]key==='Escape'&&expanded/);
+  assert.match(component,/button[.]dataset[.]previewSize===mode/);
+  assert.match(component,/destroy\(\)/);
+  assert.doesNotMatch(app,/viewportTrigger[.]addEventListener|viewportOptions[.]addEventListener/);
 });
