@@ -49,6 +49,7 @@
 ## 开发与验证
 
 ```bash
+node scripts/new-demo.mjs components magnetic-button 磁吸按钮
 node scripts/validate.mjs
 python3 -m http.server 4173
 # http://localhost:4173
@@ -58,7 +59,7 @@ python3 -m http.server 4173
 
 ## 发布
 
-仓库包括 `.github/workflows/deploy.yml`：在 `main` push 时校验资产清单并将整个网站发布到 Pages。首次部署请进入 **Settings → Pages → Build and deployment → Source: GitHub Actions**。未完成配置和成功运行之前，以上站点地址仅为预期 URL。
+仓库包括 `.github/workflows/deploy.yml`：在 `main` push 时校验资产清单并将整个网站发布到 Pages。**首次部署必须手动启用 Pages：**进入 **Settings → Pages → Build and deployment → Source: GitHub Actions**。首次 Actions 日志已确认资产校验通过，但尚未启用 Pages 时，部署任务会在配置阶段失败；系统令牌无法代替仓库管理员创建站点。完成设置后重新运行部署工作流。未完成配置和成功运行之前，以上站点地址仅为预期 URL。
 
 ## 维护原则
 
