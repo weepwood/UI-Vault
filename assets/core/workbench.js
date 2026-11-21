@@ -11,7 +11,7 @@ export function projectRowMarkup(asset,favorites,labels,selected=false) {
     '<button class="project-row" type="button" data-open="'+safe(asset.id)+'" aria-current="'+(selected?'true':'false')+'" aria-label="预览 '+safe(asset.title)+'">'+
       '<span class="project-row-icon">'+iconMarkup(local?'play':'git-branch')+'</span>'+
       '<span class="project-row-copy"><span class="project-row-title">'+safe(asset.title)+'</span>'+
-        '<span class="project-row-subtitle">'+safe(kind)+' · '+(local?'可运行网页':'外部项目')+'</span></span></button>'+
+        '<span class="project-row-subtitle">'+safe(kind)+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')+'</span></span></button>'+
     '<button class="project-star" type="button" data-favorite="'+safe(asset.id)+'" aria-pressed="'+liked+'" aria-label="'+(liked?'取消收藏 ':'收藏 ')+safe(asset.title)+'">'+iconMarkup('heart')+'</button></article>';
 }
 

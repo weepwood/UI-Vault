@@ -99,3 +99,22 @@ node scripts/check-dist.mjs
 ```
 
 `npm run check` 组合上述全部步骤。只依赖 Node 22+，无需安装 npm 第三方依赖。发布仍由 GitHub Actions 在 main 上自动执行。
+
+## 外部 GitHub Pages 项目直接内嵌（NOEMA 试点）
+
+UI-Vault 不需要把 NOEMA 的整份静态源码复制到本仓库；只需在 `catalog/assets/noema.json` 中保留独立来源 `url`，另填入实际的公开演示地址：
+
+```json
+{
+  "id": "noema",
+  "source": "external",
+  "url": "https://github.com/weepwood/NOEMA",
+  "siteUrl": "https://weepwood.github.io/NOEMA/"
+}
+```
+
+完成后运行 `npm run catalog:sync`，在 UI-Vault 右侧通过 `projectPreviewMarkup()` 自动渲染实际 iframe，而不是 GitHub 仓库说明。用户通过 `?asset=noema` 可以直达这一资源；顶部“单独打开”仍指向 NOEMA 的完整网页。
+
+当前 iframe 的 `sandbox="allow-scripts allow-forms"` 隔离运行，不为同一 GitHub Pages 主域名上的项目额外添加 `allow-same-origin`。因此磁贴的基础拖拽、缩放和展开可尝试，但 IndexedDB、Web Worker、文件系统授权及跨页面通信等可能受限或退化；完整文件夹与缓存操作建议在原站进行。特别注意 GitHub Pages 的不同项目路径仍可能同属 `weepwood.github.io` 这一浏览器 origin，不能将不同路径视为安全隔离域。若将来需要高权限的完整嵌入，优先使用**独立域名**托管子项目，并进行单独的安全评估，不能无条件组合 `allow-scripts` 与 `allow-same-origin`。
+
+外部网站还可能通过 CSP 的 `frame-ancestors` 或 `X-Frame-Options` 拒绝嵌入。这种情况不能绕过，应保留原站链接并展示明确的失败说明。NOEMA 的这次接入属于独立站点预览试点，不等于将源码转移到 UI-Vault。

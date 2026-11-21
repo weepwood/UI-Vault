@@ -148,13 +148,13 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
     state.previewSize='fluid';
     stage.dataset.size='fluid';
     stage.innerHTML=projectPreviewMarkup(asset);
-    $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':'外部资源');
+    $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源');
     $('#preview-title').textContent=asset.title;
     $('#preview-subtitle').textContent=asset.subtitle||asset.description;
     if(infoDialog.open)infoDialog.close();
     sourceLoadKey++;
     sourceLoadedId=null;
-    $('#dialog-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本地 Demo':'外部项目');
+    $('#dialog-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目');
     $('#dialog-title').textContent=asset.title;
     $('#project-info').innerHTML=projectInfoMarkup(asset,state.labels);
     $('#source-code').textContent='';

@@ -102,3 +102,26 @@ test('右侧设备模式与筛选逻辑保留预览 DOM 和路由状态',async()
   assert.match(css,/\.sidebar\.is-open/);
   assert.match(css,/prefers-reduced-motion/);
 });
+
+test('已部署的 NOEMA 通过受限 iframe 预览，保留仓库和原站入口',async()=>{
+  const [source,index]=await Promise.all([read('catalog/assets/noema.json'),read('content/assets.json')]);
+  const asset=JSON.parse(source);
+  const generated=JSON.parse(index).find(x=>x.id==='noema');
+  assert.ok(generated,'生成索引必须包含 NOEMA');
+  assert.equal(asset.siteUrl,'https://weepwood.github.io/NOEMA/');
+  assert.equal(generated.siteUrl,asset.siteUrl);
+  assert.equal(asset.url,'https://github.com/weepwood/NOEMA');
+  assert.equal(asset.source,'external');
+  assert.equal(asset.preview,undefined,'不能将外部部署伪装成本地 Demo');
+  const html=projectPreviewMarkup(generated);
+  assert.match(html,/data-preview-frame="external"/);
+  assert.match(html,/src="https:\/\/weepwood\.github\.io\/NOEMA\/"/);
+  assert.match(html,/sandbox="allow-scripts allow-forms"/);
+  assert.doesNotMatch(html,/allow-same-origin/);
+  assert.match(html,/在原站查看/);
+  const row=projectRowMarkup(generated,new Set(),labels);
+  assert.match(row,/在线预览/);
+  const info=projectInfoMarkup(generated,labels);
+  assert.match(info,/https:\/\/github\.com\/weepwood\/NOEMA/);
+  assert.match(info,/https:\/\/weepwood\.github\.io\/NOEMA\//);
+});
