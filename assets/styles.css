@@ -706,3 +706,199 @@ body.settings-body { min-height:100vh;min-height:100dvh;background:var(--canvas)
   .app-shell.is-settings .settings-view .settings-footer { padding:12px 15px; }
   .app-shell.is-settings .library-rail .sidebar-footer { display:flex; }
 }
+
+
+/* 工作台设置 2.0：设置分类导航 / 当前分类详情。
+   使用现有语义 Token，不覆盖内嵌 Demo 的主题与排版。 */
+.app-shell.is-settings > .settings-view {
+  display:grid;
+  grid-template-columns:clamp(190px,18.5vw,238px) minmax(0,1fr);
+  gap:0;
+}
+.settings-category-rail {
+  display:flex;flex-direction:column;gap:0;min-width:0;min-height:0;
+  padding:28px 14px 20px;background:var(--sidebar);
+  border-right:1px solid var(--line);
+}
+.settings-category-header { display:flex;flex-direction:column;gap:8px;padding:0 13px 20px; }
+.settings-category-caption { font-size:10px;line-height:1.4;font-weight:650;letter-spacing:.12em;color:var(--muted); }
+.settings-category-header strong { font-size:17px;letter-spacing:-.035em;line-height:1.3;color:var(--ink);font-weight:710; }
+.settings-category-nav { display:flex;flex-direction:column;gap:3px; }
+.settings-category-link {
+  width:100%;min-height:40px;display:flex;align-items:center;gap:11px;
+  padding:9px 12px;border:1px solid transparent;border-radius:9px;
+  color:var(--text);background:transparent;text-align:left;
+  font:inherit;font-size:12px;font-weight:560;cursor:pointer;
+  transition:background .16s,color .16s,border-color .16s;
+}
+.settings-category-link .ui-icon { width:17px;height:17px;flex:none;color:var(--muted); }
+.settings-category-link:hover { background:var(--canvas);color:var(--ink); }
+.settings-category-link.is-active {
+  border-color:var(--line);background:var(--surface);color:var(--ink);
+  font-weight:690;box-shadow:0 1px 2px #14232b06;
+}
+.settings-category-link.is-active .ui-icon { color:var(--accent); }
+.settings-category-link:focus-visible { outline:2px solid var(--focus);outline-offset:2px; }
+.settings-category-divider { height:1px;background:var(--line);margin:14px 12px; }
+.settings-category-note { margin:auto 12px 0;padding-top:20px;font-size:10px;color:var(--muted);line-height:1.55; }
+.settings-content-pane { display:flex;flex-direction:column;min-width:0;min-height:0;height:100%;overflow:hidden;background:var(--surface); }
+.app-shell.is-settings .settings-view .settings-header {
+  padding:31px clamp(22px,4vw,52px) 24px;border-bottom:1px solid var(--line-soft);
+}
+.app-shell.is-settings .settings-view .settings-header h1 {
+  font-size:27px;line-height:1.25;font-weight:740;letter-spacing:-.04em;
+}
+.app-shell.is-settings .settings-view .settings-intro { font-size:12px;line-height:1.65; }
+.app-shell.is-settings .settings-view .settings-eyebrow { margin-bottom:10px;font-size:10px;letter-spacing:.12em; }
+.app-shell.is-settings .settings-view .settings-scroll {
+  flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden;
+  padding:26px clamp(22px,4vw,52px) 38px;
+  overscroll-behavior:contain;
+}
+.app-shell.is-settings .settings-view .settings-section {
+  display:block;position:relative;width:min(100%,780px);
+  padding:0;margin:0;border:0;
+}
+.app-shell.is-settings .settings-view .settings-section[hidden] { display:none!important; }
+/* 分类名和说明已由工作区顶部显示；保留 DOM 标题作为区域的可访问名称。 */
+.app-shell.is-settings .settings-view .settings-section-heading {
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+  overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+}
+.app-shell.is-settings .settings-view .settings-grid {
+  display:flex;flex-direction:column;gap:0;
+  border:1px solid var(--line);border-radius:12px;
+  background:var(--surface);overflow:visible;
+}
+.app-shell.is-settings .settings-view .setting-field {
+  display:grid;grid-template-columns:minmax(130px,1fr) minmax(165px,238px);
+  gap:6px 24px;align-items:center;
+  padding:17px 19px;min-height:72px;
+  border-bottom:1px solid var(--line-soft);
+}
+.app-shell.is-settings .settings-view .setting-field:last-child { border-bottom:0; }
+.app-shell.is-settings .settings-view .setting-label {
+  grid-column:1;grid-row:1;
+  font-size:12px;font-weight:650;color:var(--ink);
+}
+.app-shell.is-settings .settings-view .settings-select {
+  grid-column:2;grid-row:1;
+}
+.app-shell.is-settings .settings-view .setting-field small {
+  grid-column:2;grid-row:2;line-height:1.55;color:var(--muted);
+}
+.app-shell.is-settings .settings-view .settings-select .select-trigger {
+  min-height:38px;height:38px;padding:0 11px;background:var(--sidebar);
+  border-color:var(--line);border-radius:8px;color:var(--ink);
+  font-size:12px;box-shadow:none;
+}
+.app-shell.is-settings .settings-view .settings-select .select-trigger:hover {
+  border-color:var(--focus);background:var(--surface);
+}
+.app-shell.is-settings .settings-view .settings-select.is-open .select-trigger { border-color:var(--accent); }
+.app-shell.is-settings .settings-view .settings-select .select-popover {
+  width:max(100%,190px);max-width:min(280px,calc(100vw - 30px));max-height:280px;
+  border-color:var(--line);border-radius:9px;z-index:20;
+}
+.settings-visual-preview {
+  display:flex;align-items:center;gap:15px;min-height:100px;
+  margin-top:17px;padding:18px 20px;border:1px solid var(--line);
+  border-radius:12px;background:var(--canvas);
+}
+.settings-preview-mark {
+  display:grid;place-items:center;flex:none;width:48px;height:48px;
+  border-radius:12px;background:var(--accent-soft);color:var(--accent);
+}
+.settings-preview-mark .ui-icon { width:23px;height:23px; }
+.settings-preview-caption { display:flex;flex-direction:column;gap:6px;flex:1;min-width:0; }
+.settings-preview-caption strong { font-size:12px;font-weight:670;color:var(--ink); }
+.settings-preview-caption span { font-size:11px;line-height:1.55;color:var(--muted); }
+.settings-preview-swatches { display:flex;align-items:center;gap:5px;flex:none; }
+.settings-preview-swatches i { display:block;width:18px;height:18px;border-radius:6px;border:1px solid var(--line); }
+.settings-preview-swatches i:nth-child(1) { background:var(--surface); }
+.settings-preview-swatches i:nth-child(2) { background:var(--sidebar); }
+.settings-preview-swatches i:nth-child(3) { background:var(--accent);border-color:transparent; }
+.settings-font-preview {
+  margin-top:17px;padding:22px 24px;border:1px solid var(--line);
+  border-radius:12px;background:var(--canvas);
+}
+.settings-sample-label { color:var(--muted);font-size:10px;letter-spacing:.08em;font-weight:640; }
+.settings-sample-chinese {
+  margin:13px 0 9px;font-family:var(--ui-font);
+  font-size:calc(24px + var(--font-step));font-weight:560;
+  line-height:1.4;letter-spacing:-.02em;color:var(--ink);
+}
+.settings-sample-latin { margin:0;font-size:calc(12px + var(--font-step));line-height:1.7;color:var(--muted);overflow-wrap:anywhere; }
+.app-shell.is-settings .settings-view .settings-grid--full {
+  display:block;padding:7px;
+}
+.app-shell.is-settings .settings-view .settings-repo-link {
+  background:var(--surface);border:1px solid transparent;min-height:76px;
+  border-radius:8px;
+}
+.app-shell.is-settings .settings-view .settings-repo-link:hover {
+  background:var(--canvas);border-color:var(--line);
+}
+.settings-about-note { margin:16px 2px 0;font-size:11px;line-height:1.8;color:var(--muted); }
+.app-shell.is-settings .settings-view .settings-footer {
+  padding:15px clamp(22px,4vw,52px);
+  border-top:1px solid var(--line);background:var(--surface);
+}
+.app-shell.is-settings .settings-view .settings-reset {
+  min-height:35px;padding:8px 13px;border-radius:8px;cursor:pointer;
+  transition:color .15s,border-color .15s,background .15s;
+}
+.app-shell.is-settings .settings-view .settings-reset:hover { background:var(--canvas); }
+.app-shell.is-settings .settings-view .settings-mobile-menu { display:none; }
+
+@media(max-width:1060px) and (min-width:761px){
+  .app-shell.is-settings > .settings-view { grid-template-columns:185px minmax(0,1fr); }
+  .settings-category-rail { padding-inline:10px; }
+  .app-shell.is-settings .settings-view .setting-field {
+    grid-template-columns:minmax(0,1fr);gap:10px;min-height:0;
+  }
+  .app-shell.is-settings .settings-view .setting-label,
+  .app-shell.is-settings .settings-view .settings-select { grid-column:1;grid-row:auto; }
+  .app-shell.is-settings .settings-view .setting-field small { grid-column:1;grid-row:auto; }
+}
+@media(max-width:760px) {
+  .app-shell.is-settings > .settings-view {
+    display:flex;flex-direction:column;
+  }
+  .app-shell.is-settings .settings-view .settings-category-rail {
+    flex:none;display:block;min-height:0;padding:10px 14px;
+    border-right:0;border-bottom:1px solid var(--line);
+  }
+  .settings-category-header,.settings-category-note,.settings-category-divider { display:none; }
+  .app-shell.is-settings .settings-view .settings-category-nav {
+    display:flex;flex-direction:row;gap:6px;overflow-x:auto;
+    scrollbar-width:none;overscroll-behavior-x:contain;
+  }
+  .app-shell.is-settings .settings-view .settings-category-nav::-webkit-scrollbar { display:none; }
+  .app-shell.is-settings .settings-view .settings-category-link {
+    flex:none;width:auto;min-height:35px;padding:7px 11px;border-radius:8px;
+    white-space:nowrap;
+  }
+  .app-shell.is-settings .settings-view .settings-category-link .ui-icon { width:15px;height:15px; }
+  .app-shell.is-settings .settings-view .settings-content-pane { flex:1;min-height:0; }
+  .app-shell.is-settings .settings-view .settings-header { padding:15px 20px; }
+  .app-shell.is-settings .settings-view .settings-mobile-menu { display:inline-flex;margin-top:13px; }
+  .app-shell.is-settings .settings-view .settings-scroll { padding:18px 20px 28px; }
+  .app-shell.is-settings .settings-view .settings-footer { padding:12px 20px; }
+}
+@media(max-width:480px){
+  .app-shell.is-settings .settings-view .settings-header { padding:12px 15px; }
+  .app-shell.is-settings .settings-view .settings-scroll { padding:14px 15px 24px; }
+  .app-shell.is-settings .settings-view .settings-footer { padding:12px 15px; }
+  .app-shell.is-settings .settings-view .setting-field {
+    grid-template-columns:minmax(0,1fr);gap:10px;padding:15px;
+    min-height:0;
+  }
+  .app-shell.is-settings .settings-view .setting-label,
+  .app-shell.is-settings .settings-view .settings-select { grid-column:1;grid-row:auto; }
+  .app-shell.is-settings .settings-view .setting-field small { grid-column:1;grid-row:auto; }
+  .settings-visual-preview { padding:15px;gap:10px;flex-wrap:wrap; }
+  .settings-preview-swatches { margin-left:58px; }
+  .settings-sample-chinese { font-size:21px; }
+  .settings-font-preview { padding:18px; }
+}
