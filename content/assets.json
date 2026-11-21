@@ -2688,6 +2688,40 @@
     "siteUrl": "https://weepwood.github.io/kumo-demo/"
   },
   {
+    "id": "liquid-orb",
+    "title": "液态玻璃球",
+    "subtitle": "Liquid Glass Orb · WebGPU",
+    "description": "基于 WebGPU / WGSL 的动态玻璃球，保留流体折射与彩色液态纹理，支持静置、思考、流速、玻璃外壳和播放控制。",
+    "type": "component",
+    "source": "local",
+    "tags": [
+      "Glass",
+      "WebGPU",
+      "WGSL",
+      "Shader",
+      "动效"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "WebGPU",
+      "WGSL"
+    ],
+    "preview": "demos/components/liquid-orb/index.html",
+    "code": "demos/components/liquid-orb/index.html",
+    "license": "用户提供代码（原始许可证未注明）",
+    "cover": "glass",
+    "featured": true,
+    "created": "2026-11-21",
+    "copyable": true,
+    "reuseNotes": [
+      "保留原始 WebGPU WGSL 着色器与两组 136 浮点 uniform 状态预设。",
+      "支持 window.liquidOrb.setState / setPlaying / setGlass / setSpeed / setAudioBands。",
+      "预览为自包含单文件，适用于现有 iframe 沙箱；WebGPU 不可用时显示静态预览。"
+    ]
+  },
+  {
     "id": "message-motion-lab",
     "title": "消息动效 · 飞入、回复与反应",
     "subtitle": "Motion Lab 手势与时间曲线研究 / 独立实现",
