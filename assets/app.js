@@ -309,7 +309,7 @@ function verifyWorkbenchShell(){
   const url=new URL(window.location.href);
   const modulePath=new URL(import.meta.url).pathname.split('/').pop();
   const token='shell-'+modulePath;
-  const isVaultHome=/\\/UI-Vault\\/(?:index\\.html)?$/.test(url.pathname);
+  const isVaultHome=url.pathname.endsWith('/UI-Vault/')||url.pathname.endsWith('/UI-Vault/index.html');
   console.error('UI Vault HTML 与脚本版本不匹配，缺少节点：'+missing.join(', '));
   if(isVaultHome&&url.searchParams.get('_ui_recovery')!==token){
     url.searchParams.set('_ui_recovery',token);
