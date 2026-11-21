@@ -30,6 +30,21 @@ test('悬浮选项不改变工具栏占用宽度，并支持窄屏和深色主�
   assert.match(css,/prefers-reduced-motion:reduce/);
 });
 
+test('自适应采用 Lucide Scan 图标，收窄闭合尺寸与悬停列表',()=>{
+  const toolbar=read('src/components/PreviewToolbar.jsx');
+  const css=read('assets/ui/preview-toolbar.css');
+  const sprite=read('assets/icons/lucide.svg');
+  const registry=read('assets/core/icons.js');
+  assert.match(toolbar,/mode:'fluid',icon:'scan',name:'自适应'/);
+  assert.match(sprite,/<symbol id="scan" viewBox="0 0 24 24">/);
+  assert.match(registry,/'scan'/);
+  assert.match(css,/flex:0 0 98px;width:98px;min-width:98px;height:34px/);
+  assert.match(css,/width:150px;max-width:min\(150px/);
+  assert.match(css,/position:absolute;right:0;top:calc\(100% - 1px\)/);
+  assert.match(css,/width:40px;min-width:40px;flex-basis:40px/);
+  assert.match(css,/\.viewport-controls \.viewport-current-icon \.ui-icon \{ width:16px;height:16px;stroke-width:2/);
+});
+
 test('React 设备切换器保留悬停展开、键盘与焦点操作',()=>{
  const app=read('assets/app.js');
  const component=read('src/components/PreviewToolbar.jsx');
