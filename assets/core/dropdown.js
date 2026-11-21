@@ -69,6 +69,7 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
     trigger.querySelector('.select-leading').innerHTML=iconMarkup(icons[selected.value]||icon);
     trigger.querySelector('.select-value').textContent=selected.textContent;
     trigger.setAttribute('aria-label',label+'：'+selected.textContent);
+    host.classList.toggle('has-filter',select.id==='tag-filter'&&select.value!=='');
     if(isOpen)renderOptions();
   }
   function setOpen(next,{focusIndex}={}){
@@ -106,7 +107,7 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
     event.preventDefault();
     if(!isOpen){
       const selected=Array.from(select.options).findIndex(option=>option.value===select.value);
-      setOpen(true,{focusIndex:event.key==='ArrowUp'?Math.max(0,selected):undefined});
+      setOpen(true,{focusIndex:event.key==='ArrowUp'&&selected===0?select.options.length-1:Math.max(0,selected)});
     }
   });
   menu.addEventListener('click',event=>{
