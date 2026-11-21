@@ -3,21 +3,22 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { DEFAULT_SETTINGS, SETTINGS_KEY, loadSettings, applySettings } from '../assets/core/settings.js';
 
-test('设置中心有独立页面、GitHub 入口与完整配置项',()=>{
+test('设置嵌入工作台并跨越右侧两栏，GitHub 入口位于设置关于分区',()=>{
   const home=readFileSync(new URL('../index.html',import.meta.url),'utf8');
-  const settings=readFileSync(new URL('../settings.html',import.meta.url),'utf8');
+  const legacy=readFileSync(new URL('../settings.html',import.meta.url),'utf8');
   const stylesheet=readFileSync(new URL('../assets/styles.css',import.meta.url),'utf8');
   const iconSprite=readFileSync(new URL('../assets/icons/lucide.svg',import.meta.url),'utf8');
-  assert.ok(home.includes('href="./settings.html"'));
-  assert.ok(home.includes('id="settings-open"'));
+  assert.ok(home.includes('href="./?view=settings"'));
+  assert.ok(home.includes('id="settings-view"'));
+  assert.ok(home.includes('data-settings-page'));
   assert.ok(!home.includes('id="settings-dialog"'));
-  assert.ok(settings.includes('data-settings-page'));
-  assert.ok(settings.includes('src="./assets/settings-page.js"'));
-  assert.ok(settings.includes('github.com/weepwood/UI-Vault'));
+  assert.ok(home.includes('github.com/weepwood/UI-Vault'));
+  assert.ok(legacy.includes('url=./?view=settings'));
   assert.ok(iconSprite.includes('<symbol id="settings"'));
   for(const key of Object.keys(DEFAULT_SETTINGS)){
-    assert.ok(settings.includes('data-setting="'+key+'"'));
+    assert.ok(home.includes('data-setting="'+key+'"'));
   }
+  assert.ok(stylesheet.includes('.app-shell.is-settings'));
   assert.ok(stylesheet.includes('html[data-theme="dark"]'));
   assert.ok(stylesheet.includes('html[data-font="system"]'));
 });
