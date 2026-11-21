@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>便当网格 · Style Atlas / UI Vault</title>
+<link rel="stylesheet" href="../../../assets/style-atlas/gallery.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/previews-a.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/previews-b.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/previews-c.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/themes.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/new-style-previews.css">
+<style>
+:root{--page:#f6f7f7;--surface:#fff;--surface-2:#f1f2f3;--ink:#20272a;--muted:#627074;--line:#dfe4e6;--accent:#315e80;--ease:cubic-bezier(.2,.8,.2,1)}
+*,*::before,*::after{box-sizing:border-box}body{margin:0;min-width:300px;background:#f6f7f7;color:#20272a;font:14px/1.6 ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(16px,4vw,42px);border-bottom:1px solid #dfe4e6;background:#fff}
+header .eyeline{font-size:12px;color:#667177}header strong{font-size:13px}header a{font-size:12px;color:#315e80;text-decoration:none}
+main{max-width:1120px;margin:0 auto;padding:clamp(18px,4vw,44px)}h1{font-size:clamp(25px,3.4vw,38px);line-height:1.25;letter-spacing:-.035em;margin:2px 0 6px}h2{font-size:15px;letter-spacing:-.012em;margin:0 0 16px}p{margin:0}.summary{color:#5c686e;max-width:80ch;font-size:13px;line-height:1.85}.english{color:#67747b;font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:22px;margin-top:28px;align-items:start}
+.panel{background:#fff;border:1px solid #e1e5e7;border-radius:12px;overflow:hidden}.panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 20px;border-bottom:1px solid #edf0f1}
+.panel-header h2{margin:0}.badge{font-size:11px;color:#637176}.preview-viewport{padding:clamp(14px,3.5vw,28px);background:#f2f3f4;display:grid;place-items:center}
+.style-preview{width:100%;max-width:570px;height:335px;padding:15px;border-radius:4px}.mini-window{height:100%;width:100%}.detail{padding:18px 20px}
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.swatch{border:0;min-width:0;background:none;padding:0;cursor:pointer;text-align:left}.swatch span{display:block;width:100%;height:40px;border:1px solid #00000012;border-radius:5px}.swatch b{display:block;font:10px/1.4 ui-monospace,Consolas,monospace;font-weight:500;margin-top:5px;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px solid #edf0f1;text-align:left;padding:8px 4px}th{font-weight:500;color:#606c72;width:34%}code{font:11px/1.5 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+button.action{border:1px solid #cdd6da;border-radius:6px;background:#fff;color:#30404a;padding:8px 10px;font-size:12px;cursor:pointer}
+.note{margin-top:18px;color:#687478;font-size:11px}.details-list{padding-left:18px;margin:0;color:#475157;font-size:12px;line-height:1.9}.panel+.panel{margin-top:16px}.subhead{font-weight:650;font-size:12px;margin-bottom:8px}.footer{font-size:12px;color:#6d797e;margin:28px 0 0;border-top:1px solid #e1e6e8;padding-top:16px}
+button:focus-visible,a:focus-visible{outline:3px solid #477ea8;outline-offset:3px}@media(max-width:800px){.layout{grid-template-columns:1fr}.style-preview{height:330px}.preview-viewport{padding:12px}}@media(max-width:420px){.style-preview{height:290px;padding:9px}.swatches{gap:4px}.swatch span{height:34px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style></head><body><header><div><strong>Style Atlas</strong> <span class="eyeline">/ 独立风格样本</span></div><a href="https://github.com/weepwood/style-atlas" target="_blank" rel="noopener noreferrer">原始项目</a></header><main><div class="english">Bento Grid</div><h1>便当网格</h1><p class="summary">Bento Grid 不是单纯的卡片堆叠，而是利用尺寸差异表达优先级。它尤其适合功能多、信息密度高、需要快速扫描的产品与作品集。</p>
+<div class="layout"><div><section class="panel"><div class="panel-header"><h2>视觉预览</h2><span class="badge">来自原版样机 · bento</span></div><div class="preview-viewport"><div class="style-preview preview-bento"><div class="mini-window bento-ui">
+          <div class="bento-main"><span>PRODUCT SYSTEM</span><strong>Build.<br>Ship.<br>Learn.</strong></div>
+          <div class="bento-accent"></div>
+          <div class="bento-chart"><i></i><i></i><i></i><i></i><i></i></div>
+        </div></div></div></section>
+<section class="panel" style="margin-top:16px"><div class="panel-header"><h2>适用与局限</h2></div><div class="detail"><p class="subhead">适用场景</p><ul class="details-list"><li>SaaS 功能总览</li><li>个人作品集与案例展示</li><li>数据看板和运营后台</li><li>产品发布页</li></ul><p class="subhead" style="margin-top:18px">实施时注意</p><ul class="details-list"><li>卡片尺寸没有语义时会显得模板化</li><li>移动端重排需要重新设计优先级</li><li>过多圆角与图标会造成视觉同质化</li></ul></div></section></div>
+<div><section class="panel"><div class="panel-header"><h2>颜色调色板</h2><span class="badge">点击色块复制</span></div><div class="detail"><div class="swatches"><button class="swatch" type="button" title="复制 #E9E9E5" data-copy="#E9E9E5" aria-label="复制色值 #E9E9E5"><span style="background:#E9E9E5"></span><b>#E9E9E5</b></button><button class="swatch" type="button" title="复制 #191919" data-copy="#191919" aria-label="复制色值 #191919"><span style="background:#191919"></span><b>#191919</b></button><button class="swatch" type="button" title="复制 #FF5F3D" data-copy="#FF5F3D" aria-label="复制色值 #FF5F3D"><span style="background:#FF5F3D"></span><b>#FF5F3D</b></button><button class="swatch" type="button" title="复制 #A6C1FF" data-copy="#A6C1FF" aria-label="复制色值 #A6C1FF"><span style="background:#A6C1FF"></span><b>#A6C1FF</b></button><button class="swatch" type="button" title="复制 #A7E7C0" data-copy="#A7E7C0" aria-label="复制色值 #A7E7C0"><span style="background:#A7E7C0"></span><b>#A7E7C0</b></button></div></div></section>
+<section class="panel"><div class="panel-header"><h2>原始设计 Token</h2><button class="action" type="button" id="copy-tokens">复制 JSON</button></div><div class="detail"><table><tbody><tr><th scope="row">gridGap</th><td><code>12px</code></td></tr><tr><th scope="row">cardRadius</th><td><code>20px</code></td></tr><tr><th scope="row">cardPadding</th><td><code>20px</code></td></tr><tr><th scope="row">darkCard</th><td><code>#191919</code></td></tr><tr><th scope="row">accentCard</th><td><code>#FF5F3D</code></td></tr></tbody></table><p class="note">字段保留源项目原始名称与值，不将演示色值误称为可直接投入生产的语义 Token。</p></div></section></div></div>
+<p class="footer">教学与设计研究样例；原仓库未声明通用开源许可证。此处为原作者 UI Vault 内的拆分展示，复制到其他项目时请核对具体授权。</p></main>
+<script type="application/json" id="atlas-data">{"id":"bento","name":"便当网格","en":"Bento Grid","category":["产品","数据"],"tags":["模块化","高密度"],"summary":"用不同尺寸的卡片组织复杂信息，兼顾扫描效率与视觉节奏。","lead":"Bento Grid 不是单纯的卡片堆叠，而是利用尺寸差异表达优先级。它尤其适合功能多、信息密度高、需要快速扫描的产品与作品集。","bestFor":["SaaS 功能总览","个人作品集与案例展示","数据看板和运营后台","产品发布页"],"risks":["卡片尺寸没有语义时会显得模板化","移动端重排需要重新设计优先级","过多圆角与图标会造成视觉同质化"],"palette":["#E9E9E5","#191919","#FF5F3D","#A6C1FF","#A7E7C0"],"tokens":{"gridGap":"12px","cardRadius":"20px","cardPadding":"20px","darkCard":"#191919","accentCard":"#FF5F3D"}}</script>
+<script>
+const data=JSON.parse(document.getElementById('atlas-data').textContent);
+async function copy(value,element){try{await navigator.clipboard.writeText(value);const old=element.textContent;element.textContent='已复制';setTimeout(()=>{element.textContent=old},1200)}catch{element.title='当前环境不允许剪贴板写入，请通过源码查看值'}}
+document.getElementById('copy-tokens').addEventListener('click',e=>copy(JSON.stringify({id:data.id,name:data.name,palette:data.palette,tokens:data.tokens},null,2),e.currentTarget));
+document.querySelectorAll('[data-copy]').forEach(node=>node.addEventListener('click',()=>copy(node.dataset.copy,node)));
+</script></body></html>
