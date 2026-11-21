@@ -7,6 +7,13 @@
 - [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [架构](docs/ARCHITECTURE.md)
 - [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
 
+## 子项目 · UI Foundation Kit
+
+- [可复用设计工具栈源码](subprojects/ui-foundation-kit/)：设计 Token、CSS 组件、Vue 示例及 React / GPUI 迁移说明。
+- [在线演示](https://weepwood.github.io/UI-Vault/?asset=ui-foundation-kit)：在 UI Vault 双栏工作台中直接预览。
+- [独立 HTML](demos/experiments/ui-foundation-kit/index.html)：自包含 Demo，可离线打开。
+- 从仓库根目录运行 `node --test tests/ui-foundation-kit.test.mjs` 检查 Token 构建；项目根目录 `npm run check` 也包含此项测试。
+
 ## 快速开始
 
 需要 Node 22+；不依赖第三方 npm 包。
@@ -102,3 +109,6 @@ npm run check           # 完整 CI 等价检查
 
 
 **顶部工具栏精简（v0.7）**：项目信息和设备模式集中在同一个 Topbar；右侧画布下面不再显示项目说明或统计文字。项目说明与源码通过 Topbar 的按钮打开带“说明／源代码”标签的居中弹窗，预览本身始终常驻右侧。
+
+
+**三栏工作台（v0.8）**：导航菜单（236px）／独立项目列表（320px）／主预览画布（剩余宽度）。在宽屏上三栏常驻，在手机上左两栏一起展开；各资源仍可在中间选中后于右侧实时交互，不重写任何独立 Demo。
