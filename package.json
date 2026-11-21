@@ -1,0 +1,21 @@
+{
+  "name": "ui-vault",
+  "private": true,
+  "version": "0.2.0",
+  "type": "module",
+  "description": "个人 UI 设计资产与 Demo 展厅",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "new:demo": "node scripts/new-demo.mjs",
+    "new:reference": "node scripts/new-reference.mjs",
+    "catalog:sync": "node scripts/catalog.mjs sync",
+    "catalog:check": "node scripts/catalog.mjs check",
+    "validate": "node scripts/validate.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/validate.mjs && node --test tests/*.test.mjs && node scripts/build.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
