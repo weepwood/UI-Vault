@@ -404,16 +404,29 @@ def verify_glass_materials(browser, origin):
             page.locator(".sample").first.wait_for(state="visible")
             assert page.locator(".sample").count() == 6, "玻璃材质数量不正确"
             page.wait_for_function("document.body.dataset.optics === 'ready'", timeout=15000)
-            for id in ["refraction-map", "gel-map"]:
-                val = page.locator("#" + id).get_attribute("href")
-                assert val and val.startswith("data:image/png;base64,"), "轮廓折射图未生成：" + id
+            for kind in ["liquid", "gel"]:
+                canvas = page.locator(".mat-" + kind + " canvas.refraction")
+                assert canvas.count() == 1, "缺少真实折射层: " + kind
+                metrics = canvas.evaluate("""el => {
+                    const c = el.getContext('2d');
+                    const d = c.getImageData(0,0,el.width,el.height).data;
+                    let lo=255, hi=0;
+                    for(let i=0;i<d.length;i+=32){lo=Math.min(lo,d[i]);hi=Math.max(hi,d[i]);}
+                    return {w:el.width,h:el.height,rendered:el.dataset.rendered,
+                        edge:+el.dataset.edgePixels,contrast:hi-lo};
+                }""")
+                assert metrics["rendered"] == "true", "Canvas 像素采样未运行：" + kind
+                assert metrics["w"] > 100 and metrics["h"] > 70, "镜片像素尺寸异常"
+                assert metrics["edge"] > 300, "缺少轮廓折射带"
+                assert metrics["contrast"] > 40, "镜片中缺少可辨识背景纹理"
+            assert page.locator(".mat-liquid .scene").evaluate("(el)=>el.style.backgroundImage.includes('data:image/png')"), "折射层与背景非同源画布"
             assert page.locator("#distortion").is_disabled(), "普通玻璃不应开放折射调节"
             page.locator('[data-material="liquid"]').click()
             assert page.locator("#distortion").is_enabled(), "液态材质未启用折射滑块"
             page.locator("#blur").evaluate("(el) => {el.value = '11'; el.dispatchEvent(new Event('input', {bubbles: true}));}")
             assert page.locator("#blur").input_value() == "11"
             page.locator('[data-material="gel"]').click()
-            assert page.locator("#blur").input_value() == "4", "材质间模糊参数发生串扰"
+            assert page.locator("#blur").input_value() == "0", "材质间模糊参数发生串扰"
             page.locator('[data-material="liquid"]').click()
             assert page.locator("#blur").input_value() == "11", "返回材料后独立参数丢失"
             page.locator('[data-view="native"]').click()
@@ -442,7 +455,7 @@ def verify_glass_materials(browser, origin):
             assert not errors, name + ": 玻璃材质脚本错误: " + "; ".join(errors)
         finally:
             context.close()
-    print("玻璃材质回归通过：六材质、SVG 轮廓图、独立参数、背景/场景、移动端与截图。")
+    print("玻璃材质回归通过：Canvas 真正像素折射、六材质、独立参数、背景/场景、移动端与截图。")
 
 def verify_rare_interactions(browser, origin):
     """Rare UI 启发的原创 Demo：桌面和手机均须完整交互，不依赖外部组件源码。"""

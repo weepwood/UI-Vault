@@ -19,7 +19,7 @@ test('玻璃卡片原入口升级为六材质的独立可交互对照页',async(
   for(const id of ['blur','tint','distortion','theme-toggle','reset','copy','css-source','status']){
     assert.ok(page.includes('id="'+id+'"'),id);
   }
-  assert.match(page,/feDisplacementMap/);
+  assert.match(page,/function paintLiquid\(/);
   assert.match(page,/ResizeObserver/);
   assert.match(page,/prefers-reduced-motion/);
   assert.match(page,/role="status" aria-live="polite"/);
@@ -47,12 +47,14 @@ test('材质展示说明准确地区分 Mica 和 Acrylic，且保留来源与非
 
 test('第二版材质实验室包含高对比背景、场景模式与独立参数',async()=>{
  const html=await read('demos/components/glass-panel/index.html');
- for(const value of ['data-wallpaper-option="lines"','data-wallpaper-option="texture"','data-view="compare"','data-view="native"','id="copy-full"','id="selected-hint"','data-optics="loading"','id="refraction-map"','id="gel-map"']){
+ for(const value of ['data-wallpaper-option="lines"','data-wallpaper-option="texture"','data-view="compare"','data-view="native"','id="copy-full"','id="selected-hint"','data-optics="loading"','class="refraction"','data-optics="loading"']){
    assert.ok(html.includes(value),value);
  }
  assert.equal((html.match(/class="native-context"/g)||[]).length,6);
  assert.match(html,/function signedDistance\(/);
- assert.match(html,/function bakeContourMap\(/);
+ assert.match(html,/function drawSceneTexture\(/);
+ assert.match(html,/function bilinear\(/);
+ assert.match(html,/function paintLiquid\(/);
  assert.match(html,/Object\.fromEntries\(Object\.entries\(defaults\)/);
  assert.match(html,/new ResizeObserver\(scheduleAlign\)/);
  assert.match(html,/toDataURL\('image\/png'\)/);
@@ -61,4 +63,20 @@ test('第二版材质实验室包含高对比背景、场景模式与独立参�
  assert.match(html,/fetch\(location\.href/);
  assert.match(html,/window\.addEventListener\('resize',scheduleAlign/);
  assert.match(html,/body\[data-wallpaper="texture"\] \.refraction/);
+});
+
+test('液态玻璃使用可移植的 Canvas 像素采样，避免 CSS/SVG 位移失效',async()=>{
+ const html=await read('demos/components/glass-panel/index.html');
+ assert.equal((html.match(/<canvas class="refraction" aria-hidden="true"><\/canvas>/g)||[]).length,2);
+ for(const fn of ['drawSceneTexture','signedDistance','bilinear','paintLiquid','alignAndBake','scheduleAlign']){
+   assert.ok(html.includes('function '+fn+'('),fn);
+ }
+ assert.match(html,/const edge=curve\*curve/);
+ assert.match(html,/const chroma=edge/);
+ assert.match(html,/ctx\.putImageData\(image,0,0\)/);
+ assert.match(html,/setPointerCapture/);
+ assert.match(html,/data\.dragX/);
+ assert.doesNotMatch(html,/<filter id="glass-refract"/);
+ assert.match(html,/data-wallpaper-option="grid"/);
+ assert.match(html,/prefers-reduced-motion/);
 });
