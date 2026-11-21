@@ -1,39 +1,49 @@
-# UI-Vault 主工作台 React 渐进迁移
+# UI-Vault React 工作台架构
 
-## 迁移原则
+## 当前状态
 
-React 只接管 UI-Vault 的管理工作台；`demos/`、`subprojects/`、跨仓镜像、React/Vue 站点等维持原入口与独立依赖，统一通过原有 iframe 沙箱运行。无需将所有 Demo 重写为 React。
+**主工作台的全部动态交互已由单一 React 19 根管理。** 静态 `index.html` 仍保留三栏 DOM 容器与初始兜底标记，React 使用 Portals 挂载至原始 CSS 布局锚点，以维持旧版视觉、URL 与缓存兼容。React 不接管独立 Demo 的源代码。
 
-首阶段严格保留现有 `index.html` 三栏 DOM、语义 class、项目 ID、URL 路由 `?asset=`/`?view=settings`、LocalStorage 收藏与偏好协议以及视觉测试基线。
+```text
+index.html                  三栏结构 / 元数据 / 无脚本初始容器
+assets/app.js               仅负责版本错配检测和 mountWorkbench()
+src/react-workbench.jsx     单根 React + Portals / 列表 / 分类 / 全局交互
+src/useWorkbench.js         useReducer 统一 Store + 副作用 Hooks
+src/components/
+  WorkbenchSelect.jsx       排序、标签和设置共用的 React 可访问下拉
+  PreviewToolbar.jsx        顶部项目、收藏、复制、设备菜单、移动入口
+  PreviewFrame.jsx          memo iframe、设备尺寸、ResizeObserver
+  ProjectDialog.jsx         原生 dialog + React tab + 源码请求取消
+  SettingsPanel.jsx         两栏设置、主题、字体、密度及浏览体验
+assets/core/                纯资源过滤、状态转换、偏好/收藏持久化
+assets/ui/*.css             组件共享 CSS 与响应式覆盖
+demos/                      HTML、Vue、React 与镜像保持独立
+```
 
-## 本阶段已接管
+## 核心设计约束
 
-- `src/react-workbench.jsx`：React 19 的 `ProjectRow`、`ProjectList`、`CategoryNavigation`。通过 `createRoot` 挂载到现有 `#gallery` 与 `#category-nav` 两处，`key={asset.id}` 避免列表筛选时元素无谓销毁。
-- `assets/app.js`：继续作为暂时的**兼容适配层**，调用 React 渲染入口，原 DOM `innerHTML` 列表写入与分类导航字符串模板已移除。
-- `assets/core/`：原有 `filterAssets`、状态转换、资源查找、收藏持久化、预览 URL 和设备模式逻辑复用，不复制一份状态模型到 React。
-- `scripts/build-react.mjs`：以 esbuild 构建 React 组件 bundle，输出 `assets/react-workbench.js`（git 忽略），再由现有 `scripts/build.mjs` 白名单拷贝、同步内容指纹，兼容 GitHub Pages 子路径。
-- `tests/react-workbench.test.mjs`：检查真实 React 消费方、无障碍标记、构建边界。现有 Chromium 截图基线继续验证渲染一致性。
+1. **React 状态唯一来源**：`useWorkbench` 使用 `useReducer` 管理检索、分类、排序、项目选择、收藏、设备模式、设置视图和移动导航。新的 UI 事件不允许再新增第二套全局状态或从 `app.js` 直接写 DOM。
+2. **React 控件拥有对应 DOM**：全局只调用一次 `createRoot`，通过 Portals 控制原三栏的挂载区。顶栏、设置、项目列表、筛选、Dialog 与 iframe 由 React 输出；旧静态 HTML 节点在启动时替换。原 `assets/ui/mobile-navigation.js` 等文件继续保留作为独立适配器与测试合同，但主站不再实例化它们。
+3. **预览稳定性**：本地 Demo 在 `PreviewFrame` 以 `React.memo` 固定 iframe 实例，筛选、收藏、设置和通知不会改变已选中项目的 iframe `src`；只有项目真正切换时才更新。沙箱 `allow-scripts`、外部站点 `allow-scripts allow-forms`、`referrerPolicy="no-referrer"` 不变。
+4. **持久化兼容**：收藏键为 `ui-vault-favorites-v1`，偏好键为 `ui-vault:preferences:v1`；深链接 `?asset=`、内嵌设置 `?view=settings`、浏览器前进/后退继续使用旧协议。
+5. **安全**：项目资料由已有 `projectInfoMarkup()` 转义后渲染，源码请求使用 `AbortController` 取消切换/关闭后未完成的请求；外部网站没有无条件增加 `allow-same-origin`。
+6. **样式不重做**：复用 `assets/styles.css`、`assets/ui/controls.css`、`dropdown.css`、`project-row.css`、`dialog.css`、`preview-toolbar.css` 和 Lucide sprite。与主站无关的原始 Demo 保持自己的视觉。
+7. **构建发布**：`scripts/build-react.mjs` 使用 esbuild 生成唯一 React bundle；原 `scripts/build.mjs` 继续负责静态资源白名单、内容指纹与 WOFF2。GitHub Pages 根路径 `/UI-Vault/` 及离线 Demo 相对路径继续可用。
 
-## 为什么暂时不直接用 Vite 替换发布器
-
-当前仓库的独立 Demo 有不同的静态资源路径和授权边界，发布器还负责资源白名单、字体子集、URL 缓存指纹和版本回退。一次性换构建系统会把 React 迁移、发布策略调整和页面重构三类风险叠加。本阶段先以极小的 React build 步骤适配现有安全发布流程，再评估 Vite 的开发体验。
-
-目前 React 只管理**目录渲染**，其他控件仍由原生 JS 模块控制，不能宣称“整个主站已完全迁移 React”。`flushSync` 目前只用于 React UI 与原有同步 DOM 控制器之间的短暂边界，后续路由和菜单完全迁移 React 时应删除这种同步耦合。
-
-## 下一阶段清单
-
-1. React 控制 `PreviewToolbar` 与设备切换（复用 `preview.js` 算法），取消工具栏 DOM 直接写入。
-2. React 控制设置视图（复用 `loadSettings` / `applySettings` 与持久化协议）、Dialog 状态与焦点管理。
-3. 将 `assets/app.js` 里的启动和事件绑定逐步收敛成 `useWorkbench` Hook / Context 或外部 store，统一处理浏览器 history、收藏、过滤器和异步请求。
-4. 所有 Chromium 视觉回归、功能交互与缓存协议验收稳定后，再考虑将开发服务器切到 Vite，发布时仍保留白名单保护。
-
-## 本地运行
+## 测试
 
 ```sh
 npm install
-npm run dev
 npm run check
 npm run visual:test
 ```
 
-React/ReactDOM/esbuild 仅用于主站构建与主站运行，不会要求子项目与 Demo 安装 React。
+CI 在固定 Ubuntu 24.04 + Chromium 环境验证九组视觉截图（桌面/手机、浅色/深色、Dialog、设置、菜单），同时检查 JS、资源目录、缓存指纹、静态发布文件。所有 React 动态行为应额外用 Playwright 测试真实点击与浏览器历史，而非仅以源码正则和像素比较认定完整正确。
+
+## 迁移完成与后续优化的区别
+
+- **已迁移**：项目行、分类、搜索、排序、过滤、收藏、设置面板、Dialog、Toast、预览工具栏、设备选择和 iframe 运行态。
+- **保留**：原生 HTML 三栏容器、浏览器原生 `dialog`、原独立 Demo、多框架站点和底层纯函数。这些并不意味着业务 UI 仍由原生代码管理。
+- **可选优化**：从静态挂载点迁移到完全 JSX 声明的三栏容器；升级 Vite 与 TS；对大型目录建立虚拟列表；用 Playwright 增加复杂交互和无障碍检测。此类变更应单独 PR，并保留现有基线。
+
+**不要因已经使用 React 就强制将全部 Demo 也迁移到 React。**
