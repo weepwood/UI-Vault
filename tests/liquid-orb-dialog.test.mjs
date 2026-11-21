@@ -21,12 +21,14 @@ test('Thinking 胶囊对话框被登记为可嵌入的多文件组件', () => {
   assert.ok(metadata.publish.includes(demo+'dialog.js'));
   assert.ok(metadata.publish.includes(demo+'dialog.css'));
   assert.match(html, /href="\.\/dialog\.css"/);
-  assert.match(html, /from '\.\/dialog\.js'/);
+  assert.match(html, /src="\.\/dialog\.js"/);
   assert.match(html, /startOpen: true/);
+  assert.doesNotMatch(html, /<script type="module"/);
 });
 test('组件使用真实首帧消息控制展示，并支持失败重试', () => {
-  assert.match(js,/export function createLiquidOrbDialog/);
-  assert.match(js,/new URL\('\.\.\/liquid-orb\/index\.html\?embed=1', import\.meta\.url\)/);
+  assert.match(js,/function createLiquidOrbDialog/);
+  assert.match(js, /Object.defineProperty\(window, 'createLiquidOrbDialog'/);
+  assert.match(js,/new URL\('\.\.\/liquid-orb\/index\.html\?embed=1', document\.currentScript/);
   assert.match(js,/event\.source !== frame\.contentWindow/);
   assert.match(js,/data\.event === 'progress'/);
   assert.match(js,/data\.event === 'ready'/);
