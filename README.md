@@ -7,6 +7,10 @@
 - [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [架构](docs/ARCHITECTURE.md)
 - [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
 
+## React 渐进迁移（第一阶段）
+
+工作台目录现在通过 React 19 组件呈现：`src/react-workbench.jsx` 中的 `ProjectRow`、`ProjectList` 与 `CategoryNavigation` 是实际消费方。其余设置、弹窗、预览仍使用原有原生 JS 控制器；独立 Demo 无须迁移，React bundle 沿用原有静态发布与缓存指纹。详见 [React 迁移实施与路线图](docs/REACT-MIGRATION.md)。
+
 ## 工作台组件与状态模块化
 
 主站保持原生 ES Modules，不引入 React。筛选/当前项目/设备模式的状态转换位于 `assets/core/workbench-state.js`；设备菜单交互位于 `assets/ui/viewport-switcher.js`；搜索、按钮、通知和下拉基础 CSS 位于 `assets/ui/controls.css`、`assets/ui/dropdown.css`。现有 `assets/app.js` 仍负责页面装载、URL 和 iframe 生命周期，Demo 路径与收藏数据协议保持不变。

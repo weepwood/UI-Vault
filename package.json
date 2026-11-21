@@ -5,21 +5,29 @@
   "type": "module",
   "description": "个人 UI 设计资产与 Demo 展厅",
   "scripts": {
-    "dev": "python3 scripts/build-fonts.py && node scripts/serve.mjs",
+    "dev": "python3 scripts/build-fonts.py && npm run react:build && node scripts/serve.mjs",
     "new:demo": "node scripts/new-demo.mjs",
     "new:reference": "node scripts/new-reference.mjs",
     "catalog:sync": "node scripts/catalog.mjs sync",
     "catalog:check": "node scripts/catalog.mjs check",
     "validate": "node scripts/validate.mjs",
     "test": "node --test tests/*.test.mjs",
-    "build": "python3 scripts/build-fonts.py && node scripts/build.mjs",
+    "build": "python3 scripts/build-fonts.py && npm run react:build && node scripts/build.mjs",
     "check": "node scripts/validate.mjs && node --test tests/*.test.mjs && node scripts/design-audit.mjs && npm run build && node scripts/check-dist.mjs",
     "design:audit": "node scripts/design-audit.mjs",
     "fonts:build": "python3 scripts/build-fonts.py",
     "visual:test": "python3 scripts/visual-regression.py",
-    "visual:bootstrap": "python3 scripts/visual-regression.py --bootstrap"
+    "visual:bootstrap": "python3 scripts/visual-regression.py --bootstrap",
+    "react:build": "node scripts/build-react.mjs"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=22.12"
+  },
+  "dependencies": {
+    "react": "19.3.1",
+    "react-dom": "19.3.1"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2"
   }
 }
