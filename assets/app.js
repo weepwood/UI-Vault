@@ -11,7 +11,7 @@ const categoryIconById=Object.freeze({
 });
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');
-const sidebar=$('#sidebar'),shade=$('#mobile-shade'),stage=$('#preview-stage'),toast=$('#toast');
+const libraryRail=$('#library-rail'),shade=$('#mobile-shade'),stage=$('#preview-stage'),toast=$('#toast');
 const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls'),infoDialog=$('#project-dialog');
 const state={
   assets:[],categories:[],labels:{all:'全部资源'},
@@ -35,12 +35,13 @@ function save(){
 }
 function setSidebar(open,{returnFocus=false}={}){
   const visible=Boolean(open&&isMobile());
-  const wasOpen=sidebar.classList.contains('is-open');
-  sidebar.classList.toggle('is-open',visible);
+  const wasOpen=libraryRail.classList.contains('is-open');
+  libraryRail.classList.toggle('is-open',visible);
   shade.hidden=!visible;
+  $('#main').inert=visible;
   menuToggle.setAttribute('aria-expanded',String(visible));
   menuToggle.setAttribute('aria-label',visible?'关闭项目目录':'打开项目目录');
-  sidebar.inert=isMobile()&&!visible;
+  libraryRail.inert=isMobile()&&!visible;
   if(visible)search.focus({preventScroll:true});
   if(!visible&&wasOpen&&returnFocus)menuToggle.focus({preventScroll:true});
 }
@@ -350,12 +351,12 @@ function initEvents(){
     if(copy){void copySource(copy.dataset.copy);return;}
     if(event.target.closest('[data-copy-link]'))copyLink();
   });
-  menuToggle.addEventListener('click',()=>setSidebar(!sidebar.classList.contains('is-open')));
+  menuToggle.addEventListener('click',()=>setSidebar(!libraryRail.classList.contains('is-open')));
   $('#sidebar-dismiss').addEventListener('click',()=>setSidebar(false,{returnFocus:true}));
   shade.addEventListener('click',()=>setSidebar(false,{returnFocus:true}));
   window.addEventListener('resize',()=>{if(!isMobile())setSidebar(false);resizePreview();});
   document.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&sidebar.classList.contains('is-open')){event.preventDefault();setSidebar(false,{returnFocus:true});return;}
+    if(event.key==='Escape'&&libraryRail.classList.contains('is-open')){event.preventDefault();setSidebar(false,{returnFocus:true});return;}
     const target=event.target;
     const editable=target instanceof Element&&Boolean(target.closest('input,textarea,select,[contenteditable="true"]'));
     if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){
@@ -377,7 +378,7 @@ async function loadJSON(path){
 }
 // HTML 与 JS 来自不同缓存版本时，旧页面可能没有新工作台需要的节点。
 const SHELL_REQUIRED_IDS=[
-  'sidebar','mobile-shade','gallery','search','sort','tag-filter','preview-stage',
+  'sidebar','library-rail','project-panel','mobile-shade','gallery','search','sort','tag-filter','preview-stage',
   'toast','menu-toggle','viewport-controls','category-nav','total-count','curated-count',
   'imported-count','favorite-count','preview-kind','preview-title',
   'preview-subtitle','project-info','project-dialog','dialog-title','dialog-kind',
@@ -417,7 +418,7 @@ function verifyWorkbenchShell(){
 }
 async function init(){
   if(!verifyWorkbenchShell())return;
-  sidebar.inert=isMobile();
+  libraryRail.inert=isMobile();
   initEvents();
   if(typeof ResizeObserver!=='undefined'){
     previewResizeObserver=new ResizeObserver(resizePreview);
