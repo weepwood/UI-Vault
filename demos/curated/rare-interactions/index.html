@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>交互组件精选 · UI Vault</title>
+<style>
+/* TUNING · Rare UI-inspired, original implementations. Adjust --accent / --radius / --motion.
+   Layout: 2 columns >= 960px, 1 column below. Functional: tabs, picker, counters,
+   notifications, task list, composer, delete confirmation, toast feedback.
+   Original components are NOT copied or redistributed; source credited in the footer. */
+:root{font-family:Inter,"SF Pro Display","Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;font-synthesis:none;--page:#f4f5f3;--surface:#fff;--surface-alt:#f9faf9;--ink:#20282b;--muted:#667176;--line:#e2e7e5;--accent:#b15d3e;--accent-soft:#faeee8;--danger:#af493c;--ring:#a34e30;--shadow:0 4px 20px rgba(20,31,30,.035);--radius:16px;--motion:210ms;color:var(--ink);background:var(--page)}
+:root[data-theme="dark"]{color-scheme:dark;--page:#16191b;--surface:#202427;--surface-alt:#272c2f;--ink:#edf0ef;--muted:#a7b0b0;--line:#3b4244;--accent:#e3a17c;--accent-soft:#3b302d;--danger:#f2a095;--ring:#efbd96;--shadow:0 6px 20px rgba(0,0,0,.11)}
+*{box-sizing:border-box}
+body{margin:0;min-width:300px}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+button:disabled{cursor:not-allowed;opacity:.5}
+a{color:var(--accent);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--ring);outline-offset:3px}
+[hidden]{display:none!important}
+svg{width:18px;height:18px;flex:none;stroke:currentColor;stroke-width:1.75;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.shell{max-width:1340px;margin:auto;padding:30px clamp(18px,3.4vw,48px) 26px}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding-bottom:25px;border-bottom:1px solid var(--line)}
+.headline h1{font-size:clamp(22px,2.7vw,31px);letter-spacing:-.04em;line-height:1.2;margin:0 0 10px;font-weight:670}
+.headline p{font-size:13px;max-width:650px;color:var(--muted);margin:0;line-height:1.8}
+.head-tools{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.tag{font-size:11px;border:1px solid var(--line);padding:7px 10px;border-radius:8px;color:var(--muted);background:var(--surface)}
+.tool-button,.soft-button,.outline-button{display:inline-flex;justify-content:center;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;min-height:36px;padding:7px 12px;font-size:12px;font-weight:570;transition:background var(--motion),transform var(--motion),border-color var(--motion)}
+.tool-button:hover,.soft-button:hover,.outline-button:hover{background:var(--surface-alt);border-color:var(--muted)}
+.tool-button:active,.soft-button:active,.outline-button:active{transform:scale(.975)}
+.tool-button svg{height:16px;width:16px}
+.filters{display:flex;flex-wrap:wrap;gap:7px;margin:22px 0 20px;align-items:center}
+.filter{padding:8px 13px;border:1px solid transparent;border-radius:9px;background:transparent;color:var(--muted);font-size:12px;font-weight:560;transition:background var(--motion),color var(--motion)}
+.filter:hover{background:var(--surface)}
+.filter[aria-pressed="true"]{color:var(--ink);background:var(--surface);border-color:var(--line);box-shadow:var(--shadow)}
+.count-note{margin-left:auto;color:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.showcase{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;align-items:start}
+.sample{border:1px solid var(--line);background:var(--surface);border-radius:var(--radius);min-width:0;overflow:visible;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.sample:focus-within{z-index:2}
+.sample-head{padding:21px 23px 15px;display:flex;justify-content:space-between;gap:12px}
+.sample-head h2{font-size:15px;font-weight:670;letter-spacing:-.015em;line-height:1.3;margin:0}
+.sample-head p{font-size:12px;color:var(--muted);line-height:1.6;margin:7px 0 0}
+.sample-index{font-size:11px;font-variant-numeric:tabular-nums;color:var(--muted);border:1px solid var(--line);height:26px;min-width:29px;border-radius:7px;display:grid;place-items:center}
+.demo-stage{min-height:156px;display:flex;flex-direction:column;justify-content:center;gap:15px;padding:15px 23px 25px;position:relative}
+.sample-foot{border-top:1px solid var(--line);padding:10px 23px;display:flex;gap:9px;align-items:center;justify-content:space-between}
+.sample-foot span{font-size:11px;color:var(--muted)}
+.sample-foot a{font-size:11px;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+.sample-foot a:hover{text-decoration:underline}
+.surface{border:1px solid var(--line);background:var(--surface-alt);border-radius:12px}
+.micro-label{color:var(--muted);font-size:11px;line-height:1.4}
+.detail-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:12px;color:var(--muted)}
+.detail-line strong{font-weight:630;color:var(--ink)}
+.action{background:var(--ink);color:var(--surface);border:1px solid var(--ink);border-radius:9px;padding:9px 15px;display:inline-flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:590;min-height:37px}
+.action svg{width:15px;height:15px}
+.action:hover{filter:brightness(1.12)}
+.ghost{border:0;background:transparent;color:var(--muted);font-size:12px;min-height:32px;padding:6px 9px;border-radius:7px}
+.ghost:hover{background:var(--surface-alt);color:var(--ink)}
+.pill-nav{position:relative;display:flex;width:min(100%,410px);padding:5px;border-radius:14px;background:var(--surface-alt);border:1px solid var(--line);isolation:isolate}
+.pill-nav .slider{position:absolute;top:5px;left:5px;height:calc(100% - 10px);width:33%;border-radius:9px;background:var(--ink);z-index:-1;transition:left 280ms cubic-bezier(.2,.8,.2,1),width 280ms cubic-bezier(.2,.8,.2,1)}
+.pill-nav button{flex:1;min-width:0;padding:12px 7px;background:transparent;border:0;border-radius:9px;font-size:12px;font-weight:580;color:var(--muted);transition:color var(--motion);position:relative}
+.pill-nav button[aria-pressed="true"]{color:var(--surface)}
+.live-note{font-size:12px;color:var(--muted);line-height:1.6;min-height:20px}
+.live-note b{color:var(--ink)}
+.picker-area{position:relative;width:min(100%,385px)}
+.picker-trigger{display:flex;align-items:center;width:100%;gap:12px;text-align:left;border:1px solid var(--line);padding:10px 12px;background:var(--surface-alt);border-radius:12px;min-height:62px}
+.picker-trigger .provider-icon{width:34px;height:34px;border-radius:9px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:700}
+.picker-title{font-size:12px;font-weight:660}
+.picker-sub{font-size:11px;color:var(--muted);margin-top:3px}
+.picker-trigger>.chevron{margin-left:auto;transition:transform var(--motion);width:16px}
+.picker-trigger[aria-expanded=true]>.chevron{transform:rotate(180deg)}
+.picker-menu{position:absolute;z-index:10;top:calc(100% + 6px);left:0;right:0;border:1px solid var(--line);border-radius:12px;box-shadow:0 14px 32px rgba(0,0,0,.12);background:var(--surface);padding:6px}
+.picker-option{background:transparent;border:0;width:100%;padding:10px 12px;text-align:left;display:flex;align-items:center;gap:10px;border-radius:8px}
+.picker-option:hover,.picker-option[aria-selected=true]{background:var(--surface-alt)}
+.picker-option:focus-visible{outline-offset:-3px}
+.picker-option span{display:grid;gap:3px;flex:1}
+.picker-option b{font-size:12px;font-weight:620}
+.picker-option small{font-size:11px;color:var(--muted)}
+.picker-option svg{color:var(--accent);opacity:0}
+.picker-option[aria-selected=true] svg{opacity:1}
+.counter{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:18px 20px}
+.counter .number{font-variant-numeric:tabular-nums;letter-spacing:-.06em;font-size:clamp(31px,5vw,48px);line-height:1.1;font-weight:650}
+.counter-actions{display:flex;align-items:center;gap:7px}
+.square-button{width:38px;height:38px;display:grid;place-items:center;background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.square-button:hover{background:var(--accent-soft)}
+.square-button svg{width:17px;height:17px}
+.status-chip{display:inline-flex;align-items:center;gap:7px;color:var(--muted);font-size:11px}
+.status-chip:before{content:"";width:6px;height:6px;background:#61a680;border-radius:50%}
+.notif-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.bell-wrap{position:relative}
+.bell-button{position:relative;width:53px;height:53px;border-radius:13px;background:var(--surface-alt);border:1px solid var(--line);display:grid;place-items:center}
+.bell-button svg{width:23px;height:23px;transform-origin:50% 10%}
+.bell-button.ring svg{animation:ring 520ms ease-in-out}
+.badge-count{position:absolute;top:-7px;right:-8px;min-width:23px;height:23px;border-radius:12px;background:var(--accent);color:#fff;font-size:11px;font-weight:650;display:grid;place-items:center;padding:0 5px;border:2px solid var(--surface)}
+.notification-panel{border:1px solid var(--line);border-radius:11px;overflow:hidden;background:var(--surface-alt)}
+.notification-panel .row-heading{display:flex;justify-content:space-between;align-items:center;padding:10px 13px;border-bottom:1px solid var(--line);font-size:11px;font-weight:630}
+.notification-panel .row-heading button{font-size:11px;color:var(--accent);border:0;background:transparent}
+.notification-list{list-style:none;padding:0;margin:0;max-height:155px;overflow:auto}
+.notification-list li{padding:10px 13px;border-bottom:1px solid var(--line);font-size:11px;line-height:1.5;color:var(--muted)}
+.notification-list li:last-child{border-bottom:0}
+.notification-list li.unread{color:var(--ink);font-weight:540}
+.notification-list li.unread:before{content:"";display:inline-block;width:5px;height:5px;margin:0 8px 2px 0;background:var(--accent);border-radius:50%}
+.task-surface{padding:10px 13px}
+.task-list{list-style:none;margin:0;padding:0}
+.task-list li{display:flex;align-items:center;gap:11px;min-height:42px;border-bottom:1px solid var(--line);font-size:12px}
+.task-list li:last-child{border-bottom:0}
+.task-list li.done .task-label{text-decoration:line-through;color:var(--muted)}
+.task-list label{display:flex;align-items:center;gap:10px;cursor:pointer;min-width:0;flex:1}
+.task-list input{appearance:none;margin:0;flex:none;width:19px;height:19px;border:1.5px solid var(--muted);border-radius:6px;display:grid;place-items:center;cursor:pointer;transition:background var(--motion),border-color var(--motion)}
+.task-list input:checked{background:var(--accent);border-color:var(--accent)}
+.task-list input:checked:after{content:"";width:9px;height:5px;border:solid #fff;border-width:0 0 2px 2px;transform:rotate(-45deg) translateY(-1px)}
+.task-label{min-width:0;overflow-wrap:anywhere}
+.progress-line{height:5px;border-radius:5px;background:var(--line);overflow:hidden}
+.progress-fill{height:100%;width:0;background:var(--accent);border-radius:inherit;transition:width 250ms ease}
+.mini-form{display:flex;gap:7px}
+.mini-form input{min-width:0;flex:1;border:1px solid var(--line);background:var(--surface-alt);border-radius:9px;padding:9px 11px;font-size:12px}
+.mini-form button{white-space:nowrap}
+.prompt-box{border:1px solid var(--line);border-radius:14px;background:var(--surface-alt);padding:13px}
+.prompt-box textarea{display:block;resize:vertical;min-height:65px;max-height:170px;width:100%;border:0;background:transparent;outline:none;font-size:12px;line-height:1.7}
+.prompt-box textarea:focus-visible{outline:none}
+.prompt-box:focus-within{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.prompt-controls{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:10px;border-top:1px solid var(--line)}
+.effort-group{display:flex;gap:4px;flex-wrap:wrap}
+.effort-group button{padding:7px 9px;background:transparent;border:1px solid transparent;color:var(--muted);font-size:11px;border-radius:8px}
+.effort-group button[aria-pressed="true"]{border-color:var(--line);background:var(--surface);color:var(--ink)}
+.prompt-result{font-size:11px;line-height:1.7;color:var(--muted);border-left:2px solid var(--accent);padding:1px 0 1px 10px;min-height:22px}
+.file-row{display:flex;align-items:center;gap:12px;padding:13px}
+.file-icon{width:37px;height:39px;border:1px solid var(--line);background:var(--surface);border-radius:8px;display:grid;place-items:center;color:var(--muted)}
+.file-text{flex:1;min-width:0;display:grid;gap:4px}
+.file-text b{font-size:12px;font-weight:620;overflow-wrap:anywhere}
+.file-text small{font-size:11px;color:var(--muted)}
+.delete-button{border:1px solid var(--line);color:var(--danger);background:var(--surface);width:35px;height:35px;border-radius:9px;display:grid;place-items:center}
+.delete-button:hover{background:var(--accent-soft)}
+.confirm-box{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;border:1px solid var(--line);background:var(--surface-alt);border-radius:10px}
+.confirm-box p{font-size:11px;margin:0;line-height:1.6;max-width:225px}
+.confirm-actions{display:flex;gap:7px}
+.danger-button{background:var(--danger);color:var(--surface);font-size:11px;font-weight:600;border:0;padding:8px 12px;border-radius:8px;min-height:34px}
+.toast-button-row{display:flex;gap:9px;flex-wrap:wrap}
+.toast-button-row button{flex:1;min-width:92px}
+.toast-preview{padding:15px 16px;display:flex;gap:11px;align-items:flex-start}
+.toast-preview svg{color:var(--accent)}
+.toast-preview b{font-size:12px}
+.toast-preview p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.6}
+.toast-host{position:fixed;z-index:100;right:18px;bottom:18px;display:flex;flex-direction:column;gap:8px;width:min(340px,calc(100vw - 36px));pointer-events:none}
+.toast-item{pointer-events:auto;display:flex;align-items:flex-start;gap:10px;border:1px solid var(--line);background:var(--surface);box-shadow:0 10px 34px rgba(0,0,0,.13);border-radius:12px;padding:12px;animation:toast-in 190ms ease-out}
+.toast-item svg{margin-top:2px}
+.toast-item b{font-size:12px;display:block}
+.toast-item p{font-size:11px;color:var(--muted);margin:4px 0 0;line-height:1.5}
+.toast-item .toast-close{margin-left:auto;border:0;background:transparent;color:var(--muted);border-radius:5px;padding:2px}
+.footer{margin-top:26px;border-top:1px solid var(--line);padding:18px 0 0;display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between}
+.footer p{font-size:11px;color:var(--muted);margin:0;line-height:1.8}
+.footer a{font-size:11px}
+@keyframes ring{0%,100%{transform:rotate(0)}20%{transform:rotate(-13deg)}42%{transform:rotate(11deg)}67%{transform:rotate(-7deg)}84%{transform:rotate(4deg)}}
+@keyframes toast-in{from{transform:translateY(9px);opacity:0}to{transform:translateY(0);opacity:1}}
+@media(max-width:960px){.showcase{grid-template-columns:1fr}.shell{padding:22px 16px}.sample{max-width:none}.demo-stage{min-height:140px}}
+@media(max-width:560px){.page-head{flex-direction:column;align-items:stretch}.head-tools{justify-content:flex-start}.sample-head{padding:17px 17px 12px}.demo-stage{padding:12px 17px 20px}.sample-foot{padding:10px 17px}.filters{gap:4px}.filter{padding:8px 10px}.count-note{width:100%;margin:6px 0 0}.confirm-box{flex-wrap:wrap}.counter{padding:15px}.counter .number{font-size:32px}.prompt-controls{flex-wrap:wrap}.prompt-controls .action{margin-left:auto}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden" xmlns="http://www.w3.org/2000/svg">
+ <symbol id="ic-moon" viewBox="0 0 24 24"><path d="M20.9 13.2A9 9 0 0 1 10.8 3.1a9 9 0 1 0 10.1 10.1Z"/></symbol>
+ <symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></symbol>
+ <symbol id="ic-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+ <symbol id="ic-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+ <symbol id="ic-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+ <symbol id="ic-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+ <symbol id="ic-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
+ <symbol id="ic-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 15H6L5 6M10 10v7m4-7v7"/></symbol>
+ <symbol id="ic-send" viewBox="0 0 24 24"><path d="m22 2-7 20-4-9-9-4 20-7ZM22 2 11 13"/></symbol>
+ <symbol id="ic-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+ <symbol id="ic-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Zm0 0v6h6M8 13h8m-8 4h6"/></symbol>
+ <symbol id="ic-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 11v6m0-10h.01"/></symbol>
+</svg>
+<main class="shell">
+  <header class="page-head">
+    <div class="headline"><h1>交互组件精选</h1><p>面向实际产品界面的八组小型交互实验。每一组均可操作、可重复测试，并提供源设计参考。</p></div>
+    <div class="head-tools"><span class="tag">8 个独立交互</span><button class="tool-button" type="button" id="themeToggle" aria-pressed="false"><svg aria-hidden="true"><use href="#ic-moon"/></svg><span id="themeLabel">深色模式</span></button></div>
+  </header>
+  <nav class="filters" aria-label="组件类型筛选"><button class="filter" type="button" data-filter="all" aria-pressed="true">全部</button><button class="filter" type="button" data-filter="navigation" aria-pressed="false">导航与选择</button><button class="filter" type="button" data-filter="feedback" aria-pressed="false">状态与反馈</button><button class="filter" type="button" data-filter="workflow" aria-pressed="false">工作流</button><span class="count-note" id="visibleCount" aria-live="polite">显示 8 / 8</span></nav>
+  <div class="showcase">
+    <article class="sample" data-kind="navigation">
+      <div class="sample-head"><div><h2>滑动分段导航</h2><p>单一选中区域，切换时保持视觉连续。</p></div><span class="sample-index">01</span></div>
+      <div class="demo-stage">
+        <nav class="pill-nav" aria-label="预览页面"><span class="slider" id="navSlider" aria-hidden="true"></span><button type="button" data-route="overview" aria-pressed="true">总览</button><button type="button" data-route="assets" aria-pressed="false">素材</button><button type="button" data-route="activity" aria-pressed="false">活动</button></nav>
+        <div class="live-note" id="navStatus" aria-live="polite">当前页面：<b>总览</b>，展示全部项目。</div>
+      </div>
+      <div class="sample-foot"><span>响应式 · 无需动画依赖</span><a href="https://www.rareui.com/components/gooeynav" target="_blank" rel="noopener noreferrer">参考 Gooey Nav</a></div>
+    </article>
+    <article class="sample" data-kind="navigation">
+      <div class="sample-head"><div><h2>模型选择器</h2><p>模型名称、说明、当前选项分层呈现。</p></div><span class="sample-index">02</span></div>
+      <div class="demo-stage">
+        <div class="picker-area">
+          <button class="picker-trigger" type="button" id="modelTrigger" aria-haspopup="listbox" aria-controls="modelList" aria-expanded="false"><span class="provider-icon" aria-hidden="true">✳</span><span><span class="picker-title" id="modelName">Standard</span><br><span class="picker-sub" id="modelDescription">日常对话与快速任务</span></span><svg class="chevron" aria-hidden="true"><use href="#ic-chevron"/></svg></button>
+          <div class="picker-menu" role="listbox" aria-label="可选模式" id="modelList" hidden>
+            <button type="button" class="picker-option" role="option" aria-selected="true" data-model="Standard" data-description="日常对话与快速任务"><span><b>Standard</b><small>快速回复，平衡体验</small></span><svg aria-hidden="true"><use href="#ic-check"/></svg></button>
+            <button type="button" class="picker-option" role="option" aria-selected="false" data-model="Focused" data-description="专注分析与推理"><span><b>Focused</b><small>更适合复杂任务</small></span><svg aria-hidden="true"><use href="#ic-check"/></svg></button>
+            <button type="button" class="picker-option" role="option" aria-selected="false" data-model="Creative" data-description="探索多种表达方式"><span><b>Creative</b><small>创意草案与发散思考</small></span><svg aria-hidden="true"><use href="#ic-check"/></svg></button>
+          </div>
+        </div>
+        <div class="micro-label">支持 ↑↓ 选择、Enter 确认、Esc 关闭。</div>
+      </div>
+      <div class="sample-foot"><span>键盘操作 · 选中反馈</span><a href="https://www.rareui.com/components/modelpicker" target="_blank" rel="noopener noreferrer">参考 Model Picker</a></div>
+    </article>
+    <article class="sample" data-kind="feedback">
+      <div class="sample-head"><div><h2>动态数值</h2><p>状态更新时以短距离过渡体现变化。</p></div><span class="sample-index">03</span></div>
+      <div class="demo-stage">
+        <div class="counter surface"><div><div class="micro-label">本月完成任务 · 演示数据</div><div class="number" id="counterValue" aria-live="off">2,480</div></div><div class="counter-actions"><button class="square-button" type="button" id="counterMinus" aria-label="减少 120"><svg aria-hidden="true"><use href="#ic-minus"/></svg></button><button class="square-button" type="button" id="counterPlus" aria-label="增加 120"><svg aria-hidden="true"><use href="#ic-plus"/></svg></button></div></div>
+        <div class="detail-line"><span class="status-chip">模拟数据</span><span id="counterDelta" aria-live="polite">点击增减按钮试试</span></div>
+      </div>
+      <div class="sample-foot"><span>Tabular nums · 减少动效兼容</span><a href="https://www.rareui.com/components/animatedcounter" target="_blank" rel="noopener noreferrer">参考 Animated Counter</a></div>
+    </article>
+    <article class="sample" data-kind="feedback">
+      <div class="sample-head"><div><h2>通知中心</h2><p>动态未读角标、消息列表与状态清理。</p></div><span class="sample-index">04</span></div>
+      <div class="demo-stage">
+        <div class="notif-row"><div class="bell-wrap"><button type="button" class="bell-button" id="bellButton" aria-label="查看通知" aria-controls="notificationPanel" aria-expanded="false"><svg aria-hidden="true"><use href="#ic-bell"/></svg><span class="badge-count" id="unreadBadge">2</span></button></div><button class="outline-button" type="button" id="pushNotification">模拟接收通知</button></div>
+        <section class="notification-panel" id="notificationPanel" aria-label="通知列表" hidden><div class="row-heading"><span>最近通知</span><button type="button" id="markRead">全部已读</button></div><ul class="notification-list" id="notificationList"></ul></section>
+        <div class="micro-label" id="notificationHint" aria-live="polite">有 2 条未读通知，点击铃铛查看。</div>
+      </div>
+      <div class="sample-foot"><span>动态角标 · 可关闭面板</span><a href="https://www.rareui.com/components/notificationbell" target="_blank" rel="noopener noreferrer">参考 Notification Bell</a></div>
+    </article>
+    <article class="sample" data-kind="workflow">
+      <div class="sample-head"><div><h2>任务清单</h2><p>完成态、进度反馈与可编辑列表。</p></div><span class="sample-index">05</span></div>
+      <div class="demo-stage">
+        <div class="task-surface surface"><ul class="task-list" id="taskList"><li><label><input type="checkbox"><span class="task-label">整理交互组件分类</span></label></li><li><label><input type="checkbox" checked><span class="task-label">完成基础样式规范</span></label></li><li><label><input type="checkbox"><span class="task-label">检查键盘与移动端</span></label></li></ul></div>
+        <div class="detail-line"><span id="taskStatus" aria-live="polite">已完成 1 / 3</span><span>进度</span></div><div class="progress-line" role="progressbar" id="taskProgress" aria-label="任务完成比例" aria-valuemin="0" aria-valuemax="100" aria-valuenow="33"><div class="progress-fill" id="taskProgressFill" style="width:33%"></div></div>
+        <form class="mini-form" id="taskForm"><input id="taskInput" aria-label="新任务名称" maxlength="65" placeholder="添加一个演示任务" required><button class="outline-button" type="submit">添加</button></form>
+      </div>
+      <div class="sample-foot"><span>原生 Checkbox · 真实进度</span><a href="https://www.rareui.com/components/tasklist" target="_blank" rel="noopener noreferrer">参考 Task List</a></div>
+    </article>
+    <article class="sample" data-kind="workflow">
+      <div class="sample-head"><div><h2>AI 输入工作区</h2><p>思考模式切换、发送与中止的完整反馈。</p></div><span class="sample-index">06</span></div>
+      <div class="demo-stage">
+        <form id="promptForm" class="prompt-box"><textarea id="promptText" aria-label="演示消息内容" placeholder="描述你想实现的交互…&#10;Enter 发送 · Shift+Enter 换行" maxlength="500" required></textarea><div class="prompt-controls"><div class="effort-group" role="group" aria-label="演示思考模式"><button type="button" aria-pressed="true" data-effort="快速">快速</button><button type="button" aria-pressed="false" data-effort="标准">标准</button><button type="button" aria-pressed="false" data-effort="深入">深入</button></div><button class="action" type="submit" id="sendPrompt"><svg aria-hidden="true"><use href="#ic-send"/></svg><span id="sendLabel">发送</span></button></div></form>
+        <div class="prompt-result" id="promptResult" role="status" aria-live="polite">此区域仅模拟界面反馈，不会连接真实 AI。</div>
+      </div>
+      <div class="sample-foot"><span>不调用 API · 可停止模拟输出</span><a href="https://www.rareui.com/components/promptbox" target="_blank" rel="noopener noreferrer">参考 Prompt Box</a></div>
+    </article>
+    <article class="sample" data-kind="feedback">
+      <div class="sample-head"><div><h2>安全删除</h2><p>二次确认、取消操作与撤销入口。</p></div><span class="sample-index">07</span></div>
+      <div class="demo-stage">
+        <div class="file-row surface" id="fileRow"><div class="file-icon"><svg aria-hidden="true"><use href="#ic-file"/></svg></div><div class="file-text"><b>interaction-notes.md</b><small>草稿 · 本地模拟文件</small></div><button class="delete-button" type="button" aria-label="删除演示文件" id="deleteTrigger"><svg aria-hidden="true"><use href="#ic-trash"/></svg></button></div>
+        <div class="confirm-box" id="deleteConfirm" role="group" aria-label="删除确认" hidden><p>确认移除这个演示文件？不会影响实际数据。</p><div class="confirm-actions"><button type="button" class="soft-button" id="cancelDelete">取消</button><button type="button" class="danger-button" id="confirmDelete">移除</button></div></div>
+        <div class="detail-line" id="deletedStatus" hidden><span>演示文件已移除</span><button class="soft-button" type="button" id="restoreDelete">撤销删除</button></div>
+      </div>
+      <div class="sample-foot"><span>危险操作确认 · Escape 取消</span><a href="https://www.rareui.com/components/deletebutton" target="_blank" rel="noopener noreferrer">参考 Delete Button</a></div>
+    </article>
+    <article class="sample" data-kind="feedback">
+      <div class="sample-head"><div><h2>Toast 消息</h2><p>即时反馈、轻量堆叠和独立关闭。</p></div><span class="sample-index">08</span></div>
+      <div class="demo-stage">
+        <div class="toast-preview surface"><svg aria-hidden="true"><use href="#ic-info"/></svg><div><b>清晰的操作结果</b><p>成功、提醒和普通信息使用相同的结构，仅改变反馈语义。</p></div></div>
+        <div class="toast-button-row"><button type="button" class="outline-button" data-toast="success">成功</button><button type="button" class="outline-button" data-toast="warning">提醒</button><button type="button" class="outline-button" data-toast="info">信息</button></div>
+        <div class="micro-label">最多堆叠三条，自动消失，也可主动关闭。</div>
+      </div>
+      <div class="sample-foot"><span>轻量堆叠 · 无外部插件</span><a href="https://www.rareui.com/components/toast" target="_blank" rel="noopener noreferrer">参考 Toast</a></div>
+    </article>
+  </div>
+  <footer class="footer"><p>此页面为 UI-Vault 独立编写的交互研究 Demo，不包含 Rare UI 组件源码。Lucide 风格图标依照 ISC 授权使用。</p><p>设计参考与致谢：<a href="https://rareui.com" target="_blank" rel="noopener noreferrer">Rare UI · Swami Malode</a> · <a href="https://github.com/swamimalode07/rare-ui/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">原项目许可证</a></p></footer>
+</main>
+<div class="toast-host" id="toastHost" role="region" aria-label="操作消息"></div>
+<script>
+(() => {
+  'use strict';
+  const $ = (selector, scope = document) => scope.querySelector(selector);
+  const $$ = (selector, scope = document) => [...scope.querySelectorAll(selector)];
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const icon = (name) => {
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('aria-hidden', 'true');
+    const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+    use.setAttribute('href', '#ic-' + name);
+    svg.append(use);
+    return svg;
+  };
+  const themeToggle = $('#themeToggle');
+  const updateTheme = () => {
+    const dark = document.documentElement.dataset.theme === 'dark';
+    themeToggle.setAttribute('aria-pressed', String(dark));
+    $('#themeLabel').textContent = dark ? '浅色模式' : '深色模式';
+    $('use', themeToggle).setAttribute('href', dark ? '#ic-sun' : '#ic-moon');
+  };
+  themeToggle.addEventListener('click', () => {
+    document.documentElement.dataset.theme = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    updateTheme();
+  });
+  updateTheme();
+  $$('.filter').forEach(button => button.addEventListener('click', () => {
+    $$('.filter').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    let count = 0;
+    $$('.sample').forEach(sample => {
+      const visible = button.dataset.filter === 'all' || sample.dataset.kind === button.dataset.filter;
+      sample.hidden = !visible;
+      if (visible) count++;
+    });
+    $('#visibleCount').textContent = '显示 ' + count + ' / 8';
+    requestAnimationFrame(moveSlider);
+  }));
+
+  const routeText = {
+    overview: ['总览', '展示全部项目。'],
+    assets: ['素材', '查看已收藏的组件。'],
+    activity: ['活动', '浏览最近的操作。']
+  };
+  function moveSlider() {
+    const active = $('.pill-nav [aria-pressed="true"]');
+    if (!active) return;
+    const nav = $('.pill-nav');
+    $('#navSlider').style.left = active.offsetLeft + 'px';
+    $('#navSlider').style.width = active.offsetWidth + 'px';
+  }
+  $$('.pill-nav button').forEach(button => button.addEventListener('click', () => {
+    $$('.pill-nav button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+    const [label, detail] = routeText[button.dataset.route];
+    $('#navStatus').replaceChildren(document.createTextNode('当前页面：'));
+    const bold = document.createElement('b');
+    bold.textContent = label;
+    $('#navStatus').append(bold, document.createTextNode('，' + detail));
+    moveSlider();
+  }));
+  window.addEventListener('resize', moveSlider, { passive: true });
+  requestAnimationFrame(moveSlider);
+
+  const modelTrigger = $('#modelTrigger');
+  const modelList = $('#modelList');
+  const modelOptions = $$('.picker-option');
+  const selectedModel = () => modelOptions.findIndex(o => o.getAttribute('aria-selected') === 'true');
+  const closeModel = (restoreFocus = false) => {
+    modelList.hidden = true;
+    modelTrigger.setAttribute('aria-expanded', 'false');
+    if (restoreFocus) modelTrigger.focus();
+  };
+  const openModel = () => {
+    modelList.hidden = false;
+    modelTrigger.setAttribute('aria-expanded', 'true');
+    modelOptions[Math.max(0, selectedModel())].focus();
+  };
+  modelTrigger.addEventListener('click', () => modelList.hidden ? openModel() : closeModel());
+  modelTrigger.addEventListener('keydown', event => {
+    if (['ArrowDown','ArrowUp'].includes(event.key)) {
+      event.preventDefault();
+      openModel();
+      if (event.key === 'ArrowUp') modelOptions[modelOptions.length - 1].focus();
+    }
+  });
+  modelOptions.forEach((option, index) => {
+    option.addEventListener('click', () => {
+      modelOptions.forEach(item => item.setAttribute('aria-selected', String(item === option)));
+      $('#modelName').textContent = option.dataset.model;
+      $('#modelDescription').textContent = option.dataset.description;
+      closeModel(true);
+    });
+    option.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); closeModel(true); }
+      if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+        event.preventDefault();
+        modelOptions[(index + modelOptions.length + (event.key === 'ArrowDown' ? 1 : -1)) % modelOptions.length].focus();
+      }
+      if (event.key === 'Home' || event.key === 'End') {
+        event.preventDefault();
+        modelOptions[event.key === 'Home' ? 0 : modelOptions.length - 1].focus();
+      }
+    });
+  });
+  document.addEventListener('pointerdown', event => {
+    if (!modelList.hidden && !$('.picker-area').contains(event.target)) closeModel();
+  });
+
+  let counterValue = 2480;
+  let paintedValue = counterValue;
+  let frame = null;
+  const renderNumber = number => { $('#counterValue').textContent = Math.round(number).toLocaleString('zh-CN'); };
+  const changeCounter = difference => {
+    const from = paintedValue, to = Math.max(0, counterValue + difference);
+    counterValue = to;
+    if (frame !== null) cancelAnimationFrame(frame);
+    if (reduced.matches) { paintedValue = to; renderNumber(to); }
+    else {
+      const start = performance.now();
+      const tick = now => {
+        const t = Math.min((now - start) / 390, 1);
+        const eased = 1 - Math.pow(1 - t, 3);
+        paintedValue = from + (to - from) * eased;
+        renderNumber(paintedValue);
+        if (t < 1) frame = requestAnimationFrame(tick); else { frame = null; paintedValue = to; }
+      };
+      frame = requestAnimationFrame(tick);
+    }
+    $('#counterDelta').textContent = (to - from >= 0 ? '+' : '') + Math.round(to - from) + ' · 当前 ' + to.toLocaleString('zh-CN');
+  };
+  $('#counterMinus').addEventListener('click', () => changeCounter(-120));
+  $('#counterPlus').addEventListener('click', () => changeCounter(120));
+
+  let incoming = 0;
+  const notices = [
+    { text: '组件规范已更新 · 5 分钟前', unread: true },
+    { text: '预览构建已完成 · 18 分钟前', unread: true }
+  ];
+  const bell = $('#bellButton');
+  const refreshNotices = () => {
+    const count = notices.filter(n => n.unread).length;
+    $('#unreadBadge').hidden = count === 0;
+    $('#unreadBadge').textContent = count > 9 ? '9+' : String(count);
+    $('#notificationHint').textContent = count ? '有 ' + count + ' 条未读通知。' : '所有通知均已阅读。';
+    const list = $('#notificationList');
+    list.replaceChildren();
+    notices.forEach(item => {
+      const li = document.createElement('li');
+      li.className = item.unread ? 'unread' : '';
+      li.textContent = item.text;
+      list.append(li);
+    });
+  };
+  bell.addEventListener('click', () => {
+    const panel = $('#notificationPanel');
+    panel.hidden = !panel.hidden;
+    bell.setAttribute('aria-expanded', String(!panel.hidden));
+  });
+  $('#pushNotification').addEventListener('click', () => {
+    incoming++;
+    notices.unshift({ text: '收到新的演示消息 #' + incoming + ' · 刚刚', unread: true });
+    if (notices.length > 6) notices.pop();
+    refreshNotices();
+    if (!reduced.matches) {
+      bell.classList.remove('ring');
+      void bell.offsetWidth;
+      bell.classList.add('ring');
+    }
+  });
+  bell.addEventListener('animationend', () => bell.classList.remove('ring'));
+  $('#markRead').addEventListener('click', () => {
+    notices.forEach(item => { item.unread = false; });
+    refreshNotices();
+  });
+  refreshNotices();
+
+  const updateTaskProgress = () => {
+    const items = $$('#taskList li');
+    const finished = items.filter(li => $('input',li).checked).length;
+    items.forEach(li => li.classList.toggle('done', $('input',li).checked));
+    const percent = items.length ? Math.round(finished / items.length * 100) : 0;
+    $('#taskStatus').textContent = '已完成 ' + finished + ' / ' + items.length;
+    $('#taskProgressFill').style.width = percent + '%';
+    $('#taskProgress').setAttribute('aria-valuenow', String(percent));
+  };
+  $('#taskList').addEventListener('change', updateTaskProgress);
+  $('#taskForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const field = $('#taskInput');
+    const value = field.value.trim();
+    if (!value) { field.focus(); return; }
+    const li = document.createElement('li');
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    const span = document.createElement('span');
+    span.className = 'task-label';
+    span.textContent = value;
+    label.append(checkbox, span);
+    li.append(label);
+    $('#taskList').append(li);
+    field.value = '';
+    field.focus();
+    updateTaskProgress();
+  });
+  updateTaskProgress();
+
+  let effort = '快速';
+  $$('.effort-group button').forEach(button => button.addEventListener('click', () => {
+    effort = button.dataset.effort;
+    $$('.effort-group button').forEach(item => item.setAttribute('aria-pressed', String(item === button)));
+  }));
+  let streamTimer = null;
+  const resetComposer = () => {
+    if (streamTimer !== null) clearInterval(streamTimer);
+    streamTimer = null;
+    $('#sendLabel').textContent = '发送';
+    $('#sendPrompt use').setAttribute('href', '#ic-send');
+    $('#promptText').disabled = false;
+    $('#promptText').focus();
+  };
+  const stopComposer = () => {
+    resetComposer();
+    $('#promptResult').textContent += '（已停止）';
+  };
+  $('#promptForm').addEventListener('submit', event => {
+    event.preventDefault();
+    if (streamTimer !== null) { stopComposer(); return; }
+    const prompt = $('#promptText').value.trim();
+    if (!prompt) { $('#promptText').focus(); return; }
+    const response = '模拟完成：已收到「' + prompt.slice(0, 38) + (prompt.length > 38 ? '…' : '') + '」，当前使用' + effort + '模式。你可以继续修改这个组件的布局与交互。';
+    let length = 0;
+    $('#promptResult').textContent = '';
+    $('#promptText').disabled = true;
+    $('#sendLabel').textContent = '停止';
+    $('#sendPrompt use').setAttribute('href', '#ic-x');
+    const step = reduced.matches ? response.length : 3;
+    streamTimer = setInterval(() => {
+      length = Math.min(response.length, length + step);
+      $('#promptResult').textContent = response.slice(0, length);
+      if (length >= response.length) resetComposer();
+    }, reduced.matches ? 1 : 42);
+    $('#promptText').value = '';
+  });
+  $('#promptText').addEventListener('keydown', event => {
+    if (event.key === 'Enter' && !event.shiftKey && !event.isComposing && !event.repeat) {
+      event.preventDefault();
+      $('#promptForm').requestSubmit();
+    }
+  });
+
+  const closeConfirm = () => { $('#deleteConfirm').hidden = true; $('#deleteTrigger').focus(); };
+  $('#deleteTrigger').addEventListener('click', () => { $('#deleteConfirm').hidden = false; $('#cancelDelete').focus(); });
+  $('#cancelDelete').addEventListener('click', closeConfirm);
+  $('#confirmDelete').addEventListener('click', () => {
+    $('#deleteConfirm').hidden = true;
+    $('#fileRow').hidden = true;
+    $('#deletedStatus').hidden = false;
+    $('#restoreDelete').focus();
+    showToast('success');
+  });
+  $('#restoreDelete').addEventListener('click', () => {
+    $('#fileRow').hidden = false;
+    $('#deletedStatus').hidden = true;
+    $('#deleteTrigger').focus();
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Escape') return;
+    if (!modelList.hidden) { closeModel(true); return; }
+    if (!$('#deleteConfirm').hidden) { closeConfirm(); return; }
+    if (!$('#notificationPanel').hidden) {
+      $('#notificationPanel').hidden = true;
+      bell.setAttribute('aria-expanded', 'false');
+      bell.focus();
+    }
+  });
+
+  let toastId = 0;
+  const toastCopy = {
+    success: ['操作完成', '演示状态已更新。', 'check'],
+    warning: ['请确认设置', '这是一条需要注意的提示。', 'info'],
+    info: ['预览提示', '所有操作都只发生在当前页面。', 'info']
+  };
+  function showToast(type) {
+    const [title, description, glyph] = toastCopy[type];
+    const toast = document.createElement('div');
+    toast.className = 'toast-item';
+    toast.id = 'sample-toast-' + (++toastId);
+    toast.setAttribute('role', 'status');
+    toast.append(icon(glyph));
+    const body = document.createElement('div');
+    const heading = document.createElement('b');
+    heading.textContent = title;
+    const p = document.createElement('p');
+    p.textContent = description;
+    body.append(heading, p);
+    toast.append(body);
+    const close = document.createElement('button');
+    close.className = 'toast-close';
+    close.type = 'button';
+    close.setAttribute('aria-label', '关闭消息');
+    close.append(icon('x'));
+    close.addEventListener('click', () => removeToast());
+    let timeout = setTimeout(removeToast, 4300);
+    function removeToast() {
+      clearTimeout(timeout);
+      toast.remove();
+    }
+    toast.append(close);
+    $('#toastHost').prepend(toast);
+    const all = $$('.toast-item');
+    all.slice(3).forEach(item => item.remove());
+  }
+  $$('[data-toast]').forEach(button => button.addEventListener('click', () => showToast(button.dataset.toast)));
+})();
+</script>
+</body>
+</html>

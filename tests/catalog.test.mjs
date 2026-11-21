@@ -45,7 +45,7 @@ test('三份手工精选 Demo 均在独立目录且带人工精调说明',async(
   const result=await inspectCatalog();
   assert.deepEqual(result.errors,[]);
   const curated=result.items.filter(x=>x.curated);
-  const ids=['desktop-shell-lab','gr8r-task-workbench','message-motion-lab'];
+  const ids=['desktop-shell-lab','gr8r-task-workbench','message-motion-lab','rare-interactions'];
   assert.deepEqual(curated.map(x=>x.id).sort(),ids.sort());
   for(const a of curated){
     assert.equal(a.source,'local');assert.equal(a.copyable,true);

@@ -444,6 +444,72 @@ def verify_glass_materials(browser, origin):
             context.close()
     print("玻璃材质回归通过：六材质、SVG 轮廓图、独立参数、背景/场景、移动端与截图。")
 
+def verify_rare_interactions(browser, origin):
+    """Rare UI 启发的原创 Demo：桌面和手机均须完整交互，不依赖外部组件源码。"""
+    for name, width, height in [("desktop", 1280, 800), ("mobile", 390, 844)]:
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            reduced_motion="reduce", locale="zh-CN",
+        )
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        try:
+            page.goto(origin + "demos/curated/rare-interactions/index.html", wait_until="domcontentloaded")
+            assert page.locator(".sample").count() == 8, "未找到八组交互组件"
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), name + ": 页面横向溢出"
+            page.locator("#themeToggle").click()
+            assert page.locator("html").get_attribute("data-theme") == "dark", "主题切换未生效"
+            page.locator(".pill-nav [data-route='assets']").click()
+            assert "素材" in page.locator("#navStatus").inner_text(), "分段导航状态未切换"
+
+            trigger = page.locator("#modelTrigger")
+            trigger.click()
+            assert page.locator("#modelList").is_visible(), "模型选择菜单未展开"
+            page.locator("[data-model='Focused']").click()
+            assert "Focused" in trigger.inner_text(), "模型选择未更新"
+            trigger.focus()
+            page.keyboard.press("ArrowDown")
+            page.keyboard.press("Escape")
+            assert not page.locator("#modelList").is_visible(), "模型选择的 Escape 无效"
+
+            page.locator("#counterPlus").click()
+            assert page.locator("#counterValue").inner_text() == "2,600", "数字变化未更新"
+            page.locator("#pushNotification").click()
+            page.locator("#bellButton").click()
+            assert page.locator("#notificationPanel").is_visible(), "通知面板未展示"
+            page.locator("#markRead").click()
+            assert page.locator("#unreadBadge").is_hidden(), "通知角标未清理"
+
+            page.locator("#taskList input").first.check()
+            assert "已完成 2 / 3" in page.locator("#taskStatus").inner_text(), "任务进度未更新"
+            page.locator("#promptText").fill("测试一个演示交互")
+            page.locator("[data-effort='深入']").click()
+            page.locator("#sendPrompt").click()
+            page.wait_for_function("document.querySelector(\"#promptResult\")?.textContent.startsWith(\"模拟完成\")", timeout=5000)
+
+            page.locator("#deleteTrigger").click()
+            page.locator("#cancelDelete").click()
+            assert not page.locator("#deleteConfirm").is_visible(), "取消删除未生效"
+            page.locator("#deleteTrigger").click()
+            page.locator("#confirmDelete").click()
+            assert page.locator("#fileRow").is_hidden(), "模拟删除未完成"
+            page.locator("#restoreDelete").click()
+            assert page.locator("#fileRow").is_visible(), "撤销删除未恢复"
+            page.locator('[data-toast="info"]').click()
+            assert page.locator(".toast-item").count() >= 1, "Toast 未显示"
+
+            page.locator('[data-filter="navigation"]').click()
+            assert page.locator(".sample:visible").count() == 2, "分类筛选不正确"
+            page.locator('[data-filter="all"]').click()
+            OUTPUT.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(OUTPUT / ("rare-interactions-" + name + ".png")), full_page=True, animations="disabled")
+            assert not errors, name + ": JavaScript 异常: " + "; ".join(errors)
+        finally:
+            context.close()
+    print("Rare UI 启发交互精选通过：桌面、手机、八组组件、键盘和反馈交互。")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -488,6 +554,7 @@ def main():
                 verify_react_interactions(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
+                verify_rare_interactions(browser, local)
             finally:
                 browser.close()
     finally:
