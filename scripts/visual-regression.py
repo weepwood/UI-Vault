@@ -315,7 +315,10 @@ def verify_liquid_orb_unified(browser, origin):
             page.keyboard.press("Escape")
             assert not size_menu.is_visible(), "Esc 不能关闭尺寸菜单"
             size_button.click()
-            page.locator("#engine").click()
+            if name == "mobile":
+                page.locator("#size-backdrop").click(position={"x": 10, "y": 30})
+            else:
+                page.locator("#engine").click()
             assert not size_menu.is_visible(), "点击菜单外没有关闭菜单"
             size_button.click()
             page.locator('#dialog-size-menu [data-size="standard"]').click()
