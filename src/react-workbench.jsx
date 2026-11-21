@@ -1,20 +1,8 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { flushSync } from 'react-dom';
 import { projectEmoji } from '../assets/core/workbench.js';
 
-/**
- * React 工作台入口：只负责项目列表与分类导航的声明式渲染。
- * 资源数据和状态仍由现有 core/* 模块提供；不接管独立 Demo 的 iframe DOM。
- * 通过稳定 root 与 keyed children，筛选与收藏不会重建整棵工作台。
- */
-const roots=new WeakMap();
-function renderInto(element,node){
-  let root=roots.get(element);
-  if(!root){root=createRoot(element);roots.set(element,root);}
-  // 兼容现有预览/键盘控制器对同步选中 DOM 的要求。
-  flushSync(()=>root.render(node));
-}
+// React 单根通过 Portals 接管所有交互区域；ProjectRow 与分类导航均为声明式组件。
 const stageLabels={draft:'待精调',refining:'精调中',stable:'已定稿'};
 const categoryIcons={style:'palette',component:'component',effect:'zap',layout:'panels-top-left',demo:'play',resource:'book-open',reference:'bookmark'};
 function Icon({name}){
@@ -55,17 +43,6 @@ export function CategoryNavigation({categories,current,settingsActive,onChange})
     </span>
     <span>{category.label}</span>
   </button>)}</>;
-}
-
-export function renderProjectList(element,props){
-  renderInto(element,<ProjectList {...props}/>);
-}
-export function renderCategoryNavigation(element,props){
-  renderInto(element,<CategoryNavigation {...props}/>);
-}
-export function unmountWorkbenchReact(element){
-  const root=roots.get(element);
-  if(root){flushSync(()=>root.unmount());roots.delete(element);}
 }
 
 import {useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
