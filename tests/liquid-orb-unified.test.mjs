@@ -25,6 +25,7 @@ test('玻璃球和思考对话框合并为一个可运行页面', () => {
 test('同一个 Canvas 在原位与原生对话框之间移动，关闭后归位', () => {
   assert.match(source,/modalSlot\.appendChild\(presentation\)/);
   assert.match(source,/modal\.showModal\(\)/);
+  assert.match(source,/modal\.addEventListener\("cancel", restorePresentation\)/);
   assert.match(source,/modal\.addEventListener\("close", restorePresentation\)/);
   assert.match(source,/viewport\.appendChild\(presentation\)/);
   assert.match(source,/modalClose\.focus\(\)/);
