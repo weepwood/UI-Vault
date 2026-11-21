@@ -674,6 +674,7 @@
     document.querySelector("#dialog-retry").addEventListener("click", () => location.reload());
     modalClose.addEventListener("click", () => modal.close());
     modal.addEventListener("click", event => { if (event.target === modal) modal.close(); });
+    modal.addEventListener("cancel", restorePresentation);
     modal.addEventListener("close", restorePresentation);
     if (!isEmbedMode) {
       document.body.dataset.dialogSize = "standard";
