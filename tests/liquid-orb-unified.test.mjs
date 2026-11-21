@@ -73,7 +73,7 @@ test('下拉菜单提供独立定位、ARIA 状态、完整键盘与外部点击
   assert.match(source,/data-size="compact"/);
   assert.match(source,/data-size="standard"/);
   assert.match(source,/data-size="large"/);
-  assert.match(source,/bottom:calc\(100% \+ 7px\)/);
+  assert.match(source,/bottom:calc\(100% \+ 9px\)/);
   assert.match(source,/\.size-menu\[hidden\]\{display:none!important\}/);
   assert.match(source,/sizePicker\.classList\.add\("is-open"\)/);
   assert.match(source,/sizePicker\.classList\.remove\("is-open"\)/);
@@ -89,4 +89,13 @@ test('下拉菜单提供独立定位、ARIA 状态、完整键盘与外部点击
   assert.match(source,/sizePicker\.appendChild\(sizeMenu\)/);
   assert.match(source,/sizeBackdrop\.hidden = true/);
   assert.match(source,/!sizePicker\.contains\(event\.target\) && !sizeMenu\.contains\(event\.target\)/);
+});
+
+test('尺寸面板的每行及说明与勾选图标有明确留白',()=>{
+  assert.match(source,/\.size-menu\{[^}]*display:flex;flex-direction:column;gap:8px/);
+  assert.match(source,/\.size-menu \[role=option\]\{[^}]*gap:12px;[^}]*min-height:44px/);
+  assert.match(source,/\.size-menu \.size-note\{[^}]*margin-left:14px/);
+  assert.match(source,/\.size-menu svg\{[^}]*margin-left:4px/);
+  assert.match(source,/\.size-menu\.is-sheet\{[^}]*gap:10px;padding:13px/);
+  assert.match(source,/\.size-menu\.is-sheet \[role=option\]\{[^}]*min-height:54px/);
 });
