@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><title>编辑排版 · Style Atlas / UI Vault</title>
+<link rel="stylesheet" href="../../../assets/style-atlas/gallery.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/previews-a.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/previews-b.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/previews-c.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/themes.css">
+<link rel="stylesheet" href="../../../assets/style-atlas/new-style-previews.css">
+<style>
+:root{--page:#f6f7f7;--surface:#fff;--surface-2:#f1f2f3;--ink:#20272a;--muted:#627074;--line:#dfe4e6;--accent:#315e80;--ease:cubic-bezier(.2,.8,.2,1)}
+*,*::before,*::after{box-sizing:border-box}body{margin:0;min-width:300px;background:#f6f7f7;color:#20272a;font:14px/1.6 ui-sans-serif,system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}
+header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px clamp(16px,4vw,42px);border-bottom:1px solid #dfe4e6;background:#fff}
+header .eyeline{font-size:12px;color:#667177}header strong{font-size:13px}header a{font-size:12px;color:#315e80;text-decoration:none}
+main{max-width:1120px;margin:0 auto;padding:clamp(18px,4vw,44px)}h1{font-size:clamp(25px,3.4vw,38px);line-height:1.25;letter-spacing:-.035em;margin:2px 0 6px}h2{font-size:15px;letter-spacing:-.012em;margin:0 0 16px}p{margin:0}.summary{color:#5c686e;max-width:80ch;font-size:13px;line-height:1.85}.english{color:#67747b;font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,.9fr);gap:22px;margin-top:28px;align-items:start}
+.panel{background:#fff;border:1px solid #e1e5e7;border-radius:12px;overflow:hidden}.panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:15px 20px;border-bottom:1px solid #edf0f1}
+.panel-header h2{margin:0}.badge{font-size:11px;color:#637176}.preview-viewport{padding:clamp(14px,3.5vw,28px);background:#f2f3f4;display:grid;place-items:center}
+.style-preview{width:100%;max-width:570px;height:335px;padding:15px;border-radius:4px}.mini-window{height:100%;width:100%}.detail{padding:18px 20px}
+.swatches{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.swatch{border:0;min-width:0;background:none;padding:0;cursor:pointer;text-align:left}.swatch span{display:block;width:100%;height:40px;border:1px solid #00000012;border-radius:5px}.swatch b{display:block;font:10px/1.4 ui-monospace,Consolas,monospace;font-weight:500;margin-top:5px;overflow-wrap:anywhere}
+table{width:100%;border-collapse:collapse;font-size:12px}th,td{border-bottom:1px solid #edf0f1;text-align:left;padding:8px 4px}th{font-weight:500;color:#606c72;width:34%}code{font:11px/1.5 ui-monospace,Consolas,monospace;overflow-wrap:anywhere}
+button.action{border:1px solid #cdd6da;border-radius:6px;background:#fff;color:#30404a;padding:8px 10px;font-size:12px;cursor:pointer}
+.note{margin-top:18px;color:#687478;font-size:11px}.details-list{padding-left:18px;margin:0;color:#475157;font-size:12px;line-height:1.9}.panel+.panel{margin-top:16px}.subhead{font-weight:650;font-size:12px;margin-bottom:8px}.footer{font-size:12px;color:#6d797e;margin:28px 0 0;border-top:1px solid #e1e6e8;padding-top:16px}
+button:focus-visible,a:focus-visible{outline:3px solid #477ea8;outline-offset:3px}@media(max-width:800px){.layout{grid-template-columns:1fr}.style-preview{height:330px}.preview-viewport{padding:12px}}@media(max-width:420px){.style-preview{height:290px;padding:9px}.swatches{gap:4px}.swatch span{height:34px}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important}}
+</style></head><body><header><div><strong>Style Atlas</strong> <span class="eyeline">/ 独立风格样本</span></div><a href="https://github.com/weepwood/style-atlas" target="_blank" rel="noopener noreferrer">原始项目</a></header><main><div class="english">Editorial</div><h1>编辑排版</h1><p class="summary">编辑排版强调字体层级、栏宽、图片裁切和留白节奏，视觉重点不是装饰组件，而是内容本身。适合长文、品牌故事和文化内容。</p>
+<div class="layout"><div><section class="panel"><div class="panel-header"><h2>视觉预览</h2><span class="badge">来自原版样机 · editorial</span></div><div class="preview-viewport"><div class="style-preview preview-editorial"><div class="mini-window editorial-ui">
+          <div class="mini-nav"><span>THE NEW ARCHIVE</span><span>ISSUE 08 — 2026</span></div>
+          <div class="editorial-grid">
+            <div class="editorial-aside">Culture / Form / Process</div>
+            <div class="editorial-main">
+              <h4>Objects<br>with memory.</h4>
+              <div class="editorial-image"></div>
+              <div class="editorial-caption"><span>Photography: A. Mori</span><span>READ 08 MIN</span></div>
+            </div>
+          </div>
+        </div></div></div></section>
+<section class="panel" style="margin-top:16px"><div class="panel-header"><h2>适用与局限</h2></div><div class="detail"><p class="subhead">适用场景</p><ul class="details-list"><li>数字杂志与独立媒体</li><li>品牌故事与年度报告</li><li>文化、建筑和时尚网站</li><li>深度专题与长文阅读</li></ul><p class="subhead" style="margin-top:18px">实施时注意</p><ul class="details-list"><li>中文衬线字体的加载与适配较复杂</li><li>移动端需要重做阅读节奏</li><li>过度追求杂志感可能牺牲操作效率</li></ul></div></section></div>
+<div><section class="panel"><div class="panel-header"><h2>颜色调色板</h2><span class="badge">点击色块复制</span></div><div class="detail"><div class="swatches"><button class="swatch" type="button" title="复制 #F2EEE5" data-copy="#F2EEE5" aria-label="复制色值 #F2EEE5"><span style="background:#F2EEE5"></span><b>#F2EEE5</b></button><button class="swatch" type="button" title="复制 #1B1B19" data-copy="#1B1B19" aria-label="复制色值 #1B1B19"><span style="background:#1B1B19"></span><b>#1B1B19</b></button><button class="swatch" type="button" title="复制 #D55733" data-copy="#D55733" aria-label="复制色值 #D55733"><span style="background:#D55733"></span><b>#D55733</b></button><button class="swatch" type="button" title="复制 #BDC8AF" data-copy="#BDC8AF" aria-label="复制色值 #BDC8AF"><span style="background:#BDC8AF"></span><b>#BDC8AF</b></button><button class="swatch" type="button" title="复制 #8A857C" data-copy="#8A857C" aria-label="复制色值 #8A857C"><span style="background:#8A857C"></span><b>#8A857C</b></button></div></div></section>
+<section class="panel"><div class="panel-header"><h2>原始设计 Token</h2><button class="action" type="button" id="copy-tokens">复制 JSON</button></div><div class="detail"><table><tbody><tr><th scope="row">serif</th><td><code>Georgia, serif</code></td></tr><tr><th scope="row">textWidth</th><td><code>68ch</code></td></tr><tr><th scope="row">rule</th><td><code>1px solid currentColor</code></td></tr><tr><th scope="row">headlineTracking</th><td><code>-0.055em</code></td></tr><tr><th scope="row">paper</th><td><code>#F2EEE5</code></td></tr></tbody></table><p class="note">字段保留源项目原始名称与值，不将演示色值误称为可直接投入生产的语义 Token。</p></div></section></div></div>
+<p class="footer">教学与设计研究样例；原仓库未声明通用开源许可证。此处为原作者 UI Vault 内的拆分展示，复制到其他项目时请核对具体授权。</p></main>
+<script type="application/json" id="atlas-data">{"id":"editorial","name":"编辑排版","en":"Editorial","category":["内容","品牌"],"tags":["衬线","杂志感"],"summary":"以版式、留白和图文节奏为核心，让网页像一份可阅读的数字刊物。","lead":"编辑排版强调字体层级、栏宽、图片裁切和留白节奏，视觉重点不是装饰组件，而是内容本身。适合长文、品牌故事和文化内容。","bestFor":["数字杂志与独立媒体","品牌故事与年度报告","文化、建筑和时尚网站","深度专题与长文阅读"],"risks":["中文衬线字体的加载与适配较复杂","移动端需要重做阅读节奏","过度追求杂志感可能牺牲操作效率"],"palette":["#F2EEE5","#1B1B19","#D55733","#BDC8AF","#8A857C"],"tokens":{"serif":"Georgia, serif","textWidth":"68ch","rule":"1px solid currentColor","headlineTracking":"-0.055em","paper":"#F2EEE5"}}</script>
+<script>
+const data=JSON.parse(document.getElementById('atlas-data').textContent);
+async function copy(value,element){try{await navigator.clipboard.writeText(value);const old=element.textContent;element.textContent='已复制';setTimeout(()=>{element.textContent=old},1200)}catch{element.title='当前环境不允许剪贴板写入，请通过源码查看值'}}
+document.getElementById('copy-tokens').addEventListener('click',e=>copy(JSON.stringify({id:data.id,name:data.name,palette:data.palette,tokens:data.tokens},null,2),e.currentTarget));
+document.querySelectorAll('[data-copy]').forEach(node=>node.addEventListener('click',()=>copy(node.dataset.copy,node)));
+</script></body></html>
