@@ -3,7 +3,7 @@ export const ICON_NAMES=Object.freeze([
   'layout-grid','heart','git-branch','sliders-horizontal','palette','component',
   'zap','panels-top-left','play','bookmark','search','menu','external-link',
   'plus','x','copy','code-xml','monitor','tablet','smartphone','maximize-2',
-  'check','arrow-up-down','book-open'
+  'check','arrow-up-down','book-open','folder','file-code','settings','list-todo','send','reply','calendar-days'
 ]);
 const ICON_SET=new Set(ICON_NAMES);
 export const ICON_SPRITE='./assets/icons/lucide.svg';
