@@ -472,8 +472,7 @@ body[data-theme="dark"] .mat-liquid .material,body[data-theme="dark"] .mat-gel .
         ctx.beginPath();
         for(let n=-h;n<w+h;n+=86){ctx.moveTo(n,0);ctx.lineTo(n+h*.5,h);}
         ctx.strokeStyle='rgba(28,67,100,.65)';ctx.lineWidth=3;ctx.stroke();
-        ctx.beginPath();ctx.arc(w*.64,h*.46,Math.min(w,h)*.27,0,Math.PI*2);
-        ctx.strokeStyle='rgba(242,246,250,.79)';ctx.lineWidth=6;ctx.stroke();
+        // 保留直线校验折射，避免大圆环被误认成镜片自带的装饰。
       }
     } else if(wallpaper==='texture'){
       for(let y=10;y<h;y+=26)for(let x=10;x<w;x+=26){
