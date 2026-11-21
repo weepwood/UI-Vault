@@ -5,6 +5,7 @@
 - [GitHub 仓库](https://github.com/weepwood/UI-Vault)
 - [预期 GitHub Pages 站点](https://weepwood.github.io/UI-Vault/)（以部署结果为准）
 - [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [架构](docs/ARCHITECTURE.md)
+- [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
 
 ## 快速开始
 
