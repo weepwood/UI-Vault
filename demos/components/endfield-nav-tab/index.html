@@ -1,0 +1,299 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#242526">
+<title>终末地导航标签 · 界面组件 · UI Vault</title>
+<style>
+/*
+ * TUNING —— 全部可调参数集中在 :root，逐项对应原站实测值（1920 视口 / root 16px）
+ * --accent        斜纹底色        原站 #f7cd5c
+ * --gold          激活竖条/光晕金  原站 #dabb65
+ * --stripe-size   斜纹周期        原站 .5rem = 8px
+ * --stripe-fade   斜纹左端渐隐宽   原站 10rem = 160px
+ * --overlap       斜纹右端钻入按钮 原站 8px（.5rem）
+ * --radius        按钮圆角        原站 .379rem = 6.064px
+ * --dur / --ease  过渡时长/曲线   原站 .2s / ease（浏览器 computed 实测）
+ * --halo-*        标题四层白光晕   原站 0 0 4/8/12/16px #e1e1e0
+ * --stage-scale   整体缩放，便于 iframe 一屏看全 7 个标签
+ *
+ * 合规说明：本 Demo 独立重实现原站的几何、遮罩与动效方法；
+ * 字体改用系统字体栈，激活插画改为 CSS 重绘的抽象放射图案，
+ * 未复制原站字体文件、插画位图或商标。原站来源见页脚链接。
+ */
+:root{
+  --stage:#242526;--stage-2:#2b2c2e;--panel:#1d1e20;--line:#3a3b3d;
+  --ink:#ececec;--muted:#9a9a9c;--accent:#f7cd5c;--gold:#dabb65;
+  --stripe-size:.5rem;--stripe-fade:10rem;--overlap:.5rem;--radius:.379rem;
+  --dur:.2s;--ease:ease;--stage-scale:.78;
+  --halo-1:#e1e1e0 0 0 .25rem;--halo-2:#e1e1e0 0 0 .5rem;
+  --halo-3:#e1e1e0 0 0 .75rem;--halo-4:#e1e1e0 0 0 1rem;
+  font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{font-size:16px}
+body{margin:0;min-height:100vh;background:var(--stage);color:var(--ink);font-size:14px;line-height:1.6}
+button,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+a{color:var(--accent);text-decoration:none}
+a:hover{text-decoration:underline}
+
+.wrap-page{max-width:1080px;margin:0 auto;padding:22px clamp(14px,3vw,32px) 40px}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;
+  padding-bottom:16px;border-bottom:1px solid var(--line)}
+.topbar h1{margin:0;font-size:19px;letter-spacing:-.01em}
+.topbar h1 span{color:var(--accent)}
+.topbar p{margin:4px 0 0;color:var(--muted);font-size:12px;max-width:60ch}
+.src-pill{flex:none;border:1px solid var(--line);border-radius:999px;padding:6px 12px;
+  font-size:11px;color:var(--muted);white-space:nowrap}
+
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;margin-top:20px;align-items:start}
+
+/* 舞台：深色，模拟原站承载环境；组件按比例缩放以适配预览 */
+.stage{position:relative;border:1px solid var(--line);border-radius:14px;
+  background:radial-gradient(ellipse 70% 60% at 18% 30%,rgba(247,205,92,.08),transparent 70%),var(--stage-2);
+  padding:18px 16px 22px;overflow:auto}
+.stage-label{font:11px ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.08em;
+  color:var(--muted);text-transform:uppercase;margin:0 0 12px 2px}
+.stage-label b{color:var(--accent)}
+.scale-note{display:flex;align-items:center;gap:9px;margin:14px 2px 0;font-size:11px;color:var(--muted)}
+.scale-note input{flex:1;max-width:180px;accent-color:var(--accent)}
+
+.rail-viewport{width:100%;display:flex;justify-content:center}
+.tab-rail{
+  /* 原站：每个标签由 .JRtBdW 包裹，7 个竖排；这里整体缩放便于查看 */
+  transform:scale(var(--stage-scale));transform-origin:top center;
+  display:flex;flex-direction:column;gap:1.4375rem;width:29.25rem;flex:none;
+}
+
+/* ---------- 组件本体：映射原站 JRtBdW ---------- */
+.tab-wrap{position:relative;padding-left:calc(100% - 19.5rem);width:29.25rem}
+/* 斜纹装饰条：原站 .JRtBdW:before —— 右端钻入按钮 8px + 两端 mask 渐隐 */
+.tab-wrap::before{
+  content:"";position:absolute;top:0;right:19rem;width:20rem;height:100%;
+  background-color:var(--accent);
+  background-image:linear-gradient(-45deg,transparent 0,transparent 20.5805%,#fff 20.5805%,#fff 29.4195%,
+    transparent 29.4195%,transparent 70.5805%,#fff 70.5805%,#fff 79.4195%,transparent 79.4195%,transparent 100%);
+  background-repeat:repeat;background-size:var(--stripe-size) var(--stripe-size);
+  -webkit-mask-image:linear-gradient(270deg,transparent 0,#fff var(--overlap),#fff calc(100% - var(--stripe-fade)),transparent 100%);
+  mask-image:linear-gradient(270deg,transparent 0,#fff var(--overlap),#fff calc(100% - var(--stripe-fade)),transparent 100%);
+  opacity:0;transition:opacity var(--dur) var(--ease);pointer-events:none;
+}
+.tab-wrap.is-active::before{opacity:.5}
+
+/* 按钮：原站 .KHykTF */
+.tab-btn{
+  box-sizing:border-box;position:relative;overflow:visible;display:flex;flex-direction:column;
+  width:16.25rem;height:5.125rem;padding:1.42176rem 0 0 1.99056rem;
+  background:transparent;border:0;border-radius:var(--radius);outline:0;text-align:left;
+  color:rgba(255,255,255,.92);
+  transition:color var(--dur) var(--ease),filter var(--dur) var(--ease);
+}
+.tab-btn:focus-visible{outline:2px solid #fff100;outline-offset:4px}
+/* 背景层：原站 .xh6xJE */
+.tab-bg{position:absolute;inset:0;border-radius:var(--radius);
+  background:rgba(55,55,57,.6);transition:background var(--dur) var(--ease)}
+/* 插画层：原站 .ntFJ5x —— CSS 重绘的抽象放射图案，替代原站位图素材 */
+.tab-art{position:absolute;inset:0;border-radius:var(--radius);overflow:hidden;opacity:0;
+  box-shadow:0 .25rem .75rem rgba(0,0,0,.35);transition:opacity var(--dur) var(--ease);
+  background:
+    radial-gradient(circle at 82% 50%,rgba(255,246,214,.95) 0 5%,transparent 6%),
+    conic-gradient(from 12deg at 82% 50%,#ffd76b 0 9%,#ff9d5c 9% 18%,#e45a7a 18% 27%,
+      #8f5fc4 27% 36%,#ffd76b 36% 45%,#ff9d5c 45% 54%,transparent 54%),
+    linear-gradient(120deg,#3a2f52,#1b1b1e);
+}
+.tab-art::after{content:"";position:absolute;inset:0;
+  background:repeating-linear-gradient(115deg,transparent 0 9px,rgba(255,255,255,.08) 9px 10px)}
+/* 左侧竖条：原站 .KHykTF:after */
+.tab-btn::after{content:"";position:absolute;left:.875rem;top:50%;transform:translateY(-50%);
+  width:.3125rem;height:1rem;border-radius:.1875rem;background:#818081;
+  transition:height var(--dur) var(--ease),background-color var(--dur) var(--ease);z-index:2}
+/* 标题：原站 .FWCA9B */
+.tab-title{position:relative;z-index:2;flex:none;line-height:1.159;
+  font-size:1.56396rem;font-weight:400;letter-spacing:-.03132rem;
+  text-shadow:0 0 .25rem rgba(225,225,224,0),0 0 .5rem rgba(225,225,224,0);
+  transition:text-shadow var(--dur) var(--ease)}
+/* 副标题：原站 .KHykTF>small */
+.tab-sub{position:relative;z-index:2;flex:none;margin-top:.15rem;
+  font-size:.85308rem;letter-spacing:-.01704rem;line-height:1.172;
+  color:rgba(255,255,255,.3);transition:color var(--dur) var(--ease),opacity var(--dur) var(--ease)}
+
+/* ---------- 激活态：原站 P26xDN 挂在父容器上 ---------- */
+.tab-wrap.is-active .tab-art{opacity:1}
+.tab-wrap.is-active .tab-btn::after{height:3.25rem;background-color:var(--gold)}
+.tab-wrap.is-active .tab-title{color:#151515;
+  text-shadow:var(--halo-1),var(--halo-2),var(--halo-3),var(--halo-4)}
+.tab-wrap.is-active .tab-sub{opacity:0}
+
+/* ---------- hover 反白：原站未激活项 hover ---------- */
+.tab-wrap:not(.is-active) .tab-btn:hover{color:#151515}
+.tab-wrap:not(.is-active) .tab-btn:hover .tab-title{
+  text-shadow:var(--halo-1),var(--halo-2),var(--halo-3),var(--halo-4)}
+.tab-wrap:not(.is-active) .tab-btn:hover .tab-sub{color:rgba(21,21,21,.3)}
+.tab-wrap:not(.is-active) .tab-btn:hover .tab-bg{background:#e1e1e0}
+.tab-wrap:not(.is-active) .tab-btn:hover::after{background-color:var(--gold)}
+
+/* ---------- 说明面板 ---------- */
+.panel{display:grid;gap:12px}
+.card{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:14px 16px}
+.card h2{margin:0 0 10px;font-size:13px;font-weight:600}
+.kv{display:grid;grid-template-columns:88px 1fr;gap:6px 10px;font-size:12px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:11px;color:var(--ink)}
+.kv dd em{color:var(--accent);font-style:normal}
+.state-name{font-size:16px;font-weight:600;color:var(--accent)}
+.desc{margin:8px 0 0;font-size:12px;color:var(--muted);line-height:1.7}
+.desc code{color:var(--ink);background:#2d2e30;padding:1px 5px;border-radius:4px;font-size:11px}
+.hint{font-size:11px;color:var(--muted);margin:0}
+kbd{font:11px ui-monospace,monospace;background:#2d2e30;border:1px solid var(--line);
+  border-bottom-width:2px;border-radius:4px;padding:1px 5px;color:var(--ink)}
+
+footer{margin-top:22px;padding-top:14px;border-top:1px solid var(--line);
+  font-size:11px;color:var(--muted);line-height:1.8}
+footer b{color:var(--ink)}
+
+@media(max-width:820px){
+  .layout{grid-template-columns:1fr}
+  .src-pill{display:none}
+  .stage{padding:14px 8px 18px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:0s!important;animation:none!important}
+  html{scroll-behavior:auto}
+}
+</style></head>
+<body>
+<div class="wrap-page">
+
+  <header class="topbar">
+    <div>
+      <h1><span>界面组件 · </span>导航标签 Nav Tab</h1>
+      <p>从《明日方舟：终末地》版本导览页提取的交互方法，独立重实现。保留斜纹遮罩、圆角交叠、四层光晕与过渡曲线的精确参数。</p>
+    </div>
+    <span class="src-pill">KHykTF · JRtBdW · P26xDN</span>
+  </header>
+
+  <div class="layout">
+
+    <section class="stage" aria-label="导航标签组件预览">
+      <p class="stage-label">COMPONENT · <b>nav tab</b> · 竖排 7 项</p>
+
+      <div class="rail-viewport">
+        <div class="tab-rail" role="tablist" aria-label="版本内容导航" aria-orientation="vertical" id="rail"></div>
+      </div>
+
+      <div class="scale-note">
+        <label for="scale">舞台缩放</label>
+        <input id="scale" type="range" min="0.5" max="0.95" step="0.01" value="0.78">
+        <span id="scaleVal">78%</span>
+      </div>
+    </section>
+
+    <aside class="panel">
+      <div class="card">
+        <h2>当前状态</h2>
+        <div class="state-name" id="stateName">内容总览</div>
+        <p class="desc">点击任一标签，或用 <kbd>↑</kbd> <kbd>↓</kbd> <kbd>Home</kbd> <kbd>End</kbd> 切换。<br>激活态由父容器状态类驱动，而非按钮本身。</p>
+      </div>
+
+      <div class="card">
+        <h2>关键参数（原站实测）</h2>
+        <dl class="kv">
+          <dt>斜纹底色</dt><dd><em>#f7cd5c</em></dd>
+          <dt>斜纹周期</dt><dd>8px · -45°</dd>
+          <dt>两端渐隐</dt><dd>mask 270deg</dd>
+          <dt>钻入交叠</dt><dd>8px → 圆角 <em>6.06px</em></dd>
+          <dt>标题光晕</dt><dd>4 / 8 / 12 / 16px</dd>
+          <dt>竖条</dt><dd>5×16 → 5×52px</dd>
+          <dt>过渡</dt><dd>.2s <em>ease</em></dd>
+        </dl>
+      </div>
+
+      <div class="card">
+        <h2>为什么好看</h2>
+        <p class="desc">斜纹右端多伸 <code>8px</code> 钻进按钮圆角下方，再用 <code>mask</code> 把这 8px 渐隐——交接处因此没有硬直角。所有反馈统一走 <code>ease .2s</code>，分层的光晕、插画、竖条各自过渡。</p>
+      </div>
+
+      <p class="hint">全部参数可在源码顶部 TUNING 注释处修改；字体与插画为合规替代实现。</p>
+    </aside>
+  </div>
+
+  <footer>
+    <b>来源：</b><a href="https://endfield.hypergryph.com/version_briefing/latest" target="_blank" rel="noopener">终末地版本导览页</a>
+    · 几何、遮罩与动效参数取自该页公开渲染样式，2026-11-21 浏览器实测。<br>
+    <b>合规：</b>本页为学习性独立重实现，使用系统字体栈与 CSS 重绘图案，未复制原站内嵌字体、插画位图或商标；原 UI 版权归权利方所有。
+  </footer>
+
+</div>
+
+<script>
+/* 7 个标签，内容取自原站版本导览；副标题沿用原站占位符 */
+const TABS = [
+  '内容总览','新干员','新武器','新活动','新区域','新剧情','体验优化'
+];
+const rail = document.getElementById('rail');
+const stateName = document.getElementById('stateName');
+
+TABS.forEach((label, i) => {
+  const wrap = document.createElement('div');
+  wrap.className = 'tab-wrap' + (i === 0 ? ' is-active' : '');
+  wrap.setAttribute('role','presentation');
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'tab-btn';
+  btn.setAttribute('role','tab');
+  btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+  btn.tabIndex = i === 0 ? 0 : -1;
+  btn.dataset.index = String(i);
+  btn.innerHTML =
+    '<span class="tab-bg" aria-hidden="true"></span>' +
+    '<span class="tab-art" aria-hidden="true"></span>' +
+    '<span class="tab-title">' + label + '</span>' +
+    '<small class="tab-sub" aria-hidden="true">-/////////-</small>';
+  wrap.appendChild(btn);
+  rail.appendChild(wrap);
+});
+
+const wraps = [...rail.querySelectorAll('.tab-wrap')];
+const btns  = [...rail.querySelectorAll('.tab-btn')];
+
+function activate(i, focus){
+  wraps.forEach((w, idx) => w.classList.toggle('is-active', idx === i));
+  btns.forEach((b, idx) => {
+    b.setAttribute('aria-selected', idx === i ? 'true' : 'false');
+    b.tabIndex = idx === i ? 0 : -1;
+  });
+  stateName.textContent = TABS[i];
+  if (focus) btns[i].focus();
+}
+
+btns.forEach((b, i) => {
+  b.addEventListener('click', () => activate(i, false));
+});
+
+/* 竖排 tablist 的键盘契约：上下 / Home / End */
+rail.addEventListener('keydown', (e) => {
+  const cur = btns.findIndex(b => b === document.activeElement);
+  if (cur < 0) return;
+  let next = cur;
+  if (e.key === 'ArrowDown' || e.key === 'ArrowRight') next = (cur + 1) % btns.length;
+  else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') next = (cur - 1 + btns.length) % btns.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = btns.length - 1;
+  else return;
+  e.preventDefault();
+  activate(next, true);
+});
+
+/* 舞台缩放控制 */
+const scale = document.getElementById('scale');
+const scaleVal = document.getElementById('scaleVal');
+scale.addEventListener('input', () => {
+  document.documentElement.style.setProperty('--stage-scale', scale.value);
+  scaleVal.textContent = Math.round(scale.value * 100) + '%';
+});
+</script>
+</body></html>
