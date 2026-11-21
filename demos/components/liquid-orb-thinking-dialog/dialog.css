@@ -4,9 +4,9 @@
  */
 .lod-overlay{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:20px;background:rgba(1,3,10,.91);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
 .lod-overlay[hidden]{display:none!important}
-.lod-panel{position:relative;display:flex;align-items:center;justify-content:space-between;gap:clamp(22px,4.5vw,74px);width:min(1030px,90vw);min-height:clamp(190px,29vw,382px);padding:clamp(20px,4.4vw,68px);border:1px solid rgba(184,190,210,.25);border-radius:999px;background:radial-gradient(ellipse at 49% 110%,rgba(56,41,73,.20),transparent 62%),linear-gradient(150deg,rgba(22,24,28,.98),rgba(12,14,17,.99));box-shadow:inset 0 1px 1px rgba(255,255,255,.095),0 24px 80px rgba(0,0,0,.42);color:#a6a7ae}
+.lod-panel{position:relative;display:flex;align-items:center;justify-content:space-between;gap:clamp(18px,3.3vw,46px);width:min(790px,calc(100vw - 36px));min-height:clamp(166px,24vw,265px);padding:clamp(18px,3.2vw,39px);border:1px solid rgba(184,190,210,.25);border-radius:999px;background:radial-gradient(ellipse at 49% 110%,rgba(56,41,73,.20),transparent 62%),linear-gradient(150deg,rgba(22,24,28,.98),rgba(12,14,17,.99));box-shadow:inset 0 1px 1px rgba(255,255,255,.095),0 24px 80px rgba(0,0,0,.42);color:#a6a7ae}
 .lod-panel:focus{outline:none}
-.lod-art{position:relative;flex:0 0 clamp(144px,24vw,260px);width:clamp(144px,24vw,260px);aspect-ratio:1;display:grid;place-items:center}
+.lod-art{position:relative;flex:0 0 clamp(106px,19vw,178px);width:clamp(106px,19vw,178px);aspect-ratio:1;display:grid;place-items:center}
 .lod-viewport{position:absolute;inset:0;border-radius:50%;overflow:hidden;opacity:0;transition:opacity .32s ease}
 .lod-ready .lod-viewport{opacity:1}
 .lod-viewport iframe{display:block;width:100%;height:100%;border:0;background:transparent}
@@ -19,15 +19,15 @@
 .lod-retry{border:1px solid rgba(196,202,226,.28);border-radius:7px;background:#282b35;color:#e5e7f1;font-size:12px;padding:7px 11px;cursor:pointer}
 .lod-retry[hidden]{display:none!important}
 .lod-copy{flex:1;display:flex;align-items:center;justify-content:flex-start;min-width:0}
-.lod-text{margin:0;color:rgba(173,174,182,.67);font:600 clamp(37px,6.7vw,92px)/1.15 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"PingFang SC",sans-serif;letter-spacing:-.035em;overflow-wrap:anywhere}
-.lod-close{position:absolute;right:clamp(25px,4.5vw,60px);top:clamp(19px,3vw,39px);width:28px;height:28px;display:grid;place-items:center;border:0;background:transparent;color:rgba(217,221,237,.35);border-radius:999px;cursor:pointer;transition:color .18s,background-color .18s}
+.lod-text{margin:0;color:rgba(173,174,182,.67);font:600 clamp(27px,4.5vw,61px)/1.15 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"PingFang SC",sans-serif;letter-spacing:-.035em;overflow-wrap:anywhere}
+.lod-close{position:absolute;right:clamp(24px,3.6vw,43px);top:clamp(17px,2.7vw,27px);width:28px;height:28px;display:grid;place-items:center;border:0;background:transparent;color:rgba(217,221,237,.35);border-radius:999px;cursor:pointer;transition:color .18s,background-color .18s}
 .lod-close:hover,.lod-close:focus-visible{color:#f1f2f6;background:#ffffff13}
 .lod-close:focus-visible,.lod-retry:focus-visible{outline:2px solid #b1bcff;outline-offset:2px}
 .lod-close svg{width:16px;height:16px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round}
 @media(max-width:720px){
   .lod-panel{width:min(96vw,670px);min-height:170px;padding:23px 30px;gap:23px}
   .lod-art{flex-basis:clamp(102px,26vw,160px);width:clamp(102px,26vw,160px)}
-  .lod-text{font-size:clamp(27px,5.5vw,48px)}
+  .lod-text{font-size:clamp(27px,4.6vw,42px)}
   .lod-track{height:9px}
   .lod-close{right:22px;top:15px}
 }
@@ -42,4 +42,18 @@
 }
 @media(prefers-reduced-motion:reduce){
   .lod-viewport,.lod-fill,.lod-close{transition:none!important}
+}
+
+/* Responsive polish: container-first sizing, balanced orb/text and narrower mobile pills. */
+.lod-panel{max-width:100%;overflow:hidden}
+.lod-art{min-width:0}
+.lod-text{min-width:0;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+@media(max-width:500px){
+ .lod-overlay{padding:8px}
+ .lod-panel{width:100%;min-height:132px;padding:17px 20px;gap:12px}
+ .lod-art{flex-basis:clamp(84px,24vw,118px);width:clamp(84px,24vw,118px)}
+ .lod-text{font-size:clamp(24px,6vw,34px)}
+ .lod-close{top:8px;right:13px}
+ .lod-loading{gap:9px}
+ .lod-loading-label{font-size:10px}
 }

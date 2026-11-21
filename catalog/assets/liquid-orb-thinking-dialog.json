@@ -2,7 +2,7 @@
   "id": "liquid-orb-thinking-dialog",
   "title": "液态玻璃思考对话框",
   "subtitle": "Liquid Orb Thinking Dialog",
-  "description": "参照深色胶囊对话框设计，左侧实时 WebGPU 液态玻璃球，右侧 Thinking… 文字；首帧准备期间以渐变进度条代替圆形占位，并提供可复用的 JavaScript 控制接口。",
+  "description": "与玻璃球合并到统一演示页面；保留原有对话框入口及可复用 JS/CSS，支持响应式胶囊尺寸与可配置文字。",
   "type": "component",
   "source": "local",
   "tags": [
@@ -19,19 +19,19 @@
     "WebGPU"
   ],
   "preview": "demos/components/liquid-orb-thinking-dialog/index.html",
-  "code": "demos/components/liquid-orb-thinking-dialog/index.html",
+  "code": "demos/components/liquid-orb-thinking-dialog/dialog.js",
   "publish": [
     "demos/components/liquid-orb-thinking-dialog/dialog.js",
     "demos/components/liquid-orb-thinking-dialog/dialog.css"
   ],
   "license": "UI 框架为本仓新增；玻璃球着色器来源于用户提供代码（原始许可证未注明）",
   "cover": "glass",
-  "featured": true,
+  "featured": false,
   "created": "2026-11-21",
   "copyable": false,
   "reuseNotes": [
-    "导入 dialog.js 的 createLiquidOrbDialog，搭配 dialog.css，即可创建可控制的模态胶囊对话框。",
-    "通过 postMessage 接收现有 WebGPU 组件的真实加载阶段与首帧就绪通知，不使用虚假百分比动画。",
-    "支持 Esc、关闭按钮、遮罩点击、焦点恢复、流速状态控制和 WebGPU 失败重试。"
+    "旧对话框预览链接自动跳转到统一展示页的思考对话框模式，保留原有收藏和分享入口。",
+    "独立复用时可使用 dialog.js 与 dialog.css；示例页使用单个 WebGPU Canvas，减少多重渲染开销。",
+    "组件最大宽度已收敛至约 790px，并加入小屏适配。"
   ]
 }

@@ -20,10 +20,10 @@ test('Thinking 胶囊对话框被登记为可嵌入的多文件组件', () => {
   assert.equal(metadata.preview, demo+'index.html');
   assert.ok(metadata.publish.includes(demo+'dialog.js'));
   assert.ok(metadata.publish.includes(demo+'dialog.css'));
-  assert.match(html, /href="\.\/dialog\.css"/);
-  assert.match(html, /src="\.\/dialog\.js"/);
-  assert.match(html, /startOpen: true/);
+  assert.match(html, /http-equiv="refresh"/);
+  assert.match(html, /\.\.\/liquid-orb\/index\.html#dialog/);
   assert.doesNotMatch(html, /<script type="module"/);
+  assert.equal(metadata.code, demo+'dialog.js');
 });
 test('组件使用真实首帧消息控制展示，并支持失败重试', () => {
   assert.match(js,/function createLiquidOrbDialog/);
@@ -49,4 +49,11 @@ test('对话框有 Esc、焦点管理、可配置文案及可用的 API', () => 
     assert.match(js,new RegExp('\\b'+name+'\\b'));
   const checked=spawnSync(process.execPath,['--check',join(ROOT,demo,'dialog.js')],{encoding:'utf8'});
   assert.equal(checked.status,0,checked.stderr);
+});
+
+test('复用对话框缩小默认尺寸，手机视口不出现夸张巨型胶囊', () => {
+  assert.match(css,/width:min\(790px,calc\(100vw - 36px\)\)/);
+  assert.match(css,/min-height:clamp\(166px,24vw,265px\)/);
+  assert.doesNotMatch(css,/width:min\(1030px/);
+  assert.match(css,/@media\(max-width:500px\)/);
 });

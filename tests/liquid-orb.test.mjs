@@ -15,7 +15,7 @@ test('液态玻璃球 Demo 自包含并有可访问的控制界面', () => {
   assert.match(html, /data-state="idle"/);
   assert.match(html, /data-state="thinking"/);
   assert.match(html, /aria-pressed/);
-  assert.match(html, /当前环境无法启动 WebGPU/);
+  assert.match(html, /WebGPU 不可用/);
   assert.match(html, /id="orb-progress"/);
   assert.doesNotMatch(html, /class="still"/);
   assert.match(html, /\.stage canvas\{opacity:0/);

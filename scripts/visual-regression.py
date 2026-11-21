@@ -238,6 +238,79 @@ def verify_react_interactions(browser, origin):
         mobile.close()
 
 
+
+def verify_liquid_orb_unified(browser, origin):
+    """独立场景烟测：单页切换、可见尺寸、模态关闭和旧深链接兼容。"""
+    for name, width, height in [("desktop", 1280, 800), ("mobile", 390, 844)]:
+        context = browser.new_context(
+            viewport={"width": width, "height": height}, device_scale_factor=1,
+            reduced_motion="reduce", locale="zh-CN", color_scheme="dark",
+        )
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        try:
+            page.goto(origin + "demos/components/liquid-orb/index.html", wait_until="domcontentloaded")
+            page.locator("#tab-dialog").click(timeout=30000)
+            assert page.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')")
+            if page.locator("body").evaluate("(el) => el.classList.contains('fallback')"):
+                assert not page.locator("#status").is_visible(), "错误提示挤进胶囊"
+                assert not page.locator("#orb-retry").is_visible(), "球体区域的重试按钮应转移到控制区"
+                assert page.locator("#dialog-retry").is_visible(), "未找到思考模式的重试控制"
+            assert page.locator("#presentation canvas").count() == 1, "合并页面出现重复 Canvas"
+            pill = page.locator("#presentation").bounding_box()
+            assert pill and 120 < pill["height"] < 310, f"{name}: 胶囊高度异常: {pill}"
+            assert pill["width"] <= width - 12, f"{name}: 胶囊宽度超出视口: {pill}"
+            assert pill["x"] >= -2, f"{name}: 胶囊越过页面左边缘: {pill}"
+            assert pill["x"] + pill["width"] <= width + 2, f"{name}: 胶囊越过页面右边缘: {pill}"
+            if name == "desktop":
+                page.locator("#dialog-size").select_option("compact")
+                compact = page.locator("#presentation").bounding_box()
+                assert compact["width"] < pill["width"], "紧凑模式没有缩小对话框"
+                page.locator("#dialog-size").select_option("standard")
+            page.locator("#dialog-text").fill("Generating...")
+            assert page.locator("#dialog-caption").inner_text() == "Generating..."
+            assert page.locator("#presentation canvas").count() == 1
+            OUTPUT.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(OUTPUT / f"liquid-orb-unified-{name}.png"), animations="disabled")
+            page.locator("#dialog-open").click()
+            assert page.locator("#thinking-modal").evaluate("(el) => el.open"), "思考对话框未打开"
+            assert page.locator("#thinking-modal #presentation canvas").count() == 1, "模态框复用了错误的渲染节点"
+            if name == "desktop":
+                page.screenshot(path=str(OUTPUT / "liquid-orb-modal-desktop.png"), animations="disabled")
+            page.keyboard.press("Escape")
+            assert not page.locator("#thinking-modal").evaluate("(el) => el.open"), "Esc 未关闭对话框"
+            assert page.locator("#demo-viewport #presentation canvas").count() == 1, "Canvas 没有归还展示区"
+            page.locator("#tab-orb").click()
+            assert not page.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')")
+            assert not errors, f"{name}: 脚本运行错误: " + "; ".join(errors)
+        finally:
+            context.close()
+
+    context = browser.new_context(viewport={"width": 900, "height": 640}, reduced_motion="reduce")
+    page = context.new_page()
+    try:
+        page.goto(origin + "demos/components/liquid-orb-thinking-dialog/index.html", wait_until="domcontentloaded")
+        page.wait_for_url("**/demos/components/liquid-orb/index.html#dialog", timeout=15000)
+        assert page.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')"), "旧链接没有进入思考对话框模式"
+    finally:
+        context.close()
+    # UI-Vault React 实际嵌入采用 sandboxed iframe；再验证一次内部标签切换。
+    context = browser.new_context(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
+    page = context.new_page()
+    embedded_errors = []
+    page.on("pageerror", lambda error: embedded_errors.append(str(error)))
+    try:
+        page.goto(origin + "?asset=liquid-orb", wait_until="domcontentloaded")
+        preview = page.frame_locator('iframe[data-preview-frame="local"]')
+        preview.locator("#tab-dialog").click(timeout=30000)
+        assert preview.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')"), "主站沙箱中标签切换无效"
+        assert not embedded_errors, "主站沙箱错误：" + "; ".join(embedded_errors)
+    finally:
+        context.close()
+    print("液态玻璃单页回归通过：桌面/移动端尺寸、同一 Canvas、模态焦点、旧链接及沙箱预览。")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -280,6 +353,7 @@ def main():
                     raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
+                verify_liquid_orb_unified(browser, local)
             finally:
                 browser.close()
     finally:
