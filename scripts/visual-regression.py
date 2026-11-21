@@ -293,6 +293,15 @@ def verify_liquid_orb_unified(browser, origin):
             assert page.locator("#dialog-size-current").inner_text() == "紧凑"
             assert page.locator("#dialog-size").input_value() == "compact"
             compact = page.locator("#presentation").bounding_box()
+            if name == "desktop":
+                print("CAPSULE_SIZE_DEBUG", page.evaluate("""() => ({
+                    bodyClass:document.body.className, bodySize:document.body.dataset.dialogSize,
+                    computedVariable:getComputedStyle(document.body).getPropertyValue('--pill-width'),
+                    computedWidth:getComputedStyle(document.querySelector('#presentation')).width,
+                    computedMinWidth:getComputedStyle(document.querySelector('#presentation')).minWidth,
+                    parentWidth:getComputedStyle(document.querySelector('#demo-viewport')).width
+                })"""), "standard", pill, "compact", compact, flush=True)
+                page.screenshot(path=str(OUTPUT / "liquid-orb-compact-debug.png"), animations="disabled")
             assert compact["width"] < pill["width"], "紧凑模式没有缩小对话框"
             assert_orb_geometry(name + "-compact")
             size_button.click()
