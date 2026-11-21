@@ -48,3 +48,18 @@
 | [消息动效](../demos/curated/message-motion-lab/index.html) | [Motion-Lab 的动效研究](https://github.com/weepwood/Motion-Lab/blob/main/src/motion.ts) | 消息动画、时长、缓动、手势回复和反应 |
 
 以上页面由本轮在 UI-Vault 内独立实现；不是对原仓库 UI 的像素级复制，也未迁入其第三方依赖、真实数据或服务逻辑。每个实验以后单独精调，不自动覆盖。详见 [手工精调说明](CURATED-LABS.md)。
+
+
+## 独立 React / Vue 站点嵌入试点（2026-11-21）
+
+基于 NOEMA 的直接 iframe 预览方式，给三个**已经收录**但缺乏在线地址的 React/Vue 资源补充 `siteUrl`，不迁移应用源码和 npm 依赖。
+
+| 资源 ID | 技术栈 | 在线站点 | 已成功的 Pages 发布工作流 |
+| --- | --- | --- | --- |
+| `motion-lab` | Vue 3 / Vite | https://weepwood.github.io/Motion-Lab/ | https://github.com/weepwood/Motion-Lab/actions/runs/40000590665 |
+| `react-ui-atlas` | React / Vite | https://weepwood.github.io/react-ui-atlas/ | https://github.com/weepwood/react-ui-atlas/actions/runs/30005272761 |
+| `weepwood-ui` | Vue 3 / Storybook | https://weepwood.github.io/weepwood-UI/ | https://github.com/weepwood/weepwood-UI/actions/runs/44559209996 |
+
+访问主站并通过 `?asset=motion-lab`、`?asset=react-ui-atlas`、`?asset=weepwood-ui` 可直接选择三个资源；中间栏显示「在线预览」，右侧使用隔离 iframe。现有 `fluxnav-start-page`、`kumo-edge-console`、`style-atlas`、`fontfolio`、`s2u-link-workbench` 保持原有 React/Vue 在线链接，避免重复导入。
+
+**验证边界：**上述三个仓库的构建与 Pages 发布记录均为成功；本站通过资源索引和预览 HTML 的测试确认了 URL、沙箱属性与原站回退入口，但并没有对第三方 iframe 的浏览器实际交互逐项验收。页面的 CSP / X-Frame-Options 可能限制内嵌，Storybook 等带存储或多 iframe 的站点也可能受沙箱限制。完整功能需要时通过「单独打开」访问原站。未确认已部署的 `mrr-admin`、`graphboard-workspace` 暂不添加演示地址。

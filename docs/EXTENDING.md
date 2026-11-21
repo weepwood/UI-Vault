@@ -118,3 +118,21 @@ UI-Vault 不需要把 NOEMA 的整份静态源码复制到本仓库；只需在 
 当前 iframe 的 `sandbox="allow-scripts allow-forms"` 隔离运行，不为同一 GitHub Pages 主域名上的项目额外添加 `allow-same-origin`。因此磁贴的基础拖拽、缩放和展开可尝试，但 IndexedDB、Web Worker、文件系统授权及跨页面通信等可能受限或退化；完整文件夹与缓存操作建议在原站进行。特别注意 GitHub Pages 的不同项目路径仍可能同属 `weepwood.github.io` 这一浏览器 origin，不能将不同路径视为安全隔离域。若将来需要高权限的完整嵌入，优先使用**独立域名**托管子项目，并进行单独的安全评估，不能无条件组合 `allow-scripts` 与 `allow-same-origin`。
 
 外部网站还可能通过 CSP 的 `frame-ancestors` 或 `X-Frame-Options` 拒绝嵌入。这种情况不能绕过，应保留原站链接并展示明确的失败说明。NOEMA 的这次接入属于独立站点预览试点，不等于将源码转移到 UI-Vault。
+
+
+## React / Vue 直接内嵌项目（无需迁移源码）
+
+对于已经独立部署的 React 或 Vue 项目，在 `catalog/assets/<id>.json` 的 `source:"external"` 条目中登记经过核实的 `siteUrl`，即可在 UI-Vault 右侧显示网页。例如，`motion-lab` 的实际配置包含：
+
+```json
+{
+  "id": "motion-lab",
+  "source": "external",
+  "url": "https://github.com/weepwood/Motion-Lab",
+  "siteUrl": "https://weepwood.github.io/Motion-Lab/"
+}
+```
+
+示例仅包含嵌入相关字段，实际 JSON 还需满足原有资源协议。更新后执行 `npm run catalog:sync` 与 `npm run check`。不需要安装 React/Vue 依赖或复制构建产物；主站通过带沙箱的 iframe 访问其他部署站点。若项目没有可靠的公开预览网址，则只保留 GitHub 仓库索引，不猜测 URL。
+
+为安全隔离，默认保留 `sandbox="allow-scripts allow-forms"`；不要为了本地存储或文件夹访问而直接追加 `allow-same-origin`。完整应用、特别是嵌套 iframe 的 Storybook 或浏览器本地文件类项目，可以使用顶部「单独打开」在原站使用。
