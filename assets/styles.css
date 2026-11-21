@@ -1003,50 +1003,74 @@ html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--ta
 }
 
 
-/* 设备预览切换：分段式工具栏，按实际预览栏宽度响应，避免全局屏宽误判。 */
+/* 设备预览：默认显示当前模式；鼠标悬停时浮出完整设备列表，工具栏不跳动。 */
 .main { container-name: preview-toolbar;container-type:inline-size; }
 .topbar-tools { gap:9px; }
 .viewport-controls {
-  display:inline-flex;align-items:center;gap:2px;
-  flex:none;padding:3px;border:1px solid var(--line);
-  border-radius:10px;background:var(--canvas);
+  position:relative;display:flex;align-items:center;
+  flex:0 0 116px;width:116px;min-width:116px;height:36px;
+  padding:0;border:0;border-radius:0;background:transparent;
+  z-index:16;
 }
-.viewport-controls button {
-  display:inline-flex;align-items:center;justify-content:center;
-  gap:6px;min-width:34px;height:32px;
-  padding:0 10px;border:1px solid transparent;
-  border-radius:7px;background:transparent;color:var(--muted);
-  font-size:11px;font-weight:550;line-height:1;white-space:nowrap;
-  transition:background-color .15s ease,color .15s ease,border-color .15s ease;
+.viewport-controls .viewport-current {
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;min-width:0;height:36px;gap:7px;padding:0 10px;
+  border:1px solid var(--line);border-radius:9px;
+  background:var(--canvas);color:var(--text);
+  font-size:11px;font-weight:630;line-height:1;
+  cursor:pointer;
+  transition:background-color .15s ease,border-color .15s ease;
 }
-.viewport-controls button .ui-icon { width:16px;height:16px; }
-.viewport-controls button span { display:inline; }
-.viewport-controls button:hover {
-  background:var(--surface);color:var(--ink);
+.viewport-controls .viewport-current:hover,
+.viewport-controls.is-expanded .viewport-current {
+  color:var(--accent);background:var(--accent-soft);border-color:var(--line);
 }
-.viewport-controls button[aria-pressed="true"] {
-  background:var(--accent-soft);border-color:var(--line);
-  color:var(--accent);font-weight:700;
+.viewport-controls .viewport-current-icon { display:inline-flex;align-items:center;flex:none; }
+.viewport-controls .viewport-current-icon .ui-icon { width:16px;height:16px; }
+.viewport-controls .viewport-current .viewport-current-label {
+  display:inline;flex:1;min-width:0;white-space:nowrap;text-align:left;
+  overflow:hidden;text-overflow:ellipsis;
 }
-.viewport-controls button[aria-pressed="true"]:hover { background:var(--accent-soft); }
-.viewport-controls button:focus-visible {
-  outline:2px solid var(--focus);outline-offset:2px;position:relative;z-index:1;
+.viewport-controls .viewport-current-chevron { width:13px;height:13px;flex:none;color:var(--muted);transition:transform .16s ease; }
+.viewport-controls.is-expanded .viewport-current-chevron { transform:rotate(180deg); }
+.viewport-controls .viewport-options {
+  position:absolute;right:0;top:calc(100% - 1px);
+  display:grid;gap:3px;width:164px;max-width:min(164px,calc(100vw - 24px));
+  padding:5px;border:1px solid var(--line);border-radius:10px;
+  background:var(--surface);box-shadow:0 12px 26px #15283222,0 2px 8px #1528320b;
+  z-index:20;
+  animation:viewport-menu-in .14s ease-out;
 }
-html[data-theme="dark"] .viewport-controls { border-color:var(--line);background:var(--canvas); }
-html[data-theme="dark"] .viewport-controls button:hover { background:var(--surface); }
-html[data-theme="dark"] .viewport-controls button[aria-pressed="true"] { border-color:var(--line);background:var(--accent-soft); }
-@container preview-toolbar (max-width:900px) {
-  .viewport-controls button { padding:0 8px; }
-  .viewport-controls button span { display:none; }
-  .viewport-controls button[aria-pressed="true"] span { display:inline; }
+.viewport-controls .viewport-options[hidden] { display:none!important; }
+.viewport-controls .viewport-options button {
+  display:flex;align-items:center;justify-content:flex-start;
+  width:100%;min-width:0;height:36px;gap:11px;padding:0 11px;
+  border:1px solid transparent;border-radius:7px;
+  background:transparent;color:var(--text);text-align:left;
+  font-size:12px;font-weight:530;white-space:nowrap;
+  transition:background-color .14s ease,color .14s ease;
 }
+.viewport-controls .viewport-options button span { display:inline; }
+.viewport-controls .viewport-options button .ui-icon { width:17px;height:17px; }
+.viewport-controls .viewport-options button:hover { background:var(--canvas);color:var(--ink); }
+.viewport-controls .viewport-options button[aria-pressed="true"] {
+  border-color:transparent;background:var(--accent-soft);color:var(--accent);font-weight:670;
+}
+.viewport-controls :is(.viewport-current,.viewport-options button):focus-visible {
+  outline:2px solid var(--focus);outline-offset:2px;
+}
+@keyframes viewport-menu-in {
+  from { opacity:0;transform:translateY(-3px); }
+  to { opacity:1;transform:translateY(0); }
+}
+html[data-theme="dark"] .viewport-controls .viewport-current { background:var(--canvas);border-color:var(--line); }
+html[data-theme="dark"] .viewport-controls.is-expanded .viewport-current { background:var(--accent-soft); }
+html[data-theme="dark"] .viewport-controls .viewport-options { border-color:var(--line);background:var(--surface); }
 @container preview-toolbar (max-width:520px) {
   .topbar { flex-wrap:wrap;row-gap:5px;padding:7px 12px; }
   .topbar-project { flex:1 0 100%;min-height:28px; }
   .topbar-tools { width:100%;justify-content:space-between;gap:8px; }
   .topbar-separator { display:none; }
-  .viewport-controls { min-width:0; }
-  .viewport-controls button { min-width:32px;padding:0 7px;height:31px; }
   .topbar-actions { gap:4px; }
   .topbar-actions :is(.info-action,.square-action,.open-action) {
     width:31px;height:31px;min-width:31px;padding:0;
@@ -1054,11 +1078,15 @@ html[data-theme="dark"] .viewport-controls button[aria-pressed="true"] { border-
   .topbar-actions :is(.info-action,.open-action) span { display:none; }
 }
 @container preview-toolbar (max-width:375px) {
-  .viewport-controls { gap:0;padding:2px; }
-  .viewport-controls button { min-width:30px;padding:0 5px;height:30px; }
-  .viewport-controls button[aria-pressed="true"] span { display:none; }
+  .viewport-controls { width:42px;min-width:42px;flex-basis:42px; }
+  .viewport-controls .viewport-current { justify-content:center;padding:0 7px; }
+  .viewport-controls .viewport-current .viewport-current-label,
+  .viewport-controls .viewport-current-chevron { display:none; }
   .topbar-actions { gap:2px; }
 }
 @media(prefers-reduced-motion:reduce) {
-  .viewport-controls button { transition:none; }
+  .viewport-controls .viewport-current,
+  .viewport-controls .viewport-options button,
+  .viewport-controls .viewport-current-chevron { transition:none; }
+  .viewport-controls .viewport-options { animation:none; }
 }
