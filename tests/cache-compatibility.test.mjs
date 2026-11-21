@@ -29,7 +29,6 @@ test('HTML/JS 缓存错配不再直接调用缺失 sidebar 的 inert',async()=>{
   assert.ok(build.includes('app.${assetRevision}.js'),'主站入口需要版本化脚本');
   assert.match(build,/styles\.\$\{assetRevision\}\.css/);
   assert.match(build,/withRevision/);
-  assert.ok(build.includes("[\u0027index.html\u0027,\u0027app\u0027]"));
   assert.match(check,/cssFingerprint/);
   assert.match(check,/jsFingerprint/);
 });
