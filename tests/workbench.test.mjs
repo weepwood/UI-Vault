@@ -90,8 +90,11 @@ test('右侧设备模式与筛选逻辑保留预览 DOM 和路由状态',async()
   const app=await read('assets/app.js');
   assert.match(app,/function selectPreviewSize\(mode\)/);
   assert.match(app,/applyPreviewLayout\(stage,iframe,state.previewSize\)/);
-  assert.match(app,/window\.history\.pushState/);
-  assert.match(app,/window\.addEventListener\('popstate'/);
+  const router=await read('assets/core/workbench-router.js');
+  assert.ok(app.includes('router.setAsset(asset.id,historyMode)'));
+  assert.ok(app.includes('router.subscribe('));
+  assert.ok(router.includes("host.history[historyMode+'State']"));
+  assert.ok(router.includes("host.addEventListener('popstate'"));
   assert.match(app,/previewResizeObserver\.observe\(stage\)/);
   const favoriteCode=app.slice(app.indexOf('function toggleFavorite('),app.indexOf('async function copyText('));
   assert.doesNotMatch(favoriteCode,/stage\.innerHTML|stage\.replaceChildren/);
