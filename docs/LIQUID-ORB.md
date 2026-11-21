@@ -39,7 +39,7 @@
 - 对话框支持 Escape、遮罩点击及关闭按钮；打开时聚焦关闭按钮、Tab 在可操作控件间循环，关闭后恢复焦点。
 - 屏幕阅读器可感知初始化阶段和失败状态；不支持 WebGPU 时提供重试操作。
 - 检测 `prefers-reduced-motion`，尊重减少动态效果设置；关闭对话框时通过控制消息暂停 WebGPU 动画。
-- 与主站 React 无耦合，适配现有沙箱 iframe 预览。
+- 与主站 React 业务无耦合，适配现有沙箱 iframe 预览。主站和对话框的玻璃球 iframe 显式使用 `allow="webgpu"` 委派图形权限，同时保留 `sandbox="allow-scripts"`，不授予 `allow-same-origin`。
 
 ## 许可证说明
 
