@@ -2,8 +2,8 @@ import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ROOT } from './lib/catalog.mjs';
 import { auditContrast } from './lib/contrast.mjs';
-const [css,html,app,mobile]=await Promise.all([
-  'assets/styles.css','index.html','assets/app.js','assets/ui/mobile-navigation.js'
+const [css,html,app,mobile,reactSource]=await Promise.all([
+  'assets/styles.css','index.html','assets/app.js','assets/ui/mobile-navigation.js','src/react-workbench.jsx'
 ].map(p=>readFile(join(ROOT,p),'utf8')));
 const errors=[];
 for(const row of auditContrast(css)){
@@ -25,7 +25,7 @@ const obligations=[
   [html.indexOf('id="viewport-controls"')<html.indexOf('</header>'),'设备切换控件必须在顶部 Topbar'],
   [html.includes('data-preview-size="mobile"')&&html.includes('data-preview-size="desktop"'),'预览工作区缺少设备切换'],
   [app.includes('applyPreviewLayout')&&app.includes('previewSize'),'右侧预览未接入设备宽度调节'],
-  [app.includes('projectPreviewMarkup')&&app.includes('projectRowMarkup'),'没有复用双栏项目渲染模块'],
+  [app.includes('projectPreviewMarkup')&&app.includes('renderProjectList')&&reactSource.includes('ProjectRow')&&reactSource.includes('projectEmoji'),'React 项目列表与预览模块未正确协同'],
   [!css.includes('fonts.googleapis.com'),'主站不应无依据加载第三方字体']
 ];
 for(const [pass,reason] of obligations)if(!pass)errors.push(reason);
