@@ -8,6 +8,7 @@
 - 静态 `index.html` 使用 `<svg class="ui-icon" ...><use href="./assets/icons/lucide.svg#search"></use></svg>`；动态资产卡片使用 `assets/core/icons.js` 中的 `iconMarkup('heart')`。
 - 图标必须配合可见文字或按钮自身的 `aria-label`，不在无说明时单独承担含义；纯装饰 SVG 使用 `aria-hidden="true"`、`focusable="false"`。
 - 主要导航分类映射：`palette` 视觉、`component` 组件、`zap` 动效、`panels-top-left` 布局、`play` Demo、`bookmark` 参考。
+- 项目目录中的排序 / 标签下拉菜单使用已有精简 Lucide：`arrow-up-down`（排序）、`layers`（精选）、`calendar-days`（最新）、`bookmark`（标签）、`chevron-down`（展开）、`check`（选中）。选项图标只作辅助，文字始终可见。
 - 收藏选中态使用同一个 `heart` 图标加 CSS 的 `fill: currentColor`，不再使用字符“♡/♥”混合多个字形。
 - Logo 与 favicon 采用同一 `layout-grid` 图形。图标不能替代 UI Vault 独立的产品名字。
 - 图标 SVG 在静态构建时由现有白名单规则发布，不访问 CDN；`npm run check` 确认 SVG sprite 与使用名称一致。

@@ -1,4 +1,5 @@
 import { iconMarkup } from './core/icons.js';
+import { enhanceSelect, closeDropdowns } from './core/dropdown.js';
 import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { escapeHtml, resolveAsset } from './core/render.js';
@@ -21,6 +22,7 @@ const state={
 };
 const favorites=loadFavorites();
 let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
+let sortDropdown,tagDropdown;
 const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
 
 function notify(message){
@@ -35,6 +37,7 @@ function save(){
 }
 function setSidebar(open,{returnFocus=false}={}){
   const visible=Boolean(open&&isMobile());
+  if(!visible)closeDropdowns();
   const wasOpen=libraryRail.classList.contains('is-open');
   libraryRail.classList.toggle('is-open',visible);
   shade.hidden=!visible;
@@ -68,6 +71,7 @@ function updateTags(){
   tagFilter.innerHTML='<option value="">全部标签</option>'+popularTags(state.assets,14,selected).map(tag=>
     '<option value="'+escapeHtml(tag)+'">'+escapeHtml(tag)+'</option>').join('');
   tagFilter.value=selected;
+  tagDropdown?.sync();
 }
 function filteredItems(){return filterAssets(state.assets,state,favorites);}
 function updateListSelection(){
@@ -291,9 +295,11 @@ function changeFilter(kind,value){
 function reset(){
   state.category='all';state.tag='';state.query='';state.sort='featured';
   state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;
-  search.value='';sort.value='featured';renderList();
+  search.value='';sort.value='featured';sortDropdown?.sync();renderList();
 }
 function initEvents(){
+  sortDropdown=enhanceSelect(sort,{icon:'arrow-up-down',icons:{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}});
+  tagDropdown=enhanceSelect(tagFilter,{icon:'bookmark'});
   gallery.addEventListener('click',event=>{
     const fav=event.target.closest('[data-favorite]');
     if(fav){toggleFavorite(fav.dataset.favorite);return;}

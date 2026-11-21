@@ -5,7 +5,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','content/assets.json','content/categories.json'];
+const paths=['index.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','content/assets.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);}
   if(a.coverImage)paths.push(a.coverImage);
@@ -22,6 +22,7 @@ for(const file of [`assets/styles.${cssFingerprint}.css`,`assets/app.${jsFingerp
 }
 const entry=await readFile(join(out,`assets/app.${jsFingerprint}.js`),'utf8');
 assert.match(entry,new RegExp('from [\\\x27"][.]/core/workbench[.]js[?]v='+jsFingerprint),'入口模块没有版本化工作台依赖');
+assert.match(entry,new RegExp('from [\\\x27"][.]/core/dropdown[.]js[?]v='+jsFingerprint),'入口模块没有版本化下拉菜单依赖');
 const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
 assert.match(core,new RegExp('from [\\\x27"][.]/icons[.]js[?]v='+jsFingerprint),'子模块没有使用同一版本标记');
 assert.ok(!publishedHTML.includes('src="./assets/app.js"'),'入口还引用未版本化脚本');
