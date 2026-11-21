@@ -2,7 +2,7 @@
   "id": "liquid-orb",
   "title": "液态玻璃球",
   "subtitle": "Liquid Glass Orb · WebGPU",
-  "description": "基于 WebGPU / WGSL 的动态玻璃球，保留流体折射与彩色液态纹理，支持静置、思考、流速、玻璃外壳和播放控制。",
+  "description": "基于 WebGPU / WGSL 的动态玻璃球；初始化时以真实阶段进度条代替静态圆球占位，首帧完成后显示效果，支持静置、思考、流速和玻璃外壳控制。",
   "type": "component",
   "source": "local",
   "tags": [
@@ -27,8 +27,8 @@
   "created": "2026-11-21",
   "copyable": true,
   "reuseNotes": [
-    "保留原始 WebGPU WGSL 着色器与两组 136 浮点 uniform 状态预设。",
-    "支持 window.liquidOrb.setState / setPlaying / setGlass / setSpeed / setAudioBands。",
-    "预览为自包含单文件，适用于现有 iframe 沙箱；WebGPU 不可用时显示静态预览。"
+    "完整保留 WebGPU WGSL 着色器与两组 136 浮点 uniform 状态预设。",
+    "初始化时不显示假圆球，提供真实阶段进度与 WebGPU 失败重试。",
+    "可通过 ?embed=1 作为 Thinking 对话框中的实时玻璃球渲染器，以 postMessage 传递首帧就绪与控制指令。"
   ]
 }
