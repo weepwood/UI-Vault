@@ -8,7 +8,7 @@ export function Icon({name,className='ui-icon'}){
     <use href={'./assets/icons/lucide.svg#'+name}/>
   </svg>;
 }
-export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='' }){
+export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='',dataSetting }){
   const [open,setOpen]=useState(false);
   const host=useRef(null),trigger=useRef(null),optionRefs=useRef([]);
   const generated=useId();
@@ -56,7 +56,7 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     optionRefs.current[next]?.focus({preventScroll:true});
   }
   return <div className={'select-field '+className+(open?' is-open':'')+(value&&(id==='sort'?value!=='featured':id==='tag-filter')?' has-filter':'')} ref={host}>
-    <select id={id} aria-label={label} value={value} onChange={event=>onChange(event.target.value)} hidden tabIndex={-1}>
+    <select id={id} data-setting={dataSetting} aria-label={label} value={value} onChange={event=>onChange(event.target.value)} hidden tabIndex={-1}>
       {options.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}
     </select>
     <button ref={trigger} type="button" className="select-trigger" aria-haspopup="listbox"
