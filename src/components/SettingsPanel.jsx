@@ -29,7 +29,7 @@ function Field({field,settings,onChange}){
   const item=fields[field];
   return <div className="setting-field">
     <span className="setting-label">{item.label}</span>
-    <WorkbenchSelect id={'settings-'+field} label={item.label} value={settings[field]}
+    <WorkbenchSelect id={'settings-'+field} dataSetting={field} label={item.label} value={settings[field]}
       onChange={value=>onChange(field,value)}
       options={item.options.map(([value,label])=>({value,label}))}
       icon={field==='preview'?'maximize-2':'settings'}
