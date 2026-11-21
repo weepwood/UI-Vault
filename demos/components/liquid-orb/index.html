@@ -67,18 +67,37 @@
   .presentation{width:100%;height:100%;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}
   .presentation .stage{flex:1;height:100%;min-width:0}
   .dialog-caption{display:none;color:#91929a;font-size:var(--pill-text,clamp(30px,4vw,59px));font-weight:620;letter-spacing:-.05em;line-height:1.1;white-space:nowrap;min-width:0;text-overflow:ellipsis;overflow:hidden}
-  .dialog-mode{--pill-width:750px;--pill-height:248px;--pill-orb:172px;--pill-text:clamp(31px,4.3vw,60px)}
-  .dialog-mode[data-dialog-size=compact]{--pill-width:540px;--pill-height:176px;--pill-orb:120px;--pill-text:clamp(26px,3.4vw,42px)}
-  .dialog-mode[data-dialog-size=large]{--pill-width:890px;--pill-height:290px;--pill-orb:206px;--pill-text:clamp(35px,5.1vw,72px)}
-  .dialog-mode .presentation{flex:none;width:min(var(--pill-width),100%);height:min(var(--pill-height),100%);min-height:150px;gap:clamp(16px,4vw,52px);justify-content:flex-start;overflow:hidden;padding:clamp(17px,3vw,40px);border:1px solid #7475806c;border-radius:999px;background:radial-gradient(ellipse at 25% 100%,#36324333,transparent 58%),linear-gradient(150deg,#15171b,#101114 75%);box-shadow:inset 0 1px 1px #ffffff1b,0 20px 65px #0004}
-  .dialog-mode .presentation .stage{flex:0 0 min(var(--pill-orb),40%);width:min(var(--pill-orb),40%);height:auto;aspect-ratio:1;min-height:0;position:relative;border-radius:50%;overflow:hidden}
-  .dialog-mode .dialog-caption{display:block;flex:1}
+  /* Geometry: the orb viewport is a square inscribed into the pill's left cap.
+     Both centres share x = pill-height/2; never independently size the circle. */
+  .dialog-mode{--pill-width:750px;--pill-height:248px;--pill-inset:28px;--pill-text:clamp(31px,4.3vw,60px)}
+  .dialog-mode[data-dialog-size=compact]{--pill-width:540px;--pill-height:176px;--pill-inset:21px;--pill-text:clamp(26px,3.4vw,42px)}
+  .dialog-mode[data-dialog-size=large]{--pill-width:890px;--pill-height:290px;--pill-inset:33px;--pill-text:clamp(35px,5.1vw,72px)}
+  .dialog-mode .presentation{flex:none;width:min(var(--pill-width),100%);height:var(--pill-height);min-height:0;gap:clamp(16px,3.5vw,48px);justify-content:flex-start;overflow:hidden;padding:var(--pill-inset);border:1px solid #7475806c;border-radius:calc(var(--pill-height) / 2);background:radial-gradient(ellipse at 25% 100%,#36324333,transparent 58%),linear-gradient(150deg,#15171b,#101114 75%);box-shadow:inset 0 1px 1px #ffffff1b,0 20px 65px #0004}
+  .dialog-mode .presentation .stage{flex:0 0 auto;align-self:stretch;width:calc(var(--pill-height) - 2 * var(--pill-inset) - 2px);height:auto;aspect-ratio:1;min-width:0;min-height:0;position:relative;border-radius:50%;overflow:hidden}
+  .dialog-mode .dialog-caption{display:block;flex:1;min-width:0}
   .dialog-settings{display:none;gap:12px;align-items:end;flex-wrap:wrap;margin:0 clamp(16px,3vw,32px) 16px;padding:12px 0 0;border-top:1px solid #252a3b}
   .dialog-mode .dialog-settings{display:flex}
   .dialog-field{display:flex;align-items:center;gap:10px;font-size:12px;color:#aab4c9}
-  .dialog-field input,.dialog-field select{height:34px;padding:0 10px;border-radius:7px;border:1px solid #333c51;color:#e3e8f3;background:#161d2a;font:inherit}
+  .dialog-field input{height:34px;padding:0 10px;border-radius:7px;border:1px solid #333c51;color:#e3e8f3;background:#161d2a;font:inherit}
   .dialog-field input{width:clamp(128px,18vw,225px)}
-  .dialog-field select{min-width:86px}
+  .dialog-size-field{position:relative}
+  .size-picker{position:relative;width:142px;max-width:100%;flex:none}
+  /* Keep the native select as a compatibility value source, not as a visible popup. */
+  .size-picker > select{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;clip-path:inset(50%);overflow:hidden;left:0;bottom:0}
+  .size-trigger{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;height:34px;padding:0 10px 0 12px;border:1px solid #343f55;border-radius:8px;background:#181e2b;color:#e1e8f4;font-size:12px;text-align:left;cursor:pointer}
+  .size-trigger:hover,.size-picker.is-open .size-trigger{border-color:#8190b2;background:#20283a}
+  .size-trigger svg{width:15px;height:15px;flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;color:#9baac3;transition:transform .16s}
+  .size-picker.is-open .size-trigger svg{transform:rotate(180deg)}
+  .size-menu{position:absolute;left:0;bottom:calc(100% + 7px);z-index:30;width:max(100%,190px);max-width:min(240px,calc(100vw - 32px));max-height:min(194px,40dvh);overflow-y:auto;padding:5px;border:1px solid #414c61;border-radius:10px;background:#1b2231;box-shadow:0 16px 42px #0009,0 3px 12px #0006;overscroll-behavior:contain}
+  .size-menu[hidden]{display:none!important}
+  .size-menu [role=option]{display:flex;align-items:center;gap:8px;width:100%;min-height:38px;padding:7px 8px;border:0;border-radius:6px;background:transparent;color:#d6dfef;text-align:left;white-space:nowrap;font-size:12px;cursor:pointer}
+  .size-menu [role=option]:hover,.size-menu [role=option]:focus-visible{background:#323d56;outline:none}
+  .size-menu [role=option][aria-selected=true]{background:#343f5b;color:#f7f9ff}
+  .size-menu .size-note{flex:1;text-align:right;font-size:10px;font-variant-numeric:tabular-nums;color:#94a1bc}
+  .size-menu svg{width:13px;height:13px;flex:none;fill:none;stroke:#b9c8ff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;visibility:hidden}
+  .size-menu [aria-selected=true] svg{visibility:visible}
+  .size-trigger:focus-visible,.size-menu [role=option]:focus-visible{outline:2px solid #aebdff;outline-offset:2px}
+  .dialog-mode .dialog-settings{position:relative;z-index:5;overflow:visible}
   .dialog-open{height:34px;padding:0 14px;border:1px solid #9fb2d5;border-radius:7px;background:#dce7fc;color:#1a263a;font-size:12px;font-weight:600}
   .dialog-open:hover{background:#f3f6ff}
   .thinking-modal{width:min(940px,calc(100vw - 24px));max-width:none;max-height:calc(100dvh - 24px);padding:14px;border:0;background:transparent;overflow:visible;color:inherit}
@@ -99,22 +118,33 @@
   .embed .presentation .stage{height:100%;width:100%;flex:1;border-radius:0;aspect-ratio:auto}
   @media(max-width:620px){
     .demo-viewport{padding:12px 14px}
-    .dialog-mode{--pill-orb:clamp(84px,24vw,132px);--pill-text:clamp(26px,6vw,42px)}
-    .dialog-mode[data-dialog-size=compact]{--pill-orb:clamp(74px,22vw,112px);--pill-text:clamp(23px,5.3vw,35px)}
-    .dialog-mode[data-dialog-size=large]{--pill-orb:clamp(95px,26vw,148px);--pill-text:clamp(28px,6.5vw,48px)}
-    .dialog-mode .presentation{height:auto;min-height:145px;max-height:230px;aspect-ratio:3.15;padding:14px clamp(15px,4vw,26px);gap:clamp(10px,3.6vw,23px)}
+    .dialog-mode{--pill-inset:14px;--pill-mobile-height:clamp(145px,calc((100vw - 28px) / 3.15),210px);--pill-text:clamp(26px,6vw,42px)}
+    .dialog-mode[data-dialog-size=compact]{--pill-mobile-height:clamp(124px,calc((100vw - 28px) / 3.55),176px);--pill-inset:12px;--pill-text:clamp(23px,5.3vw,35px)}
+    .dialog-mode[data-dialog-size=large]{--pill-mobile-height:clamp(164px,calc((100vw - 28px) / 2.85),236px);--pill-inset:17px;--pill-text:clamp(28px,6.5vw,48px)}
+    .dialog-mode .presentation{height:var(--pill-mobile-height);min-height:0;max-height:none;aspect-ratio:auto;border-radius:calc(var(--pill-mobile-height) / 2);padding:var(--pill-inset);gap:clamp(10px,3.6vw,23px)}
+    .dialog-mode .presentation .stage{width:calc(var(--pill-mobile-height) - 2 * var(--pill-inset) - 2px);height:auto}
     .dialog-field{gap:6px}
     .dialog-field input{width:150px}
     .dialog-settings{gap:10px}
-    .thinking-modal .presentation{height:auto;aspect-ratio:3.15;min-height:145px}
+    .thinking-modal .presentation{height:var(--pill-mobile-height);max-height:none;aspect-ratio:auto;min-height:0}
   }
   @media(max-width:390px){
-    .dialog-mode .presentation{min-height:132px;aspect-ratio:2.9;padding:12px 16px}
+    .dialog-mode .presentation{gap:10px}
     .dialog-mode .dialog-caption{font-size:clamp(23px,6.3vw,29px)}
     .dialog-field input{width:128px}
+    .size-picker{width:130px}
     .thinking-modal{padding:5px;width:calc(100vw - 12px)}
     .thinking-modal-close{top:5px;right:17px;width:26px;height:26px}
     .hint{display:none}
+  }
+
+  /* Mobile: use a true viewport-level option sheet, not a menu that obscures inputs. */
+  .size-backdrop{display:none}
+  @media(max-width:620px){
+    .size-backdrop:not([hidden]){display:block;position:fixed;inset:0;z-index:120;background:#03060db5;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+    .size-menu.is-sheet{position:fixed;bottom:max(15px,env(safe-area-inset-bottom));left:50%;right:auto;transform:translateX(-50%);z-index:121;width:min(380px,calc(100vw - 24px));max-width:none;max-height:min(330px,65dvh);padding:9px;border-radius:14px;border-color:#46536b;background:#1b2434;box-shadow:0 20px 80px #000b}
+    .size-menu.is-sheet [role=option]{min-height:48px;padding:10px 13px;font-size:14px}
+    .size-menu.is-sheet .size-note{font-size:11px}
   }
   @media(prefers-reduced-motion:reduce){.showcase-tab,.dialog-open{transition:none!important}}
 
@@ -172,17 +202,41 @@
       <label class="dialog-field" for="dialog-text">对话框文字
         <input type="text" id="dialog-text" maxlength="40" value="Thinking..." autocomplete="off" />
       </label>
-      <label class="dialog-field" for="dialog-size">尺寸
-        <select id="dialog-size">
-          <option value="compact">紧凑</option>
-          <option value="standard" selected>标准</option>
-          <option value="large">大尺寸</option>
-        </select>
-      </label>
+      <div class="dialog-field dialog-size-field">
+        <span id="dialog-size-label">尺寸</span>
+        <div class="size-picker" id="size-picker">
+          <select id="dialog-size" aria-hidden="true" tabindex="-1">
+            <option value="compact">紧凑</option>
+            <option value="standard" selected>标准</option>
+            <option value="large">大尺寸</option>
+          </select>
+          <button type="button" class="size-trigger" id="dialog-size-trigger"
+            aria-haspopup="listbox" aria-expanded="false" aria-controls="dialog-size-menu"
+            aria-labelledby="dialog-size-label dialog-size-current">
+            <span id="dialog-size-current">标准</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div class="size-menu" id="dialog-size-menu" role="listbox" aria-labelledby="dialog-size-label" hidden>
+            <button type="button" role="option" tabindex="-1" data-size="compact" aria-selected="false">
+              <span>紧凑</span><span class="size-note">540 × 176</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+            </button>
+            <button type="button" role="option" tabindex="-1" data-size="standard" aria-selected="true">
+              <span>标准</span><span class="size-note">750 × 248</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+            </button>
+            <button type="button" role="option" tabindex="-1" data-size="large" aria-selected="false">
+              <span>大尺寸</span><span class="size-note">890 × 290</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
       <button class="dialog-open" id="dialog-open" type="button">弹出对话框</button>
       <button class="dialog-retry" id="dialog-retry" type="button">重试渲染</button>
     </div>
   </main>
+  <div class="size-backdrop" id="size-backdrop" hidden aria-hidden="true"></div>
   <dialog class="thinking-modal" id="thinking-modal" aria-label="液态玻璃思考对话框">
     <div class="thinking-modal-slot" id="thinking-modal-slot"></div>
     <button class="thinking-modal-close" type="button" id="thinking-modal-close" aria-label="关闭对话框" title="关闭">
@@ -501,6 +555,12 @@
             ribbonCompositeBindGroup = null;
           }
           values.set(sampleTransition(now));
+          // In the pill the drawn orb should fill ~70% of cap height, rather than
+          // the original 72%-diameter shader radius inside a separately padded viewport.
+          // Keep the standalone orb preset unchanged.
+          if (!embedded && document.body.classList.contains("dialog-mode")) {
+            values[4] = Math.min(0.9, values[4] * 1.23);
+          }
           const frameDelta = lastFrameAt === null
             ? 0
             : Math.min(0.1, Math.max(0, (now - lastFrameAt) / 1000));
@@ -624,6 +684,7 @@
     function changeShowcase(mode, updateHash = true) {
       if (isEmbedMode || (mode !== "orb" && mode !== "dialog")) return;
       document.body.classList.toggle("dialog-mode", mode === "dialog");
+      closeSizeMenu();
       for (const tab of document.querySelectorAll("[data-showcase]")) {
         const selected = tab.dataset.showcase === mode;
         tab.setAttribute("aria-selected", String(selected));
@@ -637,9 +698,43 @@
       }
       requestDraw();
     }
+    const sizeNames = { compact:"紧凑", standard:"标准", large:"大尺寸" };
+    const sizePicker = document.querySelector("#size-picker");
+    const sizeTrigger = document.querySelector("#dialog-size-trigger");
+    const sizeMenu = document.querySelector("#dialog-size-menu");
+    const nativeSize = document.querySelector("#dialog-size");
+    const sizeBackdrop = document.querySelector("#size-backdrop");
+    const sizeItems = [...sizeMenu.querySelectorAll("[role=option]")];
+    function closeSizeMenu({restoreFocus=false}={}) {
+      sizePicker.classList.remove("is-open");
+      sizeMenu.hidden = true;
+      sizeMenu.classList.remove("is-sheet");
+      sizeBackdrop.hidden = true;
+      // Return the listbox to its trigger after a mobile top-layer presentation.
+      if (sizeMenu.parentElement !== sizePicker) sizePicker.appendChild(sizeMenu);
+      sizeTrigger.setAttribute("aria-expanded", "false");
+      if (restoreFocus) sizeTrigger.focus({preventScroll:true});
+    }
+    function openSizeMenu(focus="selected") {
+      const isMobile = matchMedia("(max-width:620px)").matches;
+      sizePicker.classList.add("is-open");
+      if (isMobile) {
+        sizeMenu.classList.add("is-sheet");
+        document.body.appendChild(sizeMenu);
+        sizeBackdrop.hidden = false;
+      }
+      sizeMenu.hidden = false;
+      sizeTrigger.setAttribute("aria-expanded", "true");
+      const active = sizeItems.findIndex(item => item.dataset.size === nativeSize.value);
+      const index = focus === "first" ? 0 : focus === "last" ? sizeItems.length - 1 : Math.max(active, 0);
+      sizeItems[index]?.focus({preventScroll:true});
+    }
     function setDialogSize(value) {
-      if (!["compact","standard","large"].includes(value)) return;
+      if (!Object.hasOwn(sizeNames,value)) return;
+      nativeSize.value = value;
       document.body.dataset.dialogSize = value;
+      document.querySelector("#dialog-size-current").textContent = sizeNames[value];
+      for(const item of sizeItems) item.setAttribute("aria-selected",String(item.dataset.size === value));
       requestDraw();
     }
     function setDialogText(value) {
@@ -649,6 +744,7 @@
     function openThinkingDialog() {
       if (isEmbedMode || modal.open) return;
       changeShowcase("dialog");
+      closeSizeMenu();
       modalSlot.appendChild(presentation);
       modal.showModal();
       modalClose.focus();
@@ -668,7 +764,36 @@
         document.querySelector('[data-showcase="'+next+'"]').focus();
       });
     });
-    document.querySelector("#dialog-size").addEventListener("change", event => setDialogSize(event.target.value));
+    nativeSize.addEventListener("change", event => setDialogSize(event.target.value));
+    sizeTrigger.addEventListener("click", () => sizeMenu.hidden ? openSizeMenu() : closeSizeMenu({restoreFocus:true}));
+    sizeTrigger.addEventListener("keydown", event => {
+      if (!["ArrowDown","ArrowUp","Home","End"].includes(event.key)) return;
+      event.preventDefault();
+      openSizeMenu(event.key === "ArrowUp" || event.key === "End" ? "last" : "first");
+    });
+    for (const item of sizeItems) {
+      item.addEventListener("click", () => { setDialogSize(item.dataset.size); closeSizeMenu({restoreFocus:true}); });
+      item.addEventListener("keydown", event => {
+        if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); closeSizeMenu({restoreFocus:true}); return; }
+        if (event.key === "Tab") { closeSizeMenu(); return; }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault(); setDialogSize(item.dataset.size); closeSizeMenu({restoreFocus:true}); return;
+        }
+        if (!["ArrowDown","ArrowUp","Home","End"].includes(event.key)) return;
+        event.preventDefault();
+        const current = sizeItems.indexOf(item);
+        const index = event.key === "Home" ? 0 : event.key === "End" ? sizeItems.length-1
+          : (current + (event.key === "ArrowDown" ? 1 : -1) + sizeItems.length) % sizeItems.length;
+        sizeItems[index].focus({preventScroll:true});
+      });
+    }
+    document.addEventListener("pointerdown", event => {
+      if (!sizePicker.contains(event.target) && !sizeMenu.contains(event.target)) closeSizeMenu();
+    });
+    document.addEventListener("focusin", event => {
+      if (!sizePicker.contains(event.target) && !sizeMenu.contains(event.target)) closeSizeMenu();
+    });
+    window.addEventListener("resize", () => { if (!sizeMenu.hidden) closeSizeMenu(); });
     dialogText.addEventListener("input", event => setDialogText(event.target.value));
     document.querySelector("#dialog-open").addEventListener("click", openThinkingDialog);
     document.querySelector("#dialog-retry").addEventListener("click", () => location.reload());

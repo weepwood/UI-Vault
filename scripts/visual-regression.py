@@ -263,11 +263,66 @@ def verify_liquid_orb_unified(browser, origin):
             assert pill["width"] <= width - 12, f"{name}: 胶囊宽度超出视口: {pill}"
             assert pill["x"] >= -2, f"{name}: 胶囊越过页面左边缘: {pill}"
             assert pill["x"] + pill["width"] <= width + 2, f"{name}: 胶囊越过页面右边缘: {pill}"
+            # A single geometrical rule should align the ball centre with the capsule's left semicircle.
+            def assert_orb_geometry(label):
+                outside = page.locator("#presentation").bounding_box()
+                orb = page.locator("#presentation .stage").bounding_box()
+                assert outside and orb, f"{label}: 缺少球体布局"
+                cap_x = outside["x"] + outside["height"] / 2
+                orb_x = orb["x"] + orb["width"] / 2
+                cap_y = outside["y"] + outside["height"] / 2
+                orb_y = orb["y"] + orb["height"] / 2
+                assert abs(orb_x - cap_x) < 3, f"{label}: 圆心与胶囊半圆不对齐：{cap_x:.1f} vs {orb_x:.1f}"
+                assert abs(orb_y - cap_y) < 3, f"{label}: 球体垂直偏心：{cap_y:.1f} vs {orb_y:.1f}"
+                assert abs(orb["width"] - orb["height"]) < 3, f"{label}: 球体容器不是正圆"
+                assert .68 < orb["height"] / outside["height"] < .84, f"{label}: 球体比例异常"
+
+            assert_orb_geometry(name + "-standard")
+            size_button = page.locator("#dialog-size-trigger")
+            size_menu = page.locator("#dialog-size-menu")
+            size_button.click()
+            assert size_button.get_attribute("aria-expanded") == "true", "下拉按钮未更新展开状态"
+            assert size_menu.is_visible(), "尺寸菜单未展开"
+            if name == "mobile":
+                assert size_menu.evaluate("(el) => el.parentElement === document.body"), "手机菜单未提升至顶层"
+                assert page.locator("#size-backdrop").is_visible(), "手机菜单未显示遮罩"
+                page.screenshot(path=str(OUTPUT / "liquid-orb-dropdown-mobile.png"), animations="disabled")
+            else:
+                assert not page.locator("#size-backdrop").is_visible(), "桌面下拉菜单不应使用手机遮罩"
+            bounds = size_menu.bounding_box()
+            assert bounds and 0 <= bounds["y"] and bounds["y"] + bounds["height"] <= height + 2, f"{name}: 下拉菜单被视口裁切"
             if name == "desktop":
-                page.locator("#dialog-size").select_option("compact")
-                compact = page.locator("#presentation").bounding_box()
-                assert compact["width"] < pill["width"], "紧凑模式没有缩小对话框"
-                page.locator("#dialog-size").select_option("standard")
+                page.screenshot(path=str(OUTPUT / "liquid-orb-dropdown-desktop.png"), animations="disabled")
+            page.locator('#dialog-size-menu [data-size="compact"]').click()
+            assert not size_menu.is_visible(), "选择尺寸后菜单没有关闭"
+            assert not page.locator("#size-backdrop").is_visible(), "选择后遮罩未关闭"
+            assert size_menu.evaluate("(el) => el.parentElement.id === 'size-picker'"), "关闭后未恢复尺寸菜单 DOM"
+            assert size_button.get_attribute("aria-expanded") == "false", "选择后菜单 aria-expanded 未恢复"
+            assert page.locator("#dialog-size-current").inner_text() == "紧凑"
+            assert page.locator("#dialog-size").input_value() == "compact"
+            compact = page.locator("#presentation").bounding_box()
+            if name == "desktop":
+                assert compact["width"] < pill["width"], "桌面紧凑模式没有缩小胶囊宽度"
+            else:
+                assert compact["height"] < pill["height"], "手机紧凑模式没有缩小胶囊高度"
+            assert_orb_geometry(name + "-compact")
+            size_button.click()
+            page.keyboard.press("End")
+            page.keyboard.press("Enter")
+            assert page.locator("#dialog-size").input_value() == "large", "键盘无法选择大尺寸"
+            assert_orb_geometry(name + "-large")
+            size_button.click()
+            page.keyboard.press("Escape")
+            assert not size_menu.is_visible(), "Esc 不能关闭尺寸菜单"
+            size_button.click()
+            if name == "mobile":
+                page.locator("#size-backdrop").click(position={"x": 10, "y": 30})
+            else:
+                page.locator("#engine").click()
+            assert not size_menu.is_visible(), "点击菜单外没有关闭菜单"
+            size_button.click()
+            page.locator('#dialog-size-menu [data-size="standard"]').click()
+            assert_orb_geometry(name + "-restored")
             page.locator("#dialog-text").fill("Generating...")
             assert page.locator("#dialog-caption").inner_text() == "Generating..."
             assert page.locator("#presentation canvas").count() == 1
@@ -305,6 +360,10 @@ def verify_liquid_orb_unified(browser, origin):
         preview = page.frame_locator('iframe[data-preview-frame="local"]')
         preview.locator("#tab-dialog").click(timeout=30000)
         assert preview.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')"), "主站沙箱中标签切换无效"
+        preview.locator("#dialog-size-trigger").click()
+        assert preview.locator("#dialog-size-menu").is_visible(), "沙箱预览内下拉菜单无法展开"
+        preview.locator('#dialog-size-menu [data-size="compact"]').click()
+        assert preview.locator("#dialog-size").input_value() == "compact", "沙箱预览内尺寸无法选择"
         assert not embedded_errors, "主站沙箱错误：" + "; ".join(embedded_errors)
     finally:
         context.close()
