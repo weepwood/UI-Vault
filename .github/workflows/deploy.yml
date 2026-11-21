@@ -1,4 +1,4 @@
-name: 校验并发布 UI Vault
+name: UI Vault 校验与发布
 on:
   push:
     branches: [main]
@@ -8,32 +8,32 @@ permissions:
   contents: read
 jobs:
   validate:
+    name: 元数据校验、测试与静态构建
     runs-on: ubuntu-latest
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
-      - name: 配置 Node
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: 校验 UI 资产清单
+      - name: 校验资产协议
         run: node scripts/validate.mjs
-      - name: 检查 JavaScript 语法
+      - name: 单元测试
+        run: node --test tests/*.test.mjs
+      - name: JavaScript 语法检查
         run: |
-          node --check assets/app.js
-          node --check scripts/new-demo.mjs
-      - name: 生成静态站点目录
-        run: |
-          mkdir -p dist
-          cp index.html favicon.svg dist/
-          cp -R assets demos content dist/
-      - name: 上传站点构建产物
+          find assets scripts tests -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
+      - name: 白名单静态构建
+        run: node scripts/build.mjs
+      - name: 发布目录检查
+        run: node scripts/check-dist.mjs
+      - name: 上传已验证的站点产物
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4
         with:
           name: ui-vault-static
           path: dist
   deploy:
+    name: GitHub Pages 发布
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
     needs: validate
     permissions:
@@ -45,19 +45,13 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: 下载静态站点
-        uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v4
         with:
           name: ui-vault-static
           path: dist
-      - name: 配置 Pages（首次自动启用）
-        uses: actions/configure-pages@v5
-        with:
-          enablement: true
-      - name: 上传 Pages 包
-        uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
           path: dist
-      - name: 部署至 GitHub Pages
-        id: deployment
+      - id: deployment
         uses: actions/deploy-pages@v4

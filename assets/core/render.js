@@ -2,7 +2,7 @@ export const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&a
 export const resolveAsset=path=>new URL(path,document.baseURI).href;
 const visual=(asset,detail=false)=>{
   const a=asset,html=escapeHtml;
-  if(a.coverImage) return '<img class="asset-cover-image" src="'+html(resolveAsset(a.coverImage))+'" alt="" loading="'+(detail?'eager':'lazy')+'">';
+  if(a.coverImage && !detail) return '<img class="asset-cover-image" src="'+html(resolveAsset(a.coverImage))+'" alt="" loading="'+(detail?'eager':'lazy')+'">';
   if(a.source==='local') return '<iframe class="'+(detail?'detail-frame':'card-preview')+'" '+(detail?'src':'data-src')+'="'+html(resolveAsset(a.preview))+'" loading="lazy" sandbox="allow-scripts" referrerpolicy="no-referrer" '+(detail?'':'tabindex="-1"')+' title="'+html(a.title)+(detail?' 完整交互预览':' 预览')+'"></iframe>';
   return '<div class="cover-art '+html(a.cover||'style')+'">'+(a.cover==='mosaic'?'<span></span>'.repeat(12):'')+'</div>';
 };
