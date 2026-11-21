@@ -29,5 +29,5 @@ test('项目列表 HTML 对名称与 ID 进行转义',()=>{
   const html=projectRowMarkup({id:'bad" onclick="evil',title:'<script>alert(1)</script>',type:'demo',source:'external'},new Set(),{demo:'Demo'});
   assert.doesNotMatch(html,/<script>|onclick="evil"/);
   assert.match(html,/&lt;script&gt;/);
-  assert.match(html,/data-open="bad&amp;quot; onclick=/);
+  assert.match(html,/data-open="bad&quot; onclick=/);
 });
