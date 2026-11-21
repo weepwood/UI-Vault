@@ -73,7 +73,7 @@
   .dialog-mode[data-dialog-size=compact]{--pill-width:540px;--pill-height:176px;--pill-inset:21px;--pill-text:clamp(26px,3.4vw,42px)}
   .dialog-mode[data-dialog-size=large]{--pill-width:890px;--pill-height:290px;--pill-inset:33px;--pill-text:clamp(35px,5.1vw,72px)}
   .dialog-mode .presentation{flex:none;width:min(var(--pill-width),100%);height:var(--pill-height);min-height:0;gap:clamp(16px,3.5vw,48px);justify-content:flex-start;overflow:hidden;padding:var(--pill-inset);border:1px solid #7475806c;border-radius:calc(var(--pill-height) / 2);background:radial-gradient(ellipse at 25% 100%,#36324333,transparent 58%),linear-gradient(150deg,#15171b,#101114 75%);box-shadow:inset 0 1px 1px #ffffff1b,0 20px 65px #0004}
-  .dialog-mode .presentation .stage{flex:0 0 auto;align-self:stretch;width:calc(var(--pill-height) - 2 * var(--pill-inset));height:auto;aspect-ratio:1;min-width:0;min-height:0;position:relative;border-radius:50%;overflow:hidden}
+  .dialog-mode .presentation .stage{flex:0 0 auto;align-self:stretch;width:calc(var(--pill-height) - 2 * var(--pill-inset) - 2px);height:auto;aspect-ratio:1;min-width:0;min-height:0;position:relative;border-radius:50%;overflow:hidden}
   .dialog-mode .dialog-caption{display:block;flex:1;min-width:0}
   .dialog-settings{display:none;gap:12px;align-items:end;flex-wrap:wrap;margin:0 clamp(16px,3vw,32px) 16px;padding:12px 0 0;border-top:1px solid #252a3b}
   .dialog-mode .dialog-settings{display:flex}
@@ -122,7 +122,7 @@
     .dialog-mode[data-dialog-size=compact]{--pill-mobile-height:clamp(124px,calc((100vw - 28px) / 3.55),176px);--pill-inset:12px;--pill-text:clamp(23px,5.3vw,35px)}
     .dialog-mode[data-dialog-size=large]{--pill-mobile-height:clamp(164px,calc((100vw - 28px) / 2.85),236px);--pill-inset:17px;--pill-text:clamp(28px,6.5vw,48px)}
     .dialog-mode .presentation{height:var(--pill-mobile-height);min-height:0;max-height:none;aspect-ratio:auto;border-radius:calc(var(--pill-mobile-height) / 2);padding:var(--pill-inset);gap:clamp(10px,3.6vw,23px)}
-    .dialog-mode .presentation .stage{width:calc(var(--pill-mobile-height) - 2 * var(--pill-inset));height:auto;max-width:43%}
+    .dialog-mode .presentation .stage{width:calc(var(--pill-mobile-height) - 2 * var(--pill-inset) - 2px);height:auto}
     .dialog-field{gap:6px}
     .dialog-field input{width:150px}
     .dialog-settings{gap:10px}
