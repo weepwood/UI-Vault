@@ -168,17 +168,29 @@ function WorkbenchPortals({nodes}){
     if(settingsActive||menuOpen)closeDropdowns();
   },[nodes,settingsActive,menuOpen,mobile]);
   useEffect(()=>{
-    const close=()=>menu(false);
+    const close=()=>{
+      menu(false);
+      const target=document.getElementById(settingsActive?'settings-menu-toggle':'menu-toggle');
+      target?.focus({preventScroll:true});
+    };
     nodes.dismiss.addEventListener('click',close);
     nodes.shade.addEventListener('click',close);
     return ()=>{
       nodes.dismiss.removeEventListener('click',close);
       nodes.shade.removeEventListener('click',close);
     };
-  },[nodes,menu]);
+  },[nodes,menu,settingsActive]);
+  useEffect(()=>{
+    if(menuOpen)searchRef.current?.focus({preventScroll:true});
+  },[menuOpen]);
   useEffect(()=>{
     const onKey=event=>{
-      if(event.key==='Escape'&&menuOpen){event.preventDefault();menu(false);return;}
+      if(event.key==='Escape'&&menuOpen){
+        event.preventDefault();
+        menu(false);
+        document.getElementById(settingsActive?'settings-menu-toggle':'menu-toggle')?.focus({preventScroll:true});
+        return;
+      }
       const editable=Boolean(event.target?.closest?.('input,textarea,select,[contenteditable="true"]'));
       if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){
         event.preventDefault();
@@ -249,7 +261,12 @@ function WorkbenchPortals({nodes}){
     {createPortal(<a id="settings-open" className="sidebar-settings" href="./?view=settings"
       aria-label="打开工作台设置" title="设置"
       aria-current={settingsActive?'page':'false'}
-      onClick={event=>{event.preventDefault();openView('settings');setDialogOpen(false);}}>
+      onClick={event=>{
+        event.preventDefault();
+        openView('settings');
+        setDialogOpen(false);
+        requestAnimationFrame(()=>document.getElementById('settings-title')?.focus({preventScroll:true}));
+      }}>
       <UIIcon name="settings"/><span>设置</span>
     </a>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
