@@ -55,7 +55,7 @@ export function checkEntry(entry, categories, fileName='') {
 export function safeRelativePath(value,prefix) {
   if(typeof value !== 'string' || !value.startsWith(prefix) || value.includes('\\') || value.includes('?') || value.includes('#')) return false;
   const parts=value.split('/');
-  return parts.every(x=>x!=='' && x!=='.' && x!=='..' && /^[a-zA-Z0-9_\-./]+$/.test(x));
+  return parts.every(x=>x!=='' && !x.startsWith('.') && x!=='.' && x!=='..' && /^[a-zA-Z0-9_\-./]+$/.test(x));
 }
 async function safeExistingFile(rel) {
   const target=resolve(ROOT,rel);
