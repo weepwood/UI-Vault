@@ -3,10 +3,13 @@ import { enhanceSelect, closeDropdowns } from './core/dropdown.js';
 import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { escapeHtml, resolveAsset } from './core/render.js';
-import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from './core/workbench.js';
+import { projectRowMarkup, projectPreviewMarkup } from './core/workbench.js';
 import { applyPreviewLayout } from './core/preview.js';
 import { initSettings } from './core/settings.js';
 import {createViewportSwitcher} from './ui/viewport-switcher.js';
+import {createMobileNavigation} from './ui/mobile-navigation.js';
+import {createProjectDialog} from './ui/project-dialog.js';
+import {createWorkbenchRouter} from './core/workbench-router.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
   setCatalogQuery,setCatalogSort,setCatalogTag,hasActiveCatalogFilters,
   activateAsset,deactivateAsset,changePreviewMode} from './core/workbench-state.js';
@@ -17,14 +20,15 @@ const categoryIconById=Object.freeze({
 });
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');
-const libraryRail=$('#library-rail'),shade=$('#mobile-shade'),stage=$('#preview-stage'),toast=$('#toast');
-const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls'),infoDialog=$('#project-dialog');
-const settingsMenuToggle=$('#settings-menu-toggle'),settingsView=$('#settings-view');
+const libraryRail=$('#library-rail'),stage=$('#preview-stage'),toast=$('#toast');
+const viewport=$('#viewport-controls');
+const settingsView=$('#settings-view');
 const settingsLink=$('#settings-open'),shell=$('.app-shell');
 const state=createWorkbenchState();
+const router=createWorkbenchRouter(window);
 const favorites=loadFavorites();
-let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
-let sortDropdown,tagDropdown,settingsManager,deviceSwitcher,settingsActive=false;
+let toastTimeout,previewResizeObserver;
+let sortDropdown,tagDropdown,settingsManager,deviceSwitcher,mobileNavigation,projectDialog,settingsActive=false;
 const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
 
 function notify(message){
@@ -37,43 +41,20 @@ function save(){
   if(!saveFavorites(favorites))notify('无法持久保存收藏，本次会话仍可使用');
   $('#favorite-count').textContent=favorites.size;
 }
-function setSidebar(open,{returnFocus=false}={}){
-  const visible=Boolean(open&&isMobile());
-  if(!visible)closeDropdowns();
-  const wasOpen=libraryRail.classList.contains('is-open');
-  libraryRail.classList.toggle('is-open',visible);
-  shade.hidden=!visible;
-  $('#main').inert=visible||settingsActive;
-  settingsView.inert=visible||!settingsActive;
-  for(const toggle of [menuToggle,settingsMenuToggle]){
-    toggle.setAttribute('aria-expanded',String(visible));
-    toggle.setAttribute('aria-label',visible?'关闭导航菜单':'打开导航菜单');
-  }
-  libraryRail.inert=isMobile()&&!visible;
-  if(visible)search.focus({preventScroll:true});
-  if(!visible&&wasOpen&&returnFocus)(settingsActive?settingsMenuToggle:menuToggle).focus({preventScroll:true});
-}
 // 设置视图保持在当前文档：导航栏不变，右侧两栏合并；通过 History 支持浏览器前进/后退。
 function setWorkbenchView(mode,{historyMode=null,focus=false}={}){
   const next=mode==='settings';
   const changed=settingsActive!==next;
   settingsActive=next;
   closeDropdowns();
-  if(next&&infoDialog.open)infoDialog.close();
+  if(next)projectDialog.close();
   shell.classList.toggle('is-settings',next);
   settingsView.hidden=!next;
-  settingsView.inert=!next;
   $('#project-panel').inert=next;
-  $('#main').inert=next;
   settingsLink.setAttribute('aria-current',next?'page':'false');
-  setSidebar(false);
+  mobileNavigation.close();
   navState();
-  if(historyMode){
-    const url=new URL(window.location.href);
-    if(next)url.searchParams.set('view','settings');
-    else url.searchParams.delete('view');
-    if(url.href!==window.location.href)window.history[historyMode+'State']({view:next?'settings':'library'},'',url);
-  }
+  router.setView(next?'settings':'library',historyMode);
   if(changed&&!next)requestAnimationFrame(resizePreview);
   if(focus&&next){
     const heading=$('#settings-title');
@@ -147,20 +128,6 @@ function selectPreviewSize(mode){
   deviceSwitcher?.sync();
   resizePreview();
 }
-function buildAssetURL(id){
-  const url=new URL(window.location.href);
-  if(id)url.searchParams.set('asset',id);
-  else url.searchParams.delete('asset');
-  url.hash='';
-  return url;
-}
-function syncURL(id,mode){
-  if(!mode)return;
-  const url=buildAssetURL(id);
-  if(url.href===window.location.href)return;
-  if(mode==='push')window.history.pushState({asset:id},'',url);
-  else window.history.replaceState({asset:id},'',url);
-}
 function clearSelection(){
   $('#preview-kind').textContent='项目目录';
   $('#preview-title').textContent='没有匹配的项目';
@@ -171,9 +138,7 @@ function clearSelection(){
   viewport.hidden=true;
   deviceSwitcher?.close();
   $('#preview-info').disabled=true;
-  if(infoDialog.open)infoDialog.close();
-  sourceLoadKey++;
-  sourceLoadedId=null;
+  projectDialog.reset();
   stage.replaceChildren();
   stage.innerHTML='<div class="preview-placeholder">'+iconMarkup('search')+'<p>左侧没有匹配项。请更换搜索关键词或点击“重置筛选”。</p></div>';
 }
@@ -187,19 +152,7 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
     $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源');
     $('#preview-title').textContent=asset.title;
     $('#preview-subtitle').textContent=asset.subtitle||asset.description;
-    if(infoDialog.open)infoDialog.close();
-    sourceLoadKey++;
-    sourceLoadedId=null;
-    $('#dialog-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目');
-    $('#dialog-title').textContent=asset.title;
-    $('#project-info').innerHTML=projectInfoMarkup(asset,state.labels);
-    $('#source-code').textContent='';
-    $('#source-status').textContent=asset.source==='local'?'选择“源代码”查看本地 Demo 实现':'外部项目：通过 GitHub 查看原始源码';
-    $('#source-copy').disabled=true;
-    const codeUrl=asset.source==='local'&&asset.code
-      ?'https://github.com/weepwood/UI-Vault/blob/main/'+asset.code.split('/').map(encodeURIComponent).join('/')
-      :asset.sourceUrl||asset.url||asset.originRepo||'https://github.com/weepwood/UI-Vault';
-    $('#source-repo').href=codeUrl;
+    projectDialog.setAsset(asset,state.labels);
     $('#preview-info').disabled=false;
     viewport.hidden=asset.source!=='local';
     deviceSwitcher?.close();
@@ -216,9 +169,9 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
   $('#preview-favorite').setAttribute('aria-pressed',String(liked));
   $('#preview-favorite').setAttribute('aria-label',(liked?'取消收藏 ':'收藏 ')+asset.title);
   updateListSelection();
-  syncURL(asset.id,historyMode);
+  router.setAsset(asset.id,historyMode);
   if(focusPreview&&isMobile()){
-    setSidebar(false);
+    mobileNavigation.close();
     const heading=$('#preview-title');
     heading.setAttribute('tabindex','-1');
     heading.focus({preventScroll:true});
@@ -245,7 +198,7 @@ async function copyText(text,message){
   }catch{notify('复制失败，请检查浏览器剪贴板权限');}
 }
 function copyLink(){
-  if(state.active)void copyText(buildAssetURL(state.active.id).href,'项目链接已复制');
+  if(state.active)void copyText(router.assetURL(state.active.id).href,'项目链接已复制');
 }
 async function copySource(id){
   const asset=state.assets.find(x=>x.id===id&&x.source==='local'&&x.copyable!==false);
@@ -256,62 +209,11 @@ async function copySource(id){
     await copyText(await response.text(),'单文件 Demo 源码已复制');
   }catch{notify('源码读取失败，请在 GitHub 打开对应文件');}
 }
-function openProjectDialog(){
-  if(!state.active)return;
-  setInfoTab('overview');
-  if(typeof infoDialog.showModal==='function')infoDialog.showModal();
-  else {notify('当前浏览器不支持原生项目说明弹窗');}
-}
-function setInfoTab(tab){
-  if(tab!=='overview'&&tab!=='source')return;
-  for(const button of infoDialog.querySelectorAll('[data-info-tab]')){
-    const selected=button.dataset.infoTab===tab;
-    button.setAttribute('aria-selected',String(selected));
-    button.tabIndex=selected?0:-1;
-  }
-  $('#dialog-overview').hidden=tab!=='overview';
-  $('#dialog-source').hidden=tab!=='source';
-  if(tab==='source')void loadProjectSource();
-}
-async function loadProjectSource(){
-  const asset=state.active;
-  if(!asset||sourceLoadedId===asset.id)return;
-  const key=++sourceLoadKey;
-  const sourceCode=$('#source-code'),status=$('#source-status'),copy=$('#source-copy');
-  copy.disabled=true;
-  if(asset.source!=='local'||!asset.code){
-    sourceCode.textContent='此项目的源代码保存在原始仓库中。请使用上方的 GitHub 源码链接查看。';
-    status.textContent='外部项目 · 不复制第三方源代码';
-    return;
-  }
-  if(asset.copyable===false){
-    sourceCode.textContent='这是多文件项目，无法将整个项目作为单文件展示。请在 GitHub 查看完整源码及相关资源。';
-    status.textContent='多文件 Demo · 请在 GitHub 查看';
-    return;
-  }
-  sourceCode.textContent='正在加载本地 Demo 源码…';
-  status.textContent='正在读取源码';
-  try{
-    const response=await fetch(resolveAsset(asset.code),{cache:'no-cache'});
-    if(!response.ok)throw Error('HTTP '+response.status);
-    const result=await response.text();
-    if(key!==sourceLoadKey||state.active?.id!==asset.id)return;
-    sourceCode.textContent=result;
-    sourceLoadedId=asset.id;
-    status.textContent='源代码 · '+result.split('\n').length+' 行';
-    copy.disabled=false;
-  }catch(error){
-    if(key!==sourceLoadKey||state.active?.id!==asset.id)return;
-    sourceCode.textContent='无法加载源代码，请使用 GitHub 链接查看完整文件。';
-    status.textContent='源码加载失败';
-    console.warn('UI Vault 源码加载失败:',error);
-  }
-}
 function changeFilter(kind,value){
   leaveSettingsForLibrary();
   changeCatalogFilter(state,kind,value);
   renderList();
-  if(isMobile())setSidebar(false);
+  if(isMobile())mobileNavigation.close();
 }
 function reset(){
   leaveSettingsForLibrary();
@@ -347,59 +249,36 @@ function initEvents(){
   });
   $('#preview-favorite').addEventListener('click',()=>{if(state.active)toggleFavorite(state.active.id);});
   $('#preview-copy-link').addEventListener('click',copyLink);
-  $('#preview-info').addEventListener('click',openProjectDialog);
-  $('#dialog-close').addEventListener('click',()=>infoDialog.close());
-  $('#source-copy').addEventListener('click',()=>{
-    if(sourceLoadedId===state.active?.id)void copyText($('#source-code').textContent,'项目源码已复制');
+  projectDialog=createProjectDialog({
+    root:$('#project-dialog'),
+    opener:$('#preview-info'),
+    getAsset:()=>state.active,
+    onNotice:notify,
+    onCopySource:copySource,
+    onCopyLink:copyLink,
+    onCopyText:copyText
   });
-  infoDialog.addEventListener('click',event=>{
-    // 仅点在原生对话框外部背景时关闭，内容区内的点击保留。
-    if(event.target!==infoDialog)return;
-    const box=infoDialog.getBoundingClientRect();
-    if(event.clientX<box.left||event.clientX>box.right||event.clientY<box.top||event.clientY>box.bottom)infoDialog.close();
+  mobileNavigation=createMobileNavigation({
+    rail:libraryRail,
+    shade:$('#mobile-shade'),
+    main:$('#main'),
+    settingsView,
+    search,
+    primaryToggle:$('#menu-toggle'),
+    settingsToggle:$('#settings-menu-toggle'),
+    dismissButton:$('#sidebar-dismiss'),
+    getView:()=>settingsActive?'settings':'library',
+    isMobile,
+    closeDropdowns
   });
-  infoDialog.addEventListener('keydown',event=>{
-    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
-    const active=event.target.closest('[data-info-tab]');
-    if(!active)return;
-    event.preventDefault();
-    const target=event.key==='Home'?'overview':event.key==='End'?'source':
-      active.dataset.infoTab==='overview'?'source':'overview';
-    setInfoTab(target);
-    infoDialog.querySelector('[data-info-tab="'+target+'"]').focus();
-  });
-  infoDialog.addEventListener('click',event=>{
-    const tab=event.target.closest('[data-info-tab]');
-    if(tab)setInfoTab(tab.dataset.infoTab);
-  });
-  $('#project-info').addEventListener('click',event=>{
-    const copy=event.target.closest('[data-copy]');
-    if(copy){void copySource(copy.dataset.copy);return;}
-    if(event.target.closest('[data-copy-link]'))copyLink();
-  });
-  menuToggle.addEventListener('click',()=>setSidebar(!libraryRail.classList.contains('is-open')));
-  settingsMenuToggle.addEventListener('click',()=>setSidebar(!libraryRail.classList.contains('is-open')));
   settingsLink.addEventListener('click',event=>{
     event.preventDefault();
     setWorkbenchView('settings',{historyMode:'push',focus:true});
   });
-  $('#sidebar-dismiss').addEventListener('click',()=>setSidebar(false,{returnFocus:true}));
-  shade.addEventListener('click',()=>setSidebar(false,{returnFocus:true}));
-  window.addEventListener('resize',()=>{if(!isMobile())setSidebar(false);resizePreview();});
-  document.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&libraryRail.classList.contains('is-open')){event.preventDefault();setSidebar(false,{returnFocus:true});return;}
-    const target=event.target;
-    const editable=target instanceof Element&&Boolean(target.closest('input,textarea,select,[contenteditable="true"]'));
-    if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){
-      event.preventDefault();setSidebar(true);search.focus();search.select();
-    }else if(!editable&&event.key==='/'&&!event.metaKey&&!event.ctrlKey&&!event.altKey){
-      event.preventDefault();setSidebar(true);search.focus();
-    }
-  });
-  window.addEventListener('popstate',()=>{
-    setWorkbenchView(new URL(window.location.href).searchParams.get('view')==='settings'?'settings':'library');
-    const id=new URL(window.location.href).searchParams.get('asset');
-    const target=state.assets.find(a=>a.id===id)||state.assets.find(a=>a.id===filteredItems()[0]?.id);
+  window.addEventListener('resize',resizePreview);
+  router.subscribe(({view,asset})=>{
+    setWorkbenchView(view);
+    const target=state.assets.find(a=>a.id===asset)||state.assets.find(a=>a.id===filteredItems()[0]?.id);
     if(target)selectAsset(target);
   });
 }
@@ -450,13 +329,12 @@ function verifyWorkbenchShell(){
 }
 async function init(){
   if(!verifyWorkbenchShell())return;
-  libraryRail.inert=isMobile();
   settingsManager=initSettings({
     onPreviewChange:mode=>{if(state.active?.source==='local')selectPreviewSize(mode);},
     onNotice:notify
   });
   initEvents();
-  setWorkbenchView(new URL(window.location.href).searchParams.get('view')==='settings'?'settings':'library');
+  setWorkbenchView(router.read().view);
   if(typeof ResizeObserver!=='undefined'){
     previewResizeObserver=new ResizeObserver(resizePreview);
     previewResizeObserver.observe(stage);
@@ -470,7 +348,7 @@ async function init(){
     $('#curated-count').textContent=items.filter(a=>a.curated===true).length;
     $('#imported-count').textContent=items.filter(a=>a.originRepo).length;
     $('#favorite-count').textContent=favorites.size;
-    const deepLink=new URL(window.location.href).searchParams.get('asset');
+    const deepLink=router.read().asset;
     const preferred=items.find(a=>a.id===deepLink)||
       items.find(a=>a.source==='local'&&a.curated===true)||
       items.find(a=>a.source==='local')||items[0];
