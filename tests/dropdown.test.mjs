@@ -49,7 +49,9 @@ test('排序、标签、展开、选中图标均来自现有 Lucide 精简图标
 });
 
 test('菜单包含弹层边界、可见焦点、激活态及减少动画支持',async()=>{
-  const css=await read('assets/styles.css');
+  const entry=await read('assets/styles.css');
+  const css=await read('assets/ui/dropdown.css');
+  assert.ok(entry.includes('@import url("./ui/dropdown.css")'),'全局入口必须加载同一份下拉样式');
   assert.match(css,/\.select-popover\s*\{[^}]*max-height:/);
   assert.match(css,/\.select-option:focus-visible\s*\{/);
   assert.match(css,/\.select-option\[aria-selected="true"\]/);
