@@ -30,24 +30,17 @@ test('悬浮选项不改变工具栏占用宽度，并支持窄屏和深色主�
   assert.match(css,/prefers-reduced-motion:reduce/);
 });
 
-test('设备组件独立管理悬停、键盘和焦点，工作台仅传递状态回调',()=>{
-  const app=read('assets/app.js');
-  const component=read('assets/ui/viewport-switcher.js');
-  assert.match(app,/import \{createViewportSwitcher\} from '[.]\/ui\/viewport-switcher[.]js'/);
-  assert.match(app,/deviceSwitcher=createViewportSwitcher\(/);
-  assert.match(app,/getMode:\(\)=>state[.]previewSize/);
-  assert.match(app,/onSelect:selectPreviewSize/);
-  assert.match(app,/deviceSwitcher[?][.]close\(\)/);
-  assert.match(app,/deviceSwitcher[?][.]sync\(\)/);
-  assert.match(component,/listen\(root,'pointerenter'/);
-  assert.match(component,/listen\(root,'pointerleave'/);
-  assert.match(component,/listen\(trigger,'click'/);
-  assert.match(component,/listen\(options,'click'/);
-  assert.match(component,/onSelect\(mode\)/);
-  assert.match(component,/listen\(root,'keydown'/);
-  assert.match(component,/\['ArrowDown','ArrowUp','Home','End'\]/);
-  assert.match(component,/event[.]key==='Escape'&&expanded/);
-  assert.match(component,/button[.]dataset[.]previewSize===mode/);
-  assert.match(component,/destroy\(\)/);
-  assert.doesNotMatch(app,/viewportTrigger[.]addEventListener|viewportOptions[.]addEventListener/);
+test('React 设备切换器保留悬停展开、键盘与焦点操作',()=>{
+ const app=read('assets/app.js');
+ const component=read('src/components/PreviewToolbar.jsx');
+ const preview=read('src/components/PreviewFrame.jsx');
+ assert.match(app,/mountWorkbench\(\)/);
+ for(const token of ['function ViewportSwitcher','onPointerEnter','onPointerLeave',
+   "event.key==='Escape'","'ArrowDown','ArrowUp','Home','End'",
+   'data-preview-size={item.mode}','aria-pressed={String(mode===item.mode)}',
+   'trigger.current?.focus']){
+   assert.ok(component.includes(token),'React 设备切换器缺少：'+token);
+ }
+ assert.match(preview,/applyPreviewLayout/);
+ assert.doesNotMatch(app,/viewportTrigger[.]addEventListener|viewportOptions[.]addEventListener/);
 });
