@@ -4,8 +4,12 @@ import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { escapeHtml, resolveAsset } from './core/render.js';
 import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from './core/workbench.js';
-import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
+import { applyPreviewLayout } from './core/preview.js';
 import { initSettings } from './core/settings.js';
+import {createViewportSwitcher} from './ui/viewport-switcher.js';
+import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
+  setCatalogQuery,setCatalogSort,setCatalogTag,hasActiveCatalogFilters,
+  activateAsset,deactivateAsset,changePreviewMode} from './core/workbench-state.js';
 
 const categoryIconById=Object.freeze({
   style:'palette',component:'component',effect:'zap',
@@ -15,18 +19,12 @@ const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');
 const libraryRail=$('#library-rail'),shade=$('#mobile-shade'),stage=$('#preview-stage'),toast=$('#toast');
 const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls'),infoDialog=$('#project-dialog');
-const viewportTrigger=$('#viewport-current'),viewportOptions=$('#viewport-options');
 const settingsMenuToggle=$('#settings-menu-toggle'),settingsView=$('#settings-view');
 const settingsLink=$('#settings-open'),shell=$('.app-shell');
-const state={
-  assets:[],categories:[],labels:{all:'全部资源'},
-  category:'all',tag:'',query:'',sort:'featured',
-  favoritesOnly:false,importedOnly:false,curatedOnly:false,
-  active:null,previewSize:'fluid'
-};
+const state=createWorkbenchState();
 const favorites=loadFavorites();
 let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
-let sortDropdown,tagDropdown,settingsManager,settingsActive=false,viewportExpanded=false;
+let sortDropdown,tagDropdown,settingsManager,deviceSwitcher,settingsActive=false;
 const isMobile=()=>window.matchMedia('(max-width:760px)').matches;
 
 function notify(message){
@@ -126,15 +124,14 @@ function renderList(){
   $('#empty').hidden=!empty;
   $('#empty-message').textContent=state.favoritesOnly&&!state.query.trim()&&!state.tag
     ?'这里还没有收藏的项目。' : '没有找到符合当前条件的项目。';
-  const filtered=state.category!=='all'||state.favoritesOnly||state.importedOnly||state.curatedOnly||
-    Boolean(state.tag)||Boolean(state.query.trim())||state.sort!=='featured';
+  const filtered=hasActiveCatalogFilters(state);
   $('#reset-filters').hidden=!filtered;
   $('#results-count').textContent=String(items.length);
   $('#results-status').textContent='当前显示 '+items.length+' 个项目';
   navState();
   updateTags();
   if(items.length===0){
-    if(state.active){state.active=null;clearSelection();}
+    if(state.active){deactivateAsset(state);clearSelection();}
   }else if(!state.active||!items.some(x=>x.id===state.active.id)){
     selectAsset(items[0],{historyMode:'replace'});
   }
@@ -144,37 +141,10 @@ function resizePreview(){
   if(!iframe||iframe.dataset.previewFrame!=='local')return;
   applyPreviewLayout(stage,iframe,state.previewSize);
 }
-// 设备菜单始终只占当前选中项的宽度，完整选项悬浮展开，不挤压顶栏。
-function setViewportMenuOpen(open,{focusOption=false}={}){
-  viewportExpanded=Boolean(open&&!viewport.hidden);
-  viewportOptions.hidden=!viewportExpanded;
-  viewport.classList.toggle('is-expanded',viewportExpanded);
-  viewportTrigger.setAttribute('aria-expanded',String(viewportExpanded));
-  if(!viewportExpanded&&viewportOptions.contains(document.activeElement)){
-    viewportTrigger.focus({preventScroll:true});
-  }
-  if(focusOption&&viewportExpanded){
-    const current=viewportOptions.querySelector('[aria-pressed="true"]')||
-      viewportOptions.querySelector('[data-preview-size]');
-    current?.focus({preventScroll:true});
-  }
-}
-function syncViewportCurrent(){
-  const buttons=[...viewportOptions.querySelectorAll('[data-preview-size]')];
-  for(const button of buttons)button.setAttribute('aria-pressed',String(button.dataset.previewSize===state.previewSize));
-  const selected=buttons.find(button=>button.dataset.previewSize===state.previewSize);
-  if(!selected)return;
-  const icon=selected.querySelector('.ui-icon');
-  const name=selected.querySelector('span')?.textContent||'自适应';
-  if(icon)$('#viewport-current-icon').replaceChildren(icon.cloneNode(true));
-  $('#viewport-current-label').textContent=name;
-  viewportTrigger.setAttribute('aria-label','当前预览：'+name+'，选择设备');
-}
 function selectPreviewSize(mode){
-  if(!Object.hasOwn(PREVIEW_WIDTHS,mode)||state.active?.source!=='local')return;
-  state.previewSize=mode;
-  stage.dataset.size=mode;
-  syncViewportCurrent();
+  if(state.active?.source!=='local'||!changePreviewMode(state,mode))return;
+  stage.dataset.size=state.previewSize;
+  deviceSwitcher?.sync();
   resizePreview();
 }
 function buildAssetURL(id){
@@ -199,7 +169,7 @@ function clearSelection(){
   $('#preview-copy-link').disabled=true;
   $('#preview-open').hidden=true;
   viewport.hidden=true;
-  setViewportMenuOpen(false);
+  deviceSwitcher?.close();
   $('#preview-info').disabled=true;
   if(infoDialog.open)infoDialog.close();
   sourceLoadKey++;
@@ -211,8 +181,7 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
   if(!asset)return;
   const same=state.active?.id===asset.id;
   if(!same){
-    state.active=asset;
-    state.previewSize=settingsManager?.get().preview||'fluid';
+    activateAsset(state,asset,settingsManager?.get().preview||'fluid');
     stage.dataset.size=state.previewSize;
     stage.innerHTML=projectPreviewMarkup(asset);
     $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源');
@@ -233,8 +202,8 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
     $('#source-repo').href=codeUrl;
     $('#preview-info').disabled=false;
     viewport.hidden=asset.source!=='local';
-    setViewportMenuOpen(false);
-    syncViewportCurrent();
+    deviceSwitcher?.close();
+    deviceSwitcher?.sync();
     const openUrl=asset.source==='local'?resolveAsset(asset.preview):asset.siteUrl||asset.url||asset.originRepo;
     $('#preview-open').href=openUrl||'https://github.com/weepwood/UI-Vault';
     $('#preview-open').hidden=!openUrl;
@@ -340,21 +309,13 @@ async function loadProjectSource(){
 }
 function changeFilter(kind,value){
   leaveSettingsForLibrary();
-  if(kind==='category'){
-    state.category=value;state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;
-  }else{
-    state[kind]=!state[kind];
-    state.category='all';
-    for(const key of ['favoritesOnly','importedOnly','curatedOnly'])if(key!==kind)state[key]=false;
-  }
-  state.tag='';
+  changeCatalogFilter(state,kind,value);
   renderList();
   if(isMobile())setSidebar(false);
 }
 function reset(){
   leaveSettingsForLibrary();
-  state.category='all';state.tag='';state.query='';state.sort='featured';
-  state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;
+  resetCatalogFilters(state);
   search.value='';sort.value='featured';sortDropdown?.sync();renderList();
 }
 function initEvents(){
@@ -374,49 +335,15 @@ function initEvents(){
   $('[data-favorites]').addEventListener('click',()=>changeFilter('favoritesOnly'));
   $('[data-imported]').addEventListener('click',()=>changeFilter('importedOnly'));
   $('[data-curated]').addEventListener('click',()=>changeFilter('curatedOnly'));
-  search.addEventListener('input',event=>{leaveSettingsForLibrary();state.query=event.target.value;renderList();});
-  sort.addEventListener('change',event=>{leaveSettingsForLibrary();state.sort=event.target.value;renderList();});
-  tagFilter.addEventListener('change',event=>{leaveSettingsForLibrary();state.tag=event.target.value;renderList();});
+  search.addEventListener('input',event=>{leaveSettingsForLibrary();setCatalogQuery(state,event.target.value);renderList();});
+  sort.addEventListener('change',event=>{leaveSettingsForLibrary();setCatalogSort(state,event.target.value);renderList();});
+  tagFilter.addEventListener('change',event=>{leaveSettingsForLibrary();setCatalogTag(state,event.target.value);renderList();});
   $('#reset-filters').addEventListener('click',reset);
   $('#clear-filters').addEventListener('click',reset);
-  // 鼠标悬停展开；触摸点击当前设备也能展开，选中后恢复单项显示。
-  viewport.addEventListener('pointerenter',event=>{
-    if(event.pointerType==='mouse')setViewportMenuOpen(true);
-  });
-  viewport.addEventListener('pointerleave',event=>{
-    if(event.pointerType==='mouse')setViewportMenuOpen(false);
-  });
-  viewportTrigger.addEventListener('click',()=>setViewportMenuOpen(!viewportExpanded));
-  viewportOptions.addEventListener('click',event=>{
-    const button=event.target.closest('[data-preview-size]');
-    if(!button||!viewportOptions.contains(button))return;
-    selectPreviewSize(button.dataset.previewSize);
-    setViewportMenuOpen(false);
-    viewportTrigger.focus({preventScroll:true});
-  });
-  viewport.addEventListener('keydown',event=>{
-    if(event.key==='Escape'&&viewportExpanded){
-      event.preventDefault();
-      event.stopPropagation();
-      setViewportMenuOpen(false);
-      viewportTrigger.focus({preventScroll:true});
-      return;
-    }
-    if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
-    if(!viewport.contains(event.target))return;
-    event.preventDefault();
-    if(!viewportExpanded){setViewportMenuOpen(true,{focusOption:true});return;}
-    const buttons=[...viewportOptions.querySelectorAll('[data-preview-size]')];
-    const index=buttons.indexOf(document.activeElement);
-    const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:
-      (index+(event.key==='ArrowDown'?1:-1)+buttons.length)%buttons.length;
-    buttons[next]?.focus({preventScroll:true});
-  });
-  viewport.addEventListener('focusout',event=>{
-    if(!viewport.contains(event.relatedTarget)&&!viewport.matches(':hover'))setViewportMenuOpen(false);
-  });
-  document.addEventListener('pointerdown',event=>{
-    if(viewportExpanded&&!viewport.contains(event.target))setViewportMenuOpen(false);
+  deviceSwitcher=createViewportSwitcher({
+    root:viewport,
+    getMode:()=>state.previewSize,
+    onSelect:selectPreviewSize
   });
   $('#preview-favorite').addEventListener('click',()=>{if(state.active)toggleFavorite(state.active.id);});
   $('#preview-copy-link').addEventListener('click',copyLink);
@@ -537,8 +464,7 @@ async function init(){
   try{
     const [items,categories]=await Promise.all([loadJSON('content/assets.json'),loadJSON('content/categories.json')]);
     if(!Array.isArray(items)||!Array.isArray(categories))throw Error('资产或分类清单格式不正确');
-    state.assets=items;state.categories=categories;
-    state.labels={all:'全部资源',...Object.fromEntries(categories.map(c=>[c.id,c.label]))};
+    setCatalogData(state,items,categories);
     initNavigation();
     $('#total-count').textContent=items.length;
     $('#curated-count').textContent=items.filter(a=>a.curated===true).length;

@@ -5,7 +5,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','content/assets.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/core/workbench-state.js','assets/ui/viewport-switcher.js','assets/ui/controls.css','assets/ui/dropdown.css','content/assets.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);}
   if(a.coverImage)paths.push(a.coverImage);
@@ -32,6 +32,15 @@ assert.match(entry,new RegExp('from [\\\x27"][.]/core/workbench[.]js[?]v='+jsFin
 assert.match(entry,new RegExp('from [\\\x27"][.]/core/dropdown[.]js[?]v='+jsFingerprint),'入口模块没有版本化下拉菜单依赖');
 const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
 assert.match(core,new RegExp('from [\\\x27"][.]/icons[.]js[?]v='+jsFingerprint),'子模块没有使用同一版本标记');
+const versionedCSS=await readFile(join(out,`assets/styles.${cssFingerprint}.css`),'utf8');
+for(const componentPath of ['./ui/controls.css','./ui/dropdown.css']){
+  assert.ok(versionedCSS.includes('@import url("'+componentPath+'")'),'主站 CSS 缺少共享组件引用：'+componentPath);
+}
+for(const modulePath of ['./core/workbench-state.js','./ui/viewport-switcher.js']){
+  assert.ok(entry.includes(modulePath+'?v='+jsFingerprint),'入口模块版本不一致：'+modulePath);
+}
+const workbenchState=await readFile(join(out,'assets/core/workbench-state.js'),'utf8');
+assert.ok(workbenchState.includes('./preview.js?v='+jsFingerprint),'状态模块依赖未版本化');
 assert.ok(!publishedHTML.includes('src="./assets/app.js"'),'入口还引用未版本化脚本');
 for(const p of ['README.md','catalog/assets/warm-workbench.json','scripts/new-demo.mjs','tests/catalog.test.mjs','.github/workflows/deploy.yml']){
   try{await stat(join(out,p));throw Error('非站点文件被误发布：'+p);}

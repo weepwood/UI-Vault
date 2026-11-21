@@ -9,7 +9,7 @@
 | 层级 | 代码事实来源 | 作用 | 当前状态 |
 | --- | --- | --- | --- |
 | Foundation（跨项目） | `subprojects/ui-foundation-kit/tokens/`、`styles/` | 通用 Token、按钮、卡片、输入、Badge、Tabs、Switch、Dialog recipes；Vue/React/GPUI 接入说明 | 已有独立项目和演示；不能自动宣称 Web/Vue/GPUI 完全一致 |
-| Workbench（本仓工作台） | `assets/styles.css`、`assets/core/*.js` | UI-Vault 资产浏览器、增强下拉、筛选、项目条目、项目预览、设置视图 | 已在主站使用；部分仍与业务 DOM 紧耦合 |
+| Workbench（本仓工作台） | `assets/styles.css`、`assets/ui/`、`assets/core/*.js` | UI-Vault 资产浏览器、增强下拉、筛选、项目条目、项目预览、设置视图 | 已在主站使用；部分仍与业务 DOM 紧耦合 |
 | Workbench 展示 | `demos/components/workbench-system/` | 上述真实样式和可直接调用模块的可交互示例 | 本轮新增，可从 UI-Vault“界面组件”目录打开；**不是第二份组件源码** |
 | Design 说明 | `DESIGN.md`、`docs/COMPONENT-SYSTEM.md` | 设计原则、组件清单、抽取优先级、验收标准 | 规范和迭代路线 |
 
@@ -65,8 +65,8 @@ demos/components/workbench-system/
 ### 抽取顺序与迁移契约
 
 1. **P0（当前）｜清点与展示**：有可运行示例、真实组件依赖、资源登记、回归检查、规范；保留现有主站选择器以避免大范围重构。
-2. **P1｜抽取无业务依赖的部分**：先梳理 CSS 语义 Token、Button/Input/Badge、下拉与 Dialog/Toast 的统一样式；让主站和展厅同时导入新 recipe，再去除原大样式中的重复定义。每个组件先有一个生产调用方。
-3. **P2｜抽取状态复杂的部分**：将设备切换器、项目导航的“视图/状态逻辑”从 `assets/app.js` 移出；保留 `aria-pressed`、焦点恢复、触屏展开、关闭菜单及 iframe 不无谓重载。
+2. **P1（部分完成）｜抽取无业务依赖的部分**：已把搜索、Button/Filter、Toast 的基础样式抽到 `assets/ui/controls.css`，下拉视觉与动效抽到 `assets/ui/dropdown.css`，并统一由主站 CSS 导入。Dialog、Badge、更多状态仍待分批抽取；不要一次性重写现有工作台。
+3. **P2（部分完成）｜抽取复杂状态**：已抽出 `assets/core/workbench-state.js`（筛选互斥、资源选中、预览模式状态）及 `assets/ui/viewport-switcher.js`（设备菜单键盘/触屏/焦点）。下一步拆出项目 Dialog 与路由/移动导航状态，继续确保 iframe 不无谓重载。
 4. **P3｜跨框架适配**：稳定组件以 Foundation 变量为桥梁接入 Vue/React；Rust/GPUI 共享视觉 Token，不照搬 DOM。只有在有第二个真实消费者后才正式标为“跨项目通用”。
 5. **P4｜自动化视觉验收**：补上 Chromium 截图基准和响应式场景，覆盖明暗主题、鼠标/触屏、宽窄视口、长文本以及字体加载。构建通过不等于视觉验收通过。
 
@@ -85,3 +85,5 @@ demos/components/workbench-system/
 - 默认 UI 语义 Token：**Foundation 为跨项目标准；Workbench CSS 当前维持兼容别名**。避免将两套主题强行统一，造成老 Demo 风格回归。
 - 先整理主站正在运行的控件，而不是一次性引入大型 Storybook、复杂状态库或 Tailwind 运行时；当组件数量和消费者规模有明确证据时再评估专业文档工具。
 - 用户筛选与分类属于产品状态，不属于通用组件；组件负责展示和事件合同，业务层负责持久化、导航和跨资源关联。
+
+本阶段的具体实现与测试路径见 [WORKBENCH-MODULES.md](WORKBENCH-MODULES.md)。

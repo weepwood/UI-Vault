@@ -7,6 +7,12 @@
 - [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [架构](docs/ARCHITECTURE.md)
 - [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
 
+## 工作台组件与状态模块化
+
+主站保持原生 ES Modules，不引入 React。筛选/当前项目/设备模式的状态转换位于 `assets/core/workbench-state.js`；设备菜单交互位于 `assets/ui/viewport-switcher.js`；搜索、按钮、通知和下拉基础 CSS 位于 `assets/ui/controls.css`、`assets/ui/dropdown.css`。现有 `assets/app.js` 仍负责页面装载、URL 和 iframe 生命周期，Demo 路径与收藏数据协议保持不变。
+
+详见 [工作台模块化设计与验收](docs/WORKBENCH-MODULES.md)。
+
 ## Workbench UI 组件展厅
 
 - [在 UI-Vault 中打开组件展厅](https://weepwood.github.io/UI-Vault/?asset=workbench-components)：直接预览、点击并检查工作台原有组件。
