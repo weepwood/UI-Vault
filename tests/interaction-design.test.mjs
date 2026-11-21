@@ -42,6 +42,9 @@ test('预览适配器使用定位和 transform，不强制触发布局重排动�
  assert.equal(iframe.style.height,Math.ceil(300/(480/768))+'px');
 });
 test('只有本地 Demo 展示视口切换，外部参考保持来源',()=>{
+ // 渲染模板在浏览器使用 document.baseURI，测试中提供同等的 Pages 子路径。
+ const previousDocument=globalThis.document;
+ globalThis.document={baseURI:'https://example.test/UI-Vault/'};
  const common={id:'demo',title:'示例',subtitle:'设计',description:'具体介绍',type:'demo',technologies:['HTML'],tags:['UI'],license:'原创',created:'2026-11-21'};
  const local={...common,source:'local',preview:'demos/a/index.html',code:'demos/a/index.html',copyable:true};
  const remote={...common,source:'external',url:'https://github.com/example/demo'};
@@ -53,6 +56,8 @@ test('只有本地 Demo 展示视口切换，外部参考保持来源',()=>{
  assert.doesNotMatch(externalDetail,/data-preview-size=/);
  assert.match(externalDetail,/https:\/\/github.com\/example\/demo/);
  assert.match(cardMarkup(remote,new Set(),{demo:'独立 Demo'}),/reference-cover/);
+ if(previousDocument===undefined)delete globalThis.document;
+ else globalThis.document=previousDocument;
 });
 test('主站收藏处理不应每次重新渲染全部预览',async()=>{
  const source=await readFile(join(ROOT,'assets/app.js'),'utf8');
