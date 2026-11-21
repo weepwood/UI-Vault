@@ -63,3 +63,13 @@
 访问主站并通过 `?asset=motion-lab`、`?asset=react-ui-atlas`、`?asset=weepwood-ui` 可直接选择三个资源；中间栏显示「在线预览」，右侧使用隔离 iframe。现有 `fluxnav-start-page`、`kumo-edge-console`、`style-atlas`、`fontfolio`、`s2u-link-workbench` 保持原有 React/Vue 在线链接，避免重复导入。
 
 **验证边界：**上述三个仓库的构建与 Pages 发布记录均为成功；本站通过资源索引和预览 HTML 的测试确认了 URL、沙箱属性与原站回退入口，但并没有对第三方 iframe 的浏览器实际交互逐项验收。页面的 CSP / X-Frame-Options 可能限制内嵌，Storybook 等带存储或多 iframe 的站点也可能受沙箱限制。完整功能需要时通过「单独打开」访问原站。未确认已部署的 `mrr-admin`、`graphboard-workspace` 暂不添加演示地址。
+
+
+## Page Mirror 镜像整合（2026-11-21）
+
+- 来源仓库：https://github.com/weepwood/page-mirror；站点单一真源：`sites/registry.json`。
+- 新增总览 `page-mirror` 与 23 个 `mirror-<slug>` 入口，均为外部资源索引。UI-Vault 不复制第三方网页代码和素材，原仓库持续独立发布。
+- 镜像在线 URL 为 `https://weepwood.github.io/page-mirror/sites/<slug>/`；右侧采用原有的隔离 iframe，失败时可在 Topbar 通过「单独打开」访问。
+- 截至收录时，20 个镜像为 review，3 个为 building。此状态来自源仓登记，并非 UI-Vault 的已验收证明。
+- 快照路由、API、登录、字体、WebGL/WebGPU 与外部资源在 iframe 中可能受限；第三方版权、字体、商标和素材许可需要逐站确认。
+- 新增镜像时需根据源仓 registry 更新 `catalog/assets/mirror-*.json`，执行 `npm run catalog:sync` 与 `npm run check`；不自动跨仓同步。
