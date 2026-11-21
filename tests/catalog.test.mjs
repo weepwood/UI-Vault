@@ -51,7 +51,7 @@ test('三份手工精选 Demo 均在独立目录且带人工精调说明',async(
     assert.equal(a.source,'local');assert.equal(a.copyable,true);
     assert.equal(a.curationStage,'draft');
     assert.equal(a.tuningGuide,'docs/CURATED-LABS.md');
-    assert.match(a.preview,/^demos\/curated\/[a-z-]+\/index\.html$/);
+    assert.match(a.preview,/^demos\/curated\/[a-z0-9-]+\/index\.html$/);
     assert.ok(a.tuningPoints.length>1);
   }
 });
