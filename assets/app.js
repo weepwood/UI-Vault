@@ -20,9 +20,9 @@ function save(){
 }
 function nav() {
   const root=$('#category-nav');
-  root.innerHTML=state.categories.map(c=>
+  root.innerHTML=state.categories.map((c,i)=>
     '<button class="nav-button" type="button" data-category="'+escapeHtml(c.id)+'">'+
-    '<span class="nav-symbol">'+escapeHtml(c.symbol)+'</span><span>'+escapeHtml(c.label)+'</span></button>'
+    '<span class="nav-index" aria-hidden="true">'+String(i+1).padStart(2,'0')+'</span><span>'+escapeHtml(c.label)+'</span></button>'
   ).join('');
   const marker=$('.nav-label-suffix');
   if(marker)marker.textContent='01 / '+String(state.categories.length).padStart(2,'0');
