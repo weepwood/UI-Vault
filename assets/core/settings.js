@@ -35,11 +35,11 @@ export function applySettings(settings){
   root.style.colorScheme=theme;
   document.querySelector('meta[name="theme-color"]')?.setAttribute('content',theme==='dark'?'#171c21':'#f5f6f5');
 }
+// 首页只读取/应用设置；独立 settings.html 才初始化可编辑的下拉控件。
 export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
   let values=loadSettings();
-  const dialog=document.getElementById('settings-dialog');
-  const controls=[...dialog.querySelectorAll('[data-setting]')];
-  // 设置菜单与项目排序、标签筛选使用同一套增强下拉组件。
+  const page=document.querySelector('[data-settings-page]');
+  const controls=page?[...page.querySelectorAll('[data-setting]')]:[];
   const selectIcons={
     theme:{system:'monitor',light:'palette',dark:'palette'},
     accent:{blue:'palette',teal:'palette',violet:'palette'},
@@ -51,48 +51,59 @@ export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
     preview:{fluid:'maximize-2',mobile:'smartphone',tablet:'tablet',desktop:'monitor'}
   };
   const dropdowns=controls.map(select=>{
-    const wrapper=document.createElement('div');
-    wrapper.className='select-field settings-select';
+    const host=document.createElement('div');
+    host.className='select-field settings-select';
     select.id='settings-'+select.dataset.setting;
-    select.before(wrapper);
-    wrapper.append(select);
+    select.before(host);
+    host.append(select);
     return enhanceSelect(select,{icon:'settings',icons:selectIcons[select.dataset.setting]});
   });
-  const sync=()=>controls.forEach((control,index)=>{control.value=values[control.dataset.setting];dropdowns[index].sync();});
+  const sync=()=>controls.forEach((control,index)=>{
+    control.value=values[control.dataset.setting];
+    dropdowns[index].sync();
+  });
   const apply=()=>{applySettings(values);sync();};
+  const notify=message=>{
+    const status=document.getElementById('settings-status');
+    if(status)status.textContent=message;
+    onNotice(message);
+  };
   const persist=()=>{
     try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(values));}
-    catch{onNotice('浏览器未允许保存偏好，刷新后可能恢复默认设置');}
+    catch{notify('当前浏览器无法持久保存设置，刷新后可能恢复默认值');}
   };
-  const open=()=>{
-    const active=document.activeElement;
-    if(active instanceof HTMLElement)dialog.dataset.returnFocus=active.id||'settings-open';
-    closeDropdowns();sync();dialog.showModal();
-  };
-  document.querySelectorAll('[data-open-settings]').forEach(button=>button.addEventListener('click',open));
-  document.getElementById('settings-close').addEventListener('click',()=>dialog.close());
-  dialog.addEventListener('click',event=>{if(event.target===dialog)dialog.close();});
-  dialog.addEventListener('close',()=>{
-    closeDropdowns();
-    const target=document.getElementById(dialog.dataset.returnFocus);
-    target?.focus({preventScroll:true});
-  });
-  dialog.addEventListener('change',event=>{
-    const control=event.target.closest('[data-setting]');
-    if(!control)return;
-    const key=control.dataset.setting,value=control.value;
-    if(!isAllowed(key,value))return;
-    values={...values,[key]:value};
-    apply();persist();
-    if(key==='preview')onPreviewChange(value);
-  });
-  document.getElementById('settings-reset').addEventListener('click',()=>{
-    values={...DEFAULT_SETTINGS};apply();persist();
-    onPreviewChange(values.preview);
-    onNotice('已恢复默认设置');
-  });
+  if(page){
+    page.addEventListener('change',event=>{
+      const control=event.target.closest('[data-setting]');
+      if(!control||!page.contains(control))return;
+      const key=control.dataset.setting,value=control.value;
+      if(!isAllowed(key,value))return;
+      if(values[key]===value)return;
+      values={...values,[key]:value};
+      apply();persist();
+      if(key==='preview')onPreviewChange(value);
+    });
+    document.getElementById('settings-reset').addEventListener('click',()=>{
+      values={...DEFAULT_SETTINGS};
+      closeDropdowns();
+      apply();persist();
+      onPreviewChange(values.preview);
+      notify('已恢复默认设置');
+    });
+    window.addEventListener('pagehide',closeDropdowns);
+  }
   const media=matchMedia('(prefers-color-scheme: dark)');
   media.addEventListener?.('change',()=>{if(values.theme==='system')applySettings(values);});
+  const refresh=()=>{
+    const next=loadSettings();
+    const previewChanged=values.preview!==next.preview;
+    values=next;
+    apply();
+    if(previewChanged)onPreviewChange(values.preview);
+  };
+  // 支持多标签页同步，并避免从浏览器“返回”恢复旧的 bfcache 状态。
+  window.addEventListener('storage',event=>{if(event.key===SETTINGS_KEY||event.key===null)refresh();});
+  window.addEventListener('pageshow',refresh);
   apply();
   return {get:()=>({...values})};
 }
