@@ -131,6 +131,12 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
     }else if(event.key==='Enter'||event.key===' '){
       event.preventDefault();
       if(index>=0)choose(items[index].dataset.value);
+    }else if(event.key.length===1&&!event.ctrlKey&&!event.metaKey&&!event.altKey){
+      // 支持英文标签的首字母快速定位；中文标签仍可使用方向键浏览。
+      const key=event.key.toLocaleLowerCase();
+      const next=items.findIndex((item,i)=>i>index&&item.querySelector('.select-option-text').textContent.toLocaleLowerCase().startsWith(key));
+      const start=items.findIndex(item=>item.querySelector('.select-option-text').textContent.toLocaleLowerCase().startsWith(key));
+      if(start>=0)focusOption(next>=0?next:start);
     }
   });
   document.addEventListener('pointerdown',event=>{
