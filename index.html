@@ -24,19 +24,12 @@
       </div>
       <div class="nav-block">
         <span class="nav-label">COLLECTIONS <span class="nav-label-suffix">01 / 06</span></span>
-        <nav aria-label="资产类别">
-          <button class="nav-button" data-category="style" type="button"><span class="nav-symbol">◐</span><span>视觉风格</span></button>
-          <button class="nav-button" data-category="component" type="button"><span class="nav-symbol">◩</span><span>界面组件</span></button>
-          <button class="nav-button" data-category="effect" type="button"><span class="nav-symbol">✳</span><span>动效实验</span></button>
-          <button class="nav-button" data-category="layout" type="button"><span class="nav-symbol">▤</span><span>布局模板</span></button>
-          <button class="nav-button" data-category="demo" type="button"><span class="nav-symbol">◇</span><span>独立 Demo</span></button>
-          <button class="nav-button" data-category="reference" type="button"><span class="nav-symbol">⌘</span><span>设计参考</span></button>
-        </nav>
+        <nav id="category-nav" aria-label="资产类别"></nav>
       </div>
       <div class="sidebar-bottom">
         <div class="sidebar-note"><span class="mini-sun">✳</span><strong>一个收藏所有灵感的地方。</strong><p>发现、收藏、拆解，然后变成下一次创作的起点。</p></div>
         <a class="sidebar-link" href="https://github.com/weepwood/UI-Vault" target="_blank" rel="noopener noreferrer"><span>⌁</span> GitHub Repository <span aria-hidden="true">↗</span></a>
-        <span class="sidebar-version">UI VAULT / V0.1 · BUILT TO GROW</span>
+        <span class="sidebar-version">UI VAULT / V0.2 · BUILT TO GROW</span>
       </div>
     </aside>
     <div class="mobile-shade" id="mobile-shade" hidden></div>
@@ -65,7 +58,7 @@
     </main>
   </div>
   <div class="drawer-overlay" id="drawer-overlay" hidden></div>
-  <aside class="detail-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-label="资产详情" aria-hidden="true" tabindex="-1">
+  <aside class="detail-drawer" id="detail-drawer" role="dialog" aria-modal="true" aria-label="资产详情" aria-hidden="true" tabindex="-1" inert>
     <div class="drawer-top"><span>ASSET DETAILS / <span id="drawer-index">—</span></span><button type="button" id="drawer-close" aria-label="关闭详情">×</button></div>
     <div id="drawer-content" class="drawer-content"></div>
   </aside>

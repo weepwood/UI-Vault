@@ -1,184 +1,209 @@
-const gallery = document.querySelector('#gallery');
-const searchInput = document.querySelector('#search');
-const tagRow = document.querySelector('#tag-row');
-const sortInput = document.querySelector('#sort');
-const drawer = document.querySelector('#detail-drawer');
-const overlay = document.querySelector('#drawer-overlay');
-const drawerContent = document.querySelector('#drawer-content');
-const toastEl = document.querySelector('#toast');
-const sidebar = document.querySelector('#sidebar');
-const mobileShade = document.querySelector('#mobile-shade');
-const categoryLabels = { all: '探索设计资产', style: '视觉风格', component: '界面组件', effect: '动效实验', layout: '布局模板', demo: '独立 Demo', reference: '设计参考' };
-const state = { category: 'all', tag: '', query: '', sort: 'featured', favoritesOnly: false, active: null };
-const FAVORITES_KEY = 'ui-vault-favorites-v1';
-let assets = [], toastTimer, lastFocus;
-let favorites;
-try { const parsed = JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'); favorites = new Set(Array.isArray(parsed) ? parsed.filter(x => typeof x === 'string') : []); }
-catch { favorites = new Set(); }
-const html = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const slug = s => String(s).replace(/[^a-z0-9-]/g, '');
-const href = path => new URL(path, document.baseURI).href;
-const textFor = a => [a.title,a.subtitle,a.description,...a.tags,...a.technologies].join(' ').toLocaleLowerCase();
-function announce(message) { clearTimeout(toastTimer); toastEl.textContent = message; toastEl.classList.add('show'); toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2800); }
-function persistFavorites(){ try { localStorage.setItem(FAVORITES_KEY,JSON.stringify([...favorites])); } catch { announce('当前浏览器无法保存收藏'); } }
-function updateFavoriteCount(){ document.querySelector('#favorite-count').textContent = favorites.size; }
-function drawCover(a) {
-  if (a.source === 'local') return '<iframe class="card-preview" loading="lazy" sandbox="allow-scripts" referrerpolicy="no-referrer" tabindex="-1" title="' + html(a.title) + ' 预览" src="' + html(href(a.preview)) + '"></iframe>';
-  const blocks = a.cover === 'mosaic' ? '<span></span>'.repeat(12) : '';
-  return '<div class="cover-art ' + html(a.cover) + '">' + blocks + '</div>';
+import { filterAssets, popularTags } from './core/catalog.js';
+import { loadFavorites, saveFavorites } from './core/favorites.js';
+import { cardMarkup, detailMarkup, escapeHtml, resolveAsset } from './core/render.js';
+
+const $=selector=>document.querySelector(selector);
+const gallery=$('#gallery'),search=$('#search'),tags=$('#tag-row'),sort=$('#sort');
+const drawer=$('#detail-drawer'),overlay=$('#drawer-overlay'),detail=$('#drawer-content');
+const sidebar=$('#sidebar'),shade=$('#mobile-shade'),toast=$('#toast');
+const state={assets:[],categories:[],labels:{all:'探索设计资产'},category:'all',tag:'',query:'',sort:'featured',favoritesOnly:false,active:null};
+const favorites=loadFavorites();
+let toastTimeout,overlayTimeout,lastFocus,previewObserver;
+
+function notify(message){
+  clearTimeout(toastTimeout);toast.textContent=message;toast.classList.add('show');
+  toastTimeout=setTimeout(()=>toast.classList.remove('show'),2700);
 }
-function card(a) {
-  const isFavorite = favorites.has(a.id);
-  const category = categoryLabels[a.type] || '设计';
-  return '<article class="asset-card" data-id="' + html(a.id) + '">' +
-    '<div class="card-visual" data-cover="' + html(a.cover) + '">' + drawCover(a) +
-      '<button type="button" class="card-open" data-open="' + html(a.id) + '" aria-label="查看 ' + html(a.title) + ' 详情"></button>' +
-      '<span class="card-state ' + (a.source === 'local' ? 'live' : '') + '">' + (a.source === 'local' ? '● LIVE DEMO' : '↗ REFERENCE') + '</span>' +
-      '<button type="button" class="card-favorite" data-favorite="' + html(a.id) + '" aria-pressed="' + isFavorite + '" aria-label="' + (isFavorite ? '取消收藏 ' : '收藏 ') + html(a.title) + '">' + (isFavorite ? '♥' : '♡') + '</button></div>' +
-    '<div class="card-bottom"><div class="card-meta"><span>' + html(category) + '</span><span class="meta-dot"></span><span>' + html(a.technologies.slice(0,2).join(' / ')) + '</span></div>' +
-    '<button type="button" class="card-title" data-open="' + html(a.id) + '"><span>' + html(a.title) + '</span><span>↗</span></button><p class="card-desc">' + html(a.description) + '</p></div></article>';
+function save(){
+  if(!saveFavorites(favorites))notify('浏览器无法保存收藏，当前变更仅在本次会话有效');
+  $('#favorite-count').textContent=favorites.size;
 }
-function visibleAssets() {
-  const term = state.query.trim().toLocaleLowerCase();
-  let list = assets.filter(a => (state.category === 'all' || a.type === state.category) &&
-    (!state.favoritesOnly || favorites.has(a.id)) &&
-    (!state.tag || a.tags.includes(state.tag)) &&
-    (!term || textFor(a).includes(term)));
-  list.sort((a,b) => state.sort === 'az' ? a.title.localeCompare(b.title,'zh-CN') :
-    state.sort === 'newest' ? b.created.localeCompare(a.created) || a.title.localeCompare(b.title,'zh-CN') :
-    Number(b.featured) - Number(a.featured) || b.created.localeCompare(a.created) || a.title.localeCompare(b.title,'zh-CN'));
-  return list;
+function nav() {
+  const root=$('#category-nav');
+  root.innerHTML=state.categories.map(c=>
+    '<button class="nav-button" type="button" data-category="'+escapeHtml(c.id)+'">'+
+    '<span class="nav-symbol">'+escapeHtml(c.symbol)+'</span><span>'+escapeHtml(c.label)+'</span></button>'
+  ).join('');
+  const marker=$('.nav-label-suffix');
+  if(marker)marker.textContent='01 / '+String(state.categories.length).padStart(2,'0');
 }
-function renderTags() {
-  const tags = new Map();
-  for (const a of assets) for (const tag of a.tags) tags.set(tag,(tags.get(tag)||0)+1);
-  const common = [...tags].sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0],'zh-CN')).slice(0,10);
-  if (state.tag && !common.some(t => t[0] === state.tag)) common.push([state.tag,tags.get(state.tag)||0]);
-  tagRow.innerHTML = '<button type="button" class="tag-chip '+(!state.tag?'is-active':'')+'" data-tag="">全部标签</button>' +
-    common.map(([tag])=>'<button type="button" class="tag-chip '+(state.tag===tag?'is-active':'')+'" data-tag="'+html(tag)+'">'+html(tag)+'</button>').join('');
+function navState(){
+  document.querySelectorAll('[data-category]').forEach(el=>el.classList.toggle('is-active',!state.favoritesOnly&&el.dataset.category===state.category));
+  const favorite=$('[data-favorites]');
+  favorite.classList.toggle('is-active',state.favoritesOnly);
+  favorite.setAttribute('aria-pressed',String(state.favoritesOnly));
+  $('#favorite-count').textContent=favorites.size;
 }
-function render() {
-  const visible = visibleAssets();
-  gallery.innerHTML = visible.map(card).join('');
-  document.querySelector('#empty').hidden = visible.length > 0;
-  document.querySelector('#results-count').textContent = String(visible.length).padStart(2,'0');
-  document.querySelector('#catalog-title').firstChild.textContent = state.favoritesOnly ? '我的收藏 ' : categoryLabels[state.category] + ' ';
-  document.querySelectorAll('[data-category]').forEach(el=>el.classList.toggle('is-active',!state.favoritesOnly && el.dataset.category===state.category));
-  const favoriteNav = document.querySelector('[data-favorites]');
-  favoriteNav.classList.toggle('is-active',state.favoritesOnly);
-  favoriteNav.setAttribute('aria-pressed',String(state.favoritesOnly));
-  updateFavoriteCount(); renderTags();
+function tagsState(){
+  const popular=popularTags(state.assets,10,state.tag);
+  tags.innerHTML='<button type="button" class="tag-chip '+(!state.tag?'is-active':'')+'" data-tag="">全部标签</button>'+
+    popular.map(t=>'<button type="button" class="tag-chip '+(t===state.tag?'is-active':'')+'" data-tag="'+escapeHtml(t)+'">'+escapeHtml(t)+'</button>').join('');
 }
-function resetFilters(){ state.category='all';state.tag='';state.query='';state.favoritesOnly=false;searchInput.value='';sortInput.value='featured';state.sort='featured';render(); }
-function toggleFavorite(id) {
-  if (favorites.has(id)) { favorites.delete(id); announce('已从收藏移除'); } else { favorites.add(id); announce('已加入我的收藏'); }
-  persistFavorites(); render();
-  if (state.active?.id===id) { const btn = drawerContent.querySelector('[data-detail-favorite]'); if(btn) { btn.textContent = favorites.has(id) ? '♥ 已收藏' : '♡ 收藏';btn.setAttribute('aria-pressed',String(favorites.has(id))); } }
-}
-function detailCover(a) {
-  if(a.source==='local') return '<iframe sandbox="allow-scripts" referrerpolicy="no-referrer" title="'+html(a.title)+' 完整交互预览" src="'+html(href(a.preview))+'"></iframe>';
-  return '<div class="card-visual" data-cover="'+html(a.cover)+'" style="height:100%;border:0;border-radius:0"><div class="cover-art '+html(a.cover)+'">'+(a.cover==='mosaic'?'<span></span>'.repeat(12):'')+'</div></div>';
-}
-function openDetail(id) {
-  const a = assets.find(x=>x.id===id); if(!a) return;
-  lastFocus = document.activeElement; state.active = a;
-  const isLocal = a.source==='local'; const isFav = favorites.has(id);
-  const repoURL = isLocal ? 'https://github.com/weepwood/UI-Vault/blob/main/' + a.code.split('/').map(encodeURIComponent).join('/') : a.url;
-  drawerContent.innerHTML =
-    '<span class="detail-eyebrow">'+(isLocal?'LOCAL DEMO / ':'EXTERNAL REFERENCE / ')+html(categoryLabels[a.type]||'设计')+'</span>' +
-    '<h2 class="detail-title">'+html(a.title)+'</h2><p class="detail-subtitle">'+html(a.subtitle)+'</p>' +
-    '<div class="detail-preview">'+detailCover(a)+'</div><p class="detail-copy">'+html(a.description)+'</p>' +
-    '<div class="detail-tags">'+a.tags.map(t=>'<span class="detail-tag">'+html(t)+'</span>').join('')+'</div>' +
-    '<div class="detail-actions">' +
-       (isLocal?'<button class="detail-button primary" type="button" data-copy="'+html(id)+'">⧉ 复制完整源码</button><button class="detail-button" type="button" data-preview="'+html(id)+'">↗ 新窗口预览</button>':
-       '<a class="detail-button primary" target="_blank" rel="noopener noreferrer" href="'+html(a.url)+'">↗ 打开原项目</a>') +
-       '<button class="detail-button" type="button" data-detail-favorite="'+html(id)+'" aria-pressed="'+isFav+'">'+(isFav?'♥ 已收藏':'♡ 收藏')+'</button></div>'+
-    '<div class="details-label">ASSET METADATA</div>'+
-    '<div class="details-grid"><div><small>Asset type</small><span>'+html(categoryLabels[a.type])+'</span></div><div><small>Stack</small><span>'+html(a.technologies.join(' / '))+'</span></div><div><small>Added</small><span>'+html(a.created)+'</span></div><div><small>License / Origin</small><span>'+html(a.license)+'</span></div></div>'+
-    (isLocal?'<div class="details-label">SOURCE CODE <a href="'+html(repoURL)+'" target="_blank" rel="noopener noreferrer" style="float:right;color:#a27759;letter-spacing:0;text-transform:none">GitHub ↗</a></div><pre class="source-code" id="source-code">正在读取独立 Demo 源码...</pre>':
-     '<p class="detail-note">这是外部项目的设计索引，并非复制或重新发布的源码。请通过原仓库核对使用说明与许可证。</p>');
-  document.querySelector('#drawer-index').textContent = id.toUpperCase();
-  overlay.hidden=false; requestAnimationFrame(()=>overlay.classList.add('is-visible'));
-  drawer.classList.add('is-open');drawer.setAttribute('aria-hidden','false');
-  document.body.style.overflow='hidden';
-  drawer.focus();
-  if (isLocal) loadSource(a);
-}
-async function loadSource(a){
-  const pre = document.querySelector('#source-code');
-  try {
-    const response = await fetch(href(a.code));
-    if(!response.ok) throw new Error('HTTP '+response.status);
-    const source = await response.text();
-    if (state.active?.id===a.id) { const current=document.querySelector('#source-code'); if(current) current.textContent=source; }
-  }catch {
-    if(state.active?.id===a.id) { const current=document.querySelector('#source-code'); if(current) current.textContent='无法加载源码。请确认演示路径已发布。'; }
+function observePreviews(){
+  previewObserver?.disconnect();
+  const frames=gallery.querySelectorAll('iframe[data-src]');
+  if(!('IntersectionObserver' in window)){
+    for(const frame of frames){frame.src=frame.dataset.src;frame.removeAttribute('data-src');}
+    return;
   }
+  previewObserver=new IntersectionObserver(entries=>{
+    for(const {target,isIntersecting} of entries)if(isIntersecting){
+      target.src=target.dataset.src;
+      target.removeAttribute('data-src');
+      previewObserver.unobserve(target);
+    }
+  },{rootMargin:'260px 0px'});
+  frames.forEach(frame=>previewObserver.observe(frame));
+}
+function render(){
+  const items=filterAssets(state.assets,state,favorites);
+  gallery.innerHTML=items.map(a=>cardMarkup(a,favorites,state.labels)).join('');
+  $('#empty').hidden=items.length>0;
+  $('#results-count').textContent=String(items.length).padStart(2,'0');
+  const heading=$('#catalog-title').firstChild;
+  heading.textContent=state.favoritesOnly?'我的收藏 ':state.labels[state.category]+' ';
+  navState();tagsState();observePreviews();
+}
+function reset(){
+  state.category='all';state.tag='';state.query='';state.favoritesOnly=false;state.sort='featured';
+  search.value='';sort.value='featured';render();
+}
+function toggleFavorite(id){
+  if(favorites.has(id)){favorites.delete(id);notify('已从收藏移除');}
+  else {favorites.add(id);notify('已加入我的收藏');}
+  save();render();
+  if(state.active?.id===id){
+    const button=detail.querySelector('[data-detail-favorite]');
+    if(button){button.textContent=favorites.has(id)?'♥ 已收藏':'♡ 收藏';button.setAttribute('aria-pressed',String(favorites.has(id)));}
+  }
+}
+async function loadSource(asset) {
+  try {
+    const result=await fetch(resolveAsset(asset.code));
+    if(!result.ok)throw Error('HTTP '+result.status);
+    const source=await result.text();
+    if(state.active?.id===asset.id&&$('#source-code'))$('#source-code').textContent=source;
+  }catch{
+    if(state.active?.id===asset.id&&$('#source-code'))$('#source-code').textContent='无法加载 Demo 源码，请使用 GitHub 链接查看。';
+  }
+}
+function openDetail(id){
+  const asset=state.assets.find(a=>a.id===id);
+  if(!asset)return;
+  if(state.active)return;
+  lastFocus=document.activeElement;
+  state.active=asset;
+  detail.innerHTML=detailMarkup(asset,favorites,state.labels);
+  $('#drawer-index').textContent=id.toUpperCase();
+  clearTimeout(overlayTimeout);
+  overlay.hidden=false;
+  requestAnimationFrame(()=>overlay.classList.add('is-visible'));
+  drawer.inert=false;
+  drawer.classList.add('is-open');
+  drawer.setAttribute('aria-hidden','false');
+  $('#main').inert=true;
+  sidebar.inert=true;
+  document.body.style.overflow='hidden';
+  $('#drawer-close').focus();
+  if(asset.source==='local'&&asset.copyable!==false)loadSource(asset);
 }
 function closeDetail(){
-  if (!state.active) return; state.active=null;
-  drawer.classList.remove('is-open');drawer.setAttribute('aria-hidden','true');
-  overlay.classList.remove('is-visible');document.body.style.overflow='';
-  setTimeout(()=>{if(!state.active)overlay.hidden=true},250);
-  if (lastFocus?.isConnected) lastFocus.focus();
+  if(!state.active)return;
+  state.active=null;
+  drawer.classList.remove('is-open');
+  drawer.setAttribute('aria-hidden','true');
+  overlay.classList.remove('is-visible');
+  drawer.inert=true;
+  $('#main').inert=false;
+  sidebar.inert=false;
+  document.body.style.overflow='';
+  overlayTimeout=setTimeout(()=>{if(!state.active)overlay.hidden=true;},260);
+  if(lastFocus?.isConnected)lastFocus.focus();
 }
-async function copyCode(id) {
-  const a=assets.find(x=>x.id===id&&x.source==='local');if(!a)return;
-  try{
-    const response=await fetch(href(a.code));if(!response.ok)throw Error('HTTP '+response.status);
-    const source=await response.text();
-    await navigator.clipboard.writeText(source);
-    announce('源码已复制，可直接保存为 index.html');
-  }catch{announce('复制失败，请使用 GitHub 源码链接');}
+async function copyCode(id){
+  const asset=state.assets.find(a=>a.id===id&&a.source==='local'&&a.copyable!==false);
+  if(!asset)return;
+  try {
+    const response=await fetch(resolveAsset(asset.code));
+    if(!response.ok)throw Error();
+    await navigator.clipboard.writeText(await response.text());
+    notify('独立 Demo 源码已复制');
+  }catch{notify('复制失败，请通过 GitHub 查看源码');}
 }
-gallery.addEventListener('click',e=>{
-  const favorite=e.target.closest('[data-favorite]'); if(favorite){toggleFavorite(favorite.dataset.favorite);return;}
-  const open=e.target.closest('[data-open]');if(open)openDetail(open.dataset.open);
-});
-document.querySelectorAll('[data-category]').forEach(el=>el.addEventListener('click',()=>{state.category=el.dataset.category;state.favoritesOnly=false;state.tag='';render();closeMobile();}));
-document.querySelector('[data-favorites]').addEventListener('click',()=>{state.favoritesOnly=!state.favoritesOnly;render();closeMobile();});
-tagRow.addEventListener('click',e=>{const chip=e.target.closest('[data-tag]');if(!chip)return;state.tag=chip.dataset.tag;render();});
-searchInput.addEventListener('input',e=>{state.query=e.target.value;render();});
-sortInput.addEventListener('change',e=>{state.sort=e.target.value;render();});
-document.querySelector('#clear-filters').addEventListener('click',resetFilters);
-document.querySelector('#drawer-close').addEventListener('click',closeDetail);
-overlay.addEventListener('click',closeDetail);
-drawerContent.addEventListener('click',e=>{
-  const copy=e.target.closest('[data-copy]');if(copy){copyCode(copy.dataset.copy);return;}
-  const preview=e.target.closest('[data-preview]');if(preview){const a=assets.find(x=>x.id===preview.dataset.preview);if(a)window.open(href(a.preview),'_blank','noopener,noreferrer');return;}
-  const favorite=e.target.closest('[data-detail-favorite]');if(favorite)toggleFavorite(favorite.dataset.detailFavorite);
-});
-function openMobile(){sidebar.classList.add('is-open');mobileShade.hidden=false;}
-function closeMobile(){sidebar.classList.remove('is-open');mobileShade.hidden=true;}
-document.querySelector('#menu-toggle').addEventListener('click',openMobile);
-mobileShade.addEventListener('click',closeMobile);
-document.addEventListener('keydown',e=>{
-  if(e.key==='Escape'){closeDetail();closeMobile();return;}
-  if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();searchInput.focus();searchInput.select();}
-  if(e.key==='/' && !['INPUT','TEXTAREA'].includes(document.activeElement?.tagName) && !state.active){e.preventDefault();searchInput.focus();}
-  if(e.key==='Tab' && state.active) {
-    const tabbable=[...drawer.querySelectorAll('button:not([disabled]),a[href],iframe')].filter(el=>el.getClientRects().length);
-    if(!tabbable.length)return;
-    const first=tabbable[0],last=tabbable[tabbable.length-1];
-    if(e.shiftKey && (document.activeElement===first || document.activeElement===drawer)){e.preventDefault();last.focus();}
-    else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
-  }
-});
+function openMobile(){sidebar.classList.add('is-open');shade.hidden=false;}
+function closeMobile(){sidebar.classList.remove('is-open');shade.hidden=true;}
+function initEvents(){
+  gallery.addEventListener('click',e=>{
+    const fav=e.target.closest('[data-favorite]');
+    if(fav){toggleFavorite(fav.dataset.favorite);return;}
+    const open=e.target.closest('[data-open]');
+    if(open)openDetail(open.dataset.open);
+  });
+  document.addEventListener('click',e=>{
+    const c=e.target.closest('[data-category]');
+    if(!c)return;
+    if(!Object.hasOwn(state.labels,c.dataset.category))return;
+    state.category=c.dataset.category;
+    state.favoritesOnly=false;state.tag='';render();closeMobile();
+  });
+  $('[data-favorites]').addEventListener('click',()=>{state.favoritesOnly=!state.favoritesOnly;render();closeMobile();});
+  tags.addEventListener('click',e=>{const chip=e.target.closest('[data-tag]');if(chip){state.tag=chip.dataset.tag;render();}});
+  search.addEventListener('input',e=>{state.query=e.target.value;render();});
+  sort.addEventListener('change',e=>{state.sort=e.target.value;render();});
+  $('#clear-filters').addEventListener('click',reset);
+  $('#drawer-close').addEventListener('click',closeDetail);
+  overlay.addEventListener('click',closeDetail);
+  detail.addEventListener('click',e=>{
+    const copy=e.target.closest('[data-copy]');if(copy){copyCode(copy.dataset.copy);return;}
+    const preview=e.target.closest('[data-preview]');
+    if(preview){
+      const asset=state.assets.find(a=>a.id===preview.dataset.preview);
+      if(asset)window.open(resolveAsset(asset.preview),'_blank','noopener,noreferrer');
+      return;
+    }
+    const fav=e.target.closest('[data-detail-favorite]');
+    if(fav)toggleFavorite(fav.dataset.detailFavorite);
+  });
+  $('#menu-toggle').addEventListener('click',openMobile);
+  shade.addEventListener('click',closeMobile);
+  document.addEventListener('keydown',e=>{
+    if(e.key==='Escape'){closeDetail();closeMobile();return;}
+    if(state.active){
+      if(e.key==='Tab'){
+        const enabled=[...drawer.querySelectorAll('button:not([disabled]),a[href],iframe')].filter(el=>el.getClientRects().length);
+        if(!enabled.length)return;
+        const first=enabled[0],last=enabled[enabled.length-1];
+        if(e.shiftKey&&(document.activeElement===first||document.activeElement===drawer)){e.preventDefault();last.focus();}
+        else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}
+      }
+      return;
+    }
+    if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='k'){e.preventDefault();search.focus();search.select();}
+    if(e.key==='/'&&!['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)){e.preventDefault();search.focus();}
+  });
+}
+async function loadJSON(path){
+  const response=await fetch(resolveAsset(path),{cache:'no-cache'});
+  if(!response.ok)throw Error('无法请求 '+path+'：HTTP '+response.status);
+  return response.json();
+}
 async function init(){
-  try{
-    const response=await fetch(href('content/assets.json'),{cache:'no-cache'});
-    if(!response.ok)throw Error('HTTP '+response.status);
-    const data=await response.json();
-    if(!Array.isArray(data))throw Error('Invalid asset catalogue');
-    assets=data;
-    document.querySelector('#metric-total').textContent=String(assets.length).padStart(2,'0');
-    document.querySelector('#metric-local').textContent=String(assets.filter(a=>a.source==='local').length).padStart(2,'0');
-    document.querySelector('#metric-external').textContent=String(assets.filter(a=>a.source==='external').length).padStart(2,'0');
-    document.querySelector('#total-count').textContent=assets.length;
+  drawer.inert=true;
+  initEvents();
+  try {
+    const [items,categories]=await Promise.all([loadJSON('content/assets.json'),loadJSON('content/categories.json')]);
+    if(!Array.isArray(items)||!Array.isArray(categories))throw Error('资产或分类清单格式错误');
+    state.assets=items;state.categories=categories;
+    state.labels={all:'探索设计资产',...Object.fromEntries(categories.map(c=>[c.id,c.label]))};
+    nav();
+    $('#metric-total').textContent=String(items.length).padStart(2,'0');
+    $('#metric-local').textContent=String(items.filter(a=>a.source==='local').length).padStart(2,'0');
+    $('#metric-external').textContent=String(items.filter(a=>a.source==='external').length).padStart(2,'0');
+    $('#total-count').textContent=items.length;
     render();
-  }catch(err){
-    document.querySelector('#gallery').innerHTML='<div class="empty-state" style="grid-column:1/-1"><h3>资产清单暂时不可用</h3><p>请通过 HTTP 服务访问并检查 content/assets.json 是否存在。</p></div>';
-    console.error('UI Vault failed to load:',err);
+  }catch(error){
+    gallery.innerHTML='<div class="empty-state" style="grid-column:1/-1"><h3>资源加载失败</h3><p>请确认使用 HTTP 服务访问，并检查资产生成与发布流程。</p></div>';
+    console.error('UI Vault:',error);
   }
 }
 init();
