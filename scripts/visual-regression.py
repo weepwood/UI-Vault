@@ -156,6 +156,77 @@ def capture_all(browser, origin, directory):
     return results
 
 
+def verify_react_interactions(browser, origin):
+    """同一 Chromium 会话验证 React 状态、iframe 保留、Dialog 和设置持久化。"""
+    context = browser.new_context(
+        viewport={"width": 1440, "height": 900}, device_scale_factor=1,
+        reduced_motion="reduce", locale="zh-CN", color_scheme="light"
+    )
+    errors = []
+    page = context.new_page()
+    page.on("pageerror", lambda error: errors.append(str(error)))
+    try:
+        page.goto(origin, wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible", timeout=30000)
+        assert page.locator(".project-row").count() > 0, "React 目录未加载"
+        assert page.locator("#results-count").inner_text() != "—", "目录结果数未更新"
+        iframe = page.locator('#preview-stage iframe[data-preview-frame="local"]')
+        iframe.wait_for(state="attached", timeout=10000)
+        page.evaluate("() => { window.__reactIframe = document.querySelector('#preview-stage iframe'); }")
+        page.locator("#preview-favorite").click()
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "收藏操作意外重建 iframe"
+        page.locator("#viewport-current").hover()
+        page.locator("#viewport-options [data-preview-size='mobile']").click()
+        assert page.locator("#preview-stage").get_attribute("data-size") == "mobile", "手机设备模式未应用"
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "改变设备模式意外重建 iframe"
+
+        page.locator("#preview-info").click()
+        dialog = page.locator("#project-dialog")
+        dialog.wait_for(state="visible")
+        assert dialog.evaluate("(node) => node.open"), "React Dialog 未打开"
+        page.locator("#tab-source").click()
+        assert page.locator("#dialog-source").is_visible(), "源码标签页未显示"
+        page.keyboard.press("Escape")
+        assert not dialog.evaluate("(node) => node.open"), "Escape 无法关闭 Dialog"
+
+        page.locator("#settings-open").click()
+        page.locator("#settings-view").wait_for(state="visible")
+        assert "view=settings" in page.url, "设置路由未写入地址"
+        select = page.locator("#settings-theme").locator("xpath=..")
+        select.locator(".select-trigger").click()
+        select.locator('[data-value="dark"]').click()
+        assert page.evaluate("document.documentElement.dataset.theme") == "dark", "React 设置未更新主题"
+        assert page.evaluate("JSON.parse(localStorage.getItem('ui-vault:preferences:v1')).theme") == "dark", "主题未保存"
+        page.reload(wait_until="domcontentloaded")
+        page.locator("#settings-view").wait_for(state="visible")
+        assert page.evaluate("document.documentElement.dataset.theme") == "dark", "重新加载后主题未恢复"
+        page.locator("#settings-reset").click()
+        assert page.evaluate("JSON.parse(localStorage.getItem('ui-vault:preferences:v1')).theme") == "system", "重置未恢复主题默认值"
+        page.go_back(wait_until="domcontentloaded")
+        page.locator("#preview-stage").wait_for(state="visible")
+        page.locator("#search").fill("xyz-unique-never-match")
+        assert page.locator(".project-row").count() == 0, "空搜索结果没有生效"
+        page.locator("#search").fill("")
+        page.locator(".project-row").first.wait_for(state="visible")
+        assert not errors, "React 浏览器 JS 异常：" + "; ".join(errors)
+        print("React 交互回归通过：收藏不重载 iframe、设备缩放、Dialog、设置持久化、历史返回、筛选。")
+    finally:
+        context.close()
+
+    mobile = browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=1,
+                                 reduced_motion="reduce", locale="zh-CN")
+    try:
+        page = mobile.new_page()
+        page.goto(origin, wait_until="domcontentloaded")
+        page.locator("#menu-toggle").click()
+        assert page.locator("#library-rail").evaluate("(el) => el.classList.contains('is-open')"), "React 手机目录无法展开"
+        page.keyboard.press("Escape")
+        assert not page.locator("#library-rail").evaluate("(el) => el.classList.contains('is-open')"), "Escape 未收起手机目录"
+        print("React 移动端回归通过：目录展开、遮罩 inert 与 Escape 关闭。")
+    finally:
+        mobile.close()
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -197,6 +268,7 @@ def main():
                 if failures:
                     raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
+                verify_react_interactions(browser, local)
             finally:
                 browser.close()
     finally:

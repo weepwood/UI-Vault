@@ -14,12 +14,14 @@ test('排序与标签筛选保留原生 select 回退，并统一由 dropdown �
   assert.match(html,/class="select-field select-field--tag"><select id="tag-filter"/);
   assert.match(html,/<option value="featured">精选优先<\/option>/);
   assert.match(html,/<option value="">全部标签<\/option>/);
-  assert.match(app,/enhanceSelect\(sort,\{icon:'arrow-up-down'/);
-  assert.match(app,/enhanceSelect\(tagFilter,\{icon:'bookmark'\}\)/);
-  assert.match(app,/tagFilter\.addEventListener\('change'/);
-  assert.match(app,/sort\.addEventListener\('change'/);
-  assert.match(app,/tagDropdown\?\.sync\(\)/);
-  assert.match(app,/sortDropdown\?\.sync\(\)/);
+  const react=await read('src/react-workbench.jsx');
+  const component=await read('src/components/WorkbenchSelect.jsx');
+  assert.match(react,/<WorkbenchSelect id="sort"/);
+  assert.match(react,/<WorkbenchSelect id="tag-filter"/);
+  assert.match(component,/<select id={id}/);
+  assert.match(component,/role="listbox"/);
+  assert.match(component,/onChange={event=>onChange\(event.target.value\)}/);
+
 });
 
 test('下拉菜单支持键盘焦点、ARIA、外部点击、滚动与 Esc 关闭',async()=>{
@@ -43,7 +45,7 @@ test('排序、标签、展开、选中图标均来自现有 Lucide 精简图标
   const source=await read('assets/core/dropdown.js');
   for(const name of ['arrow-up-down','layers','calendar-days','bookmark','check','chevron-down'])
     assert.ok(ICON_NAMES.includes(name),'缺少 Lucide 图标 '+name);
-  assert.match(app,/featured:'layers',newest:'calendar-days',az:'arrow-up-down'/);
+  assert.match(await read('src/react-workbench.jsx'),/featured:'layers',newest:'calendar-days',az:'arrow-up-down'/);
   assert.match(source,/iconMarkup\('check'\)/);
   assert.match(source,/iconMarkup\('chevron-down'\)/);
 });

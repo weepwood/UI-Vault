@@ -4,35 +4,40 @@ import {readFileSync} from 'node:fs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
-test('React 组件真正负责实时工作台目录，不与旧 DOM innerHTML 竞争',()=>{
-  const app=read('assets/app.js');
-  const react=read('src/react-workbench.jsx');
-  assert.match(app,/import \{renderProjectList,renderCategoryNavigation\} from '[.]\/react-workbench[.]js'/);
-  assert.match(app,/renderProjectList\(gallery,/);
-  assert.match(app,/renderCategoryNavigation\(\$\('#category-nav'\),/);
-  assert.doesNotMatch(app,/gallery[.]innerHTML=items[.]map/);
-  assert.doesNotMatch(app,/document[.]querySelectorAll\('\[data-category\]'\)/);
-  for(const t of ['function ProjectRow','function ProjectList','function CategoryNavigation','createRoot','flushSync']){
-    assert.ok(react.includes(t),'React 入口缺少 '+t);
-  }
-  for(const attr of ['data-open={asset.id}','aria-current={String(selected)}','key={asset.id}','onClick={()=>onSelect(asset.id)}'])
-    assert.ok(react.includes(attr),'React 元素契约缺失：'+attr);
+test('React 根以 Portals 驱动工作台全域交互',()=>{
+ const app=read('assets/app.js'),react=read('src/react-workbench.jsx');
+ const hooks=read('src/useWorkbench.js');
+ assert.match(app,/import \{mountWorkbench\} from '[.]\/react-workbench[.]js'/);
+ assert.match(app,/mountWorkbench\(\)/);
+ assert.doesNotMatch(app,/innerHTML|addEventListener\('click'/);
+ assert.match(react,/function WorkbenchPortals\(/);
+ for(const name of ['ProjectRow','ProjectList','CategoryNavigation','PreviewToolbar','PreviewFrame','ProjectDialog','SettingsPanel','WorkbenchSelect']){
+   assert.ok(react.includes(name),'全工作台缺少 React 组件 '+name);
+ }
+ for(const id of ['gallery','settings','topbar','stage','quickFilters','listControls']){
+   assert.match(react,new RegExp('createPortal\\([\\s\\S]*?nodes\\.'+id+'\\)'),'React 未接管挂载节点 '+id);
+ }
+ assert.match(react,/<ProjectDialog root={nodes.dialog}/);
+ assert.match(hooks,/useReducer\(workbenchReducer/);
+ assert.match(hooks,/router[.]subscribe/);
+ assert.match(hooks,/saveFavorites/);
+ assert.match(hooks,/applySettings/);
 });
 
-test('React 构建只接管主工作台，保留独立 iframe 和静态发布',()=>{
-  const builder=read('scripts/build-react.mjs');
-  const build=read('scripts/build.mjs');
-  const pkg=JSON.parse(read('package.json'));
-  assert.equal(pkg.dependencies.react,pkg.dependencies['react-dom']);
-  assert.match(pkg.dependencies.react,/^19\./);
-  assert.match(builder,/src\/react-workbench[.]jsx/);
-  assert.match(builder,/format:'esm'/);
-  assert.match(builder,/target:\['chrome109'/);
-  assert.match(builder,/jsx:'automatic'/);
-  assert.match(pkg.scripts.build,/npm run react:build/);
-  assert.match(build,/copyTree\('assets',webAssets\)/);
-  assert.match(build,/prefix\+path\+'\?v='/);
-  const app=read('assets/app.js');
-  assert.match(app,/stage[.]innerHTML=projectPreviewMarkup\(asset\)/);
-  assert.match(app,/applyPreviewLayout/);
+test('React iframe 管理与独立 Demo 发布保持分离',()=>{
+ const builder=read('scripts/build-react.mjs'),build=read('scripts/build.mjs');
+ const pkg=JSON.parse(read('package.json'));
+ const preview=read('src/components/PreviewFrame.jsx');
+ const toolbar=read('src/components/PreviewToolbar.jsx');
+ assert.equal(pkg.dependencies.react,pkg.dependencies['react-dom']);
+ assert.match(pkg.dependencies.react,/^19\./);
+ assert.match(builder,/src\/react-workbench[.]jsx/);
+ assert.match(builder,/format:'esm'/);
+ assert.match(builder,/target:\['chrome109'/);
+ assert.match(pkg.scripts.build,/npm run react:build/);
+ assert.match(build,/copyTree\('assets',webAssets\)/);
+ assert.match(build,/included\.add\(a.preview\)/);
+ assert.match(preview,/memo\(PreviewContent/);
+ assert.match(preview,/applyPreviewLayout\(/);
+ assert.match(toolbar,/data-preview-size={item.mode}/);
 });

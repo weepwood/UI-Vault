@@ -31,28 +31,30 @@ test('资源导航、项目列表、真实预览在独立三栏',async()=>{
  assert.match(css,/\.library-rail\s*\{\s*display:\s*grid/);
  assert.match(css,/\.project-panel\s*\{\s*display:\s*flex/);
 });
-test('中间项目列表独立滚动且只使用一次过滤状态',async()=>{
- const [css,app]=await Promise.all(['assets/styles.css','assets/app.js'].map(read));
- assert.match(css,/\.project-panel \.project-scroll\s*\{[^}]*flex:\s*1 1 0/);
- assert.match(css,/\.project-panel \.project-scroll\s*\{[^}]*overscroll-behavior:\s*contain/);
- assert.match(app,/function filteredItems\(\)\{return filterAssets\(state\.assets,state,favorites\);\}/);
- assert.match(app,/renderReactList\(items\)/);
- const react=await read('src/react-workbench.jsx');
- assert.match(react,/function ProjectRow|export function ProjectRow/);
- assert.match(react,/key=\{asset.id\}/);
- assert.match(app,/stage\.innerHTML=projectPreviewMarkup\(asset\)/);
+test('React 列表独立滚动，使用统一过滤器和独立预览',async()=>{
+ const [css,react,hooks,preview]=await Promise.all([
+  'assets/styles.css','src/react-workbench.jsx','src/useWorkbench.js',
+  'src/components/PreviewFrame.jsx'
+ ].map(read));
+ assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*flex:\s*1 1 0/);
+ assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*overscroll-behavior:\s*contain/);
+ assert.match(hooks,/filterAssets\(state.assets,state,state.favorites\)/);
+ assert.match(react,/<ProjectList items={filtered}/);
+ assert.match(react,/<PreviewFrame asset={selected}/);
+ assert.match(react,/key={asset.id}/);
+ assert.match(preview,/data-preview-frame="local"/);
 });
-test('移动端两栏一起收起/打开，并正确同步惰性焦点',async()=>{
- const [html,css,app]=await Promise.all(['index.html','assets/styles.css','assets/app.js'].map(read));
+test('移动端两栏由 React 同步 inert、遮罩及导航焦点',async()=>{
+ const [html,css,react]=await Promise.all([
+  'index.html','assets/styles.css','src/react-workbench.jsx'
+ ].map(read));
  assert.match(html,/id="menu-toggle"[^>]*aria-controls="library-rail"/);
  assert.match(css,/@media\(max-width:760px\)/);
- assert.match(css,/\.library-rail\.is-open/);
+ assert.match(css,/[.]library-rail[.]is-open/);
  assert.match(css,/@media\(max-width:480px\)/);
  assert.match(css,/grid-template-rows:\s*minmax\(0, auto\) minmax\(0,1fr\)/);
- const mobile=await read('assets/ui/mobile-navigation.js');
- assert.match(app,/mobileNavigation=createMobileNavigation\(/);
- assert.ok(mobile.includes("rail.classList.toggle('is-open',visible)"));
- assert.ok(mobile.includes('rail.inert=mobile&&!visible'));
- assert.ok(mobile.includes("main.inert=visible||getView()==='settings'"));
- assert.doesNotMatch(app,/sidebar\.classList\.toggle/);
+ for(const part of ['nodes.rail.inert=mobile&&!menuOpen','nodes.main.inert=menuOpen||settingsActive',
+  'nodes.rail.classList.toggle(\'is-open\',menuOpen)','searchRef.current?.focus']){
+  assert.ok(react.includes(part),'React 移动导航缺少：'+part);
+ }
 });
