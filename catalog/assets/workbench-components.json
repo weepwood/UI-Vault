@@ -1,0 +1,41 @@
+{
+  "id": "workbench-components",
+  "title": "Workbench UI 组件展厅",
+  "subtitle": "UI-Vault 工作台 · 原生组件与交互规范",
+  "description": "展示 UI-Vault 当前工作台实际使用的按钮、搜索、增强下拉、导航、项目条目、通知、原生弹窗、设备预览和语义设计变量，提供可交互示例和复用边界说明。",
+  "type": "component",
+  "source": "local",
+  "tags": [
+    "组件展示",
+    "设计系统",
+    "工作台",
+    "Design Tokens",
+    "Lucide"
+  ],
+  "technologies": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "ES Modules"
+  ],
+  "preview": "demos/components/workbench-system/index.html",
+  "code": "demos/components/workbench-system/index.html",
+  "publish": [
+    "demos/components/workbench-system/index.html",
+    "demos/components/workbench-system/demo.css",
+    "demos/components/workbench-system/demo.js"
+  ],
+  "license": "本仓库原创示例；Lucide 图标遵循原授权",
+  "cover": "native",
+  "featured": true,
+  "created": "2026-11-21",
+  "copyable": false,
+  "sourceUrl": "https://github.com/weepwood/UI-Vault/tree/main/assets/core",
+  "reuseNotes": [
+    "真实组件实现来源：assets/styles.css 与 assets/core/，并非复制视觉的第二套组件",
+    "通用设计基础、跨框架 Token 继续由 subprojects/ui-foundation-kit 维护",
+    "下拉菜单调用 enhanceSelect()，项目条目调用 projectRowMarkup()，设备模式复用 applyPreviewLayout()",
+    "多文件演示禁止一键复制为单文件组件；应按文档引入需要的 CSS 与 JS",
+    "组件分级、无障碍规范及后续抽取计划参见 docs/COMPONENT-SYSTEM.md"
+  ]
+}
