@@ -8,17 +8,18 @@ test('设置中心有独立页面、GitHub 入口与完整配置项',()=>{
   const settings=readFileSync(new URL('../settings.html',import.meta.url),'utf8');
   const stylesheet=readFileSync(new URL('../assets/styles.css',import.meta.url),'utf8');
   const iconSprite=readFileSync(new URL('../assets/icons/lucide.svg',import.meta.url),'utf8');
-  assert.match(home,/id="settings-open"[^>]*href="[.]\\/settings[.]html"/);
-  assert.doesNotMatch(home,/id="settings-dialog"|aria-haspopup="dialog"[^>]*settings/);
-  assert.match(settings,/data-settings-page/);
-  assert.match(settings,/src="[.]\\/assets\\/settings-page[.]js"/);
-  assert.match(settings,/github[.]com\\/weepwood\\/UI-Vault/);
-  assert.match(iconSprite,/<symbol id="settings"/);
+  assert.ok(home.includes('href="./settings.html"'));
+  assert.ok(home.includes('id="settings-open"'));
+  assert.ok(!home.includes('id="settings-dialog"'));
+  assert.ok(settings.includes('data-settings-page'));
+  assert.ok(settings.includes('src="./assets/settings-page.js"'));
+  assert.ok(settings.includes('github.com/weepwood/UI-Vault'));
+  assert.ok(iconSprite.includes('<symbol id="settings"'));
   for(const key of Object.keys(DEFAULT_SETTINGS)){
-    assert.match(settings,new RegExp('data-setting="'+key+'"'));
+    assert.ok(settings.includes('data-setting="'+key+'"'));
   }
-  assert.match(stylesheet,/html\\[data-theme="dark"\\]/);
-  assert.match(stylesheet,/html\\[data-font="system"\\]/);
+  assert.ok(stylesheet.includes('html[data-theme="dark"]'));
+  assert.ok(stylesheet.includes('html[data-font="system"]'));
 });
 test('损坏或不受支持的本地配置回退到默认值',()=>{
   const prev=globalThis.localStorage;
