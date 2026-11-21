@@ -1,12 +1,12 @@
 /*
  * Reusable Liquid Orb dialog — load dialog.css beside this JS module.
- * import {createLiquidOrbDialog} from './dialog.js';
+ * <script src="./dialog.js"></script>  =>  window.createLiquidOrbDialog({...})
  */
 const CHANNEL = 'ui-vault/liquid-orb';
-const ORB_URL = new URL('../liquid-orb/index.html?embed=1', import.meta.url).href;
+const ORB_URL = new URL('../liquid-orb/index.html?embed=1', document.currentScript?.src || document.baseURI).href;
 const VALID_STATES = new Set(['idle', 'thinking']);
 
-export function createLiquidOrbDialog({
+function createLiquidOrbDialog({
   container = document.body,
   text = 'Thinking...',
   state = 'thinking',
@@ -181,3 +181,5 @@ export function createLiquidOrbDialog({
     isReady: () => ready,
   });
 }
+
+Object.defineProperty(window, 'createLiquidOrbDialog', { value: createLiquidOrbDialog });
