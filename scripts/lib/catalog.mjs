@@ -1,0 +1,110 @@
+import { readFile, readdir, realpath, stat, writeFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { dirname, join, relative, resolve, sep } from 'node:path';
+
+export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+export const ENTRY_DIR = join(ROOT, 'catalog', 'assets');
+export const MANIFEST_PATH = join(ROOT, 'content', 'assets.json');
+export const CATEGORY_PATH = join(ROOT, 'content', 'categories.json');
+export const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+export const COVERS = new Set(['warm','glass','aurora','editor','style','mosaic','motion','native']);
+
+const isText = value => typeof value === 'string' && value.trim().length > 0;
+const isStrings = value => Array.isArray(value) && value.length > 0 && value.every(isText);
+export const formatManifest = items => JSON.stringify([...items].sort((a,b)=>a.id.localeCompare(b.id,'en')),null,2)+'\n';
+
+export function checkCategories(categories) {
+  const errors=[];
+  if(!Array.isArray(categories) || !categories.length) return ['分类配置必须是非空数组'];
+  const seen = new Set();
+  for(const item of categories) {
+    if(!item || !SLUG.test(item.id ?? '') || item.id === 'all') errors.push('分类 ID 格式错误或使用了保留 ID');
+    if(!isText(item?.label) || !isText(item?.symbol)) errors.push('分类缺少 label/symbol');
+    if(seen.has(item?.id)) errors.push('重复的分类：'+item.id);
+    seen.add(item?.id);
+  }
+  return errors;
+}
+export function checkEntry(entry, categories, fileName='') {
+  const errors=[];
+  const where = entry && isText(entry.id) ? entry.id : fileName || '未知资产';
+  if(!entry || typeof entry !== 'object' || Array.isArray(entry)) return [where+': 资产必须为对象'];
+  if(!SLUG.test(entry.id ?? '')) errors.push(where+': id 必须为英文小写 slug');
+  if(fileName && entry.id+'.json' !== fileName) errors.push(where+': 文件名必须与 id 一致');
+  if(!isText(entry.title) || !isText(entry.description)) errors.push(where+': 标题与描述不可为空');
+  if(!categories.some(x=>x.id===entry.type)) errors.push(where+': 未注册的资产分类 '+String(entry.type));
+  if(!isStrings(entry.tags) || !isStrings(entry.technologies)) errors.push(where+': tags/technologies 必须是非空字符串数组');
+  if(!isText(entry.license)) errors.push(where+': 必须明确授权信息');
+  if(typeof entry.featured !== 'boolean') errors.push(where+': featured 应为布尔值');
+  if(typeof entry.created !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(entry.created) ||
+    Number.isNaN(Date.parse(entry.created)) || new Date(entry.created).toISOString().slice(0,10)!==entry.created) errors.push(where+': 无效创建日期');
+  if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
+  if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
+  if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
+  if(entry.source==='local') {
+    if(!safeRelativePath(entry.preview,'demos/')) errors.push(where+': preview 必须指向 demos/ 下的文件');
+    if(!safeRelativePath(entry.code,'demos/')) errors.push(where+': code 必须指向 demos/ 下的文件');
+    if(entry.url!==undefined) errors.push(where+': 本地资产不应包含外部来源 url');
+  } else if(entry.source==='external') {
+    try { const u=new URL(entry.url); if(u.protocol!=='https:' || !u.hostname) throw new Error(); }
+    catch { errors.push(where+': 外部项目必须有 HTTPS url'); }
+    if(entry.preview!==undefined || entry.code!==undefined || entry.copyable===true) errors.push(where+': 外部条目不能被标为本地 Demo 或可复制源码');
+  } else errors.push(where+': source 必须是 local 或 external');
+  return errors;
+}
+export function safeRelativePath(value,prefix) {
+  if(typeof value !== 'string' || !value.startsWith(prefix) || value.includes('\\') || value.includes('?') || value.includes('#')) return false;
+  const parts=value.split('/');
+  return parts.every(x=>x!=='' && x!=='.' && x!=='..' && /^[a-zA-Z0-9_\-./]+$/.test(x));
+}
+async function safeExistingFile(rel) {
+  const target=resolve(ROOT,rel);
+  if(!target.startsWith(ROOT+sep)) return false;
+  try {
+    const [base,real,info]=await Promise.all([realpath(ROOT),realpath(target),stat(target)]);
+    return (real.startsWith(base+sep) || real===base) && info.isFile();
+  } catch { return false; }
+}
+export async function loadSource() {
+  const categories=JSON.parse(await readFile(CATEGORY_PATH,'utf8'));
+  const files=(await readdir(ENTRY_DIR,{withFileTypes:true})).filter(f=>f.name.endsWith('.json'));
+  const entries=await Promise.all(files.map(async file=>{
+    if(!file.isFile()) throw new Error('元数据不允许符号链接或子目录：'+file.name);
+    const parsed=JSON.parse(await readFile(join(ENTRY_DIR,file.name),'utf8'));
+    return {fileName:file.name,entry:parsed};
+  }));
+  return {categories,entries};
+}
+export async function inspectCatalog({checkGenerated=true}={}) {
+  const errors=[];
+  let source;
+  try { source=await loadSource(); } catch(e) { return {errors:['读取分类/资产失败：'+e.message],items:[],categories:[]}; }
+  errors.push(...checkCategories(source.categories));
+  const ids=new Set(),items=[];
+  for(const {fileName,entry} of source.entries) {
+    errors.push(...checkEntry(entry,source.categories,fileName));
+    if(ids.has(entry.id)) errors.push('重复的资产 ID: '+entry.id);
+    ids.add(entry.id);
+    items.push(entry);
+    if(entry.source==='local') {
+      for(const key of ['preview','code']) {
+        if(safeRelativePath(entry[key],'demos/') && !(await safeExistingFile(entry[key]))) errors.push(entry.id+': 缺少 '+key+' 源文件 '+entry[key]);
+      }
+    }
+    if(entry.coverImage && safeRelativePath(entry.coverImage,'media/') && !(await safeExistingFile(entry.coverImage))) errors.push(entry.id+': 找不到封面图片 '+entry.coverImage);
+  }
+  const manifest=formatManifest(items);
+  if(checkGenerated) {
+    try {
+      const actual=await readFile(MANIFEST_PATH,'utf8');
+      if(actual!==manifest) errors.push('content/assets.json 与独立资产元数据不同步：请运行 node scripts/catalog.mjs sync');
+    } catch { errors.push('缺少 content/assets.json：请运行 node scripts/catalog.mjs sync'); }
+  }
+  return {errors,items,categories:source.categories,manifest};
+}
+export async function saveManifest() {
+  const result=await inspectCatalog({checkGenerated:false});
+  if(result.errors.length) throw new Error(result.errors.join('\n'));
+  await writeFile(MANIFEST_PATH,result.manifest,'utf8');
+  return result.items.length;
+}
