@@ -283,6 +283,21 @@ def verify_liquid_orb_unified(browser, origin):
             size_button.click()
             assert size_button.get_attribute("aria-expanded") == "true", "下拉按钮未更新展开状态"
             assert size_menu.is_visible(), "尺寸菜单未展开"
+            spacing = size_menu.evaluate("""menu => {
+                const items = [...menu.querySelectorAll('[role="option"]')];
+                const boxes = items.map(item => item.getBoundingClientRect());
+                return {
+                    rowGaps: boxes.slice(1).map((box, i) => box.top - boxes[i].bottom),
+                    noteIconGaps: items.map(item =>
+                        item.querySelector('svg').getBoundingClientRect().left -
+                        item.querySelector('.size-note').getBoundingClientRect().right),
+                    rowHeights: boxes.map(box => box.height)
+                };
+            }""")
+            minimum_gap = 9 if name == "mobile" else 7
+            assert all(gap >= minimum_gap for gap in spacing["rowGaps"]), f"{name}: 选项之间间隙不足：{spacing}"
+            assert all(gap >= 12 for gap in spacing["noteIconGaps"]), f"{name}: 文字/图标距离不足：{spacing}"
+            assert all(row >= (54 if name == "mobile" else 44) for row in spacing["rowHeights"]), f"{name}: 选项高度过小：{spacing}"
             if name == "mobile":
                 assert size_menu.evaluate("(el) => el.parentElement === document.body"), "手机菜单未提升至顶层"
                 assert page.locator("#size-backdrop").is_visible(), "手机菜单未显示遮罩"
