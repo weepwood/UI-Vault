@@ -1,4 +1,5 @@
-import { copyFile, lstat, mkdir, readdir, realpath, rm } from 'node:fs/promises';
+import { copyFile, lstat, mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises';
+import { createHash } from 'node:crypto';
 import { join, dirname, resolve, sep, extname } from 'node:path';
 import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
 
@@ -8,6 +9,7 @@ const out=resolve(ROOT,'dist');
 const allowed=new Set(['.html','.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.woff','.ttf','.otf','.wasm','.webm','.mp4','.txt']);
 const webAssets=new Set(['.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.wasm']);
 const tokenAssets=new Set(['.json','.css']);
+const versionedAssets=[];
 await rm(out,{recursive:true,force:true});
 await mkdir(out,{recursive:true});
 
@@ -32,7 +34,10 @@ async function copyTree(relativeDir,extensions) {
     if(file.name.startsWith('.'))throw new Error('公开资源目录包含隐藏文件：'+relativeDir+'/'+file.name);
     const rel=relativeDir+'/'+file.name;
     if(file.isDirectory())await copyTree(rel,extensions);
-    else if(file.isFile() && extensions.has(extname(file.name).toLowerCase()))await copy(rel);
+    else if(file.isFile() && extensions.has(extname(file.name).toLowerCase())){
+      await copy(rel);
+      if(relativeDir==='assets'||relativeDir.startsWith('assets/'))versionedAssets.push(rel);
+    }
     else throw new Error('公开资源目录包含不允许发布的文件：'+rel);
   }
 }
@@ -53,3 +58,41 @@ for(const a of items) {
 }
 for(const file of included)await copy(file);
 console.log('构建完成：只发布 '+included.size+' 个声明的 Demo/封面资源及展厅公共文件。');
+
+
+/*
+ * GitHub Pages 与浏览器可能在部署后的短时间内缓存不同时间的 HTML/JS/CSS。
+ * 对每次构建生成相同的内容指纹，使 HTML、样式、入口模块与 ES module 依赖版本一致。
+ * 保留 dist/assets/app.js 及 styles.css 供旧入口兼容；新入口一律使用指纹文件名。
+ */
+const hash=createHash('sha256');
+for(const relative of ['index.html',...versionedAssets.sort()]){
+  hash.update(relative+'\0');
+  hash.update(await readFile(resolve(out,relative)));
+}
+const assetRevision=hash.digest('hex').slice(0,16);
+const htmlPath=resolve(out,'index.html');
+let html=await readFile(htmlPath,'utf8');
+if(!html.includes('href="./assets/styles.css"')||!html.includes('src="./assets/app.js"')){
+  throw new Error('入口 HTML 缺少可以版本化的 CSS/JS 资源引用');
+}
+html=html.replace('href="./assets/styles.css"',`href="./assets/styles.${assetRevision}.css"`);
+html=html.replace('src="./assets/app.js"',`src="./assets/app.${assetRevision}.js"`);
+await writeFile(htmlPath,html,'utf8');
+await copyFile(resolve(out,'assets/styles.css'),resolve(out,`assets/styles.${assetRevision}.css`));
+
+// 保持依赖图中的所有 JS 模块使用本次构建的相同指纹；源仓库代码保持原样。
+function withRevision(importSource){
+  return importSource.replace(/(\bfrom\s*['"])(\.[^'"]+\.(?:js|mjs))(['"])/g,
+    (_match,prefix,path,quote)=>prefix+path+'?v='+assetRevision+quote);
+}
+for(const relative of versionedAssets.filter(path=>/\.(?:js|mjs)$/.test(path))){
+  const source=await readFile(resolve(out,relative),'utf8');
+  const updated=withRevision(source);
+  if(relative==='assets/app.js'){
+    await writeFile(resolve(out,`assets/app.${assetRevision}.js`),updated,'utf8');
+  }else if(updated!==source){
+    await writeFile(resolve(out,relative),updated,'utf8');
+  }
+}
+console.log('静态入口已同步版本化：'+assetRevision+'（HTML / CSS / JS 模块）');

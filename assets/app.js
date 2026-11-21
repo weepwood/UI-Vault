@@ -292,7 +292,47 @@ async function loadJSON(path){
   if(!response.ok)throw Error('无法请求 '+path+'：HTTP '+response.status);
   return response.json();
 }
+// HTML 与 JS 来自不同缓存版本时，旧页面可能没有新工作台需要的节点。
+const SHELL_REQUIRED_IDS=[
+  'sidebar','mobile-shade','gallery','search','sort','tag-filter','preview-stage',
+  'toast','menu-toggle','viewport-controls','category-nav','total-count','curated-count',
+  'imported-count','favorite-count','workbench-count','preview-kind','preview-title',
+  'preview-subtitle','location-label','notes-caption','project-info','project-notes',
+  'preview-label','preview-status','preview-open','preview-favorite','preview-copy-link',
+  'results-count','results-status','empty','empty-message','reset-filters','clear-filters',
+  'sidebar-dismiss'
+];
+function verifyWorkbenchShell(){
+  const missing=SHELL_REQUIRED_IDS.filter(id=>!document.getElementById(id));
+  if(!missing.length)return true;
+  // 只在 UI Vault 主站执行一次恢复，防止错误嵌入或持续重定向。
+  const url=new URL(window.location.href);
+  const modulePath=new URL(import.meta.url).pathname.split('/').pop();
+  const token='shell-'+modulePath;
+  const isVaultHome=/\\/UI-Vault\\/(?:index\\.html)?$/.test(url.pathname);
+  console.error('UI Vault HTML 与脚本版本不匹配，缺少节点：'+missing.join(', '));
+  if(isVaultHome&&url.searchParams.get('_ui_recovery')!==token){
+    url.searchParams.set('_ui_recovery',token);
+    window.location.replace(url.href);
+    return false;
+  }
+  const notice=document.createElement('div');
+  notice.setAttribute('role','alert');
+  notice.style.cssText='position:fixed;inset:auto 14px 14px;z-index:9999;padding:14px 18px;background:#20282d;color:#fff;border-radius:8px;font:14px/1.6 system-ui;box-shadow:0 8px 30px #0004';
+  notice.textContent='UI Vault 页面资源版本不一致，无法初始化工作台。请重新打开站点： ';
+  const link=document.createElement('a');
+  link.textContent='重新加载最新版本';
+  link.style.cssText='color:#bfe3ff;text-decoration:underline;margin-left:6px';
+  const target=new URL(url.href);
+  target.searchParams.delete('_ui_recovery');
+  target.searchParams.set('refresh',String(Date.now()));
+  link.href=target.href;
+  notice.append(link);
+  document.body.prepend(notice);
+  return false;
+}
 async function init(){
+  if(!verifyWorkbenchShell())return;
   sidebar.inert=isMobile();
   initEvents();
   if(typeof ResizeObserver!=='undefined'){
@@ -325,4 +365,8 @@ async function init(){
     console.error('UI Vault:',error);
   }
 }
-init();
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',()=>{void init();},{once:true});
+}else{
+  void init();
+}
