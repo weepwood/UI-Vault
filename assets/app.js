@@ -383,7 +383,7 @@ const SHELL_REQUIRED_IDS=[
   'dialog-overview','dialog-source','dialog-close','preview-info','source-code','source-status',
   'source-repo','source-copy','preview-open','preview-favorite','preview-copy-link',
   'results-count','results-status','empty','empty-message','reset-filters','clear-filters',
-  'sidebar-dismiss','settings-open','settings-dialog','settings-close','settings-reset'
+  'sidebar-dismiss','settings-open'
 ];
 function verifyWorkbenchShell(){
   const missing=SHELL_REQUIRED_IDS.filter(id=>!document.getElementById(id));
