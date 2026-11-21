@@ -3,7 +3,8 @@ import { enhanceSelect, closeDropdowns } from './core/dropdown.js';
 import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { escapeHtml, resolveAsset } from './core/render.js';
-import { projectRowMarkup, projectPreviewMarkup } from './core/workbench.js';
+import { projectPreviewMarkup } from './core/workbench.js';
+import {renderProjectList,renderCategoryNavigation} from './react-workbench.js';
 import { applyPreviewLayout } from './core/preview.js';
 import { initSettings } from './core/settings.js';
 import {createViewportSwitcher} from './ui/viewport-switcher.js';
@@ -14,10 +15,6 @@ import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilt
   setCatalogQuery,setCatalogSort,setCatalogTag,hasActiveCatalogFilters,
   activateAsset,deactivateAsset,changePreviewMode} from './core/workbench-state.js';
 
-const categoryIconById=Object.freeze({
-  style:'palette',component:'component',effect:'zap',
-  layout:'panels-top-left',demo:'play',reference:'bookmark'
-});
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),sort=$('#sort'),tagFilter=$('#tag-filter');
 const libraryRail=$('#library-rail'),stage=$('#preview-stage'),toast=$('#toast');
@@ -66,17 +63,16 @@ function leaveSettingsForLibrary(){
   if(settingsActive)setWorkbenchView('library',{historyMode:'push'});
 }
 function initNavigation(){
-  $('#category-nav').innerHTML=state.categories.map(c=>
-    '<button class="nav-button" type="button" data-category="'+escapeHtml(c.id)+'" aria-pressed="false">'+
-    '<span class="nav-index" aria-hidden="true">'+iconMarkup(categoryIconById[c.id]||'layout-grid')+'</span>'+
-    '<span>'+escapeHtml(c.label)+'</span></button>').join('');
+  renderCategoryNavigation($('#category-nav'),{
+    categories:state.categories,
+    current:state.category,
+    settingsActive,
+    onChange:category=>changeFilter('category',category)
+  });
 }
 function navState(){
-  document.querySelectorAll('[data-category]').forEach(button=>{
-    const active=!settingsActive&&!state.favoritesOnly&&!state.importedOnly&&!state.curatedOnly&&button.dataset.category===state.category;
-    button.classList.toggle('is-active',active);
-    button.setAttribute('aria-pressed',String(active));
-  });
+  // React 负责分类按钮的 DOM、aria-pressed 与选中态。
+  initNavigation();
   for(const [selector,key] of [['[data-favorites]','favoritesOnly'],['[data-imported]','importedOnly'],['[data-curated]','curatedOnly']]){
     const button=$(selector);
     button.classList.toggle('is-active',!settingsActive&&state[key]);
@@ -91,16 +87,23 @@ function updateTags(){
   tagDropdown?.sync();
 }
 function filteredItems(){return filterAssets(state.assets,state,favorites);}
+function renderReactList(items=filteredItems()){
+  renderProjectList(gallery,{
+    items,
+    labels:state.labels,
+    selectedId:state.active?.id,
+    onSelect:id=>{
+      const asset=state.assets.find(item=>item.id===id);
+      if(asset)selectAsset(asset,{historyMode:'push',focusPreview:true});
+    }
+  });
+}
 function updateListSelection(){
-  for(const item of gallery.querySelectorAll('.project-item')){
-    const selected=item.dataset.id===state.active?.id;
-    item.classList.toggle('is-selected',selected);
-    item.querySelector('[data-open]')?.setAttribute('aria-current',String(selected));
-  }
+  renderReactList();
 }
 function renderList(){
   const items=filteredItems();
-  gallery.innerHTML=items.map(asset=>projectRowMarkup(asset,favorites,state.labels,asset.id===state.active?.id)).join('');
+  // 交由 React keyed ProjectRow 维护目录，保留原来的 CSS 与 data-open 属性。
   const empty=items.length===0;
   $('#empty').hidden=!empty;
   $('#empty-message').textContent=state.favoritesOnly&&!state.query.trim()&&!state.tag
@@ -116,6 +119,7 @@ function renderList(){
   }else if(!state.active||!items.some(x=>x.id===state.active.id)){
     selectAsset(items[0],{historyMode:'replace'});
   }
+  renderReactList(items);
 }
 function resizePreview(){
   const iframe=stage.querySelector('iframe.live-frame');
@@ -223,16 +227,7 @@ function reset(){
 function initEvents(){
   sortDropdown=enhanceSelect(sort,{icon:'arrow-up-down',icons:{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}});
   tagDropdown=enhanceSelect(tagFilter,{icon:'bookmark'});
-  gallery.addEventListener('click',event=>{
-    const button=event.target.closest('[data-open]');
-    if(!button)return;
-    const asset=state.assets.find(x=>x.id===button.dataset.open);
-    if(asset)selectAsset(asset,{historyMode:'push',focusPreview:true});
-  });
-  $('#category-nav').addEventListener('click',event=>{
-    const button=event.target.closest('[data-category]');
-    if(button&&Object.hasOwn(state.labels,button.dataset.category))changeFilter('category',button.dataset.category);
-  });
+  // React ProjectRow 与分类导航自身绑定事件，主站仅处理快捷筛选和工具栏。
   $('[data-category="all"]').addEventListener('click',()=>changeFilter('category','all'));
   $('[data-favorites]').addEventListener('click',()=>changeFilter('favoritesOnly'));
   $('[data-imported]').addEventListener('click',()=>changeFilter('importedOnly'));
