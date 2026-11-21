@@ -41,9 +41,8 @@ const versionedCSS=await readFile(join(out,`assets/styles.${cssFingerprint}.css`
 for(const componentPath of ['./ui/controls.css','./ui/dropdown.css','./ui/project-row.css','./ui/dialog.css','./ui/preview-toolbar.css']){
   assert.ok(versionedCSS.includes('@import url("'+componentPath+'")'),'主站 CSS 缺少共享组件引用：'+componentPath);
 }
-for(const modulePath of ['./core/workbench-state.js','./core/workbench-router.js','./ui/viewport-switcher.js','./ui/project-dialog.js','./ui/mobile-navigation.js']){
-  assert.ok(entry.includes(modulePath+'?v='+jsFingerprint),'入口模块版本不一致：'+modulePath);
-}
+// 模块化业务代码通过 esbuild 收纳进一个 React bundle，页面不再请求旧控制器。
+assert.ok(!entry.includes('core/workbench-state.js'),'旧业务状态不应从主入口重复加载');
 const workbenchState=await readFile(join(out,'assets/core/workbench-state.js'),'utf8');
 assert.ok(workbenchState.includes('./preview.js?v='+jsFingerprint),'状态模块依赖未版本化');
 assert.ok(!publishedHTML.includes('src="./assets/app.js"'),'入口还引用未版本化脚本');
