@@ -57,6 +57,7 @@ export function workbenchReducer(current,action){
       return next;
     }
     case 'preferences':{
+      if(Object.keys(DEFAULT_SETTINGS).every(key=>current.preferences[key]===action.values[key]))return current;
       next.preferences=action.values;
       if(next.active?.source==='local')changePreviewMode(next,action.values.preview);
       return next;
