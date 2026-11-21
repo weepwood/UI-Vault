@@ -29,7 +29,7 @@ function setup(fetchSource=async()=>({ok:true,text:async()=>''})){
  const ids=['dialog-kind','dialog-title','project-info','dialog-overview','dialog-source',
    'source-code','source-status','source-copy','source-repo','dialog-close'];
  const nodes=Object.fromEntries(ids.map(id=>['#'+id,element()]));
- const tabs=['overview','source'].map(mode=>element({dataset:{infoTab:mode}}));
+ const tabs=['overview','source'].map(mode=>element({dataset:{infoTab:mode},closest(selector){return selector==='[data-info-tab]'?this:null;}}));
  let current=null;
  const root=element({
    open:false,
