@@ -22,9 +22,9 @@
 
 ```html
 <link rel="stylesheet" href="./liquid-orb-thinking-dialog/dialog.css">
-<script type="module">
-  import { createLiquidOrbDialog } from './liquid-orb-thinking-dialog/dialog.js';
-  const dialog = createLiquidOrbDialog({ text: 'Thinking...' });
+<script src="./liquid-orb-thinking-dialog/dialog.js"></script>
+<script>
+  const dialog = window.createLiquidOrbDialog({ text: 'Thinking...' });
   dialog.show();
   dialog.setText('Processing...');
   dialog.setState('thinking'); // 也支持 idle
@@ -32,7 +32,7 @@
 </script>
 ```
 
-模块通过相对 URL 加载 `../liquid-orb/index.html?embed=1`：复用原 WGSL 和 WebGPU 渲染，不复制着色器，也不需要第三方库。对话框与 iframe 通过来源窗口限定的 `postMessage` 通信，只有真实的 `ready` 消息到达后才淡入玻璃球。
+考虑到 UI-Vault 内部预览使用隔离的 iframe，组件提供经典脚本的 `window.createLiquidOrbDialog` 接口，避免从 opaque origin 导入外部 ES Module 的 CORS 问题。模块通过相对 URL 加载 `../liquid-orb/index.html?embed=1`：复用原 WGSL 和 WebGPU 渲染，不复制着色器，也不需要第三方库。对话框与 iframe 通过来源窗口限定的 `postMessage` 通信，只有真实的 `ready` 消息到达后才淡入玻璃球。
 
 ## 可访问性及性能
 
