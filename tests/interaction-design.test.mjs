@@ -59,11 +59,15 @@ test('只有本地 Demo 展示视口切换，外部参考保持来源',()=>{
  if(previousDocument===undefined)delete globalThis.document;
  else globalThis.document=previousDocument;
 });
-test('双栏收藏操作不重建右侧真实预览',async()=>{
- const source=await readFile(join(ROOT,'assets/app.js'),'utf8');
- const functionBody=source.slice(source.indexOf('function toggleFavorite('),source.indexOf('async function copyText('));
- assert.match(functionBody,/if\(state\.favoritesOnly\)renderList\(\)/);
- assert.doesNotMatch(functionBody,/querySelectorAll\('\[data-favorite\]'\)/);
- assert.match(functionBody,/preview-favorite/);
- assert.doesNotMatch(functionBody,/stage\.innerHTML|previewFrame\.src|selectAsset\(/);
+test('React 收藏、筛选与设置不重建真实预览 iframe',async()=>{
+ const [react,preview,hooks]=await Promise.all([
+   'src/react-workbench.jsx','src/components/PreviewFrame.jsx','src/useWorkbench.js'
+ ].map(p=>readFile(join(ROOT,p),'utf8')));
+ assert.match(react,/<PreviewFrame asset={selected}/);
+ assert.match(preview,/export const PreviewFrame=memo\(/);
+ assert.match(preview,/before.asset\?\.id===after.asset\?\.id/);
+ assert.match(preview,/referrerPolicy="no-referrer"/);
+ assert.match(preview,/sandbox="allow-scripts"/);
+ assert.match(hooks,/case 'favorite'/);
+ assert.doesNotMatch(hooks,/innerHTML|replaceChildren|iframe\.src/);
 });
