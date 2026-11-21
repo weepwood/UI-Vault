@@ -27,6 +27,7 @@ VERS = f"{fontTools.__version__}/{UPSTREAM}/v2"
 LATIN_POINTS = set(range(0x20, 0x250)) | set(range(0x2000, 0x2070)) | set(range(0x20A0, 0x20D0)) | set(range(0x2190, 0x2200))
 FILES = [
     ROOT / "index.html",
+    ROOT / "settings.html",
     *sorted((ROOT / "assets").rglob("*.js")),
     *sorted((ROOT / "content").rglob("*.json")),
     *sorted((ROOT / "catalog" / "assets").glob("*.json")),
