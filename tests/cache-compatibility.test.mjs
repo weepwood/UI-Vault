@@ -18,9 +18,11 @@ test('HTML/JS 缓存错配不再直接调用缺失 sidebar 的 inert',async()=>{
     assert.ok(app.includes(required),'缺少运行时防护 '+required);
   }
   const guard=app.indexOf('if(!verifyWorkbenchShell())return;');
-  const inert=app.indexOf('sidebar.inert=isMobile();');
-  assert.ok(guard>=0&&inert>guard,'触碰 sidebar 前必须做结构校验');
+  const inert=app.indexOf('libraryRail.inert=isMobile();');
+  assert.ok(guard>=0&&inert>guard,'触碰资源目录容器前必须做结构校验');
   assert.match(html,/id="sidebar"/);
+  assert.match(html,/id="library-rail"/);
+  assert.match(html,/id="project-panel"/);
   assert.match(html,/id="preview-stage"/);
   assert.match(build,/assetRevision/);
   assert.match(build,/createHash\('sha256'\)/);
