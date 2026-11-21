@@ -137,6 +137,15 @@
     .thinking-modal-close{top:5px;right:17px;width:26px;height:26px}
     .hint{display:none}
   }
+
+  /* Mobile: use a true viewport-level option sheet, not a menu that obscures inputs. */
+  .size-backdrop{display:none}
+  @media(max-width:620px){
+    .size-backdrop:not([hidden]){display:block;position:fixed;inset:0;z-index:120;background:#03060db5;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px)}
+    .size-menu.is-sheet{position:fixed;bottom:max(15px,env(safe-area-inset-bottom));left:50%;right:auto;transform:translateX(-50%);z-index:121;width:min(380px,calc(100vw - 24px));max-width:none;max-height:min(330px,65dvh);padding:9px;border-radius:14px;border-color:#46536b;background:#1b2434;box-shadow:0 20px 80px #000b}
+    .size-menu.is-sheet [role=option]{min-height:48px;padding:10px 13px;font-size:14px}
+    .size-menu.is-sheet .size-note{font-size:11px}
+  }
   @media(prefers-reduced-motion:reduce){.showcase-tab,.dialog-open{transition:none!important}}
 
   /* Keep failure UI compact inside the pill; expose retry as a separate control. */
@@ -227,6 +236,7 @@
       <button class="dialog-retry" id="dialog-retry" type="button">重试渲染</button>
     </div>
   </main>
+  <div class="size-backdrop" id="size-backdrop" hidden aria-hidden="true"></div>
   <dialog class="thinking-modal" id="thinking-modal" aria-label="液态玻璃思考对话框">
     <div class="thinking-modal-slot" id="thinking-modal-slot"></div>
     <button class="thinking-modal-close" type="button" id="thinking-modal-close" aria-label="关闭对话框" title="关闭">
@@ -693,15 +703,26 @@
     const sizeTrigger = document.querySelector("#dialog-size-trigger");
     const sizeMenu = document.querySelector("#dialog-size-menu");
     const nativeSize = document.querySelector("#dialog-size");
+    const sizeBackdrop = document.querySelector("#size-backdrop");
     const sizeItems = [...sizeMenu.querySelectorAll("[role=option]")];
     function closeSizeMenu({restoreFocus=false}={}) {
       sizePicker.classList.remove("is-open");
       sizeMenu.hidden = true;
+      sizeMenu.classList.remove("is-sheet");
+      sizeBackdrop.hidden = true;
+      // Return the listbox to its trigger after a mobile top-layer presentation.
+      if (sizeMenu.parentElement !== sizePicker) sizePicker.appendChild(sizeMenu);
       sizeTrigger.setAttribute("aria-expanded", "false");
       if (restoreFocus) sizeTrigger.focus({preventScroll:true});
     }
     function openSizeMenu(focus="selected") {
+      const isMobile = matchMedia("(max-width:620px)").matches;
       sizePicker.classList.add("is-open");
+      if (isMobile) {
+        sizeMenu.classList.add("is-sheet");
+        document.body.appendChild(sizeMenu);
+        sizeBackdrop.hidden = false;
+      }
       sizeMenu.hidden = false;
       sizeTrigger.setAttribute("aria-expanded", "true");
       const active = sizeItems.findIndex(item => item.dataset.size === nativeSize.value);
@@ -766,8 +787,13 @@
         sizeItems[index].focus({preventScroll:true});
       });
     }
-    document.addEventListener("pointerdown", event => { if (!sizePicker.contains(event.target)) closeSizeMenu(); });
-    document.addEventListener("focusin", event => { if (!sizePicker.contains(event.target)) closeSizeMenu(); });
+    document.addEventListener("pointerdown", event => {
+      if (!sizePicker.contains(event.target) && !sizeMenu.contains(event.target)) closeSizeMenu();
+    });
+    document.addEventListener("focusin", event => {
+      if (!sizePicker.contains(event.target) && !sizeMenu.contains(event.target)) closeSizeMenu();
+    });
+    window.addEventListener("resize", () => { if (!sizeMenu.hidden) closeSizeMenu(); });
     dialogText.addEventListener("input", event => setDialogText(event.target.value));
     document.querySelector("#dialog-open").addEventListener("click", openThinkingDialog);
     document.querySelector("#dialog-retry").addEventListener("click", () => location.reload());
