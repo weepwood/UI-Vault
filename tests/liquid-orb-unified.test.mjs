@@ -83,5 +83,10 @@ test('下拉菜单提供独立定位、ARIA 状态、完整键盘与外部点击
   assert.match(source,/sizeMenu\.hidden = true/);
   assert.match(source,/sizeMenu\.hidden = false/);
   assert.match(source,/nativeSize\.value = value/);
-  assert.match(source,/event => \{ if \(!sizePicker\.contains\(event\.target\)\) closeSizeMenu\(\); \}/);
+  assert.match(source,/id="size-backdrop"/);
+  assert.match(source,/sizeMenu\.classList\.add\("is-sheet"\)/);
+  assert.match(source,/document\.body\.appendChild\(sizeMenu\)/);
+  assert.match(source,/sizePicker\.appendChild\(sizeMenu\)/);
+  assert.match(source,/sizeBackdrop\.hidden = true/);
+  assert.match(source,/!sizePicker\.contains\(event\.target\) && !sizeMenu\.contains\(event\.target\)/);
 });
