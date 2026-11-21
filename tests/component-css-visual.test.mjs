@@ -39,4 +39,15 @@ test('真实 Chromium 截图测试会对固定基线进行尺寸和颜色采样�
   assert.match(workflow,/python -m playwright install chromium/);
   assert.match(workflow,/scripts\/visual-regression[.]py/);
   assert.match(workflow,/visual-output\//);
+  assert.ok(!workflow.includes('visual-regression.py --bootstrap'),'正常 CI 禁止重新生成基线');
+  assert.match(workflow,/runs-on: ubuntu-24[.]04/);
+  const fixture=JSON.parse(read('tests/visual-baselines.json'));
+  assert.equal(fixture.version,1);
+  assert.deepEqual(fixture.grid,[48,32]);
+  const cases=Object.keys(fixture.cases);
+  assert.equal(cases.length,9);
+  for(const name of cases){
+    assert.equal(fixture.cases[name].size.length,2);
+    assert.ok(fixture.cases[name].pixels.length>200);
+  }
 });
