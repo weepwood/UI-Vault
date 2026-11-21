@@ -1,12 +1,15 @@
 # UI-Vault 设置中心
 
-设置中心现在是 **独立的静态页面**：`/UI-Vault/settings.html`（本地：`/settings.html`）。
+设置现在是**工作台内的专属视图**，不是独立网页，也不是模态弹窗。
 
-- 从主站左下角「设置」链接进入，不再使用弹窗；页面左侧设有分组导航，并可返回工作台。
-- 项目 GitHub 仓库入口位于设置页的「关于」分区，不再占据工作台侧栏底部。
-- 修改立即生效并自动保存到当前浏览器的 localStorage，存储键：`ui-vault:preferences:v1`；从浏览器后退恢复工作台时自动读取最新设置。
-- 本地无服务端，不存储用户账户数据；收藏和设置分别存储，恢复默认偏好不会删除收藏。
-- 设置中的下拉菜单与排序/标签筛选复用 `enhanceSelect()`，含图标、键盘交互和选中反馈；初始化脚本失败时原生 `select` 仍可见。
+- 点击第一栏左下角「设置」，主导航继续保留；原本“项目列表 + 预览画布”的右侧两栏合并为设置内容区域。
+- 从第一栏点击资源分类、收藏筛选或搜索，立即恢复原先三栏布局；既有预览 iframe 不重新创建。
+- 访问 `/?view=settings` 可直接打开设置视图，浏览器前进/后退支持视图切换；保留原 `?asset=id` 深链接与项目预览状态。
+- 旧的 `settings.html` 地址仍可打开，会重定向到 `./?view=settings`，避免历史书签失效。
+- 在手机上，设置视图顶部提供目录按钮，打开后只显示第一栏导航。
+- GitHub 仓库入口位于设置内的「关于」分区，不放在左侧导航底部。
+- 设置即时保存于当前浏览器的 localStorage（键 `ui-vault:preferences:v1`）；收藏与偏好独立存储，重置设置不清空收藏。
+- 下拉菜单与目录筛选复用 `enhanceSelect()`，支持键盘操作、显示选中状态和原生 select 回退。
 
 ## 设置项
 
@@ -20,13 +23,12 @@
 
 ## 技术结构
 
-- `index.html`：工作台左下角的设置入口，保留已有独立项目预览。
-- `settings.html`：设置内容、分类导航和仓库相关入口。
-- `assets/settings-page.js`：设置页独立模块入口。
+- `index.html`：在工作台内嵌入设置视图和 GitHub 相关入口。
+- `assets/app.js`：设置与项目浏览间的视图切换、浏览器历史记录和移动端目录状态。
 - `assets/core/settings.js`：共享默认值、存取、校验、应用主题及选择器初始化；首页不再依赖设置弹窗 DOM。
 - `assets/styles.css`：页面布局与原有设计 Token；适配窄屏。
-- `scripts/build.mjs`：发布 `settings.html` 并为工作台与设置入口生成**相同**的 CSS/JS 内容指纹。
-- `scripts/check-dist.mjs`、`tests/settings*.test.mjs`：验证独立路由、图标、数据字段、静态发布和样式。
+- `scripts/build.mjs`：发布单一工作台入口的带指纹脚本；`settings.html` 作为兼容重定向页面保留。
+- `scripts/check-dist.mjs`、`tests/settings*.test.mjs`：验证工作台内视图、图标、数据字段、静态发布和样式。
 
 ## 字体与项目预览边界
 
