@@ -134,17 +134,7 @@
       sendHost("progress", { progress: value, label });
     }
     function updateControls() {
-      window.addEventListener("message", event => {
-      if (!embedded || event.source !== window.parent) return;
-      const data = event.data;
-      if (!data || data.channel !== "ui-vault/liquid-orb" || data.event !== "command") return;
-      if (data.action === "setState" && Object.hasOwn(stateSeeds, data.value)) setState(data.value);
-      else if (data.action === "setPlaying" && typeof data.value === "boolean") setPlaying(data.value);
-      else if (data.action === "setGlass" && typeof data.value === "boolean") setGlass(data.value);
-      else if (data.action === "setSpeed" && Number.isFinite(data.value)) setSpeed(data.value);
-    });
-    document.querySelector("#orb-retry").addEventListener("click", () => location.reload());
-    document.querySelectorAll("[data-state]").forEach(button =>
+          document.querySelectorAll("[data-state]").forEach(button =>
         button.setAttribute("aria-pressed", String(button.dataset.state === state)));
       const playButton = document.querySelector("#motion-toggle");
       playButton.textContent = playing ? "暂停动画" : "播放动画";
@@ -503,6 +493,16 @@
       ribbonTarget?.destroy();
       device?.destroy();
     }, { once: true });
+    window.addEventListener("message", event => {
+      if (!embedded || event.source !== window.parent) return;
+      const data = event.data;
+      if (!data || data.channel !== "ui-vault/liquid-orb" || data.event !== "command") return;
+      if (data.action === "setState" && Object.hasOwn(stateSeeds, data.value)) setState(data.value);
+      else if (data.action === "setPlaying" && typeof data.value === "boolean") setPlaying(data.value);
+      else if (data.action === "setGlass" && typeof data.value === "boolean") setGlass(data.value);
+      else if (data.action === "setSpeed" && Number.isFinite(data.value)) setSpeed(data.value);
+    });
+    document.querySelector("#orb-retry").addEventListener("click", () => location.reload());
     document.querySelectorAll("[data-state]").forEach(button =>
       button.addEventListener("click", () => setState(button.dataset.state)));
     document.querySelector("#motion-toggle").addEventListener("click", () => setPlaying(!playing));
