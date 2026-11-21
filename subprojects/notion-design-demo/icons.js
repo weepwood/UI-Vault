@@ -1,0 +1,73 @@
+/* Local, dependency-free subset of Lucide SVG icons (ISC licensed icons, lucide.dev). */
+const lucidePaths = {
+  'arrow-right':'<path d="M5 12h14"/><path d="m12 5 7 7-7 7"/>',
+  'arrow-up-right':'<path d="M7 17 17 7"/><path d="M7 7h10v10"/>',
+  'arrow-left':'<path d="m12 19-7-7 7-7"/><path d="M19 12H5"/>',
+  'chevron-down':'<path d="m6 9 6 6 6-6"/>',
+  'chevron-right':'<path d="m9 18 6-6-6-6"/>',
+  'chevron-left':'<path d="m15 18-6-6 6-6"/>',
+  'check':'<path d="M20 6 9 17l-5-5"/>',
+  'check-check':'<path d="m18 6-7 7-3-3"/><path d="m22 10-7 7-3-3"/><path d="m2 12 4 4 4-4"/>',
+  'check-circle':'<circle cx="12" cy="12" r="10"/><path d="m8 12 3 3 5-6"/>',
+  'x':'<path d="M18 6 6 18"/><path d="m6 6 12 12"/>',
+  'search':'<circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>',
+  'menu':'<path d="M4 6h16M4 12h16M4 18h16"/>',
+  'home':'<path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/>',
+  'layout-dashboard':'<rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/>',
+  'file-text':'<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h8"/>',
+  'book-open':'<path d="M12 7v14M3 18V4a1 1 0 0 1 1-1h4a4 4 0 0 1 4 4 4 4 0 0 1 4-4h4a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1h-4a4 4 0 0 0-4 2 4 4 0 0 0-4-2H4a1 1 0 0 1-1-1z"/>',
+  'plus':'<path d="M12 5v14M5 12h14"/>',
+  'more-horizontal':'<circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/>',
+  'more-vertical':'<circle cx="12" cy="5" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="12" cy="19" r="1"/>',
+  'settings':'<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06-1.87 1.87-.06-.06A1.7 1.7 0 0 0 16 18.4a1.7 1.7 0 0 0-1 1.55V21h-6v-1.05A1.7 1.7 0 0 0 8 18.4a1.7 1.7 0 0 0-1.87.34l-.06.06-1.87-1.87.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-1.55-1H2v-4h1.05A1.7 1.7 0 0 0 4.6 9a1.7 1.7 0 0 0-.34-1.87L4.2 7.07 6.07 5.2l.06.06A1.7 1.7 0 0 0 8 5.6a1.7 1.7 0 0 0 1-1.55V3h6v1.05A1.7 1.7 0 0 0 16 5.6a1.7 1.7 0 0 0 1.87-.34l.06-.06 1.87 1.87-.06.06A1.7 1.7 0 0 0 19.4 9a1.7 1.7 0 0 0 1.55 1H22v4h-1.05A1.7 1.7 0 0 0 19.4 15Z"/>',
+  'bell':'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',
+  'user-round':'<circle cx="12" cy="8" r="4"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  'users':'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  'calendar':'<rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  'clock':'<circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>',
+  'folder':'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+  'copy':'<rect width="14" height="14" x="8" y="8" rx="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>',
+  'trash-2':'<path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6l-1 15H6L5 6M10 11v6M14 11v6"/>',
+  'download':'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/>',
+  'upload':'<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>',
+  'external-link':'<path d="M15 3h6v6M10 14 21 3"/><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/>',
+  'info':'<circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/>',
+  'alert-circle':'<circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/>',
+  'alert-triangle':'<path d="M10.3 3.9 2 18a2 2 0 0 0 1.7 3h16.6a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/>',
+  'circle-help':'<circle cx="12" cy="12" r="10"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/>',
+  'heart':'<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/>',
+  'star':'<path d="m12 2 3.1 6.3 7 .9-5 4.9 1.2 7L12 17.8 5.7 21l1.2-7-5-4.9 7-.9z"/>',
+  'sparkles':'<path d="m12 3 1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3ZM19 17l.7 1.3L21 19l-1.3.7L19 21l-.7-1.3L17 19l1.3-.7z"/>',
+  'sun':'<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/>',
+  'moon':'<path d="M20.9 13.1A9 9 0 0 1 10.9 3.1 9 9 0 1 0 20.9 13.1Z"/>',
+  'monitor':'<rect x="2" y="3" width="20" height="15" rx="2"/><path d="M8 21h8M12 18v3"/>',
+  'smartphone':'<rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/>',
+  'tablet':'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M12 18h.01"/>',
+  'sliders-horizontal':'<path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/>',
+  'palette':'<circle cx="12" cy="12" r="10"/><circle cx="7.5" cy="10" r="1"/><circle cx="12" cy="6.5" r="1"/><circle cx="16.5" cy="10" r="1"/><path d="M12 22a3 3 0 0 1-3-3 3 3 0 0 1 3-3h2a2 2 0 0 0 2-2c0-1.2 1-2 2-2h3"/>',
+  'type':'<path d="m4 19 6-14h4l6 14M6 15h12"/>',
+  'component':'<path d="m12 2 4 4-4 4-4-4 4-4ZM4 10l4 4-4 4-4-4 4-4ZM20 10l4 4-4 4-4-4 4-4ZM12 18l4 4-4 4-4-4 4-4Z" transform="translate(0 -2) scale(.94)"/>',
+  'mouse-pointer-2':'<path d="M4 4 20 11l-7 2-2 7z"/>',
+  'list-filter':'<path d="M4 7h16M7 12h10M10 17h4"/>',
+  'grip':'<circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/>',
+  'panel-left':'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18"/>',
+  'layers':'<path d="m12 2 9 5-9 5-9-5 9-5ZM3 12l9 5 9-5M3 17l9 5 9-5"/>',
+  'command':'<path d="M9 7V5a2 2 0 1 0-2 2h10a2 2 0 1 0-2-2v14a2 2 0 1 0 2-2H7a2 2 0 1 0 2 2z"/>',
+  'loader-circle':'<path d="M21 12a9 9 0 1 1-6-8.5"/>',
+  'image':'<rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/>',
+  'filter':'<path d="M4 4h16l-6 7v7l-4 2v-9z"/>',
+  'send':'<path d="m22 2-7 20-4-9-9-4zM22 2 11 13"/>',
+  'circle-dot':'<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/>',
+  'eye':'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>',
+  'eye-off':'<path d="m3 3 18 18M10.6 5.1A11 11 0 0 1 12 5c6 0 10 7 10 7a14.5 14.5 0 0 1-3 3.4M6 6.5A15 15 0 0 0 2 12s4 7 10 7a9.5 9.5 0 0 0 4-.9"/>',
+  'lock':'<rect x="4" y="11" width="16" height="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'
+};
+function renderLucide(root=document){
+ root.querySelectorAll('[data-lucide]').forEach(el=>{
+  const name=el.getAttribute('data-lucide');const path=lucidePaths[name];if(!path)return;
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('viewBox','0 0 24 24');svg.setAttribute('fill','none');svg.setAttribute('stroke','currentColor');svg.setAttribute('stroke-width','1.8');svg.setAttribute('stroke-linecap','round');svg.setAttribute('stroke-linejoin','round');svg.setAttribute('width','18');svg.setAttribute('height','18');svg.classList.add('lucide','lucide-'+name);
+  svg.innerHTML=path;svg.setAttribute('aria-hidden','true');if(el.className)svg.setAttribute('class','lucide lucide-'+name+' '+el.className);el.replaceWith(svg);
+ });
+}
+document.addEventListener('DOMContentLoaded',()=>renderLucide());

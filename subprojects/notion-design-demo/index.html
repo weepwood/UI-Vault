@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff">
+<title>Notion Design — Make room for ideas</title>
+<meta name="description" content="Notion 视觉设计语言交互式演示：营销页面、产品模拟、组件与主题规范。">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="library.css">
+</head>
+<body>
+<header class="site-header" id="top">
+  <div class="nav-wrap">
+    <a class="brand" href="#top" aria-label="Notion Design 首页"><span class="brand-symbol">N</span><span>Notion<span class="brand-period">.</span></span></a>
+    <nav class="desktop-nav" aria-label="主导航"><a href="#features">产品功能 <i data-lucide="chevron-down"></i></a><a href="#workspace">工作空间 <i data-lucide="chevron-down"></i></a><a href="#stories">客户故事</a><a href="components.html">组件库</a><a href="patterns.html">交互模式</a><a href="tokens.html">设计令牌</a></nav>
+    <div class="nav-actions"><a class="nav-login" href="#workspace">登录</a><button class="btn btn-primary nav-start" data-action="get-started">免费开始 <i data-lucide="arrow-right"></i></button><button class="mobile-toggle" aria-label="展开菜单" aria-expanded="false" aria-controls="mobile-nav"><span></span><span></span><span></span></button></div>
+  </div>
+  <nav class="mobile-nav" id="mobile-nav" aria-label="移动导航" hidden><a href="#features">产品功能</a><a href="#workspace">工作空间</a><a href="#stories">客户故事</a><a href="components.html">组件库</a><a href="patterns.html">交互模式</a><a href="tokens.html">设计令牌</a></nav>
+</header>
+<main>
+  <section class="hero section-shell">
+    <div class="hero-inner"><div class="hero-eyebrow"><span class="pill pill-lavender">全新工作方式 ✳</span><span>一个空间，容纳所有灵感</span></div>
+      <h1>Write. Plan.<br><span class="hero-bottom">Make it <span class="hand-underline">happen<svg viewBox="0 0 400 34" preserveAspectRatio="none" aria-hidden="true"><path d="M5 25 C105 5 260 8 395 17" fill="none" stroke="#ffb110" stroke-width="12" stroke-linecap="round"/></svg></span>.</span></h1>
+      <p class="hero-description">一个地方，汇集笔记、项目和知识。<br class="desktop-break">让想法自由生长，让团队顺畅协作。</p>
+      <div class="hero-ctas"><button class="btn btn-primary btn-large" data-action="get-started">免费体验 Notion <i data-lucide="arrow-right"></i></button><a class="btn btn-secondary btn-large" href="#workspace">探索产品演示 <i data-lucide="arrow-up-right"></i></a></div>
+      <div class="hero-caption"><span class="avatar-cluster"><i>J</i><i>M</i><i>Y</i></span><span>从个人灵感到团队协作，始终井井有条。</span></div>
+    </div>
+    <div class="hero-decoration" aria-hidden="true"><div class="doodle doodle-star">✳</div><div class="doodle doodle-sun">✷</div><div class="doodle doodle-pencil">✎</div></div>
+  </section>
+  <section class="showcase section-shell" id="workspace" aria-label="交互式工作空间演示"><div class="showcase-top"><div><span class="section-kicker">A CONNECTED WORKSPACE</span><h2>工作的每一面，<br>都在这里。</h2></div><p>写下想法、规划任务、整理知识。<br>你的工作方式，由你定义。</p></div>
+    <div class="app-window"><div class="window-topbar"><div class="window-controls"><i></i><i></i><i></i></div><span class="window-url">notion.so / your-workspace</span><span class="window-options">···</span></div>
+      <div class="workspace-app"><aside class="app-sidebar"><div class="workspace-switch"><span class="workspace-logo">N</span> Acme 工作空间 <i data-lucide="chevron-down" class="switch-chevron"></i></div><div class="sidebar-search"><i data-lucide="search"></i> <span>搜索</span><kbd>⌘ K</kbd></div><div class="sidebar-label">工作空间</div><button class="sidebar-link active" data-page="home"><i data-lucide="home"></i> 团队主页</button><button class="sidebar-link" data-page="projects"><i data-lucide="layout-dashboard"></i> 项目看板</button><button class="sidebar-link" data-page="notes"><i data-lucide="file-text"></i> 会议笔记</button><button class="sidebar-link" data-page="wiki"><i data-lucide="book-open"></i> 知识库</button><div class="sidebar-bottom"><i data-lucide="users"></i> 邀请团队成员 <i data-lucide="plus"></i></div></aside>
+      <div class="app-content"><div class="app-breadcrumb"><i data-lucide="home"></i> / <span id="breadcrumb">团队主页</span><button title="页面选项" id="more-button" aria-label="更多选项"><i data-lucide="more-horizontal"></i></button></div><div id="page-content"></div></div></div>
+    </div><p class="demo-note"><span class="green-dot"></span> 这是可交互演示 · 点击左侧导航切换页面，任务和笔记支持操作</p>
+  </section>
+  <section class="features band-warm" id="features"><div class="section-shell section-pad"><div class="section-header"><span class="section-kicker">ONE SPACE. ENDLESS POSSIBILITIES.</span><h2>更少切换。<br>更多创造。</h2><p>把分散的工具、想法和工作流程，组合成属于你的空间。</p></div>
+  <div class="feature-grid"><article class="feature-card card-peach"><div class="feature-copy"><span class="feature-number">01 / WRITE</span><h3>让每个想法<br>都有落脚之处。</h3><p>从一个空白页面开始，写下所有值得记住的事情。</p></div><div class="feature-art art-write"><div class="mini-sheet"><span class="sheet-emoji">💡</span><b>下一件了不起的事</b><div class="sheet-line wide"></div><div class="sheet-line"></div><div class="sheet-line small"></div><div class="sheet-pill">✦ 一切始于一个想法</div></div></div></article>
+  <article class="feature-card card-lavender"><div class="feature-copy"><span class="feature-number">02 / PLAN</span><h3>把复杂项目，<br>变得一目了然。</h3><p>任务、进度、负责人。一切都清楚地安排好。</p></div><div class="feature-art art-plan"><div class="mini-board"><div class="board-column"><small>待开始 <b>2</b></small><div class="board-task">用户访谈 <i class="task-tag tag-orange">研究</i></div><div class="board-task">灵感收集 <i class="task-tag tag-blue">设计</i></div></div><div class="board-column"><small>进行中 <b>1</b></small><div class="board-task">首页设计 <i class="task-tag tag-blue">设计</i></div></div></div></div></article>
+  <article class="feature-card card-yellow"><div class="feature-copy"><span class="feature-number">03 / ORGANIZE</span><h3>所有知识，<br>都值得被找到。</h3><p>建立有序的知识库，把团队经验变成共同财富。</p></div><div class="feature-art art-organize"><div class="knowledge-card"><div class="knowledge-icon">📚</div><b>团队知识库</b><div>🧭 &nbsp; 新成员入职指南</div><div>🎨 &nbsp; 品牌设计规范</div><div>🚀 &nbsp; 产品发布流程</div></div></div></article>
+  </div></div></section>
+  <section class="section-shell section-pad collaboration"><div class="collab-head"><span class="section-kicker">BUILT FOR THE WAY YOU WORK</span><h2>想法是自由的。<br><span>协作也应该如此。</span></h2><p>从一个人的待办事项，到整个团队的大胆计划。随时开始，轻松扩展。</p></div><div class="stat-row"><div><strong>1</strong><span>个统一的工作空间</span></div><div><strong>∞</strong><span>种组织想法的方式</span></div><div><strong>100%</strong><span>由你掌控的工作流</span></div></div><div class="quote-card" id="stories"><div class="quote-avatar">✳</div><blockquote>“最好的工具不是告诉你该如何工作，而是为你的想法留出足够的空间。”</blockquote><p>— 关于更好的工作方式</p></div></section>
+  <section class="section-shell section-pad system-section" id="components"><div class="section-header"><span class="section-kicker">DESIGN LANGUAGE / LIVE COMPONENTS</span><h2>简单的细节，<br>恰到好处。</h2><p>来自设计规范的色彩、排版与组件。将鼠标移到按钮上，体验真实交互状态。</p></div><div class="system-grid"><div class="system-card"><h3>颜色 / Colors</h3><p>以黑白暖灰为底色，用一抹蓝色引导行动。</p><div class="swatches"><div><i style="background:#0075DE"></i><b>Primary</b><small>#0075DE</small></div><div><i style="background:#000"></i><b>Ink</b><small>#000000</small></div><div><i style="background:#F6F5F4;border:1px solid #e8e5e1"></i><b>Warm</b><small>#F6F5F4</small></div><div><i style="background:#FFB110"></i><b>Amber</b><small>#FFB110</small></div><div><i style="background:#EADBFA"></i><b>Lavender</b><small>#EADBFA</small></div></div></div><div class="system-card"><h3>按钮 / Buttons</h3><p>清晰的视觉层次，一致的圆角和焦点反馈。</p><div class="button-examples"><button class="btn btn-primary" id="primary-demo">主要操作 →</button><button class="btn btn-secondary" id="secondary-demo">次要操作</button><button class="btn btn-ghost" id="ghost-demo">轻量操作 ↗</button></div><div class="component-feedback" id="component-feedback" aria-live="polite">点击按钮可体验状态</div></div><div class="system-card type-card"><h3>字体 / Typography</h3><p>巨大的标题，紧凑的字距，舒适的正文。</p><div class="type-specimen">Aa<span>想法无界</span></div><small>Inter / 600 / -4.6px tracking (display)</small></div><div class="system-card"><h3>组件 / Components</h3><p>从标签到状态，所有细节都服务于内容。</p><div class="chips"><span class="pill pill-lavender">✳ 新功能</span><span class="pill pill-green">✓ 已完成</span><span class="pill pill-blue">进行中</span></div><div class="sample-list"><span>◻ &nbsp; 整理设计灵感</span><span>☑ &nbsp; 确定配色与字体</span><span>◻ &nbsp; 分享给团队</span></div></div></div></section>
+  <section class="cta-band"><div class="section-shell cta-inner"><span class="section-kicker">YOUR IDEAS DESERVE A HOME</span><h2>你的下一个好主意，<br>从这里开始。</h2><p>给所有想法一点空间，看看它们能走多远。</p><button class="btn btn-primary btn-large" data-action="get-started">立即开始体验 <i data-lucide="arrow-right"></i></button><span class="cta-doodle" aria-hidden="true">✳</span></div></section>
+</main>
+<footer class="footer section-shell"><div class="footer-main"><div class="footer-brand"><a class="brand" href="#top"><span class="brand-symbol">N</span>Notion<span class="brand-period">.</span></a><p>让工具适应你的思维，<br>而非让思维适应工具。</p></div><div class="footer-links"><div><small>探索</small><a href="#features">功能介绍</a><a href="#workspace">产品演示</a><a href="#stories">客户故事</a></div><div><small>资源</small><a href="components.html">组件库</a><a href="tokens.html">颜色与字体</a><a href="patterns.html">交互模式</a></div><div><small>关于</small><a href="#top">返回首页</a><a href="https://www.notion.com/" target="_blank" rel="noopener">Notion 官网 ↗</a></div></div></div><div class="footer-bottom"><span>© 2026 Notion Design Study. 非官方设计复刻演示。</span><span>Made with clarity and a little whimsy ✳</span></div></footer>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="icons.js"></script>
+<script src="script.js"></script>
+</body></html>
