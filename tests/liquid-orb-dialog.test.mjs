@@ -39,7 +39,7 @@ test('组件使用真实首帧消息控制展示，并支持失败重试', () =>
 });
 test('对话框有 Esc、焦点管理、可配置文案及可用的 API', () => {
   assert.match(js,/event\.key === 'Escape'/);
-  assert.match(js,/event\.key === 'Tab'/);
+  assert.match(js,/event\.key !== 'Tab'/);
   assert.match(js,/previousFocus\.focus\(\)/);
   assert.match(js,/panel\.setAttribute\('aria-label'/);
   assert.match(js,/label\.textContent = value/);
