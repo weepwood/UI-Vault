@@ -1,33 +1,31 @@
 #!/usr/bin/env node
-import { readFile, writeFile, mkdir, rm, stat } from 'node:fs/promises';
-import { resolve, join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { mkdir, rm, stat, writeFile } from 'node:fs/promises';
+import { resolve, dirname, join } from 'node:path';
+import { ENTRY_DIR, ROOT, SLUG, inspectCatalog, saveManifest } from './lib/catalog.mjs';
 
-const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const catalogFile = resolve(root, 'content/assets.json');
-const kinds = { components: ['component','glass'], effects: ['effect','aurora'], layouts: ['layout','warm'], experiments: ['demo','style'] };
-const [kind,id,...nameParts] = process.argv.slice(2);
-const guide = '用法：node scripts/new-demo.mjs <components|effects|layouts|experiments> <slug> <中文标题>\n例如：node scripts/new-demo.mjs components magnetic-button 磁吸按钮';
-if (!kind || kind === '--help' || kind === '-h') { console.log(guide); process.exit(0); }
-if (!Object.hasOwn(kinds,kind) || !/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id||'') || !nameParts.join(' ').trim()) {
-  console.error('参数无效。\n'+guide);
-  process.exit(1);
+const kinds={components:['component','glass'],effects:['effect','aurora'],layouts:['layout','warm'],experiments:['demo','style']};
+const [kind,id,...rest]=process.argv.slice(2);
+const usage='用法：node scripts/new-demo.mjs <components|effects|layouts|experiments> <slug> <中文标题>';
+if(!kind || kind==='--help'){console.log(usage);process.exit(0);}
+if(!Object.hasOwn(kinds,kind) || !SLUG.test(id??'') || !rest.join(' ').trim()){
+  console.error('参数无效。\n'+usage);process.exit(1);
 }
-const title = nameParts.join(' ').trim();
-const list = JSON.parse(await readFile(catalogFile, 'utf8'));
-if (list.some(x=>x.id===id)) { console.error('资产 ID 已存在：'+id); process.exit(1); }
-const rel = 'demos/'+kind+'/'+id+'/index.html';
-const destination = resolve(root,rel);
-try { await stat(destination); console.error('文件已存在：'+rel); process.exit(1); }
-catch (err) { if (err.code !== 'ENOENT') throw err; }
-const safeTitle = title.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const page = [
-'<!doctype html>',
-'<html lang="zh-CN">',
-'<head>',
-'  <meta charset="utf-8">',
-'  <meta name="viewport" content="width=device-width,initial-scale=1">',
-'  <title>'+safeTitle+' · UI Vault</title>',
+const existing=await inspectCatalog();
+if(existing.errors.length){console.error(existing.errors.join('\n'));process.exit(1);}
+if(existing.items.some(x=>x.id===id)){console.error('已存在同名资产：'+id);process.exit(1);}
+const title=rest.join(' ').trim();
+const rel='demos/'+kind+'/'+id+'/index.html';
+const htmlPath=resolve(ROOT,rel);
+const metaPath=join(ENTRY_DIR,id+'.json');
+for(const file of [htmlPath,metaPath]) {
+  try{await stat(file);console.error('文件已存在：'+file);process.exit(1);}
+  catch(e){if(e.code!=='ENOENT')throw e;}
+}
+const escape=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const lines=[
+'<!doctype html>','<html lang="zh-CN">','<head>',
+'  <meta charset="utf-8">','  <meta name="viewport" content="width=device-width,initial-scale=1">',
+'  <title>'+escape(title)+' · UI Vault</title>',
 '  <style>',
 '    :root { font-family: system-ui, sans-serif; color: #312b26; background: #f6f4f0; }',
 '    * { box-sizing: border-box; }',
@@ -37,40 +35,28 @@ const page = [
 '    p { font-size: 13px; color: #897f73; line-height: 1.7; }',
 '    button { cursor: pointer; background: #d98e60; color: white; border: 0; border-radius: 9px; padding: 12px 18px; }',
 '    button:focus-visible { outline: 2px solid #84553b; outline-offset: 3px; }',
-'    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }',
-'  </style>',
-'</head>',
-'<body>',
+'    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }',
+'  </style>','</head>','<body>',
 '  <main class="demo">',
-'    <h1>'+safeTitle+'</h1>',
-'    <p>这是独立 Demo 模板。请替换为你的实际 UI 设计，并完善交互与响应式。</p>',
-'    <button type="button" id="demo-action">体验交互</button>',
-'    <p id="demo-feedback" aria-live="polite">等待交互。</p>',
+'    <h1>'+escape(title)+'</h1>',
+'    <p>独立 Demo 模板：请替换为实际设计，并完善交互与响应式。</p>',
+'    <button type="button" id="action">体验交互</button>',
+'    <p id="feedback" aria-live="polite">等待交互。</p>',
 '  </main>',
 '  <script>',
-'    document.querySelector("#demo-action").addEventListener("click", () => {',
-'      document.querySelector("#demo-feedback").textContent = "交互正常。";',
+'    document.querySelector("#action").addEventListener("click", () => {',
+'      document.querySelector("#feedback").textContent = "交互正常。";',
 '    });',
-'  </script>',
-'</body>',
-'</html>',
-''
-].join('\n');
-const entry = {
-  id,title,subtitle:'Original UI Demo',
-  description:'新建 Demo，待补充设计说明与使用场景。',
-  type:kinds[kind][0],source:'local',tags:['待分类'],
-  technologies:['HTML','CSS','JavaScript'],preview:rel,code:rel,
-  license:'原创示例',cover:kinds[kind][1],featured:false,
-  created:new Date().toISOString().slice(0,10)
-};
-await mkdir(dirname(destination),{recursive:true});
-try {
-  await writeFile(destination,page,{flag:'wx'});
-  list.push(entry);
-  await writeFile(catalogFile,JSON.stringify(list,null,2)+'\n');
-  console.log('已创建 '+rel+'\n已登记资产 '+id+'\n下一步：修改 Demo、完善元数据、运行 node scripts/validate.mjs');
-} catch (err) {
-  await rm(destination,{force:true});
-  throw err;
+'  </script>','</body>','</html>',''
+];
+const entry={id,title,subtitle:'Original UI Demo',description:'新建 Demo，待补充设计说明与使用场景。',type:kinds[kind][0],source:'local',tags:['待分类'],technologies:['HTML','CSS','JavaScript'],preview:rel,code:rel,copyable:true,license:'原创示例',cover:kinds[kind][1],featured:false,created:new Date().toISOString().slice(0,10)};
+await mkdir(dirname(htmlPath),{recursive:true});
+try{
+  await writeFile(htmlPath,lines.join('\n'),{flag:'wx'});
+  await writeFile(metaPath,JSON.stringify(entry,null,2)+'\n',{flag:'wx'});
+  await saveManifest();
+  console.log('已创建 '+rel+'\n元数据：catalog/assets/'+id+'.json\n已更新 content/assets.json');
+}catch(e){
+  await rm(htmlPath,{force:true}); await rm(metaPath,{force:true});
+  console.error('创建失败，已撤销新建文件：'+e.message);process.exitCode=1;
 }
