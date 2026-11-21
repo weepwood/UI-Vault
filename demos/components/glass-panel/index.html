@@ -1,4 +1,10 @@
-<!doctype html><html lang="zh-CN"><head>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>玻璃材质实验室 · UI Vault</title>
 <!--
 These inline SVG paths are from Lucide Icons (https://lucide.dev/).
 They are bundled in each standalone HTML demo so sandboxed iframe previews and
@@ -48,20 +54,302 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>柔光玻璃卡片 · UI Vault</title><style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:#9eb8bb;color:#253b46;font-family:Inter,system-ui,-apple-system,sans-serif}
-body::before{content:"";position:fixed;inset:-35%;background:radial-gradient(ellipse at 35% 40%,#e5e5fb 0,transparent 32%),radial-gradient(ellipse at 74% 27%,#f6cbb9 0,transparent 26%),radial-gradient(ellipse at 66% 77%,#84c9b5 0,transparent 28%),linear-gradient(120deg,#bbc8df,#bbccc0);filter:blur(30px);animation:float 14s ease-in-out infinite alternate}
-@keyframes float{to{transform:translate3d(5%,-3%,0) scale(1.06)}}.glass{position:relative;margin:22px;width:min(440px,calc(100% - 44px));padding:30px;border:1px solid rgba(255,255,255,.55);border-radius:26px;background:rgba(255,255,255,.29);box-shadow:0 24px 90px #405a6430,inset 0 1px 0 #ffffffaa;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
-.badge{font-size:11px;display:inline-block;border-radius:100px;padding:7px 10px;background:#ffffff80;border:1px solid #fff9;letter-spacing:.05em}.icon{width:64px;height:64px;border-radius:21px;display:grid;place-items:center;margin:26px 0 18px;background:linear-gradient(140deg,#ffffffb9,#d5e4f19e);box-shadow:0 15px 32px #64839c46;font-size:30px}
-h1{font-size:clamp(22px,4vw,32px);margin:0 0 10px;letter-spacing:-.06em;font-weight:720}p{font-size:13px;line-height:1.7;color:#58707b;margin:0 0 25px}.actions{display:flex;gap:10px}.actions button{border:0;border-radius:12px;padding:12px 19px;font:inherit;font-size:12px;font-weight:650;cursor:pointer;transition:transform .2s}.actions button:hover{transform:translateY(-2px)}.primary{background:#263f4b;color:#fff}.secondary{background:#ffffff8a;color:#345460}.state{margin-top:20px;color:#526973;font-size:11px;min-height:17px}.actions button:focus-visible{outline:2px solid #345c6d;outline-offset:3px}
-@media(prefers-reduced-motion:reduce){body::before{animation:none}.actions button{transition:none}}
-
-/* Lucide icons are embedded in this standalone sandboxed Demo. */
-.lucide-demo-icon{width:17px;height:17px;flex:none;vertical-align:-.18em}
-.icon .lucide-demo-icon{width:34px;height:34px;color:#41647a}
-.actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
-@media(max-width:410px){.actions{flex-wrap:wrap}.actions button{flex:1 1 145px}}
-</style></head><body><article class="glass"><span class="badge">显示偏好</span><div class="icon" aria-hidden="true"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+<style>
+/* TUNING: 1024/680px 自适应阈值；--blur, --tint, SVG scale 是公开调参项。全部效果为网页近似，并非系统原生材质。 */
+:root{--blur:25px;--tint:.39;--pointer-x:50%;--pointer-y:22%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"PingFang SC","Microsoft YaHei",sans-serif;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f5;color:#1f282d;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #3372ad;outline-offset:3px}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+.app{max-width:1420px;margin:0 auto;padding:30px clamp(18px,3vw,48px) 48px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:22px;margin-bottom:24px}
+.eyebrow{font-size:12px;color:#576b79;display:flex;align-items:center;gap:8px;font-weight:650}
+.lucide-demo-icon{width:18px;height:18px;flex:none;vertical-align:middle}
+.eyebrow .lucide-demo-icon{width:17px;height:17px}
+h1{font-weight:730;letter-spacing:-.047em;font-size:clamp(26px,3vw,38px);margin:11px 0 9px}
+.intro{margin:0;max-width:680px;font-size:13px;line-height:1.8;color:#5a686f}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.switcher{display:flex;align-items:center;padding:3px;border:1px solid #d8dfe0;border-radius:11px;background:#fff;gap:3px}
+.switcher button,.theme-toggle,.reset,.copy{background:transparent;color:#374b57;border:0;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:600;white-space:nowrap}
+.switcher button[aria-pressed="true"]{background:#e8eef1;color:#193d54;box-shadow:0 1px 2px #101c241a}
+.theme-toggle,.reset{border:1px solid #d8dfe0;background:#fff}
+.theme-toggle[aria-pressed="true"]{background:#26343d;color:#fff;border-color:#26343d}
+.adjustments{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:18px;padding:13px 16px;border:1px solid #e1e5e5;border-radius:14px;background:#fff}
+.control{display:flex;align-items:center;gap:11px;min-width:158px;flex:1 1 175px}
+.control label{font-size:12px;font-weight:600;white-space:nowrap}
+.control output{font-size:11px;color:#5a6a72;min-width:33px;text-align:right;font-variant-numeric:tabular-nums}
+.control input[type="range"]{width:100%;min-width:42px;accent-color:#44718a}
+.reset{display:flex;align-items:center;gap:7px;padding:8px 11px}
+.reset .lucide-demo-icon{width:15px;height:15px}
+.section-title{margin:25px 0 12px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.section-title h2{font-size:16px;font-weight:690;letter-spacing:-.02em;margin:0}
+.section-title p{font-size:11px;color:#64757d;margin:0}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.sample{min-width:0;overflow:hidden;border:1px solid #dce3e4;border-radius:17px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.sample.is-selected{border-color:#477b9f;box-shadow:0 0 0 2px #a7cadb7b}
+.scene{position:relative;isolation:isolate;height:238px;overflow:hidden;background-color:#a5aebf;background-image:var(--scene-art);background-position:center;background-size:100% 100%;--scene-art:radial-gradient(ellipse 35% 54% at 23% 29%,#fff2d6 0%,#ffb58d 45%,transparent 99%),radial-gradient(ellipse 50% 45% at 82% 40%,#a1baff 0%,#8f8be1 40%,transparent 99%),radial-gradient(ellipse 70% 70% at 45% 105%,#64c5b7 0%,transparent 90%),linear-gradient(125deg,#e2d3ee,#9ac3c8)}
+.scene::before{content:"";position:absolute;inset:0;background-image:linear-gradient(115deg,#fff5 0%,transparent 40%,#13262f0d 100%);pointer-events:none}
+body[data-wallpaper="grid"] .scene{--scene-art:linear-gradient(90deg,#8294a220 1px,transparent 1px),linear-gradient(#8294a220 1px,transparent 1px),radial-gradient(ellipse 55% 75% at 75% 30%,#b0cbd5 0%,transparent 98%),linear-gradient(155deg,#ede6dc,#9eacbb);background-size:28px 28px,28px 28px,100% 100%,100% 100%}
+.pick{display:grid;place-items:center;position:absolute;inset:0;width:100%;height:100%;background:transparent;border:0;padding:20px;text-align:left;color:inherit}
+.pick:focus-visible{outline:3px solid #1c648b;outline-offset:-5px;border-radius:0}
+.material{position:relative;isolation:isolate;overflow:hidden;width:min(100%,272px);min-height:160px;padding:20px;border-radius:22px;display:flex;flex-direction:column;justify-content:space-between;color:#273b49;background:rgba(255,255,255,var(--tint));border:1px solid #ffffffb7;box-shadow:0 15px 38px #223f5236,inset 0 1px 0 #ffffffbb;backdrop-filter:blur(var(--blur)) saturate(155%);-webkit-backdrop-filter:blur(var(--blur)) saturate(155%);transition:transform .2s ease,box-shadow .2s ease}
+.pick:hover .material{transform:translateY(-3px);box-shadow:0 20px 42px #172e423b,inset 0 1px 0 #ffffffbb}
+.material>*{position:relative;z-index:1}
+.material__top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.material__icon{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#fff8;box-shadow:inset 0 1px 0 #fff8}
+.material__icon .lucide-demo-icon{width:17px;height:17px}
+.material__dots{display:flex;gap:4px}
+.material__dots i{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.35}
+.material__label{display:block;font-size:11px;font-weight:550;letter-spacing:.01em;opacity:.83}
+.material__name{display:block;font-size:20px;font-weight:700;letter-spacing:-.045em;margin-top:5px}
+.material__rule{height:1px;background:currentColor;opacity:.16;margin-top:10px}
+.sample__footer{padding:14px 15px 15px}
+.sample__line{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sample h3{font-size:14px;margin:0;font-weight:700;letter-spacing:-.02em}
+.sample__tag{font-size:10px;color:#697983;white-space:nowrap}
+.sample__footer p{color:#5b6971;font-size:11px;line-height:1.7;margin:6px 0 0;min-height:36px}
+.mat-soft .material{background:rgba(255,255,255,calc(var(--tint) * 1.04));box-shadow:0 20px 50px #18394a2e,inset 0 1px 0 #fff}
+.mat-mica .material{backdrop-filter:none;-webkit-backdrop-filter:none;border-color:#f6f8f9a5;border-radius:12px;background:linear-gradient(135deg,#e0e8eeed,#e8e2e6f4 72%,#d8e5e7f5);box-shadow:0 18px 45px #25354d31,inset 0 1px 0 #fff9}
+.mat-mica .material__icon{border-radius:7px;background:#ffffff9c}
+.mat-acrylic .material{border-radius:12px;background:rgba(239,244,249,calc(var(--tint) + .13));border-color:#ffffff99;backdrop-filter:blur(calc(var(--blur) * 1.2)) saturate(150%);-webkit-backdrop-filter:blur(calc(var(--blur) * 1.2)) saturate(150%)}
+.mat-acrylic .material::after{content:"";z-index:0;pointer-events:none;position:absolute;inset:0;opacity:.1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 96 96' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='.48'/%3E%3C/svg%3E")}
+.mat-vibrancy .material{border-radius:19px;background:rgba(246,248,252,calc(var(--tint) + .09));border-color:#fff9;backdrop-filter:blur(calc(var(--blur) * 1.45)) saturate(185%) brightness(1.04);-webkit-backdrop-filter:blur(calc(var(--blur) * 1.45)) saturate(185%) brightness(1.04);box-shadow:0 17px 48px #27364539,0 1px 0 #ffffffa6 inset}
+.mat-liquid .material,.mat-gel .material{background:rgba(246,251,255,calc(var(--tint) * .43));border:1px solid #ffffffe0;backdrop-filter:blur(calc(var(--blur) * .48)) saturate(175%);-webkit-backdrop-filter:blur(calc(var(--blur) * .48)) saturate(175%);box-shadow:inset 0 2px 2px #fff, inset 2px 0 7px #ffffffbd,inset -3px -4px 9px #50768a3b,0 18px 35px #243d5933}
+.mat-liquid .material{border-radius:27px}
+.mat-gel .material{border-radius:29px 45px 34px 44px/34px 29px 45px 37px;transform:rotate(-1.5deg)}
+.mat-gel .pick:hover .material{transform:translateY(-3px) rotate(0deg)}
+.refraction{display:none;position:absolute;z-index:0;inset:-1px;pointer-events:none;background-image:var(--scene-art);background-repeat:no-repeat;background-size:var(--scene-w,370px) var(--scene-h,238px);background-position:var(--offset-x,0px) var(--offset-y,0px);opacity:.72}
+.mat-liquid .refraction,.mat-gel .refraction{display:block;filter:url(#glass-refract)}
+.mat-gel .refraction{filter:url(#glass-gel);opacity:.78}
+.mat-liquid .material::after,.mat-gel .material::after{content:"";pointer-events:none;z-index:0;position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse 65% 45% at var(--pointer-x) var(--pointer-y),#ffffff9c,transparent 75%),linear-gradient(138deg,#ffffffa3 0,transparent 27%,transparent 73%,#4562b136);box-shadow:inset 0 0 0 1px #fff5,inset 0 10px 18px #fff5}
+.mat-gel .material::after{background:radial-gradient(ellipse at var(--pointer-x) var(--pointer-y),#fffd,transparent 55%),linear-gradient(145deg,#fff9,#6da6d125 65%,#fff6)}
+.mat-liquid .material__top,.mat-liquid .material__bottom,.mat-gel .material__top,.mat-gel .material__bottom{z-index:2}
+.inspector{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;border:1px solid #dfe5e5;border-radius:16px;background:#fff;padding:20px;margin-top:18px}
+.inspector h2{font-size:17px;letter-spacing:-.02em;margin:0 0 9px}
+.inspector p{font-size:12px;line-height:1.8;color:#586c76;margin:0 0 12px}
+.inspector small{display:block;font-size:11px;line-height:1.8;color:#68777e}
+.inspector__label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.inspector__label span{font-size:12px;font-weight:650}
+.copy{border:1px solid #d7e0e2;background:#f6f8f9;padding:7px 11px}
+pre{margin:0;max-height:250px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#19252c;color:#ecf4f7;padding:15px 16px;border-radius:11px;line-height:1.65;font-size:11px;tab-size:2}
+.sources{padding:20px 2px 0}
+.sources h2{font-size:14px;margin:0 0 9px}
+.sources p{margin:0;color:#5e6e75;font-size:11px;line-height:1.9}
+.sources__links{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 0}
+.sources__links a{font-size:11px;color:#356381}
+.notice{font-size:11px;color:#586975;margin-top:10px}
+.status{min-height:18px;font-size:11px;color:#2c667f}
+.svg-filters{position:absolute;width:0;height:0;overflow:hidden}
+body[data-theme="dark"]{background:#161d22;color:#e9f0f3}
+body[data-theme="dark"] .intro,body[data-theme="dark"] .section-title p,body[data-theme="dark"] .sample__footer p,body[data-theme="dark"] .sample__tag,body[data-theme="dark"] .inspector p,body[data-theme="dark"] .inspector small,body[data-theme="dark"] .sources p,body[data-theme="dark"] .notice{color:#acb9bf}
+body[data-theme="dark"] .eyebrow{color:#a0bbc9}
+body[data-theme="dark"] .adjustments,body[data-theme="dark"] .switcher,body[data-theme="dark"] .theme-toggle,body[data-theme="dark"] .reset,body[data-theme="dark"] .sample,body[data-theme="dark"] .inspector{background:#222e35;border-color:#3b4d56;color:#edf4f6}
+body[data-theme="dark"] .switcher button,body[data-theme="dark"] .theme-toggle,body[data-theme="dark"] .reset{color:#d8e3e7}
+body[data-theme="dark"] .switcher button[aria-pressed="true"],body[data-theme="dark"] .theme-toggle[aria-pressed="true"]{background:#49677b;color:#fff}
+body[data-theme="dark"] .control output,body[data-theme="dark"] .status{color:#c5dce8}
+body[data-theme="dark"] .sample.is-selected{border-color:#8cc7e3}
+body[data-theme="dark"] .mat-soft .material{background:rgba(35,50,64,calc(var(--tint) + .17));color:#f2f6fa}
+body[data-theme="dark"] .mat-mica .material{background:linear-gradient(125deg,#303943f5,#45434df5 70%,#304a4df5);border-color:#73889366;color:#f3f6fb}
+body[data-theme="dark"] .mat-acrylic .material{background:rgba(33,42,55,calc(var(--tint) + .24));color:#f4f7fa;border-color:#d7e9ef61}
+body[data-theme="dark"] .mat-vibrancy .material{background:rgba(37,43,60,calc(var(--tint) + .17));color:#f3f7fa;border-color:#ffffff5c}
+body[data-theme="dark"] .mat-liquid .material,body[data-theme="dark"] .mat-gel .material{background:rgba(28,42,62,calc(var(--tint) * .6));color:#f3fbff}
+body[data-theme="dark"] .material__icon{background:#ffffff27}
+body[data-theme="dark"] .sources__links a{color:#a1d6ed}
+@media(max-width:1024px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.top{flex-direction:column}.toolbar{justify-content:flex-start}.scene{height:240px}}
+@media(max-width:680px){.app{padding:22px 14px 36px}.gallery{grid-template-columns:1fr;gap:12px}.scene{height:238px}.top{gap:16px}.inspector{grid-template-columns:1fr;padding:15px}.adjustments{gap:13px}.section-title{align-items:flex-start;flex-direction:column;gap:4px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.mat-gel .material{transform:none}.pick:hover .material,.mat-gel .pick:hover .material{transform:none}}
+@supports not ((backdrop-filter:blur(3px)) or (-webkit-backdrop-filter:blur(3px))){.material{background:#e6edf1e8!important}.mat-liquid .material,.mat-gel .material{background:#d7e7efe8!important}.material,.mat-gel .material{color:#273b49!important}}
+</style>
+</head>
+<body data-theme="light" data-wallpaper="color">
+<svg class="svg-filters" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+<defs>
+<filter id="glass-refract" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".011 .018" numOctaves="2" seed="7" result="noise"/><feDisplacementMap id="refraction-scale" in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/></filter>
+<filter id="glass-gel" x="-8%" y="-8%" width="116%" height="116%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency=".018 .024" numOctaves="2" seed="12" result="noise"/><feDisplacementMap id="gel-scale" in="SourceGraphic" in2="noise" scale="22" xChannelSelector="R" yChannelSelector="G"/></filter>
+</defs></svg>
+<main class="app">
+<header class="top"><div>
+<div class="eyebrow"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
   <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
-  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></div><h1>界面显示设置</h1><p>调整内容显示模式。此卡片用于检验透明材质下的文字对比度与按钮反馈。</p><div class="actions"><button id="primary" class="primary"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span>启用半透明</span></button><button id="secondary" class="secondary"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-  <path d="M3 3v5h5" /></svg><span>恢复默认</span></button></div><div class="state" id="status" aria-live="polite">当前状态：标准显示</div></article><script>document.querySelector('#primary').onclick=()=>document.querySelector('#status').textContent='当前状态：已启用半透明';document.querySelector('#secondary').onclick=()=>document.querySelector('#status').textContent='当前状态：标准显示';</script></body></html>
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg><span>UI Vault / 材质实验室</span></div>
+<h1>玻璃材质对照</h1>
+<p class="intro">在同一组背景和内容上，对比 Windows 与 macOS 的经典毛玻璃，以及带有折射、边缘高光的液态玻璃。点击任意样式查看实现与适用场景。</p>
+</div>
+<div class="toolbar"><div class="switcher" role="group" aria-label="预览背景">
+<button type="button" data-wallpaper-option="color" aria-pressed="true">彩色背景</button>
+<button type="button" data-wallpaper-option="grid" aria-pressed="false">网格背景</button></div>
+<button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">深色模式</button></div></header>
+<div class="adjustments" aria-label="材质参数">
+<div class="control"><label for="blur">模糊</label><input id="blur" type="range" min="8" max="50" value="25" step="1"><output id="blur-value" for="blur">25 px</output></div>
+<div class="control"><label for="tint">材质浓度</label><input id="tint" type="range" min="20" max="65" value="39" step="1"><output id="tint-value" for="tint">39%</output></div>
+<div class="control"><label for="distortion">折射</label><input id="distortion" type="range" min="0" max="32" value="14" step="1"><output id="distortion-value" for="distortion">14</output></div>
+<button type="button" class="reset" id="reset"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+  <path d="M3 3v5h5" /></svg> 恢复</button>
+</div>
+<div class="section-title"><h2>六种材质，同一背景</h2><p>点击卡片 · 选择后在下方查看说明与代码</p></div>
+<section class="gallery" aria-label="材质对照">
+<article class="sample mat-soft is-selected" data-kind="soft"><div class="scene"><button class="pick" type="button" data-material="soft" aria-pressed="true" aria-label="查看柔光玻璃材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">外观设置</span><span class="material__name">通透而柔和</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>柔光玻璃</h3><span class="sample__tag">Soft glass</span></div><p>轻透色层、低对比边缘与柔和景深。</p></div></article>
+<article class="sample mat-mica" data-kind="mica"><div class="scene"><button class="pick" type="button" data-material="mica" aria-pressed="false" aria-label="查看 Windows Mica 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">系统窗口</span><span class="material__name">背景融入桌面</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Windows · Mica</h3><span class="sample__tag">壁纸取色</span></div><p>接近不透明的壁纸染色，不是实时模糊。</p></div></article>
+<article class="sample mat-acrylic" data-kind="acrylic"><div class="scene"><button class="pick" type="button" data-material="acrylic" aria-pressed="false" aria-label="查看 Windows Acrylic 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">快捷设置</span><span class="material__name">半透明浮层</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Windows · Acrylic</h3><span class="sample__tag">噪点 + 模糊</span></div><p>更明显的透光、浅色调与细微颗粒。</p></div></article>
+<article class="sample mat-vibrancy" data-kind="vibrancy"><div class="scene"><button class="pick" type="button" data-material="vibrancy" aria-pressed="false" aria-label="查看 macOS Vibrancy 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">侧边栏</span><span class="material__name">模糊与鲜活感</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>macOS · Vibrancy</h3><span class="sample__tag">系统材质近似</span></div><p>较高饱和度的磨砂玻璃，适合背景层。</p></div></article>
+<article class="sample mat-liquid" data-kind="liquid"><div class="scene"><button class="pick" type="button" data-material="liquid" aria-pressed="false" aria-label="查看液态透镜材质"><span class="material"><span class="refraction" aria-hidden="true"></span><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">悬浮工具</span><span class="material__name">玻璃透镜</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Lens</h3><span class="sample__tag">光学折射</span></div><p>SVG 位移让底层图案发生真实像素偏移。</p></div></article>
+<article class="sample mat-gel" data-kind="gel"><div class="scene"><button class="pick" type="button" data-material="gel" aria-pressed="false" aria-label="查看液态凝胶材质"><span class="material"><span class="refraction" aria-hidden="true"></span><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">流动表面</span><span class="material__name">柔韧的光泽</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Gel</h3><span class="sample__tag">柔性轮廓</span></div><p>自由形态边缘、较强折射与指针高光。</p></div></article>
+</section>
+<section class="inspector" aria-label="选中材质说明">
+<div><h2 id="detail-title"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg> 柔光玻璃</h2><p id="detail-description">适用于内容卡片与轻量浮层。使用半透明底色和模糊形成柔和层次，优先保证文本可读。</p><small id="detail-note">网页实现为独立 CSS 示例，可使用复制按钮提取当前参数；不是操作系统 API。</small><div class="notice">浏览器 Demo 不调用 Windows Composition 或 macOS AppKit。Mica、Acrylic、Vibrancy 为外观近似；液态折射只针对本演示中可复用的背景图层。</div></div>
+<div><div class="inspector__label"><span>CSS 实现片段</span><button type="button" class="copy" id="copy">复制 CSS</button></div><pre><code id="css-source"></code></pre><div class="status" id="status" role="status" aria-live="polite"></div></div>
+</section>
+<footer class="sources">
+<h2>设计依据与开源参考</h2>
+<p>对照系统规范自行编写的网页实验；未复制第三方组件库代码、系统资源或商标。点击来源可查看更完整的原生实现与浏览器实现。</p>
+<nav class="sources__links" aria-label="设计与开源出处">
+<a href="https://learn.microsoft.com/en-us/windows/apps/design/style/mica" target="_blank" rel="noopener noreferrer">Microsoft · Mica</a>
+<a href="https://learn.microsoft.com/en-us/windows/apps/design/style/acrylic" target="_blank" rel="noopener noreferrer">Microsoft · Acrylic</a>
+<a href="https://developer.apple.com/documentation/appkit/nsvisualeffectview" target="_blank" rel="noopener noreferrer">Apple · NSVisualEffectView</a>
+<a href="https://developer.apple.com/documentation/technologyoverviews/liquid-glass" target="_blank" rel="noopener noreferrer">Apple · Liquid Glass</a>
+<a href="https://github.com/cameronrye/frostpane" target="_blank" rel="noopener noreferrer">frostpane · MIT</a>
+<a href="https://github.com/dpawlikowski/liquid-glass" target="_blank" rel="noopener noreferrer">liquid-glass · MIT</a>
+<a href="https://github.com/IshiakiZ/liquid-glass-web" target="_blank" rel="noopener noreferrer">liquid-glass-web · MIT</a>
+</nav>
+<p>为避免跨站依赖，本页字体、SVG 与脚本均内置，支持直接在 UI-Vault 预览。</p>
+</footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const root=document.documentElement;
+  const body=document.body;
+  const samples=[...document.querySelectorAll('.sample')];
+  const details={
+    soft:{title:'柔光玻璃',description:'适用于内容卡片与轻量浮层。使用半透明底色和模糊形成柔和层次，优先保证文本可读。',note:'在大面积文字附近，透明底色应足以隔开高对比背景。'},
+    mica:{title:'Windows · Mica',description:'Windows 11 的 Mica 是基于主题和桌面壁纸着色的不透明窗口背景，适合长期存在的窗口底层，不是把窗口下方实时模糊。',note:'此页用静态颜色模拟壁纸取色；真正 Mica 需要 Windows App SDK / DWM。'},
+    acrylic:{title:'Windows · Acrylic',description:'Acrylic 为半透明磨砂材料，模糊、色彩叠加和细微噪点让快捷菜单、临时浮层从背景中分离。',note:'浏览器通过 backdrop-filter 和本地 SVG 噪点近似，并非原生系统 Acrylic Brush。'},
+    vibrancy:{title:'macOS · Vibrancy',description:'macOS 传统标准材质由 NSVisualEffectView 提供。这里侧重高饱和模糊和半透明表面，接近侧栏与浮层的视觉层次。',note:'网页无法复现 AppKit 对内容与系统设置的全部动态适配。'},
+    liquid:{title:'Liquid · Lens',description:'以半透明基础材质、镜面高光和折射构建玻璃透镜。SVG feDisplacementMap 对对齐的背景副本做像素位移。',note:'演示只对内置渐变背景进行折射；复杂实时 DOM 背景需要额外捕获或渲染方案。'},
+    gel:{title:'Liquid · Gel',description:'在液态透镜基础上增加柔性轮廓、较强光学位移和跟随指针的高光反馈，适用于少量突出的交互元件。',note:'不建议大量并排叠加重度折射；浏览器合成成本可能明显增加。'}
+  };
+  let selected='soft';
+  const blur=document.getElementById('blur');
+  const tint=document.getElementById('tint');
+  const distortion=document.getElementById('distortion');
+  const code=document.getElementById('css-source');
+  const status=document.getElementById('status');
+  function recipe(){
+    const b=Number(blur.value),a=(Number(tint.value)/100).toFixed(2);
+    const basic='backdrop-filter: blur('+b+'px) saturate(155%);';
+    if(selected==='mica')return '.mica-panel {\n  /* Windows Mica 外观近似：无实时背景模糊 */\n  background: linear-gradient(135deg, #e0e8eeed, #e8e2e6f4);\n  border: 1px solid #ffffffa5;\n  border-radius: 12px;\n}';
+    if(selected==='acrylic')return '.acrylic-panel {\n  background: rgba(239,244,249,'+Math.min(.98,Number(a)+.13).toFixed(2)+');\n  backdrop-filter: blur('+Math.round(b*1.2)+'px) saturate(150%);\n  /* 叠加小面积 SVG noise 纹理 */\n  border: 1px solid #ffffff99;\n}';
+    if(selected==='vibrancy')return '.vibrant-panel {\n  background: rgba(246,248,252,'+Math.min(.98,Number(a)+.09).toFixed(2)+');\n  backdrop-filter: blur('+Math.round(b*1.45)+'px) saturate(185%);\n  border: 1px solid #ffffff99;\n}';
+    if(selected==='liquid'||selected==='gel')return '.liquid-panel {\n  background: rgba(246,251,255,'+(Number(a)*.43).toFixed(2)+');\n  backdrop-filter: blur('+Math.round(b*.48)+'px) saturate(175%);\n  border: 1px solid #ffffffe0;\n  box-shadow: inset 0 2px 2px #fff, 0 18px 35px #243d5933;\n}\n.liquid-panel .refracted-scene {\n  /* 将背景副本对齐后应用 SVG 位移滤镜 */\n  filter: url(#'+(selected==='gel'?'glass-gel':'glass-refract')+');\n  /* 当前 feDisplacementMap scale: '+Math.round(Number(distortion.value)*(selected==='gel'?1.6:1))+' */\n}';
+    return '.soft-glass-panel {\n  background: rgba(255,255,255,'+a+');\n  '+basic+'\n  border: 1px solid #ffffffb7;\n  box-shadow: 0 20px 50px #18394a2e, inset 0 1px 0 #fff;\n}';
+  }
+  function updateSelection(name){
+    if(!details[name])return;
+    selected=name;
+    samples.forEach(function(s){
+      const active=s.dataset.kind===name;
+      s.classList.toggle('is-selected',active);
+      s.querySelector('.pick').setAttribute('aria-pressed',String(active));
+    });
+    document.getElementById('detail-title').textContent=details[name].title;
+    document.getElementById('detail-description').textContent=details[name].description;
+    document.getElementById('detail-note').textContent=details[name].note;
+    code.textContent=recipe();
+    status.textContent='';
+  }
+  function updateControls(){
+    root.style.setProperty('--blur',blur.value+'px');
+    root.style.setProperty('--tint',(Number(tint.value)/100).toFixed(2));
+    document.getElementById('refraction-scale').setAttribute('scale',distortion.value);
+    document.getElementById('gel-scale').setAttribute('scale',Math.round(Number(distortion.value)*1.6));
+    document.getElementById('blur-value').textContent=blur.value+' px';
+    document.getElementById('tint-value').textContent=tint.value+'%';
+    document.getElementById('distortion-value').textContent=distortion.value;
+    code.textContent=recipe();
+  }
+  function alignRefraction(){
+    document.querySelectorAll('.refraction').forEach(function(layer){
+      const scene=layer.closest('.scene'),panel=layer.closest('.material');
+      if(!scene||!panel)return;
+      const a=scene.getBoundingClientRect(),b=panel.getBoundingClientRect();
+      layer.style.setProperty('--scene-w',a.width+'px');
+      layer.style.setProperty('--scene-h',a.height+'px');
+      layer.style.setProperty('--offset-x',(a.left-b.left)+'px');
+      layer.style.setProperty('--offset-y',(a.top-b.top)+'px');
+    });
+  }
+  let frame=0;
+  function scheduleAlign(){
+    if(frame)return;
+    frame=requestAnimationFrame(function(){frame=0;alignRefraction();});
+  }
+  samples.forEach(function(sample){
+    sample.querySelector('.pick').addEventListener('click',function(){updateSelection(sample.dataset.kind);});
+    sample.querySelector('.scene').addEventListener('pointermove',function(event){
+      if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+      const panel=sample.querySelector('.material'),r=panel.getBoundingClientRect();
+      panel.style.setProperty('--pointer-x',((event.clientX-r.left)/r.width*100).toFixed(1)+'%');
+      panel.style.setProperty('--pointer-y',((event.clientY-r.top)/r.height*100).toFixed(1)+'%');
+    },{passive:true});
+    sample.querySelector('.scene').addEventListener('pointerleave',function(){
+      const panel=sample.querySelector('.material');
+      panel.style.removeProperty('--pointer-x');
+      panel.style.removeProperty('--pointer-y');
+    });
+  });
+  [blur,tint,distortion].forEach(function(el){el.addEventListener('input',updateControls);});
+  document.querySelectorAll('[data-wallpaper-option]').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      body.dataset.wallpaper=btn.dataset.wallpaperOption;
+      document.querySelectorAll('[data-wallpaper-option]').forEach(function(b){b.setAttribute('aria-pressed',String(b===btn));});
+      scheduleAlign();
+    });
+  });
+  const theme=document.getElementById('theme-toggle');
+  theme.addEventListener('click',function(){
+    const dark=body.dataset.theme!=='dark';body.dataset.theme=dark?'dark':'light';
+    theme.setAttribute('aria-pressed',String(dark));
+    theme.textContent=dark?'浅色模式':'深色模式';
+  });
+  document.getElementById('reset').addEventListener('click',function(){
+    blur.value='25';tint.value='39';distortion.value='14';updateControls();updateSelection('soft');
+    status.textContent='参数已恢复默认';
+  });
+  document.getElementById('copy').addEventListener('click',async function(){
+    const content=code.textContent;
+    try{
+      if(!navigator.clipboard||!navigator.clipboard.writeText)throw Error('clipboard unavailable');
+      await navigator.clipboard.writeText(content);
+      status.textContent='CSS 已复制';
+    }catch(err){
+      const box=document.createElement('textarea');
+      box.value=content;box.setAttribute('aria-label','复制 CSS');box.style.position='fixed';box.style.left='-9999px';
+      document.body.appendChild(box);box.select();
+      const ok=document.execCommand('copy');box.remove();
+      status.textContent=ok?'CSS 已复制':'无法自动复制，请从代码框中手动选择复制';
+    }
+  });
+  if(typeof ResizeObserver==='function'){
+    const observer=new ResizeObserver(scheduleAlign);
+    samples.forEach(function(s){observer.observe(s.querySelector('.scene'));});
+  }else window.addEventListener('resize',scheduleAlign,{passive:true});
+  window.addEventListener('resize',scheduleAlign,{passive:true});
+  updateControls();updateSelection('soft');scheduleAlign();
+})();
+</script>
+</body>
+</html>
