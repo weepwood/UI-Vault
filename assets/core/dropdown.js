@@ -70,7 +70,10 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
     trigger.querySelector('.select-leading').innerHTML=iconMarkup(iconFor(selected.value));
     trigger.querySelector('.select-value').textContent=selected.textContent;
     trigger.setAttribute('aria-label',label+'：'+selected.textContent);
-    host.classList.toggle('has-filter',select.id==='tag-filter'&&select.value!=='');
+    host.classList.toggle('has-filter',
+      (select.id==='tag-filter'&&select.value!=='')||
+      (select.id==='sort'&&select.value!=='featured'));
+
     if(isOpen)renderOptions();
   }
   function setOpen(next,{focusIndex}={}){
