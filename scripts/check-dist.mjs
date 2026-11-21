@@ -30,4 +30,25 @@ for(const p of ['README.md','catalog/assets/warm-workbench.json','scripts/new-de
   try{await stat(join(out,p));throw Error('非站点文件被误发布：'+p);}
   catch(e){if(e.code!=='ENOENT')throw e;}
 }
-console.log('静态产物完整性检查成功。');
+// 自托管网页字体必须完整，避免 GitHub Pages 上出现字体 404 或回退到 45MB 外链 TTF。
+const fontDir=join(out,'assets/fonts');
+const fontManifest=JSON.parse(await readFile(join(fontDir,'manifest.json'),'utf8'));
+assert.equal(fontManifest.fonts.length,9,'应生成三种字重 × 三组 WOFF2 子集');
+const fontStyles=await readFile(join(fontDir,'975-yuan.css'),'utf8');
+let totalFontBytes=0;
+for(const font of fontManifest.fonts){
+  assert.match(font.file,/^975yuan-(400|500|700)-(latin|ui|common)\\.woff2$/);
+  const file=join(fontDir,font.file);
+  const bytes=await readFile(file);
+  assert.equal(bytes.subarray(0,4).toString('ascii'),'wOF2','必须使用有效的 WOFF2 文件：'+font.file);
+  assert.equal(bytes.length,font.bytes,'字体大小与构建清单不一致：'+font.file);
+  assert.ok(font.bytes>1000&&font.bytes<3_000_000,'子集体积异常：'+font.file);
+  assert.ok(fontStyles.includes(font.file),'字体 CSS 未引用：'+font.file);
+  totalFontBytes+=bytes.length;
+}
+assert.ok(totalFontBytes<12_000_000,'所有子集总体积超过预算');
+assert.match(await readFile(join(fontDir,'OFL.txt'),'utf8'),/SIL OPEN FONT LICENSE/i,'缺少字体授权条款');
+const entryCSS=await readFile(join(out,'assets/styles.css'),'utf8');
+assert.match(entryCSS,/fonts\\/975-yuan\\.css/,'主样式未引用 WOFF2 子集 CSS');
+assert.ok(!entryCSS.includes('raw.githubusercontent.com/lxgw/975Yuan'),'不应继续引用外链 TTF');
+console.log('静态产物完整性检查成功；网页字体总计 '+(totalFontBytes/1024/1024).toFixed(2)+' MiB（按字符范围加载）。');
