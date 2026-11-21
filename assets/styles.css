@@ -1,4 +1,6 @@
 @import url("./fonts/975-yuan.css");
+@import url("./ui/controls.css");
+@import url("./ui/dropdown.css");
 /* 霞鹜 975 圆体由构建脚本生成本地按需加载的 WOFF2 子集。 */
 /*
  * UI Vault v0.6 / 常驻双栏工作台
@@ -52,18 +54,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .sidebar-dismiss { display: none; place-items: center; border: 0; border-radius: 7px; width: 34px; height: 34px; color: var(--muted); background: transparent; }
 .sidebar-dismiss:hover { background: var(--line-soft); }
 .library-search { padding: 0 3px; margin-bottom: 18px; }
-.search-field { display: flex; gap: 9px; align-items: center; height: 38px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 0 10px; color: var(--subtle); }
-.search-field:focus-within { border-color: #8caabb; box-shadow: 0 0 0 3px #dfeaf1; }
-.search-field .ui-icon { width: 17px; height: 17px; }
-.search-field input { flex: 1; min-width: 0; border: 0; background: none; color: var(--ink); outline: none; font-size: 12px; }
-.search-field input::placeholder { color: var(--muted); }
 .quick-filters { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 5px; padding: 0 3px; margin-bottom: 22px; }
-.filter-button { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 9px 9px; background: transparent; border: 1px solid transparent; border-radius: 7px; color: var(--text); text-align: left; font-size: 11px; }
-.filter-button:hover { background: #eef1f1; }
-.filter-button.is-active { background: var(--accent-soft); border-color: #d0e0e9; color: var(--accent); font-weight: 650; }
-.filter-button .ui-icon { width: 15px; height: 15px; }
-.filter-button > span:nth-child(2) { min-width: 0; white-space: nowrap; }
-.filter-count { margin-left: auto; color: var(--subtle); font-size: 10px; font-variant-numeric: tabular-nums; }
 .category-section { padding: 0 3px; margin-bottom: 18px; }
 .section-row { display: flex; align-items: center; justify-content: space-between; gap: 9px; min-height: 27px; color: var(--muted); font-size: 11px; font-weight: 650; }
 .text-reset { background: transparent; border: 0; color: var(--accent); padding: 4px; font-size: 11px; font-weight: 500; }
@@ -79,37 +70,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .result-count { font-variant-numeric: tabular-nums; color: var(--subtle); font-weight: 500; }
 /* 排序 / 标签菜单：脚本未启动时使用原生 select 作为可靠回退。 */
 .tag-select-label { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 11px; }
-.select-field { position: relative; min-width: 0; }
-.select-field--sort { flex: 0 0 122px; }
-.select-field--tag { flex: 1 1 auto; }
-.select-field > select { width: 100%; min-width: 0; height: 34px; padding: 0 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 11px; }
-.select-trigger { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; height: 34px; padding: 0 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 11px; text-align: left; transition: border-color .14s, background-color .14s; }
-.select-trigger:hover { border-color: #b7c8d0; background: #fff; }
-.select-field.is-open .select-trigger { border-color: #8faebf; background: var(--surface); }
-.select-field.has-filter .select-trigger { color: var(--accent); border-color: #c2d8e5; background: #f6fafc; }
-.select-leading, .select-chevron { display: inline-flex; align-items: center; justify-content: center; flex: none; color: var(--muted); }
-.select-leading .ui-icon { width: 15px; height: 15px; }
-.select-field.has-filter .select-leading, .select-field.is-open .select-leading { color: var(--accent); }
-.select-value { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.select-chevron { margin-left: auto; transition: transform .14s ease; }
-.select-chevron .ui-icon { width: 14px; height: 14px; }
-.select-field.is-open .select-chevron { transform: rotate(180deg); }
 .list-controls { position: relative; z-index: 5; }
-.select-popover { position: absolute; right: 0; top: calc(100% + 5px); z-index: 10; width: max(100%, 188px); max-width: min(300px, calc(100vw - 24px)); max-height: min(306px, 43dvh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #dbe3e7; border-radius: 9px; background: var(--surface); box-shadow: 0 12px 28px #1e34411c, 0 2px 8px #1e34410b; animation: select-pop-in .14s ease-out; }
-.select-option { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 7px 9px; border-radius: 5px; outline-offset: -2px; color: var(--text); cursor: pointer; font-size: 11px; }
-.select-option:hover { color: var(--ink); background: var(--canvas); }
-.select-option:focus-visible { color: var(--ink); background: var(--canvas); outline: 2px solid var(--focus); }
-.select-option[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); font-weight: 650; }
-.select-option-icon, .select-option-check { display: inline-flex; flex: none; align-items: center; justify-content: center; color: var(--subtle); }
-.select-option-icon .ui-icon, .select-option-check .ui-icon { width: 15px; height: 15px; }
-.select-option-text { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.select-option-check { visibility: hidden; color: var(--accent); }
-.select-option[aria-selected="true"] .select-option-check { visibility: visible; }
-@keyframes select-pop-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
-@media(prefers-reduced-motion:reduce) {
-  .select-trigger, .select-chevron { transition: none; }
-  .select-popover { animation: none; }
-}
 .project-scroll { min-height: 0; flex: 1 1 0; overflow: auto; scrollbar-width: thin; scrollbar-color: #cfd7d9 transparent; padding: 9px 1px 12px; }
 .project-list { display: grid; gap: 3px; align-content: start; }
 .project-item { display: flex; align-items: stretch; min-width: 0; border-radius: 8px; }
@@ -149,16 +110,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .viewport-controls button:hover{color:var(--ink);background:var(--canvas)}
 .viewport-controls button[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft);border-color:#d2e0e8;font-weight:650}
 .viewport-controls button .ui-icon{width:15px;height:15px}
-.square-action,.dialog-close{display:grid;place-items:center;flex:none;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:7px;color:var(--text);background:var(--surface)}
-.square-action:hover,.dialog-close:hover{background:var(--canvas)}
-.square-action[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft)}
-.square-action[aria-pressed="true"] .ui-icon{fill:currentColor}
-.info-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:7px;font-size:11px}
-.info-action:hover{background:var(--canvas);color:var(--accent)}
-.info-action .ui-icon{width:15px;height:15px}
-.open-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:11px;font-weight:600}
-.open-action:hover{background:#33434b}
-.open-action .ui-icon{width:15px;height:15px}
 .preview-stage{position:relative;isolation:isolate;flex:1 1 0;min-height:0;overflow:hidden;background:#edf0f1}
 .preview-stage[data-size="mobile"],.preview-stage[data-size="tablet"],.preview-stage[data-size="desktop"]{background:#e9edef}
 .live-frame{display:block;position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:#fff;transform-origin:0 0;box-shadow:0 0 0 1px #d5dede}
@@ -211,8 +162,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .source-buttons .ui-icon{width:14px;height:14px}
 .source-view{min-height:120px;flex:1 1 auto;overflow:auto;white-space:pre;tab-size:2;margin:0;background:#f7f9f9;border:1px solid var(--line);border-radius:8px;padding:14px;font:11px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:#273b44}
 .source-view code{font:inherit}
-.toast{position:fixed;z-index:100;bottom:18px;right:24px;max-width:min(420px,calc(100vw - 36px));padding:10px 14px;background:var(--ink);color:#fff;border-radius:7px;font-size:12px;opacity:0;transform:translateY(8px);transition:opacity .18s,transform .18s;pointer-events:none;box-shadow:0 8px 26px #15283228}
-.toast.show{opacity:1;transform:translateY(0)}
 .mobile-shade{display:none}
 @media(max-width:1320px){
   .viewport-controls button{padding:8px 7px}
