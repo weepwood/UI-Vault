@@ -14,9 +14,10 @@ test('React 根以 Portals 驱动工作台全域交互',()=>{
  for(const name of ['ProjectRow','ProjectList','CategoryNavigation','PreviewToolbar','PreviewFrame','ProjectDialog','SettingsPanel','WorkbenchSelect']){
    assert.ok(react.includes(name),'全工作台缺少 React 组件 '+name);
  }
- for(const id of ['gallery','settings','dialog','topbar','stage','quickFilters','listControls']){
+ for(const id of ['gallery','settings','topbar','stage','quickFilters','listControls']){
    assert.match(react,new RegExp('createPortal\\([\\s\\S]*?nodes\\.'+id+'\\)'),'React 未接管挂载节点 '+id);
  }
+ assert.match(react,/<ProjectDialog root={nodes.dialog}/);
  assert.match(hooks,/useReducer\(workbenchReducer/);
  assert.match(hooks,/router[.]subscribe/);
  assert.match(hooks,/saveFavorites/);
