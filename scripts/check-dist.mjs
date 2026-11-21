@@ -5,7 +5,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','content/assets.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/settings-page.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','content/assets.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);}
   if(a.coverImage)paths.push(a.coverImage);
@@ -20,6 +20,15 @@ assert.equal(cssFingerprint,jsFingerprint,'HTML 的 JS 与 CSS 版本标记不�
 for(const file of [`assets/styles.${cssFingerprint}.css`,`assets/app.${jsFingerprint}.js`]){
   assert.ok((await stat(join(out,file))).isFile(),'缺失本次构建的版本化文件：'+file);
 }
+// 独立设置页必须同版本发布，旧弹窗不应出现在首页。
+const settingsHTML=await readFile(join(out,'settings.html'),'utf8');
+assert.ok(settingsHTML.includes(`href="./assets/styles.${cssFingerprint}.css"`),'设置页面 CSS 指纹与首页不一致');
+assert.ok(settingsHTML.includes(`src="./assets/settings-page.${jsFingerprint}.js"`),'设置页面脚本指纹与首页不一致');
+assert.ok((await stat(join(out,`assets/settings-page.${jsFingerprint}.js`))).isFile(),'缺少设置页面版本化入口');
+const settingsEntry=await readFile(join(out,`assets/settings-page.${jsFingerprint}.js`),'utf8');
+assert.ok(settingsEntry.includes(`./core/settings.js?v=${jsFingerprint}`),'设置页面模块依赖未版本化');
+assert.ok(!publishedHTML.includes('id="settings-dialog"'),'首页不应继续包含设置弹窗');
+assert.ok(settingsHTML.includes('data-settings-page'),'发布版本缺少独立设置页');
 const entry=await readFile(join(out,`assets/app.${jsFingerprint}.js`),'utf8');
 assert.match(entry,new RegExp('from [\\\x27"][.]/core/workbench[.]js[?]v='+jsFingerprint),'入口模块没有版本化工作台依赖');
 assert.match(entry,new RegExp('from [\\\x27"][.]/core/dropdown[.]js[?]v='+jsFingerprint),'入口模块没有版本化下拉菜单依赖');
