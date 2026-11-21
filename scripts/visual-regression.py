@@ -283,12 +283,20 @@ def verify_liquid_orb_unified(browser, origin):
             size_button.click()
             assert size_button.get_attribute("aria-expanded") == "true", "下拉按钮未更新展开状态"
             assert size_menu.is_visible(), "尺寸菜单未展开"
+            if name == "mobile":
+                assert size_menu.evaluate("(el) => el.parentElement === document.body"), "手机菜单未提升至顶层"
+                assert page.locator("#size-backdrop").is_visible(), "手机菜单未显示遮罩"
+                page.screenshot(path=str(OUTPUT / "liquid-orb-dropdown-mobile.png"), animations="disabled")
+            else:
+                assert not page.locator("#size-backdrop").is_visible(), "桌面下拉菜单不应使用手机遮罩"
             bounds = size_menu.bounding_box()
             assert bounds and 0 <= bounds["y"] and bounds["y"] + bounds["height"] <= height + 2, f"{name}: 下拉菜单被视口裁切"
             if name == "desktop":
                 page.screenshot(path=str(OUTPUT / "liquid-orb-dropdown-desktop.png"), animations="disabled")
             page.locator('#dialog-size-menu [data-size="compact"]').click()
             assert not size_menu.is_visible(), "选择尺寸后菜单没有关闭"
+            assert not page.locator("#size-backdrop").is_visible(), "选择后遮罩未关闭"
+            assert size_menu.evaluate("(el) => el.parentElement.id === 'size-picker'"), "关闭后未恢复尺寸菜单 DOM"
             assert size_button.get_attribute("aria-expanded") == "false", "选择后菜单 aria-expanded 未恢复"
             assert page.locator("#dialog-size-current").inner_text() == "紧凑"
             assert page.locator("#dialog-size").input_value() == "compact"
@@ -307,7 +315,7 @@ def verify_liquid_orb_unified(browser, origin):
             page.keyboard.press("Escape")
             assert not size_menu.is_visible(), "Esc 不能关闭尺寸菜单"
             size_button.click()
-            page.locator("#dialog-text").click()
+            page.locator("#engine").click()
             assert not size_menu.is_visible(), "点击菜单外没有关闭菜单"
             size_button.click()
             page.locator('#dialog-size-menu [data-size="standard"]').click()
