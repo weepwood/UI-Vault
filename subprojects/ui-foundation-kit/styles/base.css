@@ -1,0 +1,17 @@
+/* Reusable neutral foundation. Import dist/theme.css before this file. */
+*, *::before, *::after {box-sizing:border-box}
+:where(html) {font-size:16px;scroll-behavior:smooth}
+:where(body) {margin:0;min-width:280px;background:var(--ui-canvas);color:var(--ui-text);font:400 var(--ui-type-base)/1.58 var(--ui-font-sans);-webkit-font-smoothing:antialiased}
+:where(button,input,select,textarea){font:inherit}
+:where(button){cursor:pointer}
+:where(button:disabled){cursor:not-allowed}
+:where(a){color:inherit}
+:where(svg){display:block}
+:where(h1,h2,h3,p){margin-top:0}
+:where(h1,h2,h3){letter-spacing:-.028em;line-height:1.3}
+:where(:focus-visible){outline:2px solid var(--ui-accent);outline-offset:3px}
+::selection{background:var(--ui-accent-soft);color:var(--ui-text)}
+.ui-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.ui-icon{width:18px;height:18px;flex:none;stroke-width:1.85}
+.ui-muted{color:var(--ui-muted)}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
