@@ -52,7 +52,7 @@ test('导航在项目和设置视图间原位切换，支持浏览器历史记�
 });
 
 test('项目 emoji 继续无边框无底色',()=>{
-  const css=read('assets/styles.css');
+  const css=read('assets/ui/project-row.css');
   const def=css.slice(css.lastIndexOf('.project-panel .project-row-icon.project-row-emoji'));
   assert.match(def,/border:0/);
   assert.match(def,/background:transparent/);
