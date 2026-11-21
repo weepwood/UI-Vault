@@ -17,10 +17,23 @@
  * --halo-*        标题四层白光晕   原站 0 0 4/8/12/16px #e1e1e0
  * --stage-scale   整体缩放，便于 iframe 一屏看全 7 个标签
  *
- * 合规说明：本 Demo 独立重实现原站的几何、遮罩与动效方法；
- * 字体改用系统字体栈，激活插画改为 CSS 重绘的抽象放射图案，
- * 未复制原站字体文件、插画位图或商标。原站来源见页脚链接。
+ * 1:1 复刻原站 1920×1080 渲染样式：几何、遮罩、动效、字体与插画素材
+ * 均取自原站（浏览器实测 + 原站静态资源），与原版一致。
+ * 素材：assets/tab-active-bg.8b31f4.png（激活插画）
+ *       fonts/HarmonyOSSansSC-{Medium,Bold}.woff2（原站内嵌字体）
+ * 原站来源与版权归属见页脚；仅供学习研究，商业使用请自行取得授权。
  */
+/* 原站内嵌字体，逐字节复制自版本导览页 */
+@font-face{
+  font-family:"HarmonyOS_Sans_SC";
+  src:url("fonts/HarmonyOSSansSC-Medium.55cf26.woff2") format("woff2");
+  font-weight:400 500;font-display:swap;
+}
+@font-face{
+  font-family:"HarmonyOS_Sans_SC";
+  src:url("fonts/HarmonyOSSansSC-Bold.d69da8.woff2") format("woff2");
+  font-weight:600 900;font-display:swap;
+}
 :root{
   --stage:#242526;--stage-2:#2b2c2e;--panel:#1d1e20;--line:#3a3b3d;
   --ink:#ececec;--muted:#9a9a9c;--accent:#f7cd5c;--gold:#dabb65;
@@ -28,7 +41,9 @@
   --dur:.2s;--ease:ease;--stage-scale:.78;
   --halo-1:#e1e1e0 0 0 .25rem;--halo-2:#e1e1e0 0 0 .5rem;
   --halo-3:#e1e1e0 0 0 .75rem;--halo-4:#e1e1e0 0 0 1rem;
-  font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  --halo-idle:rgba(225,225,224,0) 0 0 .25rem,rgba(225,225,224,0) 0 0 .5rem,
+    rgba(225,225,224,0) 0 0 .75rem,rgba(225,225,224,0) 0 0 1rem;
+  font-family:"HarmonyOS_Sans_SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -95,17 +110,11 @@ a:hover{text-decoration:underline}
 /* 背景层：原站 .xh6xJE */
 .tab-bg{position:absolute;inset:0;border-radius:var(--radius);
   background:rgba(55,55,57,.6);transition:background var(--dur) var(--ease)}
-/* 插画层：原站 .ntFJ5x —— CSS 重绘的抽象放射图案，替代原站位图素材 */
+/* 插画层：原站 .ntFJ5x —— 原站真实激活插画素材，默认透明，激活淡入 */
 .tab-art{position:absolute;inset:0;border-radius:var(--radius);overflow:hidden;opacity:0;
   box-shadow:0 .25rem .75rem rgba(0,0,0,.35);transition:opacity var(--dur) var(--ease);
-  background:
-    radial-gradient(circle at 82% 50%,rgba(255,246,214,.95) 0 5%,transparent 6%),
-    conic-gradient(from 12deg at 82% 50%,#ffd76b 0 9%,#ff9d5c 9% 18%,#e45a7a 18% 27%,
-      #8f5fc4 27% 36%,#ffd76b 36% 45%,#ff9d5c 45% 54%,transparent 54%),
-    linear-gradient(120deg,#3a2f52,#1b1b1e);
-}
-.tab-art::after{content:"";position:absolute;inset:0;
-  background:repeating-linear-gradient(115deg,transparent 0 9px,rgba(255,255,255,.08) 9px 10px)}
+  background-image:url("assets/tab-active-bg.8b31f4.png");
+  background-position:50%;background-repeat:no-repeat;background-size:cover}
 /* 左侧竖条：原站 .KHykTF:after */
 .tab-btn::after{content:"";position:absolute;left:.875rem;top:50%;transform:translateY(-50%);
   width:.3125rem;height:1rem;border-radius:.1875rem;background:#818081;
@@ -113,7 +122,7 @@ a:hover{text-decoration:underline}
 /* 标题：原站 .FWCA9B */
 .tab-title{position:relative;z-index:2;flex:none;line-height:1.159;
   font-size:1.56396rem;font-weight:400;letter-spacing:-.03132rem;
-  text-shadow:0 0 .25rem rgba(225,225,224,0),0 0 .5rem rgba(225,225,224,0);
+  text-shadow:var(--halo-idle);
   transition:text-shadow var(--dur) var(--ease)}
 /* 副标题：原站 .KHykTF>small */
 .tab-sub{position:relative;z-index:2;flex:none;margin-top:.15rem;
@@ -170,7 +179,7 @@ footer b{color:var(--ink)}
   <header class="topbar">
     <div>
       <h1><span>界面组件 · </span>导航标签 Nav Tab</h1>
-      <p>从《明日方舟：终末地》版本导览页提取的交互方法，独立重实现。保留斜纹遮罩、圆角交叠、四层光晕与过渡曲线的精确参数。</p>
+      <p>《明日方舟：终末地》版本导览页导航标签的 1:1 复刻。斜纹遮罩、圆角交叠、四层光晕、过渡曲线、原站字体与激活插画素材均已还原，与原版一致。</p>
     </div>
     <span class="src-pill">KHykTF · JRtBdW · P26xDN</span>
   </header>
@@ -216,14 +225,14 @@ footer b{color:var(--ink)}
         <p class="desc">斜纹右端多伸 <code>8px</code> 钻进按钮圆角下方，再用 <code>mask</code> 把这 8px 渐隐——交接处因此没有硬直角。所有反馈统一走 <code>ease .2s</code>，分层的光晕、插画、竖条各自过渡。</p>
       </div>
 
-      <p class="hint">全部参数可在源码顶部 TUNING 注释处修改；字体与插画为合规替代实现。</p>
+      <p class="hint">全部参数可在源码顶部 TUNING 注释处修改；字体与原站插画素材已随组件一并放入 fonts/ 与 assets/。</p>
     </aside>
   </div>
 
   <footer>
     <b>来源：</b><a href="https://endfield.hypergryph.com/version_briefing/latest" target="_blank" rel="noopener">终末地版本导览页</a>
-    · 几何、遮罩与动效参数取自该页公开渲染样式，2026-11-21 浏览器实测。<br>
-    <b>合规：</b>本页为学习性独立重实现，使用系统字体栈与 CSS 重绘图案，未复制原站内嵌字体、插画位图或商标；原 UI 版权归权利方所有。
+    · 几何、遮罩与动效参数取自该页公开渲染样式（2026-11-21 浏览器实测）；激活插画与 HarmonyOS Sans SC 字体为原站静态资源，已随组件本地化以求 1:1 还原。<br>
+    <b>版权：</b>本站为学习研究用途的复刻演示，插画、字体及「明日方舟：终末地」UI 的全部权利归鹰角网络 / 华为等权利方所有；请勿用于商业用途，如需商用请自行取得授权。
   </footer>
 
 </div>
