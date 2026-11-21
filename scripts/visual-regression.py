@@ -486,7 +486,7 @@ def verify_rare_interactions(browser, origin):
             page.locator("#promptText").fill("测试一个演示交互")
             page.locator("[data-effort='深入']").click()
             page.locator("#sendPrompt").click()
-            page.locator("#promptResult").get_by_text("模拟完成", exact=False).wait_for(timeout=5000)
+            page.wait_for_function("document.querySelector(\"#promptResult\")?.textContent.startsWith(\"模拟完成\")", timeout=5000)
 
             page.locator("#deleteTrigger").click()
             page.locator("#cancelDelete").click()
