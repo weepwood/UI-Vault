@@ -1,0 +1,59 @@
+name: 校验并发布 UI Vault
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+      - name: 配置 Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 校验 UI 资产清单
+        run: node scripts/validate.mjs
+      - name: 检查 JavaScript 语法
+        run: node --check assets/app.js
+      - name: 生成静态站点目录
+        run: |
+          mkdir -p dist
+          cp index.html favicon.svg dist/
+          cp -R assets demos content dist/
+      - name: 上传站点构建产物
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-vault-static
+          path: dist
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: validate
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: 下载静态站点
+        uses: actions/download-artifact@v4
+        with:
+          name: ui-vault-static
+          path: dist
+      - name: 配置 Pages
+        uses: actions/configure-pages@v5
+      - name: 上传 Pages 包
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+      - name: 部署至 GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
