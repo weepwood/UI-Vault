@@ -21,10 +21,14 @@ function withBaseURI(callback){
 }
 test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',async()=>{
   const [html,css,app]=await Promise.all(['index.html','assets/styles.css','assets/app.js'].map(read));
-  for(const id of ['sidebar','category-nav','gallery','search','preview-stage','project-notes','viewport-controls']){
+  for(const id of ['sidebar','category-nav','gallery','search','preview-stage','project-dialog','preview-info','viewport-controls']){
     assert.ok(html.includes('id="'+id+'"'),'缺少 '+id);
   }
-  assert.doesNotMatch(html,/id="detail-drawer"|id="drawer-overlay"|aria-modal="true"/);
+  assert.doesNotMatch(html,/id="detail-drawer"|id="drawer-overlay"/);
+  assert.match(html,/<dialog id="project-dialog"/);
+  assert.match(html,/id="dialog-overview"/);
+  assert.match(html,/id="dialog-source"/);
+  assert.doesNotMatch(html,/class="workbench-footer"|class="project-notes"|class="preview-toolbar"/);
   assert.match(css,/grid-template-columns:\s*var\(--directory-width\) minmax\(0,1fr\)/);
   assert.match(css,/\.preview-stage\s*\{[^}]*flex:\s*1 1 0/);
   assert.match(app,/projectPreviewMarkup\(asset\)/);
