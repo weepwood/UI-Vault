@@ -55,3 +55,33 @@ test('嵌入渲染模式保持可用，旧对话框资产深链接不丢失', ()
   assert.ok(script);
   assert.doesNotThrow(()=>new Script(script, {filename:'liquid-orb-unified.js'}));
 });
+
+test('思考胶囊以半高几何约束球体圆心，渲染半径按模式变化',()=>{
+  assert.match(source,/--pill-inset:28px/);
+  assert.match(source,/--pill-inset:21px/);
+  assert.match(source,/--pill-inset:33px/);
+  assert.match(source,/border-radius:calc\(var\(--pill-height\) \/ 2\)/);
+  assert.match(source,/width:calc\(var\(--pill-height\) - 2 \* var\(--pill-inset\) - 2px\)/);
+  assert.match(source,/width:calc\(var\(--pill-mobile-height\) - 2 \* var\(--pill-inset\) - 2px\)/);
+  assert.match(source,/values\[4\] = Math\.min\(0\.9, values\[4\] \* 1\.23\)/);
+  assert.equal((source.match(/<canvas\b/g)||[]).length,1,'原地切换与模态复用唯一画布');
+});
+test('下拉菜单提供独立定位、ARIA 状态、完整键盘与外部点击处理',()=>{
+  assert.match(source,/id="dialog-size-trigger"/);
+  assert.match(source,/id="dialog-size-menu" role="listbox"/);
+  assert.match(source,/aria-expanded="false"/);
+  assert.match(source,/data-size="compact"/);
+  assert.match(source,/data-size="standard"/);
+  assert.match(source,/data-size="large"/);
+  assert.match(source,/bottom:calc\(100% \+ 7px\)/);
+  assert.match(source,/\.size-menu\[hidden\]\{display:none!important\}/);
+  assert.match(source,/sizePicker\.classList\.add\("is-open"\)/);
+  assert.match(source,/sizePicker\.classList\.remove\("is-open"\)/);
+  assert.match(source,/event\.key === "Escape"/);
+  assert.match(source,/event\.key === "Tab"/);
+  assert.match(source,/event\.key === "Enter" \|\| event\.key === " "/);
+  assert.match(source,/sizeMenu\.hidden = true/);
+  assert.match(source,/sizeMenu\.hidden = false/);
+  assert.match(source,/nativeSize\.value = value/);
+  assert.match(source,/event => \{ if \(!sizePicker\.contains\(event\.target\)\) closeSizeMenu\(\); \}/);
+});
