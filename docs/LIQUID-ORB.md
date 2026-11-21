@@ -1,24 +1,32 @@
-# WebGPU 液态玻璃球与 Thinking 对话框
+# 液态玻璃 · 单页组件演示
 
-## 入口
+同一个页面展示 WebGPU 液态玻璃球和深色 Thinking 胶囊对话框，且两种视图共享同一个真实 Canvas / GPU 设备。
 
-- 独立液态玻璃球：`demos/components/liquid-orb/index.html`
-- 图片风格的 Thinking 胶囊对话框：`demos/components/liquid-orb-thinking-dialog/index.html`
-- 对话框可复用源码：`demos/components/liquid-orb-thinking-dialog/dialog.js`、`dialog.css`
+## 演示入口
 
-## 加载行为
+- **统一页面**：`demos/components/liquid-orb/index.html`，默认「玻璃球」；在顶部切换「思考对话框」，或使用 `#dialog` 深链接直接进入该模式。
+- **旧对话框地址**：`demos/components/liquid-orb-thinking-dialog/index.html` 保留作为兼容跳转，自动进入统一页的 `#dialog` 模式。
+- **纯渲染嵌入**：`demos/components/liquid-orb/index.html?embed=1` 仍然保留，适配已有的内嵌 iframe/API。
 
-原版使用 CSS 绘制 `.still` 球形占位，WebGPU 初始化前就会显示一个假的圆球。现已移除该占位：
+## 尺寸与视觉
 
-1. 初始化只显示渐变条和当前阶段文字；canvas 在 GPU 就绪前保持不可见。
-2. 使用实际阶段通知：检测 WebGPU、连接适配器、初始化设备、编译 WGSL、准备首帧、等待 GPU 队列。
-3. 完成第一次 GPU 提交并等待 `device.queue.onSubmittedWorkDone()` 后才显示真实渲染内容。
-4. WebGPU 不可用或设备异常时显示错误与“重新尝试”，不再用圆形假图冒充真实效果。
-5. 阶段进度是离散工作步骤的提示，不是预测的耗时百分比；不会使用定时器虚构进度。
+- **紧凑**：约 540 × 176 CSS px（在可用容器内缩放），适合界面中的小型状态反馈。
+- **标准**：约 750 × 248 CSS px，默认展示。玻璃球直径约 172px，右侧文案约 31–60px，整体比例更接近参考图且减少无意义空白。
+- **大尺寸**：约 890 × 290 CSS px，用于演示或更宽的页面，不再默认占用 1030px 以上宽度。
+- 小于 620px 的视口会减小内边距、球体直径和文字尺寸，且使用椭圆胶囊适配窄屏；右侧过长文本按容器边界省略。
+- 单独的可复用 `dialog.css` 也同步缩减默认尺寸至约 790px，并保留移动端样式。
 
-## 使用对话框
+## 页面交互
 
-将 JS、CSS 和 `liquid-orb` Demo 一起部署在原有相对目录结构；以下导入路径为示例：
+1. 点击顶部「玻璃球 / 思考对话框」切换原位布局，保留渲染状态；支持方向键在两个选项卡之间切换。
+2. 思考对话框模式下可编辑文案、选择紧凑/标准/大尺寸，并点击「弹出对话框」进入原生 `<dialog>`。
+3. 模态框通过 DOM 移动同一个 Canvas 实现，不会额外实例化 WebGPU；按 Esc 或点击关闭按钮后将其移回展示区。
+4. WebGPU 初始化期间显示进度条与真实阶段提示；首帧 GPU 工作完成后再展示真实球体，不预先绘制假的静态圆球。
+5. WebGPU 不可用或设备异常时显示错误和重试。
+
+## 复用脚本
+
+`demos/components/liquid-orb-thinking-dialog/dialog.js` / `dialog.css` 继续提供既有的 `window.createLiquidOrbDialog({text:'Thinking...'})` 接口，包括 show、close、setText、setState、setPlaying、retry、destroy。独立复用器通过隔离 iframe 加载 `?embed=1`；新统一展示页则直接复用现有 Canvas，减少多实例 GPU 占用。
 
 ```html
 <link rel="stylesheet" href="./liquid-orb-thinking-dialog/dialog.css">
@@ -27,20 +35,13 @@
   const dialog = window.createLiquidOrbDialog({ text: 'Thinking...' });
   dialog.show();
   dialog.setText('Processing...');
-  dialog.setState('thinking'); // 也支持 idle
-  // dialog.close(); dialog.retry(); dialog.destroy();
+  dialog.setState('thinking');
+  // dialog.close(); dialog.destroy();
 </script>
 ```
 
-考虑到 UI-Vault 内部预览使用隔离的 iframe，组件提供经典脚本的 `window.createLiquidOrbDialog` 接口，避免从 opaque origin 导入外部 ES Module 的 CORS 问题。模块通过相对 URL 加载 `../liquid-orb/index.html?embed=1`：复用原 WGSL 和 WebGPU 渲染，不复制着色器，也不需要第三方库。对话框与 iframe 通过来源窗口限定的 `postMessage` 通信，只有真实的 `ready` 消息到达后才淡入玻璃球。
+## 兼容与权限
 
-## 可访问性及性能
+UI-Vault 主站仅对这两个原有玻璃球资产的 iframe 配置 `allow="webgpu"`。仍然只使用 `sandbox="allow-scripts"`（不授予 `allow-same-origin`），独立 iframe 之间通过检查来源窗口的 `postMessage` 协作。单文件渲染器仍保留 `window.liquidOrb` 的原始命令接口。
 
-- 对话框支持 Escape、遮罩点击及关闭按钮；打开时聚焦关闭按钮、Tab 在可操作控件间循环，关闭后恢复焦点。
-- 屏幕阅读器可感知初始化阶段和失败状态；不支持 WebGPU 时提供重试操作。
-- 检测 `prefers-reduced-motion`，尊重减少动态效果设置；关闭对话框时通过控制消息暂停 WebGPU 动画。
-- 与主站 React 业务无耦合，适配现有沙箱 iframe 预览。主站和对话框的玻璃球 iframe 显式使用 `allow="webgpu"` 委派图形权限，同时保留 `sandbox="allow-scripts"`，不授予 `allow-same-origin`。
-
-## 许可证说明
-
-玻璃球 WGSL 与 uniform 来自用户提供的文件，原始许可证未注明。对话框布局与控制代码在本仓实现；在其他项目中分发底层 WGSL 之前，应确认其原始授权。对话框为多文件组件，资产元数据设为 `copyable:false`。
+原始 WGSL 与两组 uniform 来自用户上传文件，未明确其第三方许可；不额外宣称开放授权。
