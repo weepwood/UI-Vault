@@ -60,7 +60,8 @@ export function initSettings({onPreviewChange=()=>{},onNotice=()=>{}}={}){
     const heading=document.getElementById('settings-title');
     heading.textContent=title;
     document.getElementById('settings-description').textContent=description;
-    page.querySelector('.settings-scroll')?.scrollTo({top:0,behavior:'instant'});
+    const scroller=page.querySelector('.settings-scroll');
+    if(scroller)scroller.scrollTop=0;
     if(focus)heading.focus({preventScroll:true});
   }
   const selectIcons={
