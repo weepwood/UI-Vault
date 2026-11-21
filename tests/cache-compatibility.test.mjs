@@ -18,10 +18,10 @@ test('HTML/JS 缓存错配不再直接调用缺失 sidebar 的 inert',async()=>{
     assert.ok(app.includes(required),'缺少运行时防护 '+required);
   }
   const guard=app.indexOf('if(!verifyWorkbenchShell())return;');
-  const controlsInit=app.indexOf('  initEvents();',guard);
-  const mobile=await readFile(join(ROOT,'assets/ui/mobile-navigation.js'),'utf8');
-  assert.ok(guard>=0&&controlsInit>guard,'初始化导航控制器前必须做结构校验');
-  assert.ok(mobile.includes('rail.inert=mobile&&!visible'),'导航控制器必须保护隐藏区域');
+  const mount=app.indexOf('mountWorkbench();',guard);
+  const react=await readFile(join(ROOT,'src/react-workbench.jsx'),'utf8');
+  assert.ok(guard>=0&&mount>guard,'挂载 React 前必须验证 shell 与版本');
+  assert.ok(react.includes('nodes.rail.inert=mobile&&!menuOpen'),'React 必须保护移动端非交互区域');
   assert.match(html,/id="sidebar"/);
   assert.match(html,/id="library-rail"/);
   assert.match(html,/id="project-panel"/);
