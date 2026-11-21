@@ -119,6 +119,7 @@ export function enhanceSelect(select,{icon='bookmark',icons={}}={}){
     const index=items.indexOf(document.activeElement);
     if(event.key==='Escape'){
       event.preventDefault();
+      event.stopPropagation(); // 移动端先关闭菜单，再由下一次 Escape 关闭整个目录。
       setOpen(false);
       trigger.focus({preventScroll:true});
     }else if(event.key==='Tab'){
