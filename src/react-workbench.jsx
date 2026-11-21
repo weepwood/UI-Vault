@@ -16,7 +16,7 @@ function renderInto(element,node){
   flushSync(()=>root.render(node));
 }
 const stageLabels={draft:'待精调',refining:'精调中',stable:'已定稿'};
-const categoryIcons={style:'palette',component:'component',effect:'zap',layout:'panels-top-left',demo:'play',reference:'bookmark'};
+const categoryIcons={style:'palette',component:'component',effect:'zap',layout:'panels-top-left',demo:'play',resource:'book-open',reference:'bookmark'};
 function Icon({name}){
   return <svg className="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
     strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
