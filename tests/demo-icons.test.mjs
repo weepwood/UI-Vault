@@ -28,7 +28,8 @@ test('子项目内嵌 Lucide SVG，与上游官方图形一致且无需跨源资
    assert.match(html,/The MIT License/,path+' 缺少 Feather 许可');
    assert.match(html,/Copyright \(c\) 2026 Lucide Icons and Contributors/,path+' 缺少版权说明');
    assert.match(html,/\.lucide-demo-icon/,path+' 缺少独立图标 CSS');
-   assert.match(html,/prefers-reduced-motion/,path+' 应支持减少动效');
+   if(/(?:animation|transition)\s*:/.test(html))
+     assert.match(html,/prefers-reduced-motion/,path+' 使用动画时必须尊重减少动效偏好');
  }
 });
 test('每个精选交互实验的图标不会退化成旧的操作字符',async()=>{
