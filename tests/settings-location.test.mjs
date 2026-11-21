@@ -3,29 +3,42 @@ import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
-test('设置入口只出现在侧栏底部而非顶部工具栏',()=>{
+test('首页设置入口位于左侧导航底部并跳转独立设置页',()=>{
   const html=read('index.html');
   const footer=html.indexOf('<div class="sidebar-footer">');
   const topbar=html.indexOf('<header class="topbar"');
-  const button=html.indexOf('id="settings-open"');
-  assert.ok(footer>0 && button>footer && button<topbar);
+  const link=html.indexOf('id="settings-open"');
+  assert.ok(footer>0&&link>footer&&link<topbar);
   assert.equal(html.match(/id="settings-open"/g)?.length,1);
-  assert.match(html,/<div class="sidebar-footer-links">/);
-  const sidebar=html.slice(footer,topbar);
-  const github=sidebar.indexOf('class="sidebar-github"');
-  assert.ok(github>sidebar.indexOf('id="settings-open"'),'GitHub 按钮必须在设置右边');
-  assert.match(sidebar,/aria-label="在 GitHub 打开 UI-Vault 仓库"/);
-  assert.match(sidebar,/lucide[.]svg#github/);
-  assert.doesNotMatch(sidebar,/ADDING-DEMO[.]md|新增项目|<span>GitHub<[\\/]span>/);
+  assert.match(html, /id="settings-open"[^>]*href="[.]\/settings[.]html"/);
+  assert.doesNotMatch(html, /id="settings-dialog"|class="sidebar-github"/);
+  assert.doesNotMatch(html.slice(footer,topbar), /github[.]com|ADDING-DEMO[.]md|新增项目/);
 });
-test('设置与项目目录共用下拉组件',()=>{
-  const settings=read('assets/core/settings.js');
+
+test('GitHub 项目入口只在独立设置页的关于区出现',()=>{
+  const settings=read('settings.html');
+  const about=settings.slice(settings.indexOf('id="about"'));
+  assert.match(about, /class="settings-repo-link"/);
+  assert.match(about, /github[.]com\/weepwood\/UI-Vault/);
+  assert.match(about, /lucide[.]svg#github/);
+});
+
+test('设置选择器仍复用排序与标签的自定义下拉组件',()=>{
+  const settingsJS=read('assets/core/settings.js');
   const app=read('assets/app.js');
   const css=read('assets/styles.css');
-  assert.match(settings,/import \{ enhanceSelect, closeDropdowns \} from '\.\/dropdown\.js'/);
-  assert.match(settings,/enhanceSelect\(select,/);
-  assert.match(settings,/dropdowns\[index\]\.sync\(\)/);
+  assert.match(settingsJS,/import \{ enhanceSelect, closeDropdowns \} from '[.]\/dropdown[.]js'/);
+  assert.match(settingsJS,/enhanceSelect\(select,/);
+  assert.match(settingsJS,/dropdowns\[index\][.]sync\(\)/);
   assert.match(app,/enhanceSelect\(sort,/);
-  assert.match(css,/\.settings-select \.select-popover/);
-  assert.match(css,/@media\(max-width:480px\)[\s\S]*?\.library-rail \.sidebar-footer \{ display:flex/);
+  assert.match(css,/[.]settings-select [.]select-popover/);
+});
+
+test('移动端与桌面端都保留无边框的项目 emoji',()=>{
+  const css=read('assets/styles.css');
+  assert.match(css,/[.]project-panel [.]project-row-icon[.]project-row-emoji/);
+  const definition=css.slice(css.lastIndexOf('.project-panel .project-row-icon.project-row-emoji'));
+  assert.match(definition,/border:0/);
+  assert.match(definition,/background:transparent/);
+  assert.match(definition,/font-size:26px/);
 });
