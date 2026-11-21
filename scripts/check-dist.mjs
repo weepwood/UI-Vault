@@ -5,7 +5,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);}
   if(a.coverImage)paths.push(a.coverImage);
@@ -28,6 +28,11 @@ assert.ok(publishedHTML.includes('data-settings-page'),'工作台设置控件未
 assert.ok(publishedHTML.includes('href="./?view=settings"'),'左侧设置入口没有指向工作台内设置');
 assert.ok(!publishedHTML.includes('id="settings-dialog"'),'首页不应再保留设置弹窗');
 const entry=await readFile(join(out,`assets/app.${jsFingerprint}.js`),'utf8');
+assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'主站未加载同版本 React 组件');
+const reactBundle=await readFile(join(out,'assets/react-workbench.js'),'utf8');
+assert.ok(reactBundle.length>30_000,'React 组件 bundle 缺失或异常短');
+assert.ok(!/from ['"]react(?:-dom)?(?:\/[^'"]+)?['"]/.test(reactBundle),'React 运行时不应依赖浏览器裸模块导入');
+
 assert.match(entry,new RegExp('from [\\\x27"][.]/core/workbench[.]js[?]v='+jsFingerprint),'入口模块没有版本化工作台依赖');
 assert.match(entry,new RegExp('from [\\\x27"][.]/core/dropdown[.]js[?]v='+jsFingerprint),'入口模块没有版本化下拉菜单依赖');
 const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
