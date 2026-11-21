@@ -423,6 +423,36 @@ def verify_glass_materials(browser, origin):
             assert page.locator("#distortion").is_disabled(), "普通玻璃不应开放折射调节"
             page.locator('[data-material="liquid"]').click()
             assert page.locator("#distortion").is_enabled(), "液态材质未启用折射滑块"
+
+            lens = page.locator(".mat-liquid canvas.refraction")
+            previous = lens.evaluate("""el => {
+                const ctx=el.getContext('2d');
+                window.__glassTestPixels = new Uint8ClampedArray(ctx.getImageData(0,0,el.width,el.height).data);
+                return +el.dataset.revision;
+            }""")
+            page.locator("#distortion").evaluate("""el => {
+                el.value='0';el.dispatchEvent(new Event('input',{bubbles:true}));
+            }""")
+            page.wait_for_function("""before => Number(document.querySelector('.mat-liquid canvas.refraction').dataset.revision) > before""", previous)
+            # 对比默认折射与关闭折射后像素；仅确认绘制非空不足以证明视觉折射。
+            delta = lens.evaluate("""el => {
+                const a=window.__glassTestPixels,b=el.getContext('2d').getImageData(0,0,el.width,el.height).data;
+                let sum=0,n=0;for(let i=0;i<Math.min(a.length,b.length);i+=16){sum+=Math.abs(a[i]-b[i]);n++;}
+                return sum/Math.max(1,n);
+            }""")
+            assert delta > 1, f"折射滑块没有产生可测量的像素变化：{delta:.3f}"
+            page.locator("#distortion").evaluate("""el => {
+                el.value='35';el.dispatchEvent(new Event('input',{bubbles:true}));
+            }""")
+            previous_box = page.locator(".mat-liquid .material").bounding_box()
+            if name == "desktop":
+                x = previous_box["x"] + previous_box["width"] / 2
+                y = previous_box["y"] + previous_box["height"] / 2
+                page.mouse.move(x,y);page.mouse.down()
+                page.mouse.move(x+18,y+10,steps=4);page.mouse.up()
+                new_box = page.locator(".mat-liquid .material").bounding_box()
+                assert new_box["x"] > previous_box["x"] + 6, "拖动液态镜片没有移动实际位置"
+
             page.locator("#blur").evaluate("(el) => {el.value = '11'; el.dispatchEvent(new Event('input', {bubbles: true}));}")
             assert page.locator("#blur").input_value() == "11"
             page.locator('[data-material="gel"]').click()
