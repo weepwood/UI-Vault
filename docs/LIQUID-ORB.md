@@ -1,27 +1,46 @@
-# 液态玻璃球（Liquid Orb）
+# WebGPU 液态玻璃球与 Thinking 对话框
 
-此效果源自用户提供的 WebGPU / WGSL 单文件示例，展示入口为 demos/components/liquid-orb/index.html。
+## 入口
 
-## 交互与预览
+- 独立液态玻璃球：`demos/components/liquid-orb/index.html`
+- 图片风格的 Thinking 胶囊对话框：`demos/components/liquid-orb-thinking-dialog/index.html`
+- 对话框可复用源码：`demos/components/liquid-orb-thinking-dialog/dialog.js`、`dialog.css`
 
-- UI-Vault 中选择「界面组件 → 液态玻璃球」，或独立打开 Demo（建议使用 HTTPS 或 localhost，以满足 WebGPU 的安全上下文要求）。
-- 状态：静置 / 思考；流速 0.25–2 倍；可开关玻璃外壳与播放动画。
-- 页面隐藏时不持续渲染；用户暂停时停止连续 GPU 帧提交；最高约 40 FPS，渲染 DPR 上限为 1.5。
-- 遵守 prefers-reduced-motion：系统偏好减少动画时默认暂停；WebGPU 不可用时显示标识明确的静态球体。
+## 加载行为
 
-## 控制接口
+原版使用 CSS 绘制 `.still` 球形占位，WebGPU 初始化前就会显示一个假的圆球。现已移除该占位：
 
-window.liquidOrb.getState()
-window.liquidOrb.setState('idle' | 'thinking')
-window.liquidOrb.setPlaying(boolean)
-window.liquidOrb.setGlass(boolean)
-window.liquidOrb.setSpeed(number)
-window.liquidOrb.setAudioBands({low, mid, high, all})
+1. 初始化只显示渐变条和当前阶段文字；canvas 在 GPU 就绪前保持不可见。
+2. 使用实际阶段通知：检测 WebGPU、连接适配器、初始化设备、编译 WGSL、准备首帧、等待 GPU 队列。
+3. 完成第一次 GPU 提交并等待 `device.queue.onSubmittedWorkDone()` 后才显示真实渲染内容。
+4. WebGPU 不可用或设备异常时显示错误与“重新尝试”，不再用圆形假图冒充真实效果。
+5. 阶段进度是离散工作步骤的提示，不是预测的耗时百分比；不会使用定时器虚构进度。
 
-音频接口接收外部归一化频带；此 Demo 不申请麦克风权限。
+## 使用对话框
 
-## 集成与许可边界
+将 JS、CSS 和 `liquid-orb` Demo 一起部署在原有相对目录结构；以下导入路径为示例：
 
-Shader、原始两组 136-float uniform 数据和渲染管线来自用户所提供文件；为兼容主站 iframe 沙箱，所有代码留在单个 HTML，不需要外部 JS / CSS 网络请求。
+```html
+<link rel="stylesheet" href="./liquid-orb-thinking-dialog/dialog.css">
+<script type="module">
+  import { createLiquidOrbDialog } from './liquid-orb-thinking-dialog/dialog.js';
+  const dialog = createLiquidOrbDialog({ text: 'Thinking...' });
+  dialog.show();
+  dialog.setText('Processing...');
+  dialog.setState('thinking'); // 也支持 idle
+  // dialog.close(); dialog.retry(); dialog.destroy();
+</script>
+```
 
-上传源码没有附带第三方来源网址和许可证，因此元数据不将它标成 MIT 或原创开源代码。copyable=true 仅表示演示技术上是可完整复制的单文件，不代表取得额外的第三方再分发许可。
+模块通过相对 URL 加载 `../liquid-orb/index.html?embed=1`：复用原 WGSL 和 WebGPU 渲染，不复制着色器，也不需要第三方库。对话框与 iframe 通过来源窗口限定的 `postMessage` 通信，只有真实的 `ready` 消息到达后才淡入玻璃球。
+
+## 可访问性及性能
+
+- 对话框支持 Escape、遮罩点击及关闭按钮；打开时聚焦关闭按钮、Tab 在可操作控件间循环，关闭后恢复焦点。
+- 屏幕阅读器可感知初始化阶段和失败状态；不支持 WebGPU 时提供重试操作。
+- 检测 `prefers-reduced-motion`，尊重减少动态效果设置；关闭对话框时通过控制消息暂停 WebGPU 动画。
+- 与主站 React 无耦合，适配现有沙箱 iframe 预览。
+
+## 许可证说明
+
+玻璃球 WGSL 与 uniform 来自用户提供的文件，原始许可证未注明。对话框布局与控制代码在本仓实现；在其他项目中分发底层 WGSL 之前，应确认其原始授权。对话框为多文件组件，资产元数据设为 `copyable:false`。
