@@ -9,7 +9,8 @@ permissions:
 jobs:
   validate:
     name: 元数据校验、测试与静态构建
-    runs-on: ubuntu-latest
+    # 固定 Chromium 截图所需的 Linux 字体/图形环境，避免 ubuntu-latest 升级导致像素基线漂移。
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
