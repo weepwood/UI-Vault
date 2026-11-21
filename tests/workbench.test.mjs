@@ -35,7 +35,9 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(html,/id="project-panel"/);
   assert.match(css,/\.preview-stage\s*\{[^}]*flex:\s*1 1 0/);
   assert.match(app,/projectPreviewMarkup\(asset\)/);
-  assert.match(app,/projectRowMarkup\(asset,favorites,state.labels/);
+  assert.match(app,/renderReactList\(items\)/);
+  assert.match(app,/renderProjectList\(gallery/);
+  assert.match(app,/renderCategoryNavigation\(/);
   assert.doesNotMatch(app,/drawer\.classList|overlay\.classList|openDetail\(/);
 });
 test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',()=>{
