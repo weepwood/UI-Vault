@@ -16,7 +16,9 @@ const obligations=[
   [html.includes('id="category-nav"'),'缺少资产分类导航'],
   [css.includes('prefers-reduced-motion'),'缺少减少动画支持'],
   [css.includes('focus-visible'),'缺少可见键盘焦点'],
-  [html.includes('id="preview-stage"')&&html.includes('id="gallery"'),'缺少常驻双栏项目目录与预览区'],
+  [html.includes('id="library-rail"')&&html.includes('id="sidebar"')&&html.includes('id="project-panel"')&&html.includes('id="preview-stage"'),'缺少导航、项目目录与网页预览三栏结构'],
+  [css.includes('var(--navigation-width) + var(--directory-width)')&&css.includes('.library-rail'),'缺少三栏布局样式'],
+  [app.includes('libraryRail.inert')&&app.includes('libraryRail.classList'),'移动端双目录栏的操作与无障碍保护缺失'],
   [!html.includes('id="detail-drawer"'),'不应保留弹出式网页详情'],
   [html.includes('<dialog id="project-dialog"')&&html.includes('id="preview-info"'),'项目说明与源码未使用独立弹窗'],
   [!html.includes('id="project-notes"')&&!html.includes('id="preview-status"')&&!html.includes('id="workbench-count"'),'不应继续显示底部说明与统计栏'],
@@ -31,5 +33,5 @@ if(errors.length) {
   console.error('设计质量检查失败：\n'+errors.map(s=>' - '+s).join('\n'));
   process.exitCode=1;
 }else{
-  console.log('设计质量检查通过：'+auditContrast(css).length+' 组正文语义色对比度 ≥ 4.5:1；搜索、项目双栏导航、常驻预览与减少动画要求齐全。');
+  console.log('设计质量检查通过：'+auditContrast(css).length+' 组正文语义色对比度 ≥ 4.5:1；搜索、三栏导航、常驻预览与减少动画要求齐全。');
 }

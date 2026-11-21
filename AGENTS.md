@@ -72,3 +72,8 @@ UI Vault **主站**图标使用固定 Lucide SVG 子集：`assets/icons/lucide.s
 ## v0.6 默认 UI：常驻左右两栏
 
 用户明确要求左侧列出各项目的基本菜单，右侧大面积直接显示真实网页。UI Vault **不得重新采用弹出侧边框 / modal / 抽屉来显示项目详情**。主站使用 `assets/core/workbench.js` 渲染目录和预览， `#preview-stage` 独占右侧主体；只在手机上临时覆盖目录以节省宽度。新增资产时仍只改 metadata/独立 Demo，不要往卡片画廊回退。
+
+
+## v0.8 三栏主站规范（优先于旧版双栏规定）
+
+新版项目要求把原侧边栏拆为：`aside#sidebar` 导航、`section#project-panel` 项目目录和 `main#main` 真实预览。前两栏封装在 `div#library-rail` 中，供移动端作为单一面板一起展开。未来不能把导航和项目列表重新合并到同一栏，更不能恢复网页预览抽屉。详情见 `docs/TWO-PANE-WORKBENCH.md` 的 v0.8 小节。

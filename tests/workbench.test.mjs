@@ -29,7 +29,10 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(html,/id="dialog-overview"/);
   assert.match(html,/id="dialog-source"/);
   assert.doesNotMatch(html,/class="workbench-footer"|class="project-notes"|class="preview-toolbar"/);
-  assert.match(css,/grid-template-columns:\s*var\(--directory-width\) minmax\(0,1fr\)/);
+  assert.match(css,/grid-template-columns:\s*calc\(var\(--navigation-width\) \+ var\(--directory-width\)\) minmax\(0,1fr\)/);
+  assert.match(css,/\.library-rail\s*\{\s*display: grid;/);
+  assert.match(html,/id="library-rail"/);
+  assert.match(html,/id="project-panel"/);
   assert.match(css,/\.preview-stage\s*\{[^}]*flex:\s*1 1 0/);
   assert.match(app,/projectPreviewMarkup\(asset\)/);
   assert.match(app,/projectRowMarkup\(asset,favorites,state.labels/);
