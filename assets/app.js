@@ -6,6 +6,9 @@ import { escapeHtml, resolveAsset } from './core/render.js';
 import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from './core/workbench.js';
 import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
 import { initSettings } from './core/settings.js';
+import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
+  setCatalogQuery,setCatalogSort,setCatalogTag,hasActiveCatalogFilters,
+  activateAsset,deactivateAsset,changePreviewMode} from './core/workbench-state.js';
 
 const categoryIconById=Object.freeze({
   style:'palette',component:'component',effect:'zap',
@@ -18,12 +21,7 @@ const menuToggle=$('#menu-toggle'),viewport=$('#viewport-controls'),infoDialog=$
 const viewportTrigger=$('#viewport-current'),viewportOptions=$('#viewport-options');
 const settingsMenuToggle=$('#settings-menu-toggle'),settingsView=$('#settings-view');
 const settingsLink=$('#settings-open'),shell=$('.app-shell');
-const state={
-  assets:[],categories:[],labels:{all:'全部资源'},
-  category:'all',tag:'',query:'',sort:'featured',
-  favoritesOnly:false,importedOnly:false,curatedOnly:false,
-  active:null,previewSize:'fluid'
-};
+const state=createWorkbenchState();
 const favorites=loadFavorites();
 let toastTimeout,previewResizeObserver,sourceLoadKey=0,sourceLoadedId=null;
 let sortDropdown,tagDropdown,settingsManager,settingsActive=false,viewportExpanded=false;
@@ -126,15 +124,14 @@ function renderList(){
   $('#empty').hidden=!empty;
   $('#empty-message').textContent=state.favoritesOnly&&!state.query.trim()&&!state.tag
     ?'这里还没有收藏的项目。' : '没有找到符合当前条件的项目。';
-  const filtered=state.category!=='all'||state.favoritesOnly||state.importedOnly||state.curatedOnly||
-    Boolean(state.tag)||Boolean(state.query.trim())||state.sort!=='featured';
+  const filtered=hasActiveCatalogFilters(state);
   $('#reset-filters').hidden=!filtered;
   $('#results-count').textContent=String(items.length);
   $('#results-status').textContent='当前显示 '+items.length+' 个项目';
   navState();
   updateTags();
   if(items.length===0){
-    if(state.active){state.active=null;clearSelection();}
+    if(state.active){deactivateAsset(state);clearSelection();}
   }else if(!state.active||!items.some(x=>x.id===state.active.id)){
     selectAsset(items[0],{historyMode:'replace'});
   }
@@ -172,8 +169,8 @@ function syncViewportCurrent(){
 }
 function selectPreviewSize(mode){
   if(!Object.hasOwn(PREVIEW_WIDTHS,mode)||state.active?.source!=='local')return;
-  state.previewSize=mode;
-  stage.dataset.size=mode;
+  changePreviewMode(state,mode);
+  stage.dataset.size=state.previewSize;
   syncViewportCurrent();
   resizePreview();
 }
@@ -211,8 +208,7 @@ function selectAsset(asset,{historyMode=null,focusPreview=false}={}){
   if(!asset)return;
   const same=state.active?.id===asset.id;
   if(!same){
-    state.active=asset;
-    state.previewSize=settingsManager?.get().preview||'fluid';
+    activateAsset(state,asset,settingsManager?.get().preview||'fluid');
     stage.dataset.size=state.previewSize;
     stage.innerHTML=projectPreviewMarkup(asset);
     $('#preview-kind').textContent=(state.labels[asset.type]||asset.type)+' · '+(asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源');
@@ -340,21 +336,13 @@ async function loadProjectSource(){
 }
 function changeFilter(kind,value){
   leaveSettingsForLibrary();
-  if(kind==='category'){
-    state.category=value;state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;
-  }else{
-    state[kind]=!state[kind];
-    state.category='all';
-    for(const key of ['favoritesOnly','importedOnly','curatedOnly'])if(key!==kind)state[key]=false;
-  }
-  state.tag='';
+  changeCatalogFilter(state,kind,value);
   renderList();
   if(isMobile())setSidebar(false);
 }
 function reset(){
   leaveSettingsForLibrary();
-  state.category='all';state.tag='';state.query='';state.sort='featured';
-  state.favoritesOnly=false;state.importedOnly=false;state.curatedOnly=false;
+  resetCatalogFilters(state);
   search.value='';sort.value='featured';sortDropdown?.sync();renderList();
 }
 function initEvents(){
@@ -374,9 +362,9 @@ function initEvents(){
   $('[data-favorites]').addEventListener('click',()=>changeFilter('favoritesOnly'));
   $('[data-imported]').addEventListener('click',()=>changeFilter('importedOnly'));
   $('[data-curated]').addEventListener('click',()=>changeFilter('curatedOnly'));
-  search.addEventListener('input',event=>{leaveSettingsForLibrary();state.query=event.target.value;renderList();});
-  sort.addEventListener('change',event=>{leaveSettingsForLibrary();state.sort=event.target.value;renderList();});
-  tagFilter.addEventListener('change',event=>{leaveSettingsForLibrary();state.tag=event.target.value;renderList();});
+  search.addEventListener('input',event=>{leaveSettingsForLibrary();setCatalogQuery(state,event.target.value);renderList();});
+  sort.addEventListener('change',event=>{leaveSettingsForLibrary();setCatalogSort(state,event.target.value);renderList();});
+  tagFilter.addEventListener('change',event=>{leaveSettingsForLibrary();setCatalogTag(state,event.target.value);renderList();});
   $('#reset-filters').addEventListener('click',reset);
   $('#clear-filters').addEventListener('click',reset);
   // 鼠标悬停展开；触摸点击当前设备也能展开，选中后恢复单项显示。
@@ -537,8 +525,7 @@ async function init(){
   try{
     const [items,categories]=await Promise.all([loadJSON('content/assets.json'),loadJSON('content/categories.json')]);
     if(!Array.isArray(items)||!Array.isArray(categories))throw Error('资产或分类清单格式不正确');
-    state.assets=items;state.categories=categories;
-    state.labels={all:'全部资源',...Object.fromEntries(categories.map(c=>[c.id,c.label]))};
+    setCatalogData(state,items,categories);
     initNavigation();
     $('#total-count').textContent=items.length;
     $('#curated-count').textContent=items.filter(a=>a.curated===true).length;
