@@ -8,8 +8,47 @@
 .main{padding:28px clamp(20px,4vw,60px);max-width:1250px;width:100%;margin:auto}.top{display:flex;justify-content:space-between;align-items:center;color:#988e83;font-size:12px;gap:10px}.pill{padding:9px 13px;background:#fff9f3;border:1px solid #eadfd4;border-radius:100px;color:#946b51}h1{font-size:clamp(26px,3vw,38px);letter-spacing:-.06em;margin:35px 0 7px;font-weight:750}.lead{margin:0 0 28px;color:#8e857b;font-size:14px}
 .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.stat{padding:21px;background:#fdfbf8;border:1px solid #ebe4da;border-radius:14px;min-height:138px}.stat small{font-size:12px;color:#958a80}.stat strong{display:block;margin:16px 0 8px;font-size:29px;letter-spacing:-.06em}.trend{color:#67947f;font-size:11px}.grid{display:grid;grid-template-columns:1.45fr 1fr;gap:16px;margin-top:16px}.panel{background:#fdfbf8;border:1px solid #ebe4da;border-radius:14px;padding:23px}.panel h2{font-size:15px;letter-spacing:-.03em;margin:0 0 18px}.progress{height:9px;background:#eee8e0;border-radius:20px;overflow:hidden}.progress span{display:block;height:100%;background:#db976e;border-radius:20px}.task{display:flex;gap:10px;align-items:center;padding:14px 0;border-bottom:1px solid #eee8e1;font-size:12px}.task:last-child{border-bottom:none}.check{width:17px;height:17px;border:1px solid #d7b59d;border-radius:6px;background:#f8e5d6}.task small{margin-left:auto;color:#9a9186}.bars{display:flex;align-items:flex-end;height:110px;gap:10px;margin-top:18px}.bars i{background:#ebc9b1;border-radius:4px 4px 0 0;display:block;flex:1}.bars i:nth-child(3n){background:#d68c63}.muted{font-size:12px;color:#a0978d} 
 @media(max-width:720px){.shell{grid-template-columns:1fr}.side{display:none}.main{padding:22px}.stats{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.stat:last-child{grid-column:span 2}}@media(max-width:350px){.stats{grid-template-columns:1fr}.stat:last-child{grid-column:span 1}}
+
+/* Lucide icons are embedded in this standalone sandboxed Demo. */
+.lucide-demo-icon{width:16px;height:16px;flex:none;vertical-align:-.2em}
+.nav .lucide-demo-icon{width:17px;height:17px;color:#80776e}
+.nav.active .lucide-demo-icon{color:#ad6a45}
+.pill,.panel h2{display:flex;align-items:center;gap:8px}
+.pill .lucide-demo-icon{width:14px;height:14px}
+.panel h2 .lucide-demo-icon{color:#ad6a45;width:17px;height:17px}
 </style></head>
-<body><div class="shell"><aside class="side"><div class="brand"><span class="brand-mark">W</span> warmday</div><div class="eyebrow">工作空间</div><a href="#" class="nav active"><span class="dot"></span>概览</a><a href="#" class="nav"><span class="dot"></span>项目</a><a href="#" class="nav"><span class="dot"></span>日历</a><a href="#" class="nav"><span class="dot"></span>报告</a><div class="eyebrow">我的分组</div><a href="#" class="nav"><span class="dot"></span>设计工作台</a><a href="#" class="nav"><span class="dot"></span>开发任务</a><div class="profile"><strong>设计记录</strong>近期创建 4 个 UI 实验。</div></aside>
-<main class="main"><div class="top"><span>Workspace / 概览</span><span class="pill">本地演示数据</span></div><h1>项目概览</h1><p class="lead">查看正在进行的设计任务与最近一周进度。</p>
+<body><div class="shell"><aside class="side"><div class="brand"><span class="brand-mark">W</span> warmday</div><div class="eyebrow">工作空间</div><a href="#" class="nav active"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="3" rx="1" />
+  <rect width="7" height="7" x="14" y="14" rx="1" />
+  <rect width="7" height="7" x="3" y="14" rx="1" /></svg>概览</a><a href="#" class="nav"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.9a2 2 0 0 1-1.69-.9L9.6 3.9A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2Z" /></svg>项目</a><a href="#" class="nav"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v3" />
+  <path d="M16 2v3" />
+  <rect x="3" y="3" width="18" height="18" rx="2" />
+  <path d="M3 9h18" />
+  <path d="M8 13h.01" />
+  <path d="M12 13h.01" />
+  <path d="M16 13h.01" />
+  <path d="M8 17h.01" />
+  <path d="M12 17h.01" />
+  <path d="M16 17h.01" /></svg>日历</a><a href="#" class="nav"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21v-6" />
+  <path d="M12 21V3" />
+  <path d="M19 21V9" /></svg>报告</a><div class="eyebrow">我的分组</div><a href="#" class="nav"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22a1 1 0 0 1 0-20 10 9 0 0 1 10 9 5 5 0 0 1-5 5h-2.25a1.75 1.75 0 0 0-1.4 2.8l.3.4a1.75 1.75 0 0 1-1.4 2.8z" />
+  <circle cx="13.5" cy="6.5" r=".5" fill="currentColor" />
+  <circle cx="17.5" cy="10.5" r=".5" fill="currentColor" />
+  <circle cx="6.5" cy="12.5" r=".5" fill="currentColor" />
+  <circle cx="8.5" cy="7.5" r=".5" fill="currentColor" /></svg>设计工作台</a><a href="#" class="nav"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5h8" />
+  <path d="M13 12h8" />
+  <path d="M13 19h8" />
+  <path d="m3 17 2 2 4-4" />
+  <rect x="3" y="4" width="6" height="6" rx="1" /></svg>开发任务</a><div class="profile"><strong>设计记录</strong>近期创建 4 个 UI 实验。</div></aside>
+<main class="main"><div class="top"><span>Workspace / 概览</span><span class="pill"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" />
+  <path d="m16 9-5.5 5.5L8 12" /></svg><span>本地演示数据</span></span></div><h1>项目概览</h1><p class="lead">查看正在进行的设计任务与最近一周进度。</p>
 <section class="stats"><div class="stat"><small>进行中的项目</small><strong>08</strong><span class="trend">本周新增 2 个</span></div><div class="stat"><small>已完成任务</small><strong>24</strong><span class="trend">较上周多 12%</span></div><div class="stat"><small>本周投入</small><strong>16.5h</strong><span class="muted">过去七天</span></div></section>
-<section class="grid"><div class="panel"><h2>项目 in motion</h2><p class="muted">组件库整理：完成度 72%</p><div class="progress"><span style="width:72%"></span></div><div style="height:24px"></div><h2>待处理任务</h2><div class="task"><span class="check"></span>统一按钮与表单间距<small>今天</small></div><div class="task"><span class="check"></span>复核主题色和字体层级<small>明天</small></div><div class="task"><span class="check"></span>整理 Demo 的复用说明<small>周五</small></div></div><div class="panel"><h2>本周记录</h2><p class="muted">按天记录的示例任务量。</p><div class="bars"><i style="height:35%"></i><i style="height:55%"></i><i style="height:72%"></i><i style="height:46%"></i><i style="height:90%"></i><i style="height:67%"></i><i style="height:82%"></i></div><p class="muted">M &nbsp; T &nbsp; W &nbsp; T &nbsp; F &nbsp; S &nbsp; S</p></div></section></main></div></body></html>
+<section class="grid"><div class="panel"><h2><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg><span>项目 in motion</span></h2><p class="muted">组件库整理：完成度 72%</p><div class="progress"><span style="width:72%"></span></div><div style="height:24px"></div><h2><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 5h8" />
+  <path d="M13 12h8" />
+  <path d="M13 19h8" />
+  <path d="m3 17 2 2 4-4" />
+  <rect x="3" y="4" width="6" height="6" rx="1" /></svg><span>待处理任务</span></h2><div class="task"><span class="check"></span>统一按钮与表单间距<small>今天</small></div><div class="task"><span class="check"></span>复核主题色和字体层级<small>明天</small></div><div class="task"><span class="check"></span>整理 Demo 的复用说明<small>周五</small></div></div><div class="panel"><h2><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21v-6" />
+  <path d="M12 21V3" />
+  <path d="M19 21V9" /></svg><span>本周记录</span></h2><p class="muted">按天记录的示例任务量。</p><div class="bars"><i style="height:35%"></i><i style="height:55%"></i><i style="height:72%"></i><i style="height:46%"></i><i style="height:90%"></i><i style="height:67%"></i><i style="height:82%"></i></div><p class="muted">M &nbsp; T &nbsp; W &nbsp; T &nbsp; F &nbsp; S &nbsp; S</p></div></section></main></div></body></html>
