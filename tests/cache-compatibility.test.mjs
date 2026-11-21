@@ -26,9 +26,11 @@ test('HTML/JS 缓存错配不再直接调用缺失 sidebar 的 inert',async()=>{
   assert.match(html,/id="preview-stage"/);
   assert.match(build,/assetRevision/);
   assert.match(build,/createHash\('sha256'\)/);
-  assert.match(build,/app\.\$\{assetRevision\}\.js/);
+  assert.ok(build.includes('entryName}.${assetRevision}.js'),'双页面入口必须生成版本化脚本');
   assert.match(build,/styles\.\$\{assetRevision\}\.css/);
   assert.match(build,/withRevision/);
+  assert.ok(build.includes("[\u0027index.html\u0027,\u0027app\u0027]"));
+  assert.ok(build.includes("[\u0027settings.html\u0027,\u0027settings-page\u0027]"));
   assert.match(check,/cssFingerprint/);
   assert.match(check,/jsFingerprint/);
 });
