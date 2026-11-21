@@ -27,7 +27,9 @@ function PreviewContent({asset,mode,error}){
   if(asset.source==='local'){
     return <iframe ref={frame} className="live-frame" data-preview-frame="local"
       title={asset.title+' 的可交互预览'} src={resolveAsset(asset.preview)}
-      sandbox="allow-scripts" referrerPolicy="no-referrer"/>;
+      sandbox="allow-scripts"
+      allow={asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog'?'webgpu':undefined}
+      referrerPolicy="no-referrer"/>;
   }
   if(asset.siteUrl){
     return <>

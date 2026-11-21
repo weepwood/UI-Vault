@@ -26,7 +26,7 @@ function createLiquidOrbDialog({
     '      <span class="lod-loading-label">正在准备玻璃球…</span>',
     '      <button class="lod-retry" type="button" hidden>重新尝试</button>',
     '    </div>',
-    '    <div class="lod-viewport"><iframe title="动态液态玻璃球" sandbox="allow-scripts" referrerpolicy="no-referrer"></iframe></div>',
+    '    <div class="lod-viewport"><iframe title="动态液态玻璃球" sandbox="allow-scripts" allow="webgpu" referrerpolicy="no-referrer"></iframe></div>',
     '  </div>',
     '  <div class="lod-copy"><p class="lod-text"></p></div>',
     '  <button type="button" class="lod-close" aria-label="关闭对话框" title="关闭">',
