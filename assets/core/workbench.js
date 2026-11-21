@@ -3,16 +3,26 @@ import { escapeHtml, resolveAsset } from './render.js';
 
 const safe=escapeHtml;
 const stageLabels={draft:'待精调',refining:'精调中',stable:'已定稿'};
+// 固定的 emoji 池；通过项目 ID 生成稳定的伪随机索引，避免筛选、排序时图标跳变。
+const PROJECT_EMOJIS=Object.freeze([
+  '🌌','🪐','🌿','💠','🧩','🎐','🌈','🪄','🍀','🎨',
+  '🔮','🪷','🧭','🎭','🛸','🌸','💎','✨','🌀','🎮',
+  '🧪','🎲','🎧','📚','🌙','🦋','☀️','🪁','🧸','🚀'
+]);
+export function projectEmoji(id) {
+  let hash=2166136261;
+  for(const char of String(id??''))hash=Math.imul(hash^char.codePointAt(0),16777619);
+  return PROJECT_EMOJIS[(hash>>>0)%PROJECT_EMOJIS.length];
+}
 
-export function projectRowMarkup(asset,favorites,labels,selected=false) {
-  const local=asset.source==='local',liked=favorites.has(asset.id);
+export function projectRowMarkup(asset,_favorites,labels,selected=false) {
+  const local=asset.source==='local';
   const kind=asset.curated ? '手工精选 · '+(stageLabels[asset.curationStage]||'待精调') : labels[asset.type]||asset.type;
   return '<article class="project-item'+(selected?' is-selected':'')+'" role="listitem" data-id="'+safe(asset.id)+'">'+
     '<button class="project-row" type="button" data-open="'+safe(asset.id)+'" aria-current="'+(selected?'true':'false')+'" aria-label="预览 '+safe(asset.title)+'">'+
-      '<span class="project-row-icon">'+iconMarkup(local?'play':'git-branch')+'</span>'+
+      '<span class="project-row-icon project-row-emoji" aria-hidden="true">'+projectEmoji(asset.id)+'</span>'+
       '<span class="project-row-copy"><span class="project-row-title">'+safe(asset.title)+'</span>'+
-        '<span class="project-row-subtitle">'+safe(kind)+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')+'</span></span></button>'+
-    '<button class="project-star" type="button" data-favorite="'+safe(asset.id)+'" aria-pressed="'+liked+'" aria-label="'+(liked?'取消收藏 ':'收藏 ')+safe(asset.title)+'">'+iconMarkup('heart')+'</button></article>';
+        '<span class="project-row-subtitle">'+safe(kind)+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')+'</span></span></button></article>';
 }
 
 export function projectInfoMarkup(asset,labels) {
