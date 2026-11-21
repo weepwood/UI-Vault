@@ -1,5 +1,33 @@
 [
   {
+    "id": "aesthetic-frontend-skills",
+    "title": "Aesthetic Frontend 视觉语言资料",
+    "subtitle": "跨仓库设计资产",
+    "description": "从视觉风格名称映射到设计维度、语义 Token 和前端实现指引的研究库。",
+    "type": "style",
+    "source": "external",
+    "tags": [
+      "审美词典",
+      "设计规范",
+      "Agent"
+    ],
+    "technologies": [
+      "Markdown",
+      "Design Tokens"
+    ],
+    "url": "https://github.com/weepwood/aesthetic-frontend-skills",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/aesthetic-frontend-skills",
+    "sourceUrl": "https://github.com/weepwood/aesthetic-frontend-skills/blob/main/docs/schemas/aesthetic-profile.schema.json",
+    "reuseNotes": [
+      "借鉴视觉语言的结构化分类与反例说明",
+      "外部知识库具有独立来源和授权，不复制其批量研究内容"
+    ]
+  },
+  {
     "id": "argus-ui",
     "title": "Argus UI 原生桌面",
     "subtitle": "现有项目 · Native",
@@ -20,7 +48,13 @@
     "license": "以源仓库为准",
     "cover": "native",
     "featured": false,
-    "created": "2026-11-21"
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/Argus-UI",
+    "sourceUrl": "https://github.com/weepwood/Argus-UI/blob/main/src/pages/showcase.rs",
+    "reuseNotes": [
+      "高密度原生 Windows 工作台与详情栏",
+      "GPUI Kit 的外观主题、原生材质与文本清晰度调节"
+    ]
   },
   {
     "id": "aurora-field",
@@ -48,6 +82,35 @@
     "copyable": true
   },
   {
+    "id": "blender-ui-demo",
+    "title": "Blender 风格多面板桌面研究",
+    "subtitle": "跨仓库设计资产",
+    "description": "C++/SDL3/ImGui 深色多栏工作区，含属性检查器、状态栏和可拖动分隔。",
+    "type": "reference",
+    "source": "external",
+    "tags": [
+      "ImGui",
+      "深色",
+      "多栏"
+    ],
+    "technologies": [
+      "C++",
+      "SDL3",
+      "Dear ImGui"
+    ],
+    "url": "https://github.com/weepwood/BlenderUIDemo",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "native",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/BlenderUIDemo",
+    "sourceUrl": "https://github.com/weepwood/BlenderUIDemo/blob/main/src/App.cpp",
+    "reuseNotes": [
+      "研究高密度工作区与可调宽度面板",
+      "保留原生运行边界和第三方框架归属"
+    ]
+  },
+  {
     "id": "editor-shell",
     "title": "编辑器布局原型",
     "subtitle": "Editor Workbench",
@@ -71,6 +134,221 @@
     "featured": false,
     "created": "2026-11-21",
     "copyable": true
+  },
+  {
+    "id": "emboss-poster-lab",
+    "title": "Emboss Lab · 浮雕海报交互",
+    "subtitle": "来自 Emboss-Lab 的可运行静态实验",
+    "description": "程序化纸张纹理、凹凸压印、漫反射光照与五组可切换的海报场景。",
+    "type": "effect",
+    "source": "local",
+    "tags": [
+      "浮雕",
+      "材质",
+      "SVG",
+      "交互"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "SVG",
+      "JavaScript"
+    ],
+    "preview": "demos/experiments/emboss-poster-lab/index.html",
+    "code": "demos/experiments/emboss-poster-lab/index.html",
+    "publish": [
+      "demos/experiments/emboss-poster-lab/assets/grain.svg"
+    ],
+    "copyable": false,
+    "license": "迁入个人原仓库的原创演示；设计参考与素材边界见源仓库",
+    "cover": "style",
+    "featured": true,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/Emboss-Lab",
+    "sourceUrl": "https://github.com/weepwood/Emboss-Lab/blob/main/index.html",
+    "reuseNotes": [
+      "研究 SVG feTurbulence 生成纸面颗粒与压印光影",
+      "通过鼠标位置和 CSS 变量调节局部漫反射",
+      "演示依赖独立 SVG 文件，不能单独复制 HTML 使用"
+    ]
+  },
+  {
+    "id": "eui-neo-demo",
+    "title": "EUI-NEO C++ 控件展示",
+    "subtitle": "跨仓库设计资产",
+    "description": "C++ 桌面控件示例，覆盖导航、进度条、滑块、分段选择和主题切换。",
+    "type": "reference",
+    "source": "external",
+    "tags": [
+      "C++",
+      "桌面",
+      "控件"
+    ],
+    "technologies": [
+      "C++",
+      "CMake"
+    ],
+    "url": "https://github.com/weepwood/EUI-NEO-Demo",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "native",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/EUI-NEO-Demo",
+    "sourceUrl": "https://github.com/weepwood/EUI-NEO-Demo/blob/main/app.cpp",
+    "reuseNotes": [
+      "适合对比原生控件的状态与布局结构",
+      "需要 C++ 原生环境，不应伪装成浏览器实时预览"
+    ]
+  },
+  {
+    "id": "evoatlas-tree-ui",
+    "title": "EvoAtlas 生命之树交互可视化",
+    "subtitle": "跨仓库设计资产",
+    "description": "基于树形布局、画布平移缩放和节点比较的交互式科学可视化。",
+    "type": "demo",
+    "source": "external",
+    "tags": [
+      "数据可视化",
+      "Canvas",
+      "交互"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "url": "https://github.com/weepwood/EvoAtlas",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "mosaic",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/EvoAtlas",
+    "sourceUrl": "https://github.com/weepwood/EvoAtlas/blob/main/styles.css",
+    "reuseNotes": [
+      "借鉴多层级节点筛选、聚焦和平移缩放交互",
+      "科学时间与分类数据仅按源项目注明的教育语境理解"
+    ]
+  },
+  {
+    "id": "fileatlas-browser-ui",
+    "title": "FileAtlas 文件分析工作台",
+    "subtitle": "跨仓库设计资产",
+    "description": "浏览器本地文件检索、虚拟列表、Treemap 与重复文件分析界面。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "文件管理",
+      "数据可视化",
+      "Virtual List"
+    ],
+    "technologies": [
+      "React",
+      "TypeScript",
+      "ECharts"
+    ],
+    "url": "https://github.com/weepwood/FileAtlas",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "editor",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/FileAtlas",
+    "sourceUrl": "https://github.com/weepwood/FileAtlas/blob/main/src/pages/DashboardPage.tsx",
+    "reuseNotes": [
+      "借鉴大数据量列表、分布图表与空态反馈",
+      "真实文件路径、扫描结果不能复制到公开站点"
+    ]
+  },
+  {
+    "id": "fluxnav-start-page",
+    "title": "FluxNav 浏览器起始页",
+    "subtitle": "跨仓库设计资产",
+    "description": "面向链接导航与搜索场景的 React 浏览器起始页。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "起始页",
+      "导航",
+      "React"
+    ],
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Tailwind CSS"
+    ],
+    "url": "https://github.com/weepwood/fluxnav",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/fluxnav",
+    "sourceUrl": "https://github.com/weepwood/fluxnav/blob/main/src/App.tsx",
+    "reuseNotes": [
+      "借鉴高频快捷入口和搜索主操作的排版",
+      "避免将业务展示中涉及的第三方图标无授权复制"
+    ],
+    "siteUrl": "https://fluxnav.netlify.app/"
+  },
+  {
+    "id": "fontfolio",
+    "title": "Fontfolio · 字体设计资料馆",
+    "subtitle": "跨仓库设计资产",
+    "description": "字体样张、字重切换、字体比较以及下载与许可证信息组织。",
+    "type": "style",
+    "source": "external",
+    "tags": [
+      "字体",
+      "排版",
+      "授权"
+    ],
+    "technologies": [
+      "Vue 3",
+      "TypeScript",
+      "SCSS"
+    ],
+    "url": "https://github.com/weepwood/Fontfolio",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/Fontfolio",
+    "sourceUrl": "https://github.com/weepwood/Fontfolio/blob/main/src/components/AutoFitSample.vue",
+    "reuseNotes": [
+      "参考不同语言和容器宽度下的排版预览",
+      "授权与字体文件分发须逐项核实，不能整库拷贝字体"
+    ],
+    "siteUrl": "https://weepwood.github.io/Fontfolio/"
+  },
+  {
+    "id": "frame-design-lab",
+    "title": "Frame Lab · UI 结构实验室",
+    "subtitle": "来自 Style Atlas 的独立 Frame Lab",
+    "description": "静态单页设计结构工作台，演示不同视觉方向、布局密度、Figma 结构概念和组件交互。",
+    "type": "layout",
+    "source": "local",
+    "tags": [
+      "布局",
+      "Figma",
+      "设计实验",
+      "组件"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "preview": "demos/experiments/frame-design-lab/index.html",
+    "code": "demos/experiments/frame-design-lab/index.html",
+    "copyable": true,
+    "license": "个人原仓库独立前端教学实验；外部平台引用仍归各自权利方",
+    "cover": "editor",
+    "featured": true,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/style-atlas",
+    "sourceUrl": "https://github.com/weepwood/style-atlas/blob/main/public/frame-lab/index.html",
+    "reuseNotes": [
+      "可切换 UI 视觉方向、排版密度、布局和组件状态",
+      "参考 Figma Auto Layout 的结构拆解与 Token 复制"
+    ]
   },
   {
     "id": "glass-panel",
@@ -97,6 +375,34 @@
     "copyable": true
   },
   {
+    "id": "gpui-kit-demo",
+    "title": "GPUI Kit 原生桌面脚手架",
+    "subtitle": "跨仓库设计资产",
+    "description": "Rust 原生工作台，提供侧栏、输入区、组件示例和主题切换。",
+    "type": "component",
+    "source": "external",
+    "tags": [
+      "Rust",
+      "GPUI",
+      "桌面"
+    ],
+    "technologies": [
+      "Rust",
+      "GPUI Kit"
+    ],
+    "url": "https://github.com/weepwood/GPUI-Kit-Demo",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "native",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/GPUI-Kit-Demo",
+    "sourceUrl": "https://github.com/weepwood/GPUI-Kit-Demo/blob/main/src/palette.rs",
+    "reuseNotes": [
+      "借鉴原生桌面 Token 与明暗模式管理",
+      "需原生运行，浏览器中仅提供源码与项目索引"
+    ]
+  },
+  {
     "id": "gr8r-studio-ui",
     "title": "暖色扁平组件体系",
     "subtitle": "现有项目 · 组件库",
@@ -116,7 +422,100 @@
     "license": "以源仓库为准",
     "cover": "warm",
     "featured": false,
-    "created": "2026-11-21"
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/gr8r-studio-ui",
+    "sourceUrl": "https://github.com/weepwood/gr8r-studio-ui/blob/main/src/tokens.css",
+    "reuseNotes": [
+      "无框架依赖的语义 Token 和任务工作台组件",
+      "主题、强调色与界面密度的显式配置"
+    ]
+  },
+  {
+    "id": "graphboard-workspace",
+    "title": "GraphBoard GraphQL 项目工作台",
+    "subtitle": "跨仓库设计资产",
+    "description": "Vue 项目与任务界面，使用 GraphQL 查询与交互式数据关系。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "GraphQL",
+      "工作台",
+      "数据界面"
+    ],
+    "technologies": [
+      "Vue 3",
+      "TypeScript",
+      "GraphQL"
+    ],
+    "url": "https://github.com/weepwood/GraphBoard",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/GraphBoard",
+    "sourceUrl": "https://github.com/weepwood/GraphBoard/blob/main/apps/web/src/App.vue",
+    "reuseNotes": [
+      "借鉴工作区、项目、任务三级关系的导航表达",
+      "正式运行依赖后端和数据库，本站只收录界面架构参考"
+    ]
+  },
+  {
+    "id": "infinite-mosaic-gallery",
+    "title": "Infinite Mosaic 原生图片墙",
+    "subtitle": "跨仓库设计资产",
+    "description": "Rust + GPUI 的本地无限磁贴画布，支持原位图片展开、缓存与拖动缩放。",
+    "type": "demo",
+    "source": "external",
+    "tags": [
+      "磁贴",
+      "GPUI",
+      "画布"
+    ],
+    "technologies": [
+      "Rust",
+      "GPUI Kit"
+    ],
+    "url": "https://github.com/weepwood/Infinite-Mosaic-Gallery",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "mosaic",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/Infinite-Mosaic-Gallery",
+    "sourceUrl": "https://github.com/weepwood/Infinite-Mosaic-Gallery/blob/main/src/layout.rs",
+    "reuseNotes": [
+      "借鉴确定性空间磁贴布局和持久化位置策略",
+      "原生目录扫描与图片缓存无法直接在网页运行"
+    ]
+  },
+  {
+    "id": "kumo-edge-console",
+    "title": "Kumo Edge 边缘控制台",
+    "subtitle": "跨仓库设计资产",
+    "description": "React/Kumo 边缘服务工作台，包含指标卡、状态开关、进度和终端日志。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "React",
+      "控制台",
+      "Kumo"
+    ],
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Cloudflare Kumo"
+    ],
+    "url": "https://github.com/weepwood/kumo-demo",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/kumo-demo",
+    "sourceUrl": "https://github.com/weepwood/kumo-demo/blob/main/src/App.tsx",
+    "reuseNotes": [
+      "研究设计系统组件在具体运维业务中的组合",
+      "适合作为指标、日志、设置等基础页面参考"
+    ],
+    "siteUrl": "https://weepwood.github.io/kumo-demo/"
   },
   {
     "id": "motion-lab",
@@ -138,7 +537,100 @@
     "license": "以源仓库为准",
     "cover": "motion",
     "featured": false,
-    "created": "2026-11-21"
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/Motion-Lab",
+    "sourceUrl": "https://github.com/weepwood/Motion-Lab/blob/main/src/motion.ts",
+    "reuseNotes": [
+      "消息飞入、手势反馈和可调缓动时长",
+      "减少动画和低功耗模式作为设计基础"
+    ]
+  },
+  {
+    "id": "mrr-admin",
+    "title": "MRR Admin 高密度管理界面",
+    "subtitle": "跨仓库设计资产",
+    "description": "shadcn-admin 风格的医疗后台布局、权限状态、高密度表格和业务导航。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "管理后台",
+      "表格",
+      "权限"
+    ],
+    "technologies": [
+      "React",
+      "TypeScript",
+      "Vite"
+    ],
+    "url": "https://github.com/weepwood/MRR-Admin",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "editor",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/MRR-Admin",
+    "sourceUrl": "https://github.com/weepwood/MRR-Admin/blob/main/src/components/shell.tsx",
+    "reuseNotes": [
+      "可借鉴高密度业务检索、表格与状态组件组织",
+      "任何真实患者或病案数据不得进入公开 UI 资产库"
+    ]
+  },
+  {
+    "id": "nexadesk-command-ui",
+    "title": "NexaDesk WinUI 命令启动器",
+    "subtitle": "跨仓库设计资产",
+    "description": "WinUI 3 原生快捷启动与动作搜索，包含全局命令面板和历史操作。",
+    "type": "component",
+    "source": "external",
+    "tags": [
+      "WinUI 3",
+      "命令面板",
+      "桌面"
+    ],
+    "technologies": [
+      "C#",
+      "WinUI 3"
+    ],
+    "url": "https://github.com/weepwood/NexaDesk",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "native",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/NexaDesk",
+    "sourceUrl": "https://github.com/weepwood/NexaDesk/blob/main/src/NexaDesk/Views/CommandPaletteWindow.xaml",
+    "reuseNotes": [
+      "研究原生命令搜索、常用动作排序和快捷键设计",
+      "Windows 应用需在原平台检验"
+    ]
+  },
+  {
+    "id": "nimbus-docs-ui",
+    "title": "Nimbus 文档与组件工作台",
+    "subtitle": "跨仓库设计资产",
+    "description": "Astro 文档站，集合侧栏、目录导航、搜索、MDX 组件和交互实验室。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "文档",
+      "Astro",
+      "导航"
+    ],
+    "technologies": [
+      "Astro",
+      "MDX",
+      "TypeScript"
+    ],
+    "url": "https://github.com/weepwood/nimbus-demo",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/nimbus-demo",
+    "sourceUrl": "https://github.com/weepwood/nimbus-demo/blob/main/src/components/ui/card/Card.astro",
+    "reuseNotes": [
+      "借鉴长文档信息架构、组件语义与实时主题实验",
+      "文档搜索和 MDX 渲染应保留原工程构建流程"
+    ],
+    "siteUrl": "https://weepwood.github.io/nimbus-demo/"
   },
   {
     "id": "noema",
@@ -161,7 +653,157 @@
     "license": "以源仓库为准",
     "cover": "mosaic",
     "featured": true,
-    "created": "2026-11-21"
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/NOEMA",
+    "sourceUrl": "https://github.com/weepwood/NOEMA/blob/main/src/canvas-core.js",
+    "reuseNotes": [
+      "固定磁贴画布、指针锚点缩放与展开动画",
+      "视口裁剪及缩略图和原图分级加载"
+    ]
+  },
+  {
+    "id": "orbitflow-saas-ui",
+    "title": "OrbitFlow SaaS 管理界面",
+    "subtitle": "跨仓库设计资产",
+    "description": "基于 Laravel、Livewire 和 Flux UI 的项目、任务、团队工作空间。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "SaaS",
+      "后台",
+      "任务管理"
+    ],
+    "technologies": [
+      "Laravel",
+      "Livewire",
+      "Flux UI"
+    ],
+    "url": "https://github.com/weepwood/OrbitFlow",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "warm",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/OrbitFlow",
+    "sourceUrl": "https://github.com/weepwood/OrbitFlow/blob/main/resources/views/components/layouts/app.blade.php",
+    "reuseNotes": [
+      "参考团队工作区导航、表格与表单场景",
+      "业务验证、权限和服务端依赖需留在源项目"
+    ]
+  },
+  {
+    "id": "p001-theme-workbench",
+    "title": "VS Code 2026 工作台主题实验",
+    "subtitle": "跨仓库设计资产",
+    "description": "独立编辑器布局实验，涵盖深浅色主题、命令中心、侧栏、标签与底部面板。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "编辑器",
+      "工作台",
+      "深浅主题"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "url": "https://github.com/weepwood/P-001",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "editor",
+    "featured": true,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/P-001",
+    "sourceUrl": "https://github.com/weepwood/P-001/blob/main/src/glass/glass-tokens.css",
+    "reuseNotes": [
+      "借鉴编辑器式高密度布局与主题色语义映射",
+      "可参考命令面板和多栏导航的交互分层"
+    ]
+  },
+  {
+    "id": "r2-poster-wall",
+    "title": "R2 Web 海报墙与文件展示",
+    "subtitle": "跨仓库设计资产",
+    "description": "对象存储文件管理前端，研究高密度文件列表、图片墙和预览动效。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "Gallery",
+      "云存储",
+      "图片预览"
+    ],
+    "technologies": [
+      "JavaScript",
+      "CSS"
+    ],
+    "url": "https://github.com/weepwood/r2-web",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "mosaic",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/r2-web",
+    "sourceUrl": "https://github.com/weepwood/r2-web/blob/main/src/css/poster-wall.css",
+    "reuseNotes": [
+      "研究资源缩略图与原图分级加载方式",
+      "不要把任何存储桶密钥、真实文件数据迁入公开展厅"
+    ]
+  },
+  {
+    "id": "react-ui-atlas",
+    "title": "React 组件库选型图鉴",
+    "subtitle": "跨仓库设计资产",
+    "description": "17 个 React UI 库、8 套设计体系，以及多方案横向比较与选择条件。",
+    "type": "reference",
+    "source": "external",
+    "tags": [
+      "React",
+      "组件选型",
+      "设计体系"
+    ],
+    "technologies": [
+      "React",
+      "JavaScript",
+      "Vite"
+    ],
+    "url": "https://github.com/weepwood/react-ui-atlas",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "style",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/react-ui-atlas",
+    "sourceUrl": "https://github.com/weepwood/react-ui-atlas/blob/main/src/data.js",
+    "reuseNotes": [
+      "借鉴按产品目标、技术约束筛选组件库的组织方式",
+      "可复用多方案横向对比与决策问题设计"
+    ]
+  },
+  {
+    "id": "s2u-link-workbench",
+    "title": "S2U 链接与 Scheme 工作台",
+    "subtitle": "跨仓库设计资产",
+    "description": "本地收藏、历史链接、快捷命令和二维码分享的多视图管理界面。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "链接管理",
+      "命令面板",
+      "工作台"
+    ],
+    "technologies": [
+      "Vue 3",
+      "JavaScript"
+    ],
+    "url": "https://github.com/weepwood/s2u",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "glass",
+    "featured": false,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/s2u",
+    "sourceUrl": "https://github.com/weepwood/s2u/blob/master/src/components/CommandPalette.vue",
+    "reuseNotes": [
+      "借鉴收藏、历史、快捷入口的轻量信息架构",
+      "Scheme 安全策略应由源项目维护，不复制跳转业务"
+    ],
+    "siteUrl": "https://s2u2.netlify.app/"
   },
   {
     "id": "style-atlas",
@@ -183,7 +825,43 @@
     "license": "以源仓库为准",
     "cover": "style",
     "featured": true,
-    "created": "2026-11-21"
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/style-atlas",
+    "sourceUrl": "https://github.com/weepwood/style-atlas/blob/main/src/data/styles.ts",
+    "reuseNotes": [
+      "30 套风格的可视预览与语义 Token 导出",
+      "主题偏好持久化和客户端风格比较"
+    ],
+    "siteUrl": "https://weepwood.github.io/style-atlas/"
+  },
+  {
+    "id": "tauri-desktop-kit",
+    "title": "Tauri Desktop Kit 多面板工作台",
+    "subtitle": "跨仓库设计资产",
+    "description": "Vue 与 Tauri 的桌面应用壳，包含折叠侧栏、可调面板和命令面板。",
+    "type": "layout",
+    "source": "external",
+    "tags": [
+      "Tauri",
+      "Vue",
+      "多栏布局"
+    ],
+    "technologies": [
+      "Tauri 2",
+      "Vue 3",
+      "TypeScript"
+    ],
+    "url": "https://github.com/weepwood/Tauri-Desktop-Kit",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "editor",
+    "featured": true,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/Tauri-Desktop-Kit",
+    "sourceUrl": "https://github.com/weepwood/Tauri-Desktop-Kit/blob/main/packages/shell/src/DesktopShell.vue",
+    "reuseNotes": [
+      "研究主侧栏、检查器、底栏的布局复用边界",
+      "借鉴主题与密度偏好持久化模式"
+    ]
   },
   {
     "id": "warm-workbench",
@@ -210,5 +888,34 @@
     "featured": true,
     "created": "2026-11-21",
     "copyable": true
+  },
+  {
+    "id": "weepwood-ui",
+    "title": "Weepwood UI · Vue 组件体系",
+    "subtitle": "跨仓库设计资产",
+    "description": "Vue 3 组件与 Storybook 展厅，包含 Button、Dialog、Tabs、表单与语义 Token。",
+    "type": "component",
+    "source": "external",
+    "tags": [
+      "Vue",
+      "Storybook",
+      "Design Tokens"
+    ],
+    "technologies": [
+      "Vue 3",
+      "TypeScript",
+      "Storybook"
+    ],
+    "url": "https://github.com/weepwood/weepwood-UI",
+    "license": "来源仓库与各素材单项许可为准；本站仅收录索引",
+    "cover": "glass",
+    "featured": true,
+    "created": "2026-11-21",
+    "originRepo": "https://github.com/weepwood/weepwood-UI",
+    "sourceUrl": "https://github.com/weepwood/weepwood-UI/blob/main/packages/vue/src/components/WButton.vue",
+    "reuseNotes": [
+      "参考 14 个组件的 props、状态与主题接入方式",
+      "组件文档与交互示例分离，适合建立资产复用规范"
+    ]
   }
 ]
