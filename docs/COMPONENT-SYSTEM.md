@@ -65,8 +65,8 @@ demos/components/workbench-system/
 ### 抽取顺序与迁移契约
 
 1. **P0（当前）｜清点与展示**：有可运行示例、真实组件依赖、资源登记、回归检查、规范；保留现有主站选择器以避免大范围重构。
-2. **P1（部分完成）｜抽取无业务依赖的部分**：已把搜索、Button/Filter、Toast 的基础样式抽到 `assets/ui/controls.css`，下拉视觉与动效抽到 `assets/ui/dropdown.css`，并统一由主站 CSS 导入。Dialog、Badge、更多状态仍待分批抽取；不要一次性重写现有工作台。
-3. **P2（部分完成）｜抽取复杂状态**：已抽出 `assets/core/workbench-state.js`（筛选互斥、资源选中、预览模式状态）及 `assets/ui/viewport-switcher.js`（设备菜单键盘/触屏/焦点）。下一步拆出项目 Dialog 与路由/移动导航状态，继续确保 iframe 不无谓重载。
+2. **P1（持续推进）｜抽取无业务依赖的部分**：已将基础控件与下拉分别抽入 `assets/ui/controls.css`、`dropdown.css`，并继续拆出 `project-row.css`、`dialog.css` 和 `preview-toolbar.css`。主站保留响应式场景覆盖；未来再把 Badge、更多可复用状态提炼为独立 recipe。
+3. **P2（已完成主要拆分）｜抽取复杂状态**：已抽出 `assets/core/workbench-state.js`、`assets/ui/viewport-switcher.js`、`assets/ui/project-dialog.js`、`assets/ui/mobile-navigation.js` 和 `assets/core/workbench-router.js`。下一步重点改善演示组件的跨项目 Token 复用及真实浏览器视觉回归。
 4. **P3｜跨框架适配**：稳定组件以 Foundation 变量为桥梁接入 Vue/React；Rust/GPUI 共享视觉 Token，不照搬 DOM。只有在有第二个真实消费者后才正式标为“跨项目通用”。
 5. **P4｜自动化视觉验收**：补上 Chromium 截图基准和响应式场景，覆盖明暗主题、鼠标/触屏、宽窄视口、长文本以及字体加载。构建通过不等于视觉验收通过。
 
@@ -87,3 +87,5 @@ demos/components/workbench-system/
 - 用户筛选与分类属于产品状态，不属于通用组件；组件负责展示和事件合同，业务层负责持久化、导航和跨资源关联。
 
 本阶段的具体实现与测试路径见 [WORKBENCH-MODULES.md](WORKBENCH-MODULES.md)。
+
+ProjectRow/Dialog/PreviewToolbar 的 CSS 来源、页面级覆盖与 Chromium 截图回归见 [CSS-MODULES-VISUAL.md](CSS-MODULES-VISUAL.md)。
