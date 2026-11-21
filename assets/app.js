@@ -1,7 +1,17 @@
+import { iconMarkup } from './core/icons.js';
 import { filterAssets, popularTags } from './core/catalog.js';
 import { loadFavorites, saveFavorites } from './core/favorites.js';
 import { cardMarkup, detailMarkup, escapeHtml, resolveAsset } from './core/render.js';
 import { applyPreviewLayout, PREVIEW_WIDTHS } from './core/preview.js';
+
+const categoryIconById=Object.freeze({
+  style:'palette',
+  component:'component',
+  effect:'zap',
+  layout:'panels-top-left',
+  demo:'play',
+  reference:'bookmark'
+});
 
 const $=selector=>document.querySelector(selector);
 const gallery=$('#gallery'),search=$('#search'),tags=$('#tag-row'),sort=$('#sort');
@@ -23,7 +33,7 @@ function nav() {
   const root=$('#category-nav');
   root.innerHTML=state.categories.map((c,i)=>
     '<button class="nav-button" type="button" data-category="'+escapeHtml(c.id)+'">'+
-    '<span class="nav-index" aria-hidden="true">'+String(i+1).padStart(2,'0')+'</span><span>'+escapeHtml(c.label)+'</span></button>'
+    '<span class="nav-index" aria-hidden="true">'+iconMarkup(categoryIconById[c.id]||'layout-grid')+'</span><span>'+escapeHtml(c.label)+'</span></button>'
   ).join('');
   const marker=$('.nav-label-suffix');
   if(marker)marker.textContent='01 / '+String(state.categories.length).padStart(2,'0');
@@ -106,12 +116,12 @@ function toggleFavorite(id){
       const liked=favorites.has(id);
       button.setAttribute('aria-pressed',String(liked));
       button.setAttribute('aria-label',(liked?'取消收藏':'收藏')+state.assets.find(a=>a.id===id)?.title);
-      button.textContent=liked?'♥':'♡';
+      button.innerHTML=iconMarkup('heart');
     }
   }
   if(state.active?.id===id){
     const button=detail.querySelector('[data-detail-favorite]');
-    if(button){button.textContent=favorites.has(id)?'♥ 已收藏':'♡ 收藏';button.setAttribute('aria-pressed',String(favorites.has(id)));}
+    if(button){button.innerHTML=iconMarkup('heart')+'<span>'+(favorites.has(id)?'已收藏':'收藏')+'</span>';button.setAttribute('aria-pressed',String(favorites.has(id)));}
   }
 }
 

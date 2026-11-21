@@ -64,3 +64,7 @@ npm run check
 - 仅经过人工审查的本地 Demo 可以设置 `curated:true`，并填写 `curationStage`、`tuningPoints`、`tuningGuide`。
 - `draft`、`refining`、`stable` 必须由用户实际评审后变更，不能被自动构建任务升级。
 - 先修改单个实验，避免全站或其他实验同步变化。详细见 [docs/CURATED-LABS.md](docs/CURATED-LABS.md)。
+
+## 统一图标系统（Lucide）
+
+UI Vault **主站**图标使用固定 Lucide SVG 子集：`assets/icons/lucide.svg` 和 `assets/core/icons.js`。不要新增字符图标或重复徒手绘制同一语义的 SVG，也不要通过网络 CDN 引入图标包。图标为装饰时必须 `aria-hidden=true`，控件依赖可见文字或 `aria-label`；收藏选中与否由 `aria-pressed` 驱动统一心形的 CSS 填充。图标新增前参照 [docs/ICONOGRAPHY.md](docs/ICONOGRAPHY.md) 和 Lucide ISC / Feather MIT 许可证，修改 sprite、白名单及测试，保留完整溯源。各独立 Demo 原有图标系统暂不强行替换。

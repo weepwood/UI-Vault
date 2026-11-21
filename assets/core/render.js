@@ -1,10 +1,12 @@
+import { iconMarkup } from './icons.js';
+
 export const escapeHtml=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const resolveAsset=path=>new URL(path,document.baseURI).href;
 
 function referenceVisual(asset) {
   const safe=escapeHtml, repo=asset.url ? new URL(asset.url).pathname.replace(/^\/|\/$/g,'') : asset.id;
   return '<div class="reference-cover">'+
-    '<span class="reference-overline"><span>项目参考</span><span>GitHub</span></span>'+
+    '<span class="reference-overline"><span>项目参考</span><span>'+iconMarkup('git-branch')+' GitHub</span></span>'+
     '<strong class="reference-name">'+safe(asset.title)+'</strong>'+
     '<span class="reference-origin">'+safe(repo)+'</span></div>';
 }
@@ -23,7 +25,7 @@ export function cardMarkup(a,favorites,labels) {
   return '<article class="asset-card" data-id="'+safe(a.id)+'">'+
     '<div class="card-visual" data-cover="'+safe(a.cover||'style')+'">'+visual(a)+
     '<button type="button" class="card-open" data-open="'+safe(a.id)+'" aria-label="查看'+safe(a.title)+'的详细信息"></button>'+
-    '<button type="button" class="card-favorite" data-favorite="'+safe(a.id)+'" aria-pressed="'+liked+'" aria-label="'+(liked?'取消收藏':'收藏')+safe(a.title)+'">'+(liked?'♥':'♡')+'</button></div>'+
+    '<button type="button" class="card-favorite" data-favorite="'+safe(a.id)+'" aria-pressed="'+liked+'" aria-label="'+(liked?'取消收藏':'收藏')+safe(a.title)+'">'+iconMarkup('heart')+'</button></div>'+
     '<div class="card-bottom">'+
     '<div class="card-topline"><span>'+safe(labels[a.type]||a.type)+'</span><span class="card-origin">'+(a.curated?'手工实验 · '+({draft:'待精调',refining:'精调中',stable:'已定稿'}[a.curationStage]||'待精调'):a.source==='local'?'本站 Demo':'外部项目')+'</span></div>'+
     '<button type="button" class="card-title" data-open="'+safe(a.id)+'">'+safe(a.title)+'</button>'+
@@ -42,29 +44,33 @@ export function detailMarkup(a,favorites,labels) {
   const notesBlock=(a.reuseNotes?.length||sourceLinks.length)?
     '<section class="detail-resource-notes" aria-label="跨仓库资源信息">'+
       (a.reuseNotes?.length?'<h3>可借鉴的设计点</h3><ul>'+a.reuseNotes.map(note=>'<li>'+safe(note)+'</li>').join('')+'</ul>':'')+
-      (sourceLinks.length?'<div class="detail-origin-links">'+sourceLinks.map(link=>'<a href="'+safe(link.href)+'" target="_blank" rel="noopener noreferrer">'+safe(link.label)+' ↗</a>').join('')+'</div>':'')+
+      (sourceLinks.length?'<div class="detail-origin-links">'+sourceLinks.map(link=>'<a href="'+safe(link.href)+'" target="_blank" rel="noopener noreferrer">'+safe(link.label)+iconMarkup('external-link')+'</a>').join('')+'</div>':'')+
     '</section>':'';
   const stageText={draft:'待精调',refining:'精调中',stable:'已定稿'}[a.curationStage]||'待精调';
   const tuningBlock=a.curated?'<section class="detail-resource-notes" aria-label="人工精调目标">'+
     '<h3>手工精调 · '+stageText+'</h3><ul>'+a.tuningPoints.map(t=>'<li>'+safe(t)+'</li>').join('')+'</ul>'+
-    '<div class="detail-origin-links"><a href="https://github.com/weepwood/UI-Vault/blob/main/docs/CURATED-LABS.md" target="_blank" rel="noopener noreferrer">查看逐项精调指南 ↗</a></div></section>':'';
-  const viewportControl = local ? '<div class="preview-toolbar"><span>预览宽度</span><div class="preview-options" role="group" aria-label="预览尺寸"><button type="button" data-preview-size="fluid" aria-pressed="true">自适应</button><button type="button" data-preview-size="mobile" aria-pressed="false">手机</button><button type="button" data-preview-size="tablet" aria-pressed="false">平板</button><button type="button" data-preview-size="desktop" aria-pressed="false">桌面</button></div></div>' : '';
+    '<div class="detail-origin-links"><a href="https://github.com/weepwood/UI-Vault/blob/main/docs/CURATED-LABS.md" target="_blank" rel="noopener noreferrer">查看逐项精调指南 '+iconMarkup('external-link')+'</a></div></section>':'';
+  const viewportControl = local ? '<div class="preview-toolbar"><span>预览宽度</span><div class="preview-options" role="group" aria-label="预览尺寸">'+
+    '<button type="button" data-preview-size="fluid" aria-pressed="true">'+iconMarkup('maximize-2')+'<span>自适应</span></button>'+
+    '<button type="button" data-preview-size="mobile" aria-pressed="false">'+iconMarkup('smartphone')+'<span>手机</span></button>'+
+    '<button type="button" data-preview-size="tablet" aria-pressed="false">'+iconMarkup('tablet')+'<span>平板</span></button>'+
+    '<button type="button" data-preview-size="desktop" aria-pressed="false">'+iconMarkup('monitor')+'<span>桌面</span></button></div></div>' : '';
   return '<span class="detail-eyebrow">'+safe(labels[a.type]||a.type)+' · '+(local?'本站 Demo':'外部参考')+'</span>'+
     '<h2 class="detail-title">'+safe(a.title)+'</h2><p class="detail-subtitle">'+safe(a.subtitle||'')+'</p>'+
     viewportControl+'<div class="detail-preview" '+(local?'data-preview-container="true"':'')+'>'+visual(a,true)+'</div><p class="detail-copy">'+safe(a.description)+'</p>'+
     '<div class="detail-tags">'+a.tags.map(t=>'<span class="detail-tag">'+safe(t)+'</span>').join('')+'</div>'+
     '<div class="detail-actions">'+
-      (canCopy?'<button class="detail-button primary" type="button" data-copy="'+safe(a.id)+'">复制 Demo 源码</button>':'')+
-      (local?'<button class="detail-button" type="button" data-preview="'+safe(a.id)+'">单独打开预览 ↗</button>':
-        '<a class="detail-button primary" target="_blank" rel="noopener noreferrer" href="'+safe(a.url)+'">打开原始仓库 ↗</a>')+
-      '<button class="detail-button" type="button" data-copy-link="true">复制资源链接</button>'+
-      '<button class="detail-button" type="button" data-detail-favorite="'+safe(a.id)+'" aria-pressed="'+liked+'">'+(liked?'♥ 已收藏':'♡ 收藏')+'</button></div>'+
+      (canCopy?'<button class="detail-button primary" type="button" data-copy="'+safe(a.id)+'">'+iconMarkup('code-xml')+'<span>复制 Demo 源码</span></button>':'')+
+      (local?'<button class="detail-button" type="button" data-preview="'+safe(a.id)+'">'+iconMarkup('external-link')+'<span>单独打开预览</span></button>':
+        '<a class="detail-button primary" target="_blank" rel="noopener noreferrer" href="'+safe(a.url)+'">'+iconMarkup('git-branch')+'<span>打开原始仓库</span>'+iconMarkup('external-link')+'</a>')+
+      '<button class="detail-button" type="button" data-copy-link="true">'+iconMarkup('copy')+'<span>复制资源链接</span></button>'+
+      '<button class="detail-button" type="button" data-detail-favorite="'+safe(a.id)+'" aria-pressed="'+liked+'">'+iconMarkup('heart')+'<span>'+(liked?'已收藏':'收藏')+'</span></button></div>'+
     '<div class="details-label">资源信息</div><div class="details-grid">'+
       '<div><small>资产类型</small><span>'+safe(labels[a.type]||a.type)+'</span></div>'+
       '<div><small>技术栈</small><span>'+safe(a.technologies.join(' / '))+'</span></div>'+
       '<div><small>收录时间</small><span>'+safe(a.created)+'</span></div>'+
       '<div><small>授权与来源</small><span>'+safe(a.license)+'</span></div></div>'+
-    (local?'<div class="details-label">源代码 <a href="'+safe(repoURL)+'" target="_blank" rel="noopener noreferrer" style="float:right;color:var(--accent)">在 GitHub 中查看 ↗</a></div>'+
+    (local?'<div class="details-label">源代码 <a href="'+safe(repoURL)+'" target="_blank" rel="noopener noreferrer" style="float:right;color:var(--accent)">在 GitHub 中查看 '+iconMarkup('external-link')+'</a></div>'+
       (canCopy?'<pre class="source-code" id="source-code">正在读取源码…</pre>':
         '<p class="detail-note">此 Demo 依赖多文件或构建工具，请通过 GitHub 查看完整实现。</p>'):
       '<p class="detail-note">本条目是原始仓库的设计索引。具体授权、运行方式与更新记录请以源项目为准。</p>')+notesBlock+tuningBlock;

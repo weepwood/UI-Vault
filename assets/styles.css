@@ -239,3 +239,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { 
 .detail-origin-links a .ui-icon, .details-label a .ui-icon { width: 13px; height: 13px; }
 .empty-icon { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 10px; color: var(--accent); background: var(--accent-soft); margin: 0 auto 12px; }
 .empty-icon .ui-icon { width: 22px; height: 22px; }
+
+/* Dynamic Lucide card/actions use the same sizing as static SVG. */
+.reference-overline > span:last-child { display: inline-flex; align-items: center; gap: 5px; }
+.reference-overline .ui-icon { width: 13px; height: 13px; }
+.details-label a { display: inline-flex; align-items: center; gap: 4px; }
