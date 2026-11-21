@@ -63,7 +63,7 @@ test('Lucide favicon、样式和部署路径固定且独立于 CDN',async()=>{
   const [favicon,css,build]=await Promise.all(['favicon.svg','assets/styles.css','scripts/build.mjs'].map(read));
   assert.match(favicon,/Lucide layout-grid/);
   assert.match(css,/\.ui-icon/);
-  assert.match(css,/\.card-favorite\[aria-pressed="true"\] \.ui-icon/);
+  assert.match(css,/\.project-star\[aria-pressed="true"\] \.ui-icon/);
   assert.match(build,/copyTree\('assets',webAssets\)/);
   assert.ok(!css.includes('cdn.jsdelivr.net'));
 });
