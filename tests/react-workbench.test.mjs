@@ -31,7 +31,7 @@ test('React 构建只接管主工作台，保留独立 iframe 和静态发布',(
   assert.match(builder,/jsx:'automatic'/);
   assert.match(pkg.scripts.build,/npm run react:build/);
   assert.match(build,/copyTree\('assets',webAssets\)/);
-  assert.match(build,/\.js\?v=/);
+  assert.match(build,/prefix\+path\+'\?v='/);
   const app=read('assets/app.js');
   assert.match(app,/stage[.]innerHTML=projectPreviewMarkup\(asset\)/);
   assert.match(app,/applyPreviewLayout/);
