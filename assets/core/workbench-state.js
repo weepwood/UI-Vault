@@ -17,7 +17,7 @@ export const DEFAULT_FILTERS=Object.freeze({
 export const FILTER_MODES=Object.freeze(['favoritesOnly','importedOnly','curatedOnly']);
 const SORT_MODES=new Set(['featured','newest','az']);
 
-/** @returns {import('./types.js').WorkbenchState} */
+/** @returns {object} 会话状态对象，字段兼容 core/catalog.js 的筛选协议。 */
 export function createWorkbenchState(){
   return {
     assets:[],
