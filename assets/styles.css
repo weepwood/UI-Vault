@@ -642,3 +642,67 @@ body.settings-body { min-height:100vh;min-height:100dvh;background:var(--canvas)
   .settings-main .settings-header h1 { font-size:24px; }
   .settings-main .settings-footer { align-items:flex-start; }
 }
+
+/* 工作台内设置视图：保留第一栏，右侧两栏合并为一个设置工作区。 */
+.app-shell.is-settings {
+  grid-template-columns:var(--navigation-width) minmax(0,1fr);
+}
+.app-shell.is-settings .library-rail {
+  grid-template-columns:minmax(0,1fr);
+}
+.app-shell.is-settings .library-rail .project-panel { display:none; }
+.app-shell.is-settings > .main { display:none; }
+.settings-view[hidden] { display:none!important; }
+.app-shell.is-settings > .settings-view {
+  display:flex;flex-direction:column;
+  min-width:0;min-height:0;height:100%;
+  background:var(--surface);overflow:hidden;
+}
+.app-shell.is-settings .sidebar-settings {
+  color:var(--accent);background:var(--accent-soft);font-weight:650;
+}
+.app-shell.is-settings .settings-view .settings-header {
+  flex:none;padding:28px clamp(20px,4vw,50px) 22px;
+}
+.app-shell.is-settings .settings-view .settings-header h1 {
+  font-size:25px;
+}
+.app-shell.is-settings .settings-view .settings-scroll {
+  flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;
+  padding:0 clamp(20px,4vw,50px);
+  scrollbar-width:thin;overscroll-behavior:contain;
+}
+.app-shell.is-settings .settings-view .settings-section {
+  width:min(100%,920px);
+}
+.app-shell.is-settings .settings-view .settings-footer {
+  flex:none;padding:15px clamp(20px,4vw,50px);
+}
+.app-shell.is-settings .settings-view .settings-mobile-menu { display:none; }
+@media(max-width:760px) {
+  .app-shell.is-settings { grid-template-columns:minmax(0,1fr); }
+  .app-shell.is-settings .library-rail {
+    width:min(330px,90vw);
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:minmax(0,1fr);
+  }
+  .app-shell.is-settings .library-rail .sidebar {
+    min-height:0;max-height:none;height:100%;
+    border-right:0;border-bottom:0;
+  }
+  .app-shell.is-settings .settings-view .settings-header {
+    display:flex;align-items:flex-start;gap:12px;padding:18px 20px 16px;
+  }
+  .app-shell.is-settings .settings-view .settings-mobile-menu {
+    display:inline-flex;margin-top:20px;
+  }
+  .app-shell.is-settings .settings-view .settings-scroll { padding-inline:20px; }
+  .app-shell.is-settings .settings-view .settings-footer { padding:12px 20px; }
+}
+@media(max-width:480px){
+  .app-shell.is-settings .settings-view .settings-header h1 { font-size:23px; }
+  .app-shell.is-settings .settings-view .settings-header { padding:14px 15px; }
+  .app-shell.is-settings .settings-view .settings-scroll { padding-inline:15px; }
+  .app-shell.is-settings .settings-view .settings-footer { padding:12px 15px; }
+  .app-shell.is-settings .library-rail .sidebar-footer { display:flex; }
+}
