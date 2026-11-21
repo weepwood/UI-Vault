@@ -96,7 +96,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .list-controls { position: relative; z-index: 5; }
 .select-popover { position: absolute; right: 0; top: calc(100% + 5px); z-index: 10; width: max(100%, 188px); max-width: min(300px, calc(100vw - 24px)); max-height: min(306px, 43dvh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #dbe3e7; border-radius: 9px; background: var(--surface); box-shadow: 0 12px 28px #1e34411c, 0 2px 8px #1e34410b; animation: select-pop-in .14s ease-out; }
 .select-option { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 7px 9px; border-radius: 5px; outline-offset: -2px; color: var(--text); cursor: pointer; font-size: 11px; }
-.select-option:hover, .select-option:focus-visible { color: var(--ink); background: var(--canvas); }
+.select-option:hover { color: var(--ink); background: var(--canvas); }
+.select-option:focus-visible { color: var(--ink); background: var(--canvas); outline: 2px solid var(--focus); }
 .select-option[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); font-weight: 650; }
 .select-option-icon, .select-option-check { display: inline-flex; flex: none; align-items: center; justify-content: center; color: var(--subtle); }
 .select-option-icon .ui-icon, .select-option-check .ui-icon { width: 15px; height: 15px; }
