@@ -175,8 +175,19 @@ def verify_react_interactions(browser, origin):
         page.evaluate("() => { window.__reactIframe = document.querySelector('#preview-stage iframe'); }")
         page.locator("#preview-favorite").click()
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "收藏操作意外重建 iframe"
-        page.locator("#viewport-current").hover()
+        trigger = page.locator("#viewport-current")
+        controls = page.locator("#viewport-controls")
+        base_width = controls.evaluate("(el) => el.getBoundingClientRect().width")
+        assert 95 <= base_width <= 100, f"自适应选择器闭合宽度应接近 98px，实际 {base_width}"
+        assert trigger.locator("#viewport-current-icon use").get_attribute("href").endswith("#scan"), "自适应图标不是 Lucide Scan"
+        trigger.hover()
+        options = page.locator("#viewport-options")
+        options.wait_for(state="visible")
+        popover_width = options.evaluate("(el) => el.getBoundingClientRect().width")
+        assert 145 <= popover_width <= 152, f"展开菜单应接近 150px，实际 {popover_width}"
+        assert abs(controls.evaluate("(el) => el.getBoundingClientRect().width") - base_width) < 1, "菜单展开不应撑宽顶栏"
         page.locator("#viewport-options [data-preview-size='mobile']").click()
+        assert trigger.locator("#viewport-current-icon use").get_attribute("href").endswith("#smartphone"), "手机预览图标未同步切换"
         assert page.locator("#preview-stage").get_attribute("data-size") == "mobile", "手机设备模式未应用"
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "改变设备模式意外重建 iframe"
 

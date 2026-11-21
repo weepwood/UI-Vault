@@ -1,7 +1,7 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {Icon} from './WorkbenchSelect.jsx';
 const sizes=[
-  {mode:'fluid',icon:'maximize-2',name:'自适应',hint:'自适应 · 填满预览区域'},
+  {mode:'fluid',icon:'scan',name:'自适应',hint:'自适应 · 适配可用宽度'},
   {mode:'mobile',icon:'smartphone',name:'手机',hint:'手机 · 390px'},
   {mode:'tablet',icon:'tablet',name:'平板',hint:'平板 · 768px'},
   {mode:'desktop',icon:'monitor',name:'桌面',hint:'桌面 · 1280px'}
