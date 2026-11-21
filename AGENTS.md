@@ -33,3 +33,16 @@ npm run check
 ```
 
 细节：[docs/EXTENDING.md](docs/EXTENDING.md)、[docs/ADDING-DEMO.md](docs/ADDING-DEMO.md)。
+
+## UI 设计质量与“AI 味”审查
+
+凡涉及 UI 设计与网页改版，必须先参考 [DESIGN.md](DESIGN.md) 和 [docs/AI-DESIGN-RESEARCH.md](docs/AI-DESIGN-RESEARCH.md)。
+
+- UI Vault 展厅是工作台，不是营销网页。优先搜索、分类、真实预览与来源信息。
+- 不能默认生成巨幅营销 Hero、大写英文眉题、无功能的渐变光晕、倾斜装饰卡片和重复大圆角组件。
+- 不得编造实际项目截图；外部仓库没有可用授权封面时显示其真实来源文字。
+- 按真实业务场景撰写文本，避免抽象形容词堆叠和英文空泛口号。
+- 保留用户有意创建的玻璃、暖色、极光、粗野主义等 Demo 风格；减少的是主站模板化设计，不是删除艺术实验。
+- 提交 UI 前检查桌面、平板、手机布局，键盘导航、可见焦点、长文本、空态和 prefers-reduced-motion。
+- 不把静态语法或构建成功称为视觉验收；没有看过实际渲染时明确说明。
+- 不自动安装第三方设计 Skills 或组件库；若决定使用，先检查版本、依赖和许可证。
