@@ -63,6 +63,7 @@ test('双栏收藏操作不重建右侧真实预览',async()=>{
  const source=await readFile(join(ROOT,'assets/app.js'),'utf8');
  const functionBody=source.slice(source.indexOf('function toggleFavorite('),source.indexOf('async function copyText('));
  assert.match(functionBody,/if\(state\.favoritesOnly\)renderList\(\)/);
- assert.match(functionBody,/querySelectorAll\('\[data-favorite\]'\)/);
+ assert.doesNotMatch(functionBody,/querySelectorAll\('\[data-favorite\]'\)/);
+ assert.match(functionBody,/preview-favorite/);
  assert.doesNotMatch(functionBody,/stage\.innerHTML|previewFrame\.src|selectAsset\(/);
 });
