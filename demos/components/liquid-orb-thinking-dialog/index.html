@@ -46,9 +46,9 @@
     </div>
     <p class="tip">Esc、关闭按钮或点击遮罩可关闭。开发者可通过 <code>window.thinkingDialog</code> 调用 show / close / setText / setState / retry / destroy。</p>
   </main>
-  <script type="module">
-    import { createLiquidOrbDialog } from './dialog.js';
-    const thinkingDialog = createLiquidOrbDialog({ text: 'Thinking...', startOpen: true });
+  <script src="./dialog.js"></script>
+  <script>
+    const thinkingDialog = window.createLiquidOrbDialog({ text: 'Thinking...', startOpen: true });
     Object.defineProperty(window, 'thinkingDialog', { value: thinkingDialog });
     document.querySelector('#dialog-open').addEventListener('click', () => thinkingDialog.show());
     document.querySelector('#dialog-idle').addEventListener('click', () => { thinkingDialog.setState('idle'); thinkingDialog.show(); });
