@@ -15,7 +15,9 @@
     "build": "python3 scripts/build-fonts.py && node scripts/build.mjs",
     "check": "node scripts/validate.mjs && node --test tests/*.test.mjs && node scripts/design-audit.mjs && npm run build && node scripts/check-dist.mjs",
     "design:audit": "node scripts/design-audit.mjs",
-    "fonts:build": "python3 scripts/build-fonts.py"
+    "fonts:build": "python3 scripts/build-fonts.py",
+    "visual:test": "python3 scripts/visual-regression.py",
+    "visual:bootstrap": "python3 scripts/visual-regression.py --bootstrap"
   },
   "engines": {
     "node": ">=22"
