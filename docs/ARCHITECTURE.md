@@ -36,3 +36,17 @@ UI-Vault/
 - **后续重点**：截图自动生成、Token 编辑器、独立 Demo 打包适配器和 Agent DESIGN.md 导出。
 
 完整参考：[EXTENDING.md](EXTENDING.md)。
+
+
+## v0.6：左侧项目目录 / 右侧常驻预览
+
+主站的 `index.html` 是常驻双栏结构；`assets/app.js` 管理目录筛选、焦点、历史状态和唯一的当前预览；`assets/core/workbench.js` 是项目行、资源信息与真实 iframe 的纯渲染模块。
+
+- `aside#sidebar`：搜索、分类、收藏、手工精调和项目列表；项目列表内部滚动。
+- `main#main`：标题操作栏、固定视口选择、`section#preview-stage`、原位展开的源代码/来源说明。
+- 点击项目仅替换 `#preview-stage` 的内容并更改历史 URL；不会重新绘制整个主站。
+- 本仓 Demo 在 `iframe sandbox="allow-scripts"` 内直接运行，预览容器通过 ResizeObserver + CSS transform 调整模拟设备宽度。
+- 外部站点仅在可信资产清单含 `siteUrl` 时尝试沙箱 iframe，可能被对方拒绝；没有站点时展示原仓库引用，避免误导性缩略图。
+- `?asset=<id>` 深链接、收藏数据和各 Demo 路径保持兼容。手机通过菜单开启目录，但大面积预览始终在主页面。
+
+所有新功能应以右侧交互预览为中心，不重新引入遮罩式详情抽屉。

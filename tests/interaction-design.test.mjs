@@ -59,10 +59,10 @@ test('只有本地 Demo 展示视口切换，外部参考保持来源',()=>{
  if(previousDocument===undefined)delete globalThis.document;
  else globalThis.document=previousDocument;
 });
-test('主站收藏处理不应每次重新渲染全部预览',async()=>{
+test('双栏收藏操作不重建右侧真实预览',async()=>{
  const source=await readFile(join(ROOT,'assets/app.js'),'utf8');
- const functionBody=source.slice(source.indexOf('function toggleFavorite('),source.indexOf('async function loadSource('));
- assert.match(functionBody,/if\(state\.favoritesOnly\)/);
+ const functionBody=source.slice(source.indexOf('function toggleFavorite('),source.indexOf('async function copyText('));
+ assert.match(functionBody,/if\(state\.favoritesOnly\)renderList\(\)/);
  assert.match(functionBody,/querySelectorAll\('\[data-favorite\]'\)/);
- assert.ok(!functionBody.includes('save();render();'));
+ assert.doesNotMatch(functionBody,/stage\.innerHTML|previewFrame\.src|selectAsset\(/);
 });

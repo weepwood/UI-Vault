@@ -68,3 +68,7 @@ npm run check
 ## 统一图标系统（Lucide）
 
 UI Vault **主站**图标使用固定 Lucide SVG 子集：`assets/icons/lucide.svg` 和 `assets/core/icons.js`。不要新增字符图标或重复徒手绘制同一语义的 SVG，也不要通过网络 CDN 引入图标包。图标为装饰时必须 `aria-hidden=true`，控件依赖可见文字或 `aria-label`；收藏选中与否由 `aria-pressed` 驱动统一心形的 CSS 填充。图标新增前参照 [docs/ICONOGRAPHY.md](docs/ICONOGRAPHY.md) 和 Lucide ISC / Feather MIT 许可证，修改 sprite、白名单及测试，保留完整溯源。各独立 Demo 原有图标系统暂不强行替换。
+
+## v0.6 默认 UI：常驻左右两栏
+
+用户明确要求左侧列出各项目的基本菜单，右侧大面积直接显示真实网页。UI Vault **不得重新采用弹出侧边框 / modal / 抽屉来显示项目详情**。主站使用 `assets/core/workbench.js` 渲染目录和预览， `#preview-stage` 独占右侧主体；只在手机上临时覆盖目录以节省宽度。新增资产时仍只改 metadata/独立 Demo，不要往卡片画廊回退。
