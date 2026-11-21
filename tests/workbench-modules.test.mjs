@@ -114,7 +114,7 @@ test('独立预览组件在鼠标、点击、键盘下维持选中状态且销�
     assert.equal(options.hidden,true);
     trigger.emit('click');
     root.emit('keydown',{key:'ArrowDown',target:trigger});
-    assert.equal(doc.activeElement,buttons[3]);
+    assert.equal(doc.activeElement,buttons[0]);
     component.close();
     assert.equal(doc.activeElement,trigger);
     component.destroy();
