@@ -52,3 +52,5 @@ npm run check
 对于任何会影响展厅的前端 PR，按 [docs/OPEN-SOURCE-DESIGN-WORKFLOW.md](docs/OPEN-SOURCE-DESIGN-WORKFLOW.md) 逐项自查：先以 Anthropic Frontend Design 澄清产品场景，再用 Impeccable / better-interface 评审层级与文案；随后用 better-accessibility / better-colors 处理键盘与颜色对比；最后用 Emil Kowalski 的 remove-animations 思路只保留有意义的动画，并按 Vercel Web Interface Guidelines 核对状态和错误处理。
 
 新的 UI 改动需运行 `npm run check`（包含 `design:audit`）。若没有做实际截图，就不能声称已经视觉验收。外部 Skills 是可选开发工具，不应作为页面运行时依赖，也不应无授权复制其源码。
+
+当新增 `originRepo` 资产时，必须保证跨仓筛选可检索，且一条资产具有真实可访问的主要源码链接和具体复用说明。

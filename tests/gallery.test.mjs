@@ -23,3 +23,10 @@ test('排序稳定且不修改原数组',()=>{
  assert.equal(a[0].id,'a');
 });
 test('当前标签始终可见',()=>assert.ok(popularTags(a,1,'rare').includes('rare')));
+
+test('跨仓资料可通过 originRepo 独立过滤并搜索复用要点',()=>{
+ const a=[{id:'local',title:'原创',subtitle:'',description:'本站',type:'component',tags:['设计'],technologies:['HTML'],featured:false,created:'2026-11-21'},
+ {id:'external',title:'跨仓',subtitle:'',description:'迁入资源',originRepo:'https://github.com/weepwood/demo',reuseNotes:['可复用网格布局'],type:'component',tags:['设计'],technologies:['CSS'],featured:false,created:'2026-11-21'}];
+ assert.deepEqual(filterAssets(a,{importedOnly:true}).map(x=>x.id),['external']);
+ assert.deepEqual(filterAssets(a,{query:'可复用网格'}).map(x=>x.id),['external']);
+});
