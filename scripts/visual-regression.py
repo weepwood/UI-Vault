@@ -253,6 +253,10 @@ def verify_liquid_orb_unified(browser, origin):
             page.goto(origin + "demos/components/liquid-orb/index.html", wait_until="domcontentloaded")
             page.locator("#tab-dialog").click(timeout=30000)
             assert page.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')")
+            if page.locator("body").evaluate("(el) => el.classList.contains('fallback')"):
+                assert not page.locator("#status").is_visible(), "错误提示挤进胶囊"
+                assert not page.locator("#orb-retry").is_visible(), "球体区域的重试按钮应转移到控制区"
+                assert page.locator("#dialog-retry").is_visible(), "未找到思考模式的重试控制"
             assert page.locator("#presentation canvas").count() == 1, "合并页面出现重复 Canvas"
             pill = page.locator("#presentation").bounding_box()
             assert pill and 120 < pill["height"] < 310, f"{name}: 胶囊高度异常: {pill}"
@@ -291,7 +295,20 @@ def verify_liquid_orb_unified(browser, origin):
         assert page.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')"), "旧链接没有进入思考对话框模式"
     finally:
         context.close()
-    print("液态玻璃单页回归通过：桌面/移动端尺寸、同一 Canvas、模态焦点与旧链接跳转。")
+    # UI-Vault React 实际嵌入采用 sandboxed iframe；再验证一次内部标签切换。
+    context = browser.new_context(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
+    page = context.new_page()
+    embedded_errors = []
+    page.on("pageerror", lambda error: embedded_errors.append(str(error)))
+    try:
+        page.goto(origin + "?asset=liquid-orb", wait_until="domcontentloaded")
+        preview = page.frame_locator('iframe[data-preview-frame="local"]')
+        preview.locator("#tab-dialog").click(timeout=30000)
+        assert preview.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')"), "主站沙箱中标签切换无效"
+        assert not embedded_errors, "主站沙箱错误：" + "; ".join(embedded_errors)
+    finally:
+        context.close()
+    print("液态玻璃单页回归通过：桌面/移动端尺寸、同一 Canvas、模态焦点、旧链接及沙箱预览。")
 
 
 def main():
