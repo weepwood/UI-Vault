@@ -12,7 +12,7 @@ test('从 Thinking 对话框切换回玻璃球时独立绘制区域保持正方�
   // Restrict the standalone raster to the smaller viewport dimension.
   assert.match(html, /\.demo-viewport\{[^}]*container-type:size/);
   assert.match(html, /body:not\(\.dialog-mode\):not\(\.embed\) \.presentation \.stage\{[^}]*flex:none/);
-  assert.match(html, /body:not\(\.dialog-mode\):not\(\.embed\) \.presentation \.stage\{[^}]*width:min\(100%,100cqh\)/);
+  assert.match(html, /body:not\(\.dialog-mode\):not\(\.embed\) \.presentation \.stage\{[^}]*width:min\(100%,100cqh,620px\)/);
   assert.match(html, /body:not\(\.dialog-mode\):not\(\.embed\) \.presentation \.stage\{[^}]*aspect-ratio:1/);
   assert.match(html, /\.dialog-mode \.presentation \.stage\{[^}]*aspect-ratio:1/);
   assert.match(html, /\.embed \.presentation \.stage\{[^}]*aspect-ratio:auto/);
