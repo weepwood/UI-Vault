@@ -114,41 +114,154 @@ dialog::backdrop{background:#151d16ab;backdrop-filter:blur(3px)}
 
 </style>
 <style id="background-effects">
-/* 独立背景层：仅主预览播放动画，缩略图永远静态。 */
-.scene[data-style="aurora"]::before{inset:-28%;background:radial-gradient(ellipse at 25% 48%,var(--a) 0%,transparent 35%),radial-gradient(ellipse at 61% 25%,var(--b) 0%,transparent 34%),radial-gradient(ellipse at 78% 76%,var(--c) 0%,transparent 36%);filter:blur(38px);animation:drift var(--duration,22s) ease-in-out infinite alternate}
-.scene[data-style="aurora"]::after{inset:0;background:linear-gradient(180deg,transparent 35%,var(--base) 125%)}
-.scene[data-style="mesh"]::before{inset:-20%;background:radial-gradient(ellipse at 18% 16%,var(--a),transparent 43%),radial-gradient(ellipse at 85% 23%,var(--b),transparent 41%),radial-gradient(ellipse at 48% 86%,var(--c),transparent 44%);filter:blur(26px);animation:float var(--duration,22s) ease-in-out infinite alternate}
-.scene[data-style="mesh"]::after{inset:0;background:linear-gradient(120deg,#ffffff15,transparent 52%,#00000012)}
-.scene[data-style="silk"]::before{inset:-55%;background:conic-gradient(from 12deg at 48% 49%,var(--base),var(--a),var(--b),var(--c),var(--base),var(--a),var(--base));filter:blur(28px);animation:rotate var(--duration,22s) linear infinite}
-.scene[data-style="silk"]::after{inset:0;background:radial-gradient(ellipse at center,transparent 20%,var(--base) 122%)}
-.scene[data-style="horizon"]{background:linear-gradient(180deg,var(--base) 12%,var(--a) 85%,var(--c) 150%)}
-.scene[data-style="horizon"]::before{inset:3% -20% -40%;background:radial-gradient(ellipse at 50% 91%,var(--b) 0%,var(--c) 25%,transparent 60%);filter:blur(25px);animation:breathe var(--duration,22s) ease-in-out infinite alternate}
-.scene[data-style="horizon"]::after{inset:0;background:linear-gradient(180deg,transparent 58%,#ffffff16 59%,transparent 60%),linear-gradient(0deg,#00000024,transparent 50%)}
-.scene[data-style="beams"]::before{inset:-40%;background:repeating-conic-gradient(from 264deg at 50% 110%,transparent 0deg 5deg,var(--a) 5deg 6.4deg,transparent 7deg 12deg,var(--b) 13deg 14deg,transparent 15deg 25deg);filter:blur(8px);mask-image:linear-gradient(0deg,#000,transparent 86%);animation:sway var(--duration,22s) ease-in-out infinite alternate}
-.scene[data-style="beams"]::after{inset:0;background:radial-gradient(ellipse at 48% 115%,var(--c),transparent 50%)}
-.scene[data-style="mist"]::before{inset:-26%;background:radial-gradient(ellipse at 22% 58%,var(--a),transparent 45%),radial-gradient(ellipse at 80% 44%,var(--b),transparent 40%),radial-gradient(ellipse at 50% 76%,var(--c),transparent 50%);filter:blur(58px) saturate(.84);animation:float var(--duration,22s) ease-in-out infinite alternate}
-.scene[data-style="mist"]::after{inset:0;background:linear-gradient(180deg,#ffffff1a,transparent 55%,#00000016)}
-.scene[data-style="glow"]::before{inset:-10%;background:radial-gradient(ellipse at 50% 50%,var(--a),transparent 39%),radial-gradient(ellipse at 50% 48%,var(--b),transparent 58%);filter:blur(36px);animation:breathe var(--duration,22s) ease-in-out infinite alternate}
-.scene[data-style="glow"]::after{inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 1%,var(--base) 75%)}
-.scene[data-style="topo"]::before{inset:-25%;background:repeating-radial-gradient(ellipse at 42% 46%,transparent 0px 15px,var(--a) 16px 17px,transparent 18px 30px);opacity:var(--pattern-opacity,.4)!important;transform:rotate(-14deg)}
-.scene[data-style="topo"]::after{inset:0;background:radial-gradient(ellipse at 55% 50%,var(--b),transparent 65%);opacity:.23}
-.scene[data-style="grid"]{background:linear-gradient(90deg,transparent 0%,var(--a) 130%),var(--base)}
-.scene[data-style="grid"]::before{inset:0;background-image:linear-gradient(var(--b) 1px,transparent 1px),linear-gradient(90deg,var(--b) 1px,transparent 1px);background-size:32px 32px;opacity:var(--pattern-opacity,.2)!important;mask-image:radial-gradient(ellipse at 50% 50%,#000 8%,transparent 83%)}
-.scene[data-style="grid"]::after{inset:0;background:radial-gradient(ellipse at 75% 22%,var(--c),transparent 50%);opacity:.22}
-.scene[data-style="dots"]::before{inset:0;background-image:radial-gradient(circle,var(--a) 1.4px,transparent 1.6px);background-size:20px 20px;mask-image:radial-gradient(ellipse at 50% 50%,#000 7%,transparent 80%);opacity:var(--pattern-opacity,.48)!important}
-.scene[data-style="dots"]::after{inset:0;background:radial-gradient(ellipse at 30% 40%,var(--b),transparent 65%);opacity:.22}
-.scene[data-style="paper"]{background:linear-gradient(110deg,var(--base),var(--a) 170%)}
-.scene[data-style="paper"]::before{inset:0;background:repeating-linear-gradient(0deg,transparent 0px 3px,var(--b) 4px 5px,transparent 6px 9px),repeating-linear-gradient(90deg,transparent 0px 5px,var(--c) 6px 7px,transparent 8px 12px);opacity:var(--pattern-opacity,.06)!important}
-.scene[data-style="paper"]::after{inset:0;background:radial-gradient(ellipse at 60% 28%,#ffffff66,transparent 58%)}
-.scene[data-style="stars"]::before{inset:-15%;background:radial-gradient(1px 1px at 12% 22%,#fff 90%,transparent),radial-gradient(2px 2px at 36% 65%,#fff 90%,transparent),radial-gradient(1px 1px at 61% 15%,#fff 90%,transparent),radial-gradient(2px 2px at 79% 45%,#fff 90%,transparent),radial-gradient(1px 1px at 91% 72%,#fff 90%,transparent),radial-gradient(1px 1px at 44% 30%,#fff 90%,transparent),radial-gradient(1px 1px at 68% 84%,#fff 90%,transparent),radial-gradient(1px 1px at 20% 82%,#fff 90%,transparent);background-size:140px 140px;animation:stardrift var(--duration,22s) linear infinite}
-.scene[data-style="stars"]::after{inset:0;background:radial-gradient(ellipse at 66% 65%,var(--a),transparent 55%),radial-gradient(ellipse at 32% 38%,var(--b),transparent 60%);opacity:.32}
-@keyframes drift{from{transform:translate3d(-4%,2%,0) rotate(-7deg)}to{transform:translate3d(5%,-5%,0) rotate(12deg) scale(1.13)}}
-@keyframes float{from{transform:translate3d(-3%,-2%,0) scale(1)}to{transform:translate3d(3%,4%,0) scale(1.1)}}
-@keyframes rotate{to{transform:rotate(360deg)}}
-@keyframes breathe{from{transform:scale(.88)}to{transform:scale(1.13)}}
-@keyframes sway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
-@keyframes stardrift{to{transform:translate3d(35px,24px,0)}}
+
+/* 每个场景只操作 ::before / ::after；预览动效由宿主控制，缩略图静态。 */
+.scene[data-style="aurora"]::before{
+  inset:-28% -36%;
+  background:
+    radial-gradient(ellipse 17% 75% at 26% 44%,var(--a) 0%,transparent 100%),
+    radial-gradient(ellipse 14% 83% at 46% 45%,var(--c) 0%,transparent 100%),
+    radial-gradient(ellipse 17% 83% at 67% 48%,var(--b) 0%,transparent 100%),
+    radial-gradient(ellipse 24% 38% at 76% 80%,var(--a) 0%,transparent 100%);
+  filter:blur(31px);transform:rotate(-19deg);
+  animation:auroraFlow var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="aurora"]::after{
+  inset:0;background:linear-gradient(180deg,var(--base) 0%,transparent 33%,transparent 67%,var(--base) 112%);
+  opacity:.63
+}
+.scene[data-style="mesh"]::before{
+  inset:-12%;
+  background:
+    radial-gradient(ellipse 58% 61% at 10% 0%,var(--a),transparent 92%),
+    radial-gradient(ellipse 60% 65% at 94% 26%,var(--b),transparent 93%),
+    radial-gradient(ellipse 62% 60% at 57% 110%,var(--c),transparent 96%);
+  filter:blur(18px);animation:meshFlow var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="mesh"]::after{
+  inset:0;background:linear-gradient(127deg,#ffffff26 0%,transparent 42%,#20201512 100%)
+}
+.scene[data-style="silk"]::before{
+  inset:-58%;
+  background:conic-gradient(from 170deg at 49% 50%,var(--base),var(--a) 32deg,var(--c) 92deg,var(--b) 158deg,var(--a) 211deg,var(--base) 293deg,var(--c) 349deg,var(--base));
+  filter:blur(15px);
+  animation:silkFlow var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="silk"]::after{
+  inset:0;background:linear-gradient(124deg,#ffffff2a 0%,transparent 22%,#13121b24 49%,transparent 67%,#ffffff18 86%),radial-gradient(ellipse at 50% 50%,transparent 17%,var(--base) 134%)
+}
+.scene[data-style="horizon"]{
+  background:linear-gradient(180deg,var(--base) 8%,var(--a) 112%,var(--c) 150%)
+}
+.scene[data-style="horizon"]::before{
+  inset:0 -10% -42%;
+  background:radial-gradient(ellipse 49% 40% at 50% 80%,var(--c) 0%,var(--b) 37%,transparent 100%);
+  filter:blur(20px);animation:lightBreath var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="horizon"]::after{
+  inset:0;background:linear-gradient(180deg,transparent 61.5%,#ffecd132 61.65%,transparent 62.2%,#0e18232c 100%)
+}
+.scene[data-style="beams"]::before{
+  inset:-43% -23%;
+  background:repeating-conic-gradient(from 244deg at 50% 120%,transparent 0deg 6deg,var(--a) 6.5deg 7.6deg,transparent 8deg 19deg,var(--b) 19.5deg 20.9deg,transparent 22deg 36deg);
+  filter:blur(7px);
+  mask-image:linear-gradient(0deg,#000 0%,#000 33%,transparent 94%);
+  animation:beamTilt var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="beams"]::after{
+  inset:0;background:radial-gradient(ellipse at 49% 115%,var(--c),transparent 52%);opacity:.7
+}
+.scene[data-style="mist"]::before{
+  inset:-18%;
+  background:
+    radial-gradient(ellipse 50% 55% at 27% 64%,var(--a),transparent 94%),
+    radial-gradient(ellipse 44% 45% at 80% 24%,var(--b),transparent 93%),
+    radial-gradient(ellipse 46% 39% at 65% 86%,var(--c),transparent 95%);
+  filter:blur(33px) saturate(.82);
+  animation:meshFlow var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="mist"]::after{
+  inset:0;background:linear-gradient(145deg,#ffffff21,transparent 46%,#20232916)
+}
+.scene[data-style="glow"]::before{
+  inset:-16%;
+  background:
+    radial-gradient(ellipse 27% 34% at 52% 49%,var(--c),transparent 100%),
+    radial-gradient(ellipse 53% 65% at 52% 49%,var(--a),transparent 98%),
+    radial-gradient(ellipse 62% 65% at 52% 49%,var(--b),transparent 100%);
+  filter:blur(25px);
+  animation:lightBreath var(--duration,22s) ease-in-out infinite alternate
+}
+.scene[data-style="glow"]::after{
+  inset:0;background:radial-gradient(ellipse at 50% 48%,transparent 2%,var(--base) 85%);opacity:.83
+}
+.scene[data-style="topo"]::before{
+  inset:-30%;
+  background:
+    repeating-radial-gradient(ellipse 62% 47% at 47% 46%,transparent 0px 15px,var(--a) 16px 17px,transparent 18px 31px);
+  opacity:var(--pattern-opacity,.44)!important;transform:rotate(-17deg) scale(1.3)
+}
+.scene[data-style="topo"]::after{
+  inset:0;background:radial-gradient(ellipse at 25% 28%,var(--c),transparent 65%);opacity:.19
+}
+.scene[data-style="grid"]{
+  background:linear-gradient(138deg,var(--base),var(--a) 250%)
+}
+.scene[data-style="grid"]::before{
+  inset:0;
+  background-image:linear-gradient(var(--b) 1px,transparent 1px),linear-gradient(90deg,var(--b) 1px,transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(ellipse at 51% 49%,#000 12%,transparent 92%);
+  opacity:var(--pattern-opacity,.25)!important
+}
+.scene[data-style="grid"]::after{
+  inset:0;background:radial-gradient(ellipse at 86% 18%,var(--c),transparent 58%);opacity:.26
+}
+.scene[data-style="dots"]::before{
+  inset:0;background-image:radial-gradient(circle,var(--a) 1.25px,transparent 1.55px);
+  background-size:19px 19px;
+  mask-image:linear-gradient(110deg,#000 0%,#000 55%,transparent 100%);
+  opacity:var(--pattern-opacity,.56)!important
+}
+.scene[data-style="dots"]::after{
+  inset:0;background:radial-gradient(ellipse at 85% 75%,var(--b),transparent 64%);opacity:.14
+}
+.scene[data-style="paper"]{
+  background:linear-gradient(165deg,var(--base),var(--a) 240%)
+}
+.scene[data-style="paper"]::before{
+  inset:0;
+  background:
+    repeating-linear-gradient(0deg,transparent 0px 3px,var(--b) 4px 4.45px,transparent 5px 8px),
+    repeating-linear-gradient(92deg,transparent 0px 6px,var(--c) 7px 7.4px,transparent 8px 13px),
+    radial-gradient(circle at 20% 26%,#766d5650 0 0.45px,transparent .65px);
+  background-size:auto,auto,13px 15px;
+  opacity:var(--pattern-opacity,.11)!important
+}
+.scene[data-style="paper"]::after{
+  inset:0;background:radial-gradient(ellipse at 56% 30%,#ffffff5c,transparent 60%)
+}
+.scene[data-style="stars"]::before{
+  inset:-12%;
+  background:
+    radial-gradient(1px 1px at 11% 19%,#fff 90%,transparent),radial-gradient(1.5px 1.5px at 35% 67%,#fff 90%,transparent),
+    radial-gradient(1px 1px at 60% 12%,#fff 90%,transparent),radial-gradient(2px 2px at 82% 45%,#fff 90%,transparent),
+    radial-gradient(1px 1px at 95% 78%,#fff 90%,transparent),radial-gradient(1px 1px at 45% 34%,#fff 90%,transparent),
+    radial-gradient(1px 1px at 73% 88%,#fff 90%,transparent),radial-gradient(1px 1px at 21% 81%,#fff 90%,transparent);
+  background-size:140px 140px;
+  animation:starDrift var(--duration,22s) linear infinite
+}
+.scene[data-style="stars"]::after{
+  inset:0;background:radial-gradient(ellipse at 66% 65%,var(--a),transparent 59%),radial-gradient(ellipse at 32% 38%,var(--b),transparent 63%);opacity:.32
+}
+@keyframes auroraFlow{from{transform:translate3d(-4%,1%,0) rotate(-23deg)}to{transform:translate3d(5%,-3%,0) rotate(-11deg) scale(1.08)}}
+@keyframes meshFlow{from{transform:translate3d(-2%,-2%,0)}to{transform:translate3d(3%,3%,0) scale(1.035)}}
+@keyframes silkFlow{from{transform:rotate(-10deg)}to{transform:rotate(13deg) scale(1.03)}}
+@keyframes lightBreath{from{transform:scale(.95)}to{transform:scale(1.07)}}
+@keyframes beamTilt{from{transform:rotate(-3deg)}to{transform:rotate(3deg)}}
+@keyframes starDrift{to{transform:translate3d(30px,18px,0)}}
 @media(prefers-reduced-motion:reduce){.scene::before,.scene::after{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -233,7 +346,7 @@ const palettes=[
 ];
 const $=id=>document.getElementById(id);
 const state={selected:'aurora',palette:2,intensity:90,speed:10,overlay:false,paused:false,filter:'all'};
-const patternOpacity={topo:.4,grid:.2,dots:.48,paper:.06};
+const patternOpacity={topo:.48,grid:.24,dots:.62,paper:.18};
 const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 function current(){return styles.find(item=>item.id===state.selected)||styles[0]}
 function applyPalette(node,index){
@@ -320,7 +433,7 @@ $('filters').addEventListener('click',event=>{
 });
 document.addEventListener('visibilitychange',syncMotion);
 if(prefersReduced.addEventListener)prefersReduced.addEventListener('change',syncMotion);
-const animationFor={aurora:'drift',mesh:'float',silk:'rotate',horizon:'breathe',beams:'sway',mist:'float',glow:'breathe',stars:'stardrift'};
+const animationFor={aurora:'auroraFlow',mesh:'meshFlow',silk:'silkFlow',horizon:'lightBreath',beams:'beamTilt',mist:'meshFlow',glow:'lightBreath',stars:'starDrift'};
 function selectedCode(){
   const p=palettes[state.palette],id=state.selected;
   const source=document.querySelector('#background-effects').sheet;
