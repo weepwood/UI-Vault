@@ -44,6 +44,21 @@ test('三个框架项目右侧真实 iframe 预览并保持安全沙箱与原站
     assert.match(row,/在线预览/);
   }
 });
+test('Emboss Lab 内嵌 GitHub Pages 页面并保留 GitHub 源仓链接',async()=>{
+  const {errors,items}=await inspectCatalog();
+  assert.deepEqual(errors,[]);
+  const item=items.find(asset=>asset.id==='emboss-poster-lab');
+  assert.ok(item);
+  assert.equal(item.siteUrl,'https://weepwood.github.io/Emboss-Lab/');
+  assert.equal(item.url,'https://github.com/weepwood/Emboss-Lab');
+  assert.equal(item.originRepo,item.url);
+  assert.equal(item.sourceUrl,item.url+'/blob/main/index.html');
+  const markup=projectPreviewMarkup(item);
+  assert.ok(markup.includes('src="'+item.siteUrl+'"'));
+  assert.match(markup,/data-preview-frame="external"/);
+  assert.match(markup,/sandbox="allow-scripts allow-forms"/);
+  assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
+});
 test('旧的 React/Vue 预览入口保持不变，未上线项目不伪造演示链接',async()=>{
   const assets=JSON.parse(await read('content/assets.json'));
   for(const id of ['fluxnav-start-page','kumo-edge-console','style-atlas','fontfolio','s2u-link-workbench'])

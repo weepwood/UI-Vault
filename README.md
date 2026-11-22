@@ -119,7 +119,7 @@ npm run check           # 完整 CI 等价检查
 主站使用 [Lucide](https://lucide.dev/) 本地 SVG sprite，不通过 CDN 加载，也不依赖第三方 npm 包。侧栏、搜索、收藏、详情预览、操作按钮及站点标识使用一致的线性图标；已独立实现的 Demo 保留各自设计风格。参见 [图标规范与许可](docs/ICONOGRAPHY.md)。
 
 
-**独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站保留索引与源码入口。详见 [图标规范](docs/ICONOGRAPHY.md)。
+**独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站内嵌其 [GitHub Pages 页面](https://weepwood.github.io/Emboss-Lab/)，并保留源代码链接。详见 [图标规范](docs/ICONOGRAPHY.md)。
 
 ## 常驻双栏预览（v0.6）
 

@@ -1,8 +1,8 @@
-# Emboss Lab 改为源仓入口
+# Emboss Lab 嵌入 GitHub Pages 预览
 
 ## 目标
 
-将 UI Vault 中的“Emboss Lab · 浮雕海报交互”从本地静态副本替换为直达 `weepwood/Emboss-Lab` GitHub 源仓的外部项目入口。以源仓维护当前项目内容，不在 UI Vault 继续保留第二份可运行拷贝。
+将 UI Vault 中的“Emboss Lab · 浮雕海报交互”预览切换到 `https://weepwood.github.io/Emboss-Lab/`，通过现有外部项目 iframe 模式内嵌运行。源代码仍由 `weepwood/Emboss-Lab` 维护，并通过项目详情保留源仓和 `index.html` 源码入口。不在 UI Vault 继续保留第二份可运行拷贝。
 
 ## 设计
 
@@ -15,11 +15,11 @@
 ## 替代方案
 
 1. 保留本地副本并继续同步源仓内容：用户已选择直接链接，因此不采用双份维护。
-2. 直接嵌入源仓 Pages 站点：用户选择 GitHub 源仓入口；嵌入也会依赖该站点是否允许 iframe，因此不采用。
+2. 内嵌 GitHub Pages 页面：可以在 UI Vault 中直接体验实际页面；该站点响应允许 iframe，本站已有受限外站 iframe 模式，因此采用。
 
 ## 验收标准
 
 - UI Vault 原有资产 ID 和深链接仍定位到该条目。
-- 详情预览显示外部项目状态，打开原始项目链接到 `https://github.com/weepwood/Emboss-Lab`；源码入口指向其 `index.html`。
+- 详情预览内嵌 `https://weepwood.github.io/Emboss-Lab/`，使用现有外站 iframe 沙箱；顶部“在原站查看”打开 Pages 页面，项目详情源码入口指向 GitHub `index.html`。
 - 新构建不再发布旧的 `demos/experiments/emboss-poster-lab/` 副本。
 - 资产校验、单元测试、构建及目标链接的浏览器检查通过。

@@ -54,10 +54,11 @@ test('已有自带独立图形或纯背景的实验不被强制替换',async()=>
  assert.doesNotMatch(aurora,/lucide-demo-icon/);
 });
 
-test('Emboss Lab 保留资源 ID 并直达原仓库，不再发布本地副本',async()=>{
+test('Emboss Lab 保留资源 ID 并嵌入 Pages，同时保留源仓入口',async()=>{
  const entry=JSON.parse(await source('catalog/assets/emboss-poster-lab.json'));
  assert.equal(entry.id,'emboss-poster-lab');
  assert.equal(entry.source,'external');
+ assert.equal(entry.siteUrl,'https://weepwood.github.io/Emboss-Lab/');
  assert.equal(entry.url,'https://github.com/weepwood/Emboss-Lab');
  assert.equal(entry.originRepo,entry.url);
  assert.equal(entry.sourceUrl,'https://github.com/weepwood/Emboss-Lab/blob/main/index.html');
