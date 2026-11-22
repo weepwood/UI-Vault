@@ -17,9 +17,25 @@ function isoOrNull(input){
   const date=new Date(input);
   return Number.isFinite(date.getTime())?date.toISOString():null;
 }
+function trustedHttps(input){
+  if(typeof input!=='string')return null;
+  try{
+    const u=new URL(input);
+    if(u.protocol!=='https:'||u.username||u.password||u.port)return null;
+    if(['localhost','127.0.0.1','::1'].includes(u.hostname.toLowerCase()))return null;
+    return u.href;
+  }catch{return null;}
+}
+export function classifyDeploymentStatus(state){
+  if(state==='success')return 'success';
+  if(['failure','error'].includes(state))return 'failure';
+  if(['pending','in_progress','queued'].includes(state))return 'pending';
+  return 'unknown';
+}
 function createRow(){
   return {repositoryStatus:'unverified',defaultBranch:null,pushedAt:null,
-    archived:null,licenseSpdx:null,actionsStatus:'unknown',actionsUrl:null};
+    archived:null,licenseSpdx:null,actionsStatus:'unknown',actionsUrl:null,
+    deployment:{state:'unknown',provider:null,environment:null,url:null,evidenceUrl:null,updatedAt:null}};
 }
 export async function collectPublicProjectHealth(projects,{fetcher=fetch,token='',now=new Date(),concurrency=4}={}){
   const snapshot=emptyProjectHealth(projects);
@@ -61,13 +77,47 @@ export async function collectPublicProjectHealth(projects,{fetcher=fetch,token='
         row.licenseSpdx=spdx;
       if(!row.defaultBranch)continue;
       const runs=await request(base+'/actions/runs?branch='+encodeURIComponent(row.defaultBranch)+'&per_page=1');
-      if(runs.status!==200||!Array.isArray(runs.data?.workflow_runs))continue;
-      if(!runs.data.workflow_runs.length){row.actionsStatus='none';continue;}
-      const latest=runs.data.workflow_runs[0];
-      if(latest.status==='completed'){
-        row.actionsStatus=latest.conclusion==='success'?'success':latest.conclusion==='failure'?'failure':'other';
-      }else row.actionsStatus=['in_progress','queued','requested','waiting','pending'].includes(latest.status)?'running':'unknown';
-      row.actionsUrl=publicGitHubLink(latest.html_url);
+      // Actions 没有运行记录不代表没有真实部署；部署必须单独核验。
+      if(runs.status===200&&Array.isArray(runs.data?.workflow_runs)){
+        if(!runs.data.workflow_runs.length)row.actionsStatus='none';
+        else{
+          const latest=runs.data.workflow_runs[0];
+          if(latest.status==='completed'){
+            row.actionsStatus=latest.conclusion==='success'?'success':latest.conclusion==='failure'?'failure':'other';
+          }else row.actionsStatus=['in_progress','queued','requested','waiting','pending'].includes(latest.status)?'running':'unknown';
+          row.actionsUrl=publicGitHubLink(latest.html_url);
+        }
+      }
+      // GitHub Deployments 的状态属于部署提供方记录，不等同于 Actions 或站点 HTTP 200。
+      const deployments=await request(base+'/deployments?per_page=50');
+      const candidates=Array.isArray(deployments.data)?deployments.data.filter(d=>
+        d&&typeof d.id==='number'&&(d.environment==='github-pages'||
+          d.production_environment===true||d.environment==='production')):[];
+      const latestDeployment=candidates.sort((a,b)=>Date.parse(b.created_at||0)-Date.parse(a.created_at||0))[0];
+      if(latestDeployment){
+        const environment=String(latestDeployment.environment||'').slice(0,90);
+        const statuses=await request(base+'/deployments/'+latestDeployment.id+'/statuses?per_page=1');
+        const current=Array.isArray(statuses.data)?statuses.data[0]:null;
+        row.deployment={
+          state:classifyDeploymentStatus(current?.state),
+          provider:'github-deployments',environment,
+          url:trustedHttps(current?.environment_url)||null,
+          evidenceUrl:'https://github.com/'+info.owner+'/'+info.repo+'/deployments',
+          updatedAt:isoOrNull(current?.updated_at)
+        };
+      }
+      // Pages API 只说明 Pages 构建状态；如果没有 Deployment status，不宣称实际发布成功。
+      const pages=await request(base+'/pages');
+      if(pages.status===200&&pages.data&&typeof pages.data==='object'){
+        if(row.deployment.state==='unknown'){
+          const pageState=pages.data.status;
+          row.deployment={state:pageState==='built'?'built':pageState==='errored'?'failure':
+            pageState==='building'?'pending':'unknown',
+            provider:'github-pages',environment:'github-pages',
+            url:trustedHttps(pages.data.html_url),
+            evidenceUrl:'https://github.com/'+info.owner+'/'+info.repo+'/settings/pages',updatedAt:null};
+        }else if(!row.deployment.url){row.deployment.url=trustedHttps(pages.data.html_url);}
+      }
     }
   }
   await Promise.all(Array.from({length:Math.min(Math.max(1,concurrency),projects.length||1)},()=>worker()));

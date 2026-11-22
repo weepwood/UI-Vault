@@ -44,6 +44,14 @@
 - [ ] 扩大已验证可独立下载的 Demo 范围，并自动验收 ZIP 内相对资源引用。
 - [ ] 多框架完整源码与工具链导出协议（含构建说明、锁文件和依赖版本）。
 
+## 统一项目运维视图
+
+- [x] 项目级代码检查、GitHub Deployments/Pages 证据、资产级 iframe 限制与 HTTP 状态分开采集。
+- [x] `?view=operations` 可筛选视图：代码/部署/预览、搜索、项目与资产展开。
+- [x] 离线未知快照、定期刷新和浏览器回归，不接管跨仓源码与流水线。
+- [ ] Netlify/Vercel 平台精确部署状态须连接提供方或消费可信部署记录，不应由 HTTP/Actions 代替。
+- [ ] iframe 内容真正可交互的证明需要合作站点可信 ready 协议或自动化浏览器验收；当前不把 load 当作成功。
+
 ## Project / Asset 分层管理
 
 - [x] 33 个 Project 注册表与 Schema、126 条 Asset 的 `projectId` 关联和双清单校验。

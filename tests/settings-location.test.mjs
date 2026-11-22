@@ -50,7 +50,8 @@ test('设置在同一工作台切换并与路由历史同步',()=>{
  assert.match(hooks,/router[.]setView\(view,historyMode\)/);
  assert.match(hooks,/router[.]subscribe/);
  assert.ok(router.includes("host.addEventListener('popstate'"));
- assert.ok(router.includes("url.searchParams.set('view','settings')"));
+ assert.ok(router.includes("url.searchParams.set('view',mode)"));
+ assert.ok(router.includes("'settings','operations','library'"));
  assert.match(css,/[.]app-shell[.]is-settings[\s\S]*?grid-template-columns:var\(--navigation-width\) minmax\(0,1fr\)/);
  assert.match(css,/[.]app-shell[.]is-settings [.]library-rail [.]project-panel \{ display:none; \}/);
 });

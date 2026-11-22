@@ -12,15 +12,16 @@ const has=(source,token,message)=>assert.ok(source.includes(token),message+'：'
 test('移动菜单打开、关闭和设置视图切换会同步 inert、遮罩与 aria',()=>{
   for(const token of [
     'nodes.rail.inert=mobile&&!menuOpen',
-    'nodes.main.inert=menuOpen||settingsActive',
+    'nodes.main.inert=menuOpen||notLibrary',
+    'nodes.operations.inert=menuOpen||!operationsActive',
     'nodes.settings.inert=menuOpen||!settingsActive',
     'nodes.shade.hidden=!menuOpen',
     "nodes.rail.classList.toggle('is-open',menuOpen)",
-    'if(settingsActive||menuOpen)closeDropdowns()'
+    'if(notLibrary||menuOpen)closeDropdowns()'
   ])has(react,token,'移动目录状态同步缺少');
   has(toolbar,'aria-expanded={String(menuOpen)}','菜单按钮未同步 aria-expanded');
   // 收起菜单后焦点回到当前视图的菜单按钮。
-  has(react,"document.getElementById(settingsActive?'settings-menu-toggle':'menu-toggle')",'收起菜单未恢复焦点');
+  has(react,"document.getElementById(settingsActive?'settings-menu-toggle':operationsActive?'operations-menu-toggle':'menu-toggle')",'收起菜单未恢复焦点');
   // 打开目录后聚焦搜索框。
   assert.match(react,/if\(menuOpen\)searchRef\.current\?\.focus\(\{preventScroll:true\}\)/);
 });

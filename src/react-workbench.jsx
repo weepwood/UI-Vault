@@ -17,6 +17,7 @@ import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
 import {SettingsPanel} from './components/SettingsPanel.jsx';
+import {ProjectOperationsPanel} from './components/ProjectOperationsPanel.jsx';
 import {closeDropdowns} from '../assets/core/dropdown.js';
 import {getExternalLinkNotice} from '../assets/core/external-link-message.js';
 
@@ -41,9 +42,9 @@ function QuickFilters({state,onFilter}){
     favoritesOnly:{'data-favorites':'toggle'},importedOnly:{'data-imported':'toggle'}
   };
   return <>{options.map(item=><button type="button" key={item.key}
-    className={'filter-button'+(state.view!=='settings'&&item.selected?' is-active':'')}
+    className={'filter-button'+(state.view==='library'&&item.selected?' is-active':'')}
     {...dataAttrs[item.key]}
-    aria-pressed={String(state.view!=='settings'&&item.selected)}
+    aria-pressed={String(state.view==='library'&&item.selected)}
     onClick={()=>onFilter(item.key,item.value)}>
     <UIIcon name={item.icon}/><span>{item.label}</span>
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
@@ -71,7 +72,7 @@ function ListControls({state,tags,onSort,onTag,count}){
 }
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
-  const {state,filtered,tags,filteredActive,projectHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
+  const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
     selectAsset,filter,changeSearch,changeSort,changeTag,reset,
     favorite,changePreference,resetPreferences,changePreview,menu,
     copyText,copyLink,copySource}=app;
@@ -81,6 +82,8 @@ function WorkbenchPortals({nodes}){
   const menuOpen=mobile&&state.menuOpen;
   const selected=state.active;
   const settingsActive=state.view==='settings';
+  const operationsActive=state.view==='operations';
+  const notLibrary=settingsActive||operationsActive;
   const liked=selected?state.favorites.has(selected.id):false;
   const onDialogChange=useCallback(value=>setDialogOpen(Boolean(value)),[]);
   const onMenuToggle=useCallback(()=>menu(!state.menuOpen),[menu,state.menuOpen]);
@@ -89,7 +92,7 @@ function WorkbenchPortals({nodes}){
     if(mobile)requestAnimationFrame(()=>document.getElementById('preview-title')?.focus({preventScroll:true}));
   },[selectAsset,mobile]);
 
-  useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive]);
+  useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
     const query=window.matchMedia('(max-width:760px)');
     const change=()=>{setMobile(query.matches);if(!query.matches)menu(false);};
@@ -98,19 +101,22 @@ function WorkbenchPortals({nodes}){
   },[menu]);
   useLayoutEffect(()=>{
     nodes.shell.classList.toggle('is-settings',settingsActive);
+    nodes.shell.classList.toggle('is-operations',operationsActive);
+    nodes.operations.hidden=!operationsActive;
     nodes.settings.hidden=!settingsActive;
-    nodes.projectPanel.inert=settingsActive;
+    nodes.projectPanel.inert=notLibrary;
     nodes.rail.classList.toggle('is-open',menuOpen);
     nodes.shade.hidden=!menuOpen;
-    nodes.main.inert=menuOpen||settingsActive;
+    nodes.main.inert=menuOpen||notLibrary;
+    nodes.operations.inert=menuOpen||!operationsActive;
     nodes.settings.inert=menuOpen||!settingsActive;
     nodes.rail.inert=mobile&&!menuOpen;
-    if(settingsActive||menuOpen)closeDropdowns();
-  },[nodes,settingsActive,menuOpen,mobile]);
+    if(notLibrary||menuOpen)closeDropdowns();
+  },[nodes,settingsActive,operationsActive,notLibrary,menuOpen,mobile]);
   useEffect(()=>{
     const close=()=>{
       menu(false);
-      const target=document.getElementById(settingsActive?'settings-menu-toggle':'menu-toggle');
+      const target=document.getElementById(settingsActive?'settings-menu-toggle':operationsActive?'operations-menu-toggle':'menu-toggle');
       target?.focus({preventScroll:true});
     };
     nodes.dismiss.addEventListener('click',close);
@@ -119,7 +125,7 @@ function WorkbenchPortals({nodes}){
       nodes.dismiss.removeEventListener('click',close);
       nodes.shade.removeEventListener('click',close);
     };
-  },[nodes,menu,settingsActive]);
+  },[nodes,menu,settingsActive,operationsActive]);
   useEffect(()=>{
     if(menuOpen)searchRef.current?.focus({preventScroll:true});
   },[menuOpen]);
@@ -128,14 +134,14 @@ function WorkbenchPortals({nodes}){
       if(event.key==='Escape'&&menuOpen){
         event.preventDefault();
         menu(false);
-        document.getElementById(settingsActive?'settings-menu-toggle':'menu-toggle')?.focus({preventScroll:true});
+        document.getElementById(settingsActive?'settings-menu-toggle':operationsActive?'operations-menu-toggle':'menu-toggle')?.focus({preventScroll:true});
         return;
       }
       const editable=Boolean(event.target?.closest?.('input,textarea,select,[contenteditable="true"]'));
       if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){
         event.preventDefault();
         if(mobile)menu(true);
-        else if(settingsActive)openView('library');
+        else if(notLibrary)openView('library');
         requestAnimationFrame(()=>{
           searchRef.current?.focus({preventScroll:true});
           searchRef.current?.select();
@@ -143,13 +149,13 @@ function WorkbenchPortals({nodes}){
       }else if(!editable&&event.key==='/'&&!event.metaKey&&!event.ctrlKey&&!event.altKey){
         event.preventDefault();
         if(mobile)menu(true);
-        else if(settingsActive)openView('library');
+        else if(notLibrary)openView('library');
         requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
       }
     };
     document.addEventListener('keydown',onKey);
     return ()=>document.removeEventListener('keydown',onKey);
-  },[mobile,menuOpen,menu,settingsActive,openView]);
+  },[mobile,menuOpen,menu,settingsActive,operationsActive,notLibrary,openView]);
   useEffect(()=>{
     const resetControl=nodes.reset;
     const emptyReset=nodes.emptyReset;
@@ -226,7 +232,7 @@ function WorkbenchPortals({nodes}){
       onSubmit={()=>filtered[0]&&onSelect(filtered[0].id)} searchRef={searchRef}/>,nodes.search)}
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
-      settingsActive={settingsActive} onChange={id=>filter('category',id)}/>,nodes.categories)}
+      settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} tags={tags} onSort={changeSort}
       onTag={changeTag} count={filtered.length}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
@@ -240,20 +246,31 @@ function WorkbenchPortals({nodes}){
       onMenu={onMenuToggle} menuOpen={menuOpen}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={selected} mode={state.previewSize}
       error={state.error} loading={state.loading}/>,nodes.stage)}
+    {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
+      health={projectHealthSnapshot} preview={previewHealthSnapshot}
+      onMenuToggle={onMenuToggle} menuOpen={menuOpen}/>,nodes.operations)}
     {createPortal(<SettingsPanel settings={state.preferences} onChange={changePreference}
       onReset={resetPreferences} onMenuToggle={onMenuToggle} menuOpen={menuOpen}
       visible={settingsActive}/>,nodes.settings)}
-    {createPortal(<a id="settings-open" className="sidebar-settings" href="./?view=settings"
+    {createPortal(<>
+      <a id="operations-open" className="sidebar-settings sidebar-operations" href="./?view=operations"
+        aria-label="项目状态管理" title="项目状态管理" aria-current={operationsActive?'page':'false'}
+        onClick={event=>{event.preventDefault();menu(false);openView('operations');setDialogOpen(false);
+          requestAnimationFrame(()=>document.getElementById('operations-title')?.focus({preventScroll:true}));}}>
+        <UIIcon name="chart-no-axes-column"/><span>项目状态</span>
+      </a>
+      <a id="settings-open" className="sidebar-settings" href="./?view=settings"
       aria-label="打开工作台设置" title="设置"
       aria-current={settingsActive?'page':'false'}
       onClick={event=>{
         event.preventDefault();
+        menu(false);
         openView('settings');
         setDialogOpen(false);
         requestAnimationFrame(()=>document.getElementById('settings-title')?.focus({preventScroll:true}));
       }}>
       <UIIcon name="settings"/><span>设置</span>
-    </a>,nodes.settingsLink)}
+    </a></>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
     <ProjectDialog root={nodes.dialog} asset={selected} labels={state.labels}
       project={state.projects.find(p=>p.id===selected?.projectId)||null}
@@ -274,7 +291,7 @@ export function mountWorkbench(){
     projectPanel:$('#project-panel'),shade:$('#mobile-shade'),
     search:$('.library-search'),quickFilters:$('.quick-filters'),categories:$('#category-nav'),
     listControls:$('.list-controls'),gallery:$('#gallery'),
-    topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),
+    topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
     settingsLink:$('.sidebar-footer'),dialog:$('#project-dialog'),
     toast:$('#toast'),reset:$('#reset-filters'),empty:$('#empty'),
     emptyReset:$('#clear-filters'),emptyMessage:$('#empty-message'),
@@ -283,7 +300,7 @@ export function mountWorkbench(){
   const missing=Object.entries(nodes).filter(([_,el])=>!el).map(([key])=>key);
   if(missing.length)throw Error('React 工作台缺少挂载节点：'+missing.join(', '));
   for(const key of ['search','quickFilters','categories','listControls','gallery',
-    'topbar','stage','settings','settingsLink','dialog','toast']){
+    'topbar','stage','settings','operations','settingsLink','dialog','toast']){
     nodes[key].replaceChildren();
   }
   const mount=document.createElement('div');
