@@ -781,7 +781,7 @@ body.settings-body { min-height:100vh;min-height:100dvh;background:var(--canvas)
 /* 目录筛选工具栏与预览 Topbar 共用单行高度，留出更多列表空间。 */
 .project-panel .list-controls {
   display:flex;align-items:center;gap:8px;
-  height:var(--workbench-toolbar-height);min-height:var(--workbench-toolbar-height);
+  height:var(--list-controls-height,var(--workbench-toolbar-height));min-height:var(--workbench-toolbar-height);
   padding:0 12px;flex:none;
   background:var(--surface);border-bottom:1px solid var(--line);
 }
