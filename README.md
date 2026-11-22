@@ -28,7 +28,7 @@
 
 - [在 UI-Vault 中打开组件展厅](https://weepwood.github.io/UI-Vault/?asset=workbench-components)：直接预览、点击并检查工作台原有组件。
 - [组件来源、分级与统一规划](docs/COMPONENT-SYSTEM.md)：Workbench 与 UI Foundation Kit 的所有权边界、组件清单、抽取次序及交互验收标准。
-- [演示代码](demos/components/workbench-system/)：六组组件示例，直接引用 `assets/styles.css`、`assets/core/dropdown.js`、`assets/core/workbench.js` 与 `assets/core/preview.js`。
+- [演示代码](demos/components/workbench-system/)：六组组件示例，`demo.jsx` 直接渲染主站 `src/components/` 中的 React 组件，样式来自 `assets/styles.css`。
 - 不将多文件组件演示伪装成单文件可复制代码；实际通用化由 `subprojects/ui-foundation-kit/` 继续承担。
 
 ## 子项目 · UI Foundation Kit

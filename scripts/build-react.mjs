@@ -37,6 +37,15 @@ await Promise.all([
     format:'iife',
     entryPoints:[resolve(ROOT,'demos/experiments/atlas-client-material/src/main.js')],
     outfile:resolve(ROOT,'assets/style-atlas/material3-demo.js')
+  }),
+  build({
+    ...shared,
+    // 组件展厅直接渲染 src/components/ 中的主站组件。展厅在工作台中运行于
+    // sandbox="allow-scripts" iframe，与上面两个图鉴一样使用经典 IIFE 脚本。
+    // 输出到 assets/ 下，由 build.mjs 的 copyTree('assets') 统一发布和指纹化。
+    format:'iife',
+    entryPoints:[resolve(ROOT,'demos/components/workbench-system/demo.jsx')],
+    outfile:resolve(ROOT,'assets/showcase/workbench-system.js')
   })
 ]);
-console.log('React 工作台、Ant Design 与 Material Web 图鉴构建完成。');
+console.log('React 工作台、组件展厅、Ant Design 与 Material Web 图鉴构建完成。');

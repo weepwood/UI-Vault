@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { ROOT } from '../scripts/lib/catalog.mjs';
-import { projectRowMarkup, projectInfoMarkup, projectPreviewMarkup } from '../assets/core/workbench.js';
+import { projectRowSubtitle, projectInfoMarkup, projectPreviewMarkup } from '../assets/core/workbench.js';
 
 const read=path=>readFile(join(ROOT,path),'utf8');
 const base={
@@ -41,19 +41,16 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(react,/<PreviewFrame asset={selected}/);
   assert.doesNotMatch(app,/drawer\.classList|overlay\.classList|openDetail\(/);
 });
-test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',()=>{
-  const row=projectRowMarkup(base,new Set(['sample-asset']),labels,true);
-  assert.match(row,/project-item is-selected/);
-  assert.match(row,/aria-current="true"/);
-  assert.match(row,/data-open="sample-asset"/);
-  assert.match(row,/class="project-row-icon project-row-emoji"/);
-  assert.doesNotMatch(row,/data-favorite|project-star/);
-  assert.match(row,/布局模板/);
-  assert.match(row,/可运行网页/);
-  const unselected=projectRowMarkup(base,new Set(),labels,false);
-  assert.match(unselected,/aria-current="false"/);
-  assert.doesNotMatch(unselected,/data-favorite|project-star/);
+test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',async()=>{
+  const list=await read('src/components/ProjectList.jsx');
+  assert.ok(list.includes("'project-item'+(selected?' is-selected':'')"));
+  assert.ok(list.includes('aria-current={String(selected)}'));
+  assert.ok(list.includes('data-open={asset.id}'));
+  assert.ok(list.includes('className="project-row-icon project-row-emoji"'));
+  assert.doesNotMatch(list,/data-favorite|project-star/);
+  assert.equal(projectRowSubtitle(base,labels),'布局模板 · 可运行网页');
 });
+
 test('本地项目直接显示真实 iframe，使用沙箱和 GitHub Pages 子路径',()=>withBaseURI(()=>{
   const result=projectPreviewMarkup(base);
   assert.match(result,/src="https:\/\/example\.test\/UI-Vault\/demos\/layouts\/editor-shell\/index\.html"/);
@@ -123,8 +120,7 @@ test('已部署的 NOEMA 通过受限 iframe 预览，仍保留仓库和独立�
   assert.match(html,/sandbox="allow-scripts allow-forms"/);
   assert.doesNotMatch(html,/allow-same-origin/);
   assert.doesNotMatch(html,/在原站查看/);
-  const row=projectRowMarkup(generated,new Set(),labels);
-  assert.match(row,/在线预览/);
+  assert.match(projectRowSubtitle(generated,labels),/在线预览/);
   const info=projectInfoMarkup(generated,labels);
   assert.match(info,/https:\/\/github\.com\/weepwood\/NOEMA/);
   assert.match(info,/https:\/\/weepwood\.github\.io\/NOEMA\//);

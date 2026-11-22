@@ -5,7 +5,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/showcase/workbench-system.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);if(a.sourceFiles)paths.push(...a.sourceFiles.map(file=>file.path));}
   if(a.coverImage)paths.push(a.coverImage);
@@ -32,6 +32,10 @@ assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'主站未加�
 const reactBundle=await readFile(join(out,'assets/react-workbench.js'),'utf8');
 assert.ok(reactBundle.length>30_000,'React 组件 bundle 缺失或异常短');
 assert.ok(!/from ['"]react(?:-dom)?(?:\/[^'"]+)?['"]/.test(reactBundle),'React 运行时不应依赖浏览器裸模块导入');
+// 组件展厅在 sandbox iframe 中以经典脚本加载，必须是不含 import/export 的自包含 bundle。
+const showcaseBundle=await readFile(join(out,'assets/showcase/workbench-system.js'),'utf8');
+assert.ok(showcaseBundle.length>30_000,'组件展厅 bundle 缺失或异常短');
+assert.ok(!/^\s*(?:import|export)\s/m.test(showcaseBundle),'组件展厅 bundle 不能是 ES module');
 
 assert.ok(entry.includes("mountWorkbench"),'主入口必须启动 React 工作台');
 assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'React 组件版本必须与 HTML 一致');
@@ -46,7 +50,8 @@ assert.ok(!entry.includes('core/workbench-state.js'),'旧业务状态不应从�
 const workbenchState=await readFile(join(out,'assets/core/workbench-state.js'),'utf8');
 assert.ok(workbenchState.includes('./preview.js?v='+jsFingerprint),'状态模块依赖未版本化');
 assert.ok(!publishedHTML.includes('src="./assets/app.js"'),'入口还引用未版本化脚本');
-for(const p of ['README.md','catalog/assets/warm-workbench.json','scripts/new-demo.mjs','tests/catalog.test.mjs','.github/workflows/deploy.yml']){
+// 已删除的原生控制器不应再出现在发布产物中。
+for(const p of ['assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','README.md','catalog/assets/warm-workbench.json','scripts/new-demo.mjs','tests/catalog.test.mjs','.github/workflows/deploy.yml']){
   try{await stat(join(out,p));throw Error('非站点文件被误发布：'+p);}
   catch(e){if(e.code!=='ENOENT')throw e;}
 }

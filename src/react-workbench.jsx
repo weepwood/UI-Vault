@@ -1,57 +1,13 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { projectEmoji } from '../assets/core/workbench.js';
-import {highlightSearchText,searchMatchDetail} from '../assets/core/catalog.js';
+import {ProjectRow,ProjectList} from './components/ProjectList.jsx';
+import {CategoryNavigation} from './components/CategoryNavigation.jsx';
+import {SearchField} from './components/SearchField.jsx';
 
-// React 单根通过 Portals 接管所有交互区域；ProjectRow 与分类导航均为声明式组件。
-const stageLabels={draft:'待精调',refining:'精调中',stable:'已定稿'};
-const categoryIcons={style:'palette',component:'component',effect:'zap',layout:'panels-top-left',demo:'play',resource:'book-open',reference:'bookmark'};
-function Icon({name}){
-  return <svg className="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-    <use href={'./assets/icons/lucide.svg#'+name}/>
-  </svg>;
-}
-
-function SearchHighlight({value,query}){
-  return <>{highlightSearchText(value,query).map((part,i)=>
-    part.matched?<mark key={i} className="search-match">{part.text}</mark>:part.text)}</>;
-}
-export function ProjectRow({asset,labels,selected,onSelect,query=''}){
-  const local=asset.source==='local';
-  const kind=asset.curated?'手工精选 · '+(stageLabels[asset.curationStage]||'待精调')
-    :labels[asset.type]||asset.type;
-  const match=query.trim()?searchMatchDetail(asset,query,labels):null;
-  return <article className={'project-item'+(selected?' is-selected':'')} role="listitem" data-id={asset.id}>
-    <button className="project-row" type="button" data-open={asset.id}
-      aria-current={String(selected)} aria-label={'预览 '+asset.title} onClick={()=>onSelect(asset.id)}>
-      <span className="project-row-icon project-row-emoji" aria-hidden="true">{projectEmoji(asset.id)}</span>
-      <span className="project-row-copy">
-        <span className="project-row-title"><SearchHighlight value={asset.title} query={query}/></span>
-        <span className="project-row-subtitle">{match
-          ?<><span className="search-match-label">{match.label}</span> · <SearchHighlight value={match.text} query={query}/></>
-          :kind+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')}</span>
-      </span>
-    </button>
-  </article>;
-}
-
-export function ProjectList({items,labels,selectedId,onSelect,query=''}){
-  return <>{items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
-    selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}</>;
-}
-
-export function CategoryNavigation({categories,current,settingsActive,onChange}){
-  return <>{categories.map(category=><button key={category.id} type="button"
-    className={'nav-button'+(!settingsActive&&current===category.id?' is-active':'')}
-    data-category={category.id} aria-pressed={String(!settingsActive&&current===category.id)}
-    onClick={()=>onChange(category.id)}>
-    <span className="nav-index" aria-hidden="true">
-      <Icon name={categoryIcons[category.id]||'layout-grid'}/>
-    </span>
-    <span>{category.label}</span>
-  </button>)}</>;
-}
+// React 单根通过 Portals 接管所有交互区域。
+// ProjectRow、ProjectList、CategoryNavigation、SearchField 拆到 src/components/，
+// 主站与组件展厅（demos/components/workbench-system/）共用同一实现。
+export {ProjectRow,ProjectList,CategoryNavigation};
 
 import {useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
@@ -90,26 +46,6 @@ function QuickFilters({state,onFilter}){
     <UIIcon name={item.icon}/><span>{item.label}</span>
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
   </button>)}</>;
-}
-function SearchField({value,onChange,onSubmit,searchRef}){
-  return <div className="search-field">
-    <label htmlFor="search" className="search-icon" aria-hidden="true"><UIIcon name="search"/></label>
-    <input id="search" ref={searchRef} type="search" value={value}
-      autoComplete="off" maxLength={160} placeholder="搜索项目、标签、技术栈" aria-label="搜索项目"
-      aria-keyshortcuts="Control+K Meta+K" aria-controls="gallery"
-      onKeyDown={event=>{
-        if(event.key==='Escape'&&value){event.preventDefault();event.stopPropagation();onChange('');}
-        if(event.key==='Enter'&&value.trim()){
-          event.preventDefault();
-          onSubmit?.();
-        }
-      }}
-      onChange={event=>onChange(event.target.value)}/>
-    {value&&<button className="search-clear" type="button" aria-label="清除搜索内容"
-      title="清除搜索" onClick={()=>{onChange('');searchRef.current?.focus({preventScroll:true});}}>
-      <UIIcon name="x"/>
-    </button>}
-  </div>;
 }
 function ListControls({state,tags,onSort,onTag,count}){
   return <>
@@ -219,19 +155,20 @@ function WorkbenchPortals({nodes}){
     resetControl.addEventListener('click',handle);
     emptyReset.addEventListener('click',handle);
     resetControl.hidden=!filteredActive;
-    nodes.empty.hidden=filtered.length>0&&!state.error;
+    // 目录还在加载时不显示空状态，否则首屏会先闪出“没有找到项目”。
+    nodes.empty.hidden=state.loading||(filtered.length>0&&!state.error);
     nodes.emptyMessage.textContent=state.error||
       (state.favoritesOnly&&!state.query.trim()&&!state.tag?'这里还没有收藏的项目。':
         state.query.trim()?'没有找到与“'+state.query.trim().slice(0,36)+'”匹配的项目。请尝试减少关键词或清除筛选条件。':
         '没有找到符合当前条件的项目。');
-    nodes.resultsStatus.textContent=state.query.trim()?
+    nodes.resultsStatus.textContent=state.loading?'正在加载项目目录…':state.query.trim()?
       '搜索“'+state.query.trim().slice(0,36)+'”，找到 '+filtered.length+' 个项目':
       '当前显示 '+filtered.length+' 个项目';
     return ()=>{
       resetControl.removeEventListener('click',handle);
       emptyReset.removeEventListener('click',handle);
     };
-  },[nodes,reset,filteredActive,filtered.length,state.error,state.favoritesOnly,state.query,state.tag]);
+  },[nodes,reset,filteredActive,filtered.length,state.loading,state.error,state.favoritesOnly,state.query,state.tag]);
   useEffect(()=>{
     if(!notice)return;
     nodes.toast.classList.add('show');
@@ -280,14 +217,15 @@ function WorkbenchPortals({nodes}){
     {createPortal(<ListControls state={state} tags={tags} onSort={changeSort}
       onTag={changeTag} count={filtered.length}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
-      selectedId={selected?.id} onSelect={onSelect} query={state.query}/>,nodes.gallery)}
+      selectedId={selected?.id} onSelect={onSelect} query={state.query}
+      loading={state.loading}/>,nodes.gallery)}
     {createPortal(<PreviewToolbar asset={selected} labels={state.labels}
       previewMode={state.previewSize} onChangePreview={changePreview}
       liked={liked} onFavorite={()=>favorite(selected?.id)} onCopyLink={copyLink}
       onInfo={()=>selected&&setDialogOpen(true)}
       onMenu={onMenuToggle} menuOpen={menuOpen}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={selected} mode={state.previewSize}
-      error={state.error}/>,nodes.stage)}
+      error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(<SettingsPanel settings={state.preferences} onChange={changePreference}
       onReset={resetPreferences} onMenuToggle={onMenuToggle} menuOpen={menuOpen}
       visible={settingsActive}/>,nodes.settings)}

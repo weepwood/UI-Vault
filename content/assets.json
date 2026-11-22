@@ -4211,8 +4211,8 @@
   {
     "id": "workbench-components",
     "title": "Workbench UI 组件展厅",
-    "subtitle": "UI-Vault 工作台 · 原生组件与交互规范",
-    "description": "展示 UI-Vault 当前工作台实际使用的按钮、搜索、增强下拉、导航、项目条目、通知、原生弹窗、设备预览和语义设计变量，提供可交互示例和复用边界说明。",
+    "subtitle": "UI-Vault 工作台 · 主站 React 组件与交互规范",
+    "description": "直接渲染 UI-Vault 主站正在使用的 React 组件：搜索框、增强下拉、分类导航、项目目录条目和设备切换器，以及按钮、通知、原生弹窗和语义设计变量，提供可交互示例和复用边界说明。",
     "type": "component",
     "source": "local",
     "tags": [
@@ -4225,28 +4225,27 @@
     "technologies": [
       "HTML",
       "CSS",
-      "JavaScript",
-      "ES Modules"
+      "React",
+      "JavaScript"
     ],
     "preview": "demos/components/workbench-system/index.html",
     "code": "demos/components/workbench-system/index.html",
     "publish": [
       "demos/components/workbench-system/index.html",
-      "demos/components/workbench-system/demo.css",
-      "demos/components/workbench-system/demo.js"
+      "demos/components/workbench-system/demo.css"
     ],
     "license": "本仓库原创示例；Lucide 图标遵循原授权",
     "cover": "native",
     "featured": true,
     "created": "2026-11-21",
     "copyable": false,
-    "sourceUrl": "https://github.com/weepwood/UI-Vault/tree/main/assets/core",
+    "sourceUrl": "https://github.com/weepwood/UI-Vault/tree/main/src/components",
     "reuseNotes": [
-      "真实组件实现来源：assets/styles.css 与 assets/core/，并非复制视觉的第二套组件",
+      "交互组件与主站同源：SearchField、WorkbenchSelect、CategoryNavigation、ProjectList、ViewportSwitcher 均直接从 src/components/ 导入，不是第二套实现",
+      "检索、排序与缩放复用 assets/core/catalog.js 的 filterAssets() 和 assets/core/preview.js 的 applyPreviewLayout()；示例项目为演示数据",
+      "demo.jsx 由 npm run react:build 打包为 assets/showcase/workbench-system.js（经典 IIFE 脚本），以便在 sandbox iframe 中加载",
       "通用设计基础、跨框架 Token 继续由 subprojects/ui-foundation-kit 维护",
-      "下拉菜单调用 enhanceSelect()，项目条目调用 projectRowMarkup()，设备模式复用 applyPreviewLayout()",
-      "多文件演示禁止一键复制为单文件组件；应按文档引入需要的 CSS 与 JS",
-      "组件分级、无障碍规范及后续抽取计划参见 docs/COMPONENT-SYSTEM.md"
+      "多文件演示禁止一键复制为单文件组件；组件分级、无障碍规范及抽取计划参见 docs/COMPONENT-SYSTEM.md"
     ],
     "sourceFiles": [
       {
@@ -4258,8 +4257,8 @@
         "label": "demo.css · 样式"
       },
       {
-        "path": "demos/components/workbench-system/demo.js",
-        "label": "demo.js · 交互"
+        "path": "demos/components/workbench-system/demo.jsx",
+        "label": "demo.jsx · React 入口"
       }
     ]
   }

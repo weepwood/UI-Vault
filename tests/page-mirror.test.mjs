@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {ROOT,inspectCatalog} from '../scripts/lib/catalog.mjs';
-import {projectPreviewMarkup,projectRowMarkup} from '../assets/core/workbench.js';
+import {projectPreviewMarkup,projectRowSubtitle} from '../assets/core/workbench.js';
 const slugs=["arc-crm","artcraft-apps","bencho","ccunpacked","chaz-5310","feralui","firewood","google-homepage","holo","icon-museum","inftab","inftab-app","makemepulse-2019","mimo-rl","opencode-data","outlier-portfolio","planes-react","pnpm-io","railcode","shaders","weread","zcode-website","zhheo-blog"];
 const base='https://weepwood.github.io/page-mirror/';
 const read=path=>readFile(join(ROOT,path),'utf8');
@@ -33,6 +33,6 @@ test('镜像子路径、隔离 iframe 与项目列表展示一致',async()=>{
   assert.match(markup,/sandbox="allow-scripts allow-forms"/);
   assert.match(markup,/referrerpolicy="no-referrer"/);
   assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
-  assert.match(projectRowMarkup(a,new Set(),{}),/在线预览/);
+  assert.match(projectRowSubtitle(a,{}),/在线预览/);
  }
 });

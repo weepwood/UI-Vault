@@ -44,7 +44,7 @@
 .wb-search-field{max-width:480px}
 .wb-form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
 .wb-field{display:flex;flex-direction:column;gap:8px}
-.wb-field label{font-size:12px;font-weight:620}
+.wb-field-label{font-size:12px;font-weight:620}
 .wb-field .select-field select,.wb-field .select-trigger{min-height:38px;height:38px}
 .wb-field .select-popover{left:0;right:auto;width:max(100%,180px)}
 .wb-nav-preview .nav-button{min-height:38px;border-color:var(--line);padding:8px 10px}
@@ -59,10 +59,8 @@
 .wb-empty>.ui-icon{width:23px;height:23px;color:var(--muted)}
 .wb-empty p{margin:9px 0 12px;font-size:12px}
 .wb-empty button{font-size:11px}
-.wb-viewport-options{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:15px}
-.wb-viewport-options button{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:7px;font-size:11px}
-.wb-viewport-options button[aria-pressed=true]{border-color:var(--line);background:var(--accent-soft);color:var(--accent);font-weight:700}
-.wb-viewport-options button .ui-icon{width:15px;height:15px}
+.wb-viewport-bar{position:relative;display:flex;align-items:center;min-height:36px;margin-bottom:15px}
+.wb-viewport-bar .viewport-controls{position:relative}
 .wb-device-stage{position:relative;isolation:isolate;min-height:300px;height:330px;border-radius:9px;background:var(--canvas);border:1px solid var(--line);overflow:hidden}
 .wb-device-stage iframe{position:absolute;display:block;top:0;left:0;width:100%;height:100%;transform-origin:0 0;border:0;background:#fff}
 .wb-token-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}

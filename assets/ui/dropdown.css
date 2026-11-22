@@ -1,21 +1,21 @@
-/* 增强下拉菜单视觉基线；交互逻辑见 assets/core/dropdown.js。 */
+/* 增强下拉菜单视觉基线；交互逻辑见 src/components/WorkbenchSelect.jsx，统一关闭见 assets/core/dropdown.js。 */
 .select-field { position: relative; min-width: 0; }
 .select-field--sort { flex: 0 0 122px; }
 .select-field--tag { flex: 1 1 auto; }
 .select-field > select { width: 100%; min-width: 0; height: 34px; padding: 0 8px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 11px; }
-.select-trigger { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; height: 34px; padding: 0 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 11px; text-align: left; transition: border-color .14s, background-color .14s; }
-.select-trigger:hover { border-color: #b7c8d0; background: #fff; }
-.select-field.is-open .select-trigger { border-color: #8faebf; background: var(--surface); }
-.select-field.has-filter .select-trigger { color: var(--accent); border-color: #c2d8e5; background: #f6fafc; }
+.select-trigger { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; height: 34px; padding: 0 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface); color: var(--text); font-size: 11px; text-align: left; transition: border-color var(--motion-fast,120ms) ease, background-color var(--motion-fast,120ms) ease, color var(--motion-fast,120ms) ease; }
+.select-trigger:hover { border-color: var(--accent-line,#b7c8d0); background: var(--surface); }
+.select-field.is-open .select-trigger { border-color: var(--accent-line-strong,#8faebf); background: var(--surface); }
+.select-field.has-filter .select-trigger { color: var(--accent); border-color: var(--accent-line,#c2d8e5); background: var(--accent-soft); }
 .select-leading, .select-chevron { display: inline-flex; align-items: center; justify-content: center; flex: none; color: var(--muted); }
 .select-leading .ui-icon { width: 15px; height: 15px; }
 .select-field.has-filter .select-leading, .select-field.is-open .select-leading { color: var(--accent); }
 .select-value { flex: 1; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
-.select-chevron { margin-left: auto; transition: transform .14s ease; }
+.select-chevron { margin-left: auto; transition: transform var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
 .select-chevron .ui-icon { width: 14px; height: 14px; }
 .select-field.is-open .select-chevron { transform: rotate(180deg); }
-.select-popover { position: absolute; right: 0; top: calc(100% + 5px); z-index: 10; width: max(100%, 188px); max-width: min(300px, calc(100vw - 24px)); max-height: min(306px, 43dvh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid #dbe3e7; border-radius: 9px; background: var(--surface); box-shadow: 0 12px 28px #1e34411c, 0 2px 8px #1e34410b; animation: select-pop-in .14s ease-out; }
-.select-option { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 7px 9px; border-radius: 5px; outline-offset: -2px; color: var(--text); cursor: pointer; font-size: 11px; }
+.select-popover { position: absolute; right: 0; top: calc(100% + 5px); z-index: 10; width: max(100%, 188px); max-width: min(300px, calc(100vw - 24px)); max-height: min(306px, 43dvh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); box-shadow: 0 12px 28px #1e34411c, 0 2px 8px #1e34410b; transform-origin: top right; animation: select-pop-in var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
+.select-option { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 7px 9px; border-radius: 5px; outline-offset: -2px; color: var(--text); cursor: pointer; font-size: 11px; transition: background-color var(--motion-fast,120ms) ease, color var(--motion-fast,120ms) ease; }
 .select-option:hover { color: var(--ink); background: var(--canvas); }
 .select-option:focus-visible { color: var(--ink); background: var(--canvas); outline: 2px solid var(--focus); }
 .select-option[aria-selected="true"] { color: var(--accent); background: var(--accent-soft); font-weight: 650; }
@@ -24,8 +24,8 @@
 .select-option-text { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .select-option-check { visibility: hidden; color: var(--accent); }
 .select-option[aria-selected="true"] .select-option-check { visibility: visible; }
-@keyframes select-pop-in { from { opacity: 0; transform: translateY(-3px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes select-pop-in { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @media(prefers-reduced-motion:reduce) {
-  .select-trigger, .select-chevron { transition: none; }
+  .select-trigger, .select-chevron, .select-option { transition: none; }
   .select-popover { animation: none; }
 }

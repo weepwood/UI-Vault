@@ -32,16 +32,16 @@ test('资源导航、项目列表、真实预览在独立三栏',async()=>{
  assert.match(css,/\.project-panel\s*\{\s*display:\s*flex/);
 });
 test('React 列表独立滚动，使用统一过滤器和独立预览',async()=>{
- const [css,react,hooks,preview]=await Promise.all([
+ const [css,react,hooks,preview,list]=await Promise.all([
   'assets/styles.css','src/react-workbench.jsx','src/useWorkbench.js',
-  'src/components/PreviewFrame.jsx'
+  'src/components/PreviewFrame.jsx','src/components/ProjectList.jsx'
  ].map(read));
  assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*flex:\s*1 1 0/);
  assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*overscroll-behavior:\s*contain/);
  assert.match(hooks,/filterAssets\(state.assets,state,state.favorites\)/);
  assert.match(react,/<ProjectList items={filtered}/);
  assert.match(react,/<PreviewFrame asset={selected}/);
- assert.match(react,/key={asset.id}/);
+ assert.match(list,/key={asset.id}/);
  assert.match(preview,/data-preview-frame="local"/);
 });
 test('移动端两栏由 React 同步 inert、遮罩及导航焦点',async()=>{

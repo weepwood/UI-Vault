@@ -34,8 +34,8 @@ test('主站只使用实际存在的 Lucide 图标，不混用字符形状',asyn
   for(const glyph of ['☰','☆','♡','♥','▣','＋'])assert.ok(!index.includes(glyph),'静态主站保留旧字符图标 '+glyph);
   assert.ok(!app.includes("button.textContent=liked?'♥':'♡'"));
   assert.ok(!render.includes("liked?'♥':'♡'"));
-  const react=await read('src/react-workbench.jsx');
-  assert.match(react,/categoryIcons/);
+  const navigation=await read('src/components/CategoryNavigation.jsx');
+  assert.match(navigation,/categoryIcons/);
 });
 test('Lucide 图标渲染遵循受控名称和纯装饰无障碍约定',()=>{
   const markup=iconMarkup('heart');

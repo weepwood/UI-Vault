@@ -6,13 +6,13 @@ const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
 test('搜索框不显示快捷键标识，但仍可通过原快捷键聚焦',()=>{
   const html=read('index.html');
-  const mobile=read('assets/ui/mobile-navigation.js');
+  const react=read('src/react-workbench.jsx');
   const search=html.slice(html.indexOf('<div class="library-search">'),html.indexOf('</div>',html.indexOf('<div class="library-search">')));
   assert.match(search,/id="search"/);
   assert.match(search,/aria-keyshortcuts="Control[+]K Meta[+]K"/);
   assert.doesNotMatch(search,/<kbd|⌘ K/);
-  assert.match(mobile,/event[.]metaKey\|\|event[.]ctrlKey/);
-  assert.match(mobile,/search[.]focus\(\)/);
+  assert.match(react,/event[.]metaKey\|\|event[.]ctrlKey/);
+  assert.match(react,/searchRef[.]current\?[.]focus\(/);
 });
 
 test('项目目录、结果数量、排序和标签筛选结构完整',()=>{
@@ -32,7 +32,7 @@ test('项目目录、结果数量、排序和标签筛选结构完整',()=>{
 
 test('项目控件紧凑显示、下拉可用且适配深色和小屏幕',()=>{
   const css=read('assets/styles.css');
-  const dropdown=read('assets/core/dropdown.js');
+  const dropdown=read('src/components/WorkbenchSelect.jsx');
   assert.match(css,/[.]project-panel [.]list-controls [.]project-controls-heading/);
   assert.match(css,/[.]project-panel [.]result-count/);
   assert.match(css,/[.]project-panel [.]select-field--sort [.]select-trigger/);
@@ -40,7 +40,7 @@ test('项目控件紧凑显示、下拉可用且适配深色和小屏幕',()=>{
   assert.match(css,/html\[data-theme="dark"\] [.]project-panel [.]list-controls/);
   assert.match(css,/@media\(max-width:480px\)/);
   assert.doesNotMatch(css,/[.]search-field kbd/);
-  assert.match(dropdown,/select[.]id==='sort'&&select[.]value!=='featured'/);
-  assert.match(dropdown,/select[.]id==='tag-filter'&&select[.]value!==''/);
-  assert.match(dropdown,/select[.]dispatchEvent\(new Event\('change'/);
+  // 排序不是默认值、或选了标签时，下拉显示“已筛选”状态。
+  assert.match(dropdown,/value&&\(id==='sort'\?value!=='featured':id==='tag-filter'\)\?' has-filter'/);
+  assert.match(dropdown,/onChange=\{event=>onChange\(event[.]target[.]value\)\}/);
 });

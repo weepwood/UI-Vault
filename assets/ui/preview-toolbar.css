@@ -13,9 +13,9 @@
 .topbar-separator{height:24px;border-left:1px solid var(--line);flex:none}
 .topbar-actions{display:flex;align-items:center;gap:6px;flex:none}
 .viewport-controls{display:flex;align-items:center;gap:2px;flex:none}
-.viewport-controls button{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;padding:8px 9px;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--muted);font-size:11px}
+.viewport-controls button{display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;padding:8px 9px;background:transparent;border:1px solid transparent;border-radius:6px;color:var(--muted);font-size:11px;transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease}
 .viewport-controls button:hover{color:var(--ink);background:var(--canvas)}
-.viewport-controls button[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft);border-color:#d2e0e8;font-weight:650}
+.viewport-controls button[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-line,#d2e0e8);font-weight:650}
 .viewport-controls button .ui-icon{width:15px;height:15px}
 
 /* 设备预览：98px 紧凑触发器（原 116px），展开菜单独立定位，不挤占顶栏。 */
@@ -33,8 +33,9 @@
   background:var(--canvas);color:var(--text);
   font-size:11px;font-weight:630;line-height:1;
   cursor:pointer;
-  transition:background-color .15s ease,border-color .15s ease;
+  transition:background-color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1));
 }
+.viewport-controls .viewport-current:active { transform:scale(.97); }
 .viewport-controls .viewport-current:hover,
 .viewport-controls.is-expanded .viewport-current {
   color:var(--accent);background:var(--accent-soft);border-color:var(--line);
@@ -45,7 +46,7 @@
   display:inline;flex:1;min-width:0;white-space:nowrap;text-align:left;
   overflow:hidden;text-overflow:ellipsis;
 }
-.viewport-controls .viewport-current-chevron { width:12px;height:12px;flex:none;color:var(--muted);transition:transform .16s ease; }
+.viewport-controls .viewport-current-chevron { width:12px;height:12px;flex:none;color:var(--muted);transition:transform var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
 .viewport-controls.is-expanded .viewport-current-chevron { transform:rotate(180deg); }
 .viewport-controls .viewport-options {
   position:absolute;right:0;top:calc(100% - 1px);
@@ -53,7 +54,8 @@
   padding:5px;border:1px solid var(--line);border-radius:10px;
   background:var(--surface);box-shadow:0 12px 26px #15283222,0 2px 8px #1528320b;
   z-index:20;
-  animation:viewport-menu-in .14s ease-out;
+  transform-origin:top right;
+  animation:viewport-menu-in var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1));
 }
 .viewport-controls .viewport-options[hidden] { display:none!important; }
 .viewport-controls .viewport-options button {
@@ -62,7 +64,7 @@
   border:1px solid transparent;border-radius:7px;
   background:transparent;color:var(--text);text-align:left;
   font-size:12px;font-weight:530;white-space:nowrap;
-  transition:background-color .14s ease,color .14s ease;
+  transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease;
 }
 .viewport-controls .viewport-options button span { display:inline; }
 .viewport-controls .viewport-options button .ui-icon { width:16px;height:16px;stroke-width:2; }
@@ -74,8 +76,8 @@
   outline:2px solid var(--focus);outline-offset:2px;
 }
 @keyframes viewport-menu-in {
-  from { opacity:0;transform:translateY(-3px); }
-  to { opacity:1;transform:translateY(0); }
+  from { opacity:0;transform:translateY(-4px) scale(.98); }
+  to { opacity:1;transform:translateY(0) scale(1); }
 }
 html[data-theme="dark"] .viewport-controls .viewport-current { background:var(--canvas);border-color:var(--line); }
 html[data-theme="dark"] .viewport-controls.is-expanded .viewport-current { background:var(--accent-soft); }
