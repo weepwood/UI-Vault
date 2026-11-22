@@ -18,6 +18,7 @@ import {PreviewFrame} from './components/PreviewFrame.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
 import {SettingsPanel} from './components/SettingsPanel.jsx';
 import {closeDropdowns} from '../assets/core/dropdown.js';
+import {getExternalLinkNotice} from '../assets/core/external-link-message.js';
 
 const sortOptions=[
   {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'}
@@ -175,6 +176,17 @@ function WorkbenchPortals({nodes}){
     const timer=setTimeout(()=>nodes.toast.classList.remove('show'),2600);
     return ()=>{clearTimeout(timer);nodes.toast.classList.remove('show');};
   },[notice,nodes]);
+  useEffect(()=>{
+    if(selected?.source!=='external'||selected.externalLinkBridge!==true||!selected.siteUrl)return;
+    const receive=event=>{
+      const frame=nodes.stage.querySelector('iframe[data-preview-frame="external"][data-external-link-bridge="true"]');
+      const link=getExternalLinkNotice(event,frame,selected.siteUrl);
+      if(!link)return;
+      notify(`已点击 ${link.hostname} 链接；嵌入预览不会跳转，请点“在原站查看”。`);
+    };
+    window.addEventListener('message',receive);
+    return ()=>window.removeEventListener('message',receive);
+  },[nodes.stage,notify,selected?.externalLinkBridge,selected?.id,selected?.siteUrl,selected?.source]);
   useEffect(()=>{
     nodes.settingsStatus.textContent=notice;
   },[notice,nodes]);

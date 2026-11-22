@@ -66,6 +66,14 @@ test('有在线站点的外部资源可尝试嵌入，第三方限制提示交�
   assert.match(result,/sandbox="allow-scripts allow-forms"/);
   assert.doesNotMatch(result,/外部站点可能禁止嵌入|在原站查看/);
 });
+test('外链点击提示仅为显式合作站点开启消息桥接',()=>{
+  const external={...base,source:'external',siteUrl:'https://example.org/showcase',url:'https://github.com/example/demo'};
+  const ordinary=projectPreviewMarkup(external);
+  const cooperative=projectPreviewMarkup({...external,externalLinkBridge:true});
+  assert.doesNotMatch(ordinary,/data-external-link-bridge/);
+  assert.match(cooperative,/data-external-link-bridge="true"/);
+  assert.match(cooperative,/sandbox="allow-scripts allow-forms"/);
+});
 test('没有可嵌入站点时显示真实来源，不伪造截图',()=>{
   const external={...base,source:'external',url:'https://github.com/example/demo',siteUrl:undefined};
   const preview=projectPreviewMarkup(external);
