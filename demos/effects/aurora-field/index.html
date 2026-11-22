@@ -155,46 +155,44 @@ dialog::backdrop{background:#151d16ab;backdrop-filter:blur(3px)}
 <main class="app">
 <header class="head">
   <div>
-    <div class="eyebrow"><span class="mark" aria-hidden="true">▦</span> UI Vault <span aria-hidden="true">/</span> Visual experiments</div>
+    <div class="eyebrow">UI Vault / 视觉材料档案</div>
     <h1>背景效果实验室</h1>
-    <p class="lede">从柔和的渐变、流动光影到克制的几何纹理。统一预览不同背景语言，观察它们在真实内容之下的表现。</p>
+    <p class="lede">比较渐变、光线、几何和纹理的不同表现。让背景占据画面，让参数与操作回到一旁。</p>
   </div>
-  <div class="head-note"><i aria-hidden="true"></i><span>12 个可调节的 CSS 背景</span></div>
-</header>
-<div class="preview-heading"><h2 class="section-label">实时预览</h2><span class="section-hint">仅当前场景播放动画</span></div>
+  </header>
+<div class="preview-heading"><h2 class="section-label">当前预览</h2><span class="section-hint">当前画面动效独立运行</span></div>
 <section class="workspace" aria-label="背景效果编辑器">
   <div class="preview-shell">
     <div class="preview-top">
-      <span class="preview-name" id="previewName">01 / Aurora Drift</span>
+      <span class="preview-name" id="previewName">流动极光</span>
       <div class="preview-tools">
-        <button class="icon-button" id="overlayToggle" type="button" aria-pressed="true" title="切换示例内容">预览文案</button>
+        <button class="icon-button" id="overlayToggle" type="button" aria-pressed="false" title="显示或隐藏文字对照">文字对照</button>
         <button class="icon-button" id="pauseToggle" type="button" aria-pressed="false" title="暂停或播放动画">暂停动效</button>
       </div>
     </div>
     <div class="scene-frame"><div class="scene" id="stage" data-style="aurora">
-      <div class="mock-content" id="mockContent"><div class="mock-inner">
-        <div class="mock-kicker">An experiment in atmosphere</div>
-        <div class="mock-title">Space to think.</div>
-        <p class="mock-copy">让背景成为内容的陪衬，而不是视觉上的竞争者。</p>
-        <span class="mock-pill">Explore the collection</span>
+      <div class="mock-content" id="mockContent" hidden><div class="mock-inner">
+        <div class="mock-kicker">背景与排版对照</div>
+        <div class="mock-title">阅读的留白</div>
+        <p class="mock-copy">这段文字用于检查明暗、色彩和纹理对阅读的干扰。切换参数，观察文字是否仍然清晰。</p>
       </div></div>
     </div></div>
     <div class="preview-foot"><span class="preview-caption" id="caption">柔和光晕 · 适合品牌首屏和展示页</span><span class="tech-label" id="techLabel">CSS · 动态</span></div>
   </div>
   <aside class="inspector" aria-label="效果控制面板">
-    <div class="panel-head"><h2>效果设置</h2><span>LIVE / 01</span></div>
-    <div><div class="effect-title" id="effectTitle">Aurora Drift</div><p class="effect-desc" id="effectDesc">三层径向渐变构建低饱和极光。</p></div>
+    <div class="panel-head"><h2>参数</h2><span>动态效果</span></div>
+    <div><div class="effect-title" id="effectTitle">流动极光</div><div class="effect-alias" id="effectAlias">Aurora Drift</div><p class="effect-desc" id="effectDesc">三层径向渐变构建低饱和极光。</p></div>
     <div class="rule"></div>
-    <div class="control-group"><div class="control-heading">配色方案 <output id="paletteLabel">深海蓝紫</output></div><div class="palette-row" id="paletteRow" role="group" aria-label="选择配色方案"></div></div>
+    <div class="control-group"><div class="control-heading">配色 <output id="paletteLabel">深海蓝紫</output></div><div class="palette-row" id="paletteRow" role="group" aria-label="选择配色方案"></div></div>
     <div class="control-group"><div class="control-heading"><label for="intensity">效果强度</label><output id="intensityValue">90%</output></div><input class="range" id="intensity" type="range" min="30" max="100" step="5" value="90"></div>
     <div class="control-group"><div class="control-heading"><label for="speed">动画速度</label><output id="speedValue">1.0×</output></div><input class="range" id="speed" type="range" min="5" max="20" step="5" value="10"></div>
-    <div class="switch-row"><label for="overlaySwitch">展示示例内容</label><button type="button" class="switch" id="overlaySwitch" aria-label="展示示例内容" aria-pressed="true"></button></div>
+    <div class="switch-row"><label for="overlaySwitch">显示文字对照</label><button type="button" class="switch" id="overlaySwitch" aria-label="显示文字对照" aria-pressed="false"></button></div>
     <div class="rule"></div>
-    <div class="panel-actions"><button type="button" class="primary" id="viewCode">查看 / 复制 CSS</button><button type="button" class="secondary" id="reset">恢复默认设置</button><p class="detail-note">全部效果均为独立实现的 CSS 示例；缩略图静态渲染，尊重系统减少动画设置。</p></div>
+    <div class="panel-actions"><button type="button" class="primary" id="viewCode">查看 CSS 代码</button><button type="button" class="secondary" id="reset">恢复默认参数</button><p class="detail-note">缩略图不会播放动画。选择具体背景后，可以调整颜色与运动速度。</p></div>
   </aside>
 </section>
 <section class="library" aria-labelledby="galleryTitle">
-  <div class="gallery-heading"><div><h2 class="section-label" id="galleryTitle">背景样式</h2><p>点击任意背景，在上方查看完整场景并调整细节。</p></div><span class="section-hint" id="count">全部 · 12</span></div>
+  <div class="gallery-heading"><div><h2 class="section-label" id="galleryTitle">效果目录</h2><p>每一种材质都可以单独预览、调色和复制代码。</p></div><span class="section-hint" id="count" aria-live="polite">全部 12 种</span></div>
   <div class="filters" id="filters" role="group" aria-label="背景分类">
     <button class="filter" type="button" data-filter="all" aria-pressed="true">全部背景</button>
     <button class="filter" type="button" data-filter="gradient" aria-pressed="false">渐变</button>
@@ -204,16 +202,16 @@ dialog::backdrop{background:#151d16ab;backdrop-filter:blur(3px)}
   </div>
   <div class="gallery" id="gallery"></div>
 </section>
-<footer class="sources"><div><strong>设计参考</strong><p>研究方向：React Bits Backgrounds、Aceternity UI、Motion Backgrounds、Gradient Backdrops。这里采用原生 CSS 重新设计，没有复制第三方图形或源码。具体参考链接与使用说明见仓库 docs/BACKGROUND-LAB.md。</p></div><div>UI Vault / Background Study</div></footer>
+<footer class="sources"><div><strong>设计记录</strong><p>研究了 React Bits、Aceternity UI 和多种界面设计 Skills。所有效果使用原生 CSS 独立实现，不包含外部脚本和图像素材。具体来源和取舍记录在 docs/BACKGROUND-LAB.md。</p></div><div>12 种背景 / CSS</div></footer>
 </main>
 <dialog id="codeDialog" aria-labelledby="codeTitle">
-  <div class="modal-head"><div><h2 id="codeTitle">背景 CSS</h2><p>包含当前色板、所选背景规则与必要的动画关键帧。</p></div><button type="button" class="icon-button" id="closeCode" aria-label="关闭代码窗口">关闭</button></div>
+  <div class="modal-head"><div><h2 id="codeTitle">导出 CSS</h2><p>只包含当前背景的变量、样式与对应动画。</p></div><button type="button" class="icon-button" id="closeCode" aria-label="关闭代码窗口">关闭</button></div>
   <div class="modal-body"><textarea id="codeText" readonly spellcheck="false" aria-label="可复制的背景代码"></textarea><div class="modal-actions"><span class="status" id="copyStatus" role="status" aria-live="polite"></span><button type="button" class="secondary" id="selectCode">全选</button><button type="button" class="primary" id="copyCode">复制代码</button></div></div>
 </dialog>
 <script>
 'use strict';
 const styles=[
-  {id:'aurora',name:'Aurora Drift',cn:'流动极光',category:'gradient',desc:'三层光晕缓慢漂移，保留原版极光实验的柔和氛围。',use:'品牌首屏与沉浸式展示',animated:true},
+  {id:'aurora',palette:2,name:'Aurora Drift',cn:'流动极光',category:'gradient',desc:'三层光晕缓慢漂移，保留原版极光实验的柔和氛围。',use:'品牌首屏与沉浸式展示',animated:true},
   {id:'mesh',palette:3,name:'Mesh Gradient',cn:'网格渐变',category:'gradient',desc:'多色椭圆色块交叠，形成轻盈的空间感。',use:'产品介绍与创作工具',animated:true},
   {id:'silk',palette:1,name:'Liquid Silk',cn:'丝绸流彩',category:'gradient',desc:'圆锥渐变缓慢旋转，生成连贯的彩色过渡。',use:'数字艺术与专题封面',animated:true},
   {id:'horizon',palette:1,name:'Horizon',cn:'暮光地平线',category:'light',desc:'低位发光区域与明暗层次，营造远方日落的轮廓。',use:'品牌故事与登陆页',animated:true},
@@ -234,7 +232,7 @@ const palettes=[
   {name:'冰川白蓝',base:'#e9f1f5',a:'#82b8dc',b:'#a4b8e2',c:'#cfecdf',ink:'#263c4b'}
 ];
 const $=id=>document.getElementById(id);
-const state={selected:'aurora',palette:0,intensity:90,speed:10,overlay:true,paused:false,filter:'all'};
+const state={selected:'aurora',palette:2,intensity:90,speed:10,overlay:false,paused:false,filter:'all'};
 const patternOpacity={topo:.4,grid:.2,dots:.48,paper:.06};
 const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 function current(){return styles.find(item=>item.id===state.selected)||styles[0]}
@@ -249,7 +247,7 @@ function syncMotion(){
   $('stage').classList.toggle('is-paused',!canPlay);
   $('pauseToggle').disabled=!current().animated||prefersReduced.matches;
   $('pauseToggle').setAttribute('aria-pressed',String(state.paused));
-  $('pauseToggle').textContent=state.paused?'播放动效':'暂停动效';
+  $('pauseToggle').textContent=prefersReduced.matches?'系统已减弱动效':!current().animated?'无动效':state.paused?'播放动效':'暂停动效';
   $('speed').disabled=!current().animated||prefersReduced.matches;
 }
 function update(){
@@ -259,10 +257,11 @@ function update(){
   stage.style.setProperty('--intensity',String(state.intensity/100));
   stage.style.setProperty('--pattern-opacity',String((state.intensity/100)*(patternOpacity[item.id]??1)));
   stage.style.setProperty('--duration',String(Math.round(220/state.speed))+'s');
-  $('effectTitle').textContent=item.name;
+  $('effectTitle').textContent=item.cn;
+  $('effectAlias').textContent=item.name;
   $('effectDesc').textContent=item.desc;
-  $('previewName').textContent=String(styles.indexOf(item)+1).padStart(2,'0')+' / '+item.name;
-  $('caption').textContent=item.cn+' · '+item.use;
+  $('previewName').textContent=item.cn+' / '+item.name;
+  $('caption').textContent='适用：'+item.use;
   $('techLabel').textContent=item.animated?'CSS · 动态':'CSS · 静态';
   $('paletteLabel').textContent=palettes[state.palette].name;
   $('intensityValue').textContent=state.intensity+'%';
@@ -272,7 +271,7 @@ function update(){
   $('mockContent').hidden=!state.overlay;
   $('overlaySwitch').setAttribute('aria-pressed',String(state.overlay));
   $('overlayToggle').setAttribute('aria-pressed',String(state.overlay));
-  document.querySelector('.panel-head span').textContent='LIVE / '+String(styles.indexOf(item)+1).padStart(2,'0');
+  document.querySelector('.panel-head span').textContent=item.animated?'动态效果':'静态纹理';
   document.querySelectorAll('.palette').forEach((node,i)=>node.setAttribute('aria-pressed',String(i===state.palette)));
   document.querySelectorAll('.tile').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.id===item.id)));
   syncMotion();
@@ -288,12 +287,11 @@ function renderGallery(){
     const body=document.createElement('div');body.className='tile-body';
     const name=document.createElement('div');name.className='tile-name';name.textContent=item.cn;
     const sub=document.createElement('span');sub.className='tile-sub';sub.textContent=item.name;name.append(sub);
-    const index=document.createElement('span');index.className='tile-index';index.textContent=String(styles.indexOf(item)+1).padStart(2,'0');
-    body.append(name,index);button.append(scene,body);
+    body.append(name);button.append(scene,body);
     button.addEventListener('click',()=>{state.selected=item.id;state.palette=item.palette??0;state.paused=false;update();});
     $('gallery').append(button);
   });
-  $('count').textContent=(state.filter==='all'?'全部':'当前分类')+' · '+visible.length;
+  $('count').textContent=(state.filter==='all'?'全部 ':'当前分类 ')+visible.length+' 种';
   update();
 }
 function renderPalettes(){
@@ -312,7 +310,7 @@ $('overlaySwitch').addEventListener('click',toggleOverlay);
 $('pauseToggle').addEventListener('click',()=>{state.paused=!state.paused;update()});
 $('intensity').addEventListener('input',event=>{state.intensity=Number(event.target.value);update()});
 $('speed').addEventListener('input',event=>{state.speed=Number(event.target.value);update()});
-$('reset').addEventListener('click',()=>{Object.assign(state,{palette:current().palette??0,intensity:90,speed:10,overlay:true,paused:false});update()});
+$('reset').addEventListener('click',()=>{Object.assign(state,{palette:current().palette??0,intensity:90,speed:10,overlay:false,paused:false});update()});
 $('filters').addEventListener('click',event=>{
   const button=event.target.closest('button[data-filter]');
   if(!button)return;
@@ -322,11 +320,13 @@ $('filters').addEventListener('click',event=>{
 });
 document.addEventListener('visibilitychange',syncMotion);
 if(prefersReduced.addEventListener)prefersReduced.addEventListener('change',syncMotion);
+const animationFor={aurora:'drift',mesh:'float',silk:'rotate',horizon:'breathe',beams:'sway',mist:'float',glow:'breathe',stars:'stardrift'};
 function selectedCode(){
   const p=palettes[state.palette],id=state.selected;
   const source=document.querySelector('#background-effects').sheet;
   const relevant=Array.from(source.cssRules).filter(rule=>{
-    if(rule.type===CSSRule.KEYFRAMES_RULE||rule.type===CSSRule.MEDIA_RULE)return true;
+    if(rule.type===CSSRule.KEYFRAMES_RULE)return rule.name===animationFor[id];
+    if(rule.type===CSSRule.MEDIA_RULE)return true;
     const selector=rule.selectorText||'';
     return selector.includes('.scene')&&(!selector.includes('data-style')||selector.includes('data-style="'+id+'"'));
   }).map(rule=>rule.cssText).join('\n\n');
