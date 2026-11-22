@@ -28,13 +28,21 @@ export function projectRowMarkup(asset,_favorites,labels,selected=false) {
 export function projectInfoMarkup(asset,labels) {
   const local=asset.source==='local',copyable=local&&asset.copyable!==false;
   const repoUrl=local?'https://github.com/weepwood/UI-Vault/blob/main/'+asset.code.split('/').map(encodeURIComponent).join('/'):asset.url;
+  const hasOriginCredit=Boolean(asset.originRepo&&asset.originName&&asset.originDemoUrl);
+  // External links belong to the parent ProjectDialog, never the sandboxed iframe.
+  // The catalog validator restricts originRepo and originDemoUrl to HTTPS URLs.
+  const credit=hasOriginCredit?
+    '<div class="project-credit" aria-label="原版项目来源"><span>基于</span>'+
+    '<a href="'+safe(asset.originRepo)+'" target="_blank" rel="noopener noreferrer" title="打开原版项目仓库">'+safe(asset.originName)+'</a>'+
+    '<span>改编 · MIT ·</span>'+
+    '<a href="'+safe(asset.originDemoUrl)+'" target="_blank" rel="noopener noreferrer" title="打开原版编辑器">原版编辑器'+iconMarkup('external-link')+'</a></div>':'';
   const links=[
     {href:repoUrl,label:local?'本仓源码':'原始项目'},
-    ...(asset.originRepo?[{href:asset.originRepo,label:'来源仓库'}]:[]),
+    ...(asset.originRepo&&!hasOriginCredit?[{href:asset.originRepo,label:'来源仓库'}]:[]),
     ...(asset.sourceUrl?[{href:asset.sourceUrl,label:'关键源码'}]:[]),
     ...(asset.siteUrl?[{href:asset.siteUrl,label:'在线站点'}]:[])
   ];
-  return '<p>'+safe(asset.description)+'</p>'+
+  return '<p>'+safe(asset.description)+'</p>'+credit+
     '<dl class="meta-grid">'+
       '<div><dt>分类</dt><dd>'+safe(labels[asset.type]||asset.type)+'</dd></div>'+
       '<div><dt>技术</dt><dd>'+safe((asset.technologies||[]).join(' / '))+'</dd></div>'+
