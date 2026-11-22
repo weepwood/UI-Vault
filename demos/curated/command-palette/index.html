@@ -1,0 +1,448 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Command Palette · UI Vault</title>
+<!--
+  Command Palette · UI Vault 手工精选实验（demos/curated）
+  设计参考：https://codedvisuals.com/visuals/search/command-palette
+  仅参考视觉结构与交互方式，未复制或移植原站源码；图标路径来自 Lucide（ISC）。
+  单文件、无外部请求：字体走系统栈，全部资源内联。
+-->
+<style>
+/* TUNING · codedvisuals Command Palette 的独立实现。
+   面板尺寸：width 336px / 圆角 22-18-8 / 内边距 6-11-12，改 --panel-width 无效时同步改 .panel 的 width。
+   主题令牌：--card --muted --accent --border --primary --muted-foreground，深浅两套。
+   布局阈值：仅 336px 固定宽 + max-width:calc(100vw - 48px) 兜底，无其他断点。
+   交互：输入即时过滤、↑↓/PgUp·PgDn/Ctrl+N·P 移动、↵ 派发 palette:select、Esc 先清空再失焦、
+        pointermove 跟随高亮、click 选择。空结果时显示占位说明。
+   动效：只保留 120ms 的高亮与边框过渡，无入场动画；prefers-reduced-motion 下全部归零。 */
+:root{
+  --background:oklch(100% 0 0);
+  --foreground:oklch(14.5% 0 0);
+  --card:oklch(100% 0 0);
+  --primary:oklch(20.5% 0 0);
+  --primary-foreground:oklch(98.5% 0 0);
+  --muted:oklch(97% 0 0);
+  --muted-foreground:oklch(52.6% 0 0);
+  --accent:oklch(97% 0 0);
+  --border:oklch(92.2% 0 0);
+  --shadow-xs:0 1px 2px 0 rgb(0 0 0 / .05);
+
+  --red-500:oklch(63.7% .237 25.331);
+  --orange-500:oklch(70.5% .213 47.604);
+  --yellow-500:oklch(79.5% .184 86.047);
+  --green-500:oklch(72.3% .219 149.579);
+  --blue-500:oklch(62.3% .214 259.815);
+  --indigo-500:oklch(58.5% .233 277.117);
+  --violet-500:oklch(60.6% .25 292.717);
+
+  --font-sans:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue","PingFang SC","Microsoft YaHei",Arial,sans-serif;
+}
+html.dark{
+  color-scheme:dark;
+  --background:#0a0a0a;
+  --foreground:#fafafa;
+  --card:#0f0f0f;
+  --primary:#fafafa;
+  --primary-foreground:#0a0a0a;
+  --muted:#171717;
+  --muted-foreground:#a1a1a1;
+  --accent:#1f1f1f;
+  --border:rgba(255,255,255,.1);
+  --shadow-xs:0 1px 2px 0 rgb(0 0 0 / .4);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0}
+body{
+  min-height:100dvh;display:grid;place-items:center;
+  background:var(--background);color:var(--foreground);
+  font-family:var(--font-sans);
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+}
+
+/* ---------------- 舞台 ---------------- */
+.pal{
+  position:relative;isolation:isolate;display:flex;
+  align-items:center;justify-content:center;padding:48px 24px;
+}
+
+/* ---------------- 面板 ---------------- */
+.panel{
+  position:relative;display:flex;flex:0 0 auto;width:336px;max-width:calc(100vw - 48px);
+  flex-direction:column;gap:6px;
+  border-radius:22px;
+  border:1px solid color-mix(in oklab,var(--border) 50%,transparent);
+  background:color-mix(in oklab,var(--muted) 75%,transparent);
+  padding:6px;
+}
+
+/* ---------------- 搜索行 ---------------- */
+.field{
+  position:relative;display:flex;align-items:center;gap:8px;
+  border-radius:18px;border:1px solid var(--border);
+  background:var(--card);padding:11px 12px;box-shadow:var(--shadow-xs);
+  transition:border-color .12s ease-out;
+}
+.field:focus-within{border-color:color-mix(in oklab,var(--foreground) 16%,var(--border))}
+.ico-search{width:14px;height:14px;flex-shrink:0;color:var(--muted-foreground)}
+
+.q{
+  min-width:0;flex:1;width:100%;
+  border:0;outline:0;background:transparent;padding:0;margin:0;
+  font-family:inherit;font-size:12px;line-height:16px;font-weight:500;
+  color:var(--foreground);caret-color:var(--primary);
+  -webkit-appearance:none;appearance:none;
+}
+.q::placeholder{color:var(--muted-foreground);opacity:1}
+.q::-webkit-search-cancel-button{display:none}
+
+.count{
+  display:flex;height:16px;min-width:16px;align-items:center;justify-content:center;
+  border-radius:999px;padding:0 5px;
+  background:color-mix(in oklab,var(--primary) 10%,transparent);
+  box-shadow:inset 0 0 0 1px color-mix(in oklab,var(--primary) 15%,transparent);
+  font-size:9px;line-height:1;font-weight:600;color:var(--primary);
+  font-variant-numeric:tabular-nums;
+}
+html.dark .count{background:var(--primary);color:var(--primary-foreground);box-shadow:none}
+
+/* ---------------- 光晕 + 压暗 + 列表 ---------------- */
+.body{position:relative}
+
+.glow{
+  position:absolute;left:-1px;right:-1px;bottom:-6px;height:80px;
+  transform-origin:center;border-radius:9999px 9999px 12px 12px;
+  background:linear-gradient(to right,
+    var(--red-500),var(--orange-500),var(--yellow-500),var(--green-500),
+    var(--blue-500),var(--indigo-500),var(--violet-500));
+  filter:blur(4px);opacity:.6;
+}
+
+.veil{
+  position:absolute;left:-6px;right:-6px;bottom:-6px;height:64px;
+  border-radius:0 0 22px 22px;box-shadow:var(--shadow-xs);
+  background:color-mix(in oklab,var(--background) 75%,transparent);
+  -webkit-mask-image:linear-gradient(to top,#000 50%,transparent);
+  mask-image:linear-gradient(to top,#000 50%,transparent);
+}
+
+.listcard{
+  position:relative;border-radius:18px;border:1px solid var(--border);
+  background:var(--card);box-shadow:var(--shadow-xs);
+}
+.list{
+  display:flex;flex-direction:column;padding:6px 0;
+  min-height:229px;                       /* 固定为五条命令的高度：过滤时面板不跳动 */
+  max-height:min(60vh,420px);overflow-y:auto;overscroll-behavior:contain;
+}
+.list::-webkit-scrollbar{width:10px}
+.list::-webkit-scrollbar-track{background:transparent}
+.list::-webkit-scrollbar-thumb{
+  background:color-mix(in oklab,var(--foreground) 12%,transparent);
+  border-radius:999px;border:3px solid var(--card);background-clip:padding-box;
+}
+.group{display:flex;flex-direction:column}
+
+.glabel{
+  padding:6px 12px 4px;
+  font-size:9px;line-height:1.5;font-weight:600;letter-spacing:.025em;text-transform:uppercase;
+  color:var(--muted-foreground);
+}
+
+/* ---------------- 命令行 ---------------- */
+.item{
+  position:relative;margin:0 6px;display:flex;align-items:center;gap:10px;
+  border-radius:8px;padding:6px 8px;text-align:left;
+  background:none;border:0;font:inherit;color:inherit;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+}
+.item:focus-visible{outline:2px solid color-mix(in oklab,var(--primary) 45%,transparent);outline-offset:-2px}
+
+.hi{
+  position:absolute;inset:0;border-radius:8px;pointer-events:none;
+  background:var(--accent);box-shadow:inset 0 0 0 1px var(--border);
+  opacity:0;transition:opacity .12s ease-out;
+}
+.item.on .hi{opacity:1}
+
+.ibox{
+  position:relative;display:flex;width:22px;height:22px;flex-shrink:0;
+  align-items:center;justify-content:center;border-radius:6px;
+  border:1px solid var(--border);background:var(--card);
+  color:var(--muted-foreground);box-shadow:var(--shadow-xs);
+}
+.ibox svg{width:12px;height:12px}
+
+.item .label{
+  position:relative;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  font-size:11px;line-height:16px;font-weight:500;color:var(--foreground);
+}
+
+.keys{position:relative;display:flex;flex-shrink:0;align-items:center;gap:4px}
+
+kbd{
+  display:flex;height:18px;min-width:18px;align-items:center;justify-content:center;
+  border-radius:5px;border:1px solid var(--border);background:var(--muted);
+  padding:0 4px;font-family:inherit;font-size:9px;line-height:1;font-weight:500;
+  color:var(--muted-foreground);box-shadow:var(--shadow-xs);
+}
+
+.enter{
+  position:relative;display:flex;width:12px;flex-shrink:0;align-items:center;justify-content:center;
+  color:var(--primary);opacity:0;transition:opacity .12s ease-out;
+}
+.enter svg{width:12px;height:12px}
+.item.on .enter{opacity:1}
+
+/* ---------------- 空态 ---------------- */
+.empty{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+  padding:0 12px;text-align:center;
+  font-size:11px;line-height:16px;color:var(--muted-foreground);
+}
+.empty span{font-size:10px;line-height:14px;opacity:.7}
+
+/* ---------------- 底栏 ---------------- */
+.footer{
+  display:flex;align-items:center;justify-content:space-between;
+  border-top:1px solid var(--border);padding:8px 12px;
+}
+.fkeys{display:flex;align-items:center;gap:10px}
+.fkey{display:flex;align-items:center;gap:4px}
+.fkey>span{font-size:9px;color:var(--muted-foreground)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.01ms !important;animation:none !important}
+}
+</style>
+</head>
+<body>
+
+<div class="pal">
+  <div class="panel">
+
+    <div class="field">
+      <svg class="ico-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+      <input id="q" class="q" type="text" role="combobox" aria-expanded="true"
+             aria-controls="list" aria-autocomplete="list" aria-activedescendant=""
+             placeholder="Search commands…" autocomplete="off" autocorrect="off"
+             spellcheck="false" aria-label="Search commands">
+      <span class="count" id="count" aria-live="polite">0</span>
+    </div>
+
+    <div class="body">
+      <div class="glow"></div>
+      <div class="veil"></div>
+
+      <div class="listcard">
+        <div class="list" id="list" role="listbox" aria-label="Commands"></div>
+
+        <div class="footer">
+          <div class="fkeys">
+            <span class="fkey"><kbd>↑</kbd><kbd>↓</kbd><span>Navigate</span></span>
+            <span class="fkey"><kbd>↵</kbd><span>Select</span></span>
+          </div>
+          <span class="fkey"><kbd>esc</kbd><span>Clear</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* 深浅主题：跟随系统，html.dark 可手动覆盖 */
+if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.classList.add('dark');
+
+/* ============================================================
+   数据：换命令只改这里
+   label 显示用；keywords 只参与匹配（可写中文别名）；shortcut 可省
+   ============================================================ */
+const ICONS = {
+  plus:'<path d="M5 12h14"/><path d="M12 5v14"/>',
+  fileText:'<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/>',
+  userPlus:'<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" x2="19" y1="8" y2="14"/><line x1="22" x2="16" y1="11" y2="11"/>',
+  rocket:'<path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09"/><path d="M9 12a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.4 22.4 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 .05 5 .05"/>',
+  settings:'<path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/>',
+  enter:'<path d="M20 4v7a4 4 0 0 1-4 4H4"/><path d="m9 10-5 5 5 5"/>'
+};
+
+const COMMANDS = [
+  { group:'Actions', icon:'plus',     label:'New project',        shortcut:['⌘','N'], keywords:'create new project 新建 项目' },
+  { group:'Actions', icon:'fileText', label:'New document',       shortcut:['⌘','D'], keywords:'create file doc 新建 文档 文件' },
+  { group:'Actions', icon:'userPlus', label:'Invite teammate',    shortcut:['⌘','I'], keywords:'add member invite 邀请 成员 同事' },
+  { group:'Recent',  icon:'rocket',   label:'Launch checklist',                        keywords:'release checklist go live 上线 清单' },
+  { group:'Recent',  icon:'settings', label:'Workspace settings',                      keywords:'preferences config 设置 工作区' }
+];
+
+/* ============================================================
+   渲染 / 过滤 / 键鼠
+   ============================================================ */
+const svg = (name, cls) =>
+  `<svg class="${cls || ''}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICONS[name]}</svg>`;
+
+const input   = document.getElementById('q');
+const listEl  = document.getElementById('list');
+const countEl = document.getElementById('count');
+
+let rows = [];     // 当前可见命令（扁平）
+let active = 0;    // 高亮下标
+
+const match = (cmd, tokens) => {
+  const hay = (cmd.label + ' ' + cmd.keywords + ' ' + cmd.group).toLowerCase();
+  return tokens.every(t => hay.includes(t));
+};
+
+function compute(query) {
+  const tokens = query.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  return tokens.length ? COMMANDS.filter(c => match(c, tokens)) : COMMANDS.slice();
+}
+
+function render(query) {
+  rows = compute(query);
+  active = 0;
+  countEl.textContent = rows.length;
+  listEl.innerHTML = '';
+  listEl.scrollTop = 0;
+
+  if (!rows.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty';
+    empty.setAttribute('role', 'status');
+    empty.textContent = 'No commands found';
+    const hint = document.createElement('span');
+    hint.textContent = 'Try a different keyword';
+    empty.appendChild(hint);
+    listEl.appendChild(empty);
+    input.setAttribute('aria-activedescendant', '');
+    return;
+  }
+
+  // 保持原始分组顺序，空组自动消失
+  const order = [];
+  const byGroup = new Map();
+  rows.forEach((cmd, i) => {
+    if (!byGroup.has(cmd.group)) { byGroup.set(cmd.group, []); order.push(cmd.group); }
+    byGroup.get(cmd.group).push({ cmd, i });
+  });
+
+  order.forEach(g => {
+    const wrap = document.createElement('div');
+    wrap.className = 'group';
+
+    const glabel = document.createElement('span');
+    glabel.className = 'glabel';
+    glabel.textContent = g;
+    wrap.appendChild(glabel);
+
+    byGroup.get(g).forEach(({ cmd, i }) => {
+      const keys = cmd.shortcut
+        ? `<span class="keys">${[].concat(cmd.shortcut).map(k => `<kbd>${k}</kbd>`).join('')}</span>`
+        : '';
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'item';
+      btn.id = 'opt-' + i;
+      btn.tabIndex = -1;
+      btn.setAttribute('role', 'option');
+      btn.setAttribute('aria-selected', 'false');
+      btn.dataset.i = i;
+      btn.innerHTML = `<span class="hi"></span>
+        <span class="ibox">${svg(cmd.icon)}</span>
+        <span class="label"></span>
+        ${keys}
+        <span class="enter">${svg('enter')}</span>`;
+      btn.querySelector('.label').textContent = cmd.label;
+      wrap.appendChild(btn);
+    });
+
+    listEl.appendChild(wrap);
+  });
+
+  paint(false);
+}
+
+const items = () => [...listEl.querySelectorAll('.item')];
+
+function paint(scroll) {
+  items().forEach(el => {
+    const on = Number(el.dataset.i) === active;
+    el.classList.toggle('on', on);
+    el.setAttribute('aria-selected', String(on));
+  });
+
+  const cur = listEl.querySelector('.item.on');
+  if (!cur) return;
+  input.setAttribute('aria-activedescendant', cur.id);
+  if (!scroll) return;
+
+  const r = cur.getBoundingClientRect();
+  const l = listEl.getBoundingClientRect();
+  if (r.top < l.top) listEl.scrollTop -= (l.top - r.top) + 6;
+  else if (r.bottom > l.bottom) listEl.scrollTop += (r.bottom - l.bottom) + 6;
+}
+
+function move(step) {
+  if (!rows.length) return;
+  active = (active + step + rows.length) % rows.length;
+  paint(true);
+}
+
+function select(i) {
+  const cmd = rows[i];
+  if (!cmd) return;
+  input.dispatchEvent(new CustomEvent('palette:select', {
+    bubbles: true,
+    detail: { item: cmd, index: i, label: cmd.label, group: cmd.group, query: input.value }
+  }));
+  if (typeof window.onPaletteSelect === 'function') window.onPaletteSelect(cmd);
+}
+
+/* --- 输入 --- */
+input.addEventListener('input',  () => render(input.value));
+input.addEventListener('compositionend', () => render(input.value));
+
+/* --- 键盘 --- */
+input.addEventListener('keydown', e => {
+  if (e.isComposing || e.keyCode === 229) return;   // 输入法组词中不拦截
+
+  switch (e.key) {
+    case 'ArrowDown': e.preventDefault(); move(1); break;
+    case 'ArrowUp':   e.preventDefault(); move(-1); break;
+    case 'PageDown':  e.preventDefault(); move(8); break;
+    case 'PageUp':    e.preventDefault(); move(-8); break;
+    case 'Home': if (e.ctrlKey) { e.preventDefault(); active = 0; paint(true); } break;
+    case 'End':  if (e.ctrlKey) { e.preventDefault(); active = rows.length - 1; paint(true); } break;
+    case 'Enter': e.preventDefault(); select(active); break;
+    case 'Escape':
+      e.preventDefault();
+      if (input.value) { input.value = ''; render(''); }
+      else input.blur();
+      break;
+    case 'n': if (e.ctrlKey) { e.preventDefault(); move(1); } break;
+    case 'p': if (e.ctrlKey) { e.preventDefault(); move(-1); } break;
+  }
+});
+
+/* --- 鼠标：指针所在行即高亮，点击即选择 --- */
+listEl.addEventListener('pointermove', e => {
+  const row = e.target.closest('.item');
+  if (!row) return;
+  const i = Number(row.dataset.i);
+  if (i !== active) { active = i; paint(false); }
+});
+listEl.addEventListener('click', e => {
+  const row = e.target.closest('.item');
+  if (row) select(Number(row.dataset.i));
+});
+
+/* 初始渲染并聚焦 */
+render('');
+input.focus();
+</script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{
+  "id": "command-palette",
+  "title": "命令面板 · 可搜索操作台",
+  "subtitle": "输入即过滤、键盘可走位、选中派发事件的命令面板",
+  "description": "参考 codedvisuals 的 Command Palette 设计，独立实现一个可直接使用的命令面板：输入即时过滤命令、分组标题随结果自动收起、↑↓ 与 PgUp/PgDn 移动高亮、回车派发 palette:select、Esc 先清空再失焦，空结果有占位说明；支持深浅主题、减少动效与 336px 窄屏收缩。",
+  "type": "component",
+  "source": "local",
+  "tags": [
+    "命令面板",
+    "搜索过滤",
+    "键盘导航",
+    "界面组件",
+    "codedvisuals 参考",
+    "可精调"
+  ],
+  "technologies": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "SVG"
+  ],
+  "preview": "demos/curated/command-palette/index.html",
+  "code": "demos/curated/command-palette/index.html",
+  "license": "UI-Vault 手工实现的原创代码，未复制或移植 codedvisuals 源码；设计参考 codedvisuals Command Palette；图标路径来自 Lucide（ISC 许可）。",
+  "cover": "native",
+  "featured": false,
+  "created": "2026-11-22",
+  "copyable": true,
+  "curated": true,
+  "curationStage": "draft",
+  "tuningGuide": "docs/CURATED-LABS.md",
+  "tuningPoints": [
+    "面板 336px 固定宽与 22/18/8 三级圆角的比例关系",
+    "输入分词匹配规则与空结果占位文案的表现",
+    "↑↓ 走位时列表滚动位置与 aria-activedescendant 的同步",
+    "深浅主题下计数徽章、键帽与高亮行的对比度",
+    "窄屏（<384px）时的面板收缩与底栏提示换行"
+  ],
+  "sourceUrl": "https://codedvisuals.com/visuals/search/command-palette",
+  "reuseNotes": [
+    "单文件自包含：无外部字体、图标包或网络请求，可直接整份复制进项目。",
+    "命令数据集中在 COMMANDS 数组，label 用于显示，keywords 只参与匹配（可写中文别名），shortcut 可省略。",
+    "选中时派发 palette:select 事件（detail 含 item/label/group/query），也可定义 window.onPaletteSelect(cmd)。",
+    "深浅主题跟随系统偏好，给 html 加 class=\"dark\" 可强制深色。",
+    "设计参考 codedvisuals 的 Command Palette，仅复现视觉结构与交互方式，未使用原站源码或资源。"
+  ]
+}

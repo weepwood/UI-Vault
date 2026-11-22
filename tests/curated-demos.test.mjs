@@ -8,7 +8,8 @@ import { ROOT } from '../scripts/lib/catalog.mjs';
 const curated=[
   {id:'gr8r-task-workbench',events:['task-search','task-list','task-board','create-dialog','data-view','data-accent','density']},
   {id:'desktop-shell-lab',events:['command-dialog','role="separator"','data-edge="left"','data-edge="right"','toggle-inspector','data-page']},
-  {id:'message-motion-lab',events:['messages','message-input','easing','duration','pointermove','toggleReaction','prefers-reduced-motion']}
+  {id:'message-motion-lab',events:['messages','message-input','easing','duration','pointermove','toggleReaction','prefers-reduced-motion']},
+  {id:'command-palette',events:['palette:select','aria-activedescendant','aria-selected','compositionend','No commands found','prefers-reduced-motion']}
 ];
 
 for(const item of curated){
