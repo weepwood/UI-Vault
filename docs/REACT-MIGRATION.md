@@ -23,7 +23,7 @@ demos/                      HTML、Vue、React 与镜像保持独立
 ## 核心设计约束
 
 1. **React 状态唯一来源**：`useWorkbench` 使用 `useReducer` 管理检索、分类、排序、项目选择、收藏、设备模式、设置视图和移动导航。新的 UI 事件不允许再新增第二套全局状态或从 `app.js` 直接写 DOM。
-2. **React 控件拥有对应 DOM**：全局只调用一次 `createRoot`，通过 Portals 控制原三栏的挂载区。顶栏、设置、项目列表、筛选、Dialog 与 iframe 由 React 输出；旧静态 HTML 节点在启动时替换。原 `assets/ui/mobile-navigation.js` 等文件继续保留作为独立适配器与测试合同，但主站不再实例化它们。
+2. **React 控件拥有对应 DOM**：全局只调用一次 `createRoot`，通过 Portals 控制原三栏的挂载区。顶栏、设置、项目列表、筛选、Dialog 与 iframe 由 React 输出；旧静态 HTML 节点在启动时替换。原 `assets/ui/mobile-navigation.js`、`viewport-switcher.js`、`project-dialog.js` 曾作为独立适配器保留，已于 2026-11-22 删除；它们的测试合同改为检查对应的 React 组件。
 3. **预览稳定性**：本地 Demo 在 `PreviewFrame` 以 `React.memo` 固定 iframe 实例，筛选、收藏、设置和通知不会改变已选中项目的 iframe `src`；只有项目真正切换时才更新。沙箱 `allow-scripts`、外部站点 `allow-scripts allow-forms`、`referrerPolicy="no-referrer"` 不变。
 4. **持久化兼容**：收藏键为 `ui-vault-favorites-v1`，偏好键为 `ui-vault:preferences:v1`；深链接 `?asset=`、内嵌设置 `?view=settings`、浏览器前进/后退继续使用旧协议。
 5. **安全**：项目资料由已有 `projectInfoMarkup()` 转义后渲染，源码请求使用 `AbortController` 取消切换/关闭后未完成的请求；外部网站没有无条件增加 `allow-same-origin`。

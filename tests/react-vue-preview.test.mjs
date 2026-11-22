@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {ROOT, inspectCatalog} from '../scripts/lib/catalog.mjs';
-import {projectPreviewMarkup,projectRowMarkup} from '../assets/core/workbench.js';
+import {projectPreviewMarkup,projectRowSubtitle} from '../assets/core/workbench.js';
 
 const candidates=[
   {id:'motion-lab',framework:'Vue',site:'https://weepwood.github.io/Motion-Lab/'},
@@ -40,7 +40,7 @@ test('三个框架项目右侧真实 iframe 预览并保持安全沙箱与原站
     assert.doesNotMatch(markup,/allow-same-origin/);
     assert.match(markup,/referrerpolicy="no-referrer"/);
     assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
-    const row=projectRowMarkup(asset,new Set(),{});
+    const row=projectRowSubtitle(asset,{});
     assert.match(row,/在线预览/);
   }
 });

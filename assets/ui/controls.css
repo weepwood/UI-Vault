@@ -1,6 +1,6 @@
 /* 工作台基础控件：输入、按钮、状态、通知。组件视觉规则由主站和组件展厅共享。 */
-.search-field { display: flex; gap: 9px; align-items: center; height: 38px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 0 10px; color: var(--subtle); }
-.search-field:focus-within { border-color: #8caabb; box-shadow: 0 0 0 3px #dfeaf1; }
+.search-field { display: flex; gap: 9px; align-items: center; height: 38px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); padding: 0 10px; color: var(--subtle); transition: border-color var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)), box-shadow var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
+.search-field:focus-within { border-color: var(--accent-line-strong,#8caabb); box-shadow: 0 0 0 3px var(--accent-soft); }
 .search-field .ui-icon { width: 17px; height: 17px; }
 .search-field input { flex: 1; min-width: 0; border: 0; background: none; color: var(--ink); outline: none; font-size: 12px; }
 .search-field input::placeholder { color: var(--muted); }
@@ -14,29 +14,37 @@
   display:grid;place-items:center;flex:none;width:25px;height:25px;
   padding:0;border:0;border-radius:6px;background:transparent;
   color:var(--muted);cursor:pointer;
+  transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease;
 }
 .search-clear:hover { background:var(--canvas);color:var(--ink); }
 .search-clear:focus-visible { outline:2px solid var(--focus);outline-offset:1px; }
 .search-clear .ui-icon { width:14px;height:14px; }
-.filter-button { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 9px 9px; background: transparent; border: 1px solid transparent; border-radius: 7px; color: var(--text); text-align: left; font-size: 11px; }
-.filter-button:hover { background: #eef1f1; }
-.filter-button.is-active { background: var(--accent-soft); border-color: #d0e0e9; color: var(--accent); font-weight: 650; }
+.filter-button { display: flex; align-items: center; gap: 7px; min-width: 0; padding: 9px 9px; background: transparent; border: 1px solid transparent; border-radius: 7px; color: var(--text); text-align: left; font-size: 11px; transition: background-color var(--motion-fast,120ms) ease, border-color var(--motion-fast,120ms) ease, color var(--motion-fast,120ms) ease; }
+.filter-button:hover { background: var(--hover,#eef1f1); }
+.filter-button:active { background: var(--hover-strong,#e5eaea); }
+.filter-button.is-active { background: var(--accent-soft); border-color: var(--accent-line,#d0e0e9); color: var(--accent); font-weight: 650; }
 .filter-button .ui-icon { width: 15px; height: 15px; }
 .filter-button > span:nth-child(2) { min-width: 0; white-space: nowrap; }
 .filter-count { margin-left: auto; color: var(--subtle); font-size: 10px; font-variant-numeric: tabular-nums; }
-.square-action,.dialog-close{display:grid;place-items:center;flex:none;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:7px;color:var(--text);background:var(--surface);transition:background-color .16s ease,color .16s ease,border-color .16s ease,transform .16s ease}
+.square-action,.dialog-close{display:grid;place-items:center;flex:none;width:34px;height:34px;padding:0;border:1px solid var(--line);border-radius:7px;color:var(--text);background:var(--surface);transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
 .square-action:hover,.dialog-close:hover{background:var(--canvas)}
+/* 按下时轻微收缩，作为点击已被接收的即时反馈。 */
+.square-action:active:not(:disabled),.dialog-close:active{transform:scale(.94)}
 .square-action[aria-pressed="true"]{color:var(--accent);background:var(--accent-soft)}
 .square-action[aria-pressed="true"] .ui-icon{fill:currentColor}
 #preview-favorite:active{transform:scale(.96)}
-.square-action .ui-icon{transition:fill .16s ease,transform .16s ease}
+.square-action .ui-icon{transition:fill var(--motion-base,160ms) ease,transform var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
+/* 收藏切换时心形轻跳一次；只在用户点击后播放，切换项目不会触发（见 PreviewToolbar）。 */
+.square-action .ui-icon.is-pulsing{animation:favorite-pulse var(--motion-slow,220ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
+@keyframes favorite-pulse{0%{transform:scale(1)}45%{transform:scale(1.24)}100%{transform:scale(1)}}
 @media(prefers-reduced-motion:reduce){#preview-favorite:active{transform:none}}
 html[data-motion="reduced"] #preview-favorite:active{transform:none}
-.info-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:7px;font-size:11px}
-.info-action:hover{background:var(--canvas);color:var(--accent)}
+.info-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:7px;font-size:11px;transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
+.info-action:hover{background:var(--canvas);color:var(--accent);border-color:var(--accent-line,var(--line))}
+.info-action:active:not(:disabled),.open-action:active{transform:scale(.97)}
 .info-action .ui-icon{width:15px;height:15px}
-.open-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:11px;font-weight:600}
+.open-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:11px;font-weight:600;transition:background-color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
 .open-action:hover{background:#33434b}
 .open-action .ui-icon{width:15px;height:15px}
-.toast{position:fixed;z-index:100;bottom:18px;right:24px;max-width:min(420px,calc(100vw - 36px));padding:10px 14px;background:var(--ink);color:#fff;border-radius:7px;font-size:12px;opacity:0;transform:translateY(8px);transition:opacity .18s,transform .18s;pointer-events:none;box-shadow:0 8px 26px #15283228}
+.toast{position:fixed;z-index:100;bottom:18px;right:24px;max-width:min(420px,calc(100vw - 36px));padding:10px 14px;background:var(--ink);color:#fff;border-radius:7px;font-size:12px;opacity:0;transform:translateY(8px);transition:opacity var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)),transform var(--motion-slow,220ms) var(--ease-out,cubic-bezier(.2,.8,.2,1));pointer-events:none;box-shadow:0 8px 26px #15283228}
 .toast.show{opacity:1;transform:translateY(0)}

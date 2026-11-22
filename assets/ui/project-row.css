@@ -1,11 +1,17 @@
 /* Workbench ProjectRow：列表行、项目选中态、稳定 emoji。布局覆写仍由页面维护。 */
 .project-list { display: grid; gap: 3px; align-content: start; }
-.project-item { display: flex; align-items: stretch; min-width: 0; border-radius: 8px; transition: background-color .16s ease; }
-.project-item:hover { background: #f0f2f1; }
+.project-item { position: relative; display: flex; align-items: stretch; min-width: 0; border-radius: 8px; transition: background-color var(--motion-fast,120ms) ease; }
+.project-item:hover { background: var(--hover,#f0f2f1); }
+/* 当前项目左侧的强调条：切换选中时旧项收起、新项展开，不只靠底色区分。 */
+.project-item::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); opacity: 0; transform: scaleY(.3); transition: transform var(--motion-slow,220ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)), opacity var(--motion-fast,120ms) ease; pointer-events: none; }
+.project-item.is-selected::before { opacity: 1; transform: scaleY(1); }
 .project-item.is-selected { background: var(--accent-soft); }
-.project-row { display: flex; flex: 1; min-width: 0; align-items: center; gap: 10px; text-align: left; border: 0; border-radius: 8px; background: transparent; padding: 11px 10px; color: var(--ink); }
-.project-row-icon { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); transition: border-color .16s ease, background-color .16s ease, color .16s ease; }
-.project-item.is-selected .project-row-icon { border-color: #bdd2dd; color: var(--accent); background: #fff; }
+.project-row { display: flex; flex: 1; min-width: 0; align-items: center; gap: 10px; text-align: left; border: 0; border-radius: 8px; background: transparent; padding: 11px 10px; color: var(--ink); transition: background-color var(--motion-fast,120ms) ease; }
+.project-row:active { background: var(--hover-strong,#e5eaea); }
+/* 列表在滚动容器内，焦点框向内收，避免被容器边缘裁掉。 */
+.project-row:focus-visible { outline-offset: -2px; }
+.project-row-icon { width: 34px; height: 34px; flex: 0 0 34px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); color: var(--muted); transition: border-color var(--motion-fast,120ms) ease, background-color var(--motion-fast,120ms) ease, color var(--motion-fast,120ms) ease; }
+.project-item.is-selected .project-row-icon { border-color: var(--accent-line,#bdd2dd); color: var(--accent); background: var(--surface); }
 .project-row-icon .ui-icon { width: 17px; height: 17px; }
 .project-row-copy { min-width: 0; display: grid; gap: 2px; }
 .project-row-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 620; }
@@ -25,3 +31,16 @@
 html[data-theme="dark"] .project-panel .project-item.is-selected .project-row-emoji {
   border:0;background:transparent;color:inherit;
 }
+
+/* 目录首次加载时的占位行：保持列表高度，避免先闪出“没有找到项目”。 */
+.project-skeleton { display: flex; align-items: center; gap: 10px; padding: 11px 10px; }
+.project-skeleton-icon { flex: 0 0 30px; width: 30px; height: 30px; border-radius: 8px; background: var(--line-soft); }
+.project-skeleton-lines { display: grid; gap: 7px; flex: 1; min-width: 0; }
+.project-skeleton-lines span { display: block; height: 9px; border-radius: 4px; background: var(--line-soft); }
+.project-skeleton-lines span:first-child { width: 72%; }
+.project-skeleton-lines span:last-child { width: 46%; height: 7px; }
+.project-skeleton:nth-child(3n+2) .project-skeleton-lines span:first-child { width: 58%; }
+.project-skeleton:nth-child(3n) .project-skeleton-lines span:first-child { width: 84%; }
+.project-skeleton > * { animation: skeleton-pulse 1.4s ease-in-out infinite; }
+@keyframes skeleton-pulse { 50% { opacity: .45; } }
+@media(prefers-reduced-motion:reduce) { .project-skeleton > * { animation: none; } }

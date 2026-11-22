@@ -1,6 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { projectEmoji, projectRowMarkup } from '../assets/core/workbench.js';
+import {readFileSync} from 'node:fs';
+import { projectEmoji, projectRowSubtitle } from '../assets/core/workbench.js';
+
+// 项目目录条目由 src/components/ProjectList.jsx 渲染（主站与组件展厅共用）。
+const list=readFileSync(new URL('../src/components/ProjectList.jsx',import.meta.url),'utf8');
 
 test('固定 emoji 池按 ID 稳定分配，与名称、分类、排序无关',()=>{
   const ids=['aurora-field','mrr-admin','NOEMA','ui-foundation-kit','s2u','alpha'];
@@ -12,22 +16,26 @@ test('固定 emoji 池按 ID 稳定分配，与名称、分类、排序无关',(
 });
 
 test('项目列表显示 emoji，不输出爱心按钮，预览仍可点击',()=>{
-  const asset={id:'aurora-field',title:'极光背景实验',type:'effect',source:'local'};
-  const labels={effect:'动效实验'};
-  const html=projectRowMarkup(asset,new Set(),labels,true);
-  assert.match(html,/class="project-row-icon project-row-emoji" aria-hidden="true"/);
-  assert.ok(html.includes(projectEmoji(asset.id)));
-  assert.match(html,/data-open="aurora-field"/);
-  assert.match(html,/aria-current="true"/);
-  assert.doesNotMatch(html,/data-favorite|project-star|lucide\\.svg#heart/);
-  const renamed=projectRowMarkup({...asset,title:'新的实验名称',type:'demo'},new Set(['aurora-field']),{demo:'演示'});
-  assert.ok(renamed.includes(projectEmoji(asset.id)));
-  assert.doesNotMatch(renamed,/data-favorite|project-star/);
+  assert.ok(list.includes('className="project-row-icon project-row-emoji" aria-hidden="true"'));
+  assert.ok(list.includes('{projectEmoji(asset.id)}'),'emoji 应只由项目 ID 决定');
+  assert.ok(list.includes('data-open={asset.id}'));
+  assert.ok(list.includes('aria-current={String(selected)}'));
+  assert.ok(list.includes("onClick={()=>onSelect(asset.id)}"));
+  assert.doesNotMatch(list,/data-favorite|project-star|heart/);
 });
 
-test('项目列表 HTML 对名称与 ID 进行转义',()=>{
-  const html=projectRowMarkup({id:'bad" onclick="evil',title:'<script>alert(1)</script>',type:'demo',source:'external'},new Set(),{demo:'Demo'});
-  assert.doesNotMatch(html,/<script>|onclick="evil"/);
-  assert.match(html,/&lt;script&gt;/);
-  assert.match(html,/data-open="bad&quot; onclick=/);
+test('副标题显示分类或精调阶段，以及可运行状态',()=>{
+  const labels={effect:'动效实验'};
+  assert.equal(projectRowSubtitle({id:'a',type:'effect',source:'local'},labels),'动效实验 · 可运行网页');
+  assert.equal(projectRowSubtitle({id:'b',type:'effect',source:'external',siteUrl:'https://example.test/'},labels),'动效实验 · 在线预览');
+  assert.equal(projectRowSubtitle({id:'c',type:'reference',source:'external'},labels),'reference · 外部项目');
+  assert.equal(projectRowSubtitle({id:'d',type:'effect',source:'local',curated:true,curationStage:'refining'},labels),'手工精选 · 精调中 · 可运行网页');
+  assert.equal(projectRowSubtitle({id:'e',type:'effect',source:'local',curated:true},labels),'手工精选 · 待精调 · 可运行网页');
+  assert.ok(list.includes(':projectRowSubtitle(asset,labels)'),'ProjectRow 应使用共享的副标题函数');
+});
+
+test('项目名称与 ID 由 JSX 文本输出，不拼接 HTML',()=>{
+  // React 对文本和属性值自动转义；组件中不得出现 HTML 字符串注入。
+  assert.doesNotMatch(list,/dangerouslySetInnerHTML|innerHTML|insertAdjacentHTML/);
+  assert.ok(list.includes('<SearchHighlight value={asset.title} query={query}/>'));
 });

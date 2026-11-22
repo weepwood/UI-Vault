@@ -15,14 +15,12 @@ export function projectEmoji(id) {
   return PROJECT_EMOJIS[(hash>>>0)%PROJECT_EMOJIS.length];
 }
 
-export function projectRowMarkup(asset,_favorites,labels,selected=false) {
-  const local=asset.source==='local';
+// 项目目录条目的副标题（不含搜索命中说明）：分类或精调阶段 · 可运行状态。
+// React 的 ProjectRow 渲染它；纯函数便于在 Node 测试中直接验证。
+export function projectRowSubtitle(asset,labels={}) {
   const kind=asset.curated ? '手工精选 · '+(stageLabels[asset.curationStage]||'待精调') : labels[asset.type]||asset.type;
-  return '<article class="project-item'+(selected?' is-selected':'')+'" role="listitem" data-id="'+safe(asset.id)+'">'+
-    '<button class="project-row" type="button" data-open="'+safe(asset.id)+'" aria-current="'+(selected?'true':'false')+'" aria-label="预览 '+safe(asset.title)+'">'+
-      '<span class="project-row-icon project-row-emoji" aria-hidden="true">'+projectEmoji(asset.id)+'</span>'+
-      '<span class="project-row-copy"><span class="project-row-title">'+safe(asset.title)+'</span>'+
-        '<span class="project-row-subtitle">'+safe(kind)+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')+'</span></span></button></article>';
+  const status=asset.source==='local'?'可运行网页':asset.siteUrl?'在线预览':'外部项目';
+  return kind+' · '+status;
 }
 
 export function projectInfoMarkup(asset,labels) {

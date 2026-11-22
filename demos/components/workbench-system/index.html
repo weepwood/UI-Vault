@@ -10,7 +10,8 @@
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="stylesheet" href="./assets/styles.css">
   <link rel="stylesheet" href="./demos/components/workbench-system/demo.css">
-  <script type="module" src="./demos/components/workbench-system/demo.js"></script>
+  <!-- 由 demo.jsx 打包生成（npm run react:build），直接渲染主站 src/components/ 中的组件 -->
+  <script defer src="./assets/showcase/workbench-system.js"></script>
 </head>
 <body class="wb-story-body">
 <a class="skip-link" href="./demos/components/workbench-system/index.html#wb-content">跳转到组件展示</a>
@@ -30,7 +31,7 @@
       <button type="button" class="wb-nav-item" data-story="tokens" role="tab" aria-selected="false" aria-controls="story-tokens" id="story-tab-tokens"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#palette"></use></svg><span>设计变量</span></button>
     </nav>
     <div class="wb-story-rail-bottom">
-      <span class="wb-status-dot" aria-hidden="true"></span> 原生 CSS / JavaScript
+      <span class="wb-status-dot" aria-hidden="true"></span> React · 与主站同一组件
     </div>
   </aside>
   <main id="wb-content" class="wb-story-main">
@@ -69,33 +70,29 @@
         </div>
       </section>
       <section id="story-forms" class="wb-story-panel" role="tabpanel" aria-labelledby="story-tab-forms" data-story-panel="forms" hidden>
-        <div class="wb-section-head"><h2>输入框与选择器</h2><p>展示实际使用的搜索框和增强下拉菜单，选择器由现有模块驱动。</p></div>
+        <div class="wb-section-head"><h2>输入框与选择器</h2><p>与主站目录相同的搜索框和增强下拉菜单；搜索、排序和标签会实际作用于“导航与列表”中的示例数据。</p></div>
         <div class="wb-surface">
-          <div class="wb-component-caption"><strong>Search field</strong><code>.search-field</code></div>
-          <label class="search-field wb-search-field"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#search"></use></svg><input id="wb-demo-search" type="search" placeholder="输入组件名称进行过滤" autocomplete="off" aria-label="按名称过滤示例"/></label>
-          <p class="wb-component-hint">输入搜索关键字时，“导航与列表”中的项目示例会同步过滤。</p>
+          <div class="wb-component-caption"><strong>Search field</strong><code>SearchField</code></div>
+          <div id="wb-search-mount" class="wb-search-field"></div>
+          <p class="wb-component-hint">输入关键字后，“导航与列表”中的示例会同步过滤并高亮命中文字；Esc 清空，Enter 选中第一条结果。</p>
         </div>
         <div class="wb-surface">
-          <div class="wb-component-caption"><strong>Enhanced select</strong><code>enhanceSelect()</code></div>
+          <div class="wb-component-caption"><strong>Enhanced select</strong><code>WorkbenchSelect</code></div>
           <div class="wb-form-grid">
-            <div class="wb-field"><label for="wb-sort">排序</label><div class="select-field"><select id="wb-sort" aria-label="示例排序"><option value="featured">精选优先</option><option value="newest">最近更新</option><option value="az">名称排序</option></select></div></div>
-            <div class="wb-field"><label for="wb-tag">标签</label><div class="select-field"><select id="wb-tag" aria-label="示例标签"><option value="">全部标签</option><option value="component">组件</option><option value="demo">Demo</option></select></div></div>
+            <div class="wb-field"><span class="wb-field-label" aria-hidden="true">排序</span><div id="wb-sort-mount"></div></div>
+            <div class="wb-field"><span class="wb-field-label" aria-hidden="true">标签</span><div id="wb-tag-mount"></div></div>
           </div>
           <p class="wb-component-hint" id="wb-select-result" role="status" aria-live="polite">当前：精选优先 / 全部标签</p>
         </div>
       </section>
       <section id="story-navigation" class="wb-story-panel" role="tabpanel" aria-labelledby="story-tab-navigation" data-story-panel="navigation" hidden>
-        <div class="wb-section-head"><h2>侧栏与项目条目</h2><p>直接复用工作台导航样式和 projectRowMarkup() 项目行模板。</p></div>
+        <div class="wb-section-head"><h2>侧栏与项目条目</h2><p>与主站共用 CategoryNavigation 和 ProjectList 组件；分类、搜索、排序和标签都会改变列表。</p></div>
         <div class="wb-surface">
-          <div class="wb-component-caption"><strong>Navigation</strong><code>.nav-button · .filter-button</code></div>
-          <div class="wb-example-row wb-nav-preview">
-            <button type="button" class="nav-button is-active" data-nav-choice aria-pressed="true"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg><span>全部资源</span></button>
-            <button type="button" class="nav-button" data-nav-choice aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#component"></use></svg><span>界面组件</span></button>
-            <button type="button" class="nav-button" data-nav-choice aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#zap"></use></svg><span>动效实验</span></button>
-          </div>
+          <div class="wb-component-caption"><strong>Navigation</strong><code>CategoryNavigation</code></div>
+          <div id="wb-category-nav" class="wb-example-row wb-nav-preview" role="group" aria-label="示例分类"></div>
         </div>
         <div class="wb-surface">
-          <div class="wb-component-caption"><strong>Project rows</strong><code>projectRowMarkup()</code></div>
+          <div class="wb-component-caption"><strong>Project rows</strong><code>ProjectList</code></div>
           <div id="wb-project-list" class="project-list wb-project-list" role="list" aria-label="示例项目列表"></div>
           <p class="wb-component-hint" id="wb-list-status" role="status" aria-live="polite">点击条目切换选中状态。条目内容为演示数据。</p>
         </div>
@@ -116,15 +113,10 @@
         </div>
       </section>
       <section id="story-viewport" class="wb-story-panel" role="tabpanel" aria-labelledby="story-tab-viewport" data-story-panel="viewport" hidden>
-        <div class="wb-section-head"><h2>预览设备切换</h2><p>使用 UI-Vault 的 calculatePreviewLayout() 计算缩放与居中位置，不加载外部网页。</p></div>
+        <div class="wb-section-head"><h2>预览设备切换</h2><p>与主站 Topbar 相同的设备切换器；缩放和居中由 applyPreviewLayout() 计算，不加载外部网页。</p></div>
         <div class="wb-surface">
-          <div class="wb-component-caption"><strong>Viewport modes</strong><code>assets/core/preview.js</code></div>
-          <div class="wb-viewport-options" role="group" aria-label="演示设备尺寸">
-            <button type="button" data-demo-size="fluid" aria-pressed="true"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#maximize-2"></use></svg>自适应</button>
-            <button type="button" data-demo-size="mobile" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#smartphone"></use></svg>手机</button>
-            <button type="button" data-demo-size="tablet" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#tablet"></use></svg>平板</button>
-            <button type="button" data-demo-size="desktop" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#monitor"></use></svg>桌面</button>
-          </div>
+          <div class="wb-component-caption"><strong>Viewport modes</strong><code>ViewportSwitcher · applyPreviewLayout()</code></div>
+          <div class="wb-viewport-bar" id="wb-viewport-mount"></div>
           <div class="wb-device-stage" id="wb-device-stage">
             <iframe id="wb-device-frame" title="设备预览示例" sandbox="" srcdoc="<!doctype html><html><head><meta name='viewport' content='width=device-width,initial-scale=1'><style>body{font:14px/1.6 system-ui;background:#fff;color:#23313a;padding:28px;margin:0}h1{font-size:22px;margin:0 0 12px}article{border:1px solid #e0e7eb;border-radius:10px;padding:20px;max-width:720px}small{color:#667782}</style></head><body><article><small>UI VAULT / DEMO</small><h1>响应式预览示例</h1><p>这是一份本地示例内容，用于验证不同设备宽度下的缩放。</p></article></body></html>"></iframe>
           </div>
@@ -144,7 +136,7 @@
         </div>
       </section>
     </div>
-    <footer class="wb-story-footer"><span>Workbench UI · 原生组件演示</span><span>本页面使用示例数据，不代表真实项目数量</span></footer>
+    <footer class="wb-story-footer"><span>Workbench UI · 主站组件演示</span><span>本页面使用示例数据，不代表真实项目数量</span></footer>
   </main>
 </div>
 <dialog id="wb-dialog" class="project-dialog" aria-labelledby="wb-dialog-title">

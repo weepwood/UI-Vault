@@ -1,13 +1,10 @@
 import React,{useEffect,useId,useRef,useState} from 'react';
-import {closeDropdowns} from '../../assets/core/dropdown.js';
+import {closeDropdowns,trackDropdown} from '../../assets/core/dropdown.js';
+import {Icon} from './Icon.jsx';
 
 // 保留现有 select-field DOM/CSS 协议，但值、弹窗和键盘行为全部归 React。
-export function Icon({name,className='ui-icon'}){
-  return <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-    <use href={'./assets/icons/lucide.svg#'+name}/>
-  </svg>;
-}
+// Icon 已移到 ./Icon.jsx；这里继续导出，兼容现有 import {Icon} from './WorkbenchSelect.jsx'。
+export {Icon};
 export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='',dataSetting }){
   const [open,setOpen]=useState(false);
   const host=useRef(null),trigger=useRef(null),optionRefs=useRef([]);
@@ -15,6 +12,11 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
   const menuId=(id||generated)+'-listbox';
   const selected=options.find(option=>option.value===value)||options[0];
   const iconFor=val=>Object.hasOwn(icons,val)?icons[val]:icon;
+  // 展开期间登记到共享注册表，让 closeDropdowns() 能在切换视图或打开移动目录时收起本菜单。
+  useEffect(()=>{
+    if(!open)return;
+    return trackDropdown({close:()=>setOpen(false)});
+  },[open]);
   useEffect(()=>{
     if(!open)return;
     const dismiss=event=>{if(!host.current?.contains(event.target))setOpen(false);};
@@ -28,10 +30,17 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
       window.removeEventListener('resize',close);
     };
   },[open]);
+  // 选项较多（例如标签筛选）时，键盘移动焦点要同时把选项滚动到可见范围。
+  function focusOption(index){
+    const item=optionRefs.current[index];
+    if(!item)return;
+    item.focus({preventScroll:true});
+    item.scrollIntoView?.({block:'nearest'});
+  }
   function reveal(index){
     closeDropdowns();
     setOpen(true);
-    requestAnimationFrame(()=>optionRefs.current[index]?.focus({preventScroll:true}));
+    requestAnimationFrame(()=>focusOption(index));
   }
   function choose(next){
     if(next!==value)onChange(next);
@@ -53,7 +62,7 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     const current=options.findIndex(option=>option.value===event.currentTarget.dataset.value);
     const next=event.key==='Home'?0:event.key==='End'?options.length-1:
       (current+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;
-    optionRefs.current[next]?.focus({preventScroll:true});
+    focusOption(next);
   }
   return <div className={'select-field '+className+(open?' is-open':'')+(value&&(id==='sort'?value!=='featured':id==='tag-filter')?' has-filter':'')} ref={host}>
     <select id={id} data-setting={dataSetting} aria-label={label} value={value} onChange={event=>onChange(event.target.value)} hidden tabIndex={-1}>

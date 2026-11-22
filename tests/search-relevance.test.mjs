@@ -78,12 +78,13 @@ test('标签候选可以从搜索结果集合生成并保留当前已选择标�
 test('搜索输入不再出现独立黑色焦点边框，并支持清除、回车和预览稳定',()=>{
   const css=read('assets/ui/controls.css');
   const react=read('src/react-workbench.jsx');
+  const search=read('src/components/SearchField.jsx');
   const hooks=read('src/useWorkbench.js');
   assert.match(css,/\.search-field input:focus,\.search-field input:focus-visible\s*\{\s*outline:none/);
   assert.match(css,/\.search-field:focus-within/);
-  assert.match(react,/className="search-clear"/);
-  assert.match(react,/event.key==='Escape'&&value/);
-  assert.match(react,/event.key==='Enter'&&value.trim\(\)/);
+  assert.match(search,/className="search-clear"/);
+  assert.match(search,/event.key==='Escape'&&value/);
+  assert.match(search,/event.key==='Enter'&&value.trim\(\)/);
   assert.match(react,/query={state.query}/);
   assert.match(hooks,/case 'query':setCatalogQuery\(next,action.value\);return next;/);
   assert.match(hooks,/filterAssets\(state.assets,\{\.\.\.state,tag:''\},state.favorites\)/);

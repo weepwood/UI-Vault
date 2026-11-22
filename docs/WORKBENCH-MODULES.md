@@ -1,3 +1,5 @@
+> **2026-11-22 更新**：本文列出的原生控制器 `assets/ui/viewport-switcher.js`、`assets/ui/project-dialog.js`、`assets/ui/mobile-navigation.js`，以及 `enhanceSelect()`、`projectRowMarkup()`、`initSettings()` 已删除，对应行为由 `src/components/` 中的 React 组件实现。下文仅作历史记录，模块表中的这些条目不再存在。
+
 # Workbench 模块化架构（原生 JS 阶段历史记录）
 
 > **历史文档**：本文记录 React 迁移前的原生模块边界。当前主站已由 React 19 单根、`src/useWorkbench.js` 与 `src/components/` 接管全部动态工作台交互；`assets/app.js` 仅负责初始化。新的功能修改请以 [REACT-MIGRATION.md](REACT-MIGRATION.md) 为准，下面的原生控制器仅供独立 Demo 和兼容适配参考。

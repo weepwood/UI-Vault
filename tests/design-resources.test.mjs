@@ -62,6 +62,6 @@ test('本地设计资源 iframe 允许受控的外站新标签页',async()=>{
 
 
 test('React 导航为设计资源提供 Lucide 图标',async()=>{
-  const jsx=await readFile(join(ROOT,'src/react-workbench.jsx'),'utf8');
+  const jsx=await readFile(join(ROOT,'src/components/CategoryNavigation.jsx'),'utf8');
   assert.ok(jsx.includes("resource:'book-open'"));
 });

@@ -6,7 +6,8 @@ const sizes=[
   {mode:'tablet',icon:'tablet',name:'平板',hint:'平板 · 768px'},
   {mode:'desktop',icon:'monitor',name:'桌面',hint:'桌面 · 1280px'}
 ];
-function ViewportSwitcher({mode,onChange,visible}){
+// 主站 Topbar 与组件展厅共用同一个设备切换器。
+export function ViewportSwitcher({mode,onChange,visible}){
   const [expanded,setExpanded]=useState(false);
   const trigger=useRef(null),buttons=useRef([]);
   const current=sizes.find(item=>item.mode===mode)||sizes[0];
@@ -65,6 +66,8 @@ function ViewportSwitcher({mode,onChange,visible}){
 }
 export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,onFavorite,
   onCopyLink,onInfo,onMenu,menuOpen}){
+  // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
+  const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源'):'项目目录';
   const openUrl=asset&&(asset.source==='local'?
@@ -96,8 +99,9 @@ export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,o
         </button>
         <button type="button" id="preview-favorite" className="square-action"
           aria-label={(liked?'取消收藏 ':'收藏 ')+(asset?.title||'当前项目')}
-          aria-pressed={String(liked)} disabled={!asset} onClick={onFavorite}>
-          <Icon name="heart"/>
+          aria-pressed={String(liked)} disabled={!asset}
+          onClick={()=>{onFavorite();setFavoritePulse(count=>count+1);}}>
+          <Icon key={favoritePulse} name="heart" className={favoritePulse?'ui-icon is-pulsing':'ui-icon'}/>
         </button>
         <button type="button" id="preview-copy-link" className="square-action"
           aria-label="复制当前项目链接" disabled={!asset} onClick={onCopyLink}><Icon name="copy"/></button>
