@@ -137,3 +137,11 @@ CI 增加设备提示规则、DPR 像素预算、高质量材质按需编译、�
 - **来源差异**：UI-Vault 使用从上游 WGSL 改编的内联着色器，包含质量分档和集成调整；**不能宣称当前 `shaderSource` 与上游 `effect.wgsl` 字节级一致**。需要做原版像素一致性比较时，应以 [上游 effect.wgsl](https://github.com/LerSent001/orb/blob/main/effect.wgsl) 及其 WebGPU 管线为基准，进行相同参数和分辨率下的实机截图对照。
 
 回归保护：`tests/liquid-orb-wgsl-regression.test.mjs` 锁定 WebGPU/WGSL 渲染入口、核心光学函数、高质量色散路径与单 Canvas 架构；现有 `liquid-orb-performance.test.mjs` 检查自适应性能与画质策略。静态检查不能替代在不同 GPU / 浏览器上的视觉和性能验证。
+
+## 视图切换后球体拉伸修复（2026-11-22）
+
+- **现象**：从「思考对话框」切回「玻璃球」时，前一个正方形 WebGPU 纹理帧可能被暂时拉伸到宽矩形 Canvas 中；暂停动画时尤为明显。
+- **布局修复**：独立玻璃球的 Stage 使用正方形 `aspect-ratio:1` 和容器尺寸 `min(100%, 100cqh)`，始终以内容区域宽、高的较小值为边长；思考胶囊保持原有正方形球体尺寸，`?embed=1` 维持全尺寸可嵌入预览。
+- **刷新修复**：通过 `ResizeObserver` 监测共享 Stage 的实际尺寸变化。切换选项卡、移动到模态框、窗口调整以及模态框归位后触发 GPU 重绘，即使用户暂停动画或系统开启减少动态效果也会响应。渲染失败或页面离开时解除监听。
+- **保真原则**：保留唯一 WebGPU Canvas，完全不修改 WGSL Shader、原始光学折射及画质分档逻辑。
+- **回归测试**：`tests/liquid-orb-mode-resize.test.mjs` 检查正方形几何、Embed 隔离、ResizeObserver 重绘与清理。还应分别在桌面宽屏和移动端执行「对话框 → 玻璃球 → 对话框」多次切换，以及静止模式的视觉验收。
