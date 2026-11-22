@@ -296,7 +296,7 @@ dialog::backdrop{background:#151d16ab;backdrop-filter:blur(3px)}
     <div class="panel-head"><h2>参数</h2><span>动态效果</span></div>
     <div><div class="effect-title" id="effectTitle">流动极光</div><div class="effect-alias" id="effectAlias">Aurora Drift</div><p class="effect-desc" id="effectDesc">三层径向渐变构建低饱和极光。</p></div>
     <div class="rule"></div>
-    <div class="control-group"><div class="control-heading">配色 <output id="paletteLabel">深海蓝紫</output></div><div class="palette-row" id="paletteRow" role="group" aria-label="选择配色方案"></div></div>
+    <div class="control-group"><div class="control-heading">配色 <output id="paletteLabel">北境苔绿</output></div><div class="palette-row" id="paletteRow" role="group" aria-label="选择配色方案"></div></div>
     <div class="control-group"><div class="control-heading"><label for="intensity">效果强度</label><output id="intensityValue">90%</output></div><input class="range" id="intensity" type="range" min="30" max="100" step="5" value="90"></div>
     <div class="control-group"><div class="control-heading"><label for="speed">动画速度</label><output id="speedValue">1.0×</output></div><input class="range" id="speed" type="range" min="5" max="20" step="5" value="10"></div>
     <div class="switch-row"><label for="overlaySwitch">显示文字对照</label><button type="button" class="switch" id="overlaySwitch" aria-label="显示文字对照" aria-pressed="false"></button></div>
@@ -328,21 +328,23 @@ const styles=[
   {id:'mesh',palette:3,name:'Mesh Gradient',cn:'网格渐变',category:'gradient',desc:'多色椭圆色块交叠，形成轻盈的空间感。',use:'产品介绍与创作工具',animated:true},
   {id:'silk',palette:1,name:'Liquid Silk',cn:'丝绸流彩',category:'gradient',desc:'圆锥渐变缓慢旋转，生成连贯的彩色过渡。',use:'数字艺术与专题封面',animated:true},
   {id:'horizon',palette:1,name:'Horizon',cn:'暮光地平线',category:'light',desc:'低位发光区域与明暗层次，营造远方日落的轮廓。',use:'品牌故事与登陆页',animated:true},
-  {id:'beams',name:'Light Beams',cn:'光束',category:'light',desc:'稀疏的锥形射线与柔和漫射，制造舞台感。',use:'发布会与作品展示',animated:true},
+  {id:'beams',palette:5,name:'Light Beams',cn:'光束',category:'light',desc:'稀疏的锥形射线与柔和漫射，制造舞台感。',use:'发布会与作品展示',animated:true},
   {id:'mist',palette:3,name:'Color Mist',cn:'色彩薄雾',category:'gradient',desc:'大范围柔化颜色交融，控制明暗而非增加装饰。',use:'平静的编辑器或工具',animated:true},
-  {id:'glow',name:'Soft Spotlight',cn:'柔光聚焦',category:'light',desc:'聚焦中央的一束弥散光，用来引导主要文字。',use:'Hero 区和产品亮点',animated:true},
-  {id:'topo',palette:4,name:'Contour Lines',cn:'等高线',category:'pattern',desc:'规则的同心轮廓形成层次，不依赖复杂动画。',use:'地图与数据可视化',animated:false},
+  {id:'glow',palette:5,name:'Soft Spotlight',cn:'柔光聚焦',category:'light',desc:'聚焦中央的一束弥散光，用来引导主要文字。',use:'Hero 区和产品亮点',animated:true},
+  {id:'topo',palette:3,name:'Contour Lines',cn:'等高线',category:'pattern',desc:'规则的同心轮廓形成层次，不依赖复杂动画。',use:'地图与数据可视化',animated:false},
   {id:'grid',palette:4,name:'Blueprint Grid',cn:'工程网格',category:'pattern',desc:'规则网格、渐隐遮罩和边缘色调，强调结构。',use:'开发者工具与技术文档',animated:false},
   {id:'dots',palette:4,name:'Dot Matrix',cn:'点阵',category:'pattern',desc:'细点重复排列，渐变式显隐让画面更克制。',use:'仪表板与功能模块',animated:false},
   {id:'paper',palette:3,name:'Soft Paper',cn:'纸张肌理',category:'texture',desc:'极淡的交错线纹与偏暖底色，适合长时间阅读。',use:'文字编辑和内容首页',animated:false},
-  {id:'stars',name:'Night Sky',cn:'夜空星点',category:'texture',desc:'稀疏星点缓慢移动，搭配深色氛围光。',use:'探索与科技艺术',animated:true}
+  {id:'stars',palette:0,name:'Night Sky',cn:'夜空星点',category:'texture',desc:'稀疏星点缓慢移动，搭配深色氛围光。',use:'探索与科技艺术',animated:true}
 ];
 const palettes=[
-  {name:'深海蓝紫',base:'#080e20',a:'#637cff',b:'#c166e8',c:'#2ed1b8',ink:'#ffffff'},
-  {name:'晚霞暖调',base:'#241322',a:'#ed7a77',b:'#ba80db',c:'#f9c978',ink:'#fff8f4'},
-  {name:'极地青绿',base:'#061d25',a:'#21bbba',b:'#568ce9',c:'#a0edd1',ink:'#f0ffff'},
-  {name:'温柔奶油',base:'#efebdf',a:'#ddaf9a',b:'#bec6ee',c:'#cbdbc8',ink:'#253b43'},
-  {name:'冰川白蓝',base:'#e9f1f5',a:'#82b8dc',b:'#a4b8e2',c:'#cfecdf',ink:'#263c4b'}
+  {name:'暮蓝',base:'#111e2b',a:'#466e93',b:'#7d8dad',c:'#537f80',ink:'#f5f7f6'},
+  {name:'落日陶土',base:'#2b2021',a:'#bb6752',b:'#9c7788',c:'#e4ae7a',ink:'#fbf0e6'},
+  {name:'北境苔绿',base:'#091b20',a:'#53bcaa',b:'#447d91',c:'#a3cb9d',ink:'#f1fbf5'},
+  {name:'亚麻',base:'#ece8da',a:'#d1a391',b:'#bcc7aa',c:'#d2c3a0',ink:'#2c382f'},
+  {name:'雾蓝',base:'#e5edea',a:'#96bdc0',b:'#b5b6cd',c:'#a9ccca',ink:'#263e40'},
+  {name:'石墨金',base:'#121b1b',a:'#657d6e',b:'#caac72',c:'#536e72',ink:'#f3efe2'}
+
 ];
 const $=id=>document.getElementById(id);
 const state={selected:'aurora',palette:2,intensity:90,speed:10,overlay:false,paused:false,filter:'all'};
