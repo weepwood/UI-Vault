@@ -62,13 +62,12 @@ test('本地项目直接显示真实 iframe，使用沙箱和 GitHub Pages 子�
   assert.match(result,/data-preview-frame="local"/);
   assert.doesNotMatch(result,/card-preview|reference-cover|drawer|loading="lazy"/);
 }));
-test('有在线站点的外部资源可以尝试嵌入，保留第三方限制提示',()=>{
+test('有在线站点的外部资源可尝试嵌入，第三方限制提示交由 Topbar',()=>{
   const external={...base,source:'external',siteUrl:'https://example.org/showcase',url:'https://github.com/example/demo'};
   const result=projectPreviewMarkup(external);
   assert.match(result,/src="https:\/\/example\.org\/showcase"/);
   assert.match(result,/sandbox="allow-scripts allow-forms"/);
-  assert.match(result,/外部站点可能禁止嵌入/);
-  assert.match(result,/在原站查看/);
+  assert.doesNotMatch(result,/外部站点可能禁止嵌入|在原站查看/);
 });
 test('没有可嵌入站点时显示真实来源，不伪造截图',()=>{
   const external={...base,source:'external',url:'https://github.com/example/demo',siteUrl:undefined};
@@ -108,7 +107,7 @@ test('设备模式、历史路由与收藏在 React Hook 中同步，iframe 不�
  assert.match(css,/prefers-reduced-motion/);
 });
 
-test('已部署的 NOEMA 通过受限 iframe 预览，保留仓库和原站入口',async()=>{
+test('已部署的 NOEMA 通过受限 iframe 预览，仍保留仓库和独立原站 URL',async()=>{
   const [source,index]=await Promise.all([read('catalog/assets/noema.json'),read('content/assets.json')]);
   const asset=JSON.parse(source);
   const generated=JSON.parse(index).find(x=>x.id==='noema');
@@ -123,7 +122,7 @@ test('已部署的 NOEMA 通过受限 iframe 预览，保留仓库和原站入�
   assert.match(html,/src="https:\/\/weepwood\.github\.io\/NOEMA\/"/);
   assert.match(html,/sandbox="allow-scripts allow-forms"/);
   assert.doesNotMatch(html,/allow-same-origin/);
-  assert.match(html,/在原站查看/);
+  assert.doesNotMatch(html,/在原站查看/);
   const row=projectRowMarkup(generated,new Set(),labels);
   assert.match(row,/在线预览/);
   const info=projectInfoMarkup(generated,labels);
