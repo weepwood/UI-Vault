@@ -65,7 +65,7 @@ export function projectPreviewMarkup(asset) {
       ' src="'+safe(resolveAsset(asset.preview))+'"'+gpuAllow+' sandbox="'+(asset.type==='resource'?'allow-scripts allow-popups allow-popups-to-escape-sandbox':'allow-scripts')+'" referrerpolicy="no-referrer"></iframe>';
   }
   if(asset.siteUrl) {
-    const sandbox=asset.id==='emboss-poster-lab'
+    const sandbox=['emboss-poster-lab','fileatlas-browser-ui'].includes(asset.id)
       ?'allow-scripts allow-forms allow-downloads':'allow-scripts allow-forms';
     return '<iframe class="live-frame" data-preview-frame="external" title="'+title+' 的外部网站"'+
       (asset.externalLinkBridge===true?' data-external-link-bridge="true"':'')+
