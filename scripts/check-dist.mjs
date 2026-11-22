@@ -7,7 +7,7 @@ const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
 const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/categories.json'];
 for(const a of items){
-  if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);}
+  if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);if(a.sourceFiles)paths.push(...a.sourceFiles.map(file=>file.path));}
   if(a.coverImage)paths.push(a.coverImage);
 }
 for(const p of new Set(paths))assert.ok((await stat(join(out,p))).isFile(),'缺失发布文件：'+p);
