@@ -1,5 +1,6 @@
 import { copyFile, lstat, mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import { join, dirname, resolve, sep, extname } from 'node:path';
 import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
 import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';
@@ -101,3 +102,5 @@ for(const relative of versionedAssets.filter(path=>/\.(?:js|mjs)$/.test(path))){
   }
 }
 console.log('静态入口已同步版本化：'+assetRevision+'（HTML / CSS / JS 模块）');
+// 仅对显式审查通过的本地 Demo 生成独立 ZIP，不打包整个仓库或外部依赖。
+execFileSync('python3',['scripts/build-bundles.py','--build'],{cwd:ROOT,stdio:'inherit'});
