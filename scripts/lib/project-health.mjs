@@ -77,13 +77,17 @@ export async function collectPublicProjectHealth(projects,{fetcher=fetch,token='
         row.licenseSpdx=spdx;
       if(!row.defaultBranch)continue;
       const runs=await request(base+'/actions/runs?branch='+encodeURIComponent(row.defaultBranch)+'&per_page=1');
-      if(runs.status!==200||!Array.isArray(runs.data?.workflow_runs))continue;
-      if(!runs.data.workflow_runs.length){row.actionsStatus='none';continue;}
-      const latest=runs.data.workflow_runs[0];
-      if(latest.status==='completed'){
-        row.actionsStatus=latest.conclusion==='success'?'success':latest.conclusion==='failure'?'failure':'other';
-      }else row.actionsStatus=['in_progress','queued','requested','waiting','pending'].includes(latest.status)?'running':'unknown';
-      row.actionsUrl=publicGitHubLink(latest.html_url);
+      // Actions 没有运行记录不代表没有真实部署；部署必须单独核验。
+      if(runs.status===200&&Array.isArray(runs.data?.workflow_runs)){
+        if(!runs.data.workflow_runs.length)row.actionsStatus='none';
+        else{
+          const latest=runs.data.workflow_runs[0];
+          if(latest.status==='completed'){
+            row.actionsStatus=latest.conclusion==='success'?'success':latest.conclusion==='failure'?'failure':'other';
+          }else row.actionsStatus=['in_progress','queued','requested','waiting','pending'].includes(latest.status)?'running':'unknown';
+          row.actionsUrl=publicGitHubLink(latest.html_url);
+        }
+      }
       // GitHub Deployments 的状态属于部署提供方记录，不等同于 Actions 或站点 HTTP 200。
       const deployments=await request(base+'/deployments?per_page=50');
       const candidates=Array.isArray(deployments.data)?deployments.data.filter(d=>

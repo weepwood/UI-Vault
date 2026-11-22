@@ -106,3 +106,4 @@ console.log('静态入口已同步版本化：'+assetRevision+'（HTML / CSS / J
 execFileSync('python3',['scripts/build-bundles.py','--build'],{cwd:ROOT,stdio:'inherit'});
 // 离线构建时生成未核实状态占位，不伪造远端成功。
 execFileSync(process.execPath,['scripts/project-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});
+execFileSync(process.execPath,['scripts/preview-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});

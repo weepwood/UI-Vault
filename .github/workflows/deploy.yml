@@ -69,6 +69,10 @@ jobs:
         env:
           GH_PROJECT_HEALTH_TOKEN: ${{ github.token }}
         run: node scripts/project-health.mjs --live
+      - name: 采集预览站点 HTTP 与 iframe 限制证据
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        continue-on-error: true
+        run: node scripts/preview-health.mjs --live
       - name: 上传已验证的站点产物
         if: github.event_name != 'pull_request'
         uses: actions/upload-artifact@v4

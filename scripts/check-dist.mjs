@@ -6,7 +6,7 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/showcase/workbench-system.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/projects.json','content/project-health.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/showcase/workbench-system.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/projects.json','content/project-health.json','content/preview-health.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);if(a.sourceFiles)paths.push(...a.sourceFiles.map(file=>file.path));}
   if(a.coverImage)paths.push(a.coverImage);
@@ -22,6 +22,15 @@ assert.deepEqual(Object.keys(publishedHealth.projects).sort(),registeredProjects
 for(const row of Object.values(publishedHealth.projects)){
   assert.equal(row.repositoryStatus,'unverified','离线构建不应声称仓库可访问');
   assert.equal(row.actionsStatus,'unknown','离线构建不应声称 Actions 已成功');
+}
+const previewHealth=JSON.parse(await readFile(join(out,'content/preview-health.json'),'utf8'));
+assert.equal(previewHealth.version,1,'预览快照协议版本不正确');
+assert.equal(previewHealth.checkedAt,null,'静态构建不得伪造站点探测结果');
+assert.deepEqual(Object.keys(previewHealth.assets).sort(),items.map(a=>a.id).sort(),
+  '预览快照没有覆盖全部资产');
+for(const entry of Object.values(previewHealth.assets)){
+ assert.equal(entry.http,'unverified','离线构建不应伪造网页可达性');
+ assert.equal(entry.framePolicy,'unverified','离线构建不应宣称 iframe 可用');
 }
 const publishedHTML=await readFile(join(out,'index.html'),'utf8');
 const cssFingerprint=publishedHTML.match(/href="\.\/assets\/styles\.([a-f0-9]{16})\.css"/)?.[1];
