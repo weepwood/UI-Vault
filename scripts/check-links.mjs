@@ -44,12 +44,19 @@ async function worker(){
 await Promise.all(Array.from({length:Math.min(limit,urls.length)},worker));
 const counts={ok:0,broken:0,unverified:0};
 for(const row of results)counts[row.state]++;
-const report={checkedAt:new Date().toISOString(),total:results.length,counts,results};
+const scoped={};
+for(const scope of ['asset-site','project-repo']){
+  const rows=results.filter(row=>row.scope===scope);
+  scoped[scope]={total:rows.length,ok:rows.filter(x=>x.state==='ok').length,
+    broken:rows.filter(x=>x.state==='broken').length,
+    unverified:rows.filter(x=>x.state==='unverified').length};
+}
+const report={checkedAt:new Date().toISOString(),total:results.length,counts,scoped,results};
 const interesting=results.filter(row=>row.state!=='ok');
 const markdown=[
   '# UI-Vault 外部演示链接巡检',
   '',
-  `共检查 ${report.total} 个唯一 URL（可能被多个资产引用）。`,
+  `共检查 ${report.total} 个 URL：${scoped['project-repo'].total} 个来源仓库、${scoped['asset-site'].total} 个唯一预览站点。`,
   '',
   `- 正常：${counts.ok}`,
   `- 失效（HTTP 404/410）：${counts.broken}`,
@@ -58,9 +65,9 @@ const markdown=[
   'HTTP 成功仅证明可访问；不保证该站支持 iframe、浏览器 API 或真实交互。',
   '超时、拒绝请求与权限限制统一标记为“无法确认”，不会自动删除资产。',
   '',
-  '| 状态 | HTTP | 资产 ID | URL |',
-  '| --- | --- | --- | --- |',
-  ...interesting.map(row=>`| ${row.state} | ${row.status??'—'} | ${row.ids.join(', ')} | ${row.url} |`)
+  '| 范围 | 状态 | HTTP | 关联 ID | URL |',
+  '| --- | --- | --- | --- | --- |',
+  ...interesting.map(row=>`| ${row.scope==='project-repo'?'来源项目':'资产预览'} | ${row.state} | ${row.status??'—'} | ${row.ids.join(', ')} | ${row.url} |`)
 ].join('\n')+'\n';
 await writeFile(join(ROOT,'link-report.json'),JSON.stringify(report,null,2)+'\n','utf8');
 await writeFile(join(ROOT,'link-report.md'),markdown,'utf8');
