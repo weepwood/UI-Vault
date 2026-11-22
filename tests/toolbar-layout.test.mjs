@@ -25,8 +25,8 @@ test('目录工具栏与 Topbar 使用同一高度变量，排序和标签保持
   const css=read('assets/styles.css');
   const toolbarCss=read('assets/ui/preview-toolbar.css');
   assert.match(toolbarCss,/--workbench-toolbar-height:56px/);
-  assert.match(toolbarCss,/\.topbar\{height:var\(--workbench-toolbar-height\)/);
-  assert.match(css,/\.project-panel \.list-controls \{[^}]*height:var\(--workbench-toolbar-height\)/s);
+  assert.match(toolbarCss,/\.topbar\{height:auto;min-height:var\(--workbench-toolbar-height\)/);
+  assert.match(css,/\.project-panel \.list-controls \{[^}]*height:var\(--list-controls-height,var\(--workbench-toolbar-height\)\)/s);
   assert.match(html,/class="list-controls-filters"/);
   assert.match(react,/className="list-controls-filters"/);
   assert.match(html,/id="sort"/);
@@ -34,4 +34,14 @@ test('目录工具栏与 Topbar 使用同一高度变量，排序和标签保持
   assert.match(react,/id="sort"/);
   assert.match(react,/id="tag-filter"/);
   assert.match(css,/@container preview-toolbar \(max-width:520px\) \{\s*\.topbar \{ flex-wrap:nowrap/);
+});
+
+test('目录栏使用 ResizeObserver 跟随 Topbar 的真实盒子高度',()=>{
+  const react=read('src/react-workbench.jsx');
+  assert.match(react,/nodes\.topbar/);
+  assert.match(react,/nodes\.listControls/);
+  assert.match(react,/new ResizeObserver\(entries=>sync\(entries\[0\]\)\)/);
+  assert.match(react,/entry\?\.borderBoxSize/);
+  assert.match(react,/controls\.style\.setProperty\('--list-controls-height',height\+'px'\)/);
+  assert.match(react,/controls\.style\.removeProperty\('--list-controls-height'\)/);
 });
