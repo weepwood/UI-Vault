@@ -56,7 +56,9 @@ Promise.all([
 ]).then(() => {
   const categoryTabs = $('#category-tabs');
   const sections = $$('.gallery-section');
+  let syncingCategoryTabs = false;
   categoryTabs?.addEventListener('change', (event) => {
+    if (syncingCategoryTabs) return;
     const index = Number(event.target.activeTabIndex ?? categoryTabs.activeTabIndex ?? 0);
     sections[index]?.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start'});
   });
@@ -97,7 +99,12 @@ Promise.all([
     sectionLinks.forEach((link) => link.classList.toggle('is-active', link.dataset.sectionLink === currentId));
     const activeIndex = sections.findIndex((section) => section.id === currentId);
     if (activeIndex >= 0 && categoryTabs && categoryTabs.activeTabIndex !== activeIndex) {
-      categoryTabs.activeTabIndex = activeIndex;
+      syncingCategoryTabs = true;
+      try {
+        categoryTabs.activeTabIndex = activeIndex;
+      } finally {
+        syncingCategoryTabs = false;
+      }
     }
   }, {rootMargin: '-18% 0px -68% 0px', threshold: [0, .1, .3]});
   sections.forEach((section) => sectionObserver.observe(section));
