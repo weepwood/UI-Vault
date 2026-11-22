@@ -167,6 +167,29 @@
         "minLength": 1,
         "maxLength": 200
       }
+    },
+    "sourceFiles": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 50,
+      "description": "可查看、复制和单独下载的源码文件清单；仅允许本地 Demo 的显式白名单文件",
+      "items": {
+        "type": "object",
+        "required": [
+          "path"
+        ],
+        "properties": {
+          "path": {
+            "$ref": "#/$defs/sourcePath"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "allOf": [
@@ -229,6 +252,11 @@
               "required": [
                 "copyable"
               ]
+            },
+            {
+              "required": [
+                "sourceFiles"
+              ]
             }
           ]
         }
@@ -239,6 +267,10 @@
     "demoPath": {
       "type": "string",
       "pattern": "^demos/[a-zA-Z0-9_./-]+$"
+    },
+    "sourcePath": {
+      "type": "string",
+      "pattern": "^(demos|subprojects)/[a-zA-Z0-9_./-]+$"
     }
   },
   "additionalProperties": true

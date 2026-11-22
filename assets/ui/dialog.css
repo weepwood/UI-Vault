@@ -44,3 +44,15 @@
 .source-buttons .ui-icon{width:14px;height:14px}
 .source-view{min-height:120px;flex:1 1 auto;overflow:auto;white-space:pre;tab-size:2;margin:0;background:#f7f9f9;border:1px solid var(--line);border-radius:8px;padding:14px;font:11px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;color:#273b44}
 .source-view code{font:inherit}
+
+/* 源码文件选择：复用工作台下拉组件，不改变弹窗或预览画布尺寸。 */
+.source-file-controls{display:flex;align-items:center;gap:9px;flex:1 1 220px;min-width:0}
+.source-file-controls .select-field{flex:0 1 220px;max-width:220px;min-width:120px}
+.source-file-label{font:600 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+#source-status{overflow-wrap:anywhere}
+.source-buttons button:disabled{opacity:.45;cursor:not-allowed;background:var(--surface);color:var(--muted)}
+@media(max-width:560px){
+  .source-file-controls{flex-basis:100%;flex-wrap:wrap}
+  .source-file-controls .select-field{flex:1 1 100%;max-width:none}
+  .source-buttons{width:100%;flex-wrap:wrap}
+}

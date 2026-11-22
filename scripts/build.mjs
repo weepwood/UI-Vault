@@ -2,6 +2,7 @@ import { copyFile, lstat, mkdir, readFile, readdir, realpath, rm, writeFile } fr
 import { createHash } from 'node:crypto';
 import { join, dirname, resolve, sep, extname } from 'node:path';
 import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
+import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';
 
 const {errors,items}=await inspectCatalog();
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
@@ -13,7 +14,7 @@ const versionedAssets=[];
 await rm(out,{recursive:true,force:true});
 await mkdir(out,{recursive:true});
 
-async function copy(rel) {
+async function copy(rel,{sourceFile=false}={}) {
   if(rel.split('/').some(p=>!p || p.startsWith('.') || p==='..'))throw new Error('不安全的发布路径：'+rel);
   const from=resolve(ROOT,rel),to=resolve(out,rel);
   if(!from.startsWith(ROOT+sep) || !to.startsWith(out+sep))throw new Error('越界的发布路径：'+rel);
@@ -21,7 +22,8 @@ async function copy(rel) {
   if(!info.isFile()||info.isSymbolicLink())throw new Error('仅允许发布普通文件：'+rel);
   const real=await realpath(from),base=await realpath(ROOT);
   if(!real.startsWith(base+sep))throw new Error('发布路径指向仓库外部：'+rel);
-  if(!allowed.has(extname(rel).toLowerCase()))throw new Error('发布了不允许的文件类型：'+rel);
+  if(!allowed.has(extname(rel).toLowerCase())&&!(sourceFile&&SOURCE_EXTENSIONS.includes(extname(rel).toLowerCase())))
+    throw new Error('发布了不允许的文件类型：'+rel);
   await mkdir(dirname(to),{recursive:true});
   await copyFile(from,to);
 }
@@ -45,10 +47,12 @@ for(const rel of ['index.html','settings.html','favicon.svg','content/assets.jso
 await copyTree('assets',webAssets);
 await copyTree('content/tokens',tokenAssets);
 const included=new Set();
+const sourceFilePaths=new Set();
 for(const a of items) {
   if(a.source==='local'){
     included.add(a.preview);
     if(a.copyable!==false)included.add(a.code);
+    for(const source of a.sourceFiles||[]){included.add(source.path);sourceFilePaths.add(source.path);}
     if(a.publish!==undefined){
       if(!Array.isArray(a.publish)||!a.publish.every(p=>safeRelativePath(p,'demos/')))throw new Error(a.id+' 的 publish 列表无效');
       a.publish.forEach(p=>included.add(p));
@@ -56,7 +60,7 @@ for(const a of items) {
   }
   if(a.coverImage)included.add(a.coverImage);
 }
-for(const file of included)await copy(file);
+for(const file of included)await copy(file,{sourceFile:sourceFilePaths.has(file)});
 console.log('构建完成：只发布 '+included.size+' 个声明的 Demo/封面资源及展厅公共文件。');
 
 
