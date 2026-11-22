@@ -234,8 +234,17 @@ def verify_react_interactions(browser, origin):
         assert page.locator(".project-row").count() == 0, "空搜索结果没有生效"
         page.locator("#search").fill("")
         page.locator(".project-row").first.wait_for(state="visible")
+        page.goto(origin + "?asset=emboss-poster-lab", wait_until="domcontentloaded")
+        page.locator("#preview-title").filter(has_text="Emboss Lab · 浮雕海报交互").wait_for(state="visible")
+        assert page.locator('#preview-stage iframe[data-preview-frame="local"]').count() == 0, "Emboss Lab 源仓入口不应渲染本地 Demo iframe"
+        page.locator("#preview-stage .preview-placeholder").wait_for(state="visible")
+        assert page.locator("#preview-open").get_attribute("href") == "https://github.com/weepwood/Emboss-Lab", "Emboss Lab 原项目入口链接错误"
+        page.locator("#preview-info").click()
+        page.locator("#project-dialog").wait_for(state="visible")
+        assert page.locator("#source-repo").get_attribute("href") == "https://github.com/weepwood/Emboss-Lab/blob/main/index.html", "Emboss Lab 源码链接错误"
+        page.keyboard.press("Escape")
         assert not errors, "React 浏览器 JS 异常：" + "; ".join(errors)
-        print("React 交互回归通过：收藏不重载 iframe、设备缩放、Dialog、设置持久化、历史返回、筛选。")
+        print("React 交互回归通过：收藏不重载 iframe、设备缩放、Dialog、设置持久化、历史返回、筛选与 Emboss Lab 源仓入口。")
     finally:
         context.close()
 

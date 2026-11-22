@@ -23,11 +23,11 @@
 
 **文件：** 修改 `tests/demo-icons.test.mjs`。
 
-- [ ] **步骤 1：新增失败断言**
+- [x] **步骤 1：新增失败断言**
 
 为 Emboss Lab 读取 JSON 元数据，断言 `id` 等于 `emboss-poster-lab`、`source` 等于 `external`、`url` 等于 `https://github.com/weepwood/Emboss-Lab`、`sourceUrl` 以 `/blob/main/index.html` 结尾，且目录中不再存在旧的 `index.html` 与 `assets/grain.svg`。删除并发读取旧 Emboss HTML 的断言。
 
-- [ ] **步骤 2：运行测试确认失败**
+- [x] **步骤 2：运行测试确认失败**
 
 运行：`node --test tests/demo-icons.test.mjs`
 
@@ -37,21 +37,21 @@
 
 **文件：** 修改 catalog、README、来源整合文档；删除旧 Demo 两个文件。
 
-- [ ] **步骤 1：更新 catalog 元数据**
+- [x] **步骤 1：更新 catalog 元数据**
 
 保留标题、`id`、`type`、标签与技术栈；设置 `source: "external"`、`url` 与 `originRepo` 为 GitHub 仓库地址、`sourceUrl` 为 `index.html` 文件链接。移除 `preview`、`code`、`publish`、`copyable`，保留可验证的项目说明和复用要点。授权字段改为“原仓库未声明许可证（仅收录项目索引）”。
 
-- [ ] **步骤 2：更新来源说明并移除旧文件**
+- [x] **步骤 2：更新来源说明并移除旧文件**
 
 把 `docs/SOURCE-INTEGRATION.md` 表格中的本地路径改成 GitHub 源仓和源码链接，注明本站仅收录索引；更新 README 图标说明中 Emboss Lab 与其他本地 Demo 的区别；删除 UI Vault 旧版 `index.html` 与颗粒 SVG。
 
-- [ ] **步骤 3：同步并检查资产**
+- [x] **步骤 3：同步并检查资产**
 
 运行：`npm run catalog:sync && node scripts/validate.mjs && node --test tests/demo-icons.test.mjs`
 
 预期：catalog 校验通过，Emboss Lab 外部来源回归通过，生成的公开索引同步。
 
-- [ ] **步骤 4：提交目录变更**
+- [x] **步骤 4：提交目录变更**
 
 运行：`git add catalog/assets/emboss-poster-lab.json content/assets.json docs/SOURCE-INTEGRATION.md README.md tests/demo-icons.test.mjs demos/experiments/emboss-poster-lab && git commit -m 'feat(目录): 将 Emboss Lab 改为源仓入口'`
 
@@ -59,17 +59,17 @@
 
 **文件：** 修改 `scripts/visual-regression.py`。
 
-- [ ] **步骤 1：为浏览器回归增加外部深链接场景**
+- [x] **步骤 1：为浏览器回归增加外部深链接场景**
 
 在 `verify_react_interactions` 中导航到 `?asset=emboss-poster-lab`，等待 `#preview-title` 文本为“Emboss Lab · 浮雕海报交互”，断言 `iframe[data-preview-frame="local"]` 不存在，`#preview-stage` 展示外部项目说明，并检查源码/原始项目链接的 href。
 
-- [ ] **步骤 2：运行完整验证**
+- [x] **步骤 2：运行完整验证**
 
 运行：`npm run check` 和 `npm run visual:test`。
 
 预期：资产校验、所有测试、设计审计、构建、发布目录校验和 Chromium 回归均通过。
 
-- [ ] **步骤 3：提交浏览器回归**
+- [x] **步骤 3：提交浏览器回归**
 
 运行：`git add scripts/visual-regression.py && git commit -m 'test(浏览器): 覆盖 Emboss Lab 源仓入口'`
 
