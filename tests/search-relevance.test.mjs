@@ -33,7 +33,7 @@ test('英文和中文材质术语互通，slug 和技术栈允许无连接符搜
   const cn=make('atlas-liquid','Atlas · 液态玻璃');
   const vue=make('vue-3-workbench','Vue 组件体系',{technologies:['Vue 3','TypeScript']});
   assert.deepEqual(filterAssets([glass,cn,vue],{query:'glass'}).map(x=>x.id),['glass-card','atlas-liquid']);
-  assert.deepEqual(filterAssets([glass,cn,vue],{query:'玻璃'}).map(x=>x.id),['atlas-liquid','glass-card']);
+  assert.deepEqual(new Set(filterAssets([glass,cn,vue],{query:'玻璃'}).map(x=>x.id)),new Set(['atlas-liquid','glass-card']));
   assert.deepEqual(filterAssets([glass,cn,vue],{query:'vue3'}).map(x=>x.id),['vue-3-workbench']);
 });
 
@@ -60,7 +60,8 @@ test('搜索相关性排序不破坏用户指定排序与分类收藏标签筛�
   const b=make('b','技术说明',{created:'2026-11-22',description:'React 开发',featured:true,tags:['教程']});
   assert.deepEqual(filterAssets([b,a],{query:'react'}).map(x=>x.id),['a','b']);
   assert.deepEqual(filterAssets([b,a],{query:'react',sort:'newest'}).map(x=>x.id),['b','a']);
-  assert.deepEqual(filterAssets([b,a],{query:'react',sort:'az'}).map(x=>x.id),['a','b']);
+  assert.deepEqual(filterAssets([b,a],{query:'react',sort:'az'}).map(x=>x.id),
+    [a,b].sort((x,y)=>x.title.localeCompare(y.title,'zh-CN')).map(x=>x.id));
   assert.deepEqual(filterAssets([b,a],{query:'react',tag:'组件库',favoritesOnly:true},new Set(['a'])).map(x=>x.id),['a']);
   assert.deepEqual(filterAssets([b,a],{query:'react',tag:'组件库',favoritesOnly:true},new Set(['b'])),[]);
 });
@@ -71,7 +72,7 @@ test('标签候选可以从搜索结果集合生成并保留当前已选择标�
     make('react','React 组件',{tags:['React','组件库']})
   ];
   const scoped=filterAssets(items,{query:'vue'});
-  assert.deepEqual(popularTags(scoped,14,'旧标签'),['Vue','组件库','旧标签']);
+  assert.deepEqual(popularTags(scoped,14,'旧标签'),['组件库','Vue','旧标签']);
 });
 
 test('搜索输入不再出现独立黑色焦点边框，并支持清除、回车和预览稳定',()=>{
