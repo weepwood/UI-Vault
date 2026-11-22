@@ -1,0 +1,37 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+
+const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
+
+test('外站提示和原站入口位于 React Topbar，预览区不再叠加提示',()=>{
+  const toolbar=read('src/components/PreviewToolbar.jsx');
+  const frame=read('src/components/PreviewFrame.jsx');
+  const legacy=read('assets/core/workbench.js');
+  const css=read('assets/styles.css');
+  assert.match(toolbar,/className="topbar-embed-notice"/);
+  assert.match(toolbar,/外部站点可能禁止嵌入或受沙箱限制。/);
+  assert.match(toolbar,/asset\?\.siteUrl\?'在原站查看':'单独打开'/);
+  assert.match(toolbar,/title=\{asset\?\.siteUrl\?'在原站查看':'单独打开'\}/);
+  assert.doesNotMatch(frame,/external-preview-hint/);
+  assert.doesNotMatch(legacy,/external-preview-hint/);
+  assert.doesNotMatch(css,/\.external-preview-hint/);
+  assert.match(frame,/sandbox="allow-scripts allow-forms"/);
+});
+
+test('目录工具栏与 Topbar 使用同一高度变量，排序和标签保持单行',()=>{
+  const html=read('index.html');
+  const react=read('src/react-workbench.jsx');
+  const css=read('assets/styles.css');
+  const toolbarCss=read('assets/ui/preview-toolbar.css');
+  assert.match(toolbarCss,/--workbench-toolbar-height:56px/);
+  assert.match(toolbarCss,/\.topbar\{height:var\(--workbench-toolbar-height\)/);
+  assert.match(css,/\.project-panel \.list-controls \{[^}]*height:var\(--workbench-toolbar-height\)/s);
+  assert.match(html,/class="list-controls-filters"/);
+  assert.match(react,/className="list-controls-filters"/);
+  assert.match(html,/id="sort"/);
+  assert.match(html,/id="tag-filter"/);
+  assert.match(react,/id="sort"/);
+  assert.match(react,/id="tag-filter"/);
+  assert.match(css,/@container preview-toolbar \(max-width:520px\) \{\s*\.topbar \{ flex-wrap:nowrap/);
+});
