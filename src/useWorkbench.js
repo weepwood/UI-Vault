@@ -181,7 +181,7 @@ export function useWorkbench(){
     router.setView(view,historyMode);
     dispatch({type:'view',value:view});
   },[]);
-  const leaveSettings=useCallback(()=>{if(state.view==='settings')openView('library');},[openView,state.view]);
+  const leaveSettings=useCallback(()=>{if(state.view!=='library')openView('library');},[openView,state.view]);
   const selectAsset=useCallback((id,options={})=>{
     router.setAsset(id,options.historyMode||'push');
     dispatch({type:'select',id});

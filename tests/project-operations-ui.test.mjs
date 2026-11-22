@@ -27,3 +27,11 @@ test('管理视图保持原三栏 iframe 组件隔离，不在预览 iframe 中�
  assert.match(hooks,/fetchJSON\('content\/preview-health\.json'/);
  assert.match(app,/createPortal\(<ProjectOperationsPanel/);
 });
+
+test('左侧分类、搜索会从管理页返回预览，移动端切换管理页关闭导航遮罩',()=>{
+ const hooks=read('src/useWorkbench.js');
+ const app=read('src/react-workbench.jsx');
+ assert.ok(hooks.includes("if(state.view!=='library')openView('library')"));
+ assert.ok(app.includes("menu(false);openView('operations')"));
+ assert.ok(app.includes("nodes.operations.inert=menuOpen||!operationsActive"));
+});

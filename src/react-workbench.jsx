@@ -255,7 +255,7 @@ function WorkbenchPortals({nodes}){
     {createPortal(<>
       <a id="operations-open" className="sidebar-settings sidebar-operations" href="./?view=operations"
         aria-label="项目状态管理" title="项目状态管理" aria-current={operationsActive?'page':'false'}
-        onClick={event=>{event.preventDefault();openView('operations');setDialogOpen(false);
+        onClick={event=>{event.preventDefault();menu(false);openView('operations');setDialogOpen(false);
           requestAnimationFrame(()=>document.getElementById('operations-title')?.focus({preventScroll:true}));}}>
         <UIIcon name="chart-no-axes-column"/><span>项目状态</span>
       </a>
@@ -264,6 +264,7 @@ function WorkbenchPortals({nodes}){
       aria-current={settingsActive?'page':'false'}
       onClick={event=>{
         event.preventDefault();
+        menu(false);
         openView('settings');
         setDialogOpen(false);
         requestAnimationFrame(()=>document.getElementById('settings-title')?.focus({preventScroll:true}));
