@@ -514,6 +514,7 @@ def verify_glass_materials(browser, origin):
             preview = page.locator('iframe[data-preview-frame="external"]')
             preview.wait_for(state="visible")
             assert preview.get_attribute("src") == "https://weepwood.github.io/glass-lab/"
+            assert preview.get_attribute("sandbox") == "allow-scripts allow-forms", "Emboss Lab 下载权限不应扩展给 Glass Lab"
             assert page.locator("#preview-open").get_attribute("href") == "https://weepwood.github.io/glass-lab/"
             embedded = page.frame_locator('iframe[data-preview-frame="external"]')
             embedded.get_by_role("button", name="静态网格").wait_for(state="visible", timeout=30000)
