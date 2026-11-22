@@ -34,7 +34,7 @@ export function ProjectList({items,labels,selectedId,onSelect,query='',loading=f
     <span className="project-skeleton-lines"><span/><span/></span>
   </div>)}</>;
   if(groupByProject)return <>{groupAssetsByProject(items,projects).map(group=>
-    <details key={group.id+':'+query} className="asset-project-group" open>
+    <details key={group.id+':'+query} className="asset-project-group" defaultOpen>
       <summary className="asset-project-summary" aria-label={(group.project?.name||'未归组')+'，'+group.items.length+' 条资源'}>
         <span className="asset-project-name">{group.project?.name||'未归组'}</span>
         <span className="asset-project-count">{group.items.length}</span>
