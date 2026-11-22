@@ -195,15 +195,6 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
     </div>
     <section id="dialog-overview" className="dialog-pane" role="tabpanel"
       aria-labelledby="tab-overview" tabIndex={0} hidden={tab!=='overview'}>
-      {project&&<section className="project-source-card" aria-label="所属来源项目">
-        <div className="project-source-card-title">
-          <span>所属项目</span>
-          <strong>{project.name}</strong>
-          <span>{projectAssetCount} 条资产</span>
-        </div>
-        <a href={project.repository} target="_blank" rel="noopener noreferrer"
-          title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
-      </section>}
       <div id="project-info" className="project-info" onClick={infoClick}
         dangerouslySetInnerHTML={{__html:asset?projectInfoMarkup(asset,labels):''}}/>
     </section>
@@ -254,6 +245,15 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
       aria-labelledby="tab-page-info" tabIndex={0} hidden={tab!=='page-info'}>
+      {project&&<section className="project-source-card" aria-label="所属来源项目">
+        <div className="project-source-card-title">
+          <span>所属项目</span>
+          <strong>{project.name}</strong>
+          <span>{projectAssetCount} 条资产</span>
+        </div>
+        <a href={project.repository} target="_blank" rel="noopener noreferrer"
+          title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
+      </section>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
   </div>,root);
