@@ -215,16 +215,16 @@ dialog::backdrop{background:#131f2a8c;backdrop-filter:blur(4px)}
 'use strict';
 const styles=[
   {id:'aurora',name:'Aurora Drift',cn:'流动极光',category:'gradient',desc:'三层光晕缓慢漂移，保留原版极光实验的柔和氛围。',use:'品牌首屏与沉浸式展示',animated:true},
-  {id:'mesh',name:'Mesh Gradient',cn:'网格渐变',category:'gradient',desc:'多色椭圆色块交叠，形成轻盈的空间感。',use:'产品介绍与创作工具',animated:true},
-  {id:'silk',name:'Liquid Silk',cn:'丝绸流彩',category:'gradient',desc:'圆锥渐变缓慢旋转，生成连贯的彩色过渡。',use:'数字艺术与专题封面',animated:true},
-  {id:'horizon',name:'Horizon',cn:'暮光地平线',category:'light',desc:'低位发光区域与明暗层次，营造远方日落的轮廓。',use:'品牌故事与登陆页',animated:true},
+  {id:'mesh',palette:3,name:'Mesh Gradient',cn:'网格渐变',category:'gradient',desc:'多色椭圆色块交叠，形成轻盈的空间感。',use:'产品介绍与创作工具',animated:true},
+  {id:'silk',palette:1,name:'Liquid Silk',cn:'丝绸流彩',category:'gradient',desc:'圆锥渐变缓慢旋转，生成连贯的彩色过渡。',use:'数字艺术与专题封面',animated:true},
+  {id:'horizon',palette:1,name:'Horizon',cn:'暮光地平线',category:'light',desc:'低位发光区域与明暗层次，营造远方日落的轮廓。',use:'品牌故事与登陆页',animated:true},
   {id:'beams',name:'Light Beams',cn:'光束',category:'light',desc:'稀疏的锥形射线与柔和漫射，制造舞台感。',use:'发布会与作品展示',animated:true},
-  {id:'mist',name:'Color Mist',cn:'色彩薄雾',category:'gradient',desc:'大范围柔化颜色交融，控制明暗而非增加装饰。',use:'平静的编辑器或工具',animated:true},
+  {id:'mist',palette:3,name:'Color Mist',cn:'色彩薄雾',category:'gradient',desc:'大范围柔化颜色交融，控制明暗而非增加装饰。',use:'平静的编辑器或工具',animated:true},
   {id:'glow',name:'Soft Spotlight',cn:'柔光聚焦',category:'light',desc:'聚焦中央的一束弥散光，用来引导主要文字。',use:'Hero 区和产品亮点',animated:true},
-  {id:'topo',name:'Contour Lines',cn:'等高线',category:'pattern',desc:'规则的同心轮廓形成层次，不依赖复杂动画。',use:'地图与数据可视化',animated:false},
-  {id:'grid',name:'Blueprint Grid',cn:'工程网格',category:'pattern',desc:'规则网格、渐隐遮罩和边缘色调，强调结构。',use:'开发者工具与技术文档',animated:false},
-  {id:'dots',name:'Dot Matrix',cn:'点阵',category:'pattern',desc:'细点重复排列，渐变式显隐让画面更克制。',use:'仪表板与功能模块',animated:false},
-  {id:'paper',name:'Soft Paper',cn:'纸张肌理',category:'texture',desc:'极淡的交错线纹与偏暖底色，适合长时间阅读。',use:'文字编辑和内容首页',animated:false},
+  {id:'topo',palette:4,name:'Contour Lines',cn:'等高线',category:'pattern',desc:'规则的同心轮廓形成层次，不依赖复杂动画。',use:'地图与数据可视化',animated:false},
+  {id:'grid',palette:4,name:'Blueprint Grid',cn:'工程网格',category:'pattern',desc:'规则网格、渐隐遮罩和边缘色调，强调结构。',use:'开发者工具与技术文档',animated:false},
+  {id:'dots',palette:4,name:'Dot Matrix',cn:'点阵',category:'pattern',desc:'细点重复排列，渐变式显隐让画面更克制。',use:'仪表板与功能模块',animated:false},
+  {id:'paper',palette:3,name:'Soft Paper',cn:'纸张肌理',category:'texture',desc:'极淡的交错线纹与偏暖底色，适合长时间阅读。',use:'文字编辑和内容首页',animated:false},
   {id:'stars',name:'Night Sky',cn:'夜空星点',category:'texture',desc:'稀疏星点缓慢移动，搭配深色氛围光。',use:'探索与科技艺术',animated:true}
 ];
 const palettes=[
@@ -283,13 +283,13 @@ function renderGallery(){
     const button=document.createElement('button');
     button.className='tile';button.type='button';button.dataset.id=item.id;
     button.setAttribute('aria-label','预览 '+item.cn+'背景');
-    const scene=document.createElement('div');scene.className='scene';scene.dataset.style=item.id;scene.setAttribute('aria-hidden','true');applyPalette(scene,item.id==='paper'?3:item.id==='dots'?4:item.id==='mesh'?3:0);scene.style.setProperty('--intensity','.9');
+    const scene=document.createElement('div');scene.className='scene';scene.dataset.style=item.id;scene.setAttribute('aria-hidden','true');applyPalette(scene,item.palette??0);scene.style.setProperty('--intensity','.9');
     const body=document.createElement('div');body.className='tile-body';
     const name=document.createElement('div');name.className='tile-name';name.textContent=item.cn;
     const sub=document.createElement('span');sub.className='tile-sub';sub.textContent=item.name;name.append(sub);
     const index=document.createElement('span');index.className='tile-index';index.textContent=String(styles.indexOf(item)+1).padStart(2,'0');
     body.append(name,index);button.append(scene,body);
-    button.addEventListener('click',()=>{state.selected=item.id;state.paused=false;update();});
+    button.addEventListener('click',()=>{state.selected=item.id;state.palette=item.palette??0;state.paused=false;update();});
     $('gallery').append(button);
   });
   $('count').textContent=(state.filter==='all'?'全部':'当前分类')+' · '+visible.length;
@@ -311,7 +311,7 @@ $('overlaySwitch').addEventListener('click',toggleOverlay);
 $('pauseToggle').addEventListener('click',()=>{state.paused=!state.paused;update()});
 $('intensity').addEventListener('input',event=>{state.intensity=Number(event.target.value);update()});
 $('speed').addEventListener('input',event=>{state.speed=Number(event.target.value);update()});
-$('reset').addEventListener('click',()=>{Object.assign(state,{palette:0,intensity:90,speed:10,overlay:true,paused:false});update()});
+$('reset').addEventListener('click',()=>{Object.assign(state,{palette:current().palette??0,intensity:90,speed:10,overlay:true,paused:false});update()});
 $('filters').addEventListener('click',event=>{
   const button=event.target.closest('button[data-filter]');
   if(!button)return;
@@ -330,7 +330,8 @@ function selectedCode(){
     return selector.includes('.scene')&&(!selector.includes('data-style')||selector.includes('data-style="'+id+'"'));
   }).map(rule=>rule.cssText).join('\n\n');
   return '<!-- 背景容器 -->\n<div class="scene" data-style="'+id+'"></div>\n\n<style>\n'+
-    '.scene {--base:'+p.base+';--a:'+p.a+';--b:'+p.b+';--c:'+p.c+';--ink:'+p.ink+';--intensity:'+(state.intensity/100)+';--duration:'+Math.round(220/state.speed)+'s;}\n'+
+    '.scene {position:relative;isolation:isolate;display:block;overflow:hidden;width:100%;min-height:320px;background:var(--base);color:var(--ink);--base:'+p.base+';--a:'+p.a+';--b:'+p.b+';--c:'+p.c+';--ink:'+p.ink+';--intensity:'+(state.intensity/100)+';--duration:'+Math.round(220/state.speed)+'s;}\n'+
+    '.scene::before,.scene::after{content:"";position:absolute;pointer-events:none}.scene::before{opacity:var(--intensity);z-index:0;transform-origin:50% 50%}.scene::after{z-index:1}\n'+
     relevant+'\n</style>';
 }
 $('viewCode').addEventListener('click',()=>{
