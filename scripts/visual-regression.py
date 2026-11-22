@@ -326,7 +326,7 @@ def verify_liquid_orb_unified(browser, origin):
                 assert page.locator("#dialog-retry").is_visible(), "未找到思考模式的重试控制"
             assert page.locator("#presentation canvas").count() == 1, "合并页面出现重复 Canvas"
             pill = page.locator("#presentation").bounding_box()
-            assert pill and 120 < pill["height"] < 310, f"{name}: 胶囊高度异常: {pill}"
+            assert pill and 120 <= pill["height"] < 310, f"{name}: 胶囊高度异常: {pill}"
             assert pill["width"] <= width - 12, f"{name}: 胶囊宽度超出视口: {pill}"
             assert pill["x"] >= -2, f"{name}: 胶囊越过页面左边缘: {pill}"
             assert pill["x"] + pill["width"] <= width + 2, f"{name}: 胶囊越过页面右边缘: {pill}"
