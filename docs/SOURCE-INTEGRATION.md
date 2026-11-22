@@ -7,9 +7,10 @@
 | 资产 | 来源 | 本站整合方式 | 复用边界 |
 | --- | --- | --- | --- |
 | Emboss Lab · 浮雕海报 | [在线预览](https://weepwood.github.io/Emboss-Lab/) · [weepwood/Emboss-Lab](https://github.com/weepwood/Emboss-Lab) · [入口源码](https://github.com/weepwood/Emboss-Lab/blob/main/index.html) | 外部 GitHub Pages 页面以受限 iframe 预览，不复制本地演示文件 | 代码与授权以原仓库为准；本站保留源仓和源码链接 |
+| 暖色扁平组件体系 | [在线预览](https://weepwood.github.io/gr8r-studio-ui/) · [weepwood/gr8r-studio-ui](https://github.com/weepwood/gr8r-studio-ui) · [Token 源码](https://github.com/weepwood/gr8r-studio-ui/blob/main/src/tokens.css) | 外部 GitHub Pages 页面以受限 iframe 预览 | MIT，以源仓库为准；本站保留源仓和源码链接 |
 | Frame Lab · UI 结构实验 | [style-atlas/public/frame-lab/index.html](https://github.com/weepwood/style-atlas/blob/main/public/frame-lab/index.html) | `demos/experiments/frame-design-lab/index.html` | 自包含 HTML，外部 Figma/Dribbble 网址仅为参考链接 |
 
-Frame Lab 作为本地 Demo 保留独立视觉风格。Emboss Lab 继续在其个人源仓库维护，UI Vault 内嵌其 GitHub Pages 预览，并保留项目索引和源码链接；其演示自述为参考视觉图重新绘制，具体授权边界以源仓库为准。Frame Lab 中引用的 Figma、Dribbble 等资源不表示它们与此项目存在从属关系。
+Frame Lab 作为本地 Demo 保留独立视觉风格。Emboss Lab 与暖色扁平组件体系继续由各自源仓维护，UI Vault 内嵌其 GitHub Pages 预览，并保留项目索引和源码链接；具体授权边界以各源仓为准。Frame Lab 中引用的 Figma、Dribbble 等资源不表示它们与此项目存在从属关系。
 
 ## 其他仓库的整合策略
 

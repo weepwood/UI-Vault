@@ -60,6 +60,21 @@ test('Emboss Lab 内嵌 GitHub Pages 页面并保留 GitHub 源仓链接',async(
   assert.match(markup,/sandbox="allow-scripts allow-forms allow-downloads"/);
   assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
 });
+test('暖色扁平组件体系内嵌 Gr8r Studio 展示站并保留源仓链接',async()=>{
+  const {errors,items}=await inspectCatalog();
+  assert.deepEqual(errors,[]);
+  const item=items.find(asset=>asset.id==='gr8r-studio-ui');
+  assert.ok(item);
+  assert.equal(item.siteUrl,'https://weepwood.github.io/gr8r-studio-ui/');
+  assert.equal(item.url,'https://github.com/weepwood/gr8r-studio-ui');
+  assert.equal(item.originRepo,item.url);
+  assert.equal(item.sourceUrl,item.url+'/blob/main/src/tokens.css');
+  const markup=projectPreviewMarkup(item);
+  assert.ok(markup.includes('src="'+item.siteUrl+'"'));
+  assert.match(markup,/data-preview-frame="external"/);
+  assert.match(markup,/sandbox="allow-scripts allow-forms"/);
+  assert.doesNotMatch(markup,/allow-downloads|allow-same-origin/);
+});
 test('旧的 React/Vue 预览入口保持不变，未上线项目不伪造演示链接',async()=>{
   const assets=JSON.parse(await read('content/assets.json'));
   for(const id of ['fluxnav-start-page','kumo-edge-console','style-atlas','fontfolio','s2u-link-workbench'])

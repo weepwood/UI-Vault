@@ -249,8 +249,20 @@ def verify_react_interactions(browser, origin):
         page.locator("#project-dialog").wait_for(state="visible")
         assert page.locator("#source-repo").get_attribute("href") == "https://github.com/weepwood/Emboss-Lab/blob/main/index.html", "Emboss Lab 源码链接错误"
         page.keyboard.press("Escape")
+        page.goto(origin + "?asset=gr8r-studio-ui", wait_until="domcontentloaded")
+        page.locator("#preview-title").filter(has_text="暖色扁平组件体系").wait_for(state="visible")
+        gr8r_embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
+        gr8r_embed.wait_for(state="attached")
+        assert gr8r_embed.get_attribute("src") == "https://weepwood.github.io/gr8r-studio-ui/", "暖色扁平组件体系未嵌入 Gr8r Studio 展示站"
+        assert gr8r_embed.get_attribute("sandbox") == "allow-scripts allow-forms", "Gr8r Studio 外站沙箱配置异常"
+        page.frame_locator('#preview-stage iframe[data-preview-frame="external"]').locator("h1").filter(has_text="Designed for focus").wait_for(state="visible", timeout=20000)
+        assert page.locator("#preview-open").get_attribute("href") == "https://weepwood.github.io/gr8r-studio-ui/", "Gr8r Studio 原站入口链接错误"
+        page.locator("#preview-info").click()
+        page.locator("#project-dialog").wait_for(state="visible")
+        assert page.locator("#source-repo").get_attribute("href") == "https://github.com/weepwood/gr8r-studio-ui/blob/main/src/tokens.css", "Gr8r Studio Token 源码链接错误"
+        page.keyboard.press("Escape")
         assert not errors, "React 浏览器 JS 异常：" + "; ".join(errors)
-        print("React 交互回归通过：收藏不重载 iframe、设备缩放、Dialog、设置持久化、历史返回、筛选与 Emboss Lab Pages 内嵌。")
+        print("React 交互回归通过：收藏不重载 iframe、设备缩放、Dialog、设置持久化、历史返回、筛选及 Emboss Lab / Gr8r Studio Pages 内嵌。")
     finally:
         context.close()
 
