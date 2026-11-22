@@ -1,6 +1,353 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>极光背景实验 · UI Vault</title><style>
-*{box-sizing:border-box}body{margin:0;background:#080d1d;color:#f1f3ff;font-family:Inter,system-ui,-apple-system,sans-serif;overflow:hidden}main{height:100vh;min-height:360px;display:grid;place-items:center;position:relative;isolation:isolate}main::before{content:"";position:absolute;inset:-40%;z-index:-2;opacity:.9;background:radial-gradient(ellipse at 30% 47%,#5069ec8c,transparent 33%),radial-gradient(ellipse at 58% 32%,#8e42c58f,transparent 27%),radial-gradient(ellipse at 72% 65%,#18b5ae80,transparent 30%);filter:blur(48px);animation:drift 14s ease-in-out infinite alternate}
-main::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(transparent 60%,#080d1de6),repeating-linear-gradient(0deg,#ffffff08 0 1px,transparent 1px 50px)}
-@keyframes drift{from{transform:translate3d(-3%,2%,0) rotate(-9deg)}to{transform:translate3d(5%,-5%,0) rotate(14deg) scale(1.12)}}.center{text-align:center;padding:20px;max-width:650px}.tag{display:inline-block;border:1px solid #ffffff36;border-radius:100px;padding:8px 13px;font-size:11px;color:#d2d7f0;letter-spacing:.15em;background:#ffffff0c}h1{font-size:clamp(34px,7vw,78px);font-weight:750;letter-spacing:-.085em;line-height:1.02;margin:24px 0 16px}h1 em{font-style:normal;background:linear-gradient(90deg,#acd5ff,#deb5ff,#9df2db);background-clip:text;color:transparent}p{font-size:13px;line-height:1.8;color:#abb5cd}.hint{position:absolute;bottom:25px;left:0;right:0;text-align:center;color:#8290b1;font-size:10px;letter-spacing:.12em}
-@media(prefers-reduced-motion:reduce){main::before{animation:none}}
-</style></head><body><main><div class="center"><span class="tag">CSS 背景实验 / 03</span><h1>极光渐变<br><em>背景实验</em></h1><p>三层径向渐变叠加背景模糊，使用 transform 控制漂移。<br>适合低信息密度的沉浸式页面，不建议直接用于复杂表格后台。</p></div><div class="hint">CSS 渲染 / 无外部图片</div></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>背景效果实验室 · UI Vault</title>
+<style id="layout-styles">
+:root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color:#212b33;background:#f4f5f4;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;min-width:320px}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid #3c688a;outline-offset:3px}
+button:disabled{opacity:.42;cursor:not-allowed}
+a{color:inherit}
+.app{max-width:1550px;margin:auto;padding:clamp(18px,2.8vw,42px)}
+.head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:27px}
+.eyebrow{display:flex;align-items:center;gap:9px;color:#637079;font-size:11px;font-weight:650;letter-spacing:.07em;text-transform:uppercase}
+.eyebrow .mark{display:inline-grid;place-items:center;width:24px;height:24px;border:1px solid #d8dfe1;border-radius:7px;background:white;color:#3e6279}
+h1{font-size:clamp(28px,3.6vw,43px);letter-spacing:-.055em;line-height:1.1;font-weight:740;margin:12px 0 8px}
+.lede{font-size:13px;line-height:1.8;color:#66727a;max-width:640px;margin:0}
+.head-note{display:flex;align-items:center;gap:9px;white-space:nowrap;font-size:11px;color:#75818a;background:#fff;border:1px solid #e0e4e5;border-radius:10px;padding:11px 13px}
+.head-note i{width:6px;height:6px;background:#6baf90;border-radius:50%}
+.section-label{font-size:12px;font-weight:700;color:#344550;letter-spacing:.008em;margin:0}
+.section-hint{font-size:11px;color:#8b969b}
+.preview-heading,.gallery-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) 258px;align-items:stretch;gap:15px}
+.preview-shell{background:#fff;border:1px solid #dde3e4;border-radius:16px;padding:10px;box-shadow:0 8px 35px #24323a06;min-width:0}
+.preview-top{height:33px;display:flex;align-items:center;justify-content:space-between;padding:0 8px 9px;gap:8px}
+.preview-name{font-size:11px;font-weight:650;color:#5d6b73;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.preview-tools{display:flex;gap:4px;align-items:center}
+.icon-button{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:5px 8px;min-height:26px;background:transparent;border:1px solid transparent;border-radius:7px;font-size:11px;color:#60707a}
+.icon-button:hover:not(:disabled){background:#eff2f2;color:#334650}
+.icon-button[aria-pressed="true"]{background:#eaf0f3;color:#315675}
+.scene-frame{overflow:hidden;border-radius:10px;background:#0d1322}
+#stage{height:clamp(250px,39vw,500px);min-height:250px}
+.scene{position:relative;isolation:isolate;background:var(--base,#0d1120);width:100%;height:100%;overflow:hidden;color:var(--ink,#fff)}
+.scene::before,.scene::after{content:"";position:absolute;pointer-events:none}
+.scene::before{opacity:var(--intensity,.9);z-index:0;transform-origin:50% 50%}
+.scene::after{z-index:1}
+.scene.is-paused::before,.scene.is-paused::after{animation-play-state:paused!important}
+.mock-content{position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;pointer-events:none}
+.mock-content[hidden]{display:none}
+.mock-inner{max-width:430px}
+.mock-kicker{text-transform:uppercase;letter-spacing:.23em;font-size:10px;font-weight:700;opacity:.85}
+.mock-title{font-size:clamp(28px,5vw,57px);line-height:1.1;letter-spacing:-.07em;margin:14px 0;font-weight:730}
+.mock-copy{font-size:13px;line-height:1.85;opacity:.82;margin:0 auto;max-width:355px}
+.mock-pill{display:inline-block;margin-top:25px;border-radius:100px;padding:10px 17px;font-size:11px;border:1px solid currentColor;opacity:.84}
+.preview-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 9px 3px}
+.preview-caption{font-size:11px;color:#697780;line-height:1.5;min-width:0}
+.tech-label{color:#88959d;font-size:10px;white-space:nowrap}
+.inspector{background:#fff;border:1px solid #dde3e4;border-radius:16px;padding:18px 17px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:6px}
+.panel-head h2{font-size:12px;margin:0;color:#33434d;font-weight:700}
+.panel-head span{font-size:10px;color:#8a989f}
+.effect-title{font-size:21px;letter-spacing:-.04em;margin:8px 0 3px;font-weight:730}
+.effect-desc{font-size:11px;line-height:1.7;color:#708089;margin:0}
+.rule{height:1px;background:#eaf0ef}
+.control-group{display:grid;gap:10px}
+.control-heading{display:flex;align-items:center;justify-content:space-between;font-size:11px;color:#4d5e68;font-weight:650}
+.control-heading output{color:#87929a;font:11px ui-monospace,SFMono-Regular,Consolas,monospace}
+.range{width:100%;accent-color:#426e8b;cursor:pointer}
+.palette-row{display:flex;gap:8px;flex-wrap:wrap}
+.palette{width:28px;height:28px;border-radius:50%;padding:3px;border:1px solid transparent;background:none;display:grid;place-items:center}
+.palette:before{content:"";width:100%;height:100%;border-radius:50%;background:linear-gradient(135deg,var(--p1),var(--p2) 55%,var(--p3))}
+.palette[aria-pressed="true"]{border-color:#647682}
+.switch-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.switch-row label{font-size:11px;color:#4d5e68;font-weight:650}
+.switch{width:33px;height:19px;border-radius:20px;background:#d9e0e1;border:0;padding:3px;position:relative;flex:none}
+.switch:before{content:"";display:block;width:13px;height:13px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0002;transition:transform .2s}
+.switch[aria-pressed="true"]{background:#4c7087}
+.switch[aria-pressed="true"]:before{transform:translateX(14px)}
+.panel-actions{display:grid;gap:8px;margin-top:auto}
+.primary,.secondary{width:100%;display:flex;align-items:center;justify-content:center;gap:8px;min-height:35px;border-radius:9px;font-size:11px;font-weight:700}
+.primary{background:#2b4658;border:1px solid #2b4658;color:#fff}
+.primary:hover{background:#1e3545}
+.secondary{background:#fff;border:1px solid #d9e0e2;color:#435864}
+.secondary:hover{background:#f4f7f8}
+.detail-note{font-size:10px;line-height:1.7;color:#839097;margin:0}
+.library{margin-top:32px}
+.gallery-heading{align-items:flex-end}
+.gallery-heading p{font-size:11px;color:#8a959b;margin:5px 0 0}
+.filters{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:15px}
+.filter{border:1px solid transparent;background:transparent;color:#718088;padding:7px 12px;border-radius:8px;font-size:11px;font-weight:600}
+.filter:hover{background:#eaeeef}
+.filter[aria-pressed="true"]{background:#e7ecef;color:#2e4b5e;border-color:#e2e8eb}
+.gallery{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:13px}
+.tile{background:#fff;border:1px solid #e0e5e6;border-radius:13px;padding:7px;text-align:left;display:block;min-width:0;color:inherit;transition:border-color .18s,box-shadow .18s,transform .18s}
+.tile:hover{border-color:#a4b6c0;transform:translateY(-2px)}
+.tile[aria-pressed="true"]{border-color:#58788c;box-shadow:0 0 0 1px #58788c33}
+.tile .scene{height:auto;aspect-ratio:1.7;border-radius:8px;contain:paint;pointer-events:none}
+.tile .scene::before,.tile .scene::after{animation:none!important}
+.tile-body{display:flex;align-items:flex-start;justify-content:space-between;gap:6px;padding:10px 4px 5px}
+.tile-name{font-size:12px;color:#34444e;font-weight:700;letter-spacing:-.015em}
+.tile-sub{display:block;color:#9aa5a8;font-size:10px;font-weight:500;margin-top:3px}
+.tile-index{font:10px ui-monospace,Consolas,monospace;color:#acb4b8;white-space:nowrap}
+.sources{margin:30px 0 6px;padding-top:17px;border-top:1px solid #dde4e4;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;color:#7b898f;font-size:11px;line-height:1.8}
+.sources strong{color:#52656f;font-weight:650}
+.sources p{margin:4px 0 0;max-width:750px}
+.empty{padding:42px;text-align:center;color:#8b989f;font-size:12px}
+dialog{border:1px solid #dce4e6;border-radius:15px;box-shadow:0 30px 100px #162b3a3d;width:min(720px,calc(100vw - 32px));max-height:88vh;padding:0;color:#293b47}
+dialog::backdrop{background:#131f2a8c;backdrop-filter:blur(4px)}
+.modal-head{padding:18px 22px;border-bottom:1px solid #e1e7e9;display:flex;align-items:center;justify-content:space-between;gap:14px}
+.modal-head h2{font-size:15px;margin:0}.modal-head p{font-size:11px;color:#7d8990;margin:4px 0 0}
+.modal-body{padding:16px 22px 20px}
+.modal-body textarea{display:block;width:100%;height:min(46vh,410px);resize:vertical;border:1px solid #dbe2e5;border-radius:9px;background:#f6f7f8;color:#354550;font:11px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;padding:13px}
+.modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}
+.modal-actions button{width:auto;padding:0 17px}
+.status{font-size:11px;color:#607c6b;margin-right:auto;align-self:center}
+@media(max-width:1180px){.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{grid-template-columns:minmax(0,1fr) 225px}}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.inspector{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.inspector>.panel-head,.inspector>.rule{grid-column:1/-1}.panel-actions{margin-top:0}.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}.head-note{display:none}}
+@media(max-width:600px){.app{padding:18px 14px}.head{margin-bottom:22px}.inspector{grid-template-columns:1fr}.inspector>.panel-head,.inspector>.rule{grid-column:auto}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.tile-name{font-size:11px}.tile .scene{aspect-ratio:1.45}.sources{display:block}.preview-foot{align-items:flex-start}#stage{height:320px}.mock-title{font-size:36px}}
+@media(max-width:400px){.gallery{grid-template-columns:1fr 1fr}.tile-index{display:none}.mock-copy{font-size:11px}.filters{gap:2px}.filter{padding:7px 9px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation-duration:.001ms!important;animation-iteration-count:1!important}}
+</style>
+<style id="background-effects">
+/* 独立背景层：仅主预览播放动画，缩略图永远静态。 */
+.scene[data-style="aurora"]::before{inset:-28%;background:radial-gradient(ellipse at 25% 48%,var(--a) 0%,transparent 35%),radial-gradient(ellipse at 61% 25%,var(--b) 0%,transparent 34%),radial-gradient(ellipse at 78% 76%,var(--c) 0%,transparent 36%);filter:blur(38px);animation:drift var(--duration,22s) ease-in-out infinite alternate}
+.scene[data-style="aurora"]::after{inset:0;background:linear-gradient(180deg,transparent 35%,var(--base) 125%)}
+.scene[data-style="mesh"]::before{inset:-20%;background:radial-gradient(ellipse at 18% 16%,var(--a),transparent 43%),radial-gradient(ellipse at 85% 23%,var(--b),transparent 41%),radial-gradient(ellipse at 48% 86%,var(--c),transparent 44%);filter:blur(26px);animation:float var(--duration,22s) ease-in-out infinite alternate}
+.scene[data-style="mesh"]::after{inset:0;background:linear-gradient(120deg,#ffffff15,transparent 52%,#00000012)}
+.scene[data-style="silk"]::before{inset:-55%;background:conic-gradient(from 12deg at 48% 49%,var(--base),var(--a),var(--b),var(--c),var(--base),var(--a),var(--base));filter:blur(28px);animation:rotate var(--duration,22s) linear infinite}
+.scene[data-style="silk"]::after{inset:0;background:radial-gradient(ellipse at center,transparent 20%,var(--base) 122%)}
+.scene[data-style="horizon"]{background:linear-gradient(180deg,var(--base) 12%,var(--a) 85%,var(--c) 150%)}
+.scene[data-style="horizon"]::before{inset:3% -20% -40%;background:radial-gradient(ellipse at 50% 91%,var(--b) 0%,var(--c) 25%,transparent 60%);filter:blur(25px);animation:breathe var(--duration,22s) ease-in-out infinite alternate}
+.scene[data-style="horizon"]::after{inset:0;background:linear-gradient(180deg,transparent 58%,#ffffff16 59%,transparent 60%),linear-gradient(0deg,#00000024,transparent 50%)}
+.scene[data-style="beams"]::before{inset:-40%;background:repeating-conic-gradient(from 264deg at 50% 110%,transparent 0deg 5deg,var(--a) 5deg 6.4deg,transparent 7deg 12deg,var(--b) 13deg 14deg,transparent 15deg 25deg);filter:blur(8px);mask-image:linear-gradient(0deg,#000,transparent 86%);animation:sway var(--duration,22s) ease-in-out infinite alternate}
+.scene[data-style="beams"]::after{inset:0;background:radial-gradient(ellipse at 48% 115%,var(--c),transparent 50%)}
+.scene[data-style="mist"]::before{inset:-26%;background:radial-gradient(ellipse at 22% 58%,var(--a),transparent 45%),radial-gradient(ellipse at 80% 44%,var(--b),transparent 40%),radial-gradient(ellipse at 50% 76%,var(--c),transparent 50%);filter:blur(58px) saturate(.84);animation:float var(--duration,22s) ease-in-out infinite alternate}
+.scene[data-style="mist"]::after{inset:0;background:linear-gradient(180deg,#ffffff1a,transparent 55%,#00000016)}
+.scene[data-style="glow"]::before{inset:-10%;background:radial-gradient(ellipse at 50% 50%,var(--a),transparent 39%),radial-gradient(ellipse at 50% 48%,var(--b),transparent 58%);filter:blur(36px);animation:breathe var(--duration,22s) ease-in-out infinite alternate}
+.scene[data-style="glow"]::after{inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 1%,var(--base) 75%)}
+.scene[data-style="topo"]::before{inset:-25%;background:repeating-radial-gradient(ellipse at 42% 46%,transparent 0px 15px,var(--a) 16px 17px,transparent 18px 30px);opacity:.4!important;transform:rotate(-14deg)}
+.scene[data-style="topo"]::after{inset:0;background:radial-gradient(ellipse at 55% 50%,var(--b),transparent 65%);opacity:.23}
+.scene[data-style="grid"]{background:linear-gradient(90deg,transparent 0%,var(--a) 130%),var(--base)}
+.scene[data-style="grid"]::before{inset:0;background-image:linear-gradient(var(--b) 1px,transparent 1px),linear-gradient(90deg,var(--b) 1px,transparent 1px);background-size:32px 32px;opacity:.20!important;mask-image:radial-gradient(ellipse at 50% 50%,#000 8%,transparent 83%)}
+.scene[data-style="grid"]::after{inset:0;background:radial-gradient(ellipse at 75% 22%,var(--c),transparent 50%);opacity:.22}
+.scene[data-style="dots"]::before{inset:0;background-image:radial-gradient(circle,var(--a) 1.4px,transparent 1.6px);background-size:20px 20px;mask-image:radial-gradient(ellipse at 50% 50%,#000 7%,transparent 80%);opacity:.48!important}
+.scene[data-style="dots"]::after{inset:0;background:radial-gradient(ellipse at 30% 40%,var(--b),transparent 65%);opacity:.22}
+.scene[data-style="paper"]{background:linear-gradient(110deg,var(--base),var(--a) 170%)}
+.scene[data-style="paper"]::before{inset:0;background:repeating-linear-gradient(0deg,transparent 0px 3px,var(--b) 4px 5px,transparent 6px 9px),repeating-linear-gradient(90deg,transparent 0px 5px,var(--c) 6px 7px,transparent 8px 12px);opacity:.06!important}
+.scene[data-style="paper"]::after{inset:0;background:radial-gradient(ellipse at 60% 28%,#ffffff66,transparent 58%)}
+.scene[data-style="stars"]::before{inset:-15%;background:radial-gradient(1px 1px at 12% 22%,#fff 90%,transparent),radial-gradient(2px 2px at 36% 65%,#fff 90%,transparent),radial-gradient(1px 1px at 61% 15%,#fff 90%,transparent),radial-gradient(2px 2px at 79% 45%,#fff 90%,transparent),radial-gradient(1px 1px at 91% 72%,#fff 90%,transparent),radial-gradient(1px 1px at 44% 30%,#fff 90%,transparent),radial-gradient(1px 1px at 68% 84%,#fff 90%,transparent),radial-gradient(1px 1px at 20% 82%,#fff 90%,transparent);background-size:140px 140px;animation:stardrift var(--duration,22s) linear infinite}
+.scene[data-style="stars"]::after{inset:0;background:radial-gradient(ellipse at 66% 65%,var(--a),transparent 55%),radial-gradient(ellipse at 32% 38%,var(--b),transparent 60%);opacity:.32}
+@keyframes drift{from{transform:translate3d(-4%,2%,0) rotate(-7deg)}to{transform:translate3d(5%,-5%,0) rotate(12deg) scale(1.13)}}
+@keyframes float{from{transform:translate3d(-3%,-2%,0) scale(1)}to{transform:translate3d(3%,4%,0) scale(1.1)}}
+@keyframes rotate{to{transform:rotate(360deg)}}
+@keyframes breathe{from{transform:scale(.88);opacity:.6}to{transform:scale(1.13);opacity:1}}
+@keyframes sway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes stardrift{to{transform:translate3d(35px,24px,0)}}
+@media(prefers-reduced-motion:reduce){.scene::before,.scene::after{animation:none!important}}
+</style>
+</head>
+<body>
+<main class="app">
+<header class="head">
+  <div>
+    <div class="eyebrow"><span class="mark" aria-hidden="true">▦</span> UI Vault <span aria-hidden="true">/</span> Visual experiments</div>
+    <h1>背景效果实验室</h1>
+    <p class="lede">从柔和的渐变、流动光影到克制的几何纹理。统一预览不同背景语言，观察它们在真实内容之下的表现。</p>
+  </div>
+  <div class="head-note"><i aria-hidden="true"></i><span>12 个可调节的 CSS 背景</span></div>
+</header>
+<div class="preview-heading"><h2 class="section-label">实时预览</h2><span class="section-hint">仅当前场景播放动画</span></div>
+<section class="workspace" aria-label="背景效果编辑器">
+  <div class="preview-shell">
+    <div class="preview-top">
+      <span class="preview-name" id="previewName">01 / Aurora Drift</span>
+      <div class="preview-tools">
+        <button class="icon-button" id="overlayToggle" type="button" aria-pressed="true" title="切换示例内容">预览文案</button>
+        <button class="icon-button" id="pauseToggle" type="button" aria-pressed="false" title="暂停或播放动画">暂停动效</button>
+      </div>
+    </div>
+    <div class="scene-frame"><div class="scene" id="stage" data-style="aurora">
+      <div class="mock-content" id="mockContent"><div class="mock-inner">
+        <div class="mock-kicker">An experiment in atmosphere</div>
+        <div class="mock-title">Space to think.</div>
+        <p class="mock-copy">让背景成为内容的陪衬，而不是视觉上的竞争者。</p>
+        <span class="mock-pill">Explore the collection</span>
+      </div></div>
+    </div></div>
+    <div class="preview-foot"><span class="preview-caption" id="caption">柔和光晕 · 适合品牌首屏和展示页</span><span class="tech-label" id="techLabel">CSS · 动态</span></div>
+  </div>
+  <aside class="inspector" aria-label="效果控制面板">
+    <div class="panel-head"><h2>效果设置</h2><span>LIVE / 01</span></div>
+    <div><div class="effect-title" id="effectTitle">Aurora Drift</div><p class="effect-desc" id="effectDesc">三层径向渐变构建低饱和极光。</p></div>
+    <div class="rule"></div>
+    <div class="control-group"><div class="control-heading">配色方案 <output id="paletteLabel">深海蓝紫</output></div><div class="palette-row" id="paletteRow" role="group" aria-label="选择配色方案"></div></div>
+    <div class="control-group"><div class="control-heading"><label for="intensity">效果强度</label><output id="intensityValue">90%</output></div><input class="range" id="intensity" type="range" min="30" max="100" step="5" value="90"></div>
+    <div class="control-group"><div class="control-heading"><label for="speed">动画速度</label><output id="speedValue">1.0×</output></div><input class="range" id="speed" type="range" min="5" max="20" step="5" value="10"></div>
+    <div class="switch-row"><label for="overlaySwitch">展示示例内容</label><button type="button" class="switch" id="overlaySwitch" aria-label="展示示例内容" aria-pressed="true"></button></div>
+    <div class="rule"></div>
+    <div class="panel-actions"><button type="button" class="primary" id="viewCode">查看 / 复制 CSS</button><button type="button" class="secondary" id="reset">恢复默认设置</button><p class="detail-note">全部效果均为独立实现的 CSS 示例；缩略图静态渲染，尊重系统减少动画设置。</p></div>
+  </aside>
+</section>
+<section class="library" aria-labelledby="galleryTitle">
+  <div class="gallery-heading"><div><h2 class="section-label" id="galleryTitle">背景样式</h2><p>点击任意背景，在上方查看完整场景并调整细节。</p></div><span class="section-hint" id="count">全部 · 12</span></div>
+  <div class="filters" id="filters" role="group" aria-label="背景分类">
+    <button class="filter" type="button" data-filter="all" aria-pressed="true">全部背景</button>
+    <button class="filter" type="button" data-filter="gradient" aria-pressed="false">渐变</button>
+    <button class="filter" type="button" data-filter="light" aria-pressed="false">光效</button>
+    <button class="filter" type="button" data-filter="pattern" aria-pressed="false">几何</button>
+    <button class="filter" type="button" data-filter="texture" aria-pressed="false">纹理</button>
+  </div>
+  <div class="gallery" id="gallery"></div>
+</section>
+<footer class="sources"><div><strong>设计参考</strong><p>研究方向：React Bits Backgrounds、Aceternity UI、Motion Backgrounds、Gradient Backdrops。这里采用原生 CSS 重新设计，没有复制第三方图形或源码。具体参考链接与使用说明见仓库 docs/BACKGROUND-LAB.md。</p></div><div>UI Vault / Background Study</div></footer>
+</main>
+<dialog id="codeDialog" aria-labelledby="codeTitle">
+  <div class="modal-head"><div><h2 id="codeTitle">背景 CSS</h2><p>包含当前色板、所选背景规则与必要的动画关键帧。</p></div><button type="button" class="icon-button" id="closeCode" aria-label="关闭代码窗口">关闭</button></div>
+  <div class="modal-body"><textarea id="codeText" readonly spellcheck="false" aria-label="可复制的背景代码"></textarea><div class="modal-actions"><span class="status" id="copyStatus" role="status" aria-live="polite"></span><button type="button" class="secondary" id="selectCode">全选</button><button type="button" class="primary" id="copyCode">复制代码</button></div></div>
+</dialog>
+<script>
+'use strict';
+const styles=[
+  {id:'aurora',name:'Aurora Drift',cn:'流动极光',category:'gradient',desc:'三层光晕缓慢漂移，保留原版极光实验的柔和氛围。',use:'品牌首屏与沉浸式展示',animated:true},
+  {id:'mesh',name:'Mesh Gradient',cn:'网格渐变',category:'gradient',desc:'多色椭圆色块交叠，形成轻盈的空间感。',use:'产品介绍与创作工具',animated:true},
+  {id:'silk',name:'Liquid Silk',cn:'丝绸流彩',category:'gradient',desc:'圆锥渐变缓慢旋转，生成连贯的彩色过渡。',use:'数字艺术与专题封面',animated:true},
+  {id:'horizon',name:'Horizon',cn:'暮光地平线',category:'light',desc:'低位发光区域与明暗层次，营造远方日落的轮廓。',use:'品牌故事与登陆页',animated:true},
+  {id:'beams',name:'Light Beams',cn:'光束',category:'light',desc:'稀疏的锥形射线与柔和漫射，制造舞台感。',use:'发布会与作品展示',animated:true},
+  {id:'mist',name:'Color Mist',cn:'色彩薄雾',category:'gradient',desc:'大范围柔化颜色交融，控制明暗而非增加装饰。',use:'平静的编辑器或工具',animated:true},
+  {id:'glow',name:'Soft Spotlight',cn:'柔光聚焦',category:'light',desc:'聚焦中央的一束弥散光，用来引导主要文字。',use:'Hero 区和产品亮点',animated:true},
+  {id:'topo',name:'Contour Lines',cn:'等高线',category:'pattern',desc:'规则的同心轮廓形成层次，不依赖复杂动画。',use:'地图与数据可视化',animated:false},
+  {id:'grid',name:'Blueprint Grid',cn:'工程网格',category:'pattern',desc:'规则网格、渐隐遮罩和边缘色调，强调结构。',use:'开发者工具与技术文档',animated:false},
+  {id:'dots',name:'Dot Matrix',cn:'点阵',category:'pattern',desc:'细点重复排列，渐变式显隐让画面更克制。',use:'仪表板与功能模块',animated:false},
+  {id:'paper',name:'Soft Paper',cn:'纸张肌理',category:'texture',desc:'极淡的交错线纹与偏暖底色，适合长时间阅读。',use:'文字编辑和内容首页',animated:false},
+  {id:'stars',name:'Night Sky',cn:'夜空星点',category:'texture',desc:'稀疏星点缓慢移动，搭配深色氛围光。',use:'探索与科技艺术',animated:true}
+];
+const palettes=[
+  {name:'深海蓝紫',base:'#080e20',a:'#637cff',b:'#c166e8',c:'#2ed1b8',ink:'#ffffff'},
+  {name:'晚霞暖调',base:'#241322',a:'#ed7a77',b:'#ba80db',c:'#f9c978',ink:'#fff8f4'},
+  {name:'极地青绿',base:'#061d25',a:'#21bbba',b:'#568ce9',c:'#a0edd1',ink:'#f0ffff'},
+  {name:'温柔奶油',base:'#efebdf',a:'#ddaf9a',b:'#bec6ee',c:'#cbdbc8',ink:'#253b43'},
+  {name:'冰川白蓝',base:'#e9f1f5',a:'#82b8dc',b:'#a4b8e2',c:'#cfecdf',ink:'#263c4b'}
+];
+const $=id=>document.getElementById(id);
+const state={selected:'aurora',palette:0,intensity:90,speed:10,overlay:true,paused:false,filter:'all'};
+const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)');
+function current(){return styles.find(item=>item.id===state.selected)||styles[0]}
+function applyPalette(node,index){
+  const p=palettes[index];
+  node.style.setProperty('--base',p.base);node.style.setProperty('--a',p.a);
+  node.style.setProperty('--b',p.b);node.style.setProperty('--c',p.c);
+  node.style.setProperty('--ink',p.ink);
+}
+function syncMotion(){
+  const canPlay=current().animated&&!state.paused&&!prefersReduced.matches&&!document.hidden;
+  $('stage').classList.toggle('is-paused',!canPlay);
+  $('pauseToggle').disabled=!current().animated||prefersReduced.matches;
+  $('pauseToggle').setAttribute('aria-pressed',String(state.paused));
+  $('pauseToggle').textContent=state.paused?'播放动效':'暂停动效';
+  $('speed').disabled=!current().animated||prefersReduced.matches;
+}
+function update(){
+  const item=current(),stage=$('stage');
+  stage.dataset.style=item.id;
+  applyPalette(stage,state.palette);
+  stage.style.setProperty('--intensity',String(state.intensity/100));
+  stage.style.setProperty('--duration',String(Math.round(220/state.speed))+'s');
+  $('effectTitle').textContent=item.name;
+  $('effectDesc').textContent=item.desc;
+  $('previewName').textContent=String(styles.indexOf(item)+1).padStart(2,'0')+' / '+item.name;
+  $('caption').textContent=item.cn+' · '+item.use;
+  $('techLabel').textContent=item.animated?'CSS · 动态':'CSS · 静态';
+  $('paletteLabel').textContent=palettes[state.palette].name;
+  $('intensityValue').textContent=state.intensity+'%';
+  $('intensity').value=String(state.intensity);
+  $('speedValue').textContent=(state.speed/10).toFixed(1)+'×';
+  $('speed').value=String(state.speed);
+  $('mockContent').hidden=!state.overlay;
+  $('overlaySwitch').setAttribute('aria-pressed',String(state.overlay));
+  $('overlayToggle').setAttribute('aria-pressed',String(state.overlay));
+  document.querySelector('.panel-head span').textContent='LIVE / '+String(styles.indexOf(item)+1).padStart(2,'0');
+  document.querySelectorAll('.palette').forEach((node,i)=>node.setAttribute('aria-pressed',String(i===state.palette)));
+  document.querySelectorAll('.tile').forEach(node=>node.setAttribute('aria-pressed',String(node.dataset.id===item.id)));
+  syncMotion();
+}
+function renderGallery(){
+  const visible=styles.filter(item=>state.filter==='all'||item.category===state.filter);
+  $('gallery').replaceChildren();
+  visible.forEach(item=>{
+    const button=document.createElement('button');
+    button.className='tile';button.type='button';button.dataset.id=item.id;
+    button.setAttribute('aria-label','预览 '+item.cn+'背景');
+    const scene=document.createElement('div');scene.className='scene';scene.dataset.style=item.id;scene.setAttribute('aria-hidden','true');applyPalette(scene,item.id==='paper'?3:item.id==='dots'?4:item.id==='mesh'?3:0);scene.style.setProperty('--intensity','.9');
+    const body=document.createElement('div');body.className='tile-body';
+    const name=document.createElement('div');name.className='tile-name';name.textContent=item.cn;
+    const sub=document.createElement('span');sub.className='tile-sub';sub.textContent=item.name;name.append(sub);
+    const index=document.createElement('span');index.className='tile-index';index.textContent=String(styles.indexOf(item)+1).padStart(2,'0');
+    body.append(name,index);button.append(scene,body);
+    button.addEventListener('click',()=>{state.selected=item.id;state.paused=false;update();});
+    $('gallery').append(button);
+  });
+  $('count').textContent=(state.filter==='all'?'全部':'当前分类')+' · '+visible.length;
+  update();
+}
+function renderPalettes(){
+  palettes.forEach((p,i)=>{
+    const button=document.createElement('button');
+    button.type='button';button.className='palette';button.title=p.name;
+    button.setAttribute('aria-label','配色：'+p.name);
+    button.style.setProperty('--p1',p.a);button.style.setProperty('--p2',p.b);button.style.setProperty('--p3',p.c);
+    button.addEventListener('click',()=>{state.palette=i;update()});
+    $('paletteRow').append(button);
+  });
+}
+function toggleOverlay(){state.overlay=!state.overlay;update()}
+$('overlayToggle').addEventListener('click',toggleOverlay);
+$('overlaySwitch').addEventListener('click',toggleOverlay);
+$('pauseToggle').addEventListener('click',()=>{state.paused=!state.paused;update()});
+$('intensity').addEventListener('input',event=>{state.intensity=Number(event.target.value);update()});
+$('speed').addEventListener('input',event=>{state.speed=Number(event.target.value);update()});
+$('reset').addEventListener('click',()=>{Object.assign(state,{palette:0,intensity:90,speed:10,overlay:true,paused:false});update()});
+$('filters').addEventListener('click',event=>{
+  const button=event.target.closest('button[data-filter]');
+  if(!button)return;
+  state.filter=button.dataset.filter;
+  document.querySelectorAll('[data-filter]').forEach(node=>node.setAttribute('aria-pressed',String(node===button)));
+  renderGallery();
+});
+document.addEventListener('visibilitychange',syncMotion);
+if(prefersReduced.addEventListener)prefersReduced.addEventListener('change',syncMotion);
+function selectedCode(){
+  const p=palettes[state.palette],id=state.selected;
+  const source=document.querySelector('#background-effects').sheet;
+  const relevant=Array.from(source.cssRules).filter(rule=>{
+    if(rule.type===CSSRule.KEYFRAMES_RULE||rule.type===CSSRule.MEDIA_RULE)return true;
+    const selector=rule.selectorText||'';
+    return selector.includes('.scene')&&(!selector.includes('data-style')||selector.includes('data-style="'+id+'"'));
+  }).map(rule=>rule.cssText).join('\n\n');
+  return '<!-- 背景容器 -->\n<div class="scene" data-style="'+id+'"></div>\n\n<style>\n'+
+    '.scene {--base:'+p.base+';--a:'+p.a+';--b:'+p.b+';--c:'+p.c+';--ink:'+p.ink+';--intensity:'+(state.intensity/100)+';--duration:'+Math.round(220/state.speed)+'s;}\n'+
+    relevant+'\n</style>';
+}
+$('viewCode').addEventListener('click',()=>{
+  $('codeText').value=selectedCode();$('copyStatus').textContent='';
+  if(typeof $('codeDialog').showModal==='function')$('codeDialog').showModal();
+  else $('codeDialog').setAttribute('open','');
+});
+$('closeCode').addEventListener('click',()=>$('codeDialog').close());
+$('codeDialog').addEventListener('click',event=>{if(event.target===$('codeDialog'))$('codeDialog').close()});
+$('selectCode').addEventListener('click',()=>{$('codeText').focus();$('codeText').select()});
+$('copyCode').addEventListener('click',async()=>{
+  const input=$('codeText');input.focus();input.select();let copied=false;
+  try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(input.value);copied=true}}catch{}
+  if(!copied){try{copied=document.execCommand('copy')}catch{}}
+  $('copyStatus').textContent=copied?'已复制到剪贴板':'已选中代码，请手动复制';
+});
+renderPalettes();renderGallery();
+</script>
+</body>
+</html>
