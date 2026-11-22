@@ -251,6 +251,40 @@ def verify_liquid_orb_unified(browser, origin):
         page.on("pageerror", lambda error: errors.append(str(error)))
         try:
             page.goto(origin + "demos/components/liquid-orb/index.html", wait_until="domcontentloaded")
+            # The quality control must share the existing custom size-picker UI.
+            quality_trigger = page.locator("#quality-trigger")
+            quality_trigger.click()
+            assert quality_trigger.get_attribute("aria-expanded") == "true"
+            assert page.locator("#quality-menu").is_visible(), "画质列表未打开"
+            if name == "mobile":
+                assert page.locator("#quality-menu").evaluate(
+                    "(el) => el.classList.contains('is-sheet')"
+                ), "移动端画质菜单应使用底部选择面板"
+            page.locator('#quality-menu [data-quality="high"]').click()
+            assert page.locator("#quality-mode").input_value() == "high"
+            assert page.locator("#quality-current").inner_text() == "高质量"
+            assert page.evaluate("window.liquidOrb.getPerformance().mode") == "high"
+            assert page.locator("#quality-menu").is_hidden(), "选择画质后菜单未关闭"
+            # Respect the original max DPR when the user explicitly chooses high.
+            assert page.evaluate(
+                "window.liquidOrb.getPerformance().renderDpr === Math.min(devicePixelRatio || 1, 1.5)"
+            ), "手动高质量被像素预算或预览缩放额外压低"
+            quality_trigger.focus()
+            page.keyboard.press("ArrowDown")
+            assert page.locator("#quality-menu").is_visible(), "键盘未打开画质菜单"
+            page.keyboard.press("Escape")
+            assert page.locator("#quality-menu").is_hidden(), "Escape 无法关闭画质菜单"
+            page.locator("#quality-mode").select_option("auto")
+            assert page.locator("#quality-current").inner_text() == "自动 · 推荐"
+            assert page.locator("body").get_attribute("data-theme") == "graphite"
+            for theme in ["ocean", "plum", "paper"]:
+                page.locator(f'[data-theme-preset="{theme}"]').click()
+                assert page.locator("body").get_attribute("data-theme") == theme
+                assert page.locator(f'[data-theme-preset="{theme}"]').get_attribute("aria-pressed") == "true"
+            assert page.locator("body").evaluate(
+                "(el) => getComputedStyle(el).getPropertyValue('--page-bg').trim()"
+            ) == "#f3f2ed", "浅色背景变量未生效"
+            page.locator('[data-theme-preset="graphite"]').click()
             page.locator("#tab-dialog").click(timeout=30000)
             assert page.locator("#quality-mode").input_value() == "auto", "默认未启用自动画质"
             page.locator("#quality-mode").select_option("high")
