@@ -23,7 +23,7 @@ test('仅玻璃球预览请求 WebGPU；原始沙箱隔离不放宽', async () =
   assert.doesNotMatch(projectPreviewMarkup(normal),/allow="webgpu"/);
   assert.match(react,/asset\.id==='liquid-orb'/);
   assert.match(react,/asset\.id==='liquid-orb-thinking-dialog'/);
-  assert.match(react,/const sandbox=backdropStudio\?'allow-scripts allow-downloads':'allow-scripts'/);
+  assert.match(react,/getPreviewPolicy\(asset\)/);
   assert.match(react,/allow=\{permissions\}/);
   assert.doesNotMatch(react,/allow-same-origin/);
   } finally { globalThis.document = oldDocument; }

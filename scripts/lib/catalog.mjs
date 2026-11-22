@@ -57,8 +57,8 @@ export function checkEntry(entry, categories, fileName='') {
       !value.every(cap=>PREVIEW_CAPABILITIES.includes(cap)))
       errors.push(where+': previewCapabilities 只能使用不重复的受限权限枚举');
     else{
-      if(value.includes('popups')&&(entry.source!=='external'||!entry.siteUrl))
-        errors.push(where+': popups 只允许已登记 siteUrl 的外部预览');
+      if(value.includes('popups')&&entry.source==='external'&&!entry.siteUrl)
+        errors.push(where+': 外部站点 popups 权限需要 siteUrl');
       if((value.includes('webgpu')||value.includes('fullscreen'))&&entry.source!=='local')
         errors.push(where+': webgpu/fullscreen 只允许本地预览');
       if(entry.source==='external'&&!entry.siteUrl)

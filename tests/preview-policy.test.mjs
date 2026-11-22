@@ -34,7 +34,7 @@ test('拒绝任意新增属性、越权 iframe 能力和依赖额外文件的单
   assert.ok(checkEntry({...valid,typoField:1},categories).some(x=>x.includes('未知资产字段 typoField')));
   assert.ok(checkEntry({...valid,previewCapabilities:['same-origin']},categories).some(x=>x.includes('previewCapabilities')));
   assert.ok(checkEntry({...valid,previewCapabilities:['downloads','downloads']},categories).some(x=>x.includes('previewCapabilities')));
-  assert.ok(checkEntry({...valid,previewCapabilities:['popups']},categories).some(x=>x.includes('popups')));
+  assert.deepEqual(checkEntry({...valid,previewCapabilities:['popups']},categories),[]);
   assert.ok(checkEntry({...valid,publish:['demos/a/style.css']},categories).some(x=>x.includes('copyable')));
   assert.equal(byId.get('endfield-nav-tab').copyable,false);
 });

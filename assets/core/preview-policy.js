@@ -6,7 +6,7 @@ export function getPreviewPolicy(asset){
   const sandbox=['allow-scripts'];
   if(external)sandbox.push('allow-forms');
   if(caps.has('downloads'))sandbox.push('allow-downloads');
-  if(external&&caps.has('popups'))sandbox.push('allow-popups','allow-popups-to-escape-sandbox');
+  if(caps.has('popups'))sandbox.push('allow-popups','allow-popups-to-escape-sandbox');
   const allow=['webgpu','fullscreen'].filter(item=>caps.has(item)).join('; ')||undefined;
   return {sandbox:sandbox.join(' '),allow,allowFullScreen:caps.has('fullscreen')};
 }
