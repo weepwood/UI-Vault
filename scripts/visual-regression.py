@@ -830,6 +830,45 @@ def verify_background_lab(browser, origin):
     print("背景实验室回归通过：42 场景、搜索/筛选、模板、移动预览、参数与代码导出。")
 
 
+def verify_project_health_and_grouping(browser, origin):
+    """项目分组与状态元数据不应改变当前 iframe 或旧资产深链接。"""
+    context = browser.new_context(viewport={"width": 1440, "height": 900},
+                                  device_scale_factor=1, reduced_motion="reduce", locale="zh-CN")
+    page = context.new_page()
+    try:
+        page.goto(origin + "?asset=atlas-academia", wait_until="domcontentloaded")
+        page.locator('[data-id="atlas-academia"]').wait_for(state="visible", timeout=30000)
+        page.locator('#preview-stage iframe[data-preview-frame="local"]').wait_for(state="attached")
+        page.evaluate("() => { window.__groupIframe=document.querySelector('#preview-stage iframe'); }")
+        sorting = page.locator("#sort").locator("xpath=..")
+        sorting.locator(".select-trigger").click()
+        sorting.locator('[data-value="project"]').click()
+        assert page.locator(".asset-project-group").count() == 33, "项目归组数量不正确"
+        group = page.locator(".asset-project-group").filter(has_text="Style Atlas")
+        assert group.count() == 1, "Style Atlas 分组未找到"
+        assert group.locator(".project-row").count() == 57, "Style Atlas 的 57 条资产没有正确归组"
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__groupIframe"), "项目归组意外重建 iframe"
+        group.locator("summary").click()
+        assert group.get_attribute("open") is None, "项目分组无法折叠"
+        group.locator("summary").click()
+        assert group.get_attribute("open") is not None, "项目分组无法展开"
+        page.locator("#preview-info").click()
+        page.locator("#tab-page-info").click()
+        card = page.locator(".project-source-card")
+        card.wait_for(state="visible")
+        assert "Style Atlas" in card.inner_text(), "缺少项目来源说明"
+        assert card.locator("a").get_attribute("href") == "https://github.com/weepwood/style-atlas"
+        health = page.locator(".project-health-panel")
+        health.wait_for(state="visible")
+        assert "暂无近期核验" in health.inner_text(), "离线快照不应伪造实时检查状态"
+        assert "Actions 成功不代表网页已发布" in health.inner_text(), "缺少状态准确性说明"
+        page.keyboard.press("Escape")
+        assert "asset=atlas-academia" in page.url, "旧资产深链接被分组流程改写"
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__groupIframe"), "查看仓库状态重建 iframe"
+    finally:
+        context.close()
+    print("Project 分组与健康回归通过：33 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -872,6 +911,7 @@ def main():
                     raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
+                verify_project_health_and_grouping(browser, local)
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
                 verify_liquid_orb_unified(browser, local)
