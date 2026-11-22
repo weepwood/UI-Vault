@@ -26,7 +26,8 @@ test('Project 清单完整、唯一，且与每条 Asset 一一关联',async()=>
   const c=await inspectCatalog();
   assert.deepEqual(c.errors,[]);
   const ids=new Set(result.projects.map(x=>x.id));
-  assert.equal(c.items.length,127);
+  assert.equal(c.items.length,440);
+  assert.equal(c.items.filter(x=>x.projectId==='ref-chrislemke-website-designs').length,314);
   assert.ok(c.items.every(x=>ids.has(x.projectId)));
   assert.equal(c.items.filter(x=>x.projectId==='style-atlas').length,57);
   assert.equal(c.items.filter(x=>x.projectId==='page-mirror').length,24);
