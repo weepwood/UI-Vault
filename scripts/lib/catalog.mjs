@@ -1,6 +1,7 @@
 import { readFile, readdir, realpath, stat, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, relative, resolve, sep } from 'node:path';
+import { dirname, extname, join, relative, resolve, sep } from 'node:path';
+import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 export const ENTRY_DIR = join(ROOT, 'catalog', 'assets');
@@ -41,6 +42,24 @@ export function checkEntry(entry, categories, fileName='') {
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
+  if(entry.sourceFiles!==undefined){
+    if(entry.source!=='local'||!Array.isArray(entry.sourceFiles)||!entry.sourceFiles.length||entry.sourceFiles.length>50){
+      errors.push(where+': sourceFiles 仅供本地资产使用，必须包含 1–50 个源码文件');
+    }else{
+      const seen=new Set();
+      for(const file of entry.sourceFiles){
+        if(!file||typeof file!=='object'||Array.isArray(file)||
+          !safeRelativePath(file.path,'demos/')||!SOURCE_EXTENSIONS.includes(extname(file.path).toLowerCase())){
+          errors.push(where+': sourceFiles 含无效路径或不支持的源码扩展名');
+          continue;
+        }
+        if(file.label!==undefined&&(!isText(file.label)||file.label.length>80))
+          errors.push(where+': sourceFiles.label 必须为 1–80 字符');
+        if(seen.has(file.path))errors.push(where+': sourceFiles 包含重复文件 '+file.path);
+        seen.add(file.path);
+      }
+    }
+  }
   for(const key of ['originRepo','originDemoUrl','sourceUrl','siteUrl']){
     if(entry[key]===undefined)continue;
     try{const parsed=new URL(entry[key]);if(parsed.protocol!=='https:'||!parsed.hostname)throw Error();}
@@ -109,6 +128,9 @@ export async function inspectCatalog({checkGenerated=true}={}) {
     if(entry.source==='local') {
       for(const key of ['preview','code']) {
         if(safeRelativePath(entry[key],'demos/') && !(await safeExistingFile(entry[key]))) errors.push(entry.id+': 缺少 '+key+' 源文件 '+entry[key]);
+      }
+      for(const file of entry.sourceFiles||[]){
+        if(safeRelativePath(file?.path,'demos/')&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
       }
     }
     if(entry.coverImage && safeRelativePath(entry.coverImage,'media/') && !(await safeExistingFile(entry.coverImage))) errors.push(entry.id+': 找不到封面图片 '+entry.coverImage);
