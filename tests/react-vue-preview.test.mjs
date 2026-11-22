@@ -82,3 +82,23 @@ test('旧的 React/Vue 预览入口保持不变，未上线项目不伪造演示
   for(const id of ['mrr-admin','graphboard-workspace'])
     assert.equal(assets.find(x=>x.id===id)?.siteUrl,undefined,'没有核实部署的项目不能猜测网址：'+id);
 });
+
+test('FileAtlas 内嵌在线文件分析工作台，允许报告下载但保留沙箱隔离',async()=>{
+  const {errors,items}=await inspectCatalog();
+  assert.deepEqual(errors,[]);
+  const item=items.find(asset=>asset.id==='fileatlas-browser-ui');
+  assert.ok(item);
+  assert.equal(item.siteUrl,'https://weepwood.github.io/FileAtlas/');
+  assert.equal(item.source,'external');
+  assert.equal(item.originRepo,'https://github.com/weepwood/FileAtlas');
+  assert.equal(item.preview,undefined,'不应将外站标记为本地 Demo');
+  const markup=projectPreviewMarkup(item);
+  assert.ok(markup.includes('src="'+item.siteUrl+'"'));
+  assert.match(markup,/data-preview-frame="external"/);
+  assert.match(markup,/sandbox="allow-scripts allow-forms allow-downloads"/);
+  assert.doesNotMatch(markup,/allow-same-origin/);
+  assert.match(markup,/referrerpolicy="no-referrer"/);
+  assert.match(projectRowSubtitle(item,{}),/在线预览/);
+  const reactPreview=await read('src/components/PreviewFrame.jsx');
+  assert.match(reactPreview,/\['emboss-poster-lab','fileatlas-browser-ui'\]/);
+});
