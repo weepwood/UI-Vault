@@ -25,8 +25,8 @@ test('资源导航、项目列表、真实预览在独立三栏',async()=>{
   assert.ok(right.includes('id="'+id+'"'),'预览栏缺少 '+id);
  assert.doesNotMatch(left,/id="gallery"|id="tag-filter"/);
  assert.doesNotMatch(middle,/id="category-nav"|id="search"/);
- assert.match(css,/--navigation-width:\s*236px/);
- assert.match(css,/--directory-width:\s*320px/);
+ assert.match(css,/--navigation-width:\s*208px/);
+ assert.match(css,/--directory-width:\s*292px/);
  assert.match(css,/grid-template-columns:\s*calc\(var\(--navigation-width\) \+ var\(--directory-width\)\) minmax\(0,1fr\)/);
  assert.match(css,/\.library-rail\s*\{\s*display:\s*grid/);
  assert.match(css,/\.project-panel\s*\{\s*display:\s*flex/);

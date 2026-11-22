@@ -1,35 +1,37 @@
 {
   "id": "material",
-  "name": "Google · Material 3",
-  "subtitle": "Material 3 / Expressive",
-  "category": "系统设计",
-  "platform": "移动端",
+  "name": "Google · Material 3 组件图鉴",
+  "subtitle": "Material 3 / Material Web",
+  "category": "界面组件",
+  "platform": "Web Components",
   "density": "中",
-  "layout": "mobile",
-  "status": "官方设计体系",
-  "summary": "通过语义色彩、明显的触控目标、分层页面和强主次关系，建立适合 Android 的可表达式交互。",
+  "layout": "component-gallery",
+  "status": "官方 Material Web 组件本地构建",
+  "summary": "基于 @material/web 官方组件的 Material 3 交互图鉴，涵盖基础、数据录入、导航、反馈与设计 Token。",
   "characteristics": [
-    "色调调色板",
-    "大圆角与层级表面",
-    "移动端底部导航"
+    "Material 3 语义色彩、表面层级与排版 Token",
+    "按钮、芯片、表单、导航、列表与反馈组件",
+    "官方核心组件与 Labs 组件清楚区分"
   ],
   "interactions": [
-    "浮动主操作按钮",
-    "底部导航切换",
-    "状态变化与反馈"
+    "搜索组件并按类别浏览",
+    "主题切换、滑块与分段视图交互",
+    "菜单、对话框和导航状态反馈"
   ],
   "suitableFor": [
-    "Android App",
-    "移动端事务处理"
+    "学习 Material 3 Web 组件和设计 Token",
+    "在 Web Components、React 或 Vue 项目中集成 Material Web"
   ],
   "cautions": [
-    "别把 Expressive 误解为任意夸张的装饰",
-    "触控目标和对比度需要实际测试"
+    "Material Web 当前处于维护模式，组件范围以官方包为准",
+    "Labs 组件仍属实验性 API，使用前应查看官方路线图"
   ],
   "nav": [
-    "首页",
-    "探索",
-    "收藏"
+    "基础",
+    "数据录入",
+    "导航与列表",
+    "反馈",
+    "设计 Token"
   ],
   "accent": "#6750a4",
   "bg": "#f3effa",
@@ -41,6 +43,11 @@
       "label": "Material Design 3",
       "url": "https://m3.material.io/",
       "kind": "官方规范"
+    },
+    {
+      "label": "Material Web 组件源码与路线图",
+      "url": "https://github.com/material-components/material-web",
+      "kind": "Apache-2.0 开源组件；维护状态"
     },
     {
       "label": "Material 3 Expressive",

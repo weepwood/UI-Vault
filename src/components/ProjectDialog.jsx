@@ -11,6 +11,36 @@ function sourceLink(asset){
   }
   return asset.sourceUrl||asset.url||asset.originRepo||'https://github.com/weepwood/UI-Vault';
 }
+
+function safeStrings(value){
+  return Array.isArray(value)?value.filter(item=>typeof item==='string').slice(0,12):[];
+}
+
+function PageInfoPanel({info,asset}){
+  if(!info)return <div className="page-info-empty"><strong>{asset?.title||'当前页面'}</strong><p>此页面暂未提供额外的组件说明。可在预览中查看交互与视觉效果。</p></div>;
+  const pattern=info.pattern&&typeof info.pattern==='object'?info.pattern:{};
+  const summary=pattern.summary||info.summary;
+  const facts=[['类别',pattern.category],['平台',pattern.platform],['密度',pattern.density],['布局',pattern.layout],['设计体系',pattern.status]].filter(([,value])=>typeof value==='string'&&value.trim());
+  const lists=[['视觉特征',pattern.characteristics],['交互方式',pattern.interactions],['适用场景',pattern.suitableFor],['设计注意',pattern.cautions]]
+    .map(([title,items])=>[title,safeStrings(items)]).filter(([,items])=>items.length);
+  const sections=Array.isArray(info.sections)?info.sections.slice(0,10):[];
+  const sources=Array.isArray(pattern.sources)?pattern.sources:info.links||[];
+  const palette=Array.isArray(info.palette)?info.palette.filter(color=>typeof color==='string'&&/^#[\da-f]{3,8}$/i.test(color)).slice(0,10):[];
+  return <div className="page-info-content">
+    <div className="page-info-intro"><span className="page-info-eyebrow">页面信息</span><h3>{pattern.name||asset?.title||'组件说明'}</h3>{summary&&<p>{summary}</p>}</div>
+    {!!facts.length&&<dl className="page-info-facts">{facts.map(([label,value])=><div key={label}><dt>{label}</dt><dd>{value}</dd></div>)}</dl>}
+    {!!lists.length&&<div className="page-info-groups">{lists.map(([title,items])=><section className="page-info-group" key={title}><h4>{title}</h4><ul>{items.map((item,index)=><li key={index}>{item}</li>)}</ul></section>)}</div>}
+    {!!sections.length&&<div className="page-info-groups">{sections.map((section,index)=><section className="page-info-group" key={index}><h4>{section.title||'补充说明'}</h4>{safeStrings(section.paragraphs).map((item,i)=><p key={'p'+i}>{item}</p>)}{safeStrings(section.items).length>0&&<ul>{safeStrings(section.items).map((item,i)=><li key={i}>{item}</li>)}</ul>}{typeof section.code==='string'&&<pre><code>{section.code}</code></pre>}</section>)}</div>}
+    {!!palette.length&&<section className="page-info-palette"><h4>常用颜色</h4><div>{palette.map(color=><span key={color} title={color}><i style={{backgroundColor:color}}/>{color}</span>)}</div></section>}
+    {!!sources.length&&<section className="page-info-sources"><h4>相关链接</h4><div>{sources.slice(0,8).map((link,index)=>{
+      const href=typeof link==='string'?link:link?.url;
+      const label=typeof link==='string'?link:link?.label||link?.kind||href;
+      if(typeof href!=='string'||!/^https:\/\//i.test(href))return null;
+      return <a key={index} href={href} target="_blank" rel="noopener noreferrer">{label}</a>;
+    })}</div></section>}
+    {safeStrings(info.notices).map((notice,index)=><p className="page-info-notice" key={index}>{notice}</p>)}
+  </div>;
+}
 /**
  * ProjectDialog 的标签页、异步源码、焦点、Escape 和复制逻辑全由 React 管理。
  * 保留 <dialog id="project-dialog"> 原生顶层语义，状态切换不触碰 iframe。
@@ -18,9 +48,10 @@ function sourceLink(asset){
 export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
   const [tab,setTab]=useState('overview');
   const [source,setSource]=useState({id:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});
+  const [pageInfo,setPageInfo]=useState({id:null,info:null});
   const savedFocus=useRef(null);
   const sourceTab=useRef(null);
-  useEffect(()=>{setTab('overview');setSource({id:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});},[asset?.id]);
+  useEffect(()=>{setTab('overview');setSource({id:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});setPageInfo({id:null,info:null});},[asset?.id]);
   useEffect(()=>{
     if(!root)return;
     if(open&&asset){
@@ -73,6 +104,25 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
       });
     return ()=>controller.abort();
   },[asset?.id,open,tab]);
+  useEffect(()=>{
+    if(!asset||asset.source!=='local')return;
+    const receive=event=>{
+      const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
+      if(!frame||event.source!==frame.contentWindow||event.data?.type!=='ui-vault:page-info')return;
+      try{
+        const expected=new URL(resolveAsset(asset.preview),document.baseURI).pathname;
+        if(event.data.path!==expected)return;
+      }catch{return;}
+      if(event.data.info&&typeof event.data.info==='object')setPageInfo({id:asset.id,info:event.data.info});
+    };
+    window.addEventListener('message',receive);
+    return ()=>window.removeEventListener('message',receive);
+  },[asset?.id,asset?.preview,asset?.source]);
+  useEffect(()=>{
+    if(!open||tab!=='page-info'||!asset||asset.source!=='local')return;
+    const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
+    frame?.contentWindow?.postMessage({type:'ui-vault:request-page-info'},'*');
+  },[open,tab,asset?.id]);
   if(!root)return null;
   function infoClick(event){
     const copy=event.target.closest('[data-copy]');
@@ -82,10 +132,11 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
   function tabKeys(event){
     if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
     event.preventDefault();
-    const next=event.key==='Home'?'overview':event.key==='End'?'source':
-      tab==='overview'?'source':'overview';
+    const tabs=['overview','source','page-info'];
+    const index=tabs.indexOf(tab);
+    const next=event.key==='Home'?tabs[0]:event.key==='End'?tabs.at(-1):tabs[(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];
     setTab(next);
-    document.getElementById(next==='source'?'tab-source':'tab-overview')?.focus();
+    document.getElementById(next==='source'?'tab-source':next==='page-info'?'tab-page-info':'tab-overview')?.focus();
   }
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
@@ -110,6 +161,11 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
         tabIndex={tab==='source'?0:-1} ref={sourceTab} onClick={()=>setTab('source')}>
         <Icon name="code-xml"/><span>源代码</span>
       </button>
+      <button id="tab-page-info" type="button" role="tab" data-info-tab="page-info"
+        aria-selected={String(tab==='page-info')} aria-controls="dialog-page-info"
+        tabIndex={tab==='page-info'?0:-1} onClick={()=>setTab('page-info')}>
+        <Icon name="info"/><span>页面信息</span>
+      </button>
     </div>
     <section id="dialog-overview" className="dialog-pane" role="tabpanel"
       aria-labelledby="tab-overview" tabIndex={0} hidden={tab!=='overview'}>
@@ -131,6 +187,10 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
         </div>
       </div>
       <pre className="source-view"><code id="source-code">{isCurrent?source.text:'选择“源代码”查看项目实现。'}</code></pre>
+    </section>
+    <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
+      aria-labelledby="tab-page-info" tabIndex={0} hidden={tab!=='page-info'}>
+      <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
   </div>,root);
 }

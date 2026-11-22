@@ -1,36 +1,38 @@
 {
   "id": "atlas-client-material",
   "title": "客户端 · Google · Material 3",
-  "subtitle": "Material 3 / Expressive",
-  "description": "通过语义色彩、明显的触控目标、分层页面和强主次关系，建立适合 Android 的可表达式交互。",
-  "type": "style",
+  "subtitle": "Material 3 / Material Web 组件图鉴",
+  "description": "使用官方 @material/web 组件构建的本地交互图鉴，涵盖按钮、输入、导航、反馈和设计 Token。",
+  "type": "component",
   "source": "local",
   "tags": [
     "Style Atlas",
     "客户端设计",
-    "系统设计",
-    "移动端",
-    "官方设计体系"
+    "Material Design 3",
+    "Material Web",
+    "组件图鉴",
+    "Web Components"
   ],
   "technologies": [
-    "HTML",
-    "CSS",
-    "JavaScript"
+    "Web Components",
+    "Lit",
+    "@material/web 2.5.0",
+    "CSS"
   ],
   "preview": "demos/experiments/atlas-client-material/index.html",
   "code": "demos/experiments/atlas-client-material/index.html",
   "featured": false,
   "copyable": false,
   "created": "2026-11-21",
-  "license": "原作者教学模拟；第三方设计体系须遵守官方条款",
+  "license": "图鉴为原创教学示例；@material/web 使用 Apache-2.0",
   "cover": "style",
-  "originRepo": "https://github.com/weepwood/style-atlas",
-  "sourceUrl": "https://github.com/weepwood/style-atlas/blob/main/src/data/clientPatterns.ts",
-  "siteUrl": "https://weepwood.github.io/style-atlas/",
+  "originRepo": "https://github.com/material-components/material-web",
+  "sourceUrl": "https://github.com/material-components/material-web",
+  "siteUrl": "https://m3.material.io/components",
   "reuseNotes": [
-    "官方设计体系；mobile 布局；中信息密度",
-    "色调调色板",
-    "大圆角与层级表面",
+    "组件图鉴；桌面双列 / 移动单列布局",
+    "官方 Material Web 组件本地构建",
+    "Labs 组件独立标注；维护状态见官方路线图",
     "数据：content/tokens/style-atlas/client-material.json"
   ]
 }

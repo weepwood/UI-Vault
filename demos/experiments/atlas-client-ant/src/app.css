@@ -1,0 +1,248 @@
+#ant-demo-root {
+  width: 100%;
+  min-height: 680px;
+  min-width: 0;
+}
+.ant-catalog-layout {
+  min-height: 680px;
+  min-width: 0;
+  background: #f5f7fa;
+  color: #1d2129;
+}
+.ant-catalog-sider {
+  position: sticky !important;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 500px;
+  overflow: hidden;
+  border-right: 1px solid #edf0f3;
+  background: #fff !important;
+}
+.ant-catalog-sider .ant-layout-sider-children {
+  display: flex;
+  flex-direction: column;
+}
+.ant-catalog-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 68px;
+  padding: 0 17px;
+  border-bottom: 1px solid #f0f0f0;
+  white-space: nowrap;
+}
+.ant-catalog-brand > div {
+  display: grid;
+  line-height: 1.45;
+}
+.ant-catalog-brand > div .ant-typography { font-size: 11px; }
+.ant-brand-mark {
+  display: grid;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border-radius: 8px;
+  background: #1677ff;
+  color: #fff;
+  font: 700 18px Georgia, serif;
+}
+.ant-catalog-sider .ant-menu {
+  flex: 1;
+  padding: 10px 8px;
+  border-inline-end: 0;
+}
+.ant-catalog-sider-note {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 12px 16px;
+  padding: 10px;
+  border-radius: 7px;
+  background: #f5faff;
+  color: #1677ff;
+  font-size: 11px;
+  white-space: nowrap;
+}
+.ant-layout-sider-collapsed .ant-catalog-brand { justify-content: center; padding-inline: 0; }
+.ant-layout-sider-collapsed .ant-catalog-brand > div,
+.ant-layout-sider-collapsed .ant-catalog-sider-note { display: none; }
+.ant-catalog-main { min-width: 0; overflow: visible; }
+.ant-catalog-topbar {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+  padding-inline: 24px;
+  border-bottom: 1px solid #edf0f3;
+  background: #ffffffed;
+  backdrop-filter: blur(12px);
+}
+.ant-catalog-version {
+  padding: 3px 8px;
+  border: 1px solid #e8ebef;
+  border-radius: 999px;
+  font-size: 11px;
+}
+.ant-catalog-content {
+  width: min(100%, 1240px);
+  margin: 0 auto;
+  padding: 24px clamp(14px, 2.4vw, 30px) 32px;
+}
+.ant-catalog-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 330px);
+  align-items: end;
+  gap: 22px;
+  margin-bottom: 18px;
+  scroll-margin-top: 66px;
+}
+.ant-hero-copy { max-width: 680px; }
+.ant-section-kicker {
+  display: block;
+  margin-bottom: 7px;
+  color: #8c98a8;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .12em;
+}
+.ant-catalog-hero h2.ant-typography {
+  margin: 0 0 6px;
+  font-size: clamp(22px, 2.3vw, 30px);
+  letter-spacing: -.035em;
+}
+.ant-catalog-hero .ant-typography-secondary { margin: 0; }
+.ant-catalog-hero .ant-input-affix-wrapper { box-shadow: 0 2px 8px #14203308; }
+.ant-catalog-stats { margin-bottom: 28px; }
+.ant-catalog-stats .ant-card-body { padding: 12px 14px; }
+.ant-catalog-stats .ant-statistic-title { margin-bottom: 3px; font-size: 11px; }
+.ant-catalog-stats .ant-statistic-content { font-size: 17px; }
+.ant-catalog-section {
+  margin: 0 0 30px;
+  scroll-margin-top: 68px;
+}
+.ant-section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.ant-section-heading .ant-section-kicker { margin-bottom: 2px; }
+.ant-section-heading h4.ant-typography { margin: 0; font-size: 18px; }
+.ant-section-heading > .ant-typography { font-size: 11px; text-align: right; }
+.ant-component-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.ant-component-card {
+  min-width: 0;
+  overflow: hidden;
+  border-color: #e9edf2;
+  box-shadow: 0 2px 7px #1e2d4006;
+}
+.ant-component-card .ant-card-head {
+  min-height: 42px;
+  padding-inline: 14px;
+  border-bottom-color: #f0f2f5;
+}
+.ant-component-card .ant-card-head-title { padding-block: 11px; font-size: 12px; }
+.ant-component-card .ant-card-extra { padding-block: 10px; font-size: 10px; }
+.ant-component-card .ant-card-body { min-width: 0; padding: 14px; }
+.ant-component-card .ant-divider-horizontal { margin-block: 13px; }
+.ant-demo-stretch { width: 100%; }
+.ant-demo-stretch > .ant-space-item { width: 100%; }
+.ant-demo-paragraph { margin: 0 0 8px !important; font-size: 12px; }
+.ant-demo-form .ant-form-item { margin-bottom: 10px; }
+.ant-demo-form .ant-form-item-label { padding-bottom: 3px; }
+.ant-demo-table-card { grid-column: 1 / -1; }
+.ant-demo-table-card .ant-card-body { overflow-x: auto; }
+.ant-demo-table-card .ant-table { min-width: 450px; }
+.ant-spin-placeholder {
+  min-height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 6px;
+  background: #f7f8fa;
+  color: #667085;
+  font-size: 11px;
+}
+.ant-grid-cell {
+  padding: 11px 6px;
+  border: 1px solid #d6e4ff;
+  border-radius: 5px;
+  background: #f0f5ff;
+  color: #0958d9;
+  font-size: 11px;
+  text-align: center;
+}
+.ant-catalog-no-results { padding-block: 24px; }
+.ant-catalog-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid #e9edf2;
+  font-size: 11px;
+}
+.ant-catalog-layout button:focus-visible,
+.ant-catalog-layout input:focus-visible,
+.ant-catalog-layout [tabindex]:focus-visible {
+  outline: 3px solid #91caff;
+  outline-offset: 2px;
+}
+@media (max-width: 700px) {
+  #ant-demo-root, .ant-catalog-layout { min-height: 640px; }
+  .ant-catalog-sider { min-height: 480px; }
+  .ant-catalog-brand { justify-content: center; padding-inline: 0; }
+  .ant-catalog-brand > div, .ant-catalog-sider-note { display: none; }
+  .ant-catalog-sider .ant-menu { padding-inline: 4px; }
+  .ant-catalog-topbar { padding-inline: 12px; }
+  .ant-catalog-content { padding: 18px 12px 24px; }
+  .ant-catalog-hero { grid-template-columns: 1fr; align-items: start; gap: 12px; }
+  .ant-catalog-hero .ant-input-affix-wrapper { max-width: none; }
+  .ant-component-grid { grid-template-columns: minmax(0, 1fr); }
+  .ant-demo-table-card { grid-column: auto; }
+  .ant-section-heading > .ant-typography { max-width: 48%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ant-catalog-layout *, .ant-catalog-layout *::before, .ant-catalog-layout *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
+.ant-mobile-categories { display: none; }
+@media (min-width: 701px) {
+  .ant-catalog-sider { width: 188px !important; max-width: 188px !important; min-width: 188px !important; flex: 0 0 188px !important; }
+  .ant-catalog-sider .ant-menu-item { padding-inline: 12px !important; }
+}
+@media (max-width: 700px) {
+  #ant-demo-root, .ant-catalog-layout { min-height: 100%; }
+  .ant-catalog-layout { display: block; }
+  .ant-catalog-main { width: 100% !important; min-width: 0; }
+  .ant-catalog-sider { display: none !important; }
+  .ant-catalog-main { display: block; }
+  .ant-catalog-topbar { position: relative; height: 44px; min-height: 44px; padding-inline: 12px; }
+  .ant-catalog-topbar .ant-breadcrumb { font-size: 11px; }
+  .ant-catalog-topbar .ant-space { gap: 8px !important; }
+  .ant-mobile-categories { display: block; position: sticky; z-index: 2; top: 0; overflow-x: auto; overscroll-behavior-x: contain; border-bottom: 1px solid #edf0f3; background: #fff; scrollbar-width: thin; }
+  .ant-mobile-categories .ant-menu { width: max-content; min-width: max-content; border: 0; white-space: nowrap; }
+  .ant-mobile-categories .ant-menu-overflow { display: flex; flex-wrap: nowrap; }
+  .ant-mobile-categories .ant-menu-item { flex: 0 0 auto; margin-inline: 2px; padding-inline: 11px !important; font-size: 12px; }
+  .ant-catalog-content { width: 100% !important; min-width: 0; padding: 17px 14px 24px; }
+  .ant-catalog-hero { gap: 10px; margin-bottom: 14px; }
+  .ant-catalog-hero h2.ant-typography { font-size: 23px; }
+  .ant-catalog-stats { margin-bottom: 22px; }
+  .ant-catalog-section { margin-bottom: 24px; }
+  .ant-section-heading { align-items: start; flex-direction: column; gap: 4px; }
+  .ant-section-heading > .ant-typography { max-width: none; text-align: left; }
+  .ant-component-grid { gap: 10px; }
+  .ant-component-card .ant-card-extra { white-space: normal; text-align: right; }
+}

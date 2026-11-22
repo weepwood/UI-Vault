@@ -1,8 +1,287 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Google · Material 3 · 客户端 UI 参考</title><link rel="stylesheet" href="../../../assets/style-atlas/clientAtlas.css"><style>*{box-sizing:border-box}body{margin:0;min-width:300px;background:#f5f6f6;color:#263038;font:14px/1.7 system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif}header{display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff;border-bottom:1px solid #e2e6e7;padding:15px clamp(16px,4vw,40px)}a{color:#305d7e}header a{font-size:12px;text-decoration:none}main{max-width:1150px;margin:0 auto;padding:clamp(16px,4vw,40px)}h1{font-size:clamp(24px,3vw,36px);letter-spacing:-.03em;line-height:1.22;margin:4px 0 12px}h2{font-size:16px;margin:0 0 12px}h3{font-size:14px}p{margin:0}.summary{max-width:74ch;color:#58666c;font-size:13px;line-height:1.85}.eyebrow{color:#69767b;font-size:12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:22px}.card{background:#fff;border:1px solid #e0e5e7;border-radius:11px;padding:20px;min-width:0}.card h2{margin-bottom:8px}.list{margin:0;padding-left:18px;font-size:12px;color:#4d5b61;line-height:1.9}.muted{color:#778186;font-size:12px}.palette{display:flex;gap:7px;align-items:center;margin-top:14px;flex-wrap:wrap}.palette button{border:1px solid #d8dfe2;background:#fff;padding:3px;font:10px monospace;color:#354047;cursor:pointer}.palette button span{display:block;width:70px;height:26px;margin-bottom:4px}.notice{color:#6a787d;font-size:11px;margin-top:18px}.source-list{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.source-list a{display:inline-block;border:1px solid #d8dee1;border-radius:6px;background:#fff;padding:7px 11px;font-size:12px;text-decoration:none}button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #407ea7;outline-offset:2px}@media(max-width:720px){.grid{grid-template-columns:1fr}}@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.001ms!important;animation-duration:.001ms!important}}
-.demo{margin-top:26px;padding:clamp(10px,3vw,28px);background:#e9ebed;border:1px solid #dfe4e7;border-radius:12px}.ca-mock{max-width:960px;margin:0 auto;min-height:420px;border-radius:9px;box-shadow:0 12px 28px #00000014}.ca-appbody{height:386px}.ca-appmain{padding:clamp(12px,2vw,25px)}.ca-appnav button:focus-visible,.ca-mock button:focus-visible{outline:3px solid var(--ca-accent);outline-offset:1px}.ca-mockfooter{padding:7px 15px;font-size:10px;opacity:.7}body .ca-appsearch{display:none}@media(max-width:570px){.ca-appnav{min-width:90px;width:34%}.ca-appbody{height:400px}.ca-appmain{padding:12px}.ca-metrics{grid-template-columns:1fr}.ca-metrics>div:not(:first-child){display:none}.ca-feature-grid{gap:4px}.ca-feature-grid button{padding:8px}.ca-media-tiles{gap:5px}.ca-windowbar{font-size:9px}}
-</style><link rel="stylesheet" href="../../../assets/style-atlas/reference-shell.css"></head><body data-reference-shell="client" class="client-content-first"><header><strong>Google · Material 3</strong><details class="reference-menu"><summary>页面信息</summary><div class="reference-panel"><p class="reference-kind">系统设计 · 移动端 · 官方设计体系</p><p class="reference-summary">通过语义色彩、明显的触控目标、分层页面和强主次关系，建立适合 Android 的可表达式交互。</p><a href="https://github.com/weepwood/style-atlas" target="_blank" rel="noopener noreferrer">原项目</a><div class="grid"><section class="card"><h2>视觉特征</h2><ul class="list"><li>色调调色板</li><li>大圆角与层级表面</li><li>移动端底部导航</li></ul><h2 style="margin-top:14px">交互模式</h2><ul class="list"><li>浮动主操作按钮</li><li>底部导航切换</li><li>状态变化与反馈</li></ul></section><section class="card"><h2>适用场景</h2><ul class="list"><li>Android App</li><li>移动端事务处理</li></ul><h2 style="margin-top:14px">设计风险</h2><ul class="list"><li>别把 Expressive 误解为任意夸张的装饰</li><li>触控目标和对比度需要实际测试</li></ul></section></div>
-<div class="palette"><button type="button" data-copy="#6750a4"><span style="background:#6750a4"></span>#6750a4</button><button type="button" data-copy="#f3effa"><span style="background:#f3effa"></span>#f3effa</button><button type="button" data-copy="#fff"><span style="background:#fff"></span>#fff</button><button type="button" data-copy="#2c2637"><span style="background:#2c2637"></span>#2c2637</button></div><div class="source-list"><a target="_blank" rel="noopener noreferrer" href="https://m3.material.io/">Material Design 3</a><a target="_blank" rel="noopener noreferrer" href="https://developer.android.com/design/ui/mobile/guides/material3-expressive">Material 3 Expressive</a><a target="_blank" rel="noopener noreferrer" href="https://github.com/material-components/material-components-android">Material Components for Android</a></div>
-<p class="notice">信息来自源仓库资料整理，官方设计规范与基于产品观察的参考是两种不同类别。仅复制颜色不代表遵循完整官方设计规范。</p></div></details></header><main class="client-content"><section class="demo" aria-label="可操作的客户端模拟界面"><div class="ca-mock ca-material ca-mobile" style="--ca-accent:#6750a4;--ca-bg:#f3effa;--ca-panel:#fff;--ca-text:#2c2637;--ca-radius:22px;"><div class="ca-windowbar"><span class="ca-windowdots" aria-hidden="true">● ● ●</span><span>Material 3 / Expressive</span><button type="button" id="toggle-search" aria-label="切换搜索">⌕</button></div>
-<div class="ca-appbody"><aside class="ca-appnav"><div class="ca-app-logo">Google</div><button type="button" class="selected" data-nav="0" aria-pressed="true">首页</button><button type="button" class="" data-nav="1" aria-pressed="false">探索</button><button type="button" class="" data-nav="2" aria-pressed="false">收藏</button><small>教学模拟 · 非官方组件</small></aside><div class="ca-appmain"><div class="ca-appheading"><div><small>系统设计 / WORKSPACE</small><h3 id="active-title">首页</h3></div><button type="button" id="search-main" aria-label="切换搜索">⌕</button></div><input id="sample-search" class="ca-appsearch" aria-label="搜索示例条目" placeholder="搜索示例条目…"><div class="ca-mobilecontent"><div class="ca-mobilehero"><span>✦</span><h4>你的每日灵感</h4><p>按自己的节奏，发现新内容。</p><button type="button" id="new-item">＋ 新建任务</button></div><h4>接下来</h4><div id="item-list"><button type="button" data-item="0" class="on">设计规范整理</button><button type="button" data-item="1" class="">组件行为分析</button><button type="button" data-item="2" class="">客户端交互研究</button></div></div></div></div><div class="ca-mockfooter">可以尝试导航、搜索、新增及卡片选择。仅为教学原创样机，非产品复刻。</div></div></section></main>
-<script type="application/json" id="pattern-data">{"id":"material","name":"Google · Material 3","subtitle":"Material 3 / Expressive","category":"系统设计","platform":"移动端","density":"中","layout":"mobile","status":"官方设计体系","summary":"通过语义色彩、明显的触控目标、分层页面和强主次关系，建立适合 Android 的可表达式交互。","characteristics":["色调调色板","大圆角与层级表面","移动端底部导航"],"interactions":["浮动主操作按钮","底部导航切换","状态变化与反馈"],"suitableFor":["Android App","移动端事务处理"],"cautions":["别把 Expressive 误解为任意夸张的装饰","触控目标和对比度需要实际测试"],"nav":["首页","探索","收藏"],"accent":"#6750a4","bg":"#f3effa","panel":"#fff","text":"#2c2637","radius":22,"sources":[{"label":"Material Design 3","url":"https://m3.material.io/","kind":"官方规范"},{"label":"Material 3 Expressive","url":"https://developer.android.com/design/ui/mobile/guides/material3-expressive","kind":"官方规范"},{"label":"Material Components for Android","url":"https://github.com/material-components/material-components-android","kind":"开源项目"}]}</script>
-<script src="../../../assets/style-atlas/client-demo.js"></script></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Google Material 3 · 组件图鉴</title>
+  <link rel="stylesheet" href="../../../assets/style-atlas/reference-shell.css">
+  <link rel="stylesheet" href="../../../assets/style-atlas/material3-demo.css?v=material3-gallery-20261122b">
+  <script defer src="../../../assets/style-atlas/reference-shell.js"></script>
+  <script defer src="../../../assets/style-atlas/material3-demo.js?v=material3-gallery-20261122b"></script>
+</head>
+<body data-reference-shell="client" class="material-gallery-page">
+  <main class="material-gallery" id="material-gallery">
+    <aside class="gallery-sidebar" aria-label="Material 3 图鉴导航">
+      <a class="gallery-brand" href="#top" aria-label="Material 3 组件图鉴首页">
+        <span class="gallery-mark">M</span>
+        <strong>Material 3</strong>
+      </a>
+      <md-outlined-text-field id="component-search" label="搜索组件" placeholder="搜索组件" aria-label="搜索组件"></md-outlined-text-field>
+      <nav class="gallery-sidebar-nav" aria-label="组件分类">
+        <p class="sidebar-label">分类</p>
+        <a class="sidebar-link is-active" href="#section-foundation" data-section-link="section-foundation">基础</a>
+        <a class="sidebar-link" href="#section-inputs" data-section-link="section-inputs">数据录入</a>
+        <a class="sidebar-link" href="#section-navigation" data-section-link="section-navigation">导航与列表</a>
+        <a class="sidebar-link" href="#section-feedback" data-section-link="section-feedback">反馈</a>
+        <a class="sidebar-link" href="#section-tokens" data-section-link="section-tokens">设计 Token</a>
+        <p class="sidebar-label component-label">UI 组件</p>
+        <a class="component-link" href="#component-buttons">Button</a>
+        <a class="component-link" href="#component-fab">FAB</a>
+        <a class="component-link" href="#component-chips">Chips</a>
+        <a class="component-link" href="#component-cards">Card</a>
+        <a class="component-link" href="#component-textfields">Text Field</a>
+        <a class="component-link" href="#component-select">Select</a>
+        <a class="component-link" href="#component-selection">Checkbox · Radio · Switch</a>
+        <a class="component-link" href="#component-slider">Slider · Segmented</a>
+        <a class="component-link" href="#component-tabs">Tabs</a>
+        <a class="component-link" href="#component-navigation">Navigation Bar</a>
+        <a class="component-link" href="#component-menu">Menu</a>
+        <a class="component-link" href="#component-list">List</a>
+        <a class="component-link" href="#component-dialog">Dialog</a>
+        <a class="component-link" href="#component-progress">Progress</a>
+        <a class="component-link" href="#component-color">Color Roles</a>
+        <a class="component-link" href="#component-type">Type Scale</a>
+      </nav>
+      <div class="sidebar-bottom">
+        <label class="theme-control" for="theme-toggle"><span>深色模式</span><md-switch id="theme-toggle" aria-label="切换深色主题"></md-switch></label>
+        <a href="https://m3.material.io/components" target="_blank" rel="noopener noreferrer">Material 3 规范 ↗</a>
+      </div>
+    </aside>
+
+    <div class="gallery-main" id="top">
+      <header class="gallery-topbar">
+        <h1>组件图鉴</h1>
+        <nav class="gallery-mobile-nav" aria-label="组件分类">
+      <md-tabs id="category-tabs" aria-label="Material 3 组件分类">
+        <md-primary-tab>基础</md-primary-tab>
+        <md-primary-tab>数据录入</md-primary-tab>
+        <md-primary-tab>导航与列表</md-primary-tab>
+        <md-primary-tab>反馈</md-primary-tab>
+        <md-primary-tab>设计 Token</md-primary-tab>
+      </md-tabs>
+        </nav>
+        <span class="component-count"><span id="search-summary">15 个组件</span></span>
+      </header>
+
+      <div class="gallery-sections">
+
+    <section class="gallery-section" id="section-foundation" data-category="0">
+      <div class="section-heading"><h2>基础</h2></div>
+      <div class="component-grid">
+        <article class="component-example" id="component-buttons" data-search="button 按钮 filled outlined tonal text elevated primary secondary">
+          <div class="example-heading"><h3>Button · 按钮</h3><span class="component-source">官方</span></div>
+          <div class="example-body button-showcase">
+            <md-filled-button>确认操作</md-filled-button>
+            <md-filled-tonal-button>次要操作</md-filled-tonal-button>
+            <md-outlined-button>描边按钮</md-outlined-button>
+            <md-text-button>文本按钮</md-text-button>
+            <md-elevated-button>高起按钮</md-elevated-button>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-fab" data-search="fab floating action button 浮动操作按钮">
+          <div class="example-heading"><h3>FAB · 浮动操作</h3><span class="component-source">官方</span></div>
+          <div class="example-body fab-showcase">
+            <md-fab label="新建项目" aria-label="新建项目"><span slot="icon" class="plus-icon" aria-hidden="true">＋</span></md-fab>
+            <md-branded-fab label="创建提醒" aria-label="创建提醒"><span slot="icon" class="spark-icon" aria-hidden="true">✳</span></md-branded-fab>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-chips" data-search="chips chip filter assist suggestion 标签 筛选">
+          <div class="example-heading"><h3>Chips · 标签与筛选</h3><span class="component-source">官方</span></div>
+          <div class="example-body chip-showcase">
+            <md-assist-chip label="查看规范"></md-assist-chip>
+            <md-filter-chip label="已选中" selected></md-filter-chip>
+            <md-filter-chip label="未选中"></md-filter-chip>
+            <md-suggestion-chip label="推荐：表格"></md-suggestion-chip>
+            <md-input-chip label="Material 3"></md-input-chip>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-cards" data-search="card 卡片 elevated outlined filled 实验 labs">
+          <div class="example-heading"><h3>Card · 卡片</h3><span class="component-source is-labs">Labs</span></div>
+          <div class="example-body card-showcase">
+            <md-outlined-card class="m3-card"><div class="m3-card-content"><span class="card-overline">组件更新</span><strong>Material 3 设计规范</strong><span>探索色彩、形状与动效 Token。</span><md-text-button>查看更新</md-text-button></div></md-outlined-card>
+            <md-elevated-card class="m3-card"><div class="m3-card-content"><span class="card-overline">学习路径</span><strong>从基础到反馈</strong><span>用一致的组件状态组织任务。</span><md-text-button>开始浏览</md-text-button></div></md-elevated-card>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="section-inputs" data-category="1">
+      <div class="section-heading"><h2>数据录入</h2></div>
+      <div class="component-grid">
+        <article class="component-example" id="component-textfields" data-search="textfield input 输入 文本框 outlined filled label supporting text">
+          <div class="example-heading"><h3>Text Field · 文本框</h3><span class="component-source">官方</span></div>
+          <div class="example-body field-showcase">
+            <md-outlined-text-field label="项目名称" value="Material 3 图鉴" supporting-text="最多 24 个字符" maxlength="24"></md-outlined-text-field>
+            <md-filled-text-field label="邮箱地址" type="email" value="design@example.com" supporting-text="用于接收组件更新"></md-filled-text-field>
+            <md-outlined-text-field label="必填字段" required error error-text="请填写项目名称"></md-outlined-text-field>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-select" data-search="select 下拉选择 option">
+          <div class="example-heading"><h3>Select · 选择器</h3><span class="component-source">官方</span></div>
+          <div class="example-body field-showcase">
+            <md-outlined-select label="组件分类" value="navigation">
+              <md-select-option value="foundation"><div slot="headline">基础组件</div></md-select-option>
+              <md-select-option value="inputs"><div slot="headline">数据录入</div></md-select-option>
+              <md-select-option value="navigation"><div slot="headline">导航与列表</div></md-select-option>
+              <md-select-option value="feedback"><div slot="headline">反馈</div></md-select-option>
+            </md-outlined-select>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-selection" data-search="checkbox radio switch 复选 单选 开关 状态">
+          <div class="example-heading"><h3>Checkbox · Radio · Switch</h3><span class="component-source">官方</span></div>
+          <div class="example-body choice-showcase">
+            <label class="choice-row"><md-checkbox checked></md-checkbox><span>订阅组件更新</span></label>
+            <label class="choice-row"><md-checkbox></md-checkbox><span>同步到我的收藏</span></label>
+            <div class="radio-group" role="radiogroup" aria-label="预览密度">
+              <label class="choice-row"><md-radio name="density" value="comfortable" checked></md-radio><span>舒适</span></label>
+              <label class="choice-row"><md-radio name="density" value="compact"></md-radio><span>紧凑</span></label>
+            </div>
+            <label class="choice-row switch-row"><span>自动保存</span><md-switch selected></md-switch></label>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-slider" data-search="slider segmented button range 滑块 分段">
+          <div class="example-heading"><h3>Slider · Segmented Button</h3><span class="component-source is-labs">含 Labs</span></div>
+          <div class="example-body slider-showcase">
+            <div class="range-heading"><span>圆角强度</span><output id="radius-output">24</output></div>
+            <md-slider id="radius-slider" min="8" max="32" value="24" aria-label="圆角强度"></md-slider>
+            <div class="segmented-showcase" role="group" aria-label="内容视图">
+              <md-outlined-segmented-button selected>概览</md-outlined-segmented-button>
+              <md-outlined-segmented-button>列表</md-outlined-segmented-button>
+              <md-outlined-segmented-button>代码</md-outlined-segmented-button>
+            </div>
+            <p id="view-message" class="inline-feedback" aria-live="polite">当前视图：概览</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="section-navigation" data-category="2">
+      <div class="section-heading"><h2>导航与列表</h2></div>
+      <div class="component-grid">
+        <article class="component-example" id="component-tabs" data-search="tabs primary tab 标签页 导航">
+          <div class="example-heading"><h3>Tabs · 标签页</h3><span class="component-source">官方</span></div>
+          <div class="example-body tabs-showcase">
+            <md-tabs id="demo-tabs" aria-label="规范内容">
+              <md-primary-tab>组件</md-primary-tab><md-primary-tab>Token</md-primary-tab><md-primary-tab>指南</md-primary-tab>
+            </md-tabs>
+            <p id="demo-tab-panel" class="tab-panel" role="status">组件：浏览按钮、表单和反馈组件。</p>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-navigation" data-search="navigation bar bottom navigation 导航栏 移动端 labs">
+          <div class="example-heading"><h3>Navigation Bar · 底部导航</h3><span class="component-source is-labs">Labs</span></div>
+          <div class="example-body navigation-showcase">
+            <md-navigation-bar active-index="0" aria-label="主要页面">
+              <md-navigation-tab label="首页" active><span slot="icon" class="nav-dot">●</span></md-navigation-tab>
+              <md-navigation-tab label="搜索"><span slot="icon" class="nav-dot">⌕</span></md-navigation-tab>
+              <md-navigation-tab label="收藏"><span slot="icon" class="nav-dot">♡</span></md-navigation-tab>
+            </md-navigation-bar>
+            <p id="nav-message" class="inline-feedback" aria-live="polite">当前目的地：首页</p>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-menu" data-search="menu menu-item popup 菜单">
+          <div class="example-heading"><h3>Menu · 菜单</h3><span class="component-source">官方</span></div>
+          <div class="example-body menu-showcase">
+            <md-outlined-button id="menu-anchor">更多操作</md-outlined-button>
+            <md-menu id="demo-menu" anchor="menu-anchor">
+              <md-menu-item><div slot="headline">复制组件链接</div></md-menu-item>
+              <md-menu-item><div slot="headline">查看使用说明</div></md-menu-item>
+              <md-menu-item disabled><div slot="headline">移到收藏夹</div></md-menu-item>
+            </md-menu>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-list" data-search="list list item 列表 条目">
+          <div class="example-heading"><h3>List · 列表</h3><span class="component-source">官方</span></div>
+          <div class="example-body list-showcase">
+            <md-list>
+              <md-list-item type="button" headline="按钮" supporting-text="多种强调级别和状态"></md-list-item>
+              <md-divider></md-divider>
+              <md-list-item type="button" headline="表单控件" supporting-text="输入、选择与范围调整"></md-list-item>
+              <md-divider></md-divider>
+              <md-list-item type="button" headline="反馈组件" supporting-text="对话框、进度与状态提示"></md-list-item>
+            </md-list>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="section-feedback" data-category="3">
+      <div class="section-heading"><h2>反馈</h2></div>
+      <div class="component-grid">
+        <article class="component-example" id="component-dialog" data-search="dialog modal 对话框 confirm">
+          <div class="example-heading"><h3>Dialog · 对话框</h3><span class="component-source">官方</span></div>
+          <div class="example-body dialog-showcase">
+            <md-outlined-button id="open-dialog">打开对话框</md-outlined-button>
+            <span id="dialog-result" class="inline-feedback" aria-live="polite"></span>
+          </div>
+        </article>
+
+        <article class="component-example" id="component-progress" data-search="progress linear circular 进度 loading">
+          <div class="example-heading"><h3>Progress · 进度指示器</h3><span class="component-source">官方</span></div>
+          <div class="example-body progress-showcase">
+            <div><span>资料同步</span><strong>72%</strong></div>
+            <md-linear-progress value="0.72" aria-label="资料同步 72%"></md-linear-progress>
+            <div class="progress-circular"><md-circular-progress value="0.72" aria-label="组件下载 72%"></md-circular-progress><span>下载组件包</span></div>
+            <md-linear-progress indeterminate aria-label="正在加载"></md-linear-progress>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="gallery-section" id="section-tokens" data-category="4">
+      <div class="section-heading"><h2>设计 Token</h2></div>
+      <div class="token-layout">
+        <article class="component-example token-example" id="component-color" data-search="color token 色彩 primary surface outline error">
+          <div class="example-heading"><h3>Color Roles · 语义色彩</h3><span class="component-source">Token</span></div>
+          <div class="token-swatches">
+            <div class="token-swatch primary"><span>Primary</span><code>#6750A4</code></div>
+            <div class="token-swatch primary-container"><span>Primary Container</span><code>#EADDFF</code></div>
+            <div class="token-swatch secondary"><span>Secondary</span><code>#625B71</code></div>
+            <div class="token-swatch surface"><span>Surface</span><code>#FEF7FF</code></div>
+            <div class="token-swatch surface-container"><span>Surface Container</span><code>#F3EDF7</code></div>
+            <div class="token-swatch outline"><span>Outline</span><code>#79747E</code></div>
+            <div class="token-swatch error"><span>Error</span><code>#B3261E</code></div>
+          </div>
+        </article>
+        <article class="component-example type-example" id="component-type" data-search="typography type scale 排版 字体">
+          <div class="example-heading"><h3>Type Scale · 字体比例</h3><span class="component-source">Token</span></div>
+          <div class="type-samples">
+            <p class="type-display">展示标题 <small>Display</small></p>
+            <p class="type-headline">页面标题 <small>Headline</small></p>
+            <p class="type-title">组件标题 <small>Title</small></p>
+            <p class="type-body">正文内容用来说明组件的用途、状态和交互结果。<small>Body</small></p>
+            <p class="type-label">操作标签 <small>Label</small></p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="gallery-footer">
+      <a href="https://m3.material.io/components" target="_blank" rel="noopener noreferrer">Material 3 组件规范</a>
+      <a href="https://github.com/material-components/material-web" target="_blank" rel="noopener noreferrer">Material Web 源码</a>
+    </footer>
+      </div>
+    </div>
+  </main>
+
+  <md-dialog id="demo-dialog">
+    <div slot="headline">发布组件规范？</div>
+    <div slot="content">发布后，团队成员都可以查看当前 Material 3 组件方案。</div>
+    <div slot="actions">
+      <md-text-button id="cancel-dialog">再检查一下</md-text-button>
+      <md-filled-button id="confirm-dialog">确认发布</md-filled-button>
+    </div>
+  </md-dialog>
+  <div id="toast" class="gallery-toast" role="status" aria-live="polite"></div>
+
+  <script type="application/json" id="pattern-data">{"id":"material","name":"Google · Material 3 组件图鉴","subtitle":"Material Design 3 / Material Web","category":"界面组件","platform":"Web Components","density":"中","layout":"component-gallery","status":"Google 官方设计体系","summary":"基于 Google 官方 Material Web 组件构建的 Material 3 组件图鉴，涵盖基础、数据录入、导航、反馈与设计 Token。","characteristics":["官方 Material Web 组件直接渲染","使用 Material 3 语义色和表面层级","Labs 组件单独标注"],"interactions":["按钮、芯片、输入与选择控件","菜单、标签页和底部导航","主题切换、进度和对话框"],"suitableFor":["Material 3 组件对照与学习","Web Components 在 React/Vue 项目中的集成参考"],"cautions":["Material Web 当前处于维护模式","部分较新的组件属于 Labs 实验包"],"nav":["基础","数据录入","导航与列表","反馈","设计 Token"],"accent":"#6750a4","bg":"#f7f2fa","panel":"#fffbff","text":"#1d1b20","radius":24,"sources":[{"label":"Material Design 3 规范","url":"https://m3.material.io/","kind":"官方设计规范"},{"label":"Material Web 组件源码","url":"https://github.com/material-components/material-web","kind":"Apache-2.0 开源组件"}]}</script>
+</body>
+</html>

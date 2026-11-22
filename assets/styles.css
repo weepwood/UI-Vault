@@ -161,7 +161,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 /* v0.8 三栏：导航（左）/项目列表（中）/实时预览（右）
  * 两个目录栏共享一个 Library Rail，移动端作为一个整体展开。
  */
-:root { --navigation-width: 236px; --directory-width: 320px; }
+:root { --navigation-width: 208px; --directory-width: 292px; }
 .app-shell {
   grid-template-columns: calc(var(--navigation-width) + var(--directory-width)) minmax(0,1fr);
 }
@@ -260,7 +260,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .project-panel .project-row-title { font-size: 12px; }
 .project-panel .project-row-subtitle { font-size: 10px; }
 @media(max-width:1250px) and (min-width:761px) {
-  :root { --navigation-width: 204px; --directory-width: 275px; }
+  :root { --navigation-width: 190px; --directory-width: 252px; }
   .library-rail .sidebar { padding-right: 9px; padding-left: 9px; }
   .library-rail .brand-type strong { font-size: 15px; }
   .library-rail .filter-button,
@@ -269,7 +269,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .project-panel .project-row { gap: 6px; padding-left: 5px; }
 }
 @media(max-width:930px) and (min-width:761px) {
-  :root { --navigation-width: 182px; --directory-width: 245px; }
+  :root { --navigation-width: 168px; --directory-width: 218px; }
   .library-rail .brand-type small { font-size: 9px; }
   .library-rail .sidebar-footer a { font-size: 10px; }
   .project-panel .project-row-icon { width: 27px; height: 27px; flex-basis: 27px; }

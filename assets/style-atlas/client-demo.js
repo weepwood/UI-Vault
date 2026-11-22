@@ -82,11 +82,32 @@
     vscode: {
       windowbar: 'ui-vault · styles',
       context: 'ui-vault · src / styles', search: '在文件中搜索',
-      code: ['export const spacing = {', '  compact: 8,', '  control: 12,', '  section: 24,', '};', '', 'export const focusRing = {', '  width: 2,', '  offset: 2,', '  color: "var(--focus)"', '};'],
+      code: ['const activeOrders = [', '  { id: "SO-261122-0824", status: "待发货" },', '  { id: "SO-261122-0821", status: "待审核" },', '  { id: "SO-261122-0816", status: "退款中" },', '];', '', 'const filterOrders = (orders, query) =>', '  orders.filter(order => order.customer.includes(query));', '', 'export function getVisibleOrders(orders, filters) {', '  const result = filterOrders(orders, filters.query);', '  return filters.status', '    ? result.filter(order => order.status === filters.status)', '    : result;', '}', '', 'export default getVisibleOrders;'],
     },
   }[pattern.id];
 
   if (!screen) return;
+  const vscodeSources = {
+    'client-demo.js': screen.code || [],
+    'reference-shell.css': ['.client-content-first {', '  display: flex;', '  flex-direction: column;', '  min-height: 100vh;', '}', '', '.ca-appnav {', '  flex: 0 0 216px;', '  width: 216px;', '}', '', '@media (max-width: 570px) {', '  .ca-appnav { width: 100px; }', '}'],
+    'tokens.json': ['{', '  "colorPrimary": "#1677ff",', '  "colorBgLayout": "#f5f6f8",', '  "borderRadius": 6,', '  "controlHeight": 34', '}'],
+    'index.html': ['<main class="client-content">', '  <section class="demo">', '    <div class="ca-editor">', '      <div class="ca-code">', '        <h1>Style Atlas</h1>', '      </div>', '    </div>', '  </section>', '</main>'],
+  };
+  const renderEditorCode = (lines) => {
+    const code = document.querySelector('.ca-code');
+    if (!code) return;
+    const nodes = lines.flatMap((line, index) => {
+      const number = document.createElement('span');
+      number.textContent = String(index + 1).padStart(2, '0');
+      const text = document.createElement(index === 0 ? 'em' : 'p');
+      text.textContent = line || ' ';
+      if (index === 0) text.id = 'editor-title';
+      return [number, text];
+    });
+    code.replaceChildren(...nodes);
+    const last = code.lastElementChild;
+    if (last) { last.id = 'editor-count'; last.classList.add('ca-code-hi'); }
+  };
   const set = (selector, value) => {
     const node = document.querySelector(selector);
     if (node && value != null) node.textContent = value;
@@ -159,23 +180,11 @@
       if (screen.media[1][i]) node.lastChild.textContent = screen.media[1][i];
     });
     const playingTitle = document.getElementById('playing-title');
-    if (playingTitle) playingTitle.textContent = '正在播放：' + screen.media[1][0];
+    const firstTrack = document.querySelector('.ca-track-name strong')?.textContent;
+    if (playingTitle) playingTitle.textContent = firstTrack ? `正在播放：${firstTrack} · ${screen.media[1][0]}` : '正在播放：' + screen.media[1][0];
   }
   if (screen.code) {
-    const code = document.querySelector('.ca-code');
-    if (code) {
-      const lines = screen.code.flatMap((line, i) => {
-        const number = document.createElement('span');
-        number.textContent = String(i + 1).padStart(2, '0');
-        const text = document.createElement(i === 0 ? 'em' : 'p');
-        text.textContent = line || ' ';
-        if (i === 0) text.id = 'editor-title';
-        return [number, text];
-      });
-      code.replaceChildren(...lines);
-      const last = code.lastElementChild;
-      if (last) { last.id = 'editor-count'; last.classList.add('ca-code-hi'); }
-    }
+    renderEditorCode(screen.code);
   }
 
   if (screen.editor) {
@@ -201,20 +210,21 @@
   let active = 0;
   const setNav = (index) => {
     active = index;
-    navs.forEach((node, i) => {
-      node.classList.toggle('selected', i === index);
-      node.setAttribute('aria-pressed', String(i === index));
+    navs.forEach((node) => {
+      const selected = Number(node.dataset.nav) === index;
+      node.classList.toggle('selected', selected);
+      node.setAttribute('aria-pressed', String(selected));
     });
     if (title) title.textContent = pattern.nav[index];
     if (context) context.textContent = screen.navContext?.[index] || screen.context;
     const nativeTitle = document.getElementById('native-title');
     if (nativeTitle) nativeTitle.textContent = screen.nativeTitles?.[index] || screen.feature?.[1] || pattern.nav[index];
   };
-  navs.forEach((node, index) => node.addEventListener('click', () => setNav(index)));
+  navs.forEach((node) => node.addEventListener('click', () => setNav(Number(node.dataset.nav))));
 
   const filter = () => {
     const term = input?.value.trim().toLowerCase() || '';
-    document.querySelectorAll('[data-item]').forEach((node) => {
+    document.querySelectorAll('[data-item], [data-feed-item], [data-track]').forEach((node) => {
       node.hidden = !node.textContent.toLowerCase().includes(term);
     });
   };
@@ -227,6 +237,17 @@
   document.querySelectorAll('#toggle-search,#search-main').forEach((node) => node.addEventListener('click', toggleSearch));
   input?.addEventListener('input', filter);
 
+  let selectedTrackIndex = 0;
+  const selectTrack = (index) => {
+    const tracks = [...document.querySelectorAll('[data-track]')];
+    if (!tracks.length) return;
+    selectedTrackIndex = (index + tracks.length) % tracks.length;
+    tracks.forEach((track, i) => track.setAttribute('aria-pressed', String(i === selectedTrackIndex)));
+    const playingTitle = document.getElementById('playing-title');
+    const trackName = tracks[selectedTrackIndex].querySelector('.ca-track-name strong');
+    if (playingTitle && trackName) playingTitle.textContent = '正在播放：' + trackName.textContent;
+  };
+
   document.addEventListener('click', (event) => {
     const tile = event.target.closest('[data-tile]');
     if (tile) {
@@ -236,7 +257,7 @@
       });
       const playingTitle = document.getElementById('playing-title');
       const selectedTrack = screen.media?.[1][Number(tile.dataset.tile)];
-      if (playingTitle && selectedTrack) playingTitle.textContent = '正在播放：' + selectedTrack;
+      if (playingTitle && selectedTrack) playingTitle.textContent = '播放列表：' + selectedTrack;
     }
     const item = event.target.closest('[data-item]');
     if (item) {
@@ -247,6 +268,33 @@
         node.setAttribute('aria-pressed', String(selected));
       });
     }
+    const editorFile = event.target.closest('[data-file]');
+    if (editorFile && pattern.id === 'vscode') {
+      const fileName = editorFile.dataset.file;
+      const activeFileName = document.getElementById('active-file-name');
+      if (activeFileName) activeFileName.textContent = fileName;
+      renderEditorCode(vscodeSources[fileName] || [`// ${fileName}`, '', 'export {};']);
+    }
+    const terminalToggle = event.target.closest('#toggle-terminal');
+    if (terminalToggle) {
+      const terminal = document.querySelector('.ca-terminal');
+      if (terminal) {
+        terminal.hidden = !terminal.hidden;
+        terminalToggle.setAttribute('aria-expanded', String(!terminal.hidden));
+        terminalToggle.textContent = terminal.hidden ? '显示终端' : '隐藏终端';
+      }
+    }
+    const track = event.target.closest('[data-track]');
+    if (track) selectTrack(Number(track.dataset.track));
+    const trackStep = event.target.closest('[data-track-step]');
+    if (trackStep) selectTrack(selectedTrackIndex + Number(trackStep.dataset.trackStep));
+    const ideaSave = event.target.closest('[data-save-idea]');
+    if (ideaSave) {
+      const saved = ideaSave.getAttribute('aria-pressed') !== 'true';
+      ideaSave.setAttribute('aria-pressed', String(saved));
+      ideaSave.textContent = saved ? '♥' : '♡';
+      ideaSave.setAttribute('aria-label', saved ? '取消收藏' : '加入收藏');
+    }
     const swatch = event.target.closest('[data-copy]');
     if (swatch) navigator.clipboard?.writeText(swatch.dataset.copy).catch(() => {});
   });
@@ -255,7 +303,16 @@
   document.getElementById('new-item')?.addEventListener('click', () => {
     itemCount += 1;
     const list = document.getElementById('item-list');
-    if (list && (pattern.layout !== 'editor' || screen.editor)) {
+    if (pattern.id === 'vscode' && list) {
+      const fileName = `untitled-${itemCount}.ts`;
+      const row = document.createElement('button');
+      row.type = 'button';
+      row.dataset.item = String(itemCount);
+      row.dataset.file = fileName;
+      row.textContent = fileName;
+      list.append(row);
+      row.click();
+    } else if (list && (pattern.layout !== 'editor' || screen.editor)) {
       const row = document.createElement('button');
       row.type = 'button'; row.dataset.item = String(itemCount);
       if (pattern.layout === 'mobile') row.textContent = '新建记录 ' + itemCount;
@@ -280,5 +337,6 @@
   document.getElementById('play-toggle')?.addEventListener('click', (event) => {
     playing = !playing;
     event.currentTarget.textContent = playing ? 'Ⅱ 暂停' : '▶ 播放';
+    event.currentTarget.setAttribute('aria-pressed', String(playing));
   });
 })();
