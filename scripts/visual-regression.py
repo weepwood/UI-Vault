@@ -478,7 +478,9 @@ def verify_glass_materials(browser, origin):
         page = context.new_page()
         try:
             page.goto(origin + "?asset=glass-panel", wait_until="domcontentloaded")
-            assert page.locator("#preview-title").inner_text() == "Glass Lab · 玻璃材质实验室"
+            title = page.get_by_role("heading", name="Glass Lab · 玻璃材质实验室")
+            title.wait_for(state="visible", timeout=30000)
+            assert title.inner_text() == "Glass Lab · 玻璃材质实验室"
             preview = page.locator('iframe[data-preview-frame="external"]')
             preview.wait_for(state="visible")
             assert preview.get_attribute("src") == "https://weepwood.github.io/glass-lab/"
