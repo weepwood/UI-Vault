@@ -12,13 +12,13 @@
 body{margin:0;min-width:320px}button,input,textarea{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.43}
 button:focus-visible,input:focus-visible,a:focus-visible,textarea:focus-visible{outline:2px solid #4b7954;outline-offset:3px}
 a{color:inherit}
-.app{max-width:1420px;margin:0 auto;padding:clamp(20px,3.5vw,50px)}
-.head{border-bottom:1px solid var(--line);padding:0 0 clamp(22px,3vw,34px);margin-bottom:28px}
-.eyebrow{font-size:12px;font-weight:560;color:var(--secondary);letter-spacing:0;text-transform:none}
-.eyebrow .mark{display:none}
-h1{font-size:clamp(32px,4vw,50px);line-height:1.12;letter-spacing:-.055em;font-weight:640;margin:13px 0 11px}
-.lede{max-width:730px;font-size:14px;line-height:1.8;color:var(--secondary);margin:0}
-.head-note{display:none}
+.app{max-width:1420px;margin:0 auto;padding:clamp(16px,2vw,26px) clamp(16px,3.5vw,50px) clamp(24px,3.5vw,50px)}
+
+
+
+
+
+
 .section-label{font-size:15px;font-weight:650;letter-spacing:-.017em;color:var(--ink);margin:0}
 .section-hint{font-size:12px;color:var(--secondary)}
 .preview-heading,.gallery-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 11px}
@@ -108,7 +108,7 @@ dialog::backdrop{background:#151d16ab;backdrop-filter:blur(3px)}
 .status{font-size:12px;color:#3f684c;margin-right:auto}
 @media(max-width:1150px){.workspace{grid-template-columns:minmax(0,1fr) 242px;gap:22px}.inspector{padding-left:21px}.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media(max-width:840px){.workspace{grid-template-columns:1fr}.inspector{border-left:0;border-top:1px solid var(--line);padding:22px 0 0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:19px 30px}.inspector>.panel-head,.inspector>.rule,.inspector>.panel-actions{grid-column:1/-1}.panel-actions{display:flex;align-items:center;flex-wrap:wrap}.panel-actions .primary,.panel-actions .secondary{width:auto;padding:0 16px}.detail-note{flex-basis:100%}.gallery{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:580px){.app{padding:20px 16px 28px}.head{margin-bottom:23px}.lede{font-size:13px}.preview-heading{margin-bottom:8px}.section-hint{font-size:11px}.preview-name{font-size:11px}.icon-button{min-height:32px;padding:6px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 11px}.tile-name{font-size:12px}.tile .scene{aspect-ratio:1.38}.inspector{grid-template-columns:1fr;gap:18px}.inspector>.panel-head,.inspector>.rule,.inspector>.panel-actions{grid-column:auto}.panel-actions{display:grid}.panel-actions .primary,.panel-actions .secondary{width:100%}.sources{display:block}#stage{height:345px;min-height:300px}.mock-title{font-size:37px}.preview-foot{align-items:flex-start}}
+@media(max-width:580px){.app{padding:14px 16px 28px}.preview-heading{margin-bottom:8px}.section-hint{font-size:11px}.preview-name{font-size:11px}.icon-button{min-height:32px;padding:6px}.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 11px}.tile-name{font-size:12px}.tile .scene{aspect-ratio:1.38}.inspector{grid-template-columns:1fr;gap:18px}.inspector>.panel-head,.inspector>.rule,.inspector>.panel-actions{grid-column:auto}.panel-actions{display:grid}.panel-actions .primary,.panel-actions .secondary{width:100%}.sources{display:block}#stage{height:345px;min-height:300px}.mock-title{font-size:37px}.preview-foot{align-items:flex-start}}
 @media(max-width:380px){.preview-tools{gap:0}.icon-button{font-size:11px}.tile-index{display:none}.filter{padding:9px 10px 11px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
 
@@ -266,13 +266,6 @@ dialog::backdrop{background:#151d16ab;backdrop-filter:blur(3px)}
 </head>
 <body>
 <main class="app">
-<header class="head">
-  <div>
-    <div class="eyebrow">UI Vault / 视觉材料档案</div>
-    <h1>背景效果实验室</h1>
-    <p class="lede">比较渐变、光线、几何和纹理的不同表现。让背景占据画面，让参数与操作回到一旁。</p>
-  </div>
-  </header>
 <div class="preview-heading"><h2 class="section-label">当前预览</h2><span class="section-hint">当前画面动效独立运行</span></div>
 <section class="workspace" aria-label="背景效果编辑器">
   <div class="preview-shell">
