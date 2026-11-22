@@ -22,7 +22,7 @@ const LOAD_TIMEOUT_MS=12000;
 function PreviewContent({asset,mode,error,loading}){
   const frame=useRef(null);
   const backdropStudio=asset?.id==='aurora-field';
-  const externalSandbox=asset?.id==='emboss-poster-lab'
+  const externalSandbox=asset?.id==='emboss-poster-lab'||asset?.id==='fileatlas-browser-ui'
     ?'allow-scripts allow-forms allow-downloads'
     :asset?.id==='fluxnav-start-page'
       ?'allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox'
