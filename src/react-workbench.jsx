@@ -70,7 +70,7 @@ function ListControls({state,tags,onSort,onTag,count}){
 }
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
-  const {state,filtered,tags,filteredActive,notice,notify,dispatch,openView,
+  const {state,filtered,tags,filteredActive,notice,noticeRevision,notify,dispatch,openView,
     selectAsset,filter,changeSearch,changeSort,changeTag,reset,
     favorite,changePreference,resetPreferences,changePreview,menu,
     copyText,copyLink,copySource}=app;
@@ -175,7 +175,7 @@ function WorkbenchPortals({nodes}){
     nodes.toast.classList.add('show');
     const timer=setTimeout(()=>nodes.toast.classList.remove('show'),2600);
     return ()=>{clearTimeout(timer);nodes.toast.classList.remove('show');};
-  },[notice,nodes]);
+  },[notice,noticeRevision,nodes]);
   useEffect(()=>{
     if(selected?.source!=='external'||selected.externalLinkBridge!==true||!selected.siteUrl)return;
     const receive=event=>{

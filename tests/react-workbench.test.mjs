@@ -24,6 +24,14 @@ test('React 根以 Portals 驱动工作台全域交互',()=>{
  assert.match(hooks,/applySettings/);
 });
 
+test('重复通知相同文案时仍会重新显示 toast',()=>{
+ const hooks=read('src/useWorkbench.js');
+ const react=read('src/react-workbench.jsx');
+ assert.match(hooks,/noticeRevision/);
+ assert.match(hooks,/setNoticeRevision\(revision=>revision\+1\)/);
+ assert.match(react,/\[notice,noticeRevision,nodes\]/);
+});
+
 test('React iframe 管理与独立 Demo 发布保持分离',()=>{
  const builder=read('scripts/build-react.mjs'),build=read('scripts/build.mjs');
  const pkg=JSON.parse(read('package.json'));
