@@ -10,7 +10,12 @@ test('设计资源栏目完整登记且资源原站为安全 HTTPS',async()=>{
   assert.deepEqual(catalog.errors,[]);
   assert.ok(catalog.categories.some(c=>c.id==='resource'&&c.label==='设计资源'));
   const view=catalog.items.filter(a=>a.type==='resource');
-  assert.deepEqual(view.map(a=>a.id).sort(),['design-resource-library','design-skill-handbook']);
+  for(const id of ['browser-flags-guide','design-resource-library','design-skill-handbook']) {
+    assert.ok(view.some(entry=>entry.id===id),'设计资源缺少 '+id);
+  }
+  const browserGuide=view.find(entry=>entry.id==='browser-flags-guide');
+  assert.equal(browserGuide.preview,'demos/experiments/browser-flags-guide/index.html');
+  assert.equal(browserGuide.copyable,true);
   for(const entry of view)assert.ok((await stat(join(ROOT,entry.preview))).isFile());
   const ctx={window:{}};
   const script=await readFile(join(ROOT,'assets/design-resources/catalog.js'),'utf8');

@@ -42,6 +42,7 @@
 
 - [设计网站与规范索引](https://weepwood.github.io/UI-Vault/?asset=design-resource-library)：分类、搜索和跳转至原站，收录 30 条资料。
 - [AI UI Skills 使用手册](https://weepwood.github.io/UI-Vault/?asset=design-skill-handbook)：Skills 使用场景、官方安装命令和 Prompt 模板。
+- [Chrome / Edge Flags 设置指南](https://weepwood.github.io/UI-Vault/?asset=browser-flags-guide)：按浏览器查阅实验开关、正式设置与风险说明，支持搜索、复制内部地址与配置清单。
 - [栏目维护说明](docs/DESIGN-RESOURCES.md) · [Skills Markdown 手册](docs/UI-SKILLS-HANDBOOK.md)。
 - 资源统一维护于 `assets/design-resources/catalog.js`，不复制第三方站点素材。
 
