@@ -195,14 +195,29 @@ def verify_react_interactions(browser, origin):
         dialog = page.locator("#project-dialog")
         dialog.wait_for(state="visible")
         assert dialog.evaluate("(node) => node.open"), "React Dialog 未打开"
+        # 弹窗切换不改变高度，也不会在再次进入源码时闪出加载占位内容。
+        before_height = dialog.bounding_box()["height"]
         page.locator("#tab-source").click()
         assert page.locator("#dialog-source").is_visible(), "源码标签页未显示"
+        assert abs(dialog.bounding_box()["height"] - before_height) <= 2, "项目说明与源码切换时弹窗高度跳动"
+        page.locator("#source-status").wait_for(state="visible")
+        for _ in range(3):
+            page.locator("#tab-overview").click()
+            assert abs(dialog.bounding_box()["height"] - before_height) <= 2, "返回项目说明时弹窗高度改变"
+            page.locator("#tab-source").click()
+            assert abs(dialog.bounding_box()["height"] - before_height) <= 2, "再次打开源码时弹窗高度改变"
         page.keyboard.press("Escape")
         assert not dialog.evaluate("(node) => node.open"), "Escape 无法关闭 Dialog"
 
         page.locator("#settings-open").click()
         page.locator("#settings-view").wait_for(state="visible")
         assert "view=settings" in page.url, "设置路由未写入地址"
+        page.evaluate("() => { window.__settingsScroll = document.querySelector('.settings-scroll'); }")
+        for section in ("interface", "typography", "about", "appearance"):
+            page.locator(f'[data-settings-section="{section}"]').click()
+            assert page.locator(f'#settings-view #{section}').is_visible(), f"设置分类 {section} 未显示"
+            assert page.evaluate("document.querySelector('.settings-scroll') === window.__settingsScroll"), "设置切换卸载了滚动容器"
+        assert page.evaluate("document.querySelector('#preview-stage iframe') === window.__reactIframe"), "切换设置分类重建了预览"
         select = page.locator("#settings-theme").locator("xpath=..")
         select.locator(".select-trigger").click()
         select.locator('[data-value="dark"]').click()

@@ -29,12 +29,22 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
     if(!root)return;
     if(open&&asset){
       savedFocus.current=document.activeElement;
-      if(!root.open)root.showModal();
+      if(!root.open){
+        root.showModal();
+        // 原生 dialog 的默认高度随隐藏 pane 的内容变化；在打开时锁定实际高度，避免标签切换导致整个弹窗跳动。
+        const height=root.getBoundingClientRect().height;
+        if(height>0){
+          root.style.height=Math.ceil(height)+'px';
+          root.dataset.stableHeight='true';
+        }
+      }
     }else if(root.open)root.close();
   },[root,open,asset?.id]);
   useEffect(()=>{
     if(!root)return;
     const close=()=>{
+      root.style.removeProperty('height');
+      delete root.dataset.stableHeight;
       onOpenChange(false);
       const target=savedFocus.current;
       if(target?.isConnected&&!target.disabled&&!target.closest?.('[inert]'))target.focus?.({preventScroll:true});
@@ -62,6 +72,8 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
       return ()=>controller.abort();
     }
     const path=selectedFile.path;
+    // 仅在文件发生变化或尚未成功加载时请求。来回切换说明与源码时复用已显示内容，避免先闪出加载态。
+    if(source.id===asset.id&&source.path===path&&source.ready)return ()=>controller.abort();
     setSource({id:asset.id,path,text:'正在加载本地源码…',status:'正在读取 '+selectedFile.name,ready:false});
     fetch(resolveAsset(path),{cache:'no-cache',signal:controller.signal})
       .then(async response=>{

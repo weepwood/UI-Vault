@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useLayoutEffect,useRef,useState} from 'react';
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 
 const pages=[
@@ -45,7 +45,10 @@ function Section({id,active,children}){
 }
 export function SettingsPanel({settings,onChange,onReset,onMenuToggle,menuOpen,visible}){
   const [section,setSection]=useState('appearance');
+  const scrollRef=useRef(null);
   const active=pages.find(page=>page.id===section)||pages[0];
+  // 保持内容区 DOM 挂载；切换分类只更新 hidden，避免滚动容器被 key 卸载时闪白。
+  useLayoutEffect(()=>{if(scrollRef.current)scrollRef.current.scrollTop=0;},[section]);
   function selectPage(id){setSection(id);}
   return <>
     <aside className="settings-category-rail" aria-label="设置分类">
@@ -78,7 +81,7 @@ export function SettingsPanel({settings,onChange,onReset,onMenuToggle,menuOpen,v
           <p className="settings-intro" id="settings-description">{active.description}</p>
         </div>
       </header>
-      <div className="settings-scroll" key={section}>
+      <div className="settings-scroll" ref={scrollRef}>
         <Section id="appearance" active={section==='appearance'}>
           <div className="settings-grid">
             <Field field="theme" settings={settings} onChange={onChange}/>
