@@ -879,8 +879,9 @@ def verify_project_operations(browser, origin):
         page.goto(origin + "?view=operations&asset=atlas-academia", wait_until="domcontentloaded")
         page.locator("#operations-title").wait_for(state="visible", timeout=30000)
         page.locator(".ops-project").first.wait_for(state="visible")
-        assert page.locator(".ops-project").count() == 33, "状态页没有按 33 个来源项目展示"
-        assert "显示 33 / 33" in page.locator(".ops-result-header").inner_text()
+        expected = page.evaluate("async () => (await (await fetch(\'./content/projects.json\')).json()).length")
+        assert page.locator(".ops-project").count() == expected, "状态页与实际项目注册表数量不一致"
+        assert f"显示 {expected} / {expected}" in page.locator(".ops-result-header").inner_text()
         assert "部署未核实" in page.locator(".ops-project").first.inner_text(), "离线构建不得伪造部署成功"
         page.locator("#operations-query").fill("style atlas")
         assert page.locator(".ops-project").count() == 1, "项目名搜索失败"
@@ -895,9 +896,9 @@ def verify_project_operations(browser, origin):
         chooser.locator(".select-trigger").click()
         chooser.locator('[data-value="failure"]').click()
         assert page.locator(".ops-project").count() == 0, "代码检查失败筛选未生效"
-        assert "显示 0 / 33" in page.locator(".ops-result-header").inner_text()
+        assert f"显示 0 / {expected}" in page.locator(".ops-result-header").inner_text()
         page.locator(".ops-empty button").click()
-        assert page.locator(".ops-project").count() == 33, "清除筛选未恢复完整项目清单"
+        assert page.locator(".ops-project").count() == expected, "清除筛选未恢复完整项目清单"
         page.locator("#settings-open").click()
         page.locator("#settings-title").wait_for(state="visible")
         page.go_back(wait_until="domcontentloaded")
@@ -916,7 +917,7 @@ def verify_project_operations(browser, origin):
         assert "is-open" not in (page.locator("#library-rail").get_attribute("class") or ""), "状态页移动端导航无法关闭"
     finally:
         mobile.close()
-    print("项目状态管理回归通过：三轴筛选、33 项目/57 资产、路由历史、移动端与未知态。")
+    print(f"项目状态管理回归通过：三轴筛选、{expected} 项目/57 Atlas 资产、路由历史、移动端与未知态。")
 
 def main():
     parser = argparse.ArgumentParser()
