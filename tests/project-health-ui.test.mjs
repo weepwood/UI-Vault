@@ -11,7 +11,7 @@ test('健康信息独立于 React Workbench 业务状态与 iframe，不影响�
  const dialog=read('src/components/ProjectDialog.jsx');
  assert.match(hooks,/fetchJSON\('content\/project-health\.json'/);
  assert.match(react,/projectHealthSnapshot=\{projectHealthSnapshot\}/);
- assert.match(dialog,/<ProjectHealthPanel project=\{project\} snapshot=\{projectHealthSnapshot\}/>);
+ assert.ok(dialog.includes('<ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>'));
  assert.match(panel,/Actions 成功不代表网页已发布/);
  assert.doesNotMatch(read('src/components/PreviewFrame.jsx'),/projectHealthSnapshot/);
  assert.equal(getProjectHealth(null,'noema'),null);
