@@ -843,7 +843,7 @@ def verify_project_health_and_grouping(browser, origin):
         sorting = page.locator("#sort").locator("xpath=..")
         sorting.locator(".select-trigger").click()
         sorting.locator('[data-value="project"]').click()
-        assert page.locator(".asset-project-group").count() == 33, "项目归组数量不正确"
+        assert page.locator(".asset-project-group").count() == 34, "项目归组数量不正确"
         group = page.locator(".asset-project-group").filter(has_text="Style Atlas")
         assert group.count() == 1, "Style Atlas 分组未找到"
         assert group.locator(".project-row").count() == 57, "Style Atlas 的 57 条资产没有正确归组"
@@ -868,7 +868,7 @@ def verify_project_health_and_grouping(browser, origin):
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__groupIframe"), "查看仓库状态重建 iframe"
     finally:
         context.close()
-    print("Project 分组与健康回归通过：33 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
+    print("Project 分组与健康回归通过：34 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
 
 def main():
     parser = argparse.ArgumentParser()

@@ -1,0 +1,1850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Organic Modern -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&family=Outfit:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400&family=Nunito:wght@400;600&family=Caveat:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --om-bg-primary: #FAF6F0;
+      --om-bg-surface: #F0EBE3;
+      --om-bg-surface-alt: #E4DCD3;
+
+      /* --- Neutrals --- */
+      --om-sand: #D4C9BD;
+      --om-stone: #B8A99A;
+      --om-sandstone: #C4AE96;
+
+      /* --- Warm Browns --- */
+      --om-clay: #A47864;
+      --om-walnut: #8B6F5E;
+      --om-timber: #6B5445;
+      --om-honey: #C2A68C;
+      --om-terracotta: #BFA98F;
+
+      /* --- Greens --- */
+      --om-sage: #8A9A7B;
+      --om-moss: #6B7F5E;
+
+      /* --- Text --- */
+      --om-text-primary: #3B332D;
+      --om-text-secondary: #5C534B;
+      --om-text-muted: #B8A99A;
+
+      /* --- Borders --- */
+      --om-border: #D4C9BD;
+      --om-border-light: #E4DCD3;
+
+      /* --- Functional Aliases --- */
+      --om-accent: var(--om-clay);
+      --om-accent-secondary: var(--om-sage);
+      --om-heading: var(--om-timber);
+
+      /* --- Radii --- */
+      --om-radius-sm: 8px;
+      --om-radius-md: 12px;
+      --om-radius-lg: 20px;
+      --om-radius-xl: 28px;
+      --om-radius-pill: 50px;
+      --om-radius-round: 50%;
+
+      /* --- Shadows --- */
+      --om-shadow-sm:
+        0 1px 3px rgba(59, 51, 45, 0.04),
+        0 4px 16px rgba(59, 51, 45, 0.03);
+      --om-shadow-md:
+        0 2px 6px rgba(59, 51, 45, 0.06),
+        0 8px 24px rgba(59, 51, 45, 0.05);
+      --om-shadow-lg:
+        0 4px 12px rgba(59, 51, 45, 0.08),
+        0 16px 40px rgba(59, 51, 45, 0.06);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--om-text-primary);
+      background-color: var(--om-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'DM Serif Display', 'Lora', Georgia, serif;
+      color: var(--om-heading);
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    /* Subtle linen texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='0' y='0' fill='%235C534B' opacity='0.5'/%3E%3Crect width='1' height='1' x='4' y='4' fill='%235C534B' opacity='0.3'/%3E%3Crect width='1' height='1' x='2' y='6' fill='%235C534B' opacity='0.4'/%3E%3Crect width='1' height='1' x='6' y='2' fill='%235C534B' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2.5rem;
+      background: rgba(250, 246, 240, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--om-border-light);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--om-heading);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--om-clay);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--om-text-secondary);
+      letter-spacing: 0.03em;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--om-clay);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--om-clay);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      min-height: 75vh;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(
+        170deg,
+        var(--om-bg-primary) 0%,
+        var(--om-bg-surface) 50%,
+        rgba(138, 154, 123, 0.06) 100%
+      );
+    }
+
+    /* Decorative organic blob -- top right */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 47% 53% 61% 39% / 45% 51% 49% 55%;
+      background: radial-gradient(
+        ellipse at 30% 40%,
+        rgba(164, 120, 100, 0.06) 0%,
+        rgba(164, 120, 100, 0.02) 50%,
+        transparent 70%
+      );
+      top: -150px;
+      right: -100px;
+      pointer-events: none;
+      animation: blob-drift 22s ease-in-out infinite;
+    }
+
+    /* Decorative organic blob -- bottom left */
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 450px;
+      height: 450px;
+      border-radius: 53% 47% 39% 61% / 55% 45% 55% 45%;
+      background: radial-gradient(
+        ellipse at 60% 50%,
+        rgba(138, 154, 123, 0.05) 0%,
+        transparent 60%
+      );
+      bottom: -100px;
+      left: -80px;
+      pointer-events: none;
+      animation: blob-drift 28s ease-in-out infinite reverse;
+    }
+
+    @keyframes blob-drift {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(12px, -8px) rotate(2deg); }
+      66% { transform: translate(-6px, 6px) rotate(-1deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--om-text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      color: var(--om-heading);
+      margin-bottom: 1.25rem;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--om-walnut);
+      margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--om-text-secondary);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative leaf SVG in hero */
+    .hero-leaf {
+      position: absolute;
+      opacity: 0.06;
+      pointer-events: none;
+      animation: leaf-sway 12s ease-in-out infinite;
+    }
+
+    .hero-leaf--right {
+      right: 4%;
+      bottom: 8%;
+      animation-delay: -5s;
+    }
+
+    .hero-leaf--left {
+      left: 4%;
+      top: 12%;
+    }
+
+    @keyframes leaf-sway {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      50% { transform: rotate(3deg) translateY(-8px); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: var(--om-radius-pill);
+      cursor: pointer;
+      transition: all 0.35s ease;
+    }
+
+    .btn-primary {
+      background: var(--om-timber);
+      color: var(--om-bg-primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--om-clay);
+      box-shadow: 0 4px 16px rgba(107, 84, 69, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(107, 84, 69, 0.15);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--om-timber);
+      border: 1.5px solid var(--om-border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--om-clay);
+      background: rgba(164, 120, 100, 0.06);
+      color: var(--om-clay);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--om-clay);
+      border: none;
+      padding: 0.6rem 1rem;
+      text-decoration: underline;
+      text-decoration-color: var(--om-border);
+      text-underline-offset: 4px;
+    }
+
+    .btn-ghost:hover {
+      text-decoration-color: var(--om-clay);
+    }
+
+    .btn-sage {
+      background: var(--om-sage);
+      color: var(--om-bg-primary);
+    }
+
+    .btn-sage:hover {
+      background: var(--om-moss);
+      box-shadow: 0 4px 16px rgba(107, 127, 94, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--surface {
+      background: var(--om-bg-surface);
+    }
+
+    .section--surface-alt {
+      background: var(--om-bg-surface-alt);
+    }
+
+    .section--primary {
+      background: var(--om-bg-primary);
+    }
+
+    .section-label {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--om-text-muted);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', 'Lora', Georgia, serif;
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      text-align: center;
+      color: var(--om-heading);
+      margin-bottom: 0.5rem;
+      font-weight: 400;
+    }
+
+    .section-subtitle {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      text-align: center;
+      color: var(--om-walnut);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       ORGANIC DIVIDER
+       ============================================ */
+    .organic-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 2rem 0;
+    }
+
+    .organic-divider::before,
+    .organic-divider::after {
+      content: '';
+      flex: 1;
+      height: 1.5px;
+      background: linear-gradient(90deg, transparent, var(--om-sand), transparent);
+    }
+
+    .organic-divider span {
+      padding: 0 16px;
+      color: var(--om-sand);
+      font-size: 1rem;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--om-clay);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--om-border-light);
+    }
+
+    .typo-display {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--om-heading);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .typo-heading {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--om-heading);
+      line-height: 1.25;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .typo-subheading {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: clamp(1.15rem, 2vw, 1.35rem);
+      color: var(--om-walnut);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+    }
+
+    .typo-body {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--om-text-primary);
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    .typo-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      color: var(--om-clay);
+      line-height: 1.5;
+    }
+
+    .typo-label {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--om-text-muted);
+    }
+
+    .typo-right {
+      background: var(--om-bg-surface);
+      border-radius: var(--om-radius-lg);
+      padding: 36px;
+      border: 1px solid var(--om-border-light);
+    }
+
+    .typo-right h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--om-text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--om-border-light);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--om-text-muted);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: var(--om-radius-lg);
+      overflow: hidden;
+      background: var(--om-bg-surface);
+      border: 1px solid var(--om-border-light);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: var(--om-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--om-shadow-md);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--om-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--om-text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--om-bg-surface);
+      border: 1px solid var(--om-border-light);
+      border-radius: var(--om-radius-lg);
+      padding: 2rem;
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+      box-shadow: var(--om-shadow-sm);
+    }
+
+    .card:hover {
+      box-shadow: var(--om-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--om-radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-icon--clay {
+      background: rgba(164, 120, 100, 0.1);
+      color: var(--om-clay);
+    }
+
+    .card-icon--sage {
+      background: rgba(138, 154, 123, 0.12);
+      color: var(--om-moss);
+    }
+
+    .card-icon--walnut {
+      background: rgba(139, 111, 94, 0.1);
+      color: var(--om-walnut);
+    }
+
+    .card-icon--honey {
+      background: rgba(194, 166, 140, 0.15);
+      color: var(--om-timber);
+    }
+
+    .card-icon--timber {
+      background: rgba(107, 84, 69, 0.08);
+      color: var(--om-timber);
+    }
+
+    .card-icon--moss {
+      background: rgba(107, 127, 94, 0.1);
+      color: var(--om-moss);
+    }
+
+    .card h3 {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--om-timber);
+      margin-bottom: 0.75rem;
+      letter-spacing: 0.01em;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--om-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: var(--om-radius-pill);
+      border: 1px solid var(--om-border);
+      color: var(--om-text-muted);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: rgba(164, 120, 100, 0.08);
+      color: var(--om-clay);
+      border-color: var(--om-clay);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .effect-demo {
+      border-radius: var(--om-radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--om-border-light);
+      background: var(--om-bg-surface);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-preview-label {
+      position: relative;
+      z-index: 2;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--om-heading);
+      pointer-events: none;
+    }
+
+    /* Effect 1: Organic blob gradient */
+    .effect-blob {
+      background: var(--om-bg-primary);
+    }
+
+    .effect-blob::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 47% 53% 61% 39% / 45% 51% 49% 55%;
+      background: radial-gradient(
+        ellipse at 40% 40%,
+        rgba(164, 120, 100, 0.15) 0%,
+        rgba(164, 120, 100, 0.05) 50%,
+        transparent 70%
+      );
+      top: -30px;
+      right: -20px;
+      animation: blob-drift 18s ease-in-out infinite;
+    }
+
+    .effect-blob::after {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 53% 47% 39% 61% / 55% 45% 55% 45%;
+      background: radial-gradient(
+        ellipse at 60% 50%,
+        rgba(138, 154, 123, 0.12) 0%,
+        transparent 60%
+      );
+      bottom: -30px;
+      left: -10px;
+      animation: blob-drift 24s ease-in-out infinite reverse;
+    }
+
+    /* Effect 2: Linen texture */
+    .effect-linen {
+      background: var(--om-bg-surface);
+    }
+
+    .effect-linen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='0' y='0' fill='%235C534B' opacity='0.5'/%3E%3Crect width='1' height='1' x='4' y='4' fill='%235C534B' opacity='0.3'/%3E%3Crect width='1' height='1' x='2' y='6' fill='%235C534B' opacity='0.4'/%3E%3Crect width='1' height='1' x='6' y='2' fill='%235C534B' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    /* Effect 3: Warm gradient sunrise */
+    .effect-sunrise {
+      background: linear-gradient(
+        170deg,
+        #FAF6F0 0%,
+        #F0EBE3 30%,
+        rgba(191, 169, 143, 0.2) 70%,
+        rgba(164, 120, 100, 0.12) 100%
+      );
+    }
+
+    /* Effect 4: Forest breath */
+    .effect-forest {
+      background: linear-gradient(
+        175deg,
+        #FAF6F0 0%,
+        rgba(138, 154, 123, 0.1) 40%,
+        rgba(107, 127, 94, 0.08) 70%,
+        #F0EBE3 100%
+      );
+    }
+
+    .effect-forest::before {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(138, 154, 123, 0.08) 0%,
+        transparent 70%
+      );
+      top: 10%;
+      right: 15%;
+      pointer-events: none;
+    }
+
+    /* Effect 5: Soft clay earth */
+    .effect-earth {
+      background: linear-gradient(
+        180deg,
+        #F0EBE3 0%,
+        #E4DCD3 60%,
+        rgba(164, 120, 100, 0.15) 100%
+      );
+    }
+
+    .effect-earth::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(
+        to top,
+        rgba(164, 120, 100, 0.06),
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    /* Effect 6: Organic wave pattern */
+    .effect-wave {
+      background: var(--om-bg-primary);
+      overflow: hidden;
+    }
+
+    .effect-wave::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -10%;
+      width: 120%;
+      height: 60%;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(164, 120, 100, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 70%, rgba(138, 154, 123, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 85% 90%, rgba(194, 166, 140, 0.08) 0%, transparent 45%);
+      pointer-events: none;
+    }
+
+    .effect-wave::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--om-sand),
+        transparent
+      );
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--om-timber);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--om-text-muted);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 3.5rem 2.5rem;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--om-bg-surface);
+      border-radius: var(--om-radius-xl);
+      border: 1px solid var(--om-border-light);
+      position: relative;
+      box-shadow: var(--om-shadow-sm);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'DM Serif Display', serif;
+      font-size: 6rem;
+      color: var(--om-clay);
+      opacity: 0.12;
+      position: absolute;
+      top: 0px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      color: var(--om-walnut);
+      max-width: 540px;
+      margin: 0 auto 1.25rem;
+      line-height: 1.7;
+    }
+
+    .quote-block cite {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--om-text-muted);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 620px;
+      margin: 0 auto;
+      background: linear-gradient(
+        180deg,
+        var(--om-bg-surface) 0%,
+        var(--om-bg-surface-alt) 100%
+      );
+      border-radius: var(--om-radius-xl);
+      padding: 4rem 3rem;
+      text-align: center;
+      border: 1px solid var(--om-border-light);
+      box-shadow: var(--om-shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle organic blob decoration in CTA */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border-radius: 47% 53% 61% 39% / 45% 51% 49% 55%;
+      background: radial-gradient(
+        ellipse at 40% 40%,
+        rgba(138, 154, 123, 0.05) 0%,
+        transparent 60%
+      );
+      top: -80px;
+      right: -60px;
+      pointer-events: none;
+    }
+
+    .cta-container h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .cta-container .handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.25rem;
+      color: var(--om-clay);
+      margin-bottom: 1.5rem;
+      display: block;
+      position: relative;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--om-text-secondary);
+      margin: 0 auto 2rem;
+      max-width: 460px;
+      position: relative;
+    }
+
+    .cta-container .btn {
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: linear-gradient(
+        180deg,
+        var(--om-bg-surface-alt) 0%,
+        #D4C9BD 100%
+      );
+      padding: 4rem 24px 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Subtle linen texture on footer */
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='0' y='0' fill='%233B332D' opacity='0.5'/%3E%3Crect width='1' height='1' x='4' y='4' fill='%233B332D' opacity='0.3'/%3E%3Crect width='1' height='1' x='2' y='6' fill='%233B332D' opacity='0.4'/%3E%3Crect width='1' height='1' x='6' y='2' fill='%233B332D' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--om-heading);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer p {
+      font-size: 0.92rem;
+      color: var(--om-text-secondary);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--om-text-muted);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--om-clay);
+    }
+
+    .footer-divider {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-divider span {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--om-sand);
+    }
+
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: var(--om-text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       WAVE DIVIDER
+       ============================================ */
+    .wave-divider {
+      width: 100%;
+      height: 50px;
+      display: block;
+    }
+
+    .wave-divider--surface { fill: var(--om-bg-surface); }
+    .wave-divider--surface-alt { fill: var(--om-bg-surface-alt); }
+    .wave-divider--primary { fill: var(--om-bg-primary); }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.82rem;
+      }
+
+      .hero {
+        padding: 4rem 1.5rem;
+        min-height: 65vh;
+      }
+
+      .hero-leaf {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .cta-container {
+        padding: 3rem 1.5rem;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 3rem 16px 1.5rem;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before,
+      .hero::after,
+      .hero-leaf,
+      .effect-blob::before,
+      .effect-blob::after {
+        animation: none;
+      }
+
+      .card, .color-chip, .tag, .btn,
+      .nav-links a::after, .effect-demo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Organic Modern</a>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative leaf SVG left -->
+    <svg class="hero-leaf hero-leaf--left" width="80" height="120" viewBox="0 0 80 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 10 C20 30, 10 60, 15 90 C18 100, 25 108, 40 112 C55 108, 62 100, 65 90 C70 60, 60 30, 40 10Z" fill="#8A9A7B" opacity="0.5"/>
+      <path d="M40 10 C40 40, 40 70, 40 112" stroke="#6B7F5E" stroke-width="1.5" opacity="0.4"/>
+      <path d="M40 35 C32 42, 22 48, 18 55" stroke="#6B7F5E" stroke-width="1" opacity="0.3"/>
+      <path d="M40 55 C48 62, 56 66, 62 72" stroke="#6B7F5E" stroke-width="1" opacity="0.3"/>
+      <path d="M40 75 C34 80, 26 84, 22 88" stroke="#6B7F5E" stroke-width="1" opacity="0.3"/>
+    </svg>
+
+    <!-- Decorative leaf SVG right -->
+    <svg class="hero-leaf hero-leaf--right" width="65" height="100" viewBox="0 0 65 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M32 8 C16 24, 8 50, 12 74 C14 82, 20 88, 32 92 C44 88, 50 82, 52 74 C56 50, 48 24, 32 8Z" fill="#8A9A7B" opacity="0.4"/>
+      <path d="M32 8 C32 35, 32 60, 32 92" stroke="#6B7F5E" stroke-width="1.2" opacity="0.35"/>
+      <path d="M32 28 C38 34, 44 38, 49 42" stroke="#6B7F5E" stroke-width="0.8" opacity="0.25"/>
+      <path d="M32 48 C26 54, 20 58, 16 62" stroke="#6B7F5E" stroke-width="0.8" opacity="0.25"/>
+    </svg>
+
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1>Organic Modern</h1>
+      <p class="hero-subtitle">Where Nature Meets Refined Simplicity</p>
+      <p class="hero-desc">
+        A contemporary aesthetic that harmonizes clean modern lines with the warmth, texture, and gentle irregularity of the natural world &mdash; creating spaces that feel both refined and deeply lived-in.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ORGANIC WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C150,45 300,10 450,25 C600,40 750,15 900,28 C1050,42 1150,18 1200,25 L1200,50 L0,50 Z" class="wave-divider--primary"/>
+  </svg>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--primary" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Clean, Warm &amp; Humanist</h2>
+      <p class="section-subtitle">refined serifs paired with soft, readable sans-serifs</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / DM Serif Display</p>
+            <p class="typo-display">Natural Elegance</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Lora</p>
+            <p class="typo-heading">Warm Organic Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Outfit</p>
+            <p class="typo-subheading">Soft Modern Subheadings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / DM Sans</p>
+            <p class="typo-body">Clean humanist text for comfortable long-form reading. Organic Modern favors generous line heights and restrained weight usage for calm, spacious typography.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Handwritten / Caveat</p>
+            <p class="typo-handwritten">warmth, texture &amp; quiet luxury</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Outfit Uppercase</p>
+            <p class="typo-label">Navigation &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--om-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 500; color: var(--om-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.35rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 500; color: var(--om-walnut);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--om-clay);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--om-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.75rem; color: var(--om-text-muted); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--om-border-light);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--om-clay);">DM Serif Display</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans</strong><br>
+              <span style="color: var(--om-text-muted); font-size: 0.85rem;">Warm elegance with clean readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Lora', serif; color: var(--om-clay);">Lora</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans</strong><br>
+              <span style="color: var(--om-text-muted); font-size: 0.85rem;">Classic organic warmth, modern body text</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Outfit', sans-serif; color: var(--om-clay);">Outfit</strong> + <strong style="font-family: 'Lora', serif;">Lora</strong><br>
+              <span style="color: var(--om-text-muted); font-size: 0.85rem;">Soft modern headings, rich readable body</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ORGANIC DIVIDER ===== -->
+  <div class="section--primary" style="padding: 0;">
+    <div class="organic-divider">
+      <span>&#8226; &#8226; &#8226;</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--surface" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Drawn from the Landscape</h2>
+      <p class="section-subtitle">warm sand, soft clay, weathered stone, dried sage</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#FAF6F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0EBE3;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Linen</div>
+            <div class="color-hex">#F0EBE3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E4DCD3;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Sand</div>
+            <div class="color-hex">#E4DCD3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4C9BD;"></div>
+          <div class="color-info">
+            <div class="color-name">Driftwood</div>
+            <div class="color-hex">#D4C9BD</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8A99A;"></div>
+          <div class="color-info">
+            <div class="color-name">River Stone</div>
+            <div class="color-hex">#B8A99A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4AE96;"></div>
+          <div class="color-info">
+            <div class="color-name">Sandstone</div>
+            <div class="color-hex">#C4AE96</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C2A68C;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Honey</div>
+            <div class="color-hex">#C2A68C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #BFA98F;"></div>
+          <div class="color-info">
+            <div class="color-name">Sun-dried Clay</div>
+            <div class="color-hex">#BFA98F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A47864;"></div>
+          <div class="color-info">
+            <div class="color-name">Mocha Clay</div>
+            <div class="color-hex">#A47864</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B6F5E;"></div>
+          <div class="color-info">
+            <div class="color-name">Walnut</div>
+            <div class="color-hex">#8B6F5E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B5445;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Timber</div>
+            <div class="color-hex">#6B5445</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8A9A7B;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Sage</div>
+            <div class="color-hex">#8A9A7B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7F5E;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Moss</div>
+            <div class="color-hex">#6B7F5E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B332D;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Brown</div>
+            <div class="color-hex">#3B332D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C534B;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Gray</div>
+            <div class="color-hex">#5C534B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,28 C200,42 350,8 500,22 C650,36 800,12 950,26 C1100,40 1180,16 1200,20 L1200,50 L0,50 Z" class="wave-divider--primary"/>
+  </svg>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--primary" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Soft, Grounded &amp; Tactile</h2>
+      <p class="section-subtitle">rounded edges, warm shadows, natural material inspiration</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--clay">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 3C7 3 3 7 3 12s4 9 9 9c1.5 0 3-.4 4.2-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M16 8c1.5 1.5 2.5 3.5 2.5 6s-1 4-2 5.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Curved Silhouettes</h3>
+          <p>Rounded edges, soft arcs, and flowing forms replace sharp corners. Generous border-radius values of 12-24px evoke natural, organic shapes throughout the interface.</p>
+          <span class="tag">Shape</span>
+          <span class="tag">Layout</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sage">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 22V8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 8c-4-3-8 1-8 5s4 6 8 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M12 12c4-4 8 0 8 4s-4 5-8 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Biophilic Integration</h3>
+          <p>Botanical illustrations, organic SVG elements, and nature-inspired color palettes create a persistent, calming connection to the natural world.</p>
+          <span class="tag">Nature</span>
+          <span class="tag">Pattern</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--walnut">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="18" height="18" rx="4" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M3 9h18M9 3v18" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            </svg>
+          </div>
+          <h3>Natural Textures</h3>
+          <p>Wood grain, linen weave, stone surfaces, and ceramic finishes appear as subtle background textures, grounding the digital experience in physicality.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Material</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--honey">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 20h16M4 20V10l8-6 8 6v10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <rect x="9" y="14" width="6" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Grounded Shadows</h3>
+          <p>Box shadows are soft, warm-toned, and suggest gentle weight. Elements rest on surfaces rather than floating dramatically, creating a calm, settled atmosphere.</p>
+          <span class="tag">Depth</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--timber">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M3 12h4l3-9 4 18 3-9h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <h3>Slow, Deliberate Motion</h3>
+          <p>Transitions are gentle and unhurried with 300-500ms ease-out curves. Subtle fades and smooth transforms replace bouncy or snappy effects for natural feel.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">UX</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--moss">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M12 8v4l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Generous Whitespace</h3>
+          <p>Ample breathing room around every element creates a calm, uncluttered experience. Whitespace is treated as sunlight in a room &mdash; an active design element.</p>
+          <span class="tag">Spacing</span>
+          <span class="tag">Layout</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ORGANIC DIVIDER ===== -->
+  <div class="section--primary" style="padding: 0;">
+    <div class="organic-divider">
+      <span>&#8226; &#8226; &#8226;</span>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--primary" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Atmosphere</h2>
+      <p class="section-subtitle">subtle, warm techniques with no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-blob">
+            <span class="effect-preview-label">Organic Blobs</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Organic Blob Gradient</h4>
+            <p>Irregular border-radius with radial gradients create soft, flowing biomorphic shapes.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen">
+            <span class="effect-preview-label">Linen Weave</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Linen Texture Overlay</h4>
+            <p>A fine SVG-based dot pattern at low opacity simulates woven linen fabric on surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-sunrise">
+            <span class="effect-preview-label">Sunrise</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Warm Sunrise Gradient</h4>
+            <p>Multi-stop linear gradient blending parchment, linen, and terracotta tones for warmth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-forest">
+            <span class="effect-preview-label">Forest Breath</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Forest Breath Gradient</h4>
+            <p>A subtle sage green undertone with a soft radial accent for natural depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-earth">
+            <span class="effect-preview-label">Clay Earth</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Clay Earth Gradient</h4>
+            <p>Warm grounded gradient transitioning from linen to sand with a clay accent base.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-wave">
+            <span class="effect-preview-label">Organic Wash</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Organic Color Wash</h4>
+            <p>Layered radial gradients with a soft divider line create a watercolor-like atmosphere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,22 C180,38 320,12 480,28 C640,44 780,10 960,30 C1080,40 1160,20 1200,24 L1200,50 L0,50 Z" class="wave-divider--surface"/>
+  </svg>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--surface">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Tactile Buttons</h2>
+      <p class="section-subtitle">warm, rounded, and gently responsive</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Action</a>
+        <a href="#" class="btn btn-secondary">Secondary</a>
+        <a href="#" class="btn btn-sage">Sage Accent</a>
+        <a href="#" class="btn btn-ghost">Ghost Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--primary">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The beauty of Organic Modern is its quiet confidence &mdash; sophisticated enough to convey intentionality, yet warm enough to feel like a place you want to linger.
+        </blockquote>
+        <cite>&mdash; The Spirit of Organic Modern Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Design with Nature</h2>
+        <span class="handwritten">warmth, texture &amp; quiet luxury</span>
+        <p>
+          Organic Modern embraces natural materials, warm neutrals, and curved forms. Ground every layout in soft clay, dried sage, and honest textures &mdash; then let generous whitespace breathe life into the design.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C200,12 400,42 600,20 C800,0 1000,38 1200,18 L1200,50 L0,50 Z" class="wave-divider--surface-alt"/>
+  </svg>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Organic Modern</h3>
+      <p>
+        A design aesthetic reference celebrating the harmonious blend of clean modern lines and natural warmth. Warm neutrals, curved forms, and tactile textures &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-divider">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Organic Modern &bull; Nature meets refined simplicity</p>
+    </div>
+  </footer>
+
+</body>
+</html>

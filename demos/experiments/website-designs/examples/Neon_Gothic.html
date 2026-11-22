@@ -1,0 +1,2265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon Gothic -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600&family=Rajdhani:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --gothic-bg-void: #0b0b10;
+      --gothic-bg-stone: #15151f;
+      --gothic-bg-cloister: #1c1c2a;
+      --gothic-bg-elevated: #2a2a3c;
+      --gothic-bg-mortar: #3a3a50;
+
+      /* --- Neon Accents --- */
+      --gothic-violet: #a855f7;
+      --gothic-orchid: #c026d3;
+      --gothic-cyan: #06b6d4;
+      --gothic-magenta: #ec4899;
+      --gothic-green: #10b981;
+      --gothic-amber: #f59e0b;
+      --gothic-crimson: #ef4444;
+
+      /* --- Text --- */
+      --gothic-text-primary: #d4d4e0;
+      --gothic-text-secondary: #8888a0;
+      --gothic-text-bright: #f0f0f8;
+
+      /* --- Glows --- */
+      --gothic-glow-violet: 0 0 12px rgba(168, 85, 247, 0.5), 0 0 45px rgba(168, 85, 247, 0.15);
+      --gothic-glow-orchid: 0 0 12px rgba(192, 38, 211, 0.5), 0 0 45px rgba(192, 38, 211, 0.15);
+      --gothic-glow-cyan: 0 0 12px rgba(6, 182, 212, 0.5), 0 0 45px rgba(6, 182, 212, 0.15);
+      --gothic-glow-magenta: 0 0 12px rgba(236, 72, 153, 0.5), 0 0 45px rgba(236, 72, 153, 0.15);
+
+      /* --- Borders --- */
+      --gothic-border: 1px solid rgba(168, 85, 247, 0.15);
+      --gothic-border-bright: 1px solid rgba(168, 85, 247, 0.4);
+      --gothic-border-cyan: 1px solid rgba(6, 182, 212, 0.3);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.75;
+      color: var(--gothic-text-primary);
+      background: var(--gothic-bg-void);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      color: var(--gothic-text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+    }
+
+    a {
+      color: var(--gothic-cyan);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--gothic-violet);
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);
+    }
+
+    /* Ambient background glow overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 20%, rgba(168, 85, 247, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(6, 182, 212, 0.03) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(236, 72, 153, 0.02) 0%, transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.25rem 2rem;
+      background: rgba(11, 11, 16, 0.92);
+      border-bottom: 1px solid rgba(168, 85, 247, 0.12);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gothic-violet) 20%,
+        var(--gothic-cyan) 50%,
+        var(--gothic-violet) 80%,
+        transparent
+      );
+      opacity: 0.4;
+    }
+
+    .nav-logo {
+      font-family: 'UnifrakturCook', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--gothic-violet);
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+      transition: text-shadow 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      text-shadow:
+        0 0 10px rgba(168, 85, 247, 0.8),
+        0 0 30px rgba(168, 85, 247, 0.4);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gothic-text-secondary);
+      padding: 8px 18px;
+      position: relative;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gothic-violet);
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 18px;
+      right: 18px;
+      height: 1px;
+      background: var(--gothic-violet);
+      box-shadow: 0 0 6px rgba(168, 85, 247, 0.5);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ============================================
+       HERO SECTION -- Cathedral Nave
+       ============================================ */
+    .hero {
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(168, 85, 247, 0.1) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 100%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+        var(--gothic-bg-void);
+      padding: 100px 24px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+    }
+
+    /* Gothic vertical light beams */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(
+        180deg,
+        rgba(168, 85, 247, 0.3),
+        rgba(168, 85, 247, 0.05) 40%,
+        transparent 70%
+      );
+      box-shadow:
+        -200px 0 80px 40px rgba(168, 85, 247, 0.02),
+        200px 0 80px 40px rgba(6, 182, 212, 0.02);
+      pointer-events: none;
+    }
+
+    /* Pointed arch ornament at bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 60px;
+      border-top: 2px solid var(--gothic-violet);
+      border-radius: 50% 50% 0 0;
+      box-shadow: 0 -4px 20px rgba(168, 85, 247, 0.25);
+    }
+
+    /* Floating particles */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 12% 25%, rgba(168, 85, 247, 0.25) 0%, transparent 2px),
+        radial-gradient(circle at 88% 18%, rgba(6, 182, 212, 0.2) 0%, transparent 1.5px),
+        radial-gradient(circle at 35% 80%, rgba(236, 72, 153, 0.18) 0%, transparent 2px),
+        radial-gradient(circle at 75% 65%, rgba(168, 85, 247, 0.15) 0%, transparent 1px),
+        radial-gradient(circle at 20% 55%, rgba(6, 182, 212, 0.12) 0%, transparent 1.5px),
+        radial-gradient(circle at 92% 82%, rgba(168, 85, 247, 0.2) 0%, transparent 2px),
+        radial-gradient(circle at 50% 10%, rgba(236, 72, 153, 0.15) 0%, transparent 1px),
+        radial-gradient(circle at 5% 90%, rgba(6, 182, 212, 0.18) 0%, transparent 2px);
+      animation: particleDrift 8s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+
+    @keyframes particleDrift {
+      0% { transform: translate(0, 0); opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { transform: translate(6px, -10px); opacity: 0.6; }
+    }
+
+    /* Gothic side pillars */
+    .hero-pillar {
+      position: absolute;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, rgba(168, 85, 247, 0.2), transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-pillar--left { left: 8%; }
+    .hero-pillar--right { right: 8%; }
+
+    .hero-pillar::before {
+      content: '';
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 8px;
+      height: 8px;
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 6px rgba(168, 85, 247, 0.2);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tagline {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--gothic-text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'UnifrakturCook', serif;
+      font-size: clamp(3.2rem, 10vw, 8rem);
+      font-weight: 700;
+      color: var(--gothic-violet);
+      text-shadow:
+        0 0 10px rgba(168, 85, 247, 0.8),
+        0 0 30px rgba(168, 85, 247, 0.4),
+        0 0 60px rgba(168, 85, 247, 0.2),
+        0 0 100px rgba(168, 85, 247, 0.1);
+      margin-bottom: 12px;
+      line-height: 1.05;
+      text-transform: none;
+      animation: neonPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes neonPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.88; }
+    }
+
+    .hero-subtitle {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gothic-cyan);
+      text-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--gothic-text-primary);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Rose window decorative element */
+    .hero-rose {
+      position: absolute;
+      top: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      pointer-events: none;
+      z-index: 1;
+      box-shadow:
+        0 0 12px rgba(168, 85, 247, 0.1),
+        inset 0 0 12px rgba(168, 85, 247, 0.05);
+    }
+
+    .hero-rose::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      background: conic-gradient(
+        from 0deg,
+        rgba(168, 85, 247, 0.06) 0deg,
+        transparent 30deg,
+        rgba(6, 182, 212, 0.06) 60deg,
+        transparent 90deg,
+        rgba(236, 72, 153, 0.06) 120deg,
+        transparent 150deg,
+        rgba(168, 85, 247, 0.06) 180deg,
+        transparent 210deg,
+        rgba(6, 182, 212, 0.06) 240deg,
+        transparent 270deg,
+        rgba(236, 72, 153, 0.06) 300deg,
+        transparent 330deg,
+        rgba(168, 85, 247, 0.06) 360deg
+      );
+    }
+
+    .hero-rose::after {
+      content: '';
+      position: absolute;
+      inset: 28px;
+      border-radius: 50%;
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      box-shadow: 0 0 6px rgba(168, 85, 247, 0.1);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 14px 36px;
+      border: 1px solid var(--gothic-violet);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s ease;
+      clip-path: polygon(
+        0% 8px, 8px 0%, calc(100% - 8px) 0%, 100% 8px,
+        100% calc(100% - 8px), calc(100% - 8px) 100%,
+        8px 100%, 0% calc(100% - 8px)
+      );
+    }
+
+    .btn-primary {
+      background: rgba(168, 85, 247, 0.1);
+      color: var(--gothic-violet);
+    }
+
+    .btn-primary:hover {
+      color: var(--gothic-text-bright);
+      background: rgba(168, 85, 247, 0.2);
+      box-shadow:
+        0 0 12px rgba(168, 85, 247, 0.5),
+        0 0 35px rgba(168, 85, 247, 0.15),
+        inset 0 0 12px rgba(168, 85, 247, 0.1);
+      text-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+    }
+
+    .btn-cyan {
+      background: transparent;
+      color: var(--gothic-cyan);
+      border-color: var(--gothic-cyan);
+    }
+
+    .btn-cyan:hover {
+      color: var(--gothic-text-bright);
+      background: rgba(6, 182, 212, 0.1);
+      box-shadow:
+        0 0 12px rgba(6, 182, 212, 0.5),
+        0 0 35px rgba(6, 182, 212, 0.15),
+        inset 0 0 12px rgba(6, 182, 212, 0.1);
+      text-shadow: 0 0 8px rgba(6, 182, 212, 0.6);
+    }
+
+    .btn-magenta {
+      background: transparent;
+      color: var(--gothic-magenta);
+      border-color: var(--gothic-magenta);
+    }
+
+    .btn-magenta:hover {
+      color: var(--gothic-text-bright);
+      background: rgba(236, 72, 153, 0.1);
+      box-shadow:
+        0 0 12px rgba(236, 72, 153, 0.5),
+        0 0 35px rgba(236, 72, 153, 0.15),
+        inset 0 0 12px rgba(236, 72, 153, 0.1);
+      text-shadow: 0 0 8px rgba(236, 72, 153, 0.6);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--gothic-text-secondary);
+      border-color: var(--gothic-bg-mortar);
+    }
+
+    .btn-ghost:hover {
+      color: var(--gothic-text-bright);
+      border-color: var(--gothic-violet);
+      box-shadow:
+        0 0 8px rgba(168, 85, 247, 0.3),
+        inset 0 0 8px rgba(168, 85, 247, 0.05);
+    }
+
+    /* ============================================
+       GOTHIC NEON BAND DIVIDER
+       ============================================ */
+    .neon-band {
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gothic-violet) 15%,
+        var(--gothic-cyan) 35%,
+        var(--gothic-magenta) 50%,
+        var(--gothic-cyan) 65%,
+        var(--gothic-violet) 85%,
+        transparent
+      );
+      box-shadow:
+        0 0 8px rgba(168, 85, 247, 0.4),
+        0 0 20px rgba(168, 85, 247, 0.1);
+      position: relative;
+    }
+
+    .neon-band::before,
+    .neon-band::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      width: 8px;
+      height: 8px;
+      background: var(--gothic-violet);
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+    }
+
+    .neon-band::before { left: 20%; }
+    .neon-band::after { right: 20%; }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--void {
+      background: var(--gothic-bg-void);
+    }
+
+    .section--stone {
+      background: var(--gothic-bg-stone);
+    }
+
+    .section--cloister {
+      background: var(--gothic-bg-cloister);
+    }
+
+    .section--elevated {
+      background: var(--gothic-bg-elevated);
+    }
+
+    .section-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--gothic-cyan);
+      text-align: center;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+    }
+
+    .section-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      text-align: center;
+      color: var(--gothic-text-bright);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      text-align: center;
+      color: var(--gothic-text-secondary);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       GOTHIC DIVIDER
+       ============================================ */
+    .gothic-divider {
+      width: 100%;
+      height: 50px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 3rem auto;
+      max-width: 600px;
+    }
+
+    .gothic-divider::before,
+    .gothic-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(168, 85, 247, 0.4)
+      );
+    }
+
+    .gothic-divider::after {
+      background: linear-gradient(
+        90deg,
+        rgba(168, 85, 247, 0.4),
+        transparent
+      );
+    }
+
+    .gothic-divider span {
+      width: 10px;
+      height: 10px;
+      background: var(--gothic-violet);
+      transform: rotate(45deg);
+      margin: 0 1rem;
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.6);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gothic-cyan);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(6, 182, 212, 0.3), transparent);
+    }
+
+    .typo-display {
+      font-family: 'UnifrakturCook', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--gothic-violet);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      text-shadow:
+        0 0 10px rgba(168, 85, 247, 0.8),
+        0 0 30px rgba(168, 85, 247, 0.4),
+        0 0 60px rgba(168, 85, 247, 0.2);
+    }
+
+    .typo-heading {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--gothic-text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 600;
+      color: var(--gothic-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.3;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--gothic-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-editorial {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      color: var(--gothic-magenta);
+      line-height: 1.5;
+      text-shadow: 0 0 8px rgba(236, 72, 153, 0.2);
+    }
+
+    .typo-mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      color: var(--gothic-green);
+    }
+
+    .typo-right {
+      background: var(--gothic-bg-stone);
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      padding: 36px;
+      position: relative;
+      clip-path: polygon(
+        0% 3%, 3% 0%, 97% 0%, 100% 3%,
+        100% 97%, 97% 100%, 3% 100%, 0% 97%
+      );
+    }
+
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gothic-violet), transparent);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+      letter-spacing: 0.1em;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.08);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gothic-text-secondary);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--gothic-bg-stone);
+      border: 1px solid rgba(168, 85, 247, 0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      clip-path: polygon(
+        0% 4px, 4px 0%, calc(100% - 4px) 0%, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 0% calc(100% - 4px)
+      );
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--gothic-glow-violet);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle scanline overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        180deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.06) 2px,
+        rgba(0, 0, 0, 0.06) 4px
+      );
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--gothic-text-bright);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .color-hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gothic-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--gothic-bg-stone);
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      padding: 36px 32px;
+      position: relative;
+      text-align: center;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+      clip-path: polygon(
+        0% 5%, 5% 0%, 95% 0%, 100% 5%,
+        100% 95%, 95% 100%, 5% 100%, 0% 95%
+      );
+    }
+
+    /* Pointed arch top ornament */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 30px;
+      border-bottom: 2px solid var(--gothic-violet);
+      border-radius: 0 0 50% 50%;
+      box-shadow: 0 4px 12px rgba(168, 85, 247, 0.2);
+      transition: box-shadow 0.4s ease;
+    }
+
+    /* Bottom glow line */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gothic-violet), transparent);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+      transition: box-shadow 0.4s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(168, 85, 247, 0.4);
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 15px rgba(168, 85, 247, 0.15),
+        0 0 45px rgba(168, 85, 247, 0.05),
+        inset 0 0 15px rgba(168, 85, 247, 0.03);
+    }
+
+    .card:hover::before {
+      box-shadow: 0 4px 20px rgba(168, 85, 247, 0.4);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin: 0 auto 18px;
+      border: 1px solid;
+      position: relative;
+    }
+
+    .card-icon--violet {
+      border-color: rgba(168, 85, 247, 0.4);
+      box-shadow: 0 0 12px rgba(168, 85, 247, 0.2);
+      color: var(--gothic-violet);
+    }
+
+    .card-icon--cyan {
+      border-color: rgba(6, 182, 212, 0.4);
+      box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+      color: var(--gothic-cyan);
+    }
+
+    .card-icon--magenta {
+      border-color: rgba(236, 72, 153, 0.4);
+      box-shadow: 0 0 12px rgba(236, 72, 153, 0.2);
+      color: var(--gothic-magenta);
+    }
+
+    .card-icon--orchid {
+      border-color: rgba(192, 38, 211, 0.4);
+      box-shadow: 0 0 12px rgba(192, 38, 211, 0.2);
+      color: var(--gothic-orchid);
+    }
+
+    .card-icon--green {
+      border-color: rgba(16, 185, 129, 0.4);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.2);
+      color: var(--gothic-green);
+    }
+
+    .card-icon--amber {
+      border-color: rgba(245, 158, 11, 0.4);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.2);
+      color: var(--gothic-amber);
+    }
+
+    .card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.15rem;
+      color: var(--gothic-text-bright);
+      margin-bottom: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--gothic-text-primary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      color: var(--gothic-text-secondary);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+      clip-path: polygon(
+        0% 3px, 3px 0%, calc(100% - 3px) 0%, 100% 3px,
+        100% calc(100% - 3px), calc(100% - 3px) 100%,
+        3px 100%, 0% calc(100% - 3px)
+      );
+    }
+
+    .tag:hover {
+      background: rgba(168, 85, 247, 0.15);
+      color: var(--gothic-violet);
+      border-color: rgba(168, 85, 247, 0.4);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      background: var(--gothic-bg-stone);
+      clip-path: polygon(
+        0% 4px, 4px 0%, calc(100% - 4px) 0%, 100% 4px,
+        100% calc(100% - 4px), calc(100% - 4px) 100%,
+        4px 100%, 0% calc(100% - 4px)
+      );
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Neon Glow Text */
+    .effect-neon-glow {
+      background: var(--gothic-bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-neon-glow::after {
+      content: 'NEON';
+      font-family: 'UnifrakturCook', serif;
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: var(--gothic-violet);
+      text-shadow:
+        0 0 7px rgba(168, 85, 247, 0.9),
+        0 0 20px rgba(168, 85, 247, 0.6),
+        0 0 42px rgba(168, 85, 247, 0.35),
+        0 0 82px rgba(168, 85, 247, 0.15);
+      animation: neonFlicker 4s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes neonFlicker {
+      0%, 100% { opacity: 1; }
+      48% { opacity: 1; }
+      49% { opacity: 0.7; }
+      50% { opacity: 1; }
+      85% { opacity: 1; }
+      86% { opacity: 0.8; }
+      87% { opacity: 1; }
+    }
+
+    /* Effect 2: Stained Glass */
+    .effect-stained-glass {
+      background: linear-gradient(
+        135deg,
+        rgba(168, 85, 247, 0.2) 0%,
+        rgba(6, 182, 212, 0.2) 25%,
+        rgba(236, 72, 153, 0.2) 50%,
+        rgba(16, 185, 129, 0.15) 75%,
+        rgba(168, 85, 247, 0.2) 100%
+      );
+      position: relative;
+    }
+
+    .effect-stained-glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(60deg, transparent 47%, rgba(168, 85, 247, 0.3) 47%, rgba(168, 85, 247, 0.3) 48%, transparent 48%),
+        linear-gradient(120deg, transparent 47%, rgba(6, 182, 212, 0.25) 47%, rgba(6, 182, 212, 0.25) 48%, transparent 48%),
+        linear-gradient(0deg, transparent 47%, rgba(236, 72, 153, 0.2) 47%, rgba(236, 72, 153, 0.2) 48%, transparent 48%);
+    }
+
+    .effect-stained-glass::after {
+      content: 'STAINED GLASS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--gothic-text-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 15px rgba(168, 85, 247, 0.5);
+      z-index: 1;
+    }
+
+    /* Effect 3: Gothic Tracery Pattern */
+    .effect-tracery {
+      background: var(--gothic-bg-void);
+      position: relative;
+    }
+
+    .effect-tracery::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 50% 0%, rgba(168, 85, 247, 0.3) 0%, transparent 35%),
+        radial-gradient(circle at 25% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 25%),
+        radial-gradient(circle at 75% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 25%),
+        radial-gradient(circle at 50% 100%, rgba(6, 182, 212, 0.2) 0%, transparent 30%),
+        linear-gradient(0deg, transparent 48%, rgba(168, 85, 247, 0.12) 48%, rgba(168, 85, 247, 0.12) 52%, transparent 52%),
+        linear-gradient(90deg, transparent 48%, rgba(168, 85, 247, 0.08) 48%, rgba(168, 85, 247, 0.08) 52%, transparent 52%);
+    }
+
+    .effect-tracery::after {
+      content: 'TRACERY';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.5rem;
+      color: var(--gothic-violet);
+      text-shadow: 0 0 15px rgba(168, 85, 247, 0.6);
+      letter-spacing: 0.2em;
+      z-index: 1;
+    }
+
+    /* Effect 4: Neon Border Glow */
+    .effect-border-glow {
+      background: var(--gothic-bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-border-glow::before {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      box-shadow:
+        0 0 10px rgba(6, 182, 212, 0.3),
+        0 0 30px rgba(6, 182, 212, 0.1),
+        inset 0 0 10px rgba(6, 182, 212, 0.1),
+        inset 0 0 30px rgba(6, 182, 212, 0.03);
+      animation: borderPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes borderPulse {
+      0%, 100% {
+        box-shadow:
+          0 0 10px rgba(6, 182, 212, 0.3),
+          0 0 30px rgba(6, 182, 212, 0.1),
+          inset 0 0 10px rgba(6, 182, 212, 0.1);
+      }
+      50% {
+        box-shadow:
+          0 0 15px rgba(6, 182, 212, 0.5),
+          0 0 45px rgba(6, 182, 212, 0.15),
+          inset 0 0 15px rgba(6, 182, 212, 0.15);
+      }
+    }
+
+    .effect-border-glow::after {
+      content: 'GLOW';
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gothic-cyan);
+      text-shadow:
+        0 0 10px rgba(6, 182, 212, 0.8),
+        0 0 30px rgba(6, 182, 212, 0.4);
+      letter-spacing: 0.3em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Pointed Arch Gradient */
+    .effect-arch {
+      background: var(--gothic-bg-cloister);
+      position: relative;
+    }
+
+    .effect-arch::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 80%;
+      background: linear-gradient(
+        0deg,
+        rgba(236, 72, 153, 0.15),
+        rgba(168, 85, 247, 0.1) 40%,
+        transparent 80%
+      );
+      clip-path: polygon(50% 0%, 100% 100%, 0% 100%);
+    }
+
+    .effect-arch::after {
+      content: 'SANCTUM';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--gothic-magenta);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      text-shadow:
+        0 0 10px rgba(236, 72, 153, 0.6),
+        0 0 30px rgba(236, 72, 153, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 6: Rose Window */
+    .effect-rose-window {
+      background: var(--gothic-bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-rose-window::before {
+      content: '';
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 2px solid rgba(168, 85, 247, 0.4);
+      position: relative;
+      box-shadow:
+        0 0 12px rgba(168, 85, 247, 0.3),
+        inset 0 0 12px rgba(168, 85, 247, 0.1);
+      background: conic-gradient(
+        from 0deg,
+        rgba(168, 85, 247, 0.12) 0deg,
+        transparent 30deg,
+        rgba(6, 182, 212, 0.12) 60deg,
+        transparent 90deg,
+        rgba(236, 72, 153, 0.12) 120deg,
+        transparent 150deg,
+        rgba(168, 85, 247, 0.12) 180deg,
+        transparent 210deg,
+        rgba(6, 182, 212, 0.12) 240deg,
+        transparent 270deg,
+        rgba(236, 72, 153, 0.12) 300deg,
+        transparent 330deg,
+        rgba(168, 85, 247, 0.12) 360deg
+      );
+      animation: roseRotate 30s linear infinite;
+    }
+
+    @keyframes roseRotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .effect-rose-window::after {
+      content: 'ROSE';
+      position: absolute;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.2rem;
+      color: var(--gothic-violet);
+      text-shadow: 0 0 12px rgba(168, 85, 247, 0.5);
+      letter-spacing: 0.3em;
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: var(--gothic-text-bright);
+      margin-bottom: 4px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--gothic-text-secondary);
+    }
+
+    /* ============================================
+       GOTHIC MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(168, 85, 247, 0.06) 0%, transparent 60%),
+        var(--gothic-bg-cloister);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid rgba(168, 85, 247, 0.1);
+      border-bottom: 1px solid rgba(168, 85, 247, 0.1);
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--gothic-violet), transparent 30%, transparent 70%, var(--gothic-violet));
+      opacity: 0.15;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .motif-symbol {
+      width: 40px;
+      height: 40px;
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      transform: rotate(45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 8px rgba(168, 85, 247, 0.15);
+      animation: symbolFloat 4s ease-in-out infinite;
+      opacity: 0.5;
+    }
+
+    .motif-symbol:nth-child(2) { animation-delay: -0.5s; border-color: rgba(6, 182, 212, 0.25); box-shadow: 0 0 8px rgba(6, 182, 212, 0.15); }
+    .motif-symbol:nth-child(3) { animation-delay: -1s; }
+    .motif-symbol:nth-child(4) { animation-delay: -1.5s; border-color: rgba(236, 72, 153, 0.25); box-shadow: 0 0 8px rgba(236, 72, 153, 0.15); }
+    .motif-symbol:nth-child(5) { animation-delay: -2s; border-color: rgba(6, 182, 212, 0.25); box-shadow: 0 0 8px rgba(6, 182, 212, 0.15); }
+    .motif-symbol:nth-child(6) { animation-delay: -2.5s; }
+    .motif-symbol:nth-child(7) { animation-delay: -3s; border-color: rgba(236, 72, 153, 0.25); box-shadow: 0 0 8px rgba(236, 72, 153, 0.15); }
+
+    @keyframes symbolFloat {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(-6px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      color: var(--gothic-text-bright);
+      margin-bottom: 12px;
+      text-shadow: 0 0 20px rgba(168, 85, 247, 0.2);
+    }
+
+    .motif-banner p {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--gothic-text-secondary);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--gothic-bg-stone);
+      border: 1px solid rgba(168, 85, 247, 0.15);
+      position: relative;
+      clip-path: polygon(
+        0% 10px, 10px 0%, calc(100% - 10px) 0%, 100% 10px,
+        100% calc(100% - 10px), calc(100% - 10px) 100%,
+        10px 100%, 0% calc(100% - 10px)
+      );
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 7rem;
+      color: var(--gothic-violet);
+      opacity: 0.15;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+      text-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 80%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gothic-violet), transparent);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      color: var(--gothic-text-bright);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      color: var(--gothic-violet);
+      font-style: normal;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA -- POINTED ARCH CONTAINER
+       ============================================ */
+    .arch-container {
+      max-width: 620px;
+      margin: 0 auto;
+      background: var(--gothic-bg-stone);
+      padding: 80px 48px 48px;
+      text-align: center;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+      position: relative;
+      overflow: hidden;
+      clip-path: polygon(
+        50% 0%, 100% 15%, 100% 100%, 0% 100%, 0% 15%
+      );
+    }
+
+    .arch-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 60px;
+      background: linear-gradient(180deg, var(--gothic-violet), transparent);
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
+    .arch-container::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gothic-violet) 20%,
+        var(--gothic-cyan) 50%,
+        var(--gothic-violet) 80%,
+        transparent
+      );
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    }
+
+    .arch-container h2 {
+      font-family: 'UnifrakturCook', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--gothic-violet);
+      text-transform: none;
+      margin-bottom: 12px;
+      text-shadow:
+        0 0 10px rgba(168, 85, 247, 0.6),
+        0 0 30px rgba(168, 85, 247, 0.3);
+    }
+
+    .arch-container .handwritten {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--gothic-cyan);
+      margin-bottom: 20px;
+      display: block;
+      text-shadow: 0 0 10px rgba(6, 182, 212, 0.3);
+    }
+
+    .arch-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 28px;
+      color: var(--gothic-text-primary);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--gothic-bg-cloister);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--gothic-text-primary);
+      position: relative;
+      border-top: 1px solid rgba(168, 85, 247, 0.15);
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gothic-violet) 20%,
+        var(--gothic-cyan) 50%,
+        var(--gothic-violet) 80%,
+        transparent
+      );
+      box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'UnifrakturCook', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--gothic-violet);
+      text-transform: none;
+      text-shadow:
+        0 0 10px rgba(168, 85, 247, 0.6),
+        0 0 30px rgba(168, 85, 247, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .footer > .footer-content > p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: var(--gothic-text-secondary);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gothic-text-secondary);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gothic-violet);
+      text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+    }
+
+    .footer-ornament {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .footer-ornament span {
+      width: 8px;
+      height: 8px;
+      transform: rotate(45deg);
+      border: 1px solid rgba(168, 85, 247, 0.3);
+      box-shadow: 0 0 4px rgba(168, 85, 247, 0.2);
+    }
+
+    .footer-ornament span:nth-child(odd) {
+      border-color: rgba(6, 182, 212, 0.3);
+      box-shadow: 0 0 4px rgba(6, 182, 212, 0.2);
+    }
+
+    .footer-copy {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--gothic-bg-mortar);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.68rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-pillar { display: none; }
+      .hero-rose { display: none; }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .arch-container {
+        padding: 60px 24px 36px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.78rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.7rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+
+      .motif-symbol {
+        width: 30px;
+        height: 30px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero h1,
+      .hero-particles,
+      .effect-neon-glow::after,
+      .effect-border-glow::before,
+      .effect-rose-window::before,
+      .motif-symbol {
+        animation: none;
+      }
+
+      .card, .color-chip, .tag, .btn,
+      .nav-links a, .nav-logo, .footer-links a,
+      a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Neon Gothic</a>
+    <div class="nav-links">
+      <a href="#hero">Sanctum</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-particles"></div>
+    <div class="hero-pillar hero-pillar--left"></div>
+    <div class="hero-pillar hero-pillar--right"></div>
+    <div class="hero-rose"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Neon Gothic</h1>
+      <p class="hero-subtitle">Cathedral Light &amp; Electric Shadow</p>
+      <p class="hero-desc">
+        A hybrid visual language fusing the soaring verticality and ornate tracery of medieval Gothic architecture with the electric luminosity of neon signage &mdash; sacred geometry rendered in phosphorescent light against the darkness of a digital cathedral.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-cyan">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== NEON BAND ===== -->
+  <div class="neon-band"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--void" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Blackletter Meets Neon</h2>
+      <p class="section-subtitle">medieval letterforms illuminated by electric light</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / UnifrakturCook</p>
+            <p class="typo-display">Sacred Neon</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cinzel Decorative</p>
+            <p class="typo-heading">Luminous Arches</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Cinzel</p>
+            <p class="typo-subheading">Cathedral Geometry</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter</p>
+            <p class="typo-body">Clean, legible body text designed for maximum readability against the deep darkness of the Gothic void. Modern sans-serif precision balances the ornamental weight of the display faces.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Editorial / Playfair Display</p>
+            <p class="typo-editorial">Where candlelight meets cathode glow</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Mono / Space Mono</p>
+            <p class="typo-mono">font-family: 'UnifrakturCook'; // blackletter</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'UnifrakturCook', serif; font-size: 2rem; color: var(--gothic-violet); text-shadow: 0 0 10px rgba(168, 85, 247, 0.5);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Cinzel Decorative', serif; font-size: 1.5rem; color: var(--gothic-text-bright); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 1.2rem; font-weight: 600; color: var(--gothic-cyan); text-transform: uppercase; letter-spacing: 0.08em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.3rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: var(--gothic-magenta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--gothic-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--gothic-green);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(168, 85, 247, 0.15);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'UnifrakturCook', serif; color: var(--gothic-violet);">UnifrakturCook</strong> + <strong style="color: var(--gothic-text-bright);">Inter</strong><br>
+              <span style="color: var(--gothic-text-secondary); font-size: 0.85rem;">Signature medieval-modern with neon glow headings</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cinzel Decorative', serif; color: var(--gothic-violet);">Cinzel Decorative</strong> + <strong style="color: var(--gothic-text-bright);">Inter</strong><br>
+              <span style="color: var(--gothic-text-secondary); font-size: 0.85rem;">Elegant Gothic-classical with clean readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Cinzel', serif; color: var(--gothic-violet);">Cinzel</strong> + <strong style="font-family: 'Space Mono', monospace; color: var(--gothic-text-bright);">Space Mono</strong><br>
+              <span style="color: var(--gothic-text-secondary); font-size: 0.85rem;">Formal Gothic meets technical interface</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GOTHIC DIVIDER ===== -->
+  <div class="section--void" style="padding: 0;">
+    <div class="gothic-divider">
+      <span></span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--stone" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Void &amp; Neon Light</h2>
+      <p class="section-subtitle">near-black depths pierced by electric luminescence</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0b0b10;"></div>
+          <div class="color-info">
+            <div class="color-name">Obsidian Black</div>
+            <div class="color-hex">#0B0B10</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #15151f;"></div>
+          <div class="color-info">
+            <div class="color-name">Cathedral Stone</div>
+            <div class="color-hex">#15151F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1c1c2a;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Cloister</div>
+            <div class="color-hex">#1C1C2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2a2a3c;"></div>
+          <div class="color-info">
+            <div class="color-name">Gargoyle Grey</div>
+            <div class="color-hex">#2A2A3C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3a3a50;"></div>
+          <div class="color-info">
+            <div class="color-name">Ash Mortar</div>
+            <div class="color-hex">#3A3A50</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a855f7; box-shadow: 0 0 15px rgba(168, 85, 247, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Neon Violet</div>
+            <div class="color-hex">#A855F7</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c026d3; box-shadow: 0 0 15px rgba(192, 38, 211, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Orchid</div>
+            <div class="color-hex">#C026D3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #06b6d4; box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Spectral Cyan</div>
+            <div class="color-hex">#06B6D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ec4899; box-shadow: 0 0 15px rgba(236, 72, 153, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Magenta Flame</div>
+            <div class="color-hex">#EC4899</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #10b981; box-shadow: 0 0 15px rgba(16, 185, 129, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Phantom Green</div>
+            <div class="color-hex">#10B981</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f59e0b; box-shadow: 0 0 15px rgba(245, 158, 11, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Votive Amber</div>
+            <div class="color-hex">#F59E0B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ef4444; box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);"></div>
+          <div class="color-info">
+            <div class="color-name">Crypt Crimson</div>
+            <div class="color-hex">#EF4444</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d4d4e0;"></div>
+          <div class="color-info">
+            <div class="color-name">Ghost Silver</div>
+            <div class="color-hex">#D4D4E0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8888a0;"></div>
+          <div class="color-info">
+            <div class="color-name">Mist Grey</div>
+            <div class="color-hex">#8888A0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f0f0f8;"></div>
+          <div class="color-info">
+            <div class="color-name">Wraith White</div>
+            <div class="color-hex">#F0F0F8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEON BAND ===== -->
+  <div class="neon-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--void" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Gothic Architected Cards</h2>
+      <p class="section-subtitle">luminous tracery frames housing sacred content</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--violet">&#9960;</div>
+          <h3>Pointed Arches</h3>
+          <p>The defining structural motif of Gothic architecture, reinterpreted as glowing neon outlines that frame content with upward-reaching energy and sacred geometry.</p>
+          <span class="tag">Structure</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--cyan">&#10022;</div>
+          <h3>Neon Glow Effects</h3>
+          <p>Multi-layered text-shadow and box-shadow create the signature luminous quality where every accent color appears to emit its own electric light into the surrounding darkness.</p>
+          <span class="tag">Glow</span>
+          <span class="tag">Shadow</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--magenta">&#10040;</div>
+          <h3>Rose Window Motifs</h3>
+          <p>Circular ornamental elements inspired by Gothic cathedral rose windows, rendered as conic gradients and concentric border rings with stained-glass color palettes.</p>
+          <span class="tag">Ornament</span>
+          <span class="tag">Pattern</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--orchid">&#9875;</div>
+          <h3>Vertical Emphasis</h3>
+          <p>Layouts built on strong vertical axes and bilateral symmetry, echoing the soaring nave of a Gothic cathedral where every element draws the eye upward.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Axis</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">&#9830;</div>
+          <h3>Tracery Borders</h3>
+          <p>Intricate line-work borders inspired by Gothic stone tracery and pointed arch moldings, rendered as luminous CSS outlines with gradient glow effects.</p>
+          <span class="tag">Border</span>
+          <span class="tag">Detail</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">&#9733;</div>
+          <h3>Blackletter Type</h3>
+          <p>Medieval blackletter display faces paired with clean modern sans-serifs create the era-spanning tension central to the aesthetic &mdash; ancient form, electric expression.</p>
+          <span class="tag">Type</span>
+          <span class="tag">Display</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GOTHIC MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <div class="motif-symbol"></div>
+        <div class="motif-symbol"></div>
+        <div class="motif-symbol"></div>
+        <div class="motif-symbol"></div>
+        <div class="motif-symbol"></div>
+        <div class="motif-symbol"></div>
+        <div class="motif-symbol"></div>
+      </div>
+      <h2>Reverence &amp; Luminescence</h2>
+      <p>Where the hushed awe of a cathedral nave meets the electric buzz of a neon-lit urban night</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--void" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Neon Techniques</h2>
+      <p class="section-subtitle">all the sacred luminosity, no image assets required</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-neon-glow"></div>
+          <div class="effect-caption">
+            <h4>Neon Text Glow</h4>
+            <p>Multi-layered text-shadow creates the signature luminous neon tube effect with subtle flicker animation.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stained-glass"></div>
+          <div class="effect-caption">
+            <h4>Stained Glass</h4>
+            <p>Overlapping translucent gradients with geometric line divisions simulate Gothic light filtering.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-tracery"></div>
+          <div class="effect-caption">
+            <h4>Gothic Tracery</h4>
+            <p>Radial and linear gradients combine to create luminous geometric patterns inspired by stone window tracery.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-border-glow"></div>
+          <div class="effect-caption">
+            <h4>Neon Border Glow</h4>
+            <p>Pulsing box-shadow with inner and outer glow layers creates atmospheric depth at structural edges.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-arch"></div>
+          <div class="effect-caption">
+            <h4>Pointed Arch Gradient</h4>
+            <p>Clip-path triangular gradients suggest the soaring pointed arches of Gothic cathedral interiors.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-rose-window"></div>
+          <div class="effect-caption">
+            <h4>Rose Window</h4>
+            <p>CSS conic-gradient within concentric circles creates a slowly rotating stained-glass rosette.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEON BAND ===== -->
+  <div class="neon-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--stone">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Gothic Buttons</h2>
+      <p class="section-subtitle">chamfered edges, neon borders, luminous hover states</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Neon Violet</a>
+        <a href="#" class="btn btn-cyan">Spectral Cyan</a>
+        <a href="#" class="btn btn-magenta">Magenta Flame</a>
+        <a href="#" class="btn btn-ghost">Ghost Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--void">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Neon Gothic is not merely dark mode with purple accents. It is the reverent intersection of sacred architecture and electric light &mdash; where every glow is a votive candle reborn as a gas-tube flame.
+        </blockquote>
+        <cite>&mdash; The Cathedral of Light</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GOTHIC DIVIDER ===== -->
+  <div class="section--void" style="padding: 0;">
+    <div class="gothic-divider">
+      <span></span>
+    </div>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--stone">
+    <div class="container">
+      <div class="arch-container">
+        <h2>Enter the Nave</h2>
+        <span class="handwritten">where darkness amplifies every point of light</span>
+        <p>
+          The Neon Gothic aesthetic fuses medieval Gothic architecture with electric neon luminosity. Deep obsidian backgrounds, glowing violet and cyan accents, blackletter typography, pointed arch frames, and rose window motifs &mdash; all rendered as light, never mass.
+        </p>
+        <a href="#hero" class="btn btn-primary">Ascend to the Spire</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NEON BAND ===== -->
+  <div class="neon-band"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Neon Gothic</h3>
+      <p>
+        A design aesthetic reference celebrating the fusion of medieval Gothic architecture and neon luminosity. Obsidian voids, violet glow, and sacred geometry &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Sanctum</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-ornament">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Neon Gothic &bull; Reverence in Luminescence</p>
+    </div>
+  </footer>
+
+</body>
+</html>

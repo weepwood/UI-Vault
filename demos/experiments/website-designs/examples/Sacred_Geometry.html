@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sacred Geometry -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=Raleway:wght@100;200;300;400;500;600&family=Josefin+Sans:wght@100;200;300;400;500;600;700&family=Poiret+One&family=Philosopher:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Dark Foundations --- */
+      --sg-void: #0b0b14;
+      --sg-deep-indigo: #1a1040;
+      --sg-midnight: #0f1b3d;
+      --sg-nebula: #2d1650;
+      --sg-starfield: #2a2a35;
+
+      /* --- Sacred Golds --- */
+      --sg-gold: #c8a34d;
+      --sg-gold-bright: #e8c547;
+      --sg-gold-pale: #f0dfa0;
+      --sg-gold-dim: #8b7a3a;
+
+      /* --- Spiritual Purples --- */
+      --sg-violet: #7b2fbe;
+      --sg-indigo: #4b0082;
+      --sg-crown: #6a0dad;
+
+      /* --- Light and Purity --- */
+      --sg-white: #f0ede6;
+      --sg-silver: #c0bfc0;
+      --sg-pure-white: #fafaf5;
+
+      /* --- Earth and Nature --- */
+      --sg-bronze: #8b6f47;
+      --sg-teal: #1a6b6a;
+      --sg-rose: #c47a8a;
+
+      /* --- Glow Effects --- */
+      --sg-glow-gold: rgba(200, 163, 77, 0.35);
+      --sg-glow-gold-strong: rgba(232, 197, 71, 0.5);
+      --sg-glow-violet: rgba(123, 47, 190, 0.3);
+      --sg-glass: rgba(255, 255, 255, 0.04);
+      --sg-glass-gold: rgba(200, 163, 77, 0.06);
+      --sg-glass-border: rgba(200, 163, 77, 0.15);
+
+      /* --- Functional Mappings --- */
+      --sg-bg-primary: var(--sg-void);
+      --sg-bg-secondary: var(--sg-deep-indigo);
+      --sg-bg-surface: var(--sg-glass);
+      --sg-text-primary: var(--sg-white);
+      --sg-text-secondary: var(--sg-silver);
+      --sg-text-accent: var(--sg-gold);
+      --sg-accent: var(--sg-gold);
+      --sg-accent-strong: var(--sg-gold-bright);
+      --sg-accent-secondary: var(--sg-violet);
+      --sg-border: var(--sg-glass-border);
+
+      /* --- Sacred Proportions --- */
+      --sg-phi: 1.618;
+      --sg-phi-inverse: 0.618;
+      --sg-spacing-xs: 0.382rem;
+      --sg-spacing-sm: 0.618rem;
+      --sg-spacing-md: 1rem;
+      --sg-spacing-lg: 1.618rem;
+      --sg-spacing-xl: 2.618rem;
+      --sg-spacing-2xl: 4.236rem;
+
+      /* --- Typography Scale (Golden Ratio) --- */
+      --sg-font-xs: 0.75rem;
+      --sg-font-sm: 0.875rem;
+      --sg-font-base: 1rem;
+      --sg-font-md: 1.125rem;
+      --sg-font-lg: 1.618rem;
+      --sg-font-xl: 2.618rem;
+      --sg-font-2xl: 4.236rem;
+      --sg-font-3xl: 6.854rem;
+
+      /* --- Section Padding --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Raleway', 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: var(--sg-font-base);
+      line-height: var(--sg-phi);
+      color: var(--sg-white);
+      background-color: var(--sg-void);
+      letter-spacing: 0.03em;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cinzel', 'Cormorant Garamond', serif;
+      font-weight: 500;
+      line-height: 1.2;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sg-text-accent);
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      color: var(--sg-gold);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--sg-gold-bright);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       CONTAINER
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--sg-spacing-xl);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .sg-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--sg-spacing-md) var(--sg-spacing-xl);
+      background: rgba(11, 11, 20, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--sg-glass-border);
+    }
+
+    .sg-nav__logo {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-lg);
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      text-decoration: none;
+    }
+
+    .sg-nav__logo::after {
+      content: ' \25C7';
+      font-size: 0.5em;
+      vertical-align: middle;
+      margin-left: 0.5em;
+      color: var(--sg-gold-dim);
+    }
+
+    .sg-nav__links {
+      display: flex;
+      align-items: center;
+      gap: var(--sg-spacing-xl);
+      list-style: none;
+    }
+
+    .sg-nav__link {
+      font-family: 'Raleway', sans-serif;
+      font-size: var(--sg-font-sm);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sg-silver);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .sg-nav__link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--sg-gold);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .sg-nav__link:hover {
+      color: var(--sg-gold);
+    }
+
+    .sg-nav__link:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .sg-hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: var(--sg-spacing-2xl);
+      text-align: center;
+      overflow: hidden;
+      background: radial-gradient(
+        ellipse at center,
+        var(--sg-deep-indigo) 0%,
+        var(--sg-void) 70%
+      );
+    }
+
+    /* Metatron's Cube background */
+    .sg-hero__geometry {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px;
+      height: 700px;
+      opacity: 0.07;
+      animation: sg-slow-rotate 180s linear infinite;
+      pointer-events: none;
+    }
+
+    .sg-hero__geometry circle {
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 0.5;
+    }
+
+    .sg-hero__geometry line {
+      stroke: var(--sg-gold);
+      stroke-width: 0.3;
+      opacity: 0.6;
+    }
+
+    @keyframes sg-slow-rotate {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Outer glowing ring */
+    .sg-hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 550px;
+      height: 550px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(200, 163, 77, 0.08);
+      box-shadow: 0 0 80px rgba(200, 163, 77, 0.04);
+      pointer-events: none;
+    }
+
+    /* Inner pulsing ring */
+    .sg-hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 380px;
+      height: 380px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(200, 163, 77, 0.05);
+      animation: sg-pulse-ring 8s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @keyframes sg-pulse-ring {
+      0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    .sg-hero__label {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-xs);
+      font-weight: 600;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--sg-gold-dim);
+      margin-bottom: var(--sg-spacing-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-hero__title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(2.5rem, 8vw, var(--sg-font-3xl));
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      line-height: 1.1;
+      margin-bottom: var(--sg-spacing-lg);
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 40px var(--sg-glow-gold);
+    }
+
+    .sg-hero__subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--sg-font-lg);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sg-gold-pale);
+      max-width: 36em;
+      margin-bottom: var(--sg-spacing-2xl);
+      line-height: var(--sg-phi);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-hero__cta {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      gap: var(--sg-spacing-lg);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Star field particles */
+    .sg-starfield {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sg-star {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--sg-gold-pale);
+      border-radius: 50%;
+      animation: sg-twinkle 4s ease-in-out infinite;
+    }
+
+    @keyframes sg-twinkle {
+      0%, 100% { opacity: 0.1; }
+      50% { opacity: 0.6; }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .sg-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sg-spacing-sm);
+      padding: var(--sg-spacing-sm) var(--sg-spacing-xl);
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-sm);
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      background: transparent;
+      border: 1px solid var(--sg-gold-dim);
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .sg-button::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--sg-glow-gold) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease;
+      z-index: 0;
+    }
+
+    .sg-button:hover::before {
+      width: 300%;
+      height: 300%;
+    }
+
+    .sg-button:hover {
+      color: var(--sg-gold-bright);
+      border-color: var(--sg-gold);
+      box-shadow: 0 0 15px var(--sg-glow-gold), inset 0 0 15px rgba(200, 163, 77, 0.1);
+    }
+
+    .sg-button span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Filled variant */
+    .sg-button--filled {
+      background: linear-gradient(135deg, var(--sg-gold-dim), var(--sg-gold), var(--sg-gold-dim));
+      color: var(--sg-void);
+      border-color: var(--sg-gold);
+      font-weight: 700;
+    }
+
+    .sg-button--filled:hover {
+      background: linear-gradient(135deg, var(--sg-gold), var(--sg-gold-bright), var(--sg-gold));
+      box-shadow: 0 0 25px var(--sg-glow-gold-strong), 0 0 60px var(--sg-glow-gold);
+      color: var(--sg-void);
+    }
+
+    /* Ghost variant */
+    .sg-button--ghost {
+      border-color: var(--sg-glass-border);
+      color: var(--sg-silver);
+    }
+
+    .sg-button--ghost:hover {
+      border-color: var(--sg-gold-dim);
+      color: var(--sg-gold);
+    }
+
+    /* Hexagonal variant */
+    .sg-button--hex {
+      clip-path: polygon(5% 0%, 95% 0%, 100% 50%, 95% 100%, 5% 100%, 0% 50%);
+      padding: var(--sg-spacing-sm) var(--sg-spacing-2xl);
+      background: var(--sg-deep-indigo);
+      border: none;
+    }
+
+    .sg-button--hex:hover {
+      background: linear-gradient(135deg, var(--sg-deep-indigo), var(--sg-nebula));
+      box-shadow: none;
+    }
+
+    /* ============================================
+       DIVIDER
+       ============================================ */
+    .sg-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--sg-spacing-md);
+      padding: var(--sg-spacing-2xl) var(--sg-spacing-xl);
+      width: 100%;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .sg-divider__line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sg-gold-dim), transparent);
+      opacity: 0.4;
+    }
+
+    .sg-divider__diamond {
+      width: 8px;
+      height: 8px;
+      border: 1px solid var(--sg-gold-dim);
+      transform: rotate(45deg);
+      opacity: 0.6;
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       SECTION BASE
+       ============================================ */
+    .sg-section {
+      padding: var(--section-pad) var(--sg-spacing-xl);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .sg-section--full {
+      max-width: none;
+      padding-left: 0;
+      padding-right: 0;
+    }
+
+    .sg-section--dark {
+      background: linear-gradient(180deg, var(--sg-deep-indigo) 0%, var(--sg-void) 100%);
+      max-width: none;
+    }
+
+    .sg-section--dark .container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .sg-section--nebula {
+      background: linear-gradient(180deg, var(--sg-void) 0%, var(--sg-nebula) 50%, var(--sg-void) 100%);
+      max-width: none;
+    }
+
+    .sg-section__label {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-xs);
+      font-weight: 600;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--sg-gold-dim);
+      text-align: center;
+      margin-bottom: var(--sg-spacing-sm);
+      display: block;
+    }
+
+    .sg-section__title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 5vw, var(--sg-font-2xl));
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      text-align: center;
+      margin-bottom: var(--sg-spacing-lg);
+    }
+
+    .sg-section__intro {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--sg-font-md);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sg-gold-pale);
+      text-align: center;
+      max-width: 42em;
+      margin: 0 auto var(--sg-spacing-2xl);
+      line-height: var(--sg-phi);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 0.618fr;
+      gap: var(--sg-spacing-2xl);
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: var(--sg-spacing-xl);
+    }
+
+    .typo-sample-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: var(--sg-font-xs);
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sg-gold-dim);
+      margin-bottom: var(--sg-spacing-xs);
+    }
+
+    .typo-display {
+      font-family: 'Poiret One', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.236rem);
+      font-weight: 400;
+      color: var(--sg-gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      line-height: 1.1;
+      text-shadow: 0 0 30px var(--sg-glow-gold);
+    }
+
+    .typo-heading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 4vw, 2.618rem);
+      font-weight: 500;
+      color: var(--sg-gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .typo-subheading {
+      font-family: 'Philosopher', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.618rem);
+      font-weight: 400;
+      color: var(--sg-gold-pale);
+      letter-spacing: 0.05em;
+    }
+
+    .typo-body {
+      font-family: 'Raleway', sans-serif;
+      font-size: var(--sg-font-base);
+      font-weight: 300;
+      color: var(--sg-silver);
+      line-height: var(--sg-phi);
+    }
+
+    .typo-italic {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--sg-font-lg);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sg-gold-pale);
+      line-height: var(--sg-phi);
+    }
+
+    .typo-geometric {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: var(--sg-font-md);
+      font-weight: 400;
+      color: var(--sg-gold-bright);
+      letter-spacing: 0.1em;
+    }
+
+    .typo-right {
+      border-left: 1px solid var(--sg-glass-border);
+      padding-left: var(--sg-spacing-xl);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-md);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--sg-gold);
+      margin-bottom: var(--sg-spacing-lg);
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: var(--sg-spacing-sm) 0;
+      border-bottom: 1px solid rgba(200, 163, 77, 0.08);
+    }
+
+    .typo-scale-size {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: var(--sg-font-sm);
+      color: var(--sg-gold-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .typo-pairing {
+      margin-top: var(--sg-spacing-xl);
+      padding-top: var(--sg-spacing-lg);
+      border-top: 1px solid var(--sg-glass-border);
+    }
+
+    .typo-pairing h3 {
+      margin-bottom: var(--sg-spacing-md);
+    }
+
+    .typo-pairing-item {
+      font-size: var(--sg-font-sm);
+      line-height: 1.7;
+      margin-bottom: var(--sg-spacing-md);
+      color: var(--sg-silver);
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: var(--sg-spacing-lg);
+    }
+
+    .color-chip {
+      text-align: center;
+    }
+
+    .color-swatch {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 2px;
+      border: 1px solid var(--sg-glass-border);
+      margin-bottom: var(--sg-spacing-sm);
+      position: relative;
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+    }
+
+    .color-swatch:hover {
+      box-shadow: 0 0 20px var(--sg-glow-gold);
+      transform: scale(1.03);
+    }
+
+    .color-name {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-xs);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: var(--sg-font-xs);
+      color: var(--sg-silver);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .sg-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--sg-spacing-xl);
+    }
+
+    .sg-card {
+      position: relative;
+      background: linear-gradient(145deg, rgba(26, 16, 64, 0.6), rgba(11, 11, 20, 0.8));
+      border: 1px solid var(--sg-glass-border);
+      border-radius: 2px;
+      padding: var(--sg-spacing-xl);
+      overflow: hidden;
+      transition: border-color 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    /* Flower of Life background overlay */
+    .sg-card::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 200%;
+      height: 200%;
+      transform: translate(-50%, -50%);
+      background-image:
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, var(--sg-glass-border) 28.5%, transparent 29%);
+      background-size: 60px 60px;
+      background-position:
+        0 0,
+        30px 0,
+        15px 26px,
+        -15px 26px,
+        30px 52px,
+        60px 26px,
+        45px 52px;
+      opacity: 0.08;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Gold corner accent */
+    .sg-card::after {
+      content: '';
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      right: 10px;
+      bottom: 10px;
+      border: 1px solid rgba(200, 163, 77, 0.08);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .sg-card:hover {
+      border-color: var(--sg-gold-dim);
+      box-shadow: 0 0 20px var(--sg-glow-gold), 0 0 60px rgba(200, 163, 77, 0.08);
+    }
+
+    .sg-card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: var(--sg-spacing-md);
+      opacity: 0.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-card__icon svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 1;
+    }
+
+    .sg-card__title {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-md);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      margin-bottom: var(--sg-spacing-sm);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-card__text {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: var(--sg-font-base);
+      line-height: var(--sg-phi);
+      color: var(--sg-silver);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-card__tags {
+      margin-top: var(--sg-spacing-md);
+      display: flex;
+      gap: var(--sg-spacing-sm);
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-tag {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sg-gold-dim);
+      border: 1px solid rgba(200, 163, 77, 0.12);
+      padding: 0.2em 0.6em;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .sg-banner {
+      position: relative;
+      padding: var(--sg-spacing-2xl) var(--sg-spacing-xl);
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(180deg, var(--sg-void) 0%, var(--sg-deep-indigo) 50%, var(--sg-void) 100%);
+    }
+
+    .sg-banner__geometry {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      opacity: 0.06;
+      pointer-events: none;
+      animation: sg-slow-rotate 120s linear infinite;
+    }
+
+    .sg-banner__geometry circle {
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 0.5;
+    }
+
+    .sg-banner__symbols {
+      display: flex;
+      justify-content: center;
+      gap: var(--sg-spacing-xl);
+      margin-bottom: var(--sg-spacing-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-banner__symbol-item {
+      width: 32px;
+      height: 32px;
+      opacity: 0.4;
+    }
+
+    .sg-banner__symbol-item svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 0.8;
+    }
+
+    .sg-banner h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 4vw, var(--sg-font-xl));
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      color: var(--sg-gold);
+      margin-bottom: var(--sg-spacing-sm);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-banner p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--sg-font-md);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sg-gold-pale);
+      position: relative;
+      z-index: 1;
+      max-width: 32em;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: var(--sg-spacing-xl);
+    }
+
+    .principle-item {
+      display: flex;
+      gap: var(--sg-spacing-lg);
+      align-items: flex-start;
+    }
+
+    .principle-icon {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--sg-glass-border);
+      position: relative;
+    }
+
+    .principle-icon::after {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(200, 163, 77, 0.06);
+    }
+
+    .principle-icon svg {
+      width: 28px;
+      height: 28px;
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 1;
+      opacity: 0.7;
+    }
+
+    .principle-text h3 {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-base);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      margin-bottom: var(--sg-spacing-xs);
+    }
+
+    .principle-text p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: var(--sg-font-sm);
+      line-height: var(--sg-phi);
+      color: var(--sg-silver);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--sg-spacing-xl);
+    }
+
+    .effect-demo {
+      background: linear-gradient(145deg, rgba(26, 16, 64, 0.4), rgba(11, 11, 20, 0.6));
+      border: 1px solid var(--sg-glass-border);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.4s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: var(--sg-gold-dim);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: var(--sg-spacing-lg);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-sm);
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sg-gold);
+      margin-bottom: var(--sg-spacing-xs);
+    }
+
+    .effect-caption p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: var(--sg-font-sm);
+      color: var(--sg-silver);
+      line-height: var(--sg-phi);
+    }
+
+    /* Effect 1: Flower of Life */
+    .effect-flower-of-life {
+      background: var(--sg-void);
+      background-image:
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%),
+        radial-gradient(circle, transparent 28%, rgba(200, 163, 77, 0.12) 28.5%, transparent 29%);
+      background-size: 60px 60px;
+      background-position:
+        0 0,
+        30px 0,
+        15px 26px,
+        -15px 26px,
+        30px 52px,
+        60px 26px,
+        45px 52px;
+    }
+
+    /* Effect 2: Radial Emanation */
+    .effect-emanation {
+      background:
+        radial-gradient(circle at center, rgba(200, 163, 77, 0.2) 0%, transparent 30%),
+        radial-gradient(circle at center, transparent 18%, rgba(200, 163, 77, 0.06) 18.5%, transparent 19%) no-repeat center center / 300px 300px,
+        radial-gradient(circle at center, transparent 35%, rgba(200, 163, 77, 0.04) 35.5%, transparent 36%) no-repeat center center / 300px 300px,
+        radial-gradient(circle at center, transparent 52%, rgba(200, 163, 77, 0.03) 52.5%, transparent 53%) no-repeat center center / 300px 300px,
+        radial-gradient(circle at center, transparent 70%, rgba(200, 163, 77, 0.02) 70.5%, transparent 71%) no-repeat center center / 300px 300px,
+        var(--sg-void);
+    }
+
+    /* Effect 3: Hexagonal Grid */
+    .effect-hexgrid {
+      background-color: var(--sg-deep-indigo);
+    }
+    .effect-hexgrid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(30deg, rgba(200, 163, 77, 0.08) 12%, transparent 12.5%, transparent 87.5%, rgba(200, 163, 77, 0.08) 87.5%),
+        linear-gradient(150deg, rgba(200, 163, 77, 0.08) 12%, transparent 12.5%, transparent 87.5%, rgba(200, 163, 77, 0.08) 87.5%),
+        linear-gradient(30deg, rgba(200, 163, 77, 0.08) 12%, transparent 12.5%, transparent 87.5%, rgba(200, 163, 77, 0.08) 87.5%),
+        linear-gradient(150deg, rgba(200, 163, 77, 0.08) 12%, transparent 12.5%, transparent 87.5%, rgba(200, 163, 77, 0.08) 87.5%),
+        linear-gradient(60deg, rgba(200, 163, 77, 0.04) 25%, transparent 25.5%, transparent 75%, rgba(200, 163, 77, 0.04) 75%),
+        linear-gradient(60deg, rgba(200, 163, 77, 0.04) 25%, transparent 25.5%, transparent 75%, rgba(200, 163, 77, 0.04) 75%);
+      background-size: 40px 70px;
+      background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+    }
+
+    /* Effect 4: Golden Spiral */
+    .effect-golden-spiral {
+      background: var(--sg-void);
+    }
+    .effect-golden-spiral::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 70% 60%, transparent 18%, rgba(200, 163, 77, 0.06) 18.3%, transparent 18.6%) no-repeat,
+        radial-gradient(circle at 55% 45%, transparent 28%, rgba(200, 163, 77, 0.05) 28.3%, transparent 28.6%) no-repeat,
+        radial-gradient(circle at 45% 55%, transparent 38%, rgba(200, 163, 77, 0.04) 38.3%, transparent 38.6%) no-repeat,
+        radial-gradient(circle at 52% 48%, transparent 48%, rgba(200, 163, 77, 0.035) 48.3%, transparent 48.6%) no-repeat,
+        radial-gradient(circle at 48% 52%, transparent 58%, rgba(200, 163, 77, 0.03) 58.3%, transparent 58.6%) no-repeat,
+        linear-gradient(45deg, transparent 49.5%, rgba(200, 163, 77, 0.04) 49.7%, rgba(200, 163, 77, 0.04) 50.3%, transparent 50.5%),
+        linear-gradient(-45deg, transparent 49.5%, rgba(200, 163, 77, 0.03) 49.7%, rgba(200, 163, 77, 0.03) 50.3%, transparent 50.5%);
+    }
+
+    /* Effect 5: Cosmic Void */
+    .effect-cosmic-void {
+      background: radial-gradient(ellipse at center, var(--sg-nebula) 0%, var(--sg-void) 70%);
+    }
+    .effect-cosmic-void::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1px 1px at 20% 30%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 80% 20%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 40% 70%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 60% 50%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 10% 80%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 90% 60%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 50% 10%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1px 1px at 30% 90%, var(--sg-gold-pale) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 70% 80%, var(--sg-gold-bright) 50%, transparent 100%),
+        radial-gradient(1.5px 1.5px at 25% 55%, var(--sg-gold-bright) 50%, transparent 100%),
+        radial-gradient(2px 2px at 50% 50%, var(--sg-violet) 50%, transparent 100%);
+      opacity: 0.5;
+      animation: sg-starfield-drift 60s linear infinite;
+    }
+
+    @keyframes sg-starfield-drift {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+
+    /* Effect 6: Sacred Grid Lines */
+    .effect-sacred-grid {
+      background: var(--sg-void);
+    }
+    .effect-sacred-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(200, 163, 77, 0.06) 39px, rgba(200, 163, 77, 0.06) 40px),
+        repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(200, 163, 77, 0.06) 39px, rgba(200, 163, 77, 0.06) 40px),
+        repeating-linear-gradient(60deg, transparent, transparent 39px, rgba(200, 163, 77, 0.03) 39px, rgba(200, 163, 77, 0.03) 40px),
+        repeating-linear-gradient(-60deg, transparent, transparent 39px, rgba(200, 163, 77, 0.03) 39px, rgba(200, 163, 77, 0.03) 40px);
+    }
+    .effect-sacred-grid::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 1px solid rgba(200, 163, 77, 0.15);
+      box-shadow:
+        0 0 0 30px transparent,
+        0 0 0 31px rgba(200, 163, 77, 0.08),
+        0 0 0 60px transparent,
+        0 0 0 61px rgba(200, 163, 77, 0.05);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: var(--sg-spacing-xl);
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .sg-quote {
+      text-align: center;
+      padding: var(--sg-spacing-2xl) var(--sg-spacing-xl);
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .sg-quote blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 3vw, var(--sg-font-xl));
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sg-gold-pale);
+      line-height: 1.4;
+      max-width: 28em;
+      margin: 0 auto var(--sg-spacing-lg);
+      border: none;
+      padding: 0;
+    }
+
+    .sg-quote blockquote::before {
+      content: '\201C';
+      font-family: 'Cinzel', serif;
+      font-size: 4em;
+      color: var(--sg-gold-dim);
+      display: block;
+      line-height: 0.5;
+      margin-bottom: var(--sg-spacing-md);
+      font-style: normal;
+    }
+
+    .sg-quote cite {
+      font-family: 'Cinzel', serif;
+      font-size: var(--sg-font-sm);
+      font-weight: 500;
+      font-style: normal;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sg-gold-dim);
+    }
+
+    /* Decorative flanking lines */
+    .sg-quote::before,
+    .sg-quote::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--sg-gold-dim));
+      opacity: 0.3;
+    }
+
+    .sg-quote::before {
+      left: 0;
+      background: linear-gradient(90deg, transparent, var(--sg-gold-dim));
+    }
+
+    .sg-quote::after {
+      right: 0;
+      background: linear-gradient(90deg, var(--sg-gold-dim), transparent);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .sg-cta {
+      position: relative;
+      padding: var(--sg-spacing-2xl) var(--sg-spacing-xl);
+      text-align: center;
+      overflow: hidden;
+      background: radial-gradient(ellipse at center, var(--sg-deep-indigo) 0%, var(--sg-void) 70%);
+    }
+
+    .sg-cta__geometry {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      opacity: 0.04;
+      animation: sg-slow-rotate 200s linear infinite reverse;
+      pointer-events: none;
+    }
+
+    .sg-cta__geometry circle {
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 0.5;
+    }
+
+    .sg-cta h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 5vw, var(--sg-font-2xl));
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: var(--sg-gold);
+      margin-bottom: var(--sg-spacing-sm);
+      position: relative;
+      z-index: 1;
+      text-shadow: 0 0 30px var(--sg-glow-gold);
+    }
+
+    .sg-cta__tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: var(--sg-font-lg);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--sg-gold-pale);
+      margin-bottom: var(--sg-spacing-lg);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-cta p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: var(--sg-font-base);
+      color: var(--sg-silver);
+      line-height: var(--sg-phi);
+      max-width: 36em;
+      margin: 0 auto var(--sg-spacing-xl);
+      position: relative;
+      z-index: 1;
+    }
+
+    .sg-cta .sg-button {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .sg-footer {
+      padding: var(--sg-spacing-2xl) var(--sg-spacing-xl);
+      text-align: center;
+      border-top: 1px solid var(--sg-glass-border);
+      background: rgba(11, 11, 20, 0.5);
+    }
+
+    .sg-footer__symbol {
+      width: 40px;
+      height: 40px;
+      margin: 0 auto var(--sg-spacing-md);
+      opacity: 0.4;
+    }
+
+    .sg-footer__symbol svg {
+      width: 100%;
+      height: 100%;
+      fill: none;
+      stroke: var(--sg-gold);
+      stroke-width: 0.5;
+    }
+
+    .sg-footer__links {
+      display: flex;
+      justify-content: center;
+      gap: var(--sg-spacing-lg);
+      margin-bottom: var(--sg-spacing-lg);
+      list-style: none;
+      flex-wrap: wrap;
+    }
+
+    .sg-footer__link {
+      font-family: 'Raleway', sans-serif;
+      font-size: var(--sg-font-sm);
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sg-silver);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .sg-footer__link:hover {
+      color: var(--sg-gold);
+    }
+
+    .sg-footer__copy {
+      font-family: 'Raleway', sans-serif;
+      font-size: var(--sg-font-xs);
+      font-weight: 300;
+      letter-spacing: 0.1em;
+      color: var(--sg-silver);
+      opacity: 0.5;
+    }
+
+    .sg-footer__phi {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: var(--sg-font-sm);
+      color: var(--sg-gold-dim);
+      letter-spacing: 0.15em;
+      margin-bottom: var(--sg-spacing-md);
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .sg-nav {
+        flex-direction: column;
+        gap: var(--sg-spacing-md);
+        padding: var(--sg-spacing-sm) var(--sg-spacing-md);
+      }
+
+      .sg-nav__links {
+        gap: var(--sg-spacing-md);
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .sg-hero__title {
+        letter-spacing: 0.08em;
+      }
+
+      .sg-hero__geometry {
+        width: 400px;
+        height: 400px;
+      }
+
+      .sg-hero::after {
+        width: 320px;
+        height: 320px;
+      }
+
+      .sg-hero::before {
+        width: 220px;
+        height: 220px;
+      }
+
+      .sg-section__title {
+        font-size: var(--sg-font-xl);
+      }
+
+      .sg-cards {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-right {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid var(--sg-glass-border);
+        padding-top: var(--sg-spacing-xl);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .sg-button {
+        justify-content: center;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sg-quote::before,
+      .sg-quote::after {
+        display: none;
+      }
+
+      .sg-banner__symbols {
+        gap: var(--sg-spacing-md);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .sg-nav__logo {
+        font-size: var(--sg-font-md);
+        letter-spacing: 0.12em;
+      }
+
+      .sg-nav__link {
+        font-size: var(--sg-font-xs);
+        letter-spacing: 0.08em;
+      }
+
+      .sg-hero {
+        padding: var(--sg-spacing-xl) var(--sg-spacing-md);
+      }
+
+      .sg-section {
+        padding-left: var(--sg-spacing-md);
+        padding-right: var(--sg-spacing-md);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="sg-nav">
+    <a href="#" class="sg-nav__logo">Geometria</a>
+    <ul class="sg-nav__links">
+      <li><a href="#hero" class="sg-nav__link">Origin</a></li>
+      <li><a href="#typography" class="sg-nav__link">Type</a></li>
+      <li><a href="#palette" class="sg-nav__link">Palette</a></li>
+      <li><a href="#components" class="sg-nav__link">Patterns</a></li>
+      <li><a href="#effects" class="sg-nav__link">Effects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="sg-hero" id="hero">
+    <!-- Star field -->
+    <div class="sg-starfield" id="starfield"></div>
+
+    <!-- Metatron's Cube SVG -->
+    <svg class="sg-hero__geometry" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+      <!-- Central circle -->
+      <circle cx="250" cy="250" r="30"/>
+      <!-- Inner ring: 6 circles -->
+      <circle cx="250" cy="180" r="30"/>
+      <circle cx="310" cy="215" r="30"/>
+      <circle cx="310" cy="285" r="30"/>
+      <circle cx="250" cy="320" r="30"/>
+      <circle cx="190" cy="285" r="30"/>
+      <circle cx="190" cy="215" r="30"/>
+      <!-- Outer ring: 6 circles -->
+      <circle cx="250" cy="110" r="30"/>
+      <circle cx="371" cy="180" r="30"/>
+      <circle cx="371" cy="320" r="30"/>
+      <circle cx="250" cy="390" r="30"/>
+      <circle cx="129" cy="320" r="30"/>
+      <circle cx="129" cy="180" r="30"/>
+      <!-- Connecting lines -->
+      <line x1="250" y1="110" x2="371" y2="180"/>
+      <line x1="371" y1="180" x2="371" y2="320"/>
+      <line x1="371" y1="320" x2="250" y2="390"/>
+      <line x1="250" y1="390" x2="129" y2="320"/>
+      <line x1="129" y1="320" x2="129" y2="180"/>
+      <line x1="129" y1="180" x2="250" y2="110"/>
+      <line x1="250" y1="110" x2="371" y2="320"/>
+      <line x1="371" y1="180" x2="129" y2="320"/>
+      <line x1="371" y1="320" x2="129" y2="180"/>
+      <line x1="250" y1="390" x2="250" y2="110"/>
+      <line x1="129" y1="180" x2="371" y2="180"/>
+      <line x1="129" y1="320" x2="371" y2="320"/>
+      <line x1="250" y1="110" x2="129" y2="320"/>
+      <line x1="371" y1="180" x2="250" y2="390"/>
+      <!-- Outer encompassing circle -->
+      <circle cx="250" cy="250" r="200" stroke-width="0.3"/>
+    </svg>
+
+    <span class="sg-hero__label">As Above, So Below</span>
+    <h1 class="sg-hero__title">Sacred<br>Geometry</h1>
+    <p class="sg-hero__subtitle">
+      The mathematical language of creation &mdash; where the Flower of Life blooms,
+      the Golden Ratio spirals, and Metatron's Cube reveals the architecture of the universe.
+    </p>
+    <div class="sg-hero__cta">
+      <a href="#components" class="sg-button sg-button--filled"><span>Explore Patterns</span></a>
+      <a href="#palette" class="sg-button"><span>View Palette</span></a>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="sg-divider">
+    <div class="sg-divider__line"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__line"></div>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="sg-section" id="typography">
+    <span class="sg-section__label">Typography</span>
+    <h2 class="sg-section__title">Geometric Precision &amp; Classical Grace</h2>
+    <p class="sg-section__intro">
+      Typographic harmony governed by the golden ratio &mdash; where Roman inscriptions meet
+      geometric sans-serifs, and every letterform echoes mathematical proportion.
+    </p>
+
+    <div class="typo-showcase">
+      <div class="typo-left">
+        <div class="typo-sample">
+          <p class="typo-sample-label">Display / Poiret One</p>
+          <p class="typo-display">Phi 1.618</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Heading / Cinzel</p>
+          <p class="typo-heading">Eternal Proportions</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Subheading / Philosopher</p>
+          <p class="typo-subheading">The Architecture of the Infinite</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Body / Raleway</p>
+          <p class="typo-body">Sacred geometry reveals the hidden mathematical order beneath the visible world. Patterns that govern the growth of shells, the arrangement of petals, and the structure of galaxies.</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Accent / Cormorant Garamond Italic</p>
+          <p class="typo-italic">The cosmos is written in the language of mathematics</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Numeric / Josefin Sans</p>
+          <p class="typo-geometric">0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89...</p>
+        </div>
+      </div>
+      <div class="typo-right">
+        <h3>Golden Ratio Scale</h3>
+        <div class="typo-scale">
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">6.854rem</span>
+            <span style="font-family: 'Poiret One', sans-serif; font-size: 2rem; color: var(--sg-gold);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">4.236rem</span>
+            <span style="font-family: 'Cinzel', serif; font-size: 1.6rem; font-weight: 500; color: var(--sg-gold);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">2.618rem</span>
+            <span style="font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 400; color: var(--sg-gold);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1.618rem</span>
+            <span style="font-family: 'Philosopher', sans-serif; font-size: 1.1rem; color: var(--sg-gold-pale);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1rem</span>
+            <span style="font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 1rem; color: var(--sg-silver);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.875rem</span>
+            <span style="font-family: 'Josefin Sans', sans-serif; font-weight: 400; font-size: 0.875rem; color: var(--sg-gold-dim); letter-spacing: 0.1em;">Aa</span>
+          </div>
+        </div>
+
+        <div class="typo-pairing">
+          <h3>Font Pairings</h3>
+          <p class="typo-pairing-item">
+            <strong style="font-family: 'Cinzel', serif; color: var(--sg-gold);">Cinzel (500)</strong> + <strong style="font-family: 'Raleway', sans-serif; font-weight: 300;">Raleway (300)</strong><br>
+            <span style="color: var(--sg-gold-dim); font-size: 0.8rem;">Ancient authority meets modern clarity</span>
+          </p>
+          <p class="typo-pairing-item">
+            <strong style="font-family: 'Cormorant Garamond', serif; color: var(--sg-gold);">Cormorant Garamond</strong> + <strong style="font-family: 'Josefin Sans', sans-serif; font-weight: 300;">Josefin Sans</strong><br>
+            <span style="color: var(--sg-gold-dim); font-size: 0.8rem;">Classical elegance with mathematical geometry</span>
+          </p>
+          <p class="typo-pairing-item">
+            <strong style="font-family: 'Poiret One', sans-serif; color: var(--sg-gold);">Poiret One</strong> + <strong style="font-family: 'Raleway', sans-serif; font-weight: 300;">Raleway (300)</strong><br>
+            <span style="color: var(--sg-gold-dim); font-size: 0.8rem;">Ethereal, cosmic and otherworldly</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="sg-divider">
+    <div class="sg-divider__line"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__line"></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="sg-section" id="palette">
+    <span class="sg-section__label">Color Palette</span>
+    <h2 class="sg-section__title">Cosmic Void &amp; Divine Light</h2>
+    <p class="sg-section__intro">
+      From the deep void of space to the luminous gold of celestial light &mdash;
+      the violet-indigo spectrum of spiritual insight, grounded by earth and bronze.
+    </p>
+
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #0b0b14;"></div>
+        <div class="color-name">Void Black</div>
+        <div class="color-hex">#0B0B14</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #1a1040;"></div>
+        <div class="color-name">Deep Indigo</div>
+        <div class="color-hex">#1A1040</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #0f1b3d;"></div>
+        <div class="color-name">Midnight Blue</div>
+        <div class="color-hex">#0F1B3D</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #c8a34d;"></div>
+        <div class="color-name">Celestial Gold</div>
+        <div class="color-hex">#C8A34D</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #e8c547;"></div>
+        <div class="color-name">Divine Gold</div>
+        <div class="color-hex">#E8C547</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #f0dfa0;"></div>
+        <div class="color-name">Pale Gold</div>
+        <div class="color-hex">#F0DFA0</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #7b2fbe;"></div>
+        <div class="color-name">Spirit Violet</div>
+        <div class="color-hex">#7B2FBE</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #4b0082;"></div>
+        <div class="color-name">Crown Indigo</div>
+        <div class="color-hex">#4B0082</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #f0ede6;"></div>
+        <div class="color-name">Ether White</div>
+        <div class="color-hex">#F0EDE6</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #c0bfc0;"></div>
+        <div class="color-name">Silver Light</div>
+        <div class="color-hex">#C0BFC0</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #8b6f47;"></div>
+        <div class="color-name">Earth Bronze</div>
+        <div class="color-hex">#8B6F47</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #1a6b6a;"></div>
+        <div class="color-name">Cosmic Teal</div>
+        <div class="color-hex">#1A6B6A</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #c47a8a;"></div>
+        <div class="color-name">Rose Quartz</div>
+        <div class="color-hex">#C47A8A</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #2d1650;"></div>
+        <div class="color-name">Nebula Purple</div>
+        <div class="color-hex">#2D1650</div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #2a2a35;"></div>
+        <div class="color-name">Starfield Gray</div>
+        <div class="color-hex">#2A2A35</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="sg-divider">
+    <div class="sg-divider__line"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__line"></div>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="sg-section" id="components">
+    <span class="sg-section__label">Sacred Patterns</span>
+    <h2 class="sg-section__title">The Architecture of Creation</h2>
+    <p class="sg-section__intro">
+      From the Flower of Life to Metatron's Cube, these patterns form the geometric
+      blueprint underlying all visible form &mdash; the mathematics of the cosmos made visible.
+    </p>
+
+    <div class="sg-cards">
+      <!-- Card 1: Flower of Life -->
+      <div class="sg-card">
+        <div class="sg-card__icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="10"/>
+            <circle cx="24" cy="14" r="10"/>
+            <circle cx="32.66" cy="19" r="10"/>
+            <circle cx="32.66" cy="29" r="10"/>
+            <circle cx="24" cy="34" r="10"/>
+            <circle cx="15.34" cy="29" r="10"/>
+            <circle cx="15.34" cy="19" r="10"/>
+          </svg>
+        </div>
+        <h3 class="sg-card__title">Flower of Life</h3>
+        <p class="sg-card__text">Nineteen interlocking circles arranged in hexagonal symmetry, representing the interconnectedness of all living things and the geometric foundation of creation.</p>
+        <div class="sg-card__tags">
+          <span class="sg-tag">Pattern</span>
+          <span class="sg-tag">Unity</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Golden Ratio -->
+      <div class="sg-card">
+        <div class="sg-card__icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="40" height="40" rx="1"/>
+            <line x1="28.7" y1="4" x2="28.7" y2="44"/>
+            <rect x="28.7" y="4" width="15.3" height="24.7" rx="0.5"/>
+            <line x1="28.7" y1="19" x2="44" y2="19"/>
+          </svg>
+        </div>
+        <h3 class="sg-card__title">Golden Ratio</h3>
+        <p class="sg-card__text">The divine proportion of 1.618, known as phi, governs the spiral of nautilus shells, the branching of trees, and the proportions of the human body.</p>
+        <div class="sg-card__tags">
+          <span class="sg-tag">Proportion</span>
+          <span class="sg-tag">Phi</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Metatron's Cube -->
+      <div class="sg-card">
+        <div class="sg-card__icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="24" cy="24" r="4"/>
+            <circle cx="24" cy="12" r="4"/>
+            <circle cx="34.4" cy="18" r="4"/>
+            <circle cx="34.4" cy="30" r="4"/>
+            <circle cx="24" cy="36" r="4"/>
+            <circle cx="13.6" cy="30" r="4"/>
+            <circle cx="13.6" cy="18" r="4"/>
+            <line x1="24" y1="12" x2="34.4" y2="30"/>
+            <line x1="34.4" y1="18" x2="13.6" y2="30"/>
+            <line x1="24" y1="36" x2="24" y2="12"/>
+            <line x1="34.4" y1="30" x2="13.6" y2="18"/>
+            <line x1="13.6" y1="30" x2="24" y2="12"/>
+            <line x1="13.6" y1="18" x2="34.4" y2="30"/>
+          </svg>
+        </div>
+        <h3 class="sg-card__title">Metatron's Cube</h3>
+        <p class="sg-card__text">Thirteen circles connected by seventy-eight lines containing all five Platonic Solids &mdash; the most complex and symbolically rich figure in sacred geometry.</p>
+        <div class="sg-card__tags">
+          <span class="sg-tag">Complexity</span>
+          <span class="sg-tag">Platonic</span>
+        </div>
+      </div>
+
+      <!-- Card 4: Fibonacci Spiral -->
+      <div class="sg-card">
+        <div class="sg-card__icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <path d="M24 44 C24 33 13 22 2 22" fill="none"/>
+            <path d="M2 22 C2 14 8.5 8 16 8" fill="none"/>
+            <path d="M16 8 C21 8 25 12 25 17" fill="none"/>
+            <path d="M25 17 C25 20 23 22 20 22" fill="none"/>
+            <path d="M20 22 C18.5 22 17 20.5 17 19" fill="none"/>
+            <circle cx="24" cy="24" r="22" stroke-width="0.5" opacity="0.3"/>
+          </svg>
+        </div>
+        <h3 class="sg-card__title">Fibonacci Spiral</h3>
+        <p class="sg-card__text">The logarithmic spiral derived from the Fibonacci sequence appears in nautilus shells, sunflower seed heads, spiral galaxies, and the unfurling of fern fronds.</p>
+        <div class="sg-card__tags">
+          <span class="sg-tag">Spiral</span>
+          <span class="sg-tag">Growth</span>
+        </div>
+      </div>
+
+      <!-- Card 5: Vesica Piscis -->
+      <div class="sg-card">
+        <div class="sg-card__icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="24" r="14"/>
+            <circle cx="30" cy="24" r="14"/>
+          </svg>
+        </div>
+        <h3 class="sg-card__title">Vesica Piscis</h3>
+        <p class="sg-card__text">The almond-shaped intersection of two circles of equal radius, a symbol of duality unified &mdash; the womb of creation from which all other forms emerge.</p>
+        <div class="sg-card__tags">
+          <span class="sg-tag">Duality</span>
+          <span class="sg-tag">Creation</span>
+        </div>
+      </div>
+
+      <!-- Card 6: Platonic Solids -->
+      <div class="sg-card">
+        <div class="sg-card__icon">
+          <svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,4 44,36 4,36"/>
+            <polygon points="24,44 4,12 44,12" opacity="0.4"/>
+          </svg>
+        </div>
+        <h3 class="sg-card__title">Platonic Solids</h3>
+        <p class="sg-card__text">The five regular polyhedra &mdash; tetrahedron, cube, octahedron, dodecahedron, and icosahedron &mdash; the only shapes with identical faces, edges, and angles.</p>
+        <div class="sg-card__tags">
+          <span class="sg-tag">Form</span>
+          <span class="sg-tag">Perfection</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="sg-banner">
+    <!-- Seed of Life background -->
+    <svg class="sg-banner__geometry" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="30"/>
+      <circle cx="100" cy="70" r="30"/>
+      <circle cx="126" cy="85" r="30"/>
+      <circle cx="126" cy="115" r="30"/>
+      <circle cx="100" cy="130" r="30"/>
+      <circle cx="74" cy="115" r="30"/>
+      <circle cx="74" cy="85" r="30"/>
+      <circle cx="100" cy="100" r="60" stroke-width="0.3"/>
+    </svg>
+
+    <div class="sg-banner__symbols">
+      <div class="sg-banner__symbol-item">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="12"/>
+          <circle cx="16" cy="16" r="6"/>
+          <circle cx="16" cy="16" r="2"/>
+        </svg>
+      </div>
+      <div class="sg-banner__symbol-item">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="16,2 30,26 2,26"/>
+        </svg>
+      </div>
+      <div class="sg-banner__symbol-item">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="16,2 30,10 30,22 16,30 2,22 2,10"/>
+        </svg>
+      </div>
+      <div class="sg-banner__symbol-item">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <rect x="6" y="6" width="20" height="20" transform="rotate(45 16 16)"/>
+        </svg>
+      </div>
+      <div class="sg-banner__symbol-item">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14"/>
+          <line x1="16" y1="2" x2="16" y2="30"/>
+          <line x1="2" y1="16" x2="30" y2="16"/>
+          <line x1="6" y1="6" x2="26" y2="26"/>
+          <line x1="26" y1="6" x2="6" y2="26"/>
+        </svg>
+      </div>
+    </div>
+    <h2>Proportion, Symmetry &amp; Stillness</h2>
+    <p>The mathematics of the cosmos made visible through precise geometric construction</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="sg-section">
+    <span class="sg-section__label">Foundation</span>
+    <h2 class="sg-section__title">Sacred Design Principles</h2>
+    <p class="sg-section__intro">
+      Every element's size, position, and proportion derives from a governing geometric principle &mdash;
+      design that feels simultaneously ancient and timeless, spiritual and rational.
+    </p>
+
+    <div class="principles-grid">
+      <!-- Principle 1 -->
+      <div class="principle-item">
+        <div class="principle-icon">
+          <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="12"/>
+            <circle cx="14" cy="14" r="7.4"/>
+            <circle cx="14" cy="14" r="4.6"/>
+          </svg>
+        </div>
+        <div class="principle-text">
+          <h3>Mathematical Intention</h3>
+          <p>Every element's size and position references a geometric ratio derived from sacred proportions. No arbitrary placement &mdash; only phi-governed precision.</p>
+        </div>
+      </div>
+
+      <!-- Principle 2 -->
+      <div class="principle-item">
+        <div class="principle-icon">
+          <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+            <line x1="14" y1="2" x2="14" y2="26"/>
+            <line x1="2" y1="14" x2="26" y2="14"/>
+            <line x1="5.5" y1="5.5" x2="22.5" y2="22.5"/>
+            <line x1="22.5" y1="5.5" x2="5.5" y2="22.5"/>
+            <circle cx="14" cy="14" r="10"/>
+          </svg>
+        </div>
+        <div class="principle-text">
+          <h3>Symmetry as Order</h3>
+          <p>Radial, bilateral, and rotational symmetry govern compositions. Asymmetry is used sparingly, deliberately, and always with mathematical justification.</p>
+        </div>
+      </div>
+
+      <!-- Principle 3 -->
+      <div class="principle-item">
+        <div class="principle-icon">
+          <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="14" cy="14" r="3"/>
+            <circle cx="14" cy="14" r="8" opacity="0.5"/>
+            <circle cx="14" cy="14" r="12" opacity="0.3"/>
+          </svg>
+        </div>
+        <div class="principle-text">
+          <h3>Light from Darkness</h3>
+          <p>The core visual metaphor is illumination &mdash; golden geometry shining against the cosmic void. Luminous gold on deep dark fields evokes celestial maps.</p>
+        </div>
+      </div>
+
+      <!-- Principle 4 -->
+      <div class="principle-item">
+        <div class="principle-icon">
+          <svg viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg">
+            <rect x="4" y="4" width="20" height="20" fill="none"/>
+          </svg>
+        </div>
+        <div class="principle-text">
+          <h3>Reverence for the Void</h3>
+          <p>Empty space is not wasted but the void from which form emerges. Generous negative space allows geometric patterns the room to breathe and be contemplated.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="sg-divider">
+    <div class="sg-divider__line"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__line"></div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="sg-section" id="effects">
+    <span class="sg-section__label">Visual Effects</span>
+    <h2 class="sg-section__title">CSS Techniques &amp; Sacred Patterns</h2>
+    <p class="sg-section__intro">
+      All geometry rendered through pure CSS &mdash; no image assets needed.
+      Gradients, repeating patterns, and mathematical precision create the sacred vocabulary.
+    </p>
+
+    <div class="effects-grid">
+      <div class="effect-demo">
+        <div class="effect-preview effect-flower-of-life"></div>
+        <div class="effect-caption">
+          <h4>Flower of Life</h4>
+          <p>Overlapping radial gradients create the iconic interlocking circle pattern using hexagonal background positioning.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-emanation"></div>
+        <div class="effect-caption">
+          <h4>Radial Emanation</h4>
+          <p>Concentric circle rings radiating from a luminous center point, evoking divine light emerging from the void.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-hexgrid"></div>
+        <div class="effect-caption">
+          <h4>Hexagonal Grid</h4>
+          <p>Angled linear gradients tessellate into nature's most efficient tiling shape &mdash; the honeycomb pattern.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-golden-spiral"></div>
+        <div class="effect-caption">
+          <h4>Golden Spiral</h4>
+          <p>Nested circular arcs and diagonal lines approximate the logarithmic spiral derived from the Fibonacci sequence.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-cosmic-void"></div>
+        <div class="effect-caption">
+          <h4>Cosmic Starfield</h4>
+          <p>Scattered radial dot gradients at varying sizes and opacities simulate a deep-space star field with gentle drift.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-sacred-grid"></div>
+        <div class="effect-caption">
+          <h4>Sacred Grid Lines</h4>
+          <p>Orthogonal and 60-degree repeating line patterns intersect to form a construction grid with concentric circle overlays.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="sg-divider">
+    <div class="sg-divider__line"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__line"></div>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="sg-section--dark" style="padding: var(--section-pad) 0;">
+    <div class="container">
+      <span class="sg-section__label">Interactive Elements</span>
+      <h2 class="sg-section__title">Sacred Buttons</h2>
+      <p class="sg-section__intro">geometric precision, luminous gold, meditative transitions</p>
+
+      <div class="button-showcase">
+        <button class="sg-button sg-button--filled"><span>Divine Gold</span></button>
+        <button class="sg-button"><span>Sacred Outline</span></button>
+        <button class="sg-button sg-button--ghost"><span>Ghost Vessel</span></button>
+        <button class="sg-button sg-button--hex"><span>Hexagonal Form</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="sg-section" style="padding-top: 0;">
+    <div class="sg-quote">
+      <blockquote>
+        Geometry existed before the creation. It is co-eternal with the mind of God.
+        Geometry provided God with a model for the creation. Geometry is God Himself.
+      </blockquote>
+      <cite>&mdash; Johannes Kepler</cite>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="sg-cta">
+    <!-- Seed of Life background -->
+    <svg class="sg-cta__geometry" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="100" cy="100" r="30"/>
+      <circle cx="100" cy="70" r="30"/>
+      <circle cx="126" cy="85" r="30"/>
+      <circle cx="126" cy="115" r="30"/>
+      <circle cx="100" cy="130" r="30"/>
+      <circle cx="74" cy="115" r="30"/>
+      <circle cx="74" cy="85" r="30"/>
+      <circle cx="100" cy="100" r="70" stroke-width="0.3"/>
+      <circle cx="100" cy="100" r="90" stroke-width="0.2"/>
+    </svg>
+
+    <h2>Contemplate the Patterns</h2>
+    <span class="sg-cta__tagline">where mathematics becomes meditation</span>
+    <p>
+      Sacred Geometry translates the ancient mathematical language of creation into
+      digital form &mdash; layouts governed by phi, decorations drawn from the Flower of Life,
+      and an atmosphere of cosmic stillness rendered in luminous gold on the infinite void.
+    </p>
+    <a href="#hero" class="sg-button"><span>Return to the Source</span></a>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="sg-divider">
+    <div class="sg-divider__line"></div>
+    <div class="sg-divider__diamond"></div>
+    <div class="sg-divider__line"></div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="sg-footer">
+    <div class="sg-footer__symbol">
+      <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="20" cy="20" r="18"/>
+        <circle cx="20" cy="20" r="11"/>
+        <circle cx="20" cy="20" r="4"/>
+        <line x1="20" y1="2" x2="20" y2="38"/>
+        <line x1="2" y1="20" x2="38" y2="20"/>
+      </svg>
+    </div>
+    <ul class="sg-footer__links">
+      <li><a href="#hero" class="sg-footer__link">Origin</a></li>
+      <li><a href="#typography" class="sg-footer__link">Typography</a></li>
+      <li><a href="#palette" class="sg-footer__link">Palette</a></li>
+      <li><a href="#components" class="sg-footer__link">Patterns</a></li>
+      <li><a href="#effects" class="sg-footer__link">Effects</a></li>
+    </ul>
+    <p class="sg-footer__phi">1 &middot; 1 &middot; 2 &middot; 3 &middot; 5 &middot; 8 &middot; 13 &middot; 21 &middot; 34 &middot; 55 &middot; 89</p>
+    <p class="sg-footer__copy">Design Aesthetic Reference &bull; Sacred Geometry &bull; As Above, So Below</p>
+  </footer>
+
+  <!-- ===== VANILLA JS: Star field generator ===== -->
+  <script>
+    (function() {
+      const starfield = document.getElementById('starfield');
+      if (!starfield) return;
+
+      // Respect reduced motion
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      for (let i = 0; i < 40; i++) {
+        const star = document.createElement('div');
+        star.className = 'sg-star';
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.width = (Math.random() * 2 + 1) + 'px';
+        star.style.height = star.style.width;
+        star.style.animationDelay = (Math.random() * 4) + 's';
+        star.style.animationDuration = (Math.random() * 4 + 3) + 's';
+        if (prefersReducedMotion) {
+          star.style.opacity = (Math.random() * 0.3 + 0.1).toString();
+          star.style.animation = 'none';
+        }
+        starfield.appendChild(star);
+      }
+    })();
+  </script>
+
+</body>
+</html>

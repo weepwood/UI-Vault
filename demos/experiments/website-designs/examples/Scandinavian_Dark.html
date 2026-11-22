@@ -1,0 +1,2092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scandinavian Dark -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600&family=Inter:wght@300;400;500;600&family=DM+Sans:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Dark base tones */
+      --scandi-midnight: #0e0e10;
+      --scandi-charcoal: #1a1a1e;
+      --scandi-dark-slate: #242428;
+      --scandi-graphite: #2e2e34;
+      --scandi-ash: #3c3c44;
+
+      /* Neutral grays */
+      --scandi-stone: #5a5a64;
+      --scandi-fog: #8a8a94;
+
+      /* Light tones */
+      --scandi-smoke-white: #c8c8ce;
+      --scandi-ivory: #e8e4de;
+      --scandi-warm-white: #f5f0e8;
+
+      /* Warm accents */
+      --scandi-smoked-oak: #6b5340;
+      --scandi-cognac: #a0714a;
+      --scandi-amber: #d4a054;
+
+      /* Cool accents */
+      --scandi-pine: #2a4a3a;
+      --scandi-fjord: #3a4a5a;
+
+      /* Functional tokens */
+      --bg-primary: var(--scandi-charcoal);
+      --bg-secondary: var(--scandi-dark-slate);
+      --bg-surface: var(--scandi-graphite);
+      --bg-elevated: var(--scandi-ash);
+      --text-primary: var(--scandi-ivory);
+      --text-body: var(--scandi-smoke-white);
+      --text-muted: var(--scandi-fog);
+      --text-disabled: var(--scandi-stone);
+      --accent: var(--scandi-cognac);
+      --accent-hover: var(--scandi-amber);
+      --accent-success: var(--scandi-pine);
+      --border-subtle: rgba(255, 255, 255, 0.06);
+
+      /* Spacing scale (8px base) */
+      --space-xs: 0.5rem;
+      --space-sm: 1rem;
+      --space-md: 1.5rem;
+      --space-lg: 2rem;
+      --space-xl: 3rem;
+      --space-2xl: 4rem;
+      --space-3xl: 6rem;
+      --space-4xl: 8rem;
+
+      /* Section padding */
+      --section-pad: clamp(64px, 10vw, 128px);
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--text-body);
+      background-color: var(--scandi-midnight);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--text-primary);
+      line-height: 1.2;
+    }
+
+    /* Subtle grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 var(--space-xl);
+      height: 72px;
+      background: rgba(14, 14, 16, 0.88);
+      backdrop-filter: blur(24px) saturate(1.2);
+      -webkit-backdrop-filter: blur(24px) saturate(1.2);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: background 0.4s ease;
+    }
+
+    .nav-logo {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 1.05rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-lg);
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      color: var(--text-muted);
+      position: relative;
+      transition: color 0.3s ease;
+      padding: 4px 0;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text-primary);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 0.55rem 1.4rem;
+      border: 1px solid var(--scandi-ash);
+      border-radius: 6px;
+      color: var(--text-body);
+      transition: all 0.3s ease;
+    }
+
+    .nav-cta:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(160, 113, 74, 0.08);
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      background: none;
+      border: none;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: var(--space-4xl) var(--space-lg);
+      text-align: center;
+      background: var(--bg-primary);
+      overflow: hidden;
+    }
+
+    /* Warm ambient radial glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 35%, rgba(160, 113, 74, 0.07) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 70%, rgba(58, 74, 90, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Slow-drifting aurora-like gradient */
+    .hero-aurora {
+      position: absolute;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 160%;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(42, 74, 58, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(160, 113, 74, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(58, 74, 90, 0.08) 0%, transparent 45%);
+      pointer-events: none;
+      animation: auroraShift 25s ease-in-out infinite alternate;
+    }
+
+    @keyframes auroraShift {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.6; }
+      33% { transform: translate(3%, -2%) scale(1.02); opacity: 0.8; }
+      66% { transform: translate(-2%, 1%) scale(0.98); opacity: 0.7; }
+      100% { transform: translate(1%, 3%) scale(1.01); opacity: 0.6; }
+    }
+
+    /* Faint horizontal lines suggesting wooden grain */
+    .hero-grain {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(255, 255, 255, 0.008) 3px,
+        rgba(255, 255, 255, 0.008) 4px
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .hero-label::before,
+    .hero-label::after {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+      opacity: 0.5;
+    }
+
+    .hero h1 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      line-height: 1.1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: var(--space-md);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      line-height: 1.6;
+      color: var(--text-muted);
+      max-width: 50ch;
+      margin: 0 auto var(--space-sm);
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      line-height: 1.8;
+      color: var(--text-disabled);
+      max-width: 48ch;
+      margin: 0 auto var(--space-xl);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute;
+      bottom: var(--space-xl);
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      z-index: 2;
+    }
+
+    .hero-scroll span {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-disabled);
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--scandi-ash), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 0.8; transform: scaleY(1.2); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn--primary {
+      background: var(--accent);
+      color: var(--scandi-warm-white);
+      box-shadow: 0 2px 10px rgba(160, 113, 74, 0.2);
+    }
+
+    .btn--primary:hover {
+      background: var(--accent-hover);
+      color: var(--scandi-midnight);
+      box-shadow: 0 4px 20px rgba(212, 160, 84, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn--secondary {
+      background: transparent;
+      color: var(--text-body);
+      border: 1px solid var(--scandi-ash);
+    }
+
+    .btn--secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(160, 113, 74, 0.06);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 0.9rem 1.2rem;
+    }
+
+    .btn--ghost:hover {
+      color: var(--text-primary);
+    }
+
+    .btn--pine {
+      background: var(--scandi-pine);
+      color: var(--scandi-ivory);
+      border: 1px solid rgba(42, 74, 58, 0.5);
+    }
+
+    .btn--pine:hover {
+      background: #356b4f;
+      box-shadow: 0 4px 16px rgba(42, 74, 58, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       SHARED SECTION LAYOUT
+       ============================================ */
+    .section {
+      padding: var(--section-pad) var(--space-lg);
+    }
+
+    .section--midnight { background: var(--scandi-midnight); }
+    .section--charcoal { background: var(--bg-primary); }
+    .section--slate { background: var(--bg-secondary); }
+    .section--graphite { background: var(--bg-surface); }
+
+    .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-title {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 55ch;
+      margin-bottom: var(--space-2xl);
+    }
+
+    /* Dividers */
+    .divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--scandi-ash), transparent);
+      margin: 0;
+    }
+
+    .divider--accent {
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .type-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+
+    .type-specimen {
+      padding: var(--space-xl);
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+    }
+
+    .type-specimen__label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.65rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+
+    .type-specimen__display {
+      margin-bottom: var(--space-sm);
+    }
+
+    .type-specimen__meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: var(--text-disabled);
+      letter-spacing: 0.02em;
+    }
+
+    .type-heading-xl {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      line-height: 1.1;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+    }
+
+    .type-heading-lg {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+      color: var(--text-primary);
+    }
+
+    .type-body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-body);
+    }
+
+    .type-serif {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      line-height: 1.6;
+      color: var(--accent);
+    }
+
+    .type-label-display {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .type-scales {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-md);
+    }
+
+    .type-scale-row {
+      display: flex;
+      align-items: baseline;
+      gap: var(--space-sm);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .type-scale-row:last-child {
+      border-bottom: none;
+    }
+
+    .type-scale-size {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--text-disabled);
+      min-width: 60px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-sm);
+    }
+
+    .palette-swatch {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .palette-swatch:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .palette-swatch__color {
+      height: 80px;
+      position: relative;
+    }
+
+    .palette-swatch__info {
+      padding: var(--space-sm);
+    }
+
+    .palette-swatch__name {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      color: var(--text-primary);
+      margin-bottom: 2px;
+    }
+
+    .palette-swatch__hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      color: var(--text-disabled);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: var(--space-lg);
+    }
+
+    .card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: var(--space-lg);
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      background: var(--bg-surface);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    .card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-md);
+      font-size: 1.2rem;
+      color: var(--accent);
+      background: rgba(160, 113, 74, 0.1);
+    }
+
+    .card__icon--pine {
+      background: rgba(42, 74, 58, 0.2);
+      color: #5a9a7a;
+    }
+
+    .card__icon--fjord {
+      background: rgba(58, 74, 90, 0.2);
+      color: #7a9ab0;
+    }
+
+    .card__label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.68rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .card__title {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .card__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .banner {
+      position: relative;
+      padding: var(--space-3xl) var(--space-lg);
+      background: var(--scandi-midnight);
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Layered atmospheric gradient bands */
+    .banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(42, 74, 58, 0.15) 0%,
+          rgba(14, 14, 16, 0) 30%,
+          rgba(14, 14, 16, 0) 70%,
+          rgba(58, 74, 90, 0.12) 100%
+        );
+      pointer-events: none;
+    }
+
+    /* Flickering candlelight glow */
+    .banner-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(212, 160, 84, 0.1) 0%, transparent 60%);
+      pointer-events: none;
+      animation: candleGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes candleGlow {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      25% { transform: translate(-48%, -52%) scale(1.05); opacity: 0.8; }
+      50% { transform: translate(-51%, -49%) scale(0.98); opacity: 0.7; }
+      75% { transform: translate(-49%, -51%) scale(1.03); opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 0.65; }
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner-rule {
+      width: 48px;
+      height: 1px;
+      background: var(--accent);
+      margin: 0 auto var(--space-md);
+      opacity: 0.6;
+    }
+
+    .banner-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .banner-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      color: var(--text-disabled);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .principle {
+      padding: var(--space-lg) var(--space-md);
+      text-align: center;
+    }
+
+    .principle__number {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 2.2rem;
+      color: var(--scandi-ash);
+      letter-spacing: 0.06em;
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+
+    .principle__title {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: var(--text-primary);
+      margin-bottom: var(--space-xs);
+    }
+
+    .principle__rule {
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+      margin: var(--space-sm) auto;
+    }
+
+    .principle__text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+    }
+
+    .effect-card {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    .effect-card__preview {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-card__info {
+      padding: var(--space-md);
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .effect-card__title {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-card__desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: var(--text-disabled);
+      line-height: 1.5;
+    }
+
+    /* Effect 1: Ambient Surface Elevation */
+    .fx-elevation {
+      background: var(--bg-primary);
+    }
+
+    .fx-elevation-layers {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .fx-elevation-chip {
+      width: 56px;
+      height: 56px;
+      border-radius: 8px;
+      transition: all 0.4s ease;
+    }
+
+    .fx-elevation-chip--1 {
+      background: var(--scandi-dark-slate);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .fx-elevation-chip--2 {
+      background: var(--scandi-graphite);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    }
+
+    .fx-elevation-chip--3 {
+      background: var(--scandi-ash);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+    }
+
+    .fx-elevation:hover .fx-elevation-chip--1 { transform: translateY(4px); }
+    .fx-elevation:hover .fx-elevation-chip--2 { transform: translateY(0); }
+    .fx-elevation:hover .fx-elevation-chip--3 { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.4); }
+
+    /* Effect 2: Cognac Glow */
+    .fx-glow {
+      background: var(--scandi-midnight);
+    }
+
+    .fx-glow-orb {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(160, 113, 74, 0.4) 0%, rgba(160, 113, 74, 0.08) 50%, transparent 70%);
+      animation: glowPulse 3s ease-in-out infinite alternate;
+      position: relative;
+    }
+
+    .fx-glow-orb::after {
+      content: '';
+      position: absolute;
+      inset: 20%;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(212, 160, 84, 0.5) 0%, transparent 70%);
+    }
+
+    @keyframes glowPulse {
+      0% { transform: scale(0.9); opacity: 0.6; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    /* Effect 3: Grain Texture */
+    .fx-grain {
+      background: var(--bg-primary);
+      position: relative;
+    }
+
+    .fx-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    .fx-grain-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 4: Border Reveal */
+    .fx-border-reveal {
+      background: var(--bg-primary);
+    }
+
+    .fx-border-box {
+      width: 100px;
+      height: 100px;
+      border-radius: 12px;
+      background: var(--bg-secondary);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fx-border-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      padding: 1px;
+      background: linear-gradient(135deg, transparent 0%, var(--accent) 50%, transparent 100%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .fx-border-reveal:hover .fx-border-box::before {
+      opacity: 1;
+    }
+
+    /* Effect 5: Backdrop Blur Stack */
+    .fx-blur {
+      background:
+        linear-gradient(135deg, var(--scandi-pine) 0%, var(--scandi-fjord) 50%, var(--scandi-smoked-oak) 100%);
+    }
+
+    .fx-blur-layers {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .fx-blur-panel {
+      width: 70px;
+      height: 70px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: absolute;
+    }
+
+    .fx-blur-panel--1 {
+      background: rgba(14, 14, 16, 0.4);
+      backdrop-filter: blur(4px);
+      transform: rotate(-6deg) translateX(-24px);
+    }
+
+    .fx-blur-panel--2 {
+      background: rgba(14, 14, 16, 0.5);
+      backdrop-filter: blur(12px);
+      z-index: 1;
+    }
+
+    .fx-blur-panel--3 {
+      background: rgba(14, 14, 16, 0.6);
+      backdrop-filter: blur(20px);
+      transform: rotate(6deg) translateX(24px);
+    }
+
+    /* Effect 6: Warm Fade-In */
+    .fx-fadein {
+      background: var(--bg-primary);
+    }
+
+    .fx-fadein-bars {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      height: 80px;
+    }
+
+    .fx-fadein-bar {
+      width: 12px;
+      border-radius: 4px 4px 0 0;
+      background: var(--accent);
+      opacity: 0.15;
+      animation: fadeInStagger 2s ease-in-out infinite;
+    }
+
+    .fx-fadein-bar:nth-child(1) { height: 30%; animation-delay: 0s; }
+    .fx-fadein-bar:nth-child(2) { height: 50%; animation-delay: 0.15s; }
+    .fx-fadein-bar:nth-child(3) { height: 80%; animation-delay: 0.3s; }
+    .fx-fadein-bar:nth-child(4) { height: 65%; animation-delay: 0.45s; }
+    .fx-fadein-bar:nth-child(5) { height: 90%; animation-delay: 0.6s; }
+    .fx-fadein-bar:nth-child(6) { height: 45%; animation-delay: 0.75s; }
+    .fx-fadein-bar:nth-child(7) { height: 70%; animation-delay: 0.9s; }
+
+    @keyframes fadeInStagger {
+      0%, 100% { opacity: 0.15; }
+      50% { opacity: 0.85; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-md);
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      text-align: center;
+      padding: var(--section-pad) var(--space-lg);
+      position: relative;
+    }
+
+    .quote-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(160, 113, 74, 0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--scandi-ash);
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      line-height: 1.6;
+      color: var(--accent);
+      margin-bottom: var(--space-md);
+    }
+
+    .quote-author {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.78rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-disabled);
+    }
+
+    .quote-author span {
+      color: var(--text-muted);
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      position: relative;
+      text-align: center;
+      padding: var(--section-pad) var(--space-lg);
+      background: var(--bg-secondary);
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(160, 113, 74, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: var(--space-xl);
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: var(--space-sm);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--scandi-midnight);
+      border-top: 1px solid var(--border-subtle);
+      padding: var(--space-2xl) var(--space-xl) var(--space-lg);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr repeat(3, 1fr);
+      gap: var(--space-xl);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-brand {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: var(--space-sm);
+    }
+
+    .footer-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 30ch;
+    }
+
+    .footer-heading {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: var(--space-md);
+    }
+
+    .footer-link {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: var(--scandi-fog);
+      display: block;
+      padding: 0.25rem 0;
+      transition: color 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: var(--accent);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: var(--space-xl) auto 0;
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-disabled);
+    }
+
+    .footer-legal {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .footer-legal a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--text-disabled);
+      transition: color 0.3s ease;
+    }
+
+    .footer-legal a:hover {
+      color: var(--accent);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 1024px) {
+      .principles-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .type-showcase {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      :root {
+        --section-pad: clamp(48px, 8vw, 72px);
+      }
+
+      .nav {
+        padding: 0 var(--space-md);
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 72px;
+        left: 0;
+        right: 0;
+        background: rgba(14, 14, 16, 0.96);
+        backdrop-filter: blur(24px);
+        padding: var(--space-lg);
+        gap: var(--space-sm);
+        border-bottom: 1px solid var(--border-subtle);
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 8vw, 3.2rem);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: var(--space-sm);
+        text-align: center;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        justify-content: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .hero-actions .btn {
+        justify-content: center;
+      }
+
+      .cta-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .cta-actions .btn {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">Norden</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#" class="nav-cta">Contact</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-aurora"></div>
+    <div class="hero-grain"></div>
+    <div class="hero-content">
+      <div class="hero-label">Design Aesthetic Reference</div>
+      <h1>Scandinavian Dark</h1>
+      <p class="hero-subtitle">Where darkness becomes a canvas for warmth, texture, and quiet intention</p>
+      <p class="hero-desc">Rooted in Nordic minimalism and the long dark winters of the north. Matte surfaces, natural materials, and the amber glow of candlelight against charcoal interiors.</p>
+      <div class="hero-actions">
+        <a href="#components" class="btn btn--primary">Explore Components</a>
+        <a href="#palette" class="btn btn--secondary">View Palette</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--charcoal" id="typography">
+    <div class="section-inner">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Clean Geometry, Warm Precision</h2>
+      <p class="section-subtitle">Geometric sans-serifs with open apertures and humanist warmth. Light weights maintain airiness within the dark palette. A classical serif provides editorial contrast.</p>
+
+      <div class="type-showcase">
+        <!-- Left column: Specimens -->
+        <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+          <div class="type-specimen">
+            <span class="type-specimen__label">Display / Josefin Sans 300</span>
+            <div class="type-specimen__display">
+              <span class="type-heading-xl">Nordic Noir</span>
+            </div>
+            <span class="type-specimen__meta">Light weight, wide tracking, uppercase -- hero titles and display headings</span>
+          </div>
+
+          <div class="type-specimen">
+            <span class="type-specimen__label">Heading / DM Sans 500</span>
+            <div class="type-specimen__display">
+              <span class="type-heading-lg">Material Honesty in Every Surface</span>
+            </div>
+            <span class="type-specimen__meta">Medium weight, clean geometry -- section headings and card titles</span>
+          </div>
+
+          <div class="type-specimen">
+            <span class="type-specimen__label">Body / Inter 400</span>
+            <div class="type-specimen__display">
+              <span class="type-body">The design does not compete for attention. It creates a calm, authoritative environment where content speaks and the interface recedes into the background.</span>
+            </div>
+            <span class="type-specimen__meta">Regular weight, 1.7 line-height -- readable body text on dark surfaces</span>
+          </div>
+
+          <div class="type-specimen">
+            <span class="type-specimen__label">Accent / Cormorant Garamond 300 Italic</span>
+            <div class="type-specimen__display">
+              <span class="type-serif">Warmth within darkness, balance in all things</span>
+            </div>
+            <span class="type-specimen__meta">Classical serif for pull quotes, editorial contrast, and refined accent moments</span>
+          </div>
+        </div>
+
+        <!-- Right column: Type Scale -->
+        <div>
+          <div class="type-specimen" style="position: sticky; top: 96px;">
+            <span class="type-specimen__label">Type Scale</span>
+            <div class="type-scales">
+              <div class="type-scale-row">
+                <span class="type-scale-size">4.8rem</span>
+                <span style="font-family: 'Josefin Sans', sans-serif; font-weight: 300; font-size: 2rem; color: var(--text-primary); letter-spacing: 0.05em; text-transform: uppercase;">Hero</span>
+              </div>
+              <div class="type-scale-row">
+                <span class="type-scale-size">2.4rem</span>
+                <span style="font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 1.5rem; color: var(--text-primary); letter-spacing: 0.02em;">Section Title</span>
+              </div>
+              <div class="type-scale-row">
+                <span class="type-scale-size">1.5rem</span>
+                <span style="font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 1.15rem; color: var(--text-body); letter-spacing: 0.015em;">Subsection</span>
+              </div>
+              <div class="type-scale-row">
+                <span class="type-scale-size">1rem</span>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1rem; color: var(--text-body);">Body Text</span>
+              </div>
+              <div class="type-scale-row">
+                <span class="type-scale-size">0.85rem</span>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 0.85rem; color: var(--text-muted);">Caption / Nav</span>
+              </div>
+              <div class="type-scale-row">
+                <span class="type-scale-size">0.75rem</span>
+                <span class="type-label-display">Label / Overline</span>
+              </div>
+              <div class="type-scale-row">
+                <span class="type-scale-size">0.7rem</span>
+                <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent);">Accent Label</span>
+              </div>
+            </div>
+
+            <div style="margin-top: var(--space-lg); padding-top: var(--space-md); border-top: 1px solid var(--border-subtle);">
+              <span class="type-specimen__label">Recommended Pairings</span>
+              <div style="margin-top: var(--space-sm); display: flex; flex-direction: column; gap: var(--space-xs);">
+                <span style="font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text-muted);">Josefin Sans 300 + Inter 400</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text-muted);">DM Sans 500 + Work Sans 400</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text-muted);">Cormorant Garamond 300i + Inter 300</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider divider--accent">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--midnight" id="palette">
+    <div class="section-inner">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Volcanic Basalt to Amber Glow</h2>
+      <p class="section-subtitle">Drawn from Nordic landscapes: charred pine forests, slate fjord cliffs, dark winter seas, and the warm candlelight of hygge interiors.</p>
+
+      <!-- Dark base tones -->
+      <p style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-disabled); margin-bottom: var(--space-sm);">Dark Base Tones</p>
+      <div class="palette-grid" style="margin-bottom: var(--space-xl);">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #0e0e10;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Midnight Black</div>
+            <div class="palette-swatch__hex">#0E0E10</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #1a1a1e;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Charcoal</div>
+            <div class="palette-swatch__hex">#1A1A1E</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #242428;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Dark Slate</div>
+            <div class="palette-swatch__hex">#242428</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #2e2e34;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Graphite</div>
+            <div class="palette-swatch__hex">#2E2E34</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #3c3c44;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Ash Gray</div>
+            <div class="palette-swatch__hex">#3C3C44</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Neutral & Light tones -->
+      <p style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-disabled); margin-bottom: var(--space-sm);">Neutral & Light Tones</p>
+      <div class="palette-grid" style="margin-bottom: var(--space-xl);">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #5a5a64;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Stone</div>
+            <div class="palette-swatch__hex">#5A5A64</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #8a8a94;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Fog</div>
+            <div class="palette-swatch__hex">#8A8A94</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #c8c8ce;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Smoke White</div>
+            <div class="palette-swatch__hex">#C8C8CE</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #e8e4de;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Nordic Ivory</div>
+            <div class="palette-swatch__hex">#E8E4DE</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #f5f0e8;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Warm White</div>
+            <div class="palette-swatch__hex">#F5F0E8</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Accent tones -->
+      <p style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-disabled); margin-bottom: var(--space-sm);">Warm & Cool Accents</p>
+      <div class="palette-grid">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #6b5340;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Smoked Oak</div>
+            <div class="palette-swatch__hex">#6B5340</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #a0714a;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Cognac</div>
+            <div class="palette-swatch__hex">#A0714A</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #d4a054;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Amber Glow</div>
+            <div class="palette-swatch__hex">#D4A054</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #2a4a3a;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Forest Pine</div>
+            <div class="palette-swatch__hex">#2A4A3A</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #3a4a5a;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Fjord Blue</div>
+            <div class="palette-swatch__hex">#3A4A5A</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--charcoal" id="components">
+    <div class="section-inner">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Surface Elevation & Material Language</h2>
+      <p class="section-subtitle">Cards use subtle tonal shifts rather than harsh borders. Each surface suggests a physical material -- slate on stone, charred timber on dark concrete.</p>
+
+      <div class="cards-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <p class="card__label">Layout</p>
+          <h3 class="card__title">Asymmetric Grid Balance</h3>
+          <p class="card__text">Off-center compositions with 7/5 or 8/4 column splits create visual interest while maintaining balance through weight and spacing relationships.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card__icon card__icon--pine">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <p class="card__label">Depth</p>
+          <h3 class="card__title">Z-Axis Elevation</h3>
+          <p class="card__text">Important content sits on elevated surfaces using lighter dark tones. Less important content recedes, creating a layered three-dimensional hierarchy.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card__icon card__icon--fjord">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <p class="card__label">Motion</p>
+          <h3 class="card__title">Deliberate Transitions</h3>
+          <p class="card__text">Smooth ease curves of 0.3s to 0.5s reflect the calm, unhurried Nordic character. Every animation serves a purpose -- guiding attention, not seeking it.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <p class="card__label">Typography</p>
+          <h3 class="card__title">Weight-Based Hierarchy</h3>
+          <p class="card__text">Hierarchy established through weight, size, spacing, and tonal contrast rather than color or decoration. Two typeface families maximum for coherence.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <div class="card__icon card__icon--pine">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/><path d="M12 8V2"/></svg>
+          </div>
+          <p class="card__label">Material</p>
+          <h3 class="card__title">Organic Texture Reference</h3>
+          <p class="card__text">Surfaces hint at physical materials through fine grain, soft noise overlays, or gentle gradients. Wood, stone, leather, and metal provide the vocabulary.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <div class="card__icon card__icon--fjord">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <p class="card__label">Philosophy</p>
+          <h3 class="card__title">Quiet Confidence</h3>
+          <p class="card__text">The interface never shouts. Every element is precisely placed and purposeful, creating calm authority where content speaks and ornamentation is absent.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="banner">
+    <div class="banner-glow"></div>
+    <div class="banner-content">
+      <div class="banner-rule"></div>
+      <p class="banner-text">Less, but Better</p>
+      <p class="banner-sub">Removing the unnecessary makes the necessary speak</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section section--slate">
+    <div class="section-inner">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">Foundations of Nordic Noir</h2>
+      <p class="section-subtitle">Four guiding tenets drawn from Scandinavian design philosophy, adapted for the dark palette and digital medium.</p>
+
+      <div class="principles-grid">
+        <div class="principle">
+          <span class="principle__number">01</span>
+          <h3 class="principle__title">Function Dictates Form</h3>
+          <div class="principle__rule"></div>
+          <p class="principle__text">Every visual element must serve a purpose. Decoration for its own sake is antithetical to the aesthetic. If it does not inform or guide, it should not exist.</p>
+        </div>
+
+        <div class="principle">
+          <span class="principle__number">02</span>
+          <h3 class="principle__title">Warmth Within Darkness</h3>
+          <div class="principle__rule"></div>
+          <p class="principle__text">The palette is dark but never cold. Warm undertones, natural textures, and amber-toned accents prevent the design from feeling sterile or clinical.</p>
+        </div>
+
+        <div class="principle">
+          <span class="principle__number">03</span>
+          <h3 class="principle__title">Material Honesty</h3>
+          <div class="principle__rule"></div>
+          <p class="principle__text">Surfaces reference real materials rather than arbitrary color. Wood, stone, leather, and metal provide authenticity that pure digital abstraction cannot.</p>
+        </div>
+
+        <div class="principle">
+          <span class="principle__number">04</span>
+          <h3 class="principle__title">Sustainable Simplicity</h3>
+          <div class="principle__rule"></div>
+          <p class="principle__text">Fewer visual elements mean faster loads, lower energy on OLED, and reduced cognitive burden. The aesthetic aligns with ecological and psychological values.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--charcoal" id="effects">
+    <div class="section-inner">
+      <p class="section-label">CSS Effects</p>
+      <h2 class="section-title">Atmosphere Through Restraint</h2>
+      <p class="section-subtitle">Subtle micro-interactions and material-inspired techniques that create depth and warmth without visual noise. All CSS-only, no JavaScript.</p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Surface Elevation -->
+        <div class="effect-card">
+          <div class="effect-card__preview fx-elevation">
+            <div class="fx-elevation-layers">
+              <div class="fx-elevation-chip fx-elevation-chip--1"></div>
+              <div class="fx-elevation-chip fx-elevation-chip--2"></div>
+              <div class="fx-elevation-chip fx-elevation-chip--3"></div>
+            </div>
+          </div>
+          <div class="effect-card__info">
+            <h3 class="effect-card__title">Surface Elevation</h3>
+            <p class="effect-card__desc">Tonal shifts create depth hierarchy. Lighter dark tones float forward; deeper tones recede.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Cognac Glow -->
+        <div class="effect-card">
+          <div class="effect-card__preview fx-glow">
+            <div class="fx-glow-orb"></div>
+          </div>
+          <div class="effect-card__info">
+            <h3 class="effect-card__title">Ambient Cognac Glow</h3>
+            <p class="effect-card__desc">Warm radial gradients simulate candlelight, creating the hygge atmosphere central to Nordic interiors.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Grain Texture -->
+        <div class="effect-card">
+          <div class="effect-card__preview fx-grain">
+            <span class="fx-grain-text">Texture</span>
+          </div>
+          <div class="effect-card__info">
+            <h3 class="effect-card__title">Material Grain</h3>
+            <p class="effect-card__desc">SVG noise overlays at low opacity give surfaces the organic feel of charred timber or brushed concrete.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Border Reveal -->
+        <div class="effect-card">
+          <div class="effect-card__preview fx-border-reveal">
+            <div class="fx-border-box"></div>
+          </div>
+          <div class="effect-card__info">
+            <h3 class="effect-card__title">Border Reveal</h3>
+            <p class="effect-card__desc">Gradient borders emerge on hover using mask-composite, suggesting the warm edge of firelight on dark materials.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Backdrop Blur -->
+        <div class="effect-card">
+          <div class="effect-card__preview fx-blur">
+            <div class="fx-blur-layers">
+              <div class="fx-blur-panel fx-blur-panel--1"></div>
+              <div class="fx-blur-panel fx-blur-panel--2"></div>
+              <div class="fx-blur-panel fx-blur-panel--3"></div>
+            </div>
+          </div>
+          <div class="effect-card__info">
+            <h3 class="effect-card__title">Frosted Glass Layers</h3>
+            <p class="effect-card__desc">Backdrop-filter blur with translucent dark panels creates atmospheric depth, like looking through frosted Nordic windows.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Warm Fade-In -->
+        <div class="effect-card">
+          <div class="effect-card__preview fx-fadein">
+            <div class="fx-fadein-bars">
+              <div class="fx-fadein-bar"></div>
+              <div class="fx-fadein-bar"></div>
+              <div class="fx-fadein-bar"></div>
+              <div class="fx-fadein-bar"></div>
+              <div class="fx-fadein-bar"></div>
+              <div class="fx-fadein-bar"></div>
+              <div class="fx-fadein-bar"></div>
+            </div>
+          </div>
+          <div class="effect-card__info">
+            <h3 class="effect-card__title">Staggered Warm Fade</h3>
+            <p class="effect-card__desc">Sequentially staggered opacity transitions in cognac tones, like the slow brightening of dawn over a Nordic horizon.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider divider--accent">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--slate">
+    <div class="section-inner">
+      <p class="section-label">Buttons</p>
+      <h2 class="section-title">Understated & Geometric</h2>
+      <p class="section-subtitle">Four button variants: warm cognac primary, ghost-border secondary, minimal text ghost, and forest pine accent. Smooth 0.3s transitions throughout.</p>
+
+      <div class="button-showcase">
+        <button class="btn btn--primary">Primary Action</button>
+        <button class="btn btn--secondary">Secondary</button>
+        <button class="btn btn--ghost">Ghost Link &rarr;</button>
+        <button class="btn btn--pine">Forest Accent</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="quote-section section--midnight">
+    <div class="quote-block">
+      <span class="quote-mark">&ldquo;</span>
+      <blockquote>The best design is the least design. In darkness, we find the discipline to remove everything that does not serve the moment -- and what remains glows with quiet intention.</blockquote>
+      <p class="quote-author">Alvar Aalto <span>-- on the Nordic design philosophy</span></p>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <p class="section-label">Begin</p>
+      <h2 class="cta-title">Embrace the Dark Canvas</h2>
+      <p class="cta-text">Start building with the Scandinavian Dark aesthetic. Matte surfaces, warm accents, generous space, and the quiet confidence of Nordic design tradition.</p>
+      <div class="cta-actions">
+        <a href="#" class="btn btn--primary">Get Started</a>
+        <a href="#" class="btn btn--secondary">View Documentation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">Norden</div>
+        <p class="footer-desc">Scandinavian Dark design aesthetic. Warmth within darkness, function dictating form, material honesty in every surface.</p>
+      </div>
+      <div>
+        <h4 class="footer-heading">Design</h4>
+        <a href="#palette" class="footer-link">Color Palette</a>
+        <a href="#typography" class="footer-link">Typography</a>
+        <a href="#components" class="footer-link">Components</a>
+        <a href="#effects" class="footer-link">Effects</a>
+      </div>
+      <div>
+        <h4 class="footer-heading">Principles</h4>
+        <a href="#" class="footer-link">Functional Form</a>
+        <a href="#" class="footer-link">Material Honesty</a>
+        <a href="#" class="footer-link">Warm Darkness</a>
+        <a href="#" class="footer-link">Sustainability</a>
+      </div>
+      <div>
+        <h4 class="footer-heading">Resources</h4>
+        <a href="#" class="footer-link">Design Tokens</a>
+        <a href="#" class="footer-link">Figma Kit</a>
+        <a href="#" class="footer-link">Style Guide</a>
+        <a href="#" class="footer-link">Accessibility</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">Design Aesthetic Reference -- Scandinavian Dark / Nordic Noir</span>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('open');
+        const spans = navToggle.querySelectorAll('span');
+        if (navLinks.classList.contains('open')) {
+          spans[0].style.transform = 'rotate(45deg) translate(4px, 4px)';
+          spans[1].style.opacity = '0';
+          spans[2].style.transform = 'rotate(-45deg) translate(4px, -4px)';
+        } else {
+          spans[0].style.transform = 'none';
+          spans[1].style.opacity = '1';
+          spans[2].style.transform = 'none';
+        }
+      });
+    }
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (navLinks.classList.contains('open')) {
+          navLinks.classList.remove('open');
+          const spans = navToggle.querySelectorAll('span');
+          spans[0].style.transform = 'none';
+          spans[1].style.opacity = '1';
+          spans[2].style.transform = 'none';
+        }
+      });
+    });
+
+    // Nav background opacity on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        nav.style.background = 'rgba(14, 14, 16, 0.96)';
+      } else {
+        nav.style.background = 'rgba(14, 14, 16, 0.88)';
+      }
+    }, { passive: true });
+  </script>
+</body>
+</html>

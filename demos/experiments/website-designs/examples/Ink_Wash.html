@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ink Wash -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&family=Zen+Old+Mincho:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Ink tones (dark to light) */
+      --ink-concentrated:    #0D0D0D;
+      --ink-rich:            #1A1A1A;
+      --ink-dark-wash:       #333333;
+      --ink-medium-dark:     #4D4D4D;
+      --ink-medium:          #6B6B6B;
+      --ink-light-medium:    #8A8A8A;
+      --ink-pale:            #A8A8A8;
+      --ink-faint:           #C4C4C4;
+      --ink-mist:            #DCDCDC;
+
+      /* Paper tones (warm whites) */
+      --paper-warm:          #EDECE8;
+      --paper-rice:          #F5F4F0;
+      --paper-xuan:          #FAF9F6;
+
+      /* Accent */
+      --vermilion:           #C23B22;
+      --vermilion-dark:      #8B2500;
+      --ink-warm:            #4A3728;
+
+      /* Spacing */
+      --space-xs:  0.5rem;
+      --space-sm:  1rem;
+      --space-md:  2rem;
+      --space-lg:  4rem;
+      --space-xl:  6rem;
+      --space-2xl: 8rem;
+    }
+
+    /* ============================================
+       RESET & BASE
+       ============================================ */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: var(--ink-dark-wash);
+      background-color: var(--paper-rice);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* Rice paper grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.018;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='2' y='1' fill='%23333' opacity='0.4'/%3E%3Crect width='1' height='1' x='5' y='4' fill='%23333' opacity='0.3'/%3E%3Crect width='1' height='1' x='1' y='6' fill='%23333' opacity='0.5'/%3E%3Crect width='1' height='1' x='7' y='2' fill='%23333' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: multiply;
+    }
+
+    ::selection {
+      background: rgba(194, 59, 34, 0.15);
+      color: var(--ink-concentrated);
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      color: var(--ink-concentrated);
+      line-height: 1.2;
+      overflow-wrap: break-word;
+    }
+
+    h1 {
+      font-size: clamp(2.75rem, 6vw, 4.5rem);
+      letter-spacing: 0.03em;
+    }
+
+    h2 {
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      letter-spacing: 0.02em;
+    }
+
+    h3 {
+      font-size: clamp(1.25rem, 2vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    p {
+      max-width: 38em;
+      margin-bottom: 1.5em;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: var(--ink-dark-wash);
+      text-decoration: underline;
+      text-decoration-color: var(--ink-faint);
+      text-underline-offset: 3px;
+      transition: color 0.4s ease, text-decoration-color 0.4s ease;
+    }
+
+    a:hover {
+      color: var(--vermilion);
+      text-decoration-color: var(--vermilion);
+    }
+
+    .meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light-medium);
+    }
+
+    blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--ink-medium-dark);
+      border-left: 2px solid var(--ink-faint);
+      padding-left: 1.5rem;
+      margin: var(--space-lg) 0;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 0 var(--space-md);
+    }
+
+    .container--wide {
+      max-width: 1100px;
+    }
+
+    section {
+      padding: var(--space-xl) 0;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--space-md) var(--space-lg);
+      background: var(--paper-rice);
+      border-bottom: 1px solid var(--ink-mist);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      text-decoration: none;
+    }
+
+    .nav__brand:hover {
+      text-decoration: none;
+    }
+
+    .nav__seal {
+      width: 30px;
+      height: 30px;
+      background: var(--vermilion);
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--paper-xuan);
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 0.85rem;
+      line-height: 1;
+    }
+
+    .nav__wordmark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--ink-concentrated);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: var(--space-md);
+    }
+
+    .nav__links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-medium-dark);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.4s ease;
+    }
+
+    .nav__links a:hover {
+      color: var(--ink-concentrated);
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: linear-gradient(
+        90deg,
+        var(--ink-concentrated),
+        var(--ink-medium),
+        transparent
+      );
+      transition: width 0.4s ease;
+    }
+
+    .nav__links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO
+       ============================================ */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-2xl) var(--space-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Atmospheric ink wash -- mist in the distance */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 55%;
+      background: radial-gradient(
+        ellipse at 65% 35%,
+        rgba(13, 13, 13, 0.045) 0%,
+        rgba(13, 13, 13, 0.02) 35%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    /* Ground mist gradient */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 25%;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(13, 13, 13, 0.02) 50%,
+        rgba(13, 13, 13, 0.035)
+      );
+      pointer-events: none;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+    }
+
+    .hero__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-light-medium);
+      margin-bottom: var(--space-md);
+      display: block;
+    }
+
+    .hero h1 {
+      margin-bottom: var(--space-md);
+      max-width: 14ch;
+    }
+
+    .hero__subtitle {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.25rem;
+      color: var(--ink-medium);
+      max-width: 36ch;
+      line-height: 1.7;
+      margin-bottom: var(--space-lg);
+    }
+
+    .hero__cta {
+      display: flex;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+    }
+
+    .hero__scroll {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ink-pale);
+      position: absolute;
+      bottom: var(--space-lg);
+      left: var(--space-lg);
+      z-index: 1;
+    }
+
+    .hero__scroll span {
+      display: block;
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(180deg, var(--ink-pale), transparent);
+      margin-top: var(--space-xs);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 14px 36px;
+      border-radius: 1px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      border: none;
+    }
+
+    .btn:hover {
+      text-decoration: none;
+    }
+
+    .btn--primary {
+      background: var(--ink-concentrated);
+      color: var(--paper-rice);
+    }
+
+    .btn--primary:hover {
+      background: var(--ink-rich);
+      color: var(--paper-rice);
+      box-shadow: 0 4px 20px rgba(13, 13, 13, 0.15);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--ink-dark-wash);
+      border: 1px solid var(--ink-medium);
+    }
+
+    .btn--ghost:hover {
+      color: var(--ink-concentrated);
+      border-color: var(--ink-concentrated);
+      background: rgba(13, 13, 13, 0.025);
+    }
+
+    .btn--vermilion {
+      background: var(--vermilion);
+      color: var(--paper-xuan);
+    }
+
+    .btn--vermilion:hover {
+      background: var(--vermilion-dark);
+      color: var(--paper-xuan);
+      box-shadow: 0 4px 20px rgba(194, 59, 34, 0.2);
+    }
+
+    .btn--warm {
+      background: var(--ink-warm);
+      color: var(--paper-rice);
+    }
+
+    .btn--warm:hover {
+      background: var(--ink-medium-dark);
+      color: var(--paper-rice);
+      box-shadow: 0 4px 20px rgba(74, 55, 40, 0.2);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ============================================
+       BRUSH DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 2px;
+      max-width: 180px;
+      margin: var(--space-xl) auto;
+      opacity: 0.35;
+    }
+
+    .divider--center {
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--ink-pale) 15%,
+        var(--ink-medium) 50%,
+        var(--ink-pale) 85%,
+        transparent
+      );
+    }
+
+    .divider--asym {
+      background: linear-gradient(
+        90deg,
+        var(--ink-dark-wash),
+        var(--ink-medium) 25%,
+        var(--ink-pale) 55%,
+        transparent
+      );
+      margin-left: 10%;
+      margin-right: auto;
+    }
+
+    /* Enso circle divider */
+    .enso-divider {
+      text-align: center;
+      margin: var(--space-xl) auto;
+    }
+
+    .enso-divider::before {
+      content: '';
+      display: inline-block;
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--ink-medium);
+      border-radius: 50%;
+      border-top-width: 1px;
+      border-right-width: 3px;
+      border-bottom-width: 2px;
+      border-left-width: 1px;
+      border-top-color: transparent;
+      opacity: 0.25;
+      transform: rotate(-25deg);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typography {
+      padding: var(--space-2xl) 0;
+    }
+
+    .typography__header {
+      margin-bottom: var(--space-xl);
+    }
+
+    .typography__header .meta {
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+
+    .type-specimen {
+      padding: var(--space-md) 0;
+      border-top: 1px solid var(--ink-mist);
+    }
+
+    .type-specimen__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-light-medium);
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+
+    .type-specimen--display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--ink-concentrated);
+      letter-spacing: 0.03em;
+    }
+
+    .type-specimen--heading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.75rem;
+      font-weight: 300;
+      line-height: 1.3;
+      color: var(--ink-rich);
+    }
+
+    .type-specimen--body {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--ink-dark-wash);
+    }
+
+    .type-specimen--brush {
+      font-family: 'Zen Old Mincho', serif;
+      font-size: 1.75rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink-concentrated);
+      line-height: 1.4;
+    }
+
+    .type-specimen--meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-medium);
+    }
+
+    .type-specimen--quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--ink-medium-dark);
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette {
+      padding: var(--space-2xl) 0;
+      background: var(--paper-warm);
+      position: relative;
+    }
+
+    .palette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 30% 70%,
+        rgba(13, 13, 13, 0.02),
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .palette__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      position: relative;
+      z-index: 1;
+    }
+
+    .palette__header .meta {
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .palette__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: var(--space-sm);
+      position: relative;
+      z-index: 1;
+    }
+
+    .swatch {
+      text-align: center;
+    }
+
+    .swatch__color {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 2px;
+      border: 1px solid var(--ink-mist);
+      margin-bottom: var(--space-xs);
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .swatch:hover .swatch__color {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(13, 13, 13, 0.08);
+    }
+
+    .swatch__name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink-medium-dark);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .swatch__hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.62rem;
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--ink-light-medium);
+    }
+
+    /* ============================================
+       CARDS
+       ============================================ */
+    .cards {
+      padding: var(--space-xl) 0;
+    }
+
+    .cards__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .cards__header .meta {
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+
+    .cards__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+    }
+
+    .card {
+      background: var(--paper-xuan);
+      border: 1px solid var(--ink-mist);
+      border-radius: 2px;
+      padding: var(--space-md) var(--space-md) 3.5rem;
+      position: relative;
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+
+    /* Ink bleed top edge */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--ink-pale) 25%,
+        var(--ink-medium) 50%,
+        var(--ink-pale) 75%,
+        transparent
+      );
+      opacity: 0.4;
+    }
+
+    .card:hover {
+      border-color: var(--ink-pale);
+      box-shadow: 0 8px 32px rgba(13, 13, 13, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .card__number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--ink-mist);
+      line-height: 1;
+      margin-bottom: var(--space-sm);
+    }
+
+    .card h3 {
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: var(--ink-medium);
+      line-height: 1.7;
+    }
+
+    .card__seal {
+      width: 22px;
+      height: 22px;
+      background: var(--vermilion);
+      border-radius: 2px;
+      opacity: 0.7;
+      position: absolute;
+      bottom: var(--space-sm);
+      right: var(--space-sm);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects {
+      padding: var(--space-2xl) 0;
+      background: var(--paper-warm);
+      position: relative;
+    }
+
+    .effects::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(13, 13, 13, 0.015) 50%,
+        transparent
+      );
+      pointer-events: none;
+    }
+
+    .effects__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+      position: relative;
+      z-index: 1;
+    }
+
+    .effects__header .meta {
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .effects__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-md);
+      position: relative;
+      z-index: 1;
+    }
+
+    .effect-demo {
+      background: var(--paper-xuan);
+      border: 1px solid var(--ink-mist);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .effect-demo:hover {
+      box-shadow: 0 8px 32px rgba(13, 13, 13, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .effect-preview {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      position: relative;
+    }
+
+    .effect-caption {
+      padding: var(--space-sm) var(--space-md);
+      border-top: 1px solid var(--ink-mist);
+    }
+
+    .effect-caption h4 {
+      margin-bottom: 0.25rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.88rem;
+      color: var(--ink-medium);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    /* Effect 1: Horizontal Mist */
+    .effect-mist {
+      background: linear-gradient(
+        90deg,
+        var(--paper-rice) 0%,
+        rgba(13, 13, 13, 0.025) 40%,
+        rgba(13, 13, 13, 0.04) 60%,
+        var(--paper-rice) 100%
+      );
+    }
+
+    /* Effect 2: Radial Ink Bleed */
+    .effect-ink-bleed {
+      background: var(--paper-rice);
+      background-image: radial-gradient(
+        circle at 50% 50%,
+        rgba(13, 13, 13, 0.08) 0%,
+        rgba(13, 13, 13, 0.04) 25%,
+        rgba(13, 13, 13, 0.015) 50%,
+        transparent 75%
+      );
+    }
+
+    /* Effect 3: Mountain Silhouette */
+    .effect-mountain {
+      background:
+        linear-gradient(
+          180deg,
+          var(--paper-rice) 0%,
+          var(--paper-rice) 40%,
+          rgba(13, 13, 13, 0.03) 40%,
+          rgba(13, 13, 13, 0.05) 55%,
+          rgba(13, 13, 13, 0.08) 70%,
+          rgba(13, 13, 13, 0.12) 100%
+        );
+      position: relative;
+    }
+
+    .effect-mountain::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65%;
+      background:
+        radial-gradient(ellipse at 25% 100%, rgba(13, 13, 13, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 100%, rgba(13, 13, 13, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 100%, rgba(13, 13, 13, 0.06) 0%, transparent 60%);
+    }
+
+    /* Effect 4: Corner Wash Spill */
+    .effect-corner-wash {
+      background: var(--paper-rice);
+      background-image: radial-gradient(
+        ellipse at 85% 15%,
+        rgba(13, 13, 13, 0.07) 0%,
+        rgba(13, 13, 13, 0.03) 25%,
+        transparent 55%
+      );
+    }
+
+    /* Effect 5: Paper Grain Texture */
+    .effect-paper-grain {
+      background: var(--paper-warm);
+      position: relative;
+    }
+
+    .effect-paper-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='2' y='1' fill='%23333' opacity='0.4'/%3E%3Crect width='1' height='1' x='5' y='4' fill='%23333' opacity='0.3'/%3E%3Crect width='1' height='1' x='1' y='6' fill='%23333' opacity='0.5'/%3E%3Crect width='1' height='1' x='7' y='2' fill='%23333' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    /* Effect 6: Wet-on-Wet Diffusion */
+    .effect-diffusion {
+      background: var(--paper-rice);
+      background-image:
+        radial-gradient(ellipse at 30% 40%, rgba(13, 13, 13, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 55% 55%, rgba(13, 13, 13, 0.04) 0%, transparent 35%),
+        radial-gradient(ellipse at 70% 30%, rgba(13, 13, 13, 0.05) 0%, transparent 30%);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      padding: var(--space-xl) 0;
+    }
+
+    .button-showcase__header {
+      text-align: center;
+      margin-bottom: var(--space-xl);
+    }
+
+    .button-showcase__header .meta {
+      display: block;
+      margin-bottom: var(--space-sm);
+    }
+
+    .button-showcase__grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: var(--space-md);
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       QUOTE / BLOCKQUOTE SECTION
+       ============================================ */
+    .quote-section {
+      padding: var(--space-2xl) 0;
+      text-align: center;
+      position: relative;
+    }
+
+    .quote-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        rgba(13, 13, 13, 0.025),
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .quote-section blockquote {
+      border-left: none;
+      padding-left: 0;
+      max-width: 32ch;
+      margin: 0 auto;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-section cite {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-light-medium);
+      margin-top: var(--space-md);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: var(--space-2xl) 0;
+      background: var(--paper-warm);
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 70% 50%,
+        rgba(13, 13, 13, 0.03),
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .cta-inner {
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .cta-inner h2 {
+      margin-bottom: var(--space-sm);
+    }
+
+    .cta-inner p {
+      color: var(--ink-medium);
+      max-width: 40ch;
+      margin: 0 auto var(--space-lg);
+      text-align: center;
+    }
+
+    /* ============================================
+       ABOUT / FEATURE SECTION
+       ============================================ */
+    .about {
+      padding: var(--space-2xl) 0;
+    }
+
+    .about__grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: var(--space-lg);
+      align-items: start;
+    }
+
+    .about__label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ink-light-medium);
+      padding-top: 0.4rem;
+    }
+
+    .about__text p {
+      color: var(--ink-medium-dark);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: var(--space-xl) var(--space-lg) var(--space-lg);
+      border-top: 1px solid var(--ink-mist);
+    }
+
+    .footer__inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer__brand {
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+    }
+
+    .footer__seal {
+      width: 24px;
+      height: 24px;
+      background: var(--vermilion);
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    .footer__name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: var(--ink-medium-dark);
+    }
+
+    .footer__links {
+      display: flex;
+      gap: var(--space-md);
+      margin-bottom: var(--space-xs);
+    }
+
+    .footer__links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-pale);
+      text-decoration: none;
+      transition: color 0.4s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--ink-concentrated);
+    }
+
+    .footer__right {
+      text-align: right;
+    }
+
+    .footer__copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      color: var(--ink-pale);
+    }
+
+    /* ============================================
+       ANIMATIONS (contemplative pace)
+       ============================================ */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes inkDiffuse {
+      from {
+        opacity: 0;
+        filter: blur(8px);
+      }
+      to {
+        opacity: 1;
+        filter: blur(0);
+      }
+    }
+
+    .animate-in {
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .animate-in:nth-child(2) { animation-delay: 0.15s; }
+    .animate-in:nth-child(3) { animation-delay: 0.3s; }
+    .animate-in:nth-child(4) { animation-delay: 0.45s; }
+    .animate-in:nth-child(5) { animation-delay: 0.6s; }
+    .animate-in:nth-child(6) { animation-delay: 0.75s; }
+
+    .animate-diffuse {
+      animation: inkDiffuse 1.2s ease-out both;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .effects__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .palette__grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+    }
+
+    @media (max-width: 900px) {
+      .cards__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+
+      .about__grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+
+      .type-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        padding: var(--space-sm) var(--space-md);
+      }
+
+      .nav__links {
+        gap: var(--space-sm);
+      }
+
+      .nav__links a {
+        font-size: 0.68rem;
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: var(--space-xl) var(--space-md);
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 8vw, 3rem);
+      }
+
+      .hero__scroll {
+        left: var(--space-md);
+        bottom: var(--space-md);
+      }
+
+      .effects__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-showcase__grid {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase__grid .btn {
+        text-align: center;
+      }
+
+      .footer__inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--space-sm);
+      }
+
+      .footer__right {
+        text-align: left;
+      }
+
+      .palette__grid {
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: var(--space-xs);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__brand">
+      <div class="nav__seal">&#22696;</div>
+      <span class="nav__wordmark">Ink &amp; Wash</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#cards">Principles</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero__content">
+      <span class="hero__label animate-diffuse">Sumi-e Inspired Design</span>
+      <h1 class="animate-diffuse">The Essence of the Brush</h1>
+      <p class="hero__subtitle animate-diffuse">
+        Where ink meets silence, and the space between strokes
+        holds as much meaning as the marks themselves.
+      </p>
+      <div class="hero__cta animate-diffuse">
+        <a href="#cards" class="btn btn--primary">Explore Principles</a>
+        <a href="#about" class="btn btn--ghost">Learn More</a>
+      </div>
+    </div>
+    <div class="hero__scroll">
+      Scroll
+      <span></span>
+    </div>
+  </section>
+
+  <!-- ===== BRUSH DIVIDER ===== -->
+  <hr class="divider divider--asym">
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section class="about container" id="about">
+    <div class="about__grid">
+      <div class="about__label">Philosophy</div>
+      <div class="about__text">
+        <h2>Emptiness is Form</h2>
+        <p>
+          In the tradition of sumi-e, the artist does not seek to reproduce
+          what the eye sees but to capture the spirit that animates the subject.
+          A bamboo stalk painted in six strokes carries more life than a
+          photographic rendering, because the brush conveys ki &mdash; vital energy &mdash;
+          through its movement.
+        </p>
+        <p>
+          We apply this principle to digital design. Every element earns its
+          place through purpose, not decoration. The generous emptiness between
+          components is not absence but presence &mdash; the ma that gives each
+          element its weight and significance.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRUSH DIVIDER ===== -->
+  <hr class="divider divider--center">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="typography container container--wide" id="typography">
+    <div class="typography__header">
+      <span class="meta">Letterforms</span>
+      <h2>Typography</h2>
+    </div>
+
+    <div class="type-grid">
+      <div class="type-specimen">
+        <span class="type-specimen__label">Display &mdash; Cormorant Garamond Light</span>
+        <div class="type-specimen--display">
+          The void speaks louder than ink
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-specimen__label">Heading &mdash; Cormorant Garamond 300</span>
+        <div class="type-specimen--heading">
+          Economy of means: express the maximum<br>with the minimum
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-specimen__label">Body &mdash; EB Garamond Regular</span>
+        <div class="type-specimen--body">
+          The emotional register of Ink Wash design is one of meditative calm,
+          intellectual clarity, and quiet sophistication. Surfaces feel like
+          handmade paper. Transitions evoke the slow diffusion of ink into wet
+          fibers. Interactions are gentle and unhurried.
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-specimen__label">Calligraphic &mdash; Zen Old Mincho</span>
+        <div class="type-specimen--brush">
+          &#27700;&#22696;&#30011; &mdash; Water Ink Painting
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-specimen__label">Meta &amp; UI &mdash; Inter Light</span>
+        <div class="type-specimen--meta">
+          Captions &bull; Labels &bull; Navigation &bull; Metadata &bull; Timestamps
+        </div>
+      </div>
+
+      <div class="type-specimen">
+        <span class="type-specimen__label">Pull Quote &mdash; Cormorant Garamond Italic</span>
+        <div class="type-specimen--quote">
+          &ldquo;Sumi is black and yet it is not black&rdquo; &mdash; the monochromatic ink
+          paradoxically suggests the full spectrum of color
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENSO DIVIDER ===== -->
+  <div class="enso-divider"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="palette" id="palette">
+    <div class="container container--wide">
+      <div class="palette__header">
+        <span class="meta">Tonal Scale</span>
+        <h2>Color Palette</h2>
+      </div>
+
+      <div class="palette__grid">
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #0D0D0D;"></div>
+          <span class="swatch__name">Concentrated Ink</span>
+          <span class="swatch__hex">#0D0D0D</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #1A1A1A;"></div>
+          <span class="swatch__name">Rich Ink</span>
+          <span class="swatch__hex">#1A1A1A</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #333333;"></div>
+          <span class="swatch__name">Dark Wash</span>
+          <span class="swatch__hex">#333333</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #4D4D4D;"></div>
+          <span class="swatch__name">Medium-Dark</span>
+          <span class="swatch__hex">#4D4D4D</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #6B6B6B;"></div>
+          <span class="swatch__name">Medium Wash</span>
+          <span class="swatch__hex">#6B6B6B</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #8A8A8A;"></div>
+          <span class="swatch__name">Light-Medium</span>
+          <span class="swatch__hex">#8A8A8A</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #A8A8A8;"></div>
+          <span class="swatch__name">Pale Wash</span>
+          <span class="swatch__hex">#A8A8A8</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #C4C4C4;"></div>
+          <span class="swatch__name">Faint Wash</span>
+          <span class="swatch__hex">#C4C4C4</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #DCDCDC;"></div>
+          <span class="swatch__name">Mist Wash</span>
+          <span class="swatch__hex">#DCDCDC</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #EDECE8;"></div>
+          <span class="swatch__name">Warm Paper</span>
+          <span class="swatch__hex">#EDECE8</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #F5F4F0;"></div>
+          <span class="swatch__name">Rice Paper</span>
+          <span class="swatch__hex">#F5F4F0</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #FAF9F6;"></div>
+          <span class="swatch__name">Xuan Paper</span>
+          <span class="swatch__hex">#FAF9F6</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #C23B22;"></div>
+          <span class="swatch__name">Vermilion Seal</span>
+          <span class="swatch__hex">#C23B22</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #8B2500;"></div>
+          <span class="swatch__name">Dark Vermilion</span>
+          <span class="swatch__hex">#8B2500</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background-color: #4A3728;"></div>
+          <span class="swatch__name">Warm Ink</span>
+          <span class="swatch__hex">#4A3728</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRUSH DIVIDER ===== -->
+  <hr class="divider divider--asym">
+
+  <!-- ===== CARDS SECTION ===== -->
+  <section class="cards container container--wide" id="cards">
+    <div class="cards__header">
+      <span class="meta">Principles</span>
+      <h2>The Six Fundamentals</h2>
+    </div>
+    <div class="cards__grid">
+      <div class="card animate-in">
+        <div class="card__number">01</div>
+        <h3>Brush (Fude)</h3>
+        <p>
+          The tool is an extension of the mind. Every interaction must feel
+          as intentional and alive as a loaded brush touching paper.
+        </p>
+        <div class="card__seal"></div>
+      </div>
+      <div class="card animate-in">
+        <div class="card__number">02</div>
+        <h3>Ink (Sumi)</h3>
+        <p>
+          From a single pigment, infinite expression. Our monochromatic
+          palette contains all the tonal depth needed to communicate clearly.
+        </p>
+        <div class="card__seal"></div>
+      </div>
+      <div class="card animate-in">
+        <div class="card__number">03</div>
+        <h3>Paper (Kami)</h3>
+        <p>
+          The ground receives and transforms. White space is not empty canvas
+          waiting to be filled but a luminous presence that shapes every mark.
+        </p>
+        <div class="card__seal"></div>
+      </div>
+      <div class="card animate-in">
+        <div class="card__number">04</div>
+        <h3>Water (Mizu)</h3>
+        <p>
+          The invisible medium that controls everything. Dilution creates depth,
+          softness creates atmosphere, and flow creates the rhythm of the page.
+        </p>
+        <div class="card__seal"></div>
+      </div>
+      <div class="card animate-in">
+        <div class="card__number">05</div>
+        <h3>Void (Ma)</h3>
+        <p>
+          The meaningful emptiness between elements. Negative space is the silence
+          between notes that transforms sound into music, marks into art.
+        </p>
+        <div class="card__seal"></div>
+      </div>
+      <div class="card animate-in">
+        <div class="card__number">06</div>
+        <h3>Spirit (Ki-in)</h3>
+        <p>
+          The vital resonance that animates the whole. Design should convey
+          the living essence of content, not merely its surface appearance.
+        </p>
+        <div class="card__seal"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ENSO DIVIDER ===== -->
+  <div class="enso-divider"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="effects" id="effects">
+    <div class="container container--wide">
+      <div class="effects__header">
+        <span class="meta">Visual Techniques</span>
+        <h2>CSS Effects</h2>
+      </div>
+
+      <div class="effects__grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-mist"></div>
+          <div class="effect-caption">
+            <h4>Horizontal Mist</h4>
+            <p>Fog rolling across a valley, rendered with a horizontal linear gradient of near-transparent ink.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-ink-bleed"></div>
+          <div class="effect-caption">
+            <h4>Radial Ink Bleed</h4>
+            <p>Centered ink drop diffusing outward through wet paper, created with a radial gradient.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-mountain"></div>
+          <div class="effect-caption">
+            <h4>Mountain Silhouette</h4>
+            <p>Atmospheric perspective with layered gradients suggesting distant peaks dissolving into mist.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-corner-wash"></div>
+          <div class="effect-caption">
+            <h4>Corner Wash Spill</h4>
+            <p>Asymmetric ink pooling in one corner, breaking symmetry with deliberate imbalance.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-paper-grain"></div>
+          <div class="effect-caption">
+            <h4>Paper Grain Texture</h4>
+            <p>Subtle fibrous rice paper texture using an SVG data-URI pattern with multiply blending.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-diffusion"></div>
+          <div class="effect-caption">
+            <h4>Wet-on-Wet Diffusion</h4>
+            <p>Multiple ink drops merging on damp paper, layering radial gradients at varying positions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRUSH DIVIDER ===== -->
+  <hr class="divider divider--center">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="button-showcase">
+    <div class="container">
+      <div class="button-showcase__header">
+        <span class="meta">Interactive Elements</span>
+        <h2>Buttons</h2>
+      </div>
+
+      <div class="button-showcase__grid">
+        <a href="#" class="btn btn--primary">Ink Stroke</a>
+        <a href="#" class="btn btn--ghost">Ghost Outline</a>
+        <a href="#" class="btn btn--vermilion">Vermilion Seal</a>
+        <a href="#" class="btn btn--warm">Warm Sepia</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRUSH DIVIDER ===== -->
+  <hr class="divider divider--asym">
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="quote-section">
+    <div class="container">
+      <blockquote>
+        &ldquo;In ink painting, the void speaks louder than the brush. What is left
+        unpainted carries the deepest meaning.&rdquo;
+      </blockquote>
+      <cite>&mdash; Traditional Sumi-e Wisdom</cite>
+    </div>
+  </section>
+
+  <!-- ===== ENSO DIVIDER ===== -->
+  <div class="enso-divider"></div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section" id="contact">
+    <div class="container">
+      <div class="cta-inner">
+        <span class="meta" style="display: block; margin-bottom: var(--space-sm);">Begin</span>
+        <h2>Start a Conversation</h2>
+        <p>
+          Like the meeting of brush and paper, every collaboration begins
+          with a single point of contact. We would welcome the opportunity
+          to bring contemplative clarity to your next project.
+        </p>
+        <a href="#hero" class="btn btn--vermilion">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <div class="footer__seal"></div>
+        <span class="footer__name">Ink &amp; Wash Studio</span>
+      </div>
+      <div class="footer__right">
+        <div class="footer__links">
+          <a href="#hero">Home</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Palette</a>
+          <a href="#cards">Principles</a>
+          <a href="#effects">Effects</a>
+        </div>
+        <span class="footer__copy">Design Aesthetic Reference &bull; Ink Wash &bull; &copy; 2026</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

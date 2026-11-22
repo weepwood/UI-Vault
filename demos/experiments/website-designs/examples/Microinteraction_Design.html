@@ -1,0 +1,2140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microinteraction Design -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Manrope:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES (DESIGN TOKENS)
+       ============================================ */
+    :root {
+      /* Backgrounds */
+      --mi-bg-primary: #FFFFFF;
+      --mi-bg-secondary: #FAFAFA;
+      --mi-bg-skeleton: #F1F5F9;
+
+      /* Borders & Dividers */
+      --mi-border: #E2E8F0;
+      --mi-border-focus: #3B82F6;
+
+      /* Text */
+      --mi-text-primary: #0F172A;
+      --mi-text-body: #334155;
+      --mi-text-secondary: #64748B;
+      --mi-text-placeholder: #94A3B8;
+
+      /* Interactive Accent */
+      --mi-accent: #3B82F6;
+      --mi-accent-hover: #2563EB;
+      --mi-accent-secondary: #8B5CF6;
+
+      /* State Colors */
+      --mi-success: #10B981;
+      --mi-warning: #F59E0B;
+      --mi-error: #EF4444;
+      --mi-info: #06B6D4;
+
+      /* Shadows (animated on hover/focus) */
+      --mi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+      --mi-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --mi-shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+      --mi-shadow-xl: 0 20px 40px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+      /* Typography */
+      --mi-font-body: 'Inter', system-ui, -apple-system, sans-serif;
+      --mi-font-heading: 'Manrope', 'Inter', sans-serif;
+      --mi-font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+      /* Type Scale (Major Third 1.250) */
+      --mi-text-xs: 0.75rem;
+      --mi-text-sm: 0.875rem;
+      --mi-text-base: 1rem;
+      --mi-text-lg: 1.125rem;
+      --mi-text-xl: 1.25rem;
+      --mi-text-2xl: 1.563rem;
+      --mi-text-3xl: 1.953rem;
+      --mi-text-4xl: 2.441rem;
+      --mi-text-5xl: 3.052rem;
+
+      --mi-leading-tight: 1.2;
+      --mi-leading-normal: 1.6;
+      --mi-leading-relaxed: 1.75;
+
+      /* Animation Tokens */
+      --mi-duration-fast: 150ms;
+      --mi-duration-normal: 250ms;
+      --mi-duration-slow: 400ms;
+      --mi-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+      --mi-ease-in: cubic-bezier(0.55, 0, 1, 0.45);
+      --mi-ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+      --mi-ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --mi-ease-bounce: cubic-bezier(0.34, 1.8, 0.64, 1);
+
+      /* Spacing */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: var(--mi-font-body);
+      font-size: var(--mi-text-base);
+      line-height: var(--mi-leading-normal);
+      color: var(--mi-text-body);
+      background-color: var(--mi-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--mi-font-heading);
+      color: var(--mi-text-primary);
+      line-height: var(--mi-leading-tight);
+      letter-spacing: -0.02em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      background: transparent;
+      transition:
+        background var(--mi-duration-slow) var(--mi-ease-out),
+        padding var(--mi-duration-slow) var(--mi-ease-out),
+        box-shadow var(--mi-duration-slow) var(--mi-ease-out);
+    }
+
+    .nav.scrolled {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 12px 48px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    }
+
+    .nav-logo {
+      font-family: var(--mi-font-heading);
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--mi-text-primary);
+      letter-spacing: -0.02em;
+      transition: color var(--mi-duration-fast) var(--mi-ease-out);
+    }
+
+    .nav-logo:hover {
+      color: var(--mi-accent);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      position: relative;
+      font-weight: 500;
+      font-size: 0.938rem;
+      color: var(--mi-text-body);
+      padding: 4px 0;
+      transition: color var(--mi-duration-fast) var(--mi-ease-out);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--mi-accent);
+      border-radius: 1px;
+      transition: width var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .nav-links a:hover {
+      color: var(--mi-accent);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+      background: var(--mi-bg-primary);
+    }
+
+    .hero-bg-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.07;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: mi-float 20s ease-in-out infinite;
+    }
+
+    .hero-bg-shape--1 {
+      width: 600px;
+      height: 600px;
+      top: -150px;
+      right: -100px;
+      background: var(--mi-accent);
+    }
+
+    .hero-bg-shape--2 {
+      width: 500px;
+      height: 500px;
+      bottom: -120px;
+      left: -80px;
+      background: var(--mi-accent-secondary);
+      animation-delay: -7s;
+    }
+
+    .hero-bg-shape--3 {
+      width: 350px;
+      height: 350px;
+      top: 40%;
+      left: 50%;
+      background: var(--mi-info);
+      animation-delay: -13s;
+    }
+
+    @keyframes mi-float {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -30px) scale(1.05); }
+      66% { transform: translate(-15px, 15px) scale(0.95); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(59, 130, 246, 0.08);
+      color: var(--mi-accent);
+      border-radius: 20px;
+      font-size: 0.813rem;
+      font-weight: 600;
+      margin-bottom: 24px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: mi-fade-up 700ms var(--mi-ease-out) 100ms forwards;
+    }
+
+    .hero-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--mi-accent);
+      animation: mi-pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes mi-pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.75); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, var(--mi-text-5xl));
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      max-width: 720px;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: mi-fade-up 800ms var(--mi-ease-out) 250ms forwards;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--mi-accent), var(--mi-accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: var(--mi-text-lg);
+      color: var(--mi-text-secondary);
+      max-width: 540px;
+      margin-top: 16px;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: mi-fade-up 800ms var(--mi-ease-out) 450ms forwards;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 36px;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: mi-fade-up 800ms var(--mi-ease-out) 650ms forwards;
+    }
+
+    @keyframes mi-fade-up {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 28px;
+      border: none;
+      border-radius: 8px;
+      font-family: var(--mi-font-body);
+      font-weight: 600;
+      font-size: 0.938rem;
+      cursor: pointer;
+      overflow: hidden;
+      transition:
+        background var(--mi-duration-fast) var(--mi-ease-out),
+        transform var(--mi-duration-fast) var(--mi-ease-spring),
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out),
+        border-color var(--mi-duration-fast) var(--mi-ease-out),
+        color var(--mi-duration-fast) var(--mi-ease-out);
+    }
+
+    .btn-primary {
+      background: var(--mi-accent);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: var(--mi-accent-hover);
+      box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 80ms;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--mi-text-body);
+      border: 1.5px solid var(--mi-border);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--mi-accent);
+      color: var(--mi-accent);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 80ms;
+    }
+
+    .btn-success {
+      background: var(--mi-success);
+      color: #FFFFFF;
+      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+    }
+
+    .btn-success:hover {
+      background: #059669;
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-success:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 80ms;
+    }
+
+    .btn-ghost {
+      background: rgba(59, 130, 246, 0.06);
+      color: var(--mi-accent);
+      border: 1.5px solid transparent;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(59, 130, 246, 0.12);
+      border-color: rgba(59, 130, 246, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .btn-ghost:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 80ms;
+    }
+
+    /* Ripple effect on buttons */
+    .btn .ripple {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(0);
+      animation: mi-ripple 600ms ease-out forwards;
+      pointer-events: none;
+    }
+
+    @keyframes mi-ripple {
+      to {
+        transform: scale(4);
+        opacity: 0;
+      }
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--white {
+      background: var(--mi-bg-primary);
+    }
+
+    .section--gray {
+      background: var(--mi-bg-secondary);
+    }
+
+    .section--dark {
+      background: var(--mi-text-primary);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .section--dark .section-label { color: var(--mi-accent); }
+    .section--dark .section-title { color: #FFFFFF; }
+    .section--dark .section-desc { color: rgba(255, 255, 255, 0.55); }
+
+    .section-label {
+      font-size: 0.813rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mi-accent);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: var(--mi-font-heading);
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--mi-text-primary);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-desc {
+      text-align: center;
+      color: var(--mi-text-secondary);
+      max-width: 520px;
+      margin: 0 auto 56px;
+      font-size: 1.063rem;
+    }
+
+    /* Thin animated accent line separator */
+    .section-divider {
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--mi-accent), var(--mi-accent-secondary));
+      border-radius: 2px;
+      margin: 0 auto 56px;
+    }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .mi-reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition:
+        opacity var(--mi-duration-slow) var(--mi-ease-out),
+        transform var(--mi-duration-slow) var(--mi-ease-out);
+    }
+
+    .mi-reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mi-stagger > * {
+      opacity: 0;
+      transform: translateY(16px);
+      transition:
+        opacity var(--mi-duration-normal) var(--mi-ease-out),
+        transform var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .mi-stagger.visible > *:nth-child(1) { transition-delay: 0ms; }
+    .mi-stagger.visible > *:nth-child(2) { transition-delay: 80ms; }
+    .mi-stagger.visible > *:nth-child(3) { transition-delay: 160ms; }
+    .mi-stagger.visible > *:nth-child(4) { transition-delay: 240ms; }
+    .mi-stagger.visible > *:nth-child(5) { transition-delay: 320ms; }
+    .mi-stagger.visible > *:nth-child(6) { transition-delay: 400ms; }
+
+    .mi-stagger.visible > * {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: var(--mi-font-mono);
+      font-size: var(--mi-text-xs);
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--mi-accent);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--mi-border);
+    }
+
+    .typo-display {
+      font-family: var(--mi-font-heading);
+      font-size: clamp(2.2rem, 5vw, var(--mi-text-5xl));
+      font-weight: 800;
+      color: var(--mi-text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .typo-h2 {
+      font-family: var(--mi-font-heading);
+      font-size: clamp(1.5rem, 3vw, var(--mi-text-3xl));
+      font-weight: 700;
+      color: var(--mi-text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .typo-h3 {
+      font-family: var(--mi-font-heading);
+      font-size: var(--mi-text-xl);
+      font-weight: 600;
+      color: var(--mi-text-primary);
+      line-height: 1.3;
+    }
+
+    .typo-body {
+      font-family: var(--mi-font-body);
+      font-size: var(--mi-text-base);
+      line-height: var(--mi-leading-normal);
+      color: var(--mi-text-body);
+    }
+
+    .typo-caption {
+      font-family: var(--mi-font-body);
+      font-size: var(--mi-text-sm);
+      color: var(--mi-text-secondary);
+      line-height: 1.5;
+    }
+
+    .typo-mono {
+      font-family: var(--mi-font-mono);
+      font-size: var(--mi-text-sm);
+      color: var(--mi-accent-secondary);
+      background: rgba(139, 92, 246, 0.06);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+
+    .typo-right {
+      background: var(--mi-bg-secondary);
+      border-radius: 14px;
+      padding: 36px;
+      border: 1px solid var(--mi-border);
+    }
+
+    .typo-right h3 {
+      font-size: var(--mi-text-lg);
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--mi-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: var(--mi-font-mono);
+      font-size: 0.7rem;
+      color: var(--mi-text-secondary);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--mi-bg-primary);
+      border: 1px solid var(--mi-border);
+      transition:
+        transform var(--mi-duration-normal) var(--mi-ease-out),
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out),
+        border-color var(--mi-duration-normal) var(--mi-ease-out);
+      box-shadow: var(--mi-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--mi-shadow-lg);
+      border-color: transparent;
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: var(--mi-font-body);
+      font-size: var(--mi-text-sm);
+      font-weight: 600;
+      color: var(--mi-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: var(--mi-font-mono);
+      font-size: 0.7rem;
+      color: var(--mi-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--mi-bg-primary);
+      border: 1px solid var(--mi-border);
+      border-radius: 14px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--mi-shadow-sm);
+      transition:
+        transform var(--mi-duration-normal) var(--mi-ease-out),
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out),
+        border-color var(--mi-duration-normal) var(--mi-ease-out);
+      will-change: transform;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--mi-shadow-xl);
+      border-color: transparent;
+    }
+
+    .card:active {
+      transform: translateY(-2px);
+      transition-duration: var(--mi-duration-fast);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      transition: transform var(--mi-duration-normal) var(--mi-ease-spring);
+    }
+
+    .card:hover .card-icon {
+      transform: scale(1.1) rotate(-3deg);
+    }
+
+    .card-icon--blue { background: rgba(59, 130, 246, 0.1); }
+    .card-icon--purple { background: rgba(139, 92, 246, 0.1); }
+    .card-icon--green { background: rgba(16, 185, 129, 0.1); }
+    .card-icon--cyan { background: rgba(6, 182, 212, 0.1); }
+    .card-icon--amber { background: rgba(245, 158, 11, 0.1); }
+    .card-icon--red { background: rgba(239, 68, 68, 0.1); }
+
+    .card h3 {
+      font-size: var(--mi-text-lg);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--mi-text-secondary);
+      font-size: 0.938rem;
+      line-height: 1.65;
+    }
+
+    .card-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 16px;
+      font-weight: 600;
+      font-size: var(--mi-text-sm);
+      color: var(--mi-accent);
+      opacity: 0;
+      transform: translateY(6px);
+      transition:
+        opacity var(--mi-duration-normal) var(--mi-ease-out),
+        transform var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .card:hover .card-link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card-link .arrow {
+      transition: transform var(--mi-duration-fast) var(--mi-ease-out);
+      display: inline-block;
+    }
+
+    .card-link:hover .arrow {
+      transform: translateX(3px);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--mi-border);
+      background: var(--mi-bg-primary);
+      transition:
+        transform var(--mi-duration-normal) var(--mi-ease-out),
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--mi-shadow-lg);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Hover Elevation */
+    .effect-elevation {
+      background: var(--mi-bg-secondary);
+    }
+
+    .effect-elevation-box {
+      width: 120px;
+      height: 80px;
+      background: var(--mi-bg-primary);
+      border-radius: 12px;
+      border: 1px solid var(--mi-border);
+      box-shadow: var(--mi-shadow-sm);
+      transition:
+        transform var(--mi-duration-normal) var(--mi-ease-out),
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out),
+        border-color var(--mi-duration-normal) var(--mi-ease-out);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mi-font-mono);
+      font-size: var(--mi-text-xs);
+      color: var(--mi-text-secondary);
+      cursor: pointer;
+    }
+
+    .effect-elevation:hover .effect-elevation-box {
+      transform: translateY(-8px);
+      box-shadow: var(--mi-shadow-xl);
+      border-color: var(--mi-accent);
+    }
+
+    /* Effect 2: Skeleton Shimmer */
+    .effect-skeleton {
+      background: var(--mi-bg-secondary);
+      padding: 24px;
+    }
+
+    .skeleton-bar {
+      background: var(--mi-bg-skeleton);
+      border-radius: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .skeleton-bar::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.6) 50%, transparent 100%);
+      transform: translateX(-100%);
+      animation: mi-shimmer 1.8s ease-in-out infinite;
+    }
+
+    @keyframes mi-shimmer {
+      to { transform: translateX(100%); }
+    }
+
+    .skeleton-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      margin-bottom: 16px;
+    }
+
+    .skeleton-title {
+      height: 20px;
+      width: 70%;
+      margin-bottom: 10px;
+    }
+
+    .skeleton-text {
+      height: 14px;
+      width: 100%;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-text:last-child {
+      width: 60%;
+      margin-bottom: 0;
+    }
+
+    /* Effect 3: Toggle Switch */
+    .effect-toggle-area {
+      background: var(--mi-bg-secondary);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 52px;
+      height: 28px;
+      background: var(--mi-border);
+      border-radius: 14px;
+      cursor: pointer;
+      border: none;
+      display: block;
+      transition: background var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 22px;
+      height: 22px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      box-shadow: var(--mi-shadow-sm);
+      transition:
+        transform var(--mi-duration-normal) var(--mi-ease-spring),
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .toggle-switch.active {
+      background: var(--mi-accent);
+    }
+
+    .toggle-switch.active::after {
+      transform: translateX(24px);
+      box-shadow: var(--mi-shadow-md);
+    }
+
+    .toggle-label {
+      font-size: var(--mi-text-sm);
+      color: var(--mi-text-secondary);
+      margin-top: 10px;
+      text-align: center;
+      transition: color var(--mi-duration-fast) var(--mi-ease-out);
+    }
+
+    /* Effect 4: Focus Ring Input */
+    .effect-focus-area {
+      background: var(--mi-bg-secondary);
+      padding: 24px;
+    }
+
+    .focus-input {
+      width: 100%;
+      max-width: 260px;
+      padding: 12px 16px;
+      border: 1.5px solid var(--mi-border);
+      border-radius: 8px;
+      font-family: var(--mi-font-body);
+      font-size: var(--mi-text-sm);
+      color: var(--mi-text-body);
+      background: var(--mi-bg-primary);
+      outline: none;
+      transition:
+        border-color var(--mi-duration-fast) var(--mi-ease-out),
+        box-shadow var(--mi-duration-fast) var(--mi-ease-out);
+    }
+
+    .focus-input:focus {
+      border-color: var(--mi-accent);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+    }
+
+    .focus-input::placeholder {
+      color: var(--mi-text-placeholder);
+    }
+
+    /* Effect 5: Progress Ring */
+    .effect-progress-area {
+      background: linear-gradient(135deg, var(--mi-bg-secondary), var(--mi-bg-primary));
+    }
+
+    .progress-ring-container {
+      position: relative;
+      width: 80px;
+      height: 80px;
+    }
+
+    .progress-ring {
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring-bg {
+      fill: none;
+      stroke: var(--mi-border);
+      stroke-width: 6;
+    }
+
+    .progress-ring-fill {
+      fill: none;
+      stroke: var(--mi-accent);
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 207;
+      stroke-dashoffset: 207;
+      animation: mi-progress-fill 2s var(--mi-ease-out) 1s forwards;
+    }
+
+    @keyframes mi-progress-fill {
+      to { stroke-dashoffset: 52; }
+    }
+
+    .progress-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: var(--mi-font-heading);
+      font-weight: 700;
+      font-size: var(--mi-text-sm);
+      color: var(--mi-text-primary);
+    }
+
+    /* Effect 6: Staggered Entry */
+    .effect-stagger-area {
+      background: var(--mi-bg-secondary);
+      padding: 20px;
+    }
+
+    .stagger-dots {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stagger-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--mi-accent);
+      opacity: 0;
+      transform: scale(0);
+      animation: mi-stagger-pop 500ms var(--mi-ease-spring) forwards;
+    }
+
+    .stagger-dot:nth-child(1) { animation-delay: 0.5s; }
+    .stagger-dot:nth-child(2) { animation-delay: 0.65s; background: var(--mi-accent-secondary); }
+    .stagger-dot:nth-child(3) { animation-delay: 0.8s; background: var(--mi-success); }
+    .stagger-dot:nth-child(4) { animation-delay: 0.95s; background: var(--mi-info); }
+    .stagger-dot:nth-child(5) { animation-delay: 1.1s; background: var(--mi-warning); }
+
+    .stagger-bars {
+      display: flex;
+      gap: 6px;
+      align-items: flex-end;
+      justify-content: center;
+      height: 60px;
+      margin-top: 16px;
+    }
+
+    .stagger-bar {
+      width: 16px;
+      border-radius: 4px 4px 0 0;
+      background: var(--mi-accent);
+      transform-origin: bottom;
+      transform: scaleY(0);
+      animation: mi-bar-grow 600ms var(--mi-ease-spring) forwards;
+    }
+
+    .stagger-bar:nth-child(1) { height: 30px; animation-delay: 1.4s; }
+    .stagger-bar:nth-child(2) { height: 50px; animation-delay: 1.5s; background: var(--mi-accent-secondary); }
+    .stagger-bar:nth-child(3) { height: 40px; animation-delay: 1.6s; background: var(--mi-info); }
+    .stagger-bar:nth-child(4) { height: 55px; animation-delay: 1.7s; background: var(--mi-success); }
+    .stagger-bar:nth-child(5) { height: 35px; animation-delay: 1.8s; background: var(--mi-warning); }
+    .stagger-bar:nth-child(6) { height: 45px; animation-delay: 1.9s; background: var(--mi-accent); }
+
+    @keyframes mi-stagger-pop {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    @keyframes mi-bar-grow {
+      to {
+        transform: scaleY(1);
+      }
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-size: 0.938rem;
+      font-weight: 700;
+      color: var(--mi-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: var(--mi-text-sm);
+      line-height: 1.5;
+      color: var(--mi-text-secondary);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 48px 40px;
+      margin: 0 auto;
+      max-width: 720px;
+      background: var(--mi-bg-primary);
+      border-radius: 16px;
+      border: 1px solid var(--mi-border);
+      position: relative;
+      box-shadow: var(--mi-shadow-md);
+      transition:
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out),
+        transform var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .quote-block:hover {
+      box-shadow: var(--mi-shadow-xl);
+      transform: translateY(-2px);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: var(--mi-font-heading);
+      font-size: 6rem;
+      font-weight: 800;
+      color: var(--mi-accent);
+      opacity: 0.1;
+      position: absolute;
+      top: -8px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: var(--mi-font-body);
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-weight: 400;
+      color: var(--mi-text-primary);
+      max-width: 540px;
+      margin: 0 auto 20px;
+      line-height: var(--mi-leading-relaxed);
+    }
+
+    .quote-block cite {
+      font-family: var(--mi-font-body);
+      font-size: var(--mi-text-sm);
+      color: var(--mi-text-secondary);
+      font-style: normal;
+      font-weight: 500;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(139, 92, 246, 0.04) 100%);
+      border-radius: 20px;
+      padding: 56px 48px;
+      text-align: center;
+      border: 1px solid var(--mi-border);
+      position: relative;
+      overflow: hidden;
+      transition:
+        box-shadow var(--mi-duration-normal) var(--mi-ease-out),
+        border-color var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .cta-container:hover {
+      box-shadow: var(--mi-shadow-lg);
+      border-color: rgba(59, 130, 246, 0.2);
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--mi-accent), var(--mi-accent-secondary), var(--mi-info));
+      border-radius: 20px 20px 0 0;
+    }
+
+    .cta-container h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 800;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-container p {
+      font-size: var(--mi-text-base);
+      line-height: var(--mi-leading-normal);
+      margin-bottom: 28px;
+      color: var(--mi-text-secondary);
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--mi-text-primary);
+      padding: 56px 24px 28px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .footer-content {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .footer h3 {
+      font-family: var(--mi-font-heading);
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .footer p {
+      font-size: var(--mi-text-sm);
+      max-width: 440px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-size: var(--mi-text-sm);
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.4);
+      position: relative;
+      padding: 4px 0;
+      transition: color var(--mi-duration-fast) var(--mi-ease-out);
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--mi-accent);
+      border-radius: 1px;
+      transition: width var(--mi-duration-normal) var(--mi-ease-out);
+    }
+
+    .footer-links a:hover {
+      color: #FFFFFF;
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
+    }
+
+    .footer-divider {
+      width: 40px;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 1px;
+      margin: 0 auto 24px;
+    }
+
+    .footer-copy {
+      font-family: var(--mi-font-mono);
+      font-size: 0.7rem;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       TOAST NOTIFICATION (decorative)
+       ============================================ */
+    .toast-demo {
+      position: fixed;
+      top: 88px;
+      right: 24px;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 20px;
+      background: var(--mi-bg-primary);
+      border-radius: 10px;
+      box-shadow: var(--mi-shadow-lg);
+      border-left: 3px solid var(--mi-success);
+      min-width: 280px;
+      opacity: 0;
+      transform: translateX(100%) scale(0.95);
+      animation: mi-toast-in 400ms var(--mi-ease-spring) 2.5s forwards,
+                 mi-toast-out 300ms var(--mi-ease-in) 6s forwards;
+    }
+
+    @keyframes mi-toast-in {
+      to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @keyframes mi-toast-out {
+      to {
+        opacity: 0;
+        transform: translateX(100%) scale(0.95);
+      }
+    }
+
+    .toast-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(16, 185, 129, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.8rem;
+    }
+
+    .toast-text {
+      font-size: var(--mi-text-sm);
+      font-weight: 500;
+      color: var(--mi-text-primary);
+    }
+
+    .toast-text span {
+      display: block;
+      font-size: var(--mi-text-xs);
+      font-weight: 400;
+      color: var(--mi-text-secondary);
+      margin-top: 2px;
+    }
+
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: var(--mi-success);
+      border-radius: 0 0 0 10px;
+      animation: mi-toast-progress 3.5s linear 2.5s forwards;
+    }
+
+    @keyframes mi-toast-progress {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 14px 20px;
+      }
+
+      .nav.scrolled {
+        padding: 10px 20px;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .nav-links a {
+        font-size: var(--mi-text-sm);
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+        min-height: 90vh;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .section {
+        padding: clamp(48px, 6vw, 72px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+      }
+
+      .color-swatch {
+        height: 64px;
+      }
+
+      .quote-block {
+        padding: 36px 24px;
+      }
+
+      .cta-container {
+        padding: 40px 24px;
+        margin: 0 8px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 10px 22px;
+        font-size: var(--mi-text-sm);
+      }
+
+      .toast-demo {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        gap: 10px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 52px;
+      }
+
+      .color-info {
+        padding: 8px;
+      }
+
+      .color-name {
+        font-size: var(--mi-text-xs);
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .hero-bg-shape {
+        animation: none;
+      }
+
+      .hero-badge,
+      .hero h1,
+      .hero-subtitle,
+      .hero-actions {
+        opacity: 1;
+        transform: none;
+      }
+
+      .mi-reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .mi-stagger > * {
+        opacity: 1;
+        transform: none;
+      }
+
+      .toast-demo {
+        display: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== TOAST NOTIFICATION (decorative demo) ===== -->
+  <div class="toast-demo">
+    <div class="toast-icon">&#10003;</div>
+    <div class="toast-text">
+      Page loaded successfully
+      <span>All microinteractions are active</span>
+    </div>
+    <div class="toast-progress"></div>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">Microinteraction</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-bg-shape hero-bg-shape--1"></div>
+    <div class="hero-bg-shape hero-bg-shape--2"></div>
+    <div class="hero-bg-shape hero-bg-shape--3"></div>
+
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Design Aesthetic Reference
+      </div>
+      <h1>Every Detail <span class="accent">Responds</span></h1>
+      <p class="hero-subtitle">
+        Purposeful animations and feedback loops that elevate digital interfaces from static pages into living, responsive experiences.
+      </p>
+      <div class="hero-actions">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--white" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Clean, Geometric &amp; Functional</h2>
+      <p class="section-desc">Crisp sans-serif type with strong weight hierarchies. Motion provides the personality, type stays legible and clear.</p>
+
+      <div class="typo-showcase mi-reveal">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Manrope 800</p>
+            <p class="typo-display">Motion Design</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Manrope 700</p>
+            <p class="typo-h2">Purposeful Animation</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Manrope 600</p>
+            <p class="typo-h3">Feedback loops &amp; state transitions</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body">Every hover, click, scroll, and state transition communicates meaning through carefully orchestrated visual feedback. Animations are typically 150-400ms with physics-based easing.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Inter 400</p>
+            <p class="typo-caption">Secondary text for metadata, timestamps, and helper information</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Code / JetBrains Mono 400</p>
+            <p><span class="typo-mono">transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1)</span></p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.05rem</span>
+              <span style="font-family: 'Manrope', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--mi-text-primary); letter-spacing: -0.03em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.95rem</span>
+              <span style="font-family: 'Manrope', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--mi-text-primary); letter-spacing: -0.02em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'Manrope', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--mi-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--mi-text-body);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.875rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 0.875rem; color: var(--mi-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; color: var(--mi-accent-secondary);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--mi-border);">
+            <h3 style="margin-bottom: 14px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Manrope', sans-serif; color: var(--mi-accent);">Manrope 700</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter 400</strong><br>
+              <span style="color: var(--mi-text-secondary); font-size: 0.82rem;">Modern product design &mdash; clean, professional</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Manrope', sans-serif; color: var(--mi-accent);">Manrope 800</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter 300</strong><br>
+              <span style="color: var(--mi-text-secondary); font-size: 0.82rem;">Bold headlines with light body &mdash; editorial hybrid</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Inter', sans-serif; color: var(--mi-accent);">Inter 600</strong> + <strong style="font-family: 'JetBrains Mono', monospace;">JetBrains Mono 400</strong><br>
+              <span style="color: var(--mi-text-secondary); font-size: 0.82rem;">Developer-oriented &mdash; technical, precise</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--gray" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Neutral Canvas, Purposeful Accents</h2>
+      <p class="section-desc">Predominantly neutral with strategic accent colors that highlight interactive elements, state changes, and feedback moments.</p>
+
+      <div class="palette-grid mi-stagger">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF; border-bottom: 1px solid #E2E8F0;"></div>
+          <div class="color-info">
+            <div class="color-name">White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAFAFA;"></div>
+          <div class="color-info">
+            <div class="color-name">Secondary BG</div>
+            <div class="color-hex">#FAFAFA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F1F5F9;"></div>
+          <div class="color-info">
+            <div class="color-name">Skeleton</div>
+            <div class="color-hex">#F1F5F9</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E2E8F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Border</div>
+            <div class="color-hex">#E2E8F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #94A3B8;"></div>
+          <div class="color-info">
+            <div class="color-name">Placeholder</div>
+            <div class="color-hex">#94A3B8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #64748B;"></div>
+          <div class="color-info">
+            <div class="color-name">Secondary</div>
+            <div class="color-hex">#64748B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #334155;"></div>
+          <div class="color-info">
+            <div class="color-name">Body Text</div>
+            <div class="color-hex">#334155</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0F172A;"></div>
+          <div class="color-info">
+            <div class="color-name">Headings</div>
+            <div class="color-hex">#0F172A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B82F6;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Accent</div>
+            <div class="color-hex">#3B82F6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2563EB;"></div>
+          <div class="color-info">
+            <div class="color-name">Accent Hover</div>
+            <div class="color-hex">#2563EB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B5CF6;"></div>
+          <div class="color-info">
+            <div class="color-name">Secondary</div>
+            <div class="color-hex">#8B5CF6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #10B981;"></div>
+          <div class="color-info">
+            <div class="color-name">Success</div>
+            <div class="color-hex">#10B981</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F59E0B;"></div>
+          <div class="color-info">
+            <div class="color-name">Warning</div>
+            <div class="color-hex">#F59E0B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EF4444;"></div>
+          <div class="color-info">
+            <div class="color-name">Error</div>
+            <div class="color-hex">#EF4444</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #06B6D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Info</div>
+            <div class="color-hex">#06B6D4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--white" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Cards with Hover Microinteractions</h2>
+      <p class="section-desc">Self-contained components that manage their own animation states &mdash; hover to see elevation, icon rotation, and content reveals.</p>
+
+      <div class="card-grid mi-stagger">
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#9699;</div>
+          <h3>Hover Feedback</h3>
+          <p>Interactive elements respond to cursor proximity with subtle transformations &mdash; scale shifts, shadow elevation, and background transitions.</p>
+          <a href="#" class="card-link">Learn more <span class="arrow">&rarr;</span></a>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--purple">&#9678;</div>
+          <h3>State Transitions</h3>
+          <p>Elements animate smoothly between states rather than snapping &mdash; collapsed to expanded, inactive to active, hidden to visible.</p>
+          <a href="#" class="card-link">Learn more <span class="arrow">&rarr;</span></a>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">&#10003;</div>
+          <h3>Loading States</h3>
+          <p>Skeleton screens, shimmer effects, and progressive content reveals replace generic spinners, keeping users oriented during wait times.</p>
+          <a href="#" class="card-link">Learn more <span class="arrow">&rarr;</span></a>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--cyan">&#9656;</div>
+          <h3>Scroll Reveals</h3>
+          <p>Content fades in, slides up, or scales into view as users scroll, creating discovery and narrative flow through the page.</p>
+          <a href="#" class="card-link">Learn more <span class="arrow">&rarr;</span></a>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">&#9733;</div>
+          <h3>Easing &amp; Physics</h3>
+          <p>Custom cubic-bezier curves and spring physics replace linear timing, creating natural motion that mimics real-world object behavior.</p>
+          <a href="#" class="card-link">Learn more <span class="arrow">&rarr;</span></a>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--red">&#9888;</div>
+          <h3>Error Feedback</h3>
+          <p>Input containers gently shake, borders animate to red, and helper messages slide into view with spring-like ease for validation.</p>
+          <a href="#" class="card-link">Learn more <span class="arrow">&rarr;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--gray" id="effects">
+    <div class="container">
+      <p class="section-label">CSS Effects</p>
+      <h2 class="section-title">Interactive Techniques</h2>
+      <p class="section-desc">Pure CSS microinteraction patterns &mdash; hover, animate, and toggle to see each technique in action.</p>
+
+      <div class="effects-grid mi-stagger">
+        <!-- Effect 1: Hover Elevation -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-elevation">
+            <div class="effect-elevation-box">hover me</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Shadow Elevation</h4>
+            <p>Cards lift on hover via translateY and deepening box-shadow, signaling interactivity.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Skeleton Shimmer -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-skeleton">
+            <div style="width: 100%;">
+              <div class="skeleton-bar skeleton-avatar"></div>
+              <div class="skeleton-bar skeleton-title"></div>
+              <div class="skeleton-bar skeleton-text"></div>
+              <div class="skeleton-bar skeleton-text"></div>
+              <div class="skeleton-bar skeleton-text" style="width: 55%;"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Skeleton Shimmer</h4>
+            <p>Placeholder shapes pulse with a gradient sweep, providing spatial context during loading.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Toggle Switch -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-toggle-area">
+            <div>
+              <button class="toggle-switch" id="toggleDemo" aria-label="Toggle switch demo"></button>
+              <p class="toggle-label" id="toggleLabel">Inactive</p>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Toggle Switch</h4>
+            <p>Spring-eased knob translation with background color transition on state change.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Focus Ring -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-focus-area">
+            <div style="width: 100%;">
+              <input type="text" class="focus-input" placeholder="Click to focus..." aria-label="Focus ring demo">
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Focus Ring Animation</h4>
+            <p>Border color shift and expanding box-shadow ring on input focus for clear affordance.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Progress Ring -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-progress-area">
+            <div class="progress-ring-container">
+              <svg class="progress-ring" width="80" height="80" viewBox="0 0 80 80">
+                <circle class="progress-ring-bg" cx="40" cy="40" r="33"/>
+                <circle class="progress-ring-fill" cx="40" cy="40" r="33"/>
+              </svg>
+              <span class="progress-value">75%</span>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Progress Ring</h4>
+            <p>Animated stroke-dashoffset draws a circular progress indicator with eased timing.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Staggered Entry -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-stagger-area">
+            <div>
+              <div class="stagger-dots">
+                <div class="stagger-dot"></div>
+                <div class="stagger-dot"></div>
+                <div class="stagger-dot"></div>
+                <div class="stagger-dot"></div>
+                <div class="stagger-dot"></div>
+              </div>
+              <div class="stagger-bars">
+                <div class="stagger-bar"></div>
+                <div class="stagger-bar"></div>
+                <div class="stagger-bar"></div>
+                <div class="stagger-bar"></div>
+                <div class="stagger-bar"></div>
+                <div class="stagger-bar"></div>
+              </div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Staggered Entry</h4>
+            <p>Cascading delays create a ripple-like entrance that guides the eye through content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Buttons with Tactile Feedback</h2>
+      <p class="section-desc">Multiple feedback layers &mdash; background transition, scale press, shadow shift, and optional ripple expansion.</p>
+
+      <div class="button-showcase mi-reveal">
+        <button class="btn btn-primary" onclick="createRipple(event)">Primary Action</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-success" onclick="createRipple(event)">Success State</button>
+        <button class="btn btn-ghost">Ghost Button</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--gray">
+    <div class="container">
+      <div class="quote-block mi-reveal">
+        <blockquote>
+          The best microinteractions go unnoticed by users &mdash; they simply make the interface feel &ldquo;right&rdquo; without drawing conscious attention to themselves.
+        </blockquote>
+        <cite>&mdash; Dan Saffer, Microinteractions: Designing with Details</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="cta-container mi-reveal">
+        <h2>Every Animation Has Purpose</h2>
+        <p>
+          Function over flair. Duration discipline. Easing intentionality. Consistency of motion language. Performance as a feature. Invisible when perfect.
+        </p>
+        <a href="#hero" class="btn btn-primary" onclick="createRipple(event)">Back to Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Microinteraction Design</h3>
+      <p>
+        A design aesthetic reference celebrating purposeful animation, tactile feedback, and the art of making digital interfaces feel alive &mdash; built entirely with pure CSS.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Microinteraction Design &bull; Every detail responds</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    /* Navigation scroll effect */
+    const nav = document.getElementById('nav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.scrollY;
+      if (currentScroll > 60) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+    /* Intersection Observer for scroll reveals */
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -60px 0px',
+      threshold: 0.1
+    };
+
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.mi-reveal, .mi-stagger').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    /* Toggle switch interaction */
+    const toggle = document.getElementById('toggleDemo');
+    const toggleLabel = document.getElementById('toggleLabel');
+
+    if (toggle) {
+      toggle.addEventListener('click', () => {
+        toggle.classList.toggle('active');
+        toggleLabel.textContent = toggle.classList.contains('active') ? 'Active' : 'Inactive';
+        toggleLabel.style.color = toggle.classList.contains('active')
+          ? 'var(--mi-accent)'
+          : 'var(--mi-text-secondary)';
+      });
+    }
+
+    /* Ripple effect for buttons */
+    function createRipple(event) {
+      const button = event.currentTarget;
+      const existing = button.querySelector('.ripple');
+      if (existing) existing.remove();
+
+      const ripple = document.createElement('span');
+      ripple.classList.add('ripple');
+
+      const rect = button.getBoundingClientRect();
+      const size = Math.max(rect.width, rect.height);
+      ripple.style.width = ripple.style.height = size + 'px';
+      ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+      ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+
+      button.appendChild(ripple);
+
+      ripple.addEventListener('animationend', () => {
+        ripple.remove();
+      });
+    }
+  </script>
+
+</body>
+</html>

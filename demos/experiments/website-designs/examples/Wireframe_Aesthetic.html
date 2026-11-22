@@ -1,0 +1,2418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wireframe Aesthetic -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;700;800&family=Space+Mono:wght@400;700&family=Source+Code+Pro:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* =============================================
+       CSS CUSTOM PROPERTIES
+       ============================================= */
+    :root {
+      /* Grayscale spectrum */
+      --wire-white: #ffffff;
+      --wire-gray-50: #f5f5f5;
+      --wire-gray-200: #e0e0e0;
+      --wire-gray-400: #bdbdbd;
+      --wire-gray-500: #9e9e9e;
+      --wire-gray-600: #757575;
+      --wire-gray-800: #424242;
+      --wire-gray-900: #212121;
+      --wire-black: #000000;
+
+      /* Functional accents */
+      --wire-blue: #2196f3;
+      --wire-blue-dark: #1565c0;
+      --wire-blue-tint: #90caf9;
+      --wire-red: #e53935;
+      --wire-green: #43a047;
+      --wire-note: #fff9c4;
+
+      /* Semantic tokens */
+      --wire-bg: var(--wire-white);
+      --wire-bg-alt: var(--wire-gray-50);
+      --wire-text: var(--wire-gray-800);
+      --wire-heading: var(--wire-gray-900);
+      --wire-border: var(--wire-gray-400);
+      --wire-border-strong: var(--wire-gray-900);
+      --wire-grid-line: var(--wire-gray-200);
+      --wire-annotation: var(--wire-gray-500);
+      --wire-link: var(--wire-blue);
+      --wire-link-hover: var(--wire-blue-dark);
+      --wire-accent: var(--wire-blue);
+      --wire-error: var(--wire-red);
+      --wire-success: var(--wire-green);
+
+      /* Spacing */
+      --section-pad: clamp(40px, 6vw, 72px);
+    }
+
+    /* =============================================
+       CSS RESET
+       ============================================= */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      font-size: 14px;
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'IBM Plex Mono', 'Consolas', 'Courier New', monospace;
+      line-height: 1.7;
+      color: var(--wire-text);
+      background-color: var(--wire-bg);
+      letter-spacing: 0.01em;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem;
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    /* =============================================
+       BASE TYPOGRAPHY
+       ============================================= */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      color: var(--wire-heading);
+      overflow-wrap: break-word;
+    }
+
+    h1 {
+      font-size: clamp(1.75rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    h2 {
+      font-size: clamp(1.25rem, 3vw, 2rem);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: 500;
+    }
+
+    h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+    }
+
+    p {
+      margin-bottom: 0.75rem;
+      max-width: 70ch;
+    }
+
+    a {
+      color: var(--wire-link);
+      text-decoration: underline;
+      text-decoration-style: dashed;
+      text-underline-offset: 3px;
+      transition: color 0.1s ease, text-decoration-style 0.1s ease;
+    }
+
+    a:hover {
+      color: var(--wire-link-hover);
+      text-decoration-style: solid;
+    }
+
+    code, pre {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.875em;
+      background-color: var(--wire-bg-alt);
+      border: 1px dashed var(--wire-border);
+      padding: 0.2em 0.4em;
+    }
+
+    pre {
+      padding: 1.25em;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    /* =============================================
+       GRID OVERLAY
+       ============================================= */
+    .grid-overlay {
+      position: fixed;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 1200px;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      padding: 0 1.5rem;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .grid-overlay .col {
+      border-left: 1px solid var(--wire-grid-line);
+      border-right: 1px solid var(--wire-grid-line);
+      background-color: rgba(144, 202, 249, 0.03);
+    }
+
+    .grid-overlay .col:first-child {
+      border-left: 1px solid var(--wire-gray-200);
+    }
+
+    .grid-overlay .col:last-child {
+      border-right: 1px solid var(--wire-gray-200);
+    }
+
+    /* Grid column labels */
+    .grid-labels {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .grid-labels span {
+      font-size: 0.55rem;
+      color: var(--wire-gray-400);
+      text-align: center;
+      letter-spacing: 0.05em;
+    }
+
+    /* =============================================
+       ANNOTATION LABEL SYSTEM
+       ============================================= */
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-size: 0.8rem;
+      color: var(--wire-gray-600);
+      max-width: 55ch;
+      line-height: 1.8;
+      margin-bottom: 0;
+    }
+
+    /* =============================================
+       NAVIGATION
+       ============================================= */
+    .nav {
+      border: 1px dashed var(--wire-border);
+      padding: 0.75rem 1.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .nav::before {
+      content: 'NAV';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      border-top: 1px solid var(--wire-gray-400);
+      border-right: 1px solid var(--wire-gray-400);
+    }
+
+    .nav ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.25rem;
+      align-items: center;
+    }
+
+    .nav li:first-child {
+      margin-right: auto;
+    }
+
+    .nav .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-heading);
+      text-decoration: none;
+    }
+
+    .nav .logo:hover {
+      color: var(--wire-blue);
+    }
+
+    .nav a {
+      display: block;
+      padding: 0.35rem 0.65rem;
+      color: var(--wire-gray-800);
+      text-decoration: none;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 1px dotted transparent;
+      transition: border-color 0.1s ease, color 0.1s ease;
+    }
+
+    .nav a:hover {
+      border-color: var(--wire-blue);
+      color: var(--wire-blue);
+    }
+
+    /* =============================================
+       HERO SECTION
+       ============================================= */
+    .hero {
+      min-height: 75vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 3rem 2rem;
+      border: 1px dashed var(--wire-border);
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .hero::before {
+      content: 'HERO SECTION';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      border-top: 1px solid var(--wire-gray-400);
+      border-right: 1px solid var(--wire-gray-400);
+    }
+
+    .hero-corner-bl {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      width: 10px;
+      height: 10px;
+      border-bottom: 1px solid var(--wire-gray-400);
+      border-left: 1px solid var(--wire-gray-400);
+    }
+
+    .hero-corner-br {
+      position: absolute;
+      bottom: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      border-bottom: 1px solid var(--wire-gray-400);
+      border-right: 1px solid var(--wire-gray-400);
+    }
+
+    .hero-corner-tl {
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      width: 10px;
+      height: 10px;
+      border-top: 1px solid var(--wire-gray-400);
+      border-left: 1px solid var(--wire-gray-400);
+    }
+
+    .hero h1 {
+      line-height: 1.15;
+      margin-bottom: 0;
+    }
+
+    .hero .subtitle {
+      font-size: clamp(0.75rem, 1.2vw, 0.95rem);
+      max-width: 55ch;
+      margin-top: 1.25rem;
+      line-height: 1.8;
+      color: var(--wire-gray-600);
+    }
+
+    .hero .tagline {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--wire-blue);
+      margin-bottom: 1rem;
+      border: 1px dashed var(--wire-blue);
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+    }
+
+    .hero .btn-row {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    .hero .dimensions {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-size: 0.5rem;
+      color: var(--wire-gray-400);
+      letter-spacing: 0.05em;
+    }
+
+    .hero .crosshair {
+      position: absolute;
+      width: 16px;
+      height: 16px;
+    }
+
+    .hero .crosshair::before,
+    .hero .crosshair::after {
+      content: '';
+      position: absolute;
+      background-color: var(--wire-gray-400);
+    }
+
+    .hero .crosshair::before {
+      width: 1px;
+      height: 100%;
+      left: 50%;
+    }
+
+    .hero .crosshair::after {
+      height: 1px;
+      width: 100%;
+      top: 50%;
+    }
+
+    .hero .crosshair--center {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.3;
+    }
+
+    /* =============================================
+       BUTTONS
+       ============================================= */
+    .btn {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.6rem 1.25rem;
+      border: 1px dashed var(--wire-border-strong);
+      background-color: var(--wire-bg);
+      color: var(--wire-heading);
+      cursor: pointer;
+      text-decoration: none;
+      transition: border-style 0.1s ease, border-color 0.1s ease, color 0.1s ease, background-color 0.1s ease;
+    }
+
+    .btn:hover {
+      border-style: solid;
+      border-color: var(--wire-blue);
+      color: var(--wire-blue);
+    }
+
+    .btn:active {
+      background-color: var(--wire-blue);
+      color: var(--wire-white);
+      border-color: var(--wire-blue);
+      border-style: solid;
+    }
+
+    .btn--filled {
+      background-color: var(--wire-gray-900);
+      color: var(--wire-white);
+      border-color: var(--wire-gray-900);
+      border-style: solid;
+    }
+
+    .btn--filled:hover {
+      background-color: var(--wire-blue);
+      border-color: var(--wire-blue);
+      color: var(--wire-white);
+    }
+
+    .btn--ghost {
+      border: 1px dotted var(--wire-gray-400);
+      color: var(--wire-gray-500);
+      background-color: transparent;
+    }
+
+    .btn--ghost:hover {
+      border-style: dashed;
+      color: var(--wire-gray-800);
+      border-color: var(--wire-gray-800);
+    }
+
+    .btn--blue {
+      border: 1px dashed var(--wire-blue);
+      color: var(--wire-blue);
+      background-color: transparent;
+    }
+
+    .btn--blue:hover {
+      background-color: var(--wire-blue);
+      color: var(--wire-white);
+      border-style: solid;
+    }
+
+    /* =============================================
+       SECTIONS
+       ============================================= */
+    .section {
+      border: 1px dashed var(--wire-border);
+      padding: 2.5rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .section::before {
+      content: attr(data-label);
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .section::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      border-top: 1px solid var(--wire-gray-400);
+      border-right: 1px solid var(--wire-gray-400);
+    }
+
+    .section--alt {
+      background-color: var(--wire-bg-alt);
+    }
+
+    .section--alt::before {
+      background-color: var(--wire-bg-alt);
+    }
+
+    /* =============================================
+       DIVIDER
+       ============================================= */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin: 1.5rem 0;
+      color: var(--wire-annotation);
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-top: 1px dashed var(--wire-gray-200);
+    }
+
+    .divider span {
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      white-space: nowrap;
+    }
+
+    /* =============================================
+       PLACEHOLDER IMAGE
+       ============================================= */
+    .placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border: 1px dashed var(--wire-border);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--wire-bg-alt);
+      overflow: hidden;
+    }
+
+    .placeholder::before,
+    .placeholder::after {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 1px;
+      background-color: var(--wire-gray-200);
+      top: 50%;
+      left: 50%;
+    }
+
+    .placeholder::before {
+      transform: translate(-50%, -50%) rotate(26deg);
+    }
+
+    .placeholder::after {
+      transform: translate(-50%, -50%) rotate(-26deg);
+    }
+
+    .placeholder span {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg-alt);
+      padding: 0.15rem 0.5rem;
+      z-index: 1;
+    }
+
+    .placeholder--square {
+      aspect-ratio: 1 / 1;
+    }
+
+    /* =============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================= */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    .typo-sample {
+      border: 1px dotted var(--wire-gray-200);
+      padding: 1.25rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .typo-sample-label {
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--wire-annotation);
+      margin-bottom: 0.75rem;
+      font-weight: 500;
+    }
+
+    .typo-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--wire-heading);
+      line-height: 1.15;
+    }
+
+    .typo-heading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--wire-heading);
+    }
+
+    .typo-subheading {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: var(--wire-gray-800);
+    }
+
+    .typo-body {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--wire-text);
+    }
+
+    .typo-code {
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.85rem;
+      color: var(--wire-gray-600);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-annotation {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      font-weight: 500;
+    }
+
+    .typo-scale {
+      margin-top: 1rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px dotted var(--wire-gray-200);
+    }
+
+    .typo-scale-size {
+      font-size: 0.55rem;
+      color: var(--wire-gray-500);
+      min-width: 4.5rem;
+      letter-spacing: 0.05em;
+    }
+
+    .font-pairings {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px dashed var(--wire-gray-200);
+    }
+
+    .font-pairing {
+      padding: 0.75rem 0;
+      border-bottom: 1px dotted var(--wire-gray-200);
+    }
+
+    .font-pairing:last-child {
+      border-bottom: none;
+    }
+
+    .font-pairing-names {
+      font-size: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .font-pairing-desc {
+      font-size: 0.65rem;
+      color: var(--wire-gray-600);
+    }
+
+    /* =============================================
+       COLOR PALETTE
+       ============================================= */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .color-chip {
+      border: 1px dashed var(--wire-border);
+      position: relative;
+      transition: border-color 0.1s ease, border-style 0.1s ease;
+    }
+
+    .color-chip:hover {
+      border-color: var(--wire-blue);
+      border-style: solid;
+    }
+
+    .color-swatch {
+      height: 60px;
+      border-bottom: 1px dashed var(--wire-gray-200);
+    }
+
+    .color-info {
+      padding: 0.6rem;
+    }
+
+    .color-name {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--wire-heading);
+      margin-bottom: 0.15rem;
+    }
+
+    .color-hex {
+      font-size: 0.55rem;
+      color: var(--wire-gray-600);
+      letter-spacing: 0.05em;
+    }
+
+    .color-role {
+      font-size: 0.5rem;
+      color: var(--wire-annotation);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.2rem;
+    }
+
+    /* =============================================
+       CARD GRID
+       ============================================= */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .card {
+      border: 1px dashed var(--wire-border);
+      padding: 1.25rem;
+      position: relative;
+      background-color: var(--wire-bg);
+      transition: border-color 0.1s ease, border-style 0.1s ease;
+    }
+
+    .card::before {
+      content: 'CARD';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-size: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .card:hover {
+      border-color: var(--wire-blue);
+      border-style: solid;
+    }
+
+    .card h3 {
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px dashed var(--wire-gray-200);
+    }
+
+    .card p {
+      font-size: 0.75rem;
+      color: var(--wire-gray-600);
+      line-height: 1.65;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border: 1px dotted var(--wire-gray-400);
+      padding: 0.15rem 0.4rem;
+      margin-right: 0.2rem;
+      margin-top: 0.5rem;
+      color: var(--wire-gray-600);
+      transition: border-color 0.1s ease, color 0.1s ease;
+    }
+
+    .card:hover .tag {
+      border-color: var(--wire-blue-tint);
+      color: var(--wire-blue);
+    }
+
+    .card .placeholder {
+      margin-bottom: 0.75rem;
+      aspect-ratio: 16 / 10;
+    }
+
+    .card .card-number {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-size: 0.5rem;
+      color: var(--wire-gray-400);
+      letter-spacing: 0.05em;
+    }
+
+    /* =============================================
+       DECORATIVE BANNER
+       ============================================= */
+    .wire-banner {
+      border: 1px dashed var(--wire-border);
+      margin-bottom: 1.5rem;
+      padding: 2.5rem 2rem;
+      position: relative;
+      text-align: center;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent calc(100% / 12 - 1px),
+          var(--wire-gray-200) calc(100% / 12 - 1px),
+          var(--wire-gray-200) calc(100% / 12)
+        );
+    }
+
+    .wire-banner::before {
+      content: 'BANNER';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .wire-banner h2 {
+      display: inline-block;
+      background-color: var(--wire-bg);
+      padding: 0 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .wire-banner p {
+      display: inline-block;
+      background-color: var(--wire-bg);
+      padding: 0 0.5rem;
+      font-size: 0.75rem;
+      color: var(--wire-gray-600);
+      max-width: 50ch;
+      margin: 0 auto;
+    }
+
+    .wire-banner .banner-markers {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .wire-banner .banner-markers span {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 1px dashed var(--wire-gray-400);
+      font-size: 0.5rem;
+      color: var(--wire-gray-500);
+      background-color: var(--wire-bg);
+    }
+
+    /* =============================================
+       DESIGN PRINCIPLES
+       ============================================= */
+    .principles-list {
+      margin-top: 1.5rem;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+      border-bottom: 1px dashed var(--wire-gray-200);
+    }
+
+    .principle-item:last-child {
+      border-bottom: none;
+    }
+
+    .principle-number {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--wire-gray-200);
+      min-width: 3rem;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      padding-top: 0.15rem;
+    }
+
+    .principle-content h3 {
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .principle-content p {
+      font-size: 0.8rem;
+      color: var(--wire-gray-600);
+      line-height: 1.7;
+    }
+
+    .principle-marker {
+      position: absolute;
+      top: -0.5em;
+      right: 2rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 50%;
+      background-color: var(--wire-red);
+      color: var(--wire-white);
+      font-size: 0.5rem;
+      font-weight: 700;
+    }
+
+    /* =============================================
+       EFFECTS SHOWCASE
+       ============================================= */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    .effect-demo {
+      border: 1px dashed var(--wire-border);
+      position: relative;
+      transition: border-color 0.1s ease, border-style 0.1s ease;
+    }
+
+    .effect-demo::before {
+      content: 'EFFECT';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-size: 0.5rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+      z-index: 2;
+    }
+
+    .effect-demo:hover {
+      border-color: var(--wire-blue);
+      border-style: solid;
+    }
+
+    .effect-preview {
+      height: 160px;
+      border-bottom: 1px dashed var(--wire-gray-200);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1rem 1.25rem;
+    }
+
+    .effect-caption h4 {
+      font-size: 0.75rem;
+      margin-bottom: 0.35rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.7rem;
+      color: var(--wire-gray-600);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    /* Effect 1: Grid Overlay */
+    .effect-grid-lines {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 39px,
+          var(--wire-gray-200) 39px,
+          var(--wire-gray-200) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 39px,
+          var(--wire-gray-200) 39px,
+          var(--wire-gray-200) 40px
+        );
+    }
+
+    .effect-grid-lines::before {
+      content: '12-COL GRID';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.5rem;
+      color: var(--wire-blue);
+      letter-spacing: 0.1em;
+      background-color: var(--wire-bg);
+      padding: 0.1rem 0.3rem;
+      border: 1px dashed var(--wire-blue);
+    }
+
+    /* Effect 2: Dashed Border Nesting */
+    .effect-nesting {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: var(--wire-bg);
+    }
+
+    .effect-nesting::after {
+      content: '';
+      width: 70%;
+      height: 70%;
+      border: 1px dashed var(--wire-gray-400);
+      position: absolute;
+      top: 15%;
+      left: 15%;
+    }
+
+    .effect-nesting-inner {
+      width: 45%;
+      height: 45%;
+      border: 1px dashed var(--wire-gray-600);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .effect-nesting-core {
+      width: 50%;
+      height: 50%;
+      border: 1px dashed var(--wire-gray-800);
+    }
+
+    /* Effect 3: Placeholder Cross */
+    .effect-placeholder {
+      background-color: var(--wire-bg-alt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-placeholder::before {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 1px;
+      background-color: var(--wire-gray-300, #c0c0c0);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(20deg);
+    }
+
+    .effect-placeholder::after {
+      content: '';
+      position: absolute;
+      width: 200%;
+      height: 1px;
+      background-color: var(--wire-gray-300, #c0c0c0);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-20deg);
+    }
+
+    .effect-placeholder-text {
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg-alt);
+      padding: 0.15rem 0.5rem;
+      z-index: 1;
+    }
+
+    /* Effect 4: Annotation Markers */
+    .effect-annotations {
+      background-color: var(--wire-bg);
+      position: relative;
+    }
+
+    .annotation-dot {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      font-size: 0.45rem;
+      font-weight: 700;
+      font-family: 'IBM Plex Mono', monospace;
+    }
+
+    .annotation-dot--red {
+      background-color: var(--wire-red);
+      color: var(--wire-white);
+    }
+
+    .annotation-dot--blue {
+      background-color: var(--wire-blue);
+      color: var(--wire-white);
+    }
+
+    .annotation-dot--green {
+      background-color: var(--wire-green);
+      color: var(--wire-white);
+    }
+
+    .annotation-line {
+      position: absolute;
+      background-color: var(--wire-gray-300, #c0c0c0);
+    }
+
+    .annotation-line--h {
+      height: 1px;
+      width: 40px;
+    }
+
+    .annotation-line--v {
+      width: 1px;
+      height: 30px;
+    }
+
+    .annotation-note {
+      position: absolute;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0.2rem 0.4rem;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .annotation-note--red {
+      color: var(--wire-red);
+      background-color: var(--wire-note);
+      border-color: var(--wire-red);
+    }
+
+    .annotation-note--blue {
+      color: var(--wire-blue);
+      background-color: rgba(33, 150, 243, 0.06);
+      border-color: var(--wire-blue);
+    }
+
+    /* Effect 5: Registration Marks */
+    .effect-registration {
+      background-color: var(--wire-bg);
+      position: relative;
+    }
+
+    .reg-mark {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+    }
+
+    .reg-mark::before,
+    .reg-mark::after {
+      content: '';
+      position: absolute;
+      background-color: var(--wire-gray-800);
+    }
+
+    .reg-mark--tl { top: 16px; left: 16px; }
+    .reg-mark--tl::before { width: 20px; height: 1px; top: 0; left: 0; }
+    .reg-mark--tl::after { width: 1px; height: 20px; top: 0; left: 0; }
+
+    .reg-mark--tr { top: 16px; right: 16px; }
+    .reg-mark--tr::before { width: 20px; height: 1px; top: 0; right: 0; }
+    .reg-mark--tr::after { width: 1px; height: 20px; top: 0; right: 0; }
+
+    .reg-mark--bl { bottom: 16px; left: 16px; }
+    .reg-mark--bl::before { width: 20px; height: 1px; bottom: 0; left: 0; }
+    .reg-mark--bl::after { width: 1px; height: 20px; bottom: 0; left: 0; }
+
+    .reg-mark--br { bottom: 16px; right: 16px; }
+    .reg-mark--br::before { width: 20px; height: 1px; bottom: 0; right: 0; }
+    .reg-mark--br::after { width: 1px; height: 20px; bottom: 0; right: 0; }
+
+    .reg-crosshair {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      border: 1px solid var(--wire-gray-800);
+      border-radius: 50%;
+    }
+
+    .reg-crosshair::before,
+    .reg-crosshair::after {
+      content: '';
+      position: absolute;
+      background-color: var(--wire-gray-800);
+    }
+
+    .reg-crosshair::before {
+      width: 1px;
+      height: 40px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .reg-crosshair::after {
+      width: 40px;
+      height: 1px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .reg-label {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.45rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-gray-500);
+    }
+
+    /* Effect 6: Measurement Lines */
+    .effect-dimensions {
+      background-color: var(--wire-bg-alt);
+      position: relative;
+    }
+
+    .dim-box {
+      position: absolute;
+      border: 1px dashed var(--wire-gray-400);
+    }
+
+    .dim-box--outer {
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+    }
+
+    .dim-box--inner {
+      top: 45px;
+      left: 45px;
+      width: 100px;
+      height: 60px;
+    }
+
+    .dim-line {
+      position: absolute;
+      display: flex;
+      align-items: center;
+    }
+
+    .dim-line--top {
+      top: 10px;
+      left: 20px;
+      right: 20px;
+    }
+
+    .dim-line--top::before,
+    .dim-line--top::after {
+      content: '';
+      flex: 1;
+      border-top: 1px solid var(--wire-blue);
+    }
+
+    .dim-line--side {
+      left: 10px;
+      top: 20px;
+      bottom: 20px;
+      flex-direction: column;
+    }
+
+    .dim-line--side::before,
+    .dim-line--side::after {
+      content: '';
+      flex: 1;
+      border-left: 1px solid var(--wire-blue);
+    }
+
+    .dim-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.45rem;
+      color: var(--wire-blue);
+      background-color: var(--wire-bg-alt);
+      padding: 0 0.25rem;
+      letter-spacing: 0.05em;
+    }
+
+    .dim-arrow {
+      position: absolute;
+      font-size: 0.45rem;
+      color: var(--wire-blue);
+    }
+
+    .dim-arrow--left { top: 8px; left: 16px; }
+    .dim-arrow--right { top: 8px; right: 16px; }
+    .dim-arrow--top { top: 16px; left: 6px; }
+    .dim-arrow--bottom { bottom: 16px; left: 6px; }
+
+    /* =============================================
+       BUTTON SHOWCASE
+       ============================================= */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-top: 1.5rem;
+    }
+
+    .button-demo {
+      text-align: center;
+    }
+
+    .button-demo-label {
+      display: block;
+      font-size: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--wire-annotation);
+      margin-top: 0.6rem;
+    }
+
+    /* =============================================
+       BLOCKQUOTE
+       ============================================= */
+    .quote-block {
+      border: 1px dashed var(--wire-border);
+      padding: 2.5rem 2rem;
+      position: relative;
+      text-align: center;
+    }
+
+    .quote-block::before {
+      content: 'BLOCKQUOTE';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .quote-block blockquote {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--wire-heading);
+      max-width: 50ch;
+      margin: 0 auto;
+      letter-spacing: 0.02em;
+    }
+
+    .quote-block blockquote::before {
+      content: '/*';
+      display: block;
+      font-size: 1.5rem;
+      color: var(--wire-gray-400);
+      margin-bottom: 0.5rem;
+      font-weight: 300;
+    }
+
+    .quote-block blockquote::after {
+      content: '*/';
+      display: block;
+      font-size: 1.5rem;
+      color: var(--wire-gray-400);
+      margin-top: 0.5rem;
+      font-weight: 300;
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-size: 0.7rem;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--wire-gray-500);
+    }
+
+    /* =============================================
+       CTA SECTION
+       ============================================= */
+    .cta {
+      border: 2px dashed var(--wire-gray-900);
+      padding: 3rem 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      text-align: center;
+    }
+
+    .cta::before {
+      content: 'CTA';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .cta::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 10px;
+      height: 10px;
+      border-top: 1px solid var(--wire-gray-400);
+      border-right: 1px solid var(--wire-gray-400);
+    }
+
+    .cta h2 {
+      margin-bottom: 0.75rem;
+    }
+
+    .cta p {
+      max-width: 50ch;
+      margin: 0 auto 1.5rem;
+      font-size: 0.85rem;
+      color: var(--wire-gray-600);
+      line-height: 1.8;
+    }
+
+    .cta .blueprint-label {
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--wire-blue);
+      border: 1px dashed var(--wire-blue);
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      margin-bottom: 1rem;
+    }
+
+    /* =============================================
+       FOOTER
+       ============================================= */
+    .footer {
+      border: 1px dashed var(--wire-border);
+      padding: 2rem;
+      margin-top: 1.5rem;
+      position: relative;
+    }
+
+    .footer::before {
+      content: 'FOOTER';
+      position: absolute;
+      top: -0.5em;
+      left: 0.75rem;
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wire-annotation);
+      background-color: var(--wire-bg);
+      padding: 0 0.35rem;
+    }
+
+    .footer p {
+      font-size: 0.7rem;
+      color: var(--wire-gray-600);
+    }
+
+    .footer a {
+      color: var(--wire-gray-800);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--wire-blue);
+      text-decoration-style: dashed;
+      text-decoration-line: underline;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .footer-grid h4 {
+      font-size: 0.6rem;
+      margin-bottom: 0.5rem;
+      color: var(--wire-annotation);
+      border-bottom: 1px dotted var(--wire-gray-200);
+      padding-bottom: 0.3rem;
+    }
+
+    .footer-grid ul {
+      list-style: none;
+    }
+
+    .footer-grid li {
+      padding: 0.15rem 0;
+    }
+
+    .footer-grid a {
+      font-size: 0.7rem;
+    }
+
+    .footer .copyright {
+      margin-top: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px dashed var(--wire-gray-200);
+      font-size: 0.6rem;
+      color: var(--wire-gray-500);
+    }
+
+    /* =============================================
+       ANNOTATION MARKERS
+       ============================================= */
+    .marker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.15rem;
+      height: 1.15rem;
+      border-radius: 50%;
+      background-color: var(--wire-red);
+      color: var(--wire-white);
+      font-size: 0.5rem;
+      font-weight: 700;
+      cursor: default;
+      vertical-align: super;
+      margin-left: 0.15rem;
+    }
+
+    /* =============================================
+       GRID TOGGLE BUTTON
+       ============================================= */
+    .grid-toggle {
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 1000;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.4rem 0.75rem;
+      border: 1px dashed var(--wire-gray-400);
+      background-color: var(--wire-bg);
+      color: var(--wire-gray-600);
+      cursor: pointer;
+      transition: border-color 0.1s ease, color 0.1s ease;
+    }
+
+    .grid-toggle:hover {
+      border-color: var(--wire-blue);
+      color: var(--wire-blue);
+      border-style: solid;
+    }
+
+    .grid-toggle.active {
+      border-color: var(--wire-blue);
+      color: var(--wire-blue);
+      border-style: solid;
+    }
+
+    .grid-overlay.hidden {
+      display: none;
+    }
+
+    /* =============================================
+       UTILITIES
+       ============================================= */
+    .mt-1 { margin-top: 0.75rem; }
+    .mt-2 { margin-top: 1.5rem; }
+    .mt-3 { margin-top: 2.25rem; }
+    .text-muted { color: var(--wire-gray-600); }
+    .text-annotation { color: var(--wire-annotation); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; }
+
+    /* =============================================
+       RESPONSIVE
+       ============================================= */
+    @media (max-width: 768px) {
+      html { font-size: 13px; }
+      body { padding: 1rem; }
+
+      .hero {
+        min-height: 60vh;
+        padding: 2rem 1.5rem;
+      }
+
+      .section {
+        padding: 2rem 1.5rem;
+      }
+
+      .grid-overlay {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+        padding: 0 1rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .quote-block {
+        padding: 2rem 1.5rem;
+      }
+
+      .cta {
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        min-height: 50vh;
+        padding: 1.5rem 1rem;
+      }
+
+      .section {
+        padding: 1.5rem 1rem;
+      }
+
+      .nav ul {
+        flex-direction: column;
+      }
+
+      .nav li:first-child {
+        margin-right: 0;
+        margin-bottom: 0.5rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* =============================================
+       REDUCED MOTION
+       ============================================= */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GRID OVERLAY -->
+  <div class="grid-overlay" id="gridOverlay" aria-hidden="true">
+    <div class="col"></div><div class="col"></div><div class="col"></div>
+    <div class="col"></div><div class="col"></div><div class="col"></div>
+    <div class="col"></div><div class="col"></div><div class="col"></div>
+    <div class="col"></div><div class="col"></div><div class="col"></div>
+  </div>
+
+  <!-- GRID COLUMN LABELS -->
+  <div class="grid-labels" aria-hidden="true">
+    <span>1</span><span>2</span><span>3</span><span>4</span>
+    <span>5</span><span>6</span><span>7</span><span>8</span>
+    <span>9</span><span>10</span><span>11</span><span>12</span>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <ul>
+      <li><a href="#hero" class="logo">[Wireframe]</a></li>
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-corner-tl"></div>
+    <div class="hero-corner-bl"></div>
+    <div class="hero-corner-br"></div>
+    <div class="crosshair crosshair--center" aria-hidden="true"></div>
+    <p class="tagline">Design Aesthetic Reference</p>
+    <h1>Structure<br>Is the Design</h1>
+    <p class="subtitle">
+      The wireframe is not a sketch toward a finished product. The wireframe is
+      the finished product. Exposed grids, dashed borders, annotation labels,
+      and monospace typography transform the skeletal framework into intentional,
+      production-grade visual style.
+    </p>
+    <div class="btn-row">
+      <a href="#components" class="btn">View Components</a>
+      <a href="#principles" class="btn btn--filled">Design Principles</a>
+    </div>
+    <span class="dimensions">1200 &times; 800</span>
+  </section>
+
+  <!-- ===== TYPOGRAPHY SHOWCASE ===== -->
+  <section class="section" data-label="TYPOGRAPHY" id="typography">
+    <h2>Monospace Type System</h2>
+    <p class="section-subtitle">all monospaced, all the time -- hierarchy through weight, spacing, and subtle scale</p>
+
+    <div class="typo-showcase">
+      <div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Display / JetBrains Mono 800</p>
+          <p class="typo-display">Structure</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Heading / JetBrains Mono 700</p>
+          <p class="typo-heading">Grid Systems</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Subheading / Space Mono 700</p>
+          <p class="typo-subheading">Visible Scaffolding</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Body / IBM Plex Mono 400</p>
+          <p class="typo-body">The wireframe aesthetic relies exclusively on monospaced typefaces to maintain the technical, diagrammatic quality of design-tool output.</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Technical / Source Code Pro 400</p>
+          <p class="typo-code">font-family: 'IBM Plex Mono', monospace;<br>letter-spacing: 0.01em; line-height: 1.7;</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Annotation / IBM Plex Mono 500</p>
+          <p class="typo-annotation">Section Label &middot; Component ID &middot; Grid Marker</p>
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom: 0.75rem;">Type Scale</h3>
+        <div class="typo-scale">
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">3.0 rem</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; font-weight: 800; color: var(--wire-heading); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">2.0 rem</span>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 700; color: var(--wire-heading); text-transform: uppercase; letter-spacing: 0.08em;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1.35 rem</span>
+            <span style="font-family: 'Space Mono', monospace; font-size: 1rem; font-weight: 700; color: var(--wire-gray-800);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.95 rem</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; color: var(--wire-text);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.75 rem</span>
+            <span style="font-family: 'Source Code Pro', monospace; font-size: 0.75rem; color: var(--wire-gray-600);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.55 rem</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; font-weight: 500; color: var(--wire-annotation); text-transform: uppercase; letter-spacing: 0.15em;">Aa</span>
+          </div>
+        </div>
+
+        <div class="font-pairings">
+          <h3 style="margin-bottom: 0.75rem;">Font Pairings</h3>
+          <div class="font-pairing">
+            <p class="font-pairing-names">
+              <strong style="font-family: 'JetBrains Mono', monospace; color: var(--wire-heading);">JetBrains Mono 800</strong> + <strong>IBM Plex Mono 400</strong>
+            </p>
+            <p class="font-pairing-desc">Bold structural headings with clean, readable body text</p>
+          </div>
+          <div class="font-pairing">
+            <p class="font-pairing-names">
+              <strong style="font-family: 'Space Mono', monospace; color: var(--wire-heading);">Space Mono 700</strong> + <strong>Source Code Pro 400</strong>
+            </p>
+            <p class="font-pairing-desc">Quirky geometric headings with neutral technical prose</p>
+          </div>
+          <div class="font-pairing">
+            <p class="font-pairing-names">
+              <strong style="font-family: 'JetBrains Mono', monospace; color: var(--wire-heading);">JetBrains Mono 700</strong> + <strong style="font-family: 'Source Code Pro', monospace;">Source Code Pro 300</strong>
+            </p>
+            <p class="font-pairing-desc">Developer-native pairing for builder-culture audiences</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&mdash; Section Break &mdash;</span></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--alt" data-label="COLOR PALETTE" id="palette">
+    <h2>Grayscale + Functional Accents</h2>
+    <p class="section-subtitle">severely restricted palette -- grayscale for structure, color only for function</p>
+
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #ffffff; border-bottom-color: var(--wire-gray-200);"></div>
+        <div class="color-info">
+          <p class="color-name">White</p>
+          <p class="color-hex">#FFFFFF</p>
+          <p class="color-role">Primary BG</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #f5f5f5;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 50</p>
+          <p class="color-hex">#F5F5F5</p>
+          <p class="color-role">Alt BG</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #e0e0e0;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 200</p>
+          <p class="color-hex">#E0E0E0</p>
+          <p class="color-role">Grid Lines</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #bdbdbd;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 400</p>
+          <p class="color-hex">#BDBDBD</p>
+          <p class="color-role">Borders</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #9e9e9e;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 500</p>
+          <p class="color-hex">#9E9E9E</p>
+          <p class="color-role">Annotations</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #757575;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 600</p>
+          <p class="color-hex">#757575</p>
+          <p class="color-role">Metadata</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #424242;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 800</p>
+          <p class="color-hex">#424242</p>
+          <p class="color-role">Body Text</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #212121;"></div>
+        <div class="color-info">
+          <p class="color-name">Gray 900</p>
+          <p class="color-hex">#212121</p>
+          <p class="color-role">Headings</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #000000;"></div>
+        <div class="color-info">
+          <p class="color-name">Black</p>
+          <p class="color-hex">#000000</p>
+          <p class="color-role">Max Contrast</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #2196f3;"></div>
+        <div class="color-info">
+          <p class="color-name">Blue</p>
+          <p class="color-hex">#2196F3</p>
+          <p class="color-role">Links / Accent</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #e53935;"></div>
+        <div class="color-info">
+          <p class="color-name">Red</p>
+          <p class="color-hex">#E53935</p>
+          <p class="color-role">Annotations</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #43a047;"></div>
+        <div class="color-info">
+          <p class="color-name">Green</p>
+          <p class="color-hex">#43A047</p>
+          <p class="color-role">Success</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #fff9c4; border: 1px solid #e0e0e0;"></div>
+        <div class="color-info">
+          <p class="color-name">Note</p>
+          <p class="color-hex">#FFF9C4</p>
+          <p class="color-role">Sticky Note</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #90caf9;"></div>
+        <div class="color-info">
+          <p class="color-name">Blue Tint</p>
+          <p class="color-hex">#90CAF9</p>
+          <p class="color-role">Selection</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #1565c0;"></div>
+        <div class="color-info">
+          <p class="color-name">Blue Dark</p>
+          <p class="color-hex">#1565C0</p>
+          <p class="color-role">Hover State</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPONENT CARDS ===== -->
+  <section class="section" data-label="COMPONENTS" id="components">
+    <h2>Component Library</h2>
+    <p class="section-subtitle">every element looks like a wireframe annotation -- dashed borders, labels, and placeholder markers</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <span class="card-number">01</span>
+        <div class="placeholder">
+          <span>Thumbnail</span>
+        </div>
+        <h3>Dashed Containers</h3>
+        <p>Every content region is outlined with 1px dashed borders, creating visible bounding boxes that reveal the layout hierarchy at a glance.</p>
+        <span class="tag">Border</span>
+        <span class="tag">Layout</span>
+      </div>
+
+      <div class="card">
+        <span class="card-number">02</span>
+        <div class="placeholder">
+          <span>Thumbnail</span>
+        </div>
+        <h3>Grid Overlay System</h3>
+        <p>A permanently visible 12-column grid sits behind all content, showing column guides and gutters as a design feature rather than hidden scaffolding.</p>
+        <span class="tag">CSS Grid</span>
+        <span class="tag">12-Col</span>
+      </div>
+
+      <div class="card">
+        <span class="card-number">03</span>
+        <div class="placeholder">
+          <span>Thumbnail</span>
+        </div>
+        <h3>Annotation Labels</h3>
+        <p>Components carry visible uppercase monospace labels like HEADER, NAV, and CTA, identifying their structural role in the layout hierarchy.</p>
+        <span class="tag">Labels</span>
+        <span class="tag">Metadata</span>
+      </div>
+
+      <div class="card">
+        <span class="card-number">04</span>
+        <div class="placeholder">
+          <span>Thumbnail</span>
+        </div>
+        <h3>Placeholder Crosses</h3>
+        <p>Image regions display the universal wireframe symbol -- a rectangle with diagonal cross lines and dimension annotations instead of photographs.</p>
+        <span class="tag">Images</span>
+        <span class="tag">Placeholder</span>
+      </div>
+
+      <div class="card">
+        <span class="card-number">05</span>
+        <div class="placeholder">
+          <span>Thumbnail</span>
+        </div>
+        <h3>Registration Marks</h3>
+        <p>Small L-shaped crop marks and crosshair indicators appear at corners of major sections, borrowed from print production and technical drawing.</p>
+        <span class="tag">Marks</span>
+        <span class="tag">Print</span>
+      </div>
+
+      <div class="card">
+        <span class="card-number">06</span>
+        <div class="placeholder">
+          <span>Thumbnail</span>
+        </div>
+        <h3>Monospace Type System</h3>
+        <p>All text throughout the interface uses monospaced typefaces, creating character-grid alignment and reinforcing the technical drawing quality.</p>
+        <span class="tag">Typography</span>
+        <span class="tag">Mono</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="wire-banner">
+    <h2>The Blueprint Is the Deliverable</h2>
+    <p>Process made permanent -- the wireframe stage, normally hidden from users, becomes the final product</p>
+    <div class="banner-markers" aria-hidden="true">
+      <span>A</span>
+      <span>B</span>
+      <span>C</span>
+      <span>D</span>
+      <span>E</span>
+      <span>F</span>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section" data-label="DESIGN PRINCIPLES" id="principles">
+    <span class="principle-marker" aria-hidden="true">!</span>
+    <h2>Wireframe Philosophy</h2>
+    <p class="section-subtitle">constraint as creative liberation -- the skeleton elevated to style</p>
+
+    <div class="principles-list">
+      <div class="principle-item">
+        <span class="principle-number">01</span>
+        <div class="principle-content">
+          <h3>Structure Is the Design</h3>
+          <p>The layout skeleton is not a means to an end but the final product. Revealing structure -- grid lines, bounding boxes, and component labels -- is the primary aesthetic act. Nothing is hidden behind gradients, shadows, or photographic imagery.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-number">02</span>
+        <div class="principle-content">
+          <h3>Constraint as Language</h3>
+          <p>The strict limitations of wireframing -- no color, no images, no ornamentation -- become a coherent visual vocabulary rather than restrictions to overcome. Fixed-width grids, dashed outlines, and labeled boxes create an information-dense visual language.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-number">03</span>
+        <div class="principle-content">
+          <h3>Precision Over Expression</h3>
+          <p>The aesthetic values alignment, measurement, and systematic consistency over individual creative flourish or emotional expression. Every element is placed with the deliberation of an architectural drawing.</p>
+        </div>
+      </div>
+      <div class="principle-item">
+        <span class="principle-number">04</span>
+        <div class="principle-content">
+          <h3>Transparency of Intent</h3>
+          <p>Every element visibly declares its purpose and position in the hierarchy. There are no hidden layers, obscured mechanics, or decorative distractions. If a layout uses a grid, show the grid. If a component has a bounding box, show the bounding box.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&mdash; Visual Effects &mdash;</span></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--alt" data-label="CSS EFFECTS" id="effects">
+    <h2>CSS Techniques &amp; Patterns</h2>
+    <p class="section-subtitle">all visual effects built with pure CSS -- no image assets, no libraries</p>
+
+    <div class="effects-grid">
+
+      <!-- Effect 1: Grid Lines -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-grid-lines"></div>
+        <div class="effect-caption">
+          <h4>Visible Grid Overlay</h4>
+          <p>Repeating linear gradients create a permanent background grid that exposes the column and row structure of the layout.</p>
+        </div>
+      </div>
+
+      <!-- Effect 2: Nested Dashed Borders -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-nesting">
+          <div class="effect-nesting-inner">
+            <div class="effect-nesting-core"></div>
+          </div>
+        </div>
+        <div class="effect-caption">
+          <h4>Nested Containers</h4>
+          <p>Progressively thinner dashed borders indicate component depth without introducing shadows or three-dimensional effects.</p>
+        </div>
+      </div>
+
+      <!-- Effect 3: Placeholder Cross -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-placeholder">
+          <span class="effect-placeholder-text">Image -- 800 &times; 450</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Placeholder Image Cross</h4>
+          <p>Diagonal linear gradients form the universal wireframe symbol for image regions, annotated with dimension markers.</p>
+        </div>
+      </div>
+
+      <!-- Effect 4: Annotation Markers -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-annotations">
+          <span class="annotation-dot annotation-dot--red" style="top: 20px; left: 20px;">1</span>
+          <span class="annotation-line annotation-line--h" style="top: 28px; left: 42px; background-color: var(--wire-red);"></span>
+          <span class="annotation-note annotation-note--red" style="top: 20px; left: 86px;">Header Component</span>
+
+          <span class="annotation-dot annotation-dot--blue" style="top: 65px; left: 35px;">2</span>
+          <span class="annotation-line annotation-line--h" style="top: 73px; left: 57px; background-color: var(--wire-blue);"></span>
+          <span class="annotation-note annotation-note--blue" style="top: 65px; left: 101px;">Interactive Region</span>
+
+          <span class="annotation-dot annotation-dot--green" style="top: 110px; left: 50px;">3</span>
+          <span class="annotation-line annotation-line--h" style="top: 118px; left: 72px; background-color: var(--wire-green);"></span>
+          <span style="position: absolute; top: 110px; left: 116px; font-family: 'IBM Plex Mono', monospace; font-size: 0.45rem; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.2rem 0.4rem; border: 1px solid var(--wire-green); color: var(--wire-green); background-color: rgba(67, 160, 71, 0.06); white-space: nowrap;">Approved</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Annotation Markers</h4>
+          <p>Numbered marker dots with connecting lines and callout labels mimic design-tool comment systems for structural documentation.</p>
+        </div>
+      </div>
+
+      <!-- Effect 5: Registration Marks -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-registration">
+          <div class="reg-mark reg-mark--tl"></div>
+          <div class="reg-mark reg-mark--tr"></div>
+          <div class="reg-mark reg-mark--bl"></div>
+          <div class="reg-mark reg-mark--br"></div>
+          <div class="reg-crosshair"></div>
+          <span class="reg-label">Registration</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Registration &amp; Crop Marks</h4>
+          <p>Corner L-marks and center crosshairs borrowed from print production create precise technical-drawing aesthetics.</p>
+        </div>
+      </div>
+
+      <!-- Effect 6: Measurement Lines -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-dimensions">
+          <div class="dim-box dim-box--outer"></div>
+          <div class="dim-box dim-box--inner"></div>
+          <div class="dim-line dim-line--top">
+            <span class="dim-value">1200px</span>
+          </div>
+          <div class="dim-line dim-line--side">
+            <span class="dim-value">800px</span>
+          </div>
+          <span class="dim-arrow dim-arrow--left">&larr;</span>
+          <span class="dim-arrow dim-arrow--right">&rarr;</span>
+          <span class="dim-arrow dim-arrow--top">&uarr;</span>
+          <span class="dim-arrow dim-arrow--bottom">&darr;</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Dimension Annotations</h4>
+          <p>Measurement lines with arrow terminators and value labels annotate element sizes, mimicking technical drawing conventions.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&mdash; Interactive Elements &mdash;</span></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section" data-label="BUTTONS" id="buttons">
+    <h2>Button Variants</h2>
+    <p class="section-subtitle">dashed borders shift to solid on hover, mimicking element selection in design tools</p>
+
+    <div class="button-showcase">
+      <div class="button-demo">
+        <a href="#" class="btn">Default</a>
+        <span class="button-demo-label">Dashed / Default</span>
+      </div>
+      <div class="button-demo">
+        <a href="#" class="btn btn--filled">Primary</a>
+        <span class="button-demo-label">Filled / Primary</span>
+      </div>
+      <div class="button-demo">
+        <a href="#" class="btn btn--ghost">Ghost</a>
+        <span class="button-demo-label">Dotted / Ghost</span>
+      </div>
+      <div class="button-demo">
+        <a href="#" class="btn btn--blue">Blueprint</a>
+        <span class="button-demo-label">Blueprint / Accent</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section section--alt" data-label="QUOTE">
+    <div class="quote-block">
+      <blockquote>
+        The wireframe is not an intermediate artifact to be replaced by polished visuals. The wireframe is the design. Structure elevated to style, process made permanent, the skeleton declared complete.
+      </blockquote>
+      <cite>&mdash; The Wireframe Aesthetic Manifesto</cite>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <div class="cta">
+    <span class="blueprint-label">Call to Action</span>
+    <h2>Build With the Blueprint</h2>
+    <p>
+      Embrace dashed borders, monospace type, visible grid overlays, and annotation labels.
+      Let the scaffolding become the surface. Let the skeleton be the style.
+    </p>
+    <a href="#hero" class="btn btn--filled">Back to Top</a>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#typography">Typography</a></li>
+          <li><a href="#palette">Palette</a></li>
+          <li><a href="#components">Components</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Design Guide</a></li>
+          <li><a href="#">Component Library</a></li>
+          <li><a href="#">Grid System</a></li>
+          <li><a href="#">Type Specimen</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Principles</h4>
+        <ul>
+          <li><a href="#principles">Structure as Design</a></li>
+          <li><a href="#principles">Constraint as Language</a></li>
+          <li><a href="#principles">Precision Over Expression</a></li>
+          <li><a href="#principles">Transparency of Intent</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Technical</h4>
+        <ul>
+          <li><a href="#">12-Column Grid</a></li>
+          <li><a href="#">Monospace Stack</a></li>
+          <li><a href="#">Dashed Borders</a></li>
+          <li><a href="#">CSS-Only Visuals</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="copyright">
+      Built with HTML and CSS. Monospace type. Dashed borders. Visible grid.
+      The wireframe is the design. &copy; 2025
+    </p>
+  </footer>
+
+  <!-- GRID TOGGLE BUTTON -->
+  <button class="grid-toggle active" id="gridToggle" type="button" aria-label="Toggle grid overlay">Grid: On</button>
+
+  <script>
+    // Grid overlay toggle
+    (function() {
+      var toggle = document.getElementById('gridToggle');
+      var grid = document.getElementById('gridOverlay');
+      if (toggle && grid) {
+        toggle.addEventListener('click', function() {
+          grid.classList.toggle('hidden');
+          var isVisible = !grid.classList.contains('hidden');
+          toggle.textContent = 'Grid: ' + (isVisible ? 'On' : 'Off');
+          toggle.classList.toggle('active', isVisible);
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>

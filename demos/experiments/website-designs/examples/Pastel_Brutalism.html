@@ -1,0 +1,1589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastel Brutalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Pastel Fills --- */
+      --pb-pink: #ffd6e0;
+      --pb-lavender: #c5b4e3;
+      --pb-mint: #b8e8d0;
+      --pb-buttercream: #fff1c1;
+      --pb-blue: #b6d8f2;
+      --pb-peach: #ffcba4;
+      --pb-orchid: #e8c5e8;
+      --pb-lime: #d4f0b4;
+      --pb-blush: #f5c6c6;
+
+      /* --- Neutrals --- */
+      --pb-canvas: #f0f0f0;
+      --pb-white: #ffffff;
+      --pb-black: #1a1a1a;
+      --pb-charcoal: #2b2b2b;
+      --pb-slate: #6b6b6b;
+      --pb-silver: #d0d0d0;
+
+      /* --- Structural Tokens --- */
+      --pb-border-width: 3px;
+      --pb-border-color: #1a1a1a;
+      --pb-shadow: 6px 6px 0 #1a1a1a;
+      --pb-shadow-sm: 4px 4px 0 #1a1a1a;
+      --pb-shadow-lg: 8px 8px 0 #1a1a1a;
+      --pb-radius: 0px;
+      --pb-radius-soft: 6px;
+      --pb-padding: 28px;
+      --pb-gap: 20px;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(48px, 6vw, 80px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--pb-canvas);
+      color: var(--pb-charcoal);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.65;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--pb-black);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       PREFERS REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       LAYOUT UTILITIES
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--canvas { background: var(--pb-canvas); }
+    .section--white { background: var(--pb-white); }
+    .section--pink { background: var(--pb-pink); }
+    .section--lavender { background: var(--pb-lavender); }
+    .section--mint { background: var(--pb-mint); }
+    .section--buttercream { background: var(--pb-buttercream); }
+    .section--blue { background: var(--pb-blue); }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--pb-black);
+      display: inline-block;
+      padding: 4px 14px;
+      border: 2px solid var(--pb-border-color);
+      background: var(--pb-buttercream);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--pb-slate);
+      margin-bottom: 40px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 24px;
+      border-bottom: var(--pb-border-width) solid var(--pb-border-color);
+      background: var(--pb-canvas);
+    }
+
+    .nav__logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      color: var(--pb-black);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .nav__logo span {
+      display: inline-block;
+      background: var(--pb-pink);
+      padding: 2px 8px;
+      border: 2px solid var(--pb-border-color);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 8px;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--pb-black);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      padding: 8px 16px;
+      border: 2px solid transparent;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .nav__links a:hover {
+      border-color: var(--pb-border-color);
+      background: var(--pb-buttercream);
+    }
+
+    .nav__links a.active {
+      border-color: var(--pb-border-color);
+      background: var(--pb-pink);
+      box-shadow: 2px 2px 0 var(--pb-border-color);
+    }
+
+    @media (max-width: 700px) {
+      .nav {
+        flex-direction: column;
+        gap: 16px;
+      }
+      .nav__links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: var(--pb-lavender);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-lg);
+      padding: 72px 48px;
+      text-align: center;
+      max-width: 1200px;
+      margin: var(--pb-gap) auto;
+      margin-left: max(24px, calc((100% - 1200px) / 2));
+      margin-right: max(24px, calc((100% - 1200px) / 2));
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero__tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 6px 16px;
+      border: 2px solid var(--pb-border-color);
+      background: var(--pb-buttercream);
+      margin-bottom: 24px;
+    }
+
+    .hero__title {
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      margin-bottom: 20px;
+      color: var(--pb-black);
+    }
+
+    .hero__title-accent {
+      display: inline-block;
+      background: var(--pb-pink);
+      padding: 0 12px;
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-sm);
+    }
+
+    .hero__subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--pb-charcoal);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative blocks in hero */
+    .hero__deco {
+      position: absolute;
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      opacity: 0.35;
+    }
+
+    .hero__deco--1 {
+      width: 80px;
+      height: 80px;
+      background: var(--pb-pink);
+      top: 20px;
+      left: 30px;
+      transform: rotate(12deg);
+    }
+
+    .hero__deco--2 {
+      width: 60px;
+      height: 60px;
+      background: var(--pb-mint);
+      top: 40px;
+      right: 50px;
+      transform: rotate(-8deg);
+    }
+
+    .hero__deco--3 {
+      width: 50px;
+      height: 50px;
+      background: var(--pb-buttercream);
+      bottom: 30px;
+      left: 80px;
+      transform: rotate(25deg);
+    }
+
+    .hero__deco--4 {
+      width: 70px;
+      height: 40px;
+      background: var(--pb-blue);
+      bottom: 50px;
+      right: 40px;
+      transform: rotate(-15deg);
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 48px 24px;
+      }
+      .hero__deco { display: none; }
+    }
+
+    /* ============================================
+       BORDER BAND DIVIDER
+       ============================================ */
+    .border-band {
+      display: flex;
+      height: 12px;
+      border-top: var(--pb-border-width) solid var(--pb-border-color);
+      border-bottom: var(--pb-border-width) solid var(--pb-border-color);
+      overflow: hidden;
+    }
+
+    .border-band span {
+      flex: 1;
+    }
+
+    .border-band span:nth-child(1) { background: var(--pb-pink); }
+    .border-band span:nth-child(2) { background: var(--pb-lavender); }
+    .border-band span:nth-child(3) { background: var(--pb-mint); }
+    .border-band span:nth-child(4) { background: var(--pb-buttercream); }
+    .border-band span:nth-child(5) { background: var(--pb-blue); }
+    .border-band span:nth-child(6) { background: var(--pb-peach); }
+    .border-band span:nth-child(7) { background: var(--pb-orchid); }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 14px 32px;
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-sm);
+      cursor: pointer;
+      text-decoration: none;
+      transition: box-shadow 0.12s ease, transform 0.12s ease;
+      background: var(--pb-buttercream);
+      color: var(--pb-black);
+    }
+
+    .btn:hover {
+      box-shadow: 2px 2px 0 var(--pb-border-color);
+      transform: translate(2px, 2px);
+    }
+
+    .btn:active {
+      box-shadow: 0 0 0 var(--pb-border-color);
+      transform: translate(4px, 4px);
+    }
+
+    .btn--pink { background: var(--pb-pink); }
+    .btn--lavender { background: var(--pb-lavender); }
+    .btn--mint { background: var(--pb-mint); }
+    .btn--blue { background: var(--pb-blue); }
+    .btn--peach { background: var(--pb-peach); }
+
+    .btn--dark {
+      background: var(--pb-black);
+      color: var(--pb-white);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--pb-black);
+    }
+
+    .btn--outline:hover {
+      background: var(--pb-buttercream);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: var(--pb-gap);
+    }
+
+    .typo-left {
+      display: flex;
+      flex-direction: column;
+      gap: var(--pb-gap);
+    }
+
+    .typo-sample {
+      background: var(--pb-white);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow);
+      padding: var(--pb-padding);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .typo-sample:hover {
+      box-shadow: var(--pb-shadow-sm);
+      transform: translate(2px, 2px);
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border: 2px solid var(--pb-border-color);
+      background: var(--pb-mint);
+      display: inline-block;
+      margin-bottom: 14px;
+      color: var(--pb-black);
+    }
+
+    .typo-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1.0;
+      color: var(--pb-black);
+    }
+
+    .typo-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--pb-black);
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--pb-charcoal);
+    }
+
+    .typo-mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--pb-charcoal);
+    }
+
+    .typo-label {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--pb-black);
+    }
+
+    .typo-right {
+      background: var(--pb-white);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow);
+      padding: var(--pb-padding);
+    }
+
+    .typo-right h3 {
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border: 2px solid var(--pb-border-color);
+    }
+
+    .typo-scale-item:nth-child(1) { background: var(--pb-pink); }
+    .typo-scale-item:nth-child(2) { background: var(--pb-lavender); }
+    .typo-scale-item:nth-child(3) { background: var(--pb-mint); }
+    .typo-scale-item:nth-child(4) { background: var(--pb-buttercream); }
+    .typo-scale-item:nth-child(5) { background: var(--pb-blue); }
+    .typo-scale-item:nth-child(6) { background: var(--pb-peach); }
+
+    .typo-scale-size {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--pb-charcoal);
+    }
+
+    .typo-pairings {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: var(--pb-border-width) solid var(--pb-border-color);
+    }
+
+    .typo-pairings h3 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .typo-pair {
+      margin-bottom: 12px;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .typo-pair strong {
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--pb-black);
+    }
+
+    .typo-pair span {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--pb-slate);
+    }
+
+    @media (max-width: 800px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--pb-gap);
+    }
+
+    .color-chip {
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-sm);
+      background: var(--pb-white);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .color-chip:hover {
+      box-shadow: 2px 2px 0 var(--pb-border-color);
+      transform: translate(2px, 2px);
+    }
+
+    .color-swatch {
+      height: 80px;
+      border-bottom: var(--pb-border-width) solid var(--pb-border-color);
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--pb-black);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--pb-slate);
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 900px) {
+      .palette-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 550px) {
+      .palette-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* ============================================
+       CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--pb-gap);
+    }
+
+    .card {
+      background: var(--pb-white);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow);
+      padding: var(--pb-padding);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--pb-shadow-sm);
+      transform: translate(2px, 2px);
+    }
+
+    .card--pink { background: var(--pb-pink); }
+    .card--lavender { background: var(--pb-lavender); }
+    .card--mint { background: var(--pb-mint); }
+    .card--buttercream { background: var(--pb-buttercream); }
+    .card--blue { background: var(--pb-blue); }
+    .card--peach { background: var(--pb-peach); }
+
+    .card__icon {
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--pb-border-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      background: var(--pb-white);
+    }
+
+    .card__icon--pink { background: var(--pb-pink); }
+    .card__icon--lavender { background: var(--pb-lavender); }
+    .card__icon--mint { background: var(--pb-mint); }
+    .card__icon--buttercream { background: var(--pb-buttercream); }
+    .card__icon--blue { background: var(--pb-blue); }
+    .card__icon--peach { background: var(--pb-peach); }
+
+    .card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--pb-charcoal);
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border: 2px solid var(--pb-border-color);
+      background: var(--pb-mint);
+      color: var(--pb-black);
+      margin-right: 6px;
+      margin-bottom: 4px;
+    }
+
+    .tag--pink { background: var(--pb-pink); }
+    .tag--blue { background: var(--pb-blue); }
+    .tag--buttercream { background: var(--pb-buttercream); }
+    .tag--lavender { background: var(--pb-lavender); }
+    .tag--peach { background: var(--pb-peach); }
+
+    @media (max-width: 900px) {
+      .card-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--pb-gap);
+    }
+
+    .effect-demo {
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow);
+      background: var(--pb-white);
+      overflow: hidden;
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .effect-demo:hover {
+      box-shadow: var(--pb-shadow-sm);
+      transform: translate(2px, 2px);
+    }
+
+    .effect-preview {
+      height: 180px;
+      border-bottom: var(--pb-border-width) solid var(--pb-border-color);
+      position: relative;
+    }
+
+    .effect-caption {
+      padding: 18px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--pb-black);
+      margin-bottom: 6px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      color: var(--pb-slate);
+      line-height: 1.5;
+    }
+
+    /* Effect 1: Checkerboard */
+    .effect-checkerboard {
+      background-color: var(--pb-pink);
+      background-image:
+        linear-gradient(45deg, var(--pb-black) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--pb-black) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--pb-black) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--pb-black) 75%);
+      background-size: 24px 24px;
+      background-position: 0 0, 0 12px, 12px -12px, -12px 0;
+      opacity: 0.8;
+    }
+
+    /* Effect 2: Pastel Stripes */
+    .effect-stripes {
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--pb-pink) 0px,
+        var(--pb-pink) 12px,
+        var(--pb-lavender) 12px,
+        var(--pb-lavender) 24px,
+        var(--pb-mint) 24px,
+        var(--pb-mint) 36px,
+        var(--pb-buttercream) 36px,
+        var(--pb-buttercream) 48px
+      );
+    }
+
+    /* Effect 3: Dot Grid */
+    .effect-dotgrid {
+      background-color: var(--pb-blue);
+      background-image: radial-gradient(var(--pb-black) 1.5px, transparent 1.5px);
+      background-size: 16px 16px;
+    }
+
+    /* Effect 4: Stacked Offset Layers */
+    .effect-stacked {
+      background: var(--pb-mint);
+      position: relative;
+    }
+
+    .effect-stacked::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      background: var(--pb-lavender);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-sm);
+    }
+
+    .effect-stacked::after {
+      content: '';
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      right: 40px;
+      bottom: 40px;
+      background: var(--pb-pink);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-sm);
+      z-index: 1;
+    }
+
+    /* Effect 5: Cross Hatch */
+    .effect-crosshatch {
+      background-color: var(--pb-buttercream);
+      background-image:
+        linear-gradient(0deg, transparent 48%, var(--pb-border-color) 48%, var(--pb-border-color) 52%, transparent 52%),
+        linear-gradient(90deg, transparent 48%, var(--pb-border-color) 48%, var(--pb-border-color) 52%, transparent 52%);
+      background-size: 20px 20px;
+      opacity: 0.6;
+    }
+
+    /* Effect 6: Color Block Mosaic */
+    .effect-mosaic {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 2px;
+      padding: 2px;
+      background: var(--pb-border-color);
+    }
+
+    .effect-mosaic span {
+      display: block;
+    }
+
+    .effect-mosaic span:nth-child(1) { background: var(--pb-pink); }
+    .effect-mosaic span:nth-child(2) { background: var(--pb-lavender); }
+    .effect-mosaic span:nth-child(3) { background: var(--pb-mint); }
+    .effect-mosaic span:nth-child(4) { background: var(--pb-buttercream); }
+    .effect-mosaic span:nth-child(5) { background: var(--pb-blue); }
+    .effect-mosaic span:nth-child(6) { background: var(--pb-peach); }
+    .effect-mosaic span:nth-child(7) { background: var(--pb-orchid); }
+    .effect-mosaic span:nth-child(8) { background: var(--pb-lime); }
+    .effect-mosaic span:nth-child(9) { background: var(--pb-pink); }
+    .effect-mosaic span:nth-child(10) { background: var(--pb-blue); }
+    .effect-mosaic span:nth-child(11) { background: var(--pb-buttercream); }
+    .effect-mosaic span:nth-child(12) { background: var(--pb-lavender); }
+
+    @media (max-width: 900px) {
+      .effects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 600px) {
+      .effects-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 720px;
+      margin: 0 auto;
+      background: var(--pb-white);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-lg);
+      padding: 48px;
+      text-align: center;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--pb-pink);
+      position: absolute;
+      top: -10px;
+      left: 24px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 700;
+      color: var(--pb-black);
+      line-height: 1.4;
+      letter-spacing: -0.01em;
+      margin-bottom: 20px;
+    }
+
+    .quote-block cite {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--pb-slate);
+      display: inline-block;
+      padding: 4px 14px;
+      border: 2px solid var(--pb-border-color);
+      background: var(--pb-lavender);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      background: var(--pb-pink);
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-lg);
+      padding: 56px 48px;
+      text-align: center;
+      max-width: 1200px;
+      margin: 0 auto var(--pb-gap);
+      margin-left: max(24px, calc((100% - 1200px) / 2));
+      margin-right: max(24px, calc((100% - 1200px) / 2));
+    }
+
+    .cta h2 {
+      font-size: clamp(1.5rem, 4vw, 2.8rem);
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .cta p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      color: var(--pb-charcoal);
+      margin-bottom: 32px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    .cta__badges {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    @media (max-width: 600px) {
+      .cta {
+        padding: 40px 24px;
+      }
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--pb-black);
+      color: var(--pb-silver);
+      border-top: var(--pb-border-width) solid var(--pb-border-color);
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .footer__brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--pb-white);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .footer__brand span {
+      display: inline-block;
+      background: var(--pb-pink);
+      color: var(--pb-black);
+      padding: 2px 8px;
+      border: 2px solid var(--pb-silver);
+    }
+
+    .footer__links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      list-style: none;
+      margin: 0 0 20px;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .footer__links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--pb-silver);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: color 0.15s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--pb-pink);
+    }
+
+    .footer__copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--pb-slate);
+      margin-top: 16px;
+    }
+
+    .footer__blocks {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .footer__blocks span {
+      display: block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--pb-slate);
+    }
+
+    .footer__blocks span:nth-child(1) { background: var(--pb-pink); }
+    .footer__blocks span:nth-child(2) { background: var(--pb-lavender); }
+    .footer__blocks span:nth-child(3) { background: var(--pb-mint); }
+    .footer__blocks span:nth-child(4) { background: var(--pb-buttercream); }
+    .footer__blocks span:nth-child(5) { background: var(--pb-blue); }
+    .footer__blocks span:nth-child(6) { background: var(--pb-peach); }
+    .footer__blocks span:nth-child(7) { background: var(--pb-orchid); }
+
+    /* ============================================
+       STATS ROW
+       ============================================ */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--pb-gap);
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: var(--pb-gap) 24px;
+    }
+
+    .stat {
+      border: var(--pb-border-width) solid var(--pb-border-color);
+      box-shadow: var(--pb-shadow-sm);
+      padding: 24px;
+      text-align: center;
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+
+    .stat:hover {
+      box-shadow: 2px 2px 0 var(--pb-border-color);
+      transform: translate(2px, 2px);
+    }
+
+    .stat--pink { background: var(--pb-pink); }
+    .stat--mint { background: var(--pb-mint); }
+    .stat--buttercream { background: var(--pb-buttercream); }
+    .stat--blue { background: var(--pb-blue); }
+
+    .stat__number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 2.5rem;
+      color: var(--pb-black);
+      line-height: 1;
+      letter-spacing: -0.03em;
+    }
+
+    .stat__label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--pb-charcoal);
+      margin-top: 8px;
+    }
+
+    @media (max-width: 700px) {
+      .stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 400px) {
+      .stats { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__logo">Pastel <span>Brutalism</span></a>
+    <div class="nav__links">
+      <a href="#hero" class="active">Home</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero__deco hero__deco--1"></div>
+    <div class="hero__deco hero__deco--2"></div>
+    <div class="hero__deco hero__deco--3"></div>
+    <div class="hero__deco hero__deco--4"></div>
+
+    <div style="position: relative; z-index: 2;">
+      <span class="hero__tag">Design Aesthetic Reference</span>
+      <h1 class="hero__title">Pastel<br><span class="hero__title-accent">Brutalism</span></h1>
+      <p class="hero__subtitle">
+        Raw structural honesty meets candy-toned softness &mdash; thick black borders, hard-offset shadows, and flat pastel fills that feel bold yet approachable.
+      </p>
+      <div class="hero__buttons">
+        <a href="#components" class="btn btn--pink">Explore Cards</a>
+        <a href="#palette" class="btn btn--outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== BORDER BAND ===== -->
+  <div class="border-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== STATS ROW ===== -->
+  <div class="stats">
+    <div class="stat stat--pink">
+      <div class="stat__number">3px</div>
+      <div class="stat__label">Border Width</div>
+    </div>
+    <div class="stat stat--mint">
+      <div class="stat__number">0</div>
+      <div class="stat__label">Blur Radius</div>
+    </div>
+    <div class="stat stat--buttercream">
+      <div class="stat__number">6px</div>
+      <div class="stat__label">Shadow Offset</div>
+    </div>
+    <div class="stat stat--blue">
+      <div class="stat__number">9</div>
+      <div class="stat__label">Pastel Fills</div>
+    </div>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--white" id="typography">
+    <div class="container">
+      <span class="section-label">Typography</span>
+      <h2 class="section-title">Bold, Exposed &amp; Structured</h2>
+      <p class="section-subtitle">oversized grotesk headings, clean body text, raw monospace accents</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample" style="background: var(--pb-pink);">
+            <p class="typo-sample-label">Display / Space Grotesk 700</p>
+            <p class="typo-display">Build Bold</p>
+          </div>
+          <div class="typo-sample" style="background: var(--pb-lavender);">
+            <p class="typo-sample-label" style="background: var(--pb-blue);">Heading / Space Grotesk 700</p>
+            <p class="typo-heading">Structural Clarity</p>
+          </div>
+          <div class="typo-sample" style="background: var(--pb-buttercream);">
+            <p class="typo-sample-label" style="background: var(--pb-peach);">Body / Inter 400</p>
+            <p class="typo-body">Clean, highly legible body text for long-form reading. Pastel Brutalism pairs gentle backgrounds with crisp sans-serif typography, ensuring comfort without sacrificing structure.</p>
+          </div>
+          <div class="typo-sample" style="background: var(--pb-mint);">
+            <p class="typo-sample-label" style="background: var(--pb-lavender);">Monospace / Space Mono</p>
+            <p class="typo-mono">font-family: 'Space Mono', monospace;</p>
+            <p class="typo-label" style="margin-top: 10px;">Tags, Labels &amp; Metadata</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.6rem; color: var(--pb-black);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.8rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--pb-black);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.3rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.1rem; color: var(--pb-black);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.0rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--pb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--pb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-weight: 700; font-size: 0.75rem; color: var(--pb-black); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <div class="typo-pair">
+              <strong>Space Grotesk 700</strong> + Inter 400
+              <span>Technical, structured, modern brutalism</span>
+            </div>
+            <div class="typo-pair">
+              <strong>Space Grotesk 700</strong> + Space Mono 400
+              <span>Full monospace family, raw developer aesthetic</span>
+            </div>
+            <div class="typo-pair">
+              <strong>Syne 800</strong> + Work Sans 400
+              <span>Expressive, bold, high-contrast editorial</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BORDER BAND ===== -->
+  <div class="border-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--canvas" id="palette">
+    <div class="container">
+      <span class="section-label">Color Palette</span>
+      <h2 class="section-title">Candy Tones &amp; Stark Neutrals</h2>
+      <p class="section-subtitle">soft pastels grounded by thick black structural lines</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFD6E0;"></div>
+          <div class="color-info">
+            <div class="color-name">Baby Pink</div>
+            <div class="color-hex">#FFD6E0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C5B4E3;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Lavender</div>
+            <div class="color-hex">#C5B4E3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8E8D0;"></div>
+          <div class="color-info">
+            <div class="color-name">Mint Cream</div>
+            <div class="color-hex">#B8E8D0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFF1C1;"></div>
+          <div class="color-info">
+            <div class="color-name">Buttercream</div>
+            <div class="color-hex">#FFF1C1</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B6D8F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Powder Blue</div>
+            <div class="color-hex">#B6D8F2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFCBA4;"></div>
+          <div class="color-info">
+            <div class="color-name">Peach Sorbet</div>
+            <div class="color-hex">#FFCBA4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8C5E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Orchid Mist</div>
+            <div class="color-hex">#E8C5E8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4F0B4;"></div>
+          <div class="color-info">
+            <div class="color-name">Lime Sorbet</div>
+            <div class="color-hex">#D4F0B4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5C6C6;"></div>
+          <div class="color-info">
+            <div class="color-name">Blush</div>
+            <div class="color-hex">#F5C6C6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0F0F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Concrete</div>
+            <div class="color-hex">#F0F0F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF; border-bottom: none;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A1A;"></div>
+          <div class="color-info">
+            <div class="color-name">Near Black</div>
+            <div class="color-hex">#1A1A1A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2B2B2B;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal</div>
+            <div class="color-hex">#2B2B2B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B6B6B;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate</div>
+            <div class="color-hex">#6B6B6B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D0D0D0;"></div>
+          <div class="color-info">
+            <div class="color-name">Silver</div>
+            <div class="color-hex">#D0D0D0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BORDER BAND ===== -->
+  <div class="border-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--white" id="components">
+    <div class="container">
+      <span class="section-label">Components</span>
+      <h2 class="section-title">Bordered Cards &amp; Flat Surfaces</h2>
+      <p class="section-subtitle">thick outlines, hard shadows, pastel fills -- honest and tactile</p>
+
+      <div class="card-grid">
+        <div class="card card--pink">
+          <div class="card__icon card__icon--buttercream">&#9632;</div>
+          <h3>Thick Black Borders</h3>
+          <p>Every element is outlined with solid 3px black strokes that define shapes with absolute clarity. No subtle hairlines here.</p>
+          <span class="tag">Structure</span>
+          <span class="tag tag--buttercream">Core</span>
+        </div>
+        <div class="card card--lavender">
+          <div class="card__icon card__icon--pink">&#9650;</div>
+          <h3>Hard-Offset Shadows</h3>
+          <p>Zero-blur, fixed-pixel-offset shadows create a flat cutout-paper effect. Elements float above the canvas as physical objects.</p>
+          <span class="tag tag--blue">Shadow</span>
+          <span class="tag tag--peach">Depth</span>
+        </div>
+        <div class="card card--mint">
+          <div class="card__icon card__icon--lavender">&#9679;</div>
+          <h3>Flat Color Fills</h3>
+          <p>No gradients, no transparencies. Each surface is a single solid pastel tone, maintaining the brutalist honesty of the design system.</p>
+          <span class="tag tag--pink">Color</span>
+          <span class="tag">Flat</span>
+        </div>
+        <div class="card card--buttercream">
+          <div class="card__icon card__icon--mint">&#9998;</div>
+          <h3>Oversized Typography</h3>
+          <p>Headlines use extra-bold fonts at architecturally scaled sizes. The typographic weight matches the structural boldness of the borders.</p>
+          <span class="tag tag--lavender">Type</span>
+          <span class="tag tag--buttercream">Bold</span>
+        </div>
+        <div class="card card--blue">
+          <div class="card__icon card__icon--peach">&#9733;</div>
+          <h3>Tactile Interactions</h3>
+          <p>Hover states shift shadow offsets and translate elements, creating a satisfying "press-in" sensation that reinforces the physical metaphor.</p>
+          <span class="tag tag--pink">Hover</span>
+          <span class="tag tag--buttercream">UX</span>
+        </div>
+        <div class="card card--peach">
+          <div class="card__icon card__icon--blue">&#9776;</div>
+          <h3>Visible Grid Structure</h3>
+          <p>The layout grid is never hidden. Columns, rows, and gutters are perceptible through consistent alignment and deliberate uniform spacing.</p>
+          <span class="tag tag--lavender">Layout</span>
+          <span class="tag">Grid</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BORDER BAND ===== -->
+  <div class="border-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--canvas" id="effects">
+    <div class="container">
+      <span class="section-label">Visual Effects</span>
+      <h2 class="section-title">CSS Patterns &amp; Textures</h2>
+      <p class="section-subtitle">all structural, zero blur -- pure CSS, no image assets</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-checkerboard"></div>
+          <div class="effect-caption">
+            <h4>Checkerboard</h4>
+            <p>Intersecting 45-degree linear gradients on a pastel base create a classic architectural grid pattern.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stripes"></div>
+          <div class="effect-caption">
+            <h4>Pastel Stripes</h4>
+            <p>Repeating diagonal stripes cycle through the core palette, creating a candy-toned visual rhythm.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-dotgrid"></div>
+          <div class="effect-caption">
+            <h4>Dot Grid</h4>
+            <p>Small radial-gradient dots on a pastel surface evoke grid paper and technical drawing aesthetics.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stacked"></div>
+          <div class="effect-caption">
+            <h4>Stacked Layers</h4>
+            <p>Nested bordered rectangles with hard shadows create visual depth through offset layering.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-crosshatch"></div>
+          <div class="effect-caption">
+            <h4>Cross Hatch</h4>
+            <p>Horizontal and vertical line grids on buttercream mimic the raw construction grid of architectural plans.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-mosaic">
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+            <span></span><span></span><span></span><span></span>
+          </div>
+          <div class="effect-caption">
+            <h4>Color Block Mosaic</h4>
+            <p>A flat grid of solid pastel tiles separated by dark lines -- the patchwork quilt effect in pure CSS.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BORDER BAND ===== -->
+  <div class="border-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--mint">
+    <div class="container">
+      <span class="section-label" style="background: var(--pb-pink);">Interactive Elements</span>
+      <h2 class="section-title">Brutalist Buttons</h2>
+      <p class="section-subtitle">chunky, bordered, obviously clickable</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Default</a>
+        <a href="#" class="btn btn--pink">Pink Action</a>
+        <a href="#" class="btn btn--dark">Dark Mode</a>
+        <a href="#" class="btn btn--outline">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--canvas">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Pastel Brutalism proves that raw structural honesty and soft, approachable color can coexist &mdash; creating designs that feel both strong and tender, confident and friendly.
+        </blockquote>
+        <cite>&mdash; The Pastel Brutalism Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--canvas">
+    <div class="cta">
+      <h2>Build Something Bold</h2>
+      <div class="cta__badges">
+        <span class="tag tag--lavender">Thick Borders</span>
+        <span class="tag tag--blue">Hard Shadows</span>
+        <span class="tag tag--buttercream">Flat Pastels</span>
+        <span class="tag tag--pink">Zero Blur</span>
+      </div>
+      <p>
+        Embrace the tension between candy-toned softness and brutalist structural honesty. Let thick black borders hold the pastels. Let the shadows stay hard.
+      </p>
+      <a href="#hero" class="btn btn--dark">Back to the Top</a>
+    </div>
+  </section>
+
+  <!-- ===== BORDER BAND ===== -->
+  <div class="border-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__brand">Pastel <span>Brutalism</span></div>
+    <div class="footer__blocks">
+      <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+    </div>
+    <div class="footer__links">
+      <a href="#hero">Home</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <p class="footer__copy">Design Aesthetic Reference &bull; Pastel Brutalism &bull; Thick borders, soft fills, zero blur</p>
+  </footer>
+
+</body>
+</html>

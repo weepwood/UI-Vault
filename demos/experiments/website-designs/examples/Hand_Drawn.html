@@ -1,0 +1,1949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hand Drawn -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&family=Patrick+Hand&family=Caveat:wght@400;700&family=Fredericka+the+Great&family=Shadows+Into+Light&family=Permanent+Marker&family=Indie+Flower&family=Nunito:wght@300;400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Paper and background tones */
+      --hand-paper: #FAF6ED;
+      --hand-paper-mid: #F3EBDA;
+      --hand-kraft: #E8D5B5;
+      --hand-paper-shadow: #D9CEBC;
+
+      /* Ink and text */
+      --hand-graphite: #3B3B3B;
+      --hand-ink: #2C2825;
+      --hand-charcoal: #6B6560;
+      --hand-pencil-light: #A09888;
+
+      /* Illustrative accents */
+      --hand-blue: #5B9BD5;
+      --hand-coral: #E87461;
+      --hand-green: #6DAE6D;
+      --hand-yellow: #F7D55E;
+      --hand-lilac: #B8A9D4;
+      --hand-orange: #E8943A;
+      --hand-teal: #4AADA1;
+      --hand-pink: #F5C6C2;
+
+      /* Functional mappings */
+      --hand-bg-primary: var(--hand-paper);
+      --hand-bg-secondary: var(--hand-kraft);
+      --hand-bg-card: #FFFFFF;
+      --hand-text-primary: var(--hand-graphite);
+      --hand-text-heading: var(--hand-ink);
+      --hand-text-muted: var(--hand-charcoal);
+      --hand-accent-primary: var(--hand-blue);
+      --hand-accent-warm: var(--hand-coral);
+      --hand-accent-success: var(--hand-green);
+      --hand-accent-warning: var(--hand-yellow);
+      --hand-border: var(--hand-pencil-light);
+      --hand-link: var(--hand-blue);
+      --hand-link-hover: var(--hand-coral);
+
+      /* Shadows */
+      --hand-shadow-sm: 2px 3px 0 var(--hand-paper-shadow), 4px 6px 12px rgba(44, 40, 37, 0.08);
+      --hand-shadow-md: 3px 5px 0 var(--hand-paper-shadow), 6px 10px 20px rgba(44, 40, 37, 0.12);
+      --hand-shadow-lg: 4px 7px 0 var(--hand-paper-shadow), 8px 14px 28px rgba(44, 40, 37, 0.15);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Nunito', 'Quicksand', -apple-system, sans-serif;
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--hand-text-primary);
+      background-color: var(--hand-paper);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      color: var(--hand-text-heading);
+      line-height: 1.25;
+    }
+
+    h1 {
+      font-family: 'Architects Daughter', cursive;
+      font-size: clamp(2.4rem, 6vw, 4.2rem);
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+
+    h2 {
+      font-family: 'Patrick Hand', 'Architects Daughter', cursive;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: clamp(1.3rem, 3vw, 1.9rem);
+      color: var(--hand-accent-warm);
+      line-height: 1.35;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--hand-paper);
+      border-bottom: 2.5px solid var(--hand-graphite);
+      border-image: repeating-linear-gradient(
+        90deg,
+        var(--hand-graphite) 0px,
+        var(--hand-graphite) 8px,
+        transparent 8px,
+        transparent 10px,
+        var(--hand-graphite) 10px,
+        var(--hand-graphite) 22px,
+        transparent 22px,
+        transparent 25px
+      ) 1;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: 0 3px 8px rgba(44, 40, 37, 0.1);
+    }
+
+    .nav-logo {
+      font-family: 'Architects Daughter', cursive;
+      font-size: 1.6rem;
+      color: var(--hand-text-heading);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--hand-accent-warm);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.15rem;
+      color: var(--hand-text-primary);
+      padding-bottom: 2px;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 100%;
+      height: 6px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='6'%3E%3Cpath d='M0 3 Q 10 0, 20 3 T 40 3 T 60 3 T 80 3 T 100 3' fill='none' stroke='%23E87461' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+      background-size: 100px 6px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--hand-accent-warm);
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background-color: var(--hand-paper);
+      background-image:
+        radial-gradient(
+          ellipse at 20% 50%,
+          rgba(232, 213, 181, 0.3) 0%,
+          transparent 60%
+        ),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.04'/%3E%3C/svg%3E");
+      overflow: hidden;
+    }
+
+    /* Doodle decorations */
+    .hero-doodle {
+      position: absolute;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .hero-doodle--star {
+      top: 8%;
+      right: 10%;
+      animation: doodle-float 6s ease-in-out infinite;
+    }
+
+    .hero-doodle--swirl {
+      bottom: 12%;
+      left: 6%;
+      animation: doodle-float 8s ease-in-out infinite reverse;
+    }
+
+    .hero-doodle--flower {
+      top: 60%;
+      right: 8%;
+      animation: doodle-float 7s ease-in-out infinite;
+      animation-delay: -2s;
+    }
+
+    .hero-doodle--arrow {
+      bottom: 30%;
+      left: 12%;
+      animation: doodle-float 5s ease-in-out infinite;
+      animation-delay: -1s;
+    }
+
+    @keyframes doodle-float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tagline {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--hand-accent-primary);
+      margin-bottom: 12px;
+      transform: rotate(-1.5deg);
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: 'Fredericka the Great', cursive;
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      color: var(--hand-text-heading);
+      margin-bottom: 8px;
+      line-height: 1.1;
+      position: relative;
+    }
+
+    /* Sketchy underline under hero title */
+    .hero h1::after {
+      content: '';
+      display: block;
+      width: 60%;
+      height: 8px;
+      margin: 0.5rem auto 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='8'%3E%3Cpath d='M2 5 Q 25 1, 50 4 T 100 5 T 150 3 T 198 5' fill='none' stroke='%23E87461' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x;
+      background-size: 200px 8px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Patrick Hand', cursive;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      color: var(--hand-charcoal);
+      max-width: 600px;
+      margin: 1rem auto 2rem;
+      line-height: 1.5;
+    }
+
+    .hero-desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--hand-charcoal);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.15rem;
+      padding: 0.75rem 2rem;
+      border: 2.5px solid var(--hand-ink);
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+      display: inline-block;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-coral {
+      color: #FFFFFF;
+      background-color: var(--hand-coral);
+      border-radius: 30px 8px 24px 12px;
+      transform: rotate(-0.8deg);
+      box-shadow: 2px 3px 0 var(--hand-ink);
+    }
+
+    .btn-coral:hover {
+      background-color: var(--hand-blue);
+      transform: rotate(0.5deg) translateY(-2px);
+      box-shadow: 3px 5px 0 var(--hand-ink);
+    }
+
+    .btn-coral:active {
+      transform: rotate(-0.3deg) translateY(1px);
+      box-shadow: 1px 1px 0 var(--hand-ink);
+    }
+
+    .btn-blue {
+      color: #FFFFFF;
+      background-color: var(--hand-blue);
+      border-radius: 10px 26px 8px 28px;
+      transform: rotate(0.6deg);
+      box-shadow: 2px 3px 0 var(--hand-ink);
+    }
+
+    .btn-blue:hover {
+      background-color: var(--hand-teal);
+      transform: rotate(-0.4deg) translateY(-2px);
+      box-shadow: 3px 5px 0 var(--hand-ink);
+    }
+
+    .btn-green {
+      color: #FFFFFF;
+      background-color: var(--hand-green);
+      border-radius: 24px 12px 30px 8px;
+      transform: rotate(-0.5deg);
+      box-shadow: 2px 3px 0 var(--hand-ink);
+    }
+
+    .btn-green:hover {
+      background-color: var(--hand-teal);
+      transform: rotate(0.3deg) translateY(-2px);
+      box-shadow: 3px 5px 0 var(--hand-ink);
+    }
+
+    .btn-outline {
+      background-color: transparent;
+      color: var(--hand-ink);
+      border: 2.5px dashed var(--hand-ink);
+      border-radius: 12px 28px 10px 24px;
+      transform: rotate(0.4deg);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--hand-yellow);
+      border-style: solid;
+      color: var(--hand-ink);
+      transform: rotate(-0.3deg) translateY(-2px);
+      box-shadow: 2px 3px 0 var(--hand-ink);
+    }
+
+    /* ============================================
+       SKETCHY DIVIDER
+       ============================================ */
+    .hand-divider {
+      border: none;
+      height: 8px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='8'%3E%3Cpath d='M2 4 Q 20 1, 40 5 T 80 3 T 120 5 T 160 3 T 200 5 T 240 3 T 280 5 T 320 4 T 360 5 T 398 4' fill='none' stroke='%23A09888' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") repeat-x center;
+      background-size: 400px 8px;
+      margin: 3rem auto;
+      max-width: 80%;
+    }
+
+    .hand-divider--stars {
+      border: none;
+      height: 20px;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='20'%3E%3Ctext x='20' y='15' font-size='14' fill='%23A09888'%3E%E2%9C%A6%3C/text%3E%3Cpath d='M40 10 Q 60 7, 80 10 T 120 10 T 160 10' fill='none' stroke='%23A09888' stroke-width='1.5' stroke-linecap='round'/%3E%3Ctext x='175' y='15' font-size='14' fill='%23A09888'%3E%E2%9C%A6%3C/text%3E%3C/svg%3E") repeat-x center;
+      background-size: 200px 20px;
+      margin: 3rem auto;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--paper {
+      background-color: var(--hand-paper);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    .section--kraft {
+      background-color: var(--hand-kraft);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='k'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23k)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    .section--graph {
+      background-color: var(--hand-paper);
+      background-image:
+        linear-gradient(rgba(59, 59, 59, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 59, 59, 0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    .section--notebook {
+      background-color: var(--hand-paper);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 31px,
+          rgba(59, 59, 59, 0.04) 31px,
+          rgba(59, 59, 59, 0.04) 32px
+        ),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='nb'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23nb)' opacity='0.03'/%3E%3C/svg%3E");
+    }
+
+    .section--ink {
+      background: var(--hand-ink);
+      color: var(--hand-paper);
+    }
+
+    .section--ink .section-label { color: var(--hand-yellow); }
+    .section--ink .section-title { color: var(--hand-paper); }
+    .section--ink .section-subtitle { color: var(--hand-kraft); }
+
+    .section-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--hand-accent-primary);
+      text-align: center;
+      margin-bottom: 8px;
+      transform: rotate(-1deg);
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Architects Daughter', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      text-align: center;
+      color: var(--hand-text-heading);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Patrick Hand', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      text-align: center;
+      color: var(--hand-charcoal);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--hand-accent-warm);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--hand-paper-shadow);
+    }
+
+    .typo-display {
+      font-family: 'Fredericka the Great', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      color: var(--hand-text-heading);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Architects Daughter', cursive;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--hand-text-heading);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Patrick Hand', cursive;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--hand-accent-warm);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--hand-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-annotation {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      color: var(--hand-accent-primary);
+      line-height: 1.5;
+      transform: rotate(-1.5deg);
+      display: inline-block;
+    }
+
+    .typo-marker {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.2rem;
+      color: var(--hand-accent-warm);
+    }
+
+    .typo-ui {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--hand-charcoal);
+    }
+
+    .typo-right {
+      background: var(--hand-bg-card);
+      border-radius: 14px 8px 16px 6px;
+      padding: 36px;
+      border: 2.5px solid var(--hand-graphite);
+      position: relative;
+      transform: rotate(0.3deg);
+      box-shadow: var(--hand-shadow-sm);
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: 2.5px solid var(--hand-graphite);
+      border-radius: 16px 6px 18px 8px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .typo-right h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dashed rgba(160, 152, 136, 0.4);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--hand-charcoal);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px 6px 14px 8px;
+      overflow: hidden;
+      background: var(--hand-bg-card);
+      border: 2px solid var(--hand-graphite);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 2px 3px 0 var(--hand-paper-shadow);
+      position: relative;
+    }
+
+    .color-chip::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border: 2px solid var(--hand-graphite);
+      border-radius: 14px 8px 16px 6px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px) rotate(-1.5deg);
+      box-shadow: var(--hand-shadow-md);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    /* Watercolor texture overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, rgba(0,0,0,0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 0.95rem;
+      color: var(--hand-text-heading);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--hand-charcoal);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--hand-bg-card);
+      padding: 2rem;
+      border-radius: 12px 8px 14px 6px;
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--hand-shadow-sm);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -2px;
+      border: 2.5px solid var(--hand-graphite);
+      border-radius: 14px 6px 16px 8px;
+      opacity: 0.7;
+      pointer-events: none;
+    }
+
+    .card:nth-child(1) { transform: rotate(-0.8deg); }
+    .card:nth-child(2) { transform: rotate(0.5deg); }
+    .card:nth-child(3) { transform: rotate(-0.3deg); }
+    .card:nth-child(4) { transform: rotate(0.7deg); }
+    .card:nth-child(5) { transform: rotate(-0.5deg); }
+    .card:nth-child(6) { transform: rotate(0.4deg); }
+
+    .card:hover {
+      transform: rotate(0.3deg) translateY(-3px);
+      box-shadow: var(--hand-shadow-lg);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 18px 8px 16px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      border: 2px solid var(--hand-ink);
+      position: relative;
+    }
+
+    .card-icon--coral {
+      background: var(--hand-coral);
+      box-shadow: 2px 2px 0 var(--hand-ink);
+    }
+
+    .card-icon--blue {
+      background: var(--hand-blue);
+      box-shadow: 2px 2px 0 var(--hand-ink);
+    }
+
+    .card-icon--green {
+      background: var(--hand-green);
+      box-shadow: 2px 2px 0 var(--hand-ink);
+    }
+
+    .card-icon--yellow {
+      background: var(--hand-yellow);
+      box-shadow: 2px 2px 0 var(--hand-ink);
+    }
+
+    .card-icon--lilac {
+      background: var(--hand-lilac);
+      box-shadow: 2px 2px 0 var(--hand-ink);
+    }
+
+    .card-icon--teal {
+      background: var(--hand-teal);
+      box-shadow: 2px 2px 0 var(--hand-ink);
+    }
+
+    .card h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.4rem;
+      color: var(--hand-text-heading);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.96rem;
+      line-height: 1.75;
+      color: var(--hand-text-primary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-size: 0.88rem;
+      padding: 3px 14px;
+      border-radius: 20px 6px 16px 8px;
+      border: 1.5px dashed var(--hand-pencil-light);
+      color: var(--hand-charcoal);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--hand-yellow);
+      color: var(--hand-ink);
+      border-color: var(--hand-ink);
+      border-style: solid;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      border-radius: 14px 8px 16px 6px;
+      overflow: hidden;
+      border: 2.5px solid var(--hand-graphite);
+      background: var(--hand-bg-card);
+      box-shadow: var(--hand-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: rotate(0.5deg) translateY(-3px);
+      box-shadow: var(--hand-shadow-md);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Paper Grain Texture */
+    .effect-paper-grain {
+      background-color: var(--hand-paper);
+      background-image:
+        radial-gradient(
+          ellipse at 50% 0%,
+          rgba(255, 255, 255, 0.4) 0%,
+          transparent 70%
+        ),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='pg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23pg)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    .effect-paper-grain::after {
+      content: 'PAPER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Architects Daughter', cursive;
+      font-size: 2rem;
+      color: var(--hand-graphite);
+      z-index: 1;
+    }
+
+    /* Effect 2: Watercolor Wash */
+    .effect-watercolor {
+      background:
+        radial-gradient(ellipse at 25% 40%, rgba(91, 155, 213, 0.5) 0%, transparent 55%),
+        radial-gradient(ellipse at 65% 30%, rgba(232, 116, 97, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 45% 75%, rgba(109, 174, 109, 0.45) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(247, 213, 94, 0.35) 0%, transparent 40%),
+        var(--hand-paper);
+    }
+
+    .effect-watercolor::after {
+      content: 'WATERCOLOR';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fredericka the Great', cursive;
+      font-size: 1.6rem;
+      color: var(--hand-ink);
+      text-shadow: 0 0 20px rgba(250, 246, 237, 0.8);
+      z-index: 1;
+    }
+
+    /* Effect 3: Graph Paper */
+    .effect-graph-paper {
+      background-color: var(--hand-paper);
+      background-image:
+        linear-gradient(rgba(59, 59, 59, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(59, 59, 59, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    .effect-graph-paper::after {
+      content: 'GRAPH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-2deg);
+      font-family: 'Patrick Hand', cursive;
+      font-size: 2.2rem;
+      color: var(--hand-blue);
+      z-index: 1;
+    }
+
+    /* Effect 4: Marker Stripes */
+    .effect-markers {
+      background: var(--hand-paper);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 28px,
+          rgba(232, 116, 97, 0.25) 28px,
+          rgba(232, 116, 97, 0.25) 32px,
+          transparent 32px,
+          transparent 56px,
+          rgba(91, 155, 213, 0.2) 56px,
+          rgba(91, 155, 213, 0.2) 60px,
+          transparent 60px,
+          transparent 84px,
+          rgba(109, 174, 109, 0.2) 84px,
+          rgba(109, 174, 109, 0.2) 88px,
+          transparent 88px,
+          transparent 112px,
+          rgba(247, 213, 94, 0.25) 112px,
+          rgba(247, 213, 94, 0.25) 116px
+        );
+    }
+
+    .effect-markers::after {
+      content: 'MARKERS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Permanent Marker', cursive;
+      font-size: 2rem;
+      color: var(--hand-coral);
+      z-index: 1;
+    }
+
+    /* Effect 5: Pencil Sketch Lines */
+    .effect-pencil {
+      background: var(--hand-paper-mid);
+      background-image:
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 4px,
+          rgba(59, 59, 59, 0.04) 4px,
+          rgba(59, 59, 59, 0.04) 5px
+        ),
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 7px,
+          rgba(59, 59, 59, 0.03) 7px,
+          rgba(59, 59, 59, 0.03) 8px
+        );
+    }
+
+    .effect-pencil::after {
+      content: 'PENCIL';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-1deg);
+      font-family: 'Caveat', cursive;
+      font-size: 2.4rem;
+      color: var(--hand-graphite);
+      z-index: 1;
+    }
+
+    /* Effect 6: Chalkboard */
+    .effect-chalkboard {
+      background-color: #2C3E2C;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='ch'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ch)' opacity='0.06'/%3E%3C/svg%3E");
+    }
+
+    .effect-chalkboard::after {
+      content: 'CHALK';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fredericka the Great', cursive;
+      font-size: 2.2rem;
+      color: rgba(250, 246, 237, 0.85);
+      text-shadow: 0 0 8px rgba(250, 246, 237, 0.2);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.15rem;
+      color: var(--hand-text-heading);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--hand-charcoal);
+    }
+
+    /* ============================================
+       DOODLE MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--hand-ink);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='mb'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23mb)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 2rem;
+      opacity: 0.35;
+    }
+
+    .motif-row span {
+      animation: doodle-float 4s ease-in-out infinite;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.5s; }
+    .motif-row span:nth-child(3) { animation-delay: -1s; }
+    .motif-row span:nth-child(4) { animation-delay: -1.5s; }
+    .motif-row span:nth-child(5) { animation-delay: -2s; }
+    .motif-row span:nth-child(6) { animation-delay: -2.5s; }
+    .motif-row span:nth-child(7) { animation-delay: -3s; }
+
+    .motif-banner h2 {
+      font-family: 'Architects Daughter', cursive;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--hand-paper);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--hand-yellow);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--hand-bg-card);
+      border-radius: 16px 8px 20px 6px;
+      border: 2.5px solid var(--hand-graphite);
+      position: relative;
+      box-shadow: var(--hand-shadow-md);
+      transform: rotate(-0.3deg);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Fredericka the Great', cursive;
+      font-size: 7rem;
+      color: var(--hand-coral);
+      opacity: 0.15;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      color: var(--hand-charcoal);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.6;
+      border: none;
+      padding: 0;
+    }
+
+    .quote-block cite {
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      color: var(--hand-accent-warm);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       SPEECH BUBBLE CTA
+       ============================================ */
+    .cta-container {
+      max-width: 600px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .cta-bubble {
+      background: var(--hand-bg-card);
+      border: 3px solid var(--hand-ink);
+      border-radius: 30px 24px 30px 6px;
+      padding: 48px;
+      position: relative;
+      box-shadow: var(--hand-shadow-lg);
+      transform: rotate(-0.5deg);
+    }
+
+    .cta-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 60px;
+      width: 0;
+      height: 0;
+      border-left: 16px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 22px solid var(--hand-ink);
+    }
+
+    .cta-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 63px;
+      width: 0;
+      height: 0;
+      border-left: 13px solid transparent;
+      border-right: 7px solid transparent;
+      border-top: 18px solid var(--hand-bg-card);
+      z-index: 1;
+    }
+
+    .cta-bubble h2 {
+      font-family: 'Architects Daughter', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 8px;
+      color: var(--hand-text-heading);
+    }
+
+    .cta-bubble .hand-annotation {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--hand-accent-primary);
+      transform: rotate(-1.5deg);
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+
+    .cta-bubble p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--hand-text-primary);
+      margin-bottom: 24px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background-color: var(--hand-ink);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='ft'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ft)' opacity='0.04'/%3E%3C/svg%3E");
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--hand-paper);
+      position: relative;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Architects Daughter', cursive;
+      font-size: 1.8rem;
+      color: var(--hand-paper);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(250, 246, 237, 0.6);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      color: rgba(250, 246, 237, 0.45);
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .footer-links a:hover {
+      color: var(--hand-coral);
+    }
+
+    .footer-doodle {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      opacity: 0.25;
+    }
+
+    .footer-doodle svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .footer-copy {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(250, 246, 237, 0.25);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       WOBBLE ANIMATION
+       ============================================ */
+    @keyframes hand-wobble {
+      0%   { transform: rotate(-0.5deg) scale(1); }
+      25%  { transform: rotate(0.3deg) scale(1.002); }
+      50%  { transform: rotate(-0.2deg) scale(0.998); }
+      75%  { transform: rotate(0.5deg) scale(1.001); }
+      100% { transform: rotate(-0.5deg) scale(1); }
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 1rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-doodle {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card:nth-child(n) {
+        transform: rotate(0deg);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+        transform: rotate(0deg);
+      }
+
+      .cta-bubble {
+        padding: 36px 24px;
+        transform: rotate(0deg);
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      .typo-right {
+        transform: rotate(0deg);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-doodle,
+      .motif-row span {
+        animation: none;
+      }
+
+      .card, .color-chip, .effect-demo, .btn, .tag, .nav-links a {
+        transition: none;
+      }
+
+      .nav-links a::after {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Hand Drawn</a>
+    <div class="nav-links">
+      <a href="#hero">Sketch</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Doodle decorations -->
+    <svg class="hero-doodle hero-doodle--star" width="70" height="70" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M35 5 L40 28 L63 28 L44 42 L50 65 L35 50 L20 65 L26 42 L7 28 L30 28 Z" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+    <svg class="hero-doodle hero-doodle--swirl" width="90" height="90" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M45 45 C45 35, 55 30, 60 40 C65 50, 55 60, 45 55 C35 50, 30 40, 40 30 C50 20, 65 25, 68 42" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <svg class="hero-doodle hero-doodle--flower" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="30" cy="22" r="8" stroke="#3B3B3B" stroke-width="1.5" fill="none"/>
+      <circle cx="22" cy="32" r="8" stroke="#3B3B3B" stroke-width="1.5" fill="none"/>
+      <circle cx="38" cy="32" r="8" stroke="#3B3B3B" stroke-width="1.5" fill="none"/>
+      <circle cx="30" cy="28" r="4" stroke="#3B3B3B" stroke-width="1.5" fill="none"/>
+    </svg>
+    <svg class="hero-doodle hero-doodle--arrow" width="80" height="40" viewBox="0 0 80 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 20 Q 20 15, 40 20 T 75 18" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" fill="none"/>
+      <path d="M65 10 L75 18 L64 24" stroke="#3B3B3B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    </svg>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Hand Drawn</h1>
+      <p class="hero-subtitle">Sketchy Lines, Paper Textures &amp; Human Warmth</p>
+      <p class="hero-desc">
+        A warm, illustrative web design aesthetic that replaces digital precision with the unmistakable character of human illustration &mdash; every element feels sketched with pencil, inked with a pen, or colored with markers.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-coral">Explore Components</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SKETCHY DIVIDER ===== -->
+  <div class="hand-divider--stars"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--notebook" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Hand-Lettered &amp; Friendly</h2>
+      <p class="section-subtitle">illustrated headings, clean body text, sketchbook personality</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Fredericka the Great</p>
+            <p class="typo-display">Sketchy Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Architects Daughter</p>
+            <p class="typo-heading">Casual Lettered Headings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Patrick Hand</p>
+            <p class="typo-subheading">Warm Handwritten Subheadings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Nunito</p>
+            <p class="typo-body">Clean, rounded sans-serif body text for comfortable long-form reading. The hand-drawn aesthetic demands readable body copy to contrast with illustrated headings.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Annotation / Caveat</p>
+            <p class="typo-annotation">little notes in the margins</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Marker / Permanent Marker</p>
+            <p class="typo-marker">Bold Felt-Tip Emphasis</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Quicksand</p>
+            <p class="typo-ui">Interface Labels &amp; Metadata</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5rem</span>
+              <span style="font-family: 'Fredericka the Great', cursive; font-size: 1.8rem; color: var(--hand-text-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.2rem</span>
+              <span style="font-family: 'Architects Daughter', cursive; font-size: 1.5rem; color: var(--hand-text-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Patrick Hand', cursive; font-size: 1.3rem; color: var(--hand-accent-warm);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.3rem</span>
+              <span style="font-family: 'Caveat', cursive; font-size: 1.1rem; color: var(--hand-accent-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--hand-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--hand-charcoal); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 2px dashed var(--hand-paper-shadow);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Architects Daughter', cursive; color: var(--hand-accent-warm);">Architects Daughter</strong> + <strong>Nunito</strong><br>
+              <span style="color: var(--hand-charcoal); font-size: 0.85rem;">Casual, approachable creative showcase</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Fredericka the Great', cursive; color: var(--hand-accent-warm);">Fredericka the Great</strong> + <strong>Quicksand</strong><br>
+              <span style="color: var(--hand-charcoal); font-size: 0.85rem;">Playful, storybook-like warmth</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Permanent Marker', cursive; color: var(--hand-accent-warm);">Permanent Marker</strong> + <strong style="font-family: 'Quicksand', sans-serif;">Quicksand</strong><br>
+              <span style="color: var(--hand-charcoal); font-size: 0.85rem;">Bold, crafted, maker energy</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKETCHY DIVIDER ===== -->
+  <div class="hand-divider"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--kraft" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Art-Supply Colors</h2>
+      <p class="section-subtitle">marker coral, watercolor blue &amp; sketchbook cream</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6ED;"></div>
+          <div class="color-info">
+            <div class="color-name">Sketchbook Cream</div>
+            <div class="color-hex">#FAF6ED</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8D5B5;"></div>
+          <div class="color-info">
+            <div class="color-name">Kraft Tan</div>
+            <div class="color-hex">#E8D5B5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B3B3B;"></div>
+          <div class="color-info">
+            <div class="color-name">Pencil Graphite</div>
+            <div class="color-hex">#3B3B3B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C2825;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink Black</div>
+            <div class="color-hex">#2C2825</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5C6C2;"></div>
+          <div class="color-info">
+            <div class="color-name">Eraser Pink</div>
+            <div class="color-hex">#F5C6C2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5B9BD5;"></div>
+          <div class="color-info">
+            <div class="color-name">Watercolor Blue</div>
+            <div class="color-hex">#5B9BD5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E87461;"></div>
+          <div class="color-info">
+            <div class="color-name">Marker Coral</div>
+            <div class="color-hex">#E87461</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6DAE6D;"></div>
+          <div class="color-info">
+            <div class="color-name">Colored Pencil Green</div>
+            <div class="color-hex">#6DAE6D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F7D55E;"></div>
+          <div class="color-info">
+            <div class="color-name">Crayon Yellow</div>
+            <div class="color-hex">#F7D55E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8A9D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Chalk Lilac</div>
+            <div class="color-hex">#B8A9D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8943A;"></div>
+          <div class="color-info">
+            <div class="color-name">Felt-Tip Orange</div>
+            <div class="color-hex">#E8943A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4AADA1;"></div>
+          <div class="color-info">
+            <div class="color-name">Brush Pen Teal</div>
+            <div class="color-hex">#4AADA1</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B6560;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Smoke</div>
+            <div class="color-hex">#6B6560</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D9CEBC;"></div>
+          <div class="color-info">
+            <div class="color-name">Paper Shadow</div>
+            <div class="color-hex">#D9CEBC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Whiteboard White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKETCHY DIVIDER ===== -->
+  <div class="hand-divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--paper" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Sketchy Cards &amp; Illustrated Details</h2>
+      <p class="section-subtitle">like pages torn from an artist's sketchbook</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--coral">&#9998;</div>
+          <h3>Sketchy Borders</h3>
+          <p>All borders, frames, and containers use lines with visible wobble, pressure variation, and slight irregularity rather than pixel-perfect edges.</p>
+          <span class="tag">Borders</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#127912;</div>
+          <h3>Watercolor Fills</h3>
+          <p>Background colors appear as though applied with real art supplies, featuring subtle texture, uneven saturation, and soft bleeding edges.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Color</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">&#127811;</div>
+          <h3>Doodle Ornaments</h3>
+          <p>Stars, swirls, arrows, flowers, and abstract squiggles serve as decorative accents around headings and between sections.</p>
+          <span class="tag">Decorative</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--yellow">&#128196;</div>
+          <h3>Paper Textures</h3>
+          <p>The page feels like a physical surface: cream paper, kraft card, graph paper, or a watercolor pad with visible grain and tooth.</p>
+          <span class="tag">Background</span>
+          <span class="tag">Texture</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--lilac">&#128172;</div>
+          <h3>Speech Bubbles</h3>
+          <p>Comic-style speech bubbles and callout shapes replace standard tooltips and notification elements with illustrated charm.</p>
+          <span class="tag">Tooltip</span>
+          <span class="tag">Comic</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--teal">&#8634;</div>
+          <h3>Slight Rotations</h3>
+          <p>Cards, images, and text blocks are tilted 0.5 to 2.5 degrees as if casually placed on a desk rather than snapped to a grid.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Organic</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOODLE MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&#9734;</span>
+        <span>&#10047;</span>
+        <span>&#9997;</span>
+        <span>&#9998;</span>
+        <span>&#10047;</span>
+        <span>&#9734;</span>
+        <span>&#9997;</span>
+      </div>
+      <h2>Warmth, Craft &amp; Human Touch</h2>
+      <p>Where algorithms pursue perfection, Hand Drawn celebrates the wobble of a real hand</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--graph" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Techniques</h2>
+      <p class="section-subtitle">all the sketchy effects, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-paper-grain"></div>
+          <div class="effect-caption">
+            <h4>Paper Grain</h4>
+            <p>SVG noise filter creates the subtle fibrous texture of quality drawing paper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-watercolor"></div>
+          <div class="effect-caption">
+            <h4>Watercolor Wash</h4>
+            <p>Overlapping radial gradients with soft edges simulate watercolor paint on paper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-graph-paper"></div>
+          <div class="effect-caption">
+            <h4>Graph Paper Grid</h4>
+            <p>CSS linear gradients create the precise ruled lines of engineering paper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-markers"></div>
+          <div class="effect-caption">
+            <h4>Marker Stripes</h4>
+            <p>Repeating colored bands at irregular intervals mimic marker strokes on paper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-pencil"></div>
+          <div class="effect-caption">
+            <h4>Pencil Cross-Hatch</h4>
+            <p>Diagonal repeating gradients simulate the cross-hatching of pencil shading.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-chalkboard"></div>
+          <div class="effect-caption">
+            <h4>Chalkboard</h4>
+            <p>Dark green surface with noise texture recreates a cafe chalkboard feel.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKETCHY DIVIDER ===== -->
+  <div class="hand-divider--stars"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--kraft">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Illustrated Buttons</h2>
+      <p class="section-subtitle">hand-drawn, marker-filled &amp; sketchy</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-coral">Coral Marker</a>
+        <a href="#" class="btn btn-blue">Watercolor Blue</a>
+        <a href="#" class="btn btn-green">Pencil Green</a>
+        <a href="#" class="btn btn-outline">Dashed Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--paper">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Hand Drawn design is fundamentally an anti-corporate, anti-AI statement: where algorithmic systems pursue mathematical perfection, this aesthetic celebrates the wobble of a real hand, the grain of actual paper, and the imperfect charm that only a human can produce.
+        </blockquote>
+        <cite>&mdash; The Spirit of Hand-Drawn Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION (SPEECH BUBBLE) ===== -->
+  <section class="section section--graph">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-bubble">
+          <h2>Start Sketching!</h2>
+          <span class="hand-annotation">grab your pencils &amp; markers</span>
+          <p>
+            The Hand Drawn aesthetic builds entire interfaces from illustrated components. Pair sketchy borders, paper textures, and hand-lettered typography to create digital experiences that feel personal, crafted, and deeply human.
+          </p>
+          <a href="#hero" class="btn btn-coral">Back to the Top</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SKETCHY DIVIDER ===== -->
+  <div class="hand-divider"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Hand Drawn</h3>
+      <p>
+        A design aesthetic reference celebrating warm, illustrative, sketchbook-inspired web design. Paper textures, marker fills, and hand-lettered type &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Sketch</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-doodle">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2 L14 9 L21 9 L15 14 L17 21 L12 17 L7 21 L9 14 L3 9 L10 9 Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="12" cy="10" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="8" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="16" cy="12" r="5" stroke="currentColor" stroke-width="1.5" fill="none"/>
+          <circle cx="12" cy="11" r="2" stroke="currentColor" stroke-width="1.5" fill="none"/>
+        </svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 2 L14 9 L21 9 L15 14 L17 21 L12 17 L7 21 L9 14 L3 9 L10 9 Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        </svg>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Hand Drawn &bull; Sketched with warmth</p>
+    </div>
+  </footer>
+
+</body>
+</html>

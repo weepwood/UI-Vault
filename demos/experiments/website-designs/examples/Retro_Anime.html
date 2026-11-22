@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Anime -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bebas+Neue&family=Lexend:wght@300;400;500;700&family=Noto+Sans+JP:wght@400;700&family=Russo+One&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --anime-bg-night: #0b0e1a;
+      --anime-bg-dark: #1a1e3a;
+      --anime-bg-panel: #2c3258;
+      --anime-bg-shadow: #3a2a5c;
+
+      /* --- Primary Accents --- */
+      --anime-pink: #ff4081;
+      --anime-orange: #ff6b35;
+      --anime-yellow: #ffd54f;
+      --anime-cyan: #00bcd4;
+      --anime-indigo: #5c6bc0;
+      --anime-magenta: #e040fb;
+      --anime-red: #d32f2f;
+      --anime-green: #66bb6a;
+
+      /* --- Skin & Warm Tones --- */
+      --anime-peach: #ffb570;
+
+      /* --- Text --- */
+      --anime-text-primary: #f5e6d3;
+      --anime-text-secondary: #a89ec9;
+
+      /* --- Cel Outline --- */
+      --anime-outline: #0b0e1a;
+      --anime-outline-width: 3px;
+
+      /* --- Shadow Tones (Cel Shading) --- */
+      --anime-shadow-cool: rgba(26, 30, 58, 0.5);
+      --anime-shadow-warm: rgba(210, 47, 47, 0.15);
+
+      /* --- Glow Effects --- */
+      --anime-glow-pink: 0 0 12px rgba(255, 64, 129, 0.5), 0 0 40px rgba(255, 64, 129, 0.15);
+      --anime-glow-cyan: 0 0 12px rgba(0, 188, 212, 0.5), 0 0 40px rgba(0, 188, 212, 0.15);
+      --anime-glow-yellow: 0 0 12px rgba(255, 213, 79, 0.5), 0 0 40px rgba(255, 213, 79, 0.15);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--anime-bg-night);
+      color: var(--anime-text-primary);
+      font-family: 'Lexend', 'Noto Sans JP', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Bangers', cursive;
+      letter-spacing: 0.04em;
+      line-height: 1.1;
+      color: var(--anime-text-primary);
+    }
+
+    a {
+      color: var(--anime-cyan);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    a:hover { color: var(--anime-pink); }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--night {
+      background: var(--anime-bg-night);
+    }
+
+    .section--dark {
+      background: var(--anime-bg-dark);
+    }
+
+    .section--panel {
+      background: var(--anime-bg-panel);
+    }
+
+    .section-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--anime-cyan);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--anime-yellow);
+      text-shadow: 3px 3px 0 var(--anime-outline), -1px -1px 0 var(--anime-outline), 1px -1px 0 var(--anime-outline), -1px 1px 0 var(--anime-outline);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .section-subtitle {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1.05rem;
+      color: var(--anime-text-secondary);
+      margin-bottom: 48px;
+      max-width: 600px;
+    }
+
+    /* ============================================
+       GRAIN OVERLAY (global)
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 32px;
+      background: var(--anime-bg-dark);
+      border-bottom: var(--anime-outline-width) solid var(--anime-outline);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--anime-pink), var(--anime-orange), var(--anime-yellow), var(--anime-cyan), var(--anime-magenta));
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .nav-logo {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      color: var(--anime-pink);
+      text-decoration: none;
+      text-shadow: 2px 2px 0 var(--anime-outline);
+      letter-spacing: 0.04em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--anime-yellow);
+    }
+
+    .nav-logo-kanji {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 0.55em;
+      color: var(--anime-text-secondary);
+      margin-left: 6px;
+      vertical-align: super;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      color: var(--anime-text-primary);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 8px;
+      border-bottom: 3px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--anime-pink);
+      border-bottom-color: var(--anime-pink);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+      background: var(--anime-bg-night);
+      overflow: hidden;
+    }
+
+    /* Speed lines background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: -25%;
+      background: repeating-conic-gradient(
+        from 0deg at 50% 55%,
+        transparent 0deg,
+        transparent 3.5deg,
+        rgba(255, 64, 129, 0.035) 3.5deg,
+        rgba(255, 64, 129, 0.035) 4deg
+      );
+      pointer-events: none;
+      z-index: 1;
+      animation: hero-speed-rotate 120s linear infinite;
+    }
+
+    @keyframes hero-speed-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Film grain overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Atmospheric gradient orbs */
+    .hero-atmosphere {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-atmosphere::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 64, 129, 0.12) 0%, transparent 70%);
+      top: -200px;
+      right: -150px;
+      animation: atmosphere-drift 8s ease-in-out infinite alternate;
+    }
+
+    .hero-atmosphere::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 188, 212, 0.1) 0%, transparent 70%);
+      bottom: -150px;
+      left: -100px;
+      animation: atmosphere-drift 10s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes atmosphere-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to { transform: translate(30px, -20px) scale(1.1); }
+    }
+
+    /* Decorative vertical kanji */
+    .hero-kanji-left,
+    .hero-kanji-right {
+      position: absolute;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      writing-mode: vertical-rl;
+      color: var(--anime-text-secondary);
+      opacity: 0.08;
+      z-index: 1;
+      letter-spacing: 0.3em;
+      user-select: none;
+    }
+
+    .hero-kanji-left {
+      left: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .hero-kanji-right {
+      right: 40px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 800px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--anime-cyan);
+      border: 2px solid var(--anime-cyan);
+      padding: 6px 20px;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .hero-badge::before {
+      content: '';
+      position: absolute;
+      inset: 3px;
+      border: 1px solid rgba(0, 188, 212, 0.3);
+    }
+
+    .hero-title {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      color: var(--anime-yellow);
+      text-shadow:
+        4px 4px 0 var(--anime-outline),
+        -2px -2px 0 var(--anime-outline),
+        2px -2px 0 var(--anime-outline),
+        -2px 2px 0 var(--anime-outline),
+        0 0 40px rgba(255, 213, 79, 0.3);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.06em;
+      line-height: 0.95;
+    }
+
+    .hero-title-sub {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: var(--anime-pink);
+      text-shadow: 2px 2px 0 var(--anime-outline);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-desc {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1.1rem;
+      color: var(--anime-text-secondary);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 36px;
+      font-family: 'Bangers', cursive;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      position: relative;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--anime-pink);
+      color: #fff;
+      text-shadow: 1px 1px 0 var(--anime-outline);
+      box-shadow: 4px 4px 0 var(--anime-outline);
+    }
+
+    .btn-primary:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--anime-outline);
+      color: #fff;
+    }
+
+    .btn-primary:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--anime-outline);
+    }
+
+    .btn-cyan {
+      background: var(--anime-cyan);
+      color: #fff;
+      text-shadow: 1px 1px 0 var(--anime-outline);
+      box-shadow: 4px 4px 0 var(--anime-outline);
+    }
+
+    .btn-cyan:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--anime-outline);
+      color: #fff;
+    }
+
+    .btn-cyan:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--anime-outline);
+    }
+
+    .btn-orange {
+      background: var(--anime-orange);
+      color: #fff;
+      text-shadow: 1px 1px 0 var(--anime-outline);
+      box-shadow: 4px 4px 0 var(--anime-outline);
+    }
+
+    .btn-orange:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--anime-outline);
+      color: #fff;
+    }
+
+    .btn-orange:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--anime-outline);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--anime-pink);
+      box-shadow: 4px 4px 0 var(--anime-pink);
+      border-color: var(--anime-pink);
+    }
+
+    .btn-ghost:hover {
+      background: var(--anime-pink);
+      color: #fff;
+      text-shadow: 1px 1px 0 var(--anime-outline);
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--anime-outline);
+      border-color: var(--anime-outline);
+    }
+
+    .btn-ghost:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--anime-outline);
+    }
+
+    /* ============================================
+       SPEED LINE DIVIDER
+       ============================================ */
+    .speed-divider {
+      height: 60px;
+      position: relative;
+      overflow: hidden;
+      background: var(--anime-bg-night);
+    }
+
+    .speed-divider::before {
+      content: '';
+      position: absolute;
+      inset: -100%;
+      background: repeating-conic-gradient(
+        from 0deg at 50% 200%,
+        transparent 0deg,
+        transparent 2deg,
+        rgba(255, 64, 129, 0.08) 2deg,
+        rgba(255, 64, 129, 0.08) 2.5deg
+      );
+      pointer-events: none;
+    }
+
+    .speed-divider::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg,
+        var(--anime-pink),
+        var(--anime-orange),
+        var(--anime-yellow),
+        var(--anime-cyan),
+        var(--anime-magenta),
+        var(--anime-pink)
+      );
+    }
+
+    /* Thick variant */
+    .speed-divider--thick {
+      height: 80px;
+    }
+
+    .speed-divider--thick::after {
+      height: 5px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      padding: 24px 0;
+      border-bottom: 2px solid var(--anime-bg-panel);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--anime-cyan);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--anime-yellow);
+      text-shadow: 3px 3px 0 var(--anime-outline), -1px -1px 0 var(--anime-outline), 1px -1px 0 var(--anime-outline), -1px 1px 0 var(--anime-outline);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .typo-heading {
+      font-family: 'Russo One', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      color: var(--anime-pink);
+      text-shadow: 2px 2px 0 var(--anime-outline);
+    }
+
+    .typo-subtitle {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--anime-orange);
+      text-shadow: 2px 2px 0 var(--anime-outline);
+    }
+
+    .typo-body {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1rem;
+      color: var(--anime-text-primary);
+      line-height: 1.7;
+    }
+
+    .typo-kanji-deco {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--anime-text-secondary);
+      opacity: 0.6;
+      letter-spacing: 0.2em;
+    }
+
+    .typo-ui-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--anime-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .typo-right h3 {
+      font-family: 'Russo One', sans-serif;
+      font-size: 1.3rem;
+      color: var(--anime-pink);
+      text-shadow: 2px 2px 0 var(--anime-outline);
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 16px;
+      background: var(--anime-bg-dark);
+      border: 2px solid var(--anime-bg-panel);
+      border-left: 4px solid var(--anime-pink);
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      color: var(--anime-text-secondary);
+      letter-spacing: 0.04em;
+    }
+
+    .typo-pairings {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 2px solid var(--anime-bg-panel);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 16px;
+    }
+
+    .typo-pair {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .typo-pair-desc {
+      color: var(--anime-text-secondary);
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      background: var(--anime-bg-dark);
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      overflow: hidden;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+    }
+
+    .color-chip::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: -4px;
+      bottom: -4px;
+      background: var(--anime-bg-shadow);
+      border: 2px solid var(--anime-outline);
+      z-index: -1;
+    }
+
+    .color-chip:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--anime-bg-shadow);
+    }
+
+    .color-swatch {
+      height: 80px;
+      border-bottom: var(--anime-outline-width) solid var(--anime-outline);
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Bangers', cursive;
+      font-size: 0.92rem;
+      color: var(--anime-text-primary);
+      letter-spacing: 0.02em;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      color: var(--anime-text-secondary);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--anime-bg-dark);
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      border-radius: 4px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      right: -6px;
+      bottom: -6px;
+      background: var(--anime-bg-shadow);
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      border-radius: 4px;
+      z-index: -1;
+    }
+
+    .card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 9px 9px 0 var(--anime-bg-shadow);
+    }
+
+    /* Accent stripe at top of card */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+    }
+
+    .card:nth-child(1)::after { background: var(--anime-pink); }
+    .card:nth-child(2)::after { background: var(--anime-orange); }
+    .card:nth-child(3)::after { background: var(--anime-yellow); }
+    .card:nth-child(4)::after { background: var(--anime-cyan); }
+    .card:nth-child(5)::after { background: var(--anime-magenta); }
+    .card:nth-child(6)::after { background: var(--anime-indigo); }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--anime-outline);
+      margin-bottom: 16px;
+      font-size: 1.6rem;
+      position: relative;
+    }
+
+    .card-icon--pink {
+      background: var(--anime-pink);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+    .card-icon--orange {
+      background: var(--anime-orange);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+    .card-icon--yellow {
+      background: var(--anime-yellow);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+    .card-icon--cyan {
+      background: var(--anime-cyan);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+    .card-icon--magenta {
+      background: var(--anime-magenta);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+    .card-icon--indigo {
+      background: var(--anime-indigo);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+
+    /* SVG icons in cards */
+    .card-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .card h3 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      color: var(--anime-pink);
+      text-shadow: 2px 2px 0 var(--anime-outline);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.95rem;
+      color: var(--anime-text-primary);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border: 2px solid var(--anime-bg-panel);
+      color: var(--anime-text-secondary);
+      margin-right: 6px;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      position: relative;
+      padding: 60px 32px;
+      background: var(--anime-bg-dark);
+      overflow: hidden;
+      text-align: center;
+      border-top: var(--anime-outline-width) solid var(--anime-outline);
+      border-bottom: var(--anime-outline-width) solid var(--anime-outline);
+    }
+
+    /* Speed lines behind banner */
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: -100%;
+      background: repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        transparent 5deg,
+        rgba(255, 213, 79, 0.03) 5deg,
+        rgba(255, 213, 79, 0.03) 6deg
+      );
+      pointer-events: none;
+    }
+
+    /* Scanlines */
+    .motif-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .motif-symbols {
+      font-size: 2rem;
+      margin-bottom: 16px;
+      letter-spacing: 1.2rem;
+      color: var(--anime-yellow);
+      text-shadow: 0 0 20px rgba(255, 213, 79, 0.4);
+    }
+
+    .motif-banner h2 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--anime-yellow);
+      text-shadow: 3px 3px 0 var(--anime-outline), -1px -1px 0 var(--anime-outline), 1px -1px 0 var(--anime-outline), -1px 1px 0 var(--anime-outline), 0 0 30px rgba(255, 213, 79, 0.2);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .motif-banner p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1rem;
+      color: var(--anime-text-secondary);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES SECTION
+       ============================================ */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 28px;
+      background: var(--anime-bg-dark);
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      border-left: 6px solid var(--anime-pink);
+      position: relative;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .feature-item:nth-child(2) { border-left-color: var(--anime-orange); }
+    .feature-item:nth-child(3) { border-left-color: var(--anime-cyan); }
+    .feature-item:nth-child(4) { border-left-color: var(--anime-yellow); }
+
+    .feature-item:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--anime-bg-shadow);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--anime-bg-panel);
+      border: 3px solid var(--anime-outline);
+      box-shadow: 3px 3px 0 var(--anime-outline);
+    }
+
+    .feature-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .feature-text h3 {
+      font-family: 'Russo One', sans-serif;
+      font-size: 1.2rem;
+      color: var(--anime-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .feature-text p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.95rem;
+      color: var(--anime-text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      background: var(--anime-bg-dark);
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--anime-bg-shadow);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: var(--anime-outline-width) solid var(--anime-outline);
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.15rem;
+      color: var(--anime-pink);
+      text-shadow: 1px 1px 0 var(--anime-outline);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.82rem;
+      color: var(--anime-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* --- Effect 1: Speed Lines --- */
+    .effect-speed-lines {
+      background: var(--anime-bg-night);
+    }
+
+    .effect-speed-lines::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        transparent 4deg,
+        rgba(255, 64, 129, 0.08) 4deg,
+        rgba(255, 64, 129, 0.08) 5deg
+      );
+      animation: effect-rotate 30s linear infinite;
+    }
+
+    .effect-speed-lines::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 30px;
+      height: 30px;
+      background: var(--anime-pink);
+      border: 3px solid var(--anime-outline);
+      border-radius: 50%;
+      box-shadow: 0 0 20px rgba(255, 64, 129, 0.6);
+      z-index: 2;
+    }
+
+    @keyframes effect-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* --- Effect 2: Halftone Screentone --- */
+    .effect-halftone {
+      background: linear-gradient(135deg, var(--anime-bg-dark) 0%, var(--anime-bg-panel) 50%, var(--anime-bg-shadow) 100%);
+    }
+
+    .effect-halftone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(
+        circle,
+        var(--anime-text-secondary) 1px,
+        transparent 1px
+      );
+      background-size: 6px 6px;
+      opacity: 0.2;
+      mix-blend-mode: overlay;
+    }
+
+    .effect-halftone::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(
+        circle,
+        var(--anime-pink) 0.8px,
+        transparent 0.8px
+      );
+      background-size: 4px 4px;
+      background-position: 2px 2px;
+      opacity: 0.1;
+    }
+
+    /* --- Effect 3: VHS Scan Lines --- */
+    .effect-scanlines {
+      background: linear-gradient(180deg, #1a1040 0%, #2a1a50 50%, #1a1040 100%);
+    }
+
+    .effect-scanlines::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+      );
+    }
+
+    .effect-scanlines::after {
+      content: 'PLAY \25B6';
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      color: var(--anime-cyan);
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 8px rgba(0, 188, 212, 0.6);
+      animation: vhs-blink 2s step-end infinite;
+    }
+
+    @keyframes vhs-blink {
+      0%, 80% { opacity: 1; }
+      81%, 100% { opacity: 0; }
+    }
+
+    /* VHS tracking bar */
+    .effect-scanlines .vhs-bar {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      animation: vhs-track 4s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    @keyframes vhs-track {
+      0% { top: -6px; }
+      100% { top: 100%; }
+    }
+
+    /* --- Effect 4: Cel Shading --- */
+    .effect-cel-shade {
+      background: var(--anime-bg-panel);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-cel-shade .cel-shape {
+      width: 80px;
+      height: 80px;
+      background: var(--anime-cyan);
+      border: 3px solid var(--anime-outline);
+      position: relative;
+      transform: rotate(12deg);
+    }
+
+    .effect-cel-shade .cel-shape::before {
+      content: '';
+      position: absolute;
+      right: -8px;
+      bottom: -8px;
+      width: 100%;
+      height: 100%;
+      background: var(--anime-bg-shadow);
+      border: 3px solid var(--anime-outline);
+      z-index: -1;
+    }
+
+    .effect-cel-shade .cel-shape::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.15);
+    }
+
+    .effect-cel-shade .cel-circle {
+      width: 50px;
+      height: 50px;
+      background: var(--anime-orange);
+      border: 3px solid var(--anime-outline);
+      border-radius: 50%;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    .effect-cel-shade .cel-circle::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 50%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.15);
+      border-radius: 50% 0 0 50%;
+    }
+
+    /* --- Effect 5: Starburst Sparkle --- */
+    .effect-sparkle {
+      background: var(--anime-bg-night);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .sparkle-star {
+      position: absolute;
+      background: var(--anime-yellow);
+    }
+
+    .sparkle-star--1 {
+      width: 2px;
+      height: 24px;
+      top: 30px;
+      left: 60px;
+      animation: sparkle-pulse 1.5s ease-in-out infinite;
+    }
+
+    .sparkle-star--1::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 2px;
+      background: var(--anime-yellow);
+      top: 11px;
+      left: -11px;
+    }
+
+    .sparkle-star--2 {
+      width: 2px;
+      height: 16px;
+      top: 80px;
+      right: 50px;
+      animation: sparkle-pulse 1.5s ease-in-out infinite 0.5s;
+    }
+
+    .sparkle-star--2::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 2px;
+      background: var(--anime-yellow);
+      top: 7px;
+      left: -7px;
+    }
+
+    .sparkle-star--3 {
+      width: 2px;
+      height: 20px;
+      bottom: 40px;
+      left: 50%;
+      animation: sparkle-pulse 1.5s ease-in-out infinite 1s;
+    }
+
+    .sparkle-star--3::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 2px;
+      background: var(--anime-yellow);
+      top: 9px;
+      left: -9px;
+    }
+
+    .sparkle-text {
+      font-family: 'Bangers', cursive;
+      font-size: 2.2rem;
+      color: var(--anime-yellow);
+      text-shadow: 2px 2px 0 var(--anime-outline), 0 0 20px rgba(255, 213, 79, 0.4);
+      position: relative;
+      z-index: 2;
+    }
+
+    @keyframes sparkle-pulse {
+      0%, 100% { opacity: 1; transform: scale(1) rotate(0deg); }
+      50% { opacity: 0.4; transform: scale(0.6) rotate(45deg); }
+    }
+
+    /* --- Effect 6: Neon Glow / Chromatic --- */
+    .effect-neon {
+      background: var(--anime-bg-night);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .neon-text {
+      font-family: 'Bangers', cursive;
+      font-size: 2.5rem;
+      color: var(--anime-magenta);
+      text-shadow:
+        0 0 7px var(--anime-magenta),
+        0 0 20px var(--anime-magenta),
+        0 0 42px rgba(224, 64, 251, 0.4),
+        0 0 82px rgba(224, 64, 251, 0.2);
+      animation: neon-flicker 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    .neon-text::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 3px;
+      top: 0;
+      color: var(--anime-cyan);
+      opacity: 0.3;
+      z-index: -1;
+      filter: blur(1px);
+    }
+
+    @keyframes neon-flicker {
+      0%, 100% { opacity: 1; }
+      5% { opacity: 0.85; }
+      10% { opacity: 1; }
+      45% { opacity: 1; }
+      50% { opacity: 0.9; }
+      55% { opacity: 1; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE SECTION
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 4px;
+      background: var(--anime-pink);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--anime-yellow);
+      text-shadow: 2px 2px 0 var(--anime-outline), -1px -1px 0 var(--anime-outline), 1px -1px 0 var(--anime-outline), -1px 1px 0 var(--anime-outline);
+      line-height: 1.3;
+      margin-bottom: 20px;
+      padding: 0 20px;
+      letter-spacing: 0.03em;
+    }
+
+    .quote-block cite {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      color: var(--anime-text-secondary);
+      letter-spacing: 0.12em;
+      font-style: normal;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: repeating-conic-gradient(
+        from 0deg at 50% 50%,
+        transparent 0deg,
+        transparent 6deg,
+        rgba(255, 64, 129, 0.025) 6deg,
+        rgba(255, 64, 129, 0.025) 7deg
+      );
+      pointer-events: none;
+      animation: cta-rotate 90s linear infinite;
+    }
+
+    @keyframes cta-rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .cta-container {
+      position: relative;
+      z-index: 2;
+      max-width: 650px;
+      margin: 0 auto;
+      padding: 48px 40px;
+      background: var(--anime-bg-dark);
+      border: var(--anime-outline-width) solid var(--anime-outline);
+      box-shadow: 8px 8px 0 var(--anime-bg-shadow);
+    }
+
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, var(--anime-pink), var(--anime-orange), var(--anime-yellow));
+    }
+
+    .cta-container h2 {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--anime-yellow);
+      text-shadow: 3px 3px 0 var(--anime-outline), -1px -1px 0 var(--anime-outline), 1px -1px 0 var(--anime-outline), -1px 1px 0 var(--anime-outline);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .cta-container .cta-kanji {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--anime-text-secondary);
+      opacity: 0.5;
+      margin-bottom: 16px;
+      letter-spacing: 0.3em;
+    }
+
+    .cta-container p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 1rem;
+      color: var(--anime-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--anime-bg-dark);
+      border-top: var(--anime-outline-width) solid var(--anime-outline);
+      padding: 48px 32px 32px;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--anime-pink), var(--anime-orange), var(--anime-yellow), var(--anime-cyan), var(--anime-magenta));
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-content h3 {
+      font-family: 'Bangers', cursive;
+      font-size: 1.8rem;
+      color: var(--anime-pink);
+      text-shadow: 2px 2px 0 var(--anime-outline);
+      margin-bottom: 12px;
+    }
+
+    .footer-content > p {
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.92rem;
+      color: var(--anime-text-secondary);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      color: var(--anime-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--anime-pink);
+    }
+
+    .footer-kanji {
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--anime-text-secondary);
+      opacity: 0.3;
+      letter-spacing: 0.6em;
+      margin-bottom: 16px;
+    }
+
+    .footer-copy {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      color: var(--anime-text-secondary);
+      opacity: 0.6;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      html { scroll-behavior: auto; }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .feature-item {
+        flex-direction: column;
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 20px;
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 80px 20px 60px;
+      }
+
+      .hero-title {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+      }
+
+      .hero-kanji-left,
+      .hero-kanji-right {
+        display: none;
+      }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        text-align: center;
+      }
+
+      .cta-container {
+        padding: 32px 24px;
+        box-shadow: 5px 5px 0 var(--anime-bg-shadow);
+      }
+
+      .motif-banner {
+        padding: 40px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.68rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-links {
+        gap: 12px;
+      }
+    }
+
+    /* ============================================
+       MOBILE NAV TOGGLE (JS-driven)
+       ============================================ */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 2px solid var(--anime-pink);
+      color: var(--anime-pink);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      cursor: pointer;
+      text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle {
+        display: block;
+      }
+      .nav-links {
+        display: none;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Retro Anime <span class="nav-logo-kanji">\u30A2\u30CB\u30E1</span></a>
+      <button class="nav-toggle" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Toggle navigation">MENU</button>
+      <div class="nav-links">
+        <a href="#hero">Hero</a>
+        <a href="#typography">Type</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-atmosphere"></div>
+
+    <!-- Decorative vertical kanji -->
+    <div class="hero-kanji-left">\u30D0\u30C8\u30EB\u30FB\u30A2\u30AF\u30B7\u30E7\u30F3\u30FB\u30C9\u30E9\u30DE</div>
+    <div class="hero-kanji-right">\u30BB\u30EB\u30A2\u30CB\u30E1\u30FC\u30B7\u30E7\u30F3</div>
+
+    <div class="hero-content">
+      <div class="hero-badge">\u2605 Design Aesthetic Reference \u2605</div>
+      <h1 class="hero-title">Retro Anime</h1>
+      <p class="hero-title-sub">Cel Animation &amp; Midnight Broadcasts</p>
+      <p class="hero-desc">
+        A bold visual language drawn from the golden age of Japanese cel animation &mdash; thick ink outlines, saturated color on dark indigo, speed lines, halftone grain, and the warm analog soul of hand-painted celluloid frames.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-ghost">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SPEED LINE DIVIDER ===== -->
+  <div class="speed-divider speed-divider--thick"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--dark" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Bold, Expressive &amp; Inked</h2>
+      <p class="section-subtitle">Title-card energy meets subtitle precision &mdash; text that shouts, whispers, and moves</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Bangers</p>
+            <p class="typo-display">Final Episode!!</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Russo One</p>
+            <p class="typo-heading">Mecha Strike Force Alpha</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subtitle / Bebas Neue</p>
+            <p class="typo-subtitle">Episode 26 &mdash; The Last Transmission</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lexend</p>
+            <p class="typo-body">Warm, readable body text for comfortable long-form reading. The analog era valued clarity alongside expression, producing interfaces with both energy and legibility.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Decorative / Noto Sans JP</p>
+            <p class="typo-kanji-deco">\u30EC\u30C8\u30ED\u30A2\u30CB\u30E1 \u7F8E\u5B66</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Space Grotesk</p>
+            <p class="typo-ui-text">Interface Labels &amp; Metadata</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Bangers', cursive; font-size: 2rem; color: var(--anime-yellow); text-shadow: 2px 2px 0 var(--anime-outline);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.4rem</span>
+              <span style="font-family: 'Russo One', sans-serif; font-size: 1.4rem; color: var(--anime-pink); text-shadow: 1px 1px 0 var(--anime-outline);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--anime-orange); letter-spacing: 0.12em; text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Lexend', sans-serif; font-size: 1rem; color: var(--anime-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.95rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 0.95rem; color: var(--anime-cyan); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Noto Sans JP', sans-serif; font-weight: 700; font-size: 0.9rem; color: var(--anime-text-secondary); opacity: 0.6;">\u30A2\u30A2</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <p class="typo-pair">
+              <strong style="font-family: 'Bangers', cursive; color: var(--anime-pink);">Bangers</strong> + <strong>Lexend</strong><br>
+              <span class="typo-pair-desc">Classic manga energy with highly readable body text</span>
+            </p>
+            <p class="typo-pair">
+              <strong style="font-family: 'Russo One', sans-serif; color: var(--anime-orange);">Russo One</strong> + <strong>Zen Kaku Gothic New</strong><br>
+              <span class="typo-pair-desc">Bold mecha-inspired headings with Japanese-inflected body</span>
+            </p>
+            <p class="typo-pair">
+              <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--anime-cyan);">Bebas Neue</strong> + <strong>Space Grotesk</strong><br>
+              <span class="typo-pair-desc">Cinematic subtitle feel with modern geometric body</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPEED LINE DIVIDER ===== -->
+  <div class="speed-divider"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--night" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Cel Animation Palette</h2>
+      <p class="section-subtitle">Saturated analog warmth on deep midnight backgrounds &mdash; the broadcast television aesthetic</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0B0E1A;"></div>
+          <div class="color-info">
+            <div class="color-name">Night Sky</div>
+            <div class="color-hex">#0B0E1A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1E3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Panel</div>
+            <div class="color-hex">#1A1E3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C3258;"></div>
+          <div class="color-info">
+            <div class="color-name">Elevated Panel</div>
+            <div class="color-hex">#2C3258</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3A2A5C;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Purple</div>
+            <div class="color-hex">#3A2A5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF4081;"></div>
+          <div class="color-info">
+            <div class="color-name">Hot Pink</div>
+            <div class="color-hex">#FF4081</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF6B35;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunset Orange</div>
+            <div class="color-hex">#FF6B35</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFD54F;"></div>
+          <div class="color-info">
+            <div class="color-name">Golden Yellow</div>
+            <div class="color-hex">#FFD54F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00BCD4;"></div>
+          <div class="color-info">
+            <div class="color-name">Teal Cyan</div>
+            <div class="color-hex">#00BCD4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C6BC0;"></div>
+          <div class="color-info">
+            <div class="color-name">Indigo</div>
+            <div class="color-hex">#5C6BC0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E040FB;"></div>
+          <div class="color-info">
+            <div class="color-name">Magenta Neon</div>
+            <div class="color-hex">#E040FB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D32F2F;"></div>
+          <div class="color-info">
+            <div class="color-name">Anime Red</div>
+            <div class="color-hex">#D32F2F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #66BB6A;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Green</div>
+            <div class="color-hex">#66BB6A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5E6D3;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Parchment</div>
+            <div class="color-hex">#F5E6D3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A89EC9;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender Mist</div>
+            <div class="color-hex">#A89EC9</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFB570;"></div>
+          <div class="color-info">
+            <div class="color-name">Peach Glow</div>
+            <div class="color-hex">#FFB570</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPEED LINE DIVIDER ===== -->
+  <div class="speed-divider"></div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--dark" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Cel-Outlined Cards &amp; Panels</h2>
+      <p class="section-subtitle">Thick ink borders, hard-edged shadows, and the bold graphic energy of manga panels</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--pink">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0e1a" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="2" x2="12" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></svg>
+          </div>
+          <h3>Speed Lines</h3>
+          <p>Radiating conic gradients create dramatic focus and energy, drawing the eye to action points like manga impact frames.</p>
+          <span class="tag">Motion</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--orange">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0e1a" stroke-width="2.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="12" y1="3" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Manga Panels</h3>
+          <p>Asymmetric, angular content divisions guide the eye through layouts like a comic page, with thick borders separating each frame.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Structure</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--yellow">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0e1a" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+          </div>
+          <h3>Starburst Sparkle</h3>
+          <p>Four-pointed star highlights on headings and interactive elements &mdash; the distinctive anime shimmer on eyes and metallic surfaces.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">Accent</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--cyan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0e1a" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3 C12 3 6 9 6 12 C6 15 8.69 18 12 18"/></svg>
+          </div>
+          <h3>Cel-Shaded Depth</h3>
+          <p>Hard-edged box shadows with zero blur simulate flat painted shadows, replicating the hand-inked depth of traditional cel animation.</p>
+          <span class="tag">Shadow</span>
+          <span class="tag">Depth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--magenta">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0e1a" stroke-width="2.5" stroke-linecap="round"><rect x="2" y="4" width="20" height="16" rx="1"/><line x1="2" y1="8" x2="22" y2="8"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="16" x2="22" y2="16"/></svg>
+          </div>
+          <h3>VHS Artifacts</h3>
+          <p>Scan lines, color bleeding, and chromatic aberration as subtle texture layers that reinforce the retro broadcast and VHS playback feel.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Nostalgia</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--indigo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0b0e1a" stroke-width="2.5" stroke-linecap="round"><circle cx="7" cy="12" r="2"/><circle cx="12" cy="7" r="2"/><circle cx="17" cy="12" r="2"/><circle cx="12" cy="17" r="2"/></svg>
+          </div>
+          <h3>Halftone Patterns</h3>
+          <p>Dot patterns and crosshatch textures reference manga screentone production techniques, applied as overlay fills for atmospheric depth.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Print</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-symbols">\u2605 \u2726 \u2605 \u2726 \u2605</div>
+      <h2>Ink, Celluloid &amp; Midnight Static</h2>
+      <p>From VHS fansubs to late-night anime blocks &mdash; a celebration of analog craft filtered through digital execution</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--night">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Retro Anime Philosophy</h2>
+      <p class="section-subtitle">Narrative interfaces, emotional color, hand-drawn character, expressive typography</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ff4081" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Interface as Narrative</h3>
+            <p>Treat the interface as a story &mdash; guide users through content like panels in a manga chapter. Asymmetric layouts, dramatic pacing, and visual hierarchy create a cinematic reading experience.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ff6b35" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 3v9l6 3"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Color Is Emotion</h3>
+            <p>Warm tones signal energy and action. Cool tones signal calm and atmosphere. Vivid accent colors pop against dark backgrounds with theatrical intensity, never soft or muted.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#00bcd4" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Embrace Imperfection</h3>
+            <p>Slight texture, grain, and hand-drawn qualities add warmth that sterile digital precision lacks. The analog craft of paint-on-celluloid production has character that perfection cannot replicate.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffd54f" stroke-width="2" stroke-linecap="round"><path d="M4 7h16"/><path d="M4 12h10"/><path d="M4 17h14"/><circle cx="20" cy="12" r="2"/></svg>
+          </div>
+          <div class="feature-text">
+            <h3>Outlines Are Structural</h3>
+            <p>Every major element should feel "inked" with deliberate thick borders. Removing outlines makes the design lose its illustrative, hand-drawn character &mdash; the cel-animation signature.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPEED LINE DIVIDER ===== -->
+  <div class="speed-divider"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--dark" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS-Only Anime Techniques</h2>
+      <p class="section-subtitle">All the dramatic analog atmosphere &mdash; no image assets required</p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Speed Lines -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-speed-lines"></div>
+          <div class="effect-caption">
+            <h4>Speed Lines</h4>
+            <p>Repeating conic gradients radiate from a focal point, creating the iconic manga action-frame effect.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Halftone Screentone -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-halftone"></div>
+          <div class="effect-caption">
+            <h4>Halftone Screentone</h4>
+            <p>Layered radial dot grids simulate manga print screentone shading and texture.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: VHS Scan Lines -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-scanlines">
+            <div class="vhs-bar"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>VHS Scan Lines</h4>
+            <p>Horizontal line overlay with tracking bar animation evokes analog television broadcast quality.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Cel Shading -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-cel-shade">
+            <div class="cel-shape"></div>
+            <div class="cel-circle"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Cel-Shaded Depth</h4>
+            <p>Hard-edged shadows with zero blur and flat half-tone fills replicate hand-painted cel animation depth.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Starburst Sparkle -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-sparkle">
+            <div class="sparkle-star sparkle-star--1"></div>
+            <div class="sparkle-star sparkle-star--2"></div>
+            <div class="sparkle-star sparkle-star--3"></div>
+            <span class="sparkle-text">\u2728</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Anime Sparkle</h4>
+            <p>Four-pointed star crosses pulse and rotate &mdash; the classic anime eye shimmer and highlight effect.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Neon Glow -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-neon">
+            <span class="neon-text" data-text="NEON">NEON</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Neon Glow</h4>
+            <p>Layered text shadows with chromatic offset create the neon sign glow of cyberpunk anime cityscapes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPEED LINE DIVIDER ===== -->
+  <div class="speed-divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--panel">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Anime-Style Buttons</h2>
+      <p class="section-subtitle">Thick outlines, hard shadows, punchy hover states &mdash; bold and expressive</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Hot Pink Action</a>
+        <a href="#" class="btn btn-cyan">Teal Cyan Info</a>
+        <a href="#" class="btn btn-orange">Sunset Energy</a>
+        <a href="#" class="btn btn-ghost">Ghost Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--night">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The retro anime aesthetic is a love letter to analog craft &mdash; cel paint, midnight broadcasts, VHS static, and the hand-drawn soul that made every frame feel alive.
+        </blockquote>
+        <cite>&mdash; The Spirit of Cel Animation</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--dark cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Next Episode Awaits</h2>
+        <p class="cta-kanji">\u6B21\u56DE\u4E88\u544A</p>
+        <p>
+          The Retro Anime aesthetic celebrates thick ink outlines, saturated cel-shaded color, dramatic speed lines, and the warm analog grain of 80s/90s Japanese animation. Bold, nostalgic, and unmistakably handmade.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPEED LINE DIVIDER ===== -->
+  <div class="speed-divider speed-divider--thick"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Retro Anime <span class="nav-logo-kanji">\u30A2\u30CB\u30E1</span></h3>
+      <p>
+        A design aesthetic reference celebrating the bold, hand-crafted visual language of 80s/90s Japanese cel animation. Speed lines, halftone grain, neon glow, and midnight indigo &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Hero</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-kanji">\u30BB\u30EB\u30A2\u30CB\u30E1 \u2605 \u30EC\u30C8\u30ED \u2605 \u7F8E\u5B66</div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Retro Anime &bull; \u30A2\u30CB\u30E1</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        var target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile nav if open
+          var navLinks = document.querySelector('.nav-links');
+          if (navLinks) navLinks.classList.remove('open');
+        }
+      });
+    });
+
+    // Active nav link highlighting on scroll
+    var sections = document.querySelectorAll('section[id], header[id]');
+    var navAnchors = document.querySelectorAll('.nav-links a');
+
+    function highlightNav() {
+      var scrollY = window.scrollY + 100;
+      sections.forEach(function(section) {
+        var top = section.offsetTop;
+        var height = section.offsetHeight;
+        var id = section.getAttribute('id');
+        if (scrollY >= top && scrollY < top + height) {
+          navAnchors.forEach(function(a) {
+            a.style.color = '';
+            a.style.borderBottomColor = 'transparent';
+            if (a.getAttribute('href') === '#' + id) {
+              a.style.color = '#ff4081';
+              a.style.borderBottomColor = '#ff4081';
+            }
+          });
+        }
+      });
+    }
+
+    window.addEventListener('scroll', highlightNav, { passive: true });
+    highlightNav();
+  </script>
+
+</body>
+</html>

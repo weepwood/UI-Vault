@@ -1,0 +1,2028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mediterranean -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Playfair+Display:wght@400;600;700&family=Spectral:wght@300;400;600&family=Lato:wght@300;400;700&family=Raleway:wght@300;400;500;600&family=Caveat:wght@400;700&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --med-whitewash: #FAF7F2;
+      --med-stucco: #F0E6D6;
+      --med-sand: #D9C6A5;
+
+      /* --- Warm Accents --- */
+      --med-terracotta: #C65D3B;
+      --med-sienna: #A0432E;
+      --med-clay: #8B5E3C;
+      --med-golden: #D4A843;
+      --med-pomegranate: #B5334E;
+
+      /* --- Cool Accents --- */
+      --med-azure: #1B6B93;
+      --med-aegean: #2E96C7;
+      --med-sky: #A8D4E6;
+      --med-lavender: #9B8EC4;
+
+      /* --- Greens --- */
+      --med-olive: #6B7F3A;
+      --med-sage: #A3B18A;
+
+      /* --- Dark --- */
+      --med-cypress: #3D3929;
+
+      /* --- Functional Tokens --- */
+      --med-bg-primary: var(--med-whitewash);
+      --med-bg-secondary: var(--med-stucco);
+      --med-text-primary: var(--med-cypress);
+      --med-text-secondary: var(--med-clay);
+      --med-accent-warm: var(--med-terracotta);
+      --med-accent-cool: var(--med-azure);
+      --med-border: rgba(139, 94, 60, 0.2);
+
+      /* --- Shadows --- */
+      --med-shadow-sm: 0 2px 8px rgba(61, 57, 41, 0.06), 0 1px 3px rgba(61, 57, 41, 0.04);
+      --med-shadow-md: 0 4px 16px rgba(61, 57, 41, 0.08), 0 2px 6px rgba(61, 57, 41, 0.05);
+      --med-shadow-lg: 0 8px 32px rgba(61, 57, 41, 0.1), 0 4px 12px rgba(61, 57, 41, 0.06);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Lato', 'Raleway', sans-serif;
+      font-weight: 400;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      color: var(--med-clay);
+      background-color: var(--med-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', 'Playfair Display', Georgia, serif;
+      color: var(--med-cypress);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+    }
+
+    /* Subtle stucco texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.55' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(16px) saturate(1.2);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      border-bottom: 1px solid rgba(139, 94, 60, 0.12);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--med-cypress);
+      letter-spacing: 0.04em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--med-terracotta);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--med-clay);
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--med-terracotta);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--med-terracotta);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(250, 247, 242, 0) 0%,
+          rgba(250, 247, 242, 0.4) 40%,
+          rgba(240, 230, 214, 0.7) 100%
+        ),
+        linear-gradient(
+          135deg,
+          var(--med-stucco) 0%,
+          var(--med-whitewash) 50%,
+          var(--med-sky) 100%
+        );
+    }
+
+    /* Warm golden-hour radial glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(
+        ellipse,
+        rgba(212, 168, 67, 0.15) 0%,
+        rgba(198, 93, 59, 0.06) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    /* Second glow on left side */
+    .hero-glow {
+      position: absolute;
+      bottom: -15%;
+      left: -8%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(
+        ellipse,
+        rgba(168, 212, 230, 0.12) 0%,
+        rgba(27, 107, 147, 0.04) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    /* Decorative arch shapes in hero background */
+    .hero-arch {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 120px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-arch::before,
+    .hero-arch::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 200px;
+      height: 300px;
+      border-radius: 100px 100px 0 0;
+      border: 1px solid rgba(198, 93, 59, 0.08);
+    }
+
+    .hero-arch::before {
+      left: 8%;
+      opacity: 0.6;
+    }
+
+    .hero-arch::after {
+      right: 8%;
+      width: 160px;
+      height: 250px;
+      border-radius: 80px 80px 0 0;
+      opacity: 0.4;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tagline {
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(0.75rem, 1.5vw, 0.85rem);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--med-terracotta);
+      margin-bottom: 16px;
+      font-weight: 500;
+      opacity: 0.85;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--med-cypress);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      color: var(--med-terracotta);
+      margin-bottom: 8px;
+      font-weight: 400;
+    }
+
+    /* Ornamental divider */
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 1.5rem auto;
+      max-width: 200px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ornament::before,
+    .ornament::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--med-terracotta),
+        transparent
+      );
+    }
+
+    .ornament span {
+      width: 8px;
+      height: 8px;
+      background: var(--med-terracotta);
+      border-radius: 50%;
+      opacity: 0.6;
+    }
+
+    .hero-desc {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--med-clay);
+      max-width: 540px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2.2rem;
+      border-radius: 8px;
+      border: none;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--med-terracotta);
+      color: var(--med-whitewash);
+      box-shadow: 0 4px 14px rgba(198, 93, 59, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--med-sienna);
+      box-shadow: 0 6px 20px rgba(198, 93, 59, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--med-terracotta);
+      border: 2px solid var(--med-terracotta);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--med-terracotta);
+      color: var(--med-whitewash);
+      box-shadow: 0 4px 14px rgba(198, 93, 59, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .btn-azure {
+      background: var(--med-azure);
+      color: var(--med-whitewash);
+      box-shadow: 0 4px 14px rgba(27, 107, 147, 0.25);
+    }
+
+    .btn-azure:hover {
+      background: #155A7D;
+      box-shadow: 0 6px 20px rgba(27, 107, 147, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-olive {
+      background: var(--med-olive);
+      color: var(--med-whitewash);
+      box-shadow: 0 4px 14px rgba(107, 127, 58, 0.25);
+    }
+
+    .btn-olive:hover {
+      background: #566929;
+      box-shadow: 0 6px 20px rgba(107, 127, 58, 0.35);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       TILE-BAND DIVIDER
+       ============================================ */
+    .tile-band {
+      height: 12px;
+      width: 100%;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--med-terracotta) 0px,
+        var(--med-terracotta) 8px,
+        var(--med-whitewash) 8px,
+        var(--med-whitewash) 10px,
+        var(--med-azure) 10px,
+        var(--med-azure) 18px,
+        var(--med-whitewash) 18px,
+        var(--med-whitewash) 20px,
+        var(--med-golden) 20px,
+        var(--med-golden) 28px,
+        var(--med-whitewash) 28px,
+        var(--med-whitewash) 30px,
+        var(--med-olive) 30px,
+        var(--med-olive) 38px,
+        var(--med-whitewash) 38px,
+        var(--med-whitewash) 40px
+      );
+    }
+
+    .tile-band--thick {
+      height: 16px;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--whitewash {
+      background: var(--med-whitewash);
+    }
+
+    .section--stucco {
+      background: var(--med-stucco);
+    }
+
+    .section--sand {
+      background: var(--med-sand);
+    }
+
+    .section--cypress {
+      background: var(--med-cypress);
+      color: var(--med-stucco);
+    }
+
+    .section--cypress .section-label { color: var(--med-golden); }
+    .section--cypress .section-title { color: var(--med-whitewash); }
+    .section--cypress .section-subtitle { color: var(--med-sand); }
+
+    .section-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--med-terracotta);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 600;
+      text-align: center;
+      color: var(--med-cypress);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      text-align: center;
+      color: var(--med-terracotta);
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    /* ============================================
+       WROUGHT-IRON DIVIDER
+       ============================================ */
+    .iron-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 0 auto;
+      max-width: 400px;
+      padding: 32px 0;
+      color: var(--med-clay);
+      opacity: 0.4;
+    }
+
+    .iron-divider::before,
+    .iron-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: currentColor;
+    }
+
+    .iron-divider span {
+      width: 10px;
+      height: 10px;
+      border: 1.5px solid currentColor;
+      transform: rotate(45deg);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--med-terracotta);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--med-sand);
+    }
+
+    .typo-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--med-cypress);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--med-cypress);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Spectral', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      color: var(--med-sienna);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Lato', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--med-clay);
+      margin-bottom: 8px;
+    }
+
+    .typo-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--med-terracotta);
+      line-height: 1.5;
+    }
+
+    .typo-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--med-olive);
+    }
+
+    .typo-right {
+      background: var(--med-whitewash);
+      border-radius: 16px;
+      padding: 36px;
+      border: 1px solid rgba(198, 93, 59, 0.1);
+      box-shadow: var(--med-shadow-sm);
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(217, 198, 165, 0.5);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--med-olive);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--med-whitewash);
+      border: 1px solid rgba(198, 93, 59, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--med-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--med-shadow-lg);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Spectral', serif;
+      font-size: 0.92rem;
+      font-weight: 400;
+      color: var(--med-cypress);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--med-olive);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--med-whitewash);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--med-shadow-sm);
+      border: 1px solid rgba(198, 93, 59, 0.1);
+    }
+
+    /* Subtle terracotta top accent line */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--med-terracotta),
+        var(--med-golden),
+        var(--med-terracotta),
+        transparent
+      );
+      border-radius: 0 0 2px 2px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--med-shadow-lg);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+    }
+
+    .card-icon--terracotta {
+      background: linear-gradient(135deg, var(--med-terracotta), var(--med-golden));
+      box-shadow: 0 4px 12px rgba(198, 93, 59, 0.2);
+    }
+
+    .card-icon--azure {
+      background: linear-gradient(135deg, var(--med-azure), var(--med-aegean));
+      box-shadow: 0 4px 12px rgba(27, 107, 147, 0.2);
+    }
+
+    .card-icon--olive {
+      background: linear-gradient(135deg, var(--med-olive), var(--med-sage));
+      box-shadow: 0 4px 12px rgba(107, 127, 58, 0.2);
+    }
+
+    .card-icon--golden {
+      background: linear-gradient(135deg, var(--med-golden), #E8C060);
+      box-shadow: 0 4px 12px rgba(212, 168, 67, 0.2);
+    }
+
+    .card-icon--sienna {
+      background: linear-gradient(135deg, var(--med-sienna), var(--med-terracotta));
+      box-shadow: 0 4px 12px rgba(160, 67, 46, 0.2);
+    }
+
+    .card-icon--lavender {
+      background: linear-gradient(135deg, var(--med-lavender), #B5A8D8);
+      box-shadow: 0 4px 12px rgba(155, 142, 196, 0.2);
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--med-cypress);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.98rem;
+      line-height: 1.75;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--med-sand);
+      color: var(--med-olive);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--med-terracotta);
+      color: var(--med-whitewash);
+      border-color: var(--med-terracotta);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(198, 93, 59, 0.1);
+      background: var(--med-whitewash);
+      box-shadow: var(--med-shadow-sm);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Stucco Texture */
+    .effect-stucco {
+      background: var(--med-stucco);
+      position: relative;
+    }
+
+    .effect-stucco::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .effect-stucco::after {
+      content: 'STUCCO';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--med-cypress);
+      z-index: 1;
+      letter-spacing: 0.1em;
+    }
+
+    /* Effect 2: Azure Sea Gradient */
+    .effect-azure-sea {
+      background: linear-gradient(
+        180deg,
+        var(--med-azure) 0%,
+        var(--med-aegean) 40%,
+        var(--med-sky) 100%
+      );
+    }
+
+    .effect-azure-sea::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 70% 80%, rgba(255, 255, 255, 0.1) 0%, transparent 30%);
+      animation: seaShimmer 6s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes seaShimmer {
+      0% { opacity: 0.5; transform: translateX(0); }
+      100% { opacity: 1; transform: translateX(8px); }
+    }
+
+    .effect-azure-sea::after {
+      content: 'AZURE SEA';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--med-whitewash);
+      text-shadow: 0 2px 8px rgba(27, 107, 147, 0.3);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* Effect 3: Mosaic Tile */
+    .effect-mosaic {
+      background: var(--med-sand);
+      position: relative;
+    }
+
+    .effect-mosaic::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, var(--med-terracotta) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--med-azure) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--med-golden) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--med-olive) 75%);
+      background-size: 28px 28px;
+      background-position: 0 0, 0 14px, 14px -14px, -14px 0px;
+      opacity: 0.25;
+    }
+
+    .effect-mosaic::after {
+      content: 'MOSAIC';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--med-cypress);
+      text-shadow: 0 1px 3px rgba(217, 198, 165, 0.6);
+      z-index: 1;
+      letter-spacing: 0.08em;
+    }
+
+    /* Effect 4: Golden Hour */
+    .effect-golden-hour {
+      background: linear-gradient(
+        135deg,
+        var(--med-terracotta) 0%,
+        var(--med-golden) 40%,
+        #F0D78C 70%,
+        var(--med-stucco) 100%
+      );
+    }
+
+    .effect-golden-hour::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -30%;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.3) 0%,
+        rgba(212, 168, 67, 0.15) 30%,
+        transparent 60%
+      );
+      animation: goldenPulse 4s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes goldenPulse {
+      0% { transform: scale(1); opacity: 0.6; }
+      100% { transform: scale(1.2); opacity: 1; }
+    }
+
+    .effect-golden-hour::after {
+      content: 'GOLDEN HOUR';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--med-whitewash);
+      text-shadow: 0 2px 12px rgba(160, 67, 46, 0.4);
+      z-index: 1;
+      letter-spacing: 0.08em;
+    }
+
+    /* Effect 5: Olive Grove */
+    .effect-olive-grove {
+      background: linear-gradient(
+        180deg,
+        var(--med-olive) 0%,
+        var(--med-sage) 50%,
+        #C8D5A4 100%
+      );
+      position: relative;
+    }
+
+    .effect-olive-grove::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 40%, rgba(255, 255, 255, 0.1) 0%, transparent 30%),
+        radial-gradient(ellipse at 80% 60%, rgba(61, 57, 41, 0.08) 0%, transparent 25%),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 40px,
+          rgba(255, 255, 255, 0.03) 40px,
+          rgba(255, 255, 255, 0.03) 42px
+        );
+      pointer-events: none;
+    }
+
+    .effect-olive-grove::after {
+      content: 'OLIVE GROVE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--med-whitewash);
+      text-shadow: 0 2px 8px rgba(107, 127, 58, 0.4);
+      z-index: 1;
+      letter-spacing: 0.06em;
+    }
+
+    /* Effect 6: Terracotta Arch */
+    .effect-arch {
+      background: linear-gradient(180deg, var(--med-sienna) 0%, var(--med-terracotta) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-arch::before {
+      content: '';
+      position: absolute;
+      bottom: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 160px;
+      border-radius: 60px 60px 0 0;
+      background: linear-gradient(
+        180deg,
+        rgba(250, 247, 242, 0.2) 0%,
+        rgba(250, 247, 242, 0.08) 100%
+      );
+      border: 2px solid rgba(250, 247, 242, 0.15);
+      border-bottom: none;
+    }
+
+    .effect-arch::after {
+      content: 'ARCHWAY';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--med-whitewash);
+      text-shadow: 0 2px 8px rgba(160, 67, 46, 0.4);
+      z-index: 1;
+      letter-spacing: 0.1em;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--med-cypress);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--med-clay);
+    }
+
+    /* ============================================
+       MEDITERRANEAN MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: linear-gradient(135deg, var(--med-cypress) 0%, #4A4536 100%);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 40px,
+        rgba(212, 168, 67, 0.04) 40px,
+        rgba(212, 168, 67, 0.04) 42px
+      );
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      opacity: 0.35;
+    }
+
+    .motif-row span {
+      width: 12px;
+      height: 12px;
+      border: 1.5px solid var(--med-golden);
+      transform: rotate(45deg);
+      animation: diamondFloat 4s ease-in-out infinite;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.5s; }
+    .motif-row span:nth-child(3) { animation-delay: -1s; }
+    .motif-row span:nth-child(4) { animation-delay: -1.5s; }
+    .motif-row span:nth-child(5) { animation-delay: -2s; }
+    .motif-row span:nth-child(6) { animation-delay: -2.5s; }
+    .motif-row span:nth-child(7) { animation-delay: -3s; }
+
+    @keyframes diamondFloat {
+      0%, 100% { transform: rotate(45deg) translateY(0); }
+      50% { transform: rotate(45deg) translateY(-5px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--med-whitewash);
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--med-golden);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--med-whitewash);
+      border-radius: 16px;
+      border: 1px solid rgba(198, 93, 59, 0.1);
+      position: relative;
+      box-shadow: var(--med-shadow-md);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 7rem;
+      color: var(--med-terracotta);
+      opacity: 0.15;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Spectral', serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--med-cypress);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      color: var(--med-terracotta);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       ARCHED CTA CONTAINER
+       ============================================ */
+    .arched-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: linear-gradient(180deg, var(--med-whitewash), var(--med-stucco));
+      border-radius: 300px 300px 16px 16px;
+      padding: 80px 48px 48px;
+      text-align: center;
+      border: 1px solid rgba(198, 93, 59, 0.12);
+      box-shadow: var(--med-shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .arched-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(
+        90deg,
+        var(--med-terracotta),
+        var(--med-golden),
+        var(--med-azure),
+        var(--med-olive),
+        var(--med-terracotta)
+      );
+      border-radius: 300px 300px 0 0;
+    }
+
+    .arched-container h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 300;
+      font-style: italic;
+      margin-bottom: 16px;
+    }
+
+    .arched-container .handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--med-terracotta);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .arched-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 24px;
+      color: var(--med-clay);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--med-cypress);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--med-stucco);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.5' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--med-whitewash);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Lato', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 300;
+      color: rgba(240, 230, 214, 0.6);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(240, 230, 214, 0.45);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--med-terracotta);
+    }
+
+    .footer-ornament {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      opacity: 0.25;
+    }
+
+    .footer-ornament span {
+      width: 8px;
+      height: 8px;
+      border: 1.5px solid var(--med-golden);
+      transform: rotate(45deg);
+    }
+
+    .footer-ornament span:nth-child(3) {
+      width: 10px;
+      height: 10px;
+      background: var(--med-golden);
+      border: none;
+      border-radius: 50%;
+      transform: none;
+    }
+
+    .footer-copy {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: rgba(240, 230, 214, 0.25);
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-arch {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .arched-container {
+        padding: 60px 28px 36px;
+        border-radius: 200px 200px 16px 16px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.7rem 1.8rem;
+        font-size: 0.82rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .effect-azure-sea::before,
+      .effect-golden-hour::before,
+      .motif-row span {
+        animation: none;
+      }
+
+      .card, .btn, .color-chip, .tag, .nav-links a::after {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Mediterranean</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-arch"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Mediterranean</h1>
+      <p class="hero-subtitle">Sun, Sea &amp; Terracotta</p>
+      <div class="ornament"><span></span></div>
+      <p class="hero-desc">
+        A warm, sun-drenched aesthetic rooted in whitewashed villages, azure coastal waters, terracotta rooftops, and the timeless elegance of arched doorways and mosaic courtyards.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TILE BAND ===== -->
+  <div class="tile-band tile-band--thick"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--whitewash" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Classical Elegance, Coastal Warmth</h2>
+      <p class="section-subtitle">elegant serifs, warm sans-serifs, handwritten accents</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cormorant Garamond Light Italic</p>
+            <p class="typo-display">Sotto il Sole</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display</p>
+            <p class="typo-heading">Coastal Horizons</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Spectral Light</p>
+            <p class="typo-subheading">Sunlit terraces &amp; ancient stone</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lato</p>
+            <p class="typo-body">Warm humanist sans-serif for comfortable reading. The Mediterranean style values warmth and openness over cold precision, creating an inviting reading experience.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Handwritten / Caveat</p>
+            <p class="typo-handwritten">warmth, craft &amp; timeless beauty</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Josefin Sans</p>
+            <p class="typo-label">Navigation &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 300; font-style: italic; color: var(--med-cypress);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.2rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--med-cypress);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Spectral', serif; font-size: 1.2rem; font-weight: 300; color: var(--med-sienna);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--med-terracotta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Lato', sans-serif; font-size: 1rem; color: var(--med-clay);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Josefin Sans', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--med-olive); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--med-sand);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cormorant Garamond', serif; color: var(--med-sienna);">Cormorant Garamond 600</strong> + <strong>Lato 400</strong><br>
+              <span style="color: var(--med-olive); font-size: 0.85rem;">Classical elegance with warm readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--med-sienna);">Playfair Display 700</strong> + <strong>Raleway 400</strong><br>
+              <span style="color: var(--med-olive); font-size: 0.85rem;">Sophisticated editorial, travel-magazine feel</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--med-sienna);">Playfair Display 600</strong> + <strong style="font-family: 'Josefin Sans', sans-serif;">Josefin Sans 300</strong><br>
+              <span style="color: var(--med-olive); font-size: 0.85rem;">Boutique hospitality, modern Mediterranean</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WROUGHT-IRON DIVIDER ===== -->
+  <div class="section--whitewash" style="padding: 0;">
+    <div class="iron-divider">
+      <span></span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--stucco" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Sun-Baked Earth &amp; Azure Sea</h2>
+      <p class="section-subtitle">terracotta warmth, coastal blues &amp; olive greens</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF7F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Whitewash</div>
+            <div class="color-hex">#FAF7F2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0E6D6;"></div>
+          <div class="color-info">
+            <div class="color-name">Stucco Cream</div>
+            <div class="color-hex">#F0E6D6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D9C6A5;"></div>
+          <div class="color-info">
+            <div class="color-name">Sand Dune</div>
+            <div class="color-hex">#D9C6A5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C65D3B;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta</div>
+            <div class="color-hex">#C65D3B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A0432E;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Sienna</div>
+            <div class="color-hex">#A0432E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B5E3C;"></div>
+          <div class="color-info">
+            <div class="color-name">Clay Pot</div>
+            <div class="color-hex">#8B5E3C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B6B93;"></div>
+          <div class="color-info">
+            <div class="color-name">Azure Sea</div>
+            <div class="color-hex">#1B6B93</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2E96C7;"></div>
+          <div class="color-info">
+            <div class="color-name">Aegean Blue</div>
+            <div class="color-hex">#2E96C7</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A8D4E6;"></div>
+          <div class="color-info">
+            <div class="color-name">Santorini Sky</div>
+            <div class="color-hex">#A8D4E6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7F3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Olive Grove</div>
+            <div class="color-hex">#6B7F3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A3B18A;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Leaf</div>
+            <div class="color-hex">#A3B18A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A843;"></div>
+          <div class="color-info">
+            <div class="color-name">Golden Hour</div>
+            <div class="color-hex">#D4A843</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3D3929;"></div>
+          <div class="color-info">
+            <div class="color-name">Cypress Shadow</div>
+            <div class="color-hex">#3D3929</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9B8EC4;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender Field</div>
+            <div class="color-hex">#9B8EC4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B5334E;"></div>
+          <div class="color-info">
+            <div class="color-name">Pomegranate</div>
+            <div class="color-hex">#B5334E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TILE BAND ===== -->
+  <div class="tile-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--whitewash" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Warm Cards &amp; Artisanal Details</h2>
+      <p class="section-subtitle">like ceramic tiles arranged on a sunlit wall</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--terracotta">&#9782;</div>
+          <h3>Arched Containers</h3>
+          <p>Rounded arch forms reference Roman, Moorish, and Byzantine architecture, used in image frames, cards, and section headers to evoke whitewashed doorways.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Shape</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--azure">&#9670;</div>
+          <h3>Mosaic Tile Patterns</h3>
+          <p>Geometric repeating patterns inspired by Moroccan zellige, Portuguese azulejo, and Italian majolica tilework serve as decorative borders and backgrounds.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--olive">&#9752;</div>
+          <h3>Botanical Greens</h3>
+          <p>Muted sage, olive, and cypress greens provide natural contrast, referencing the region's lush groves, herb gardens, and trailing bougainvillea.</p>
+          <span class="tag">Color</span>
+          <span class="tag">Nature</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--golden">&#9788;</div>
+          <h3>Golden Hour Light</h3>
+          <p>Soft amber tones, warm gradients, and golden-hour radial glows capture the quality of Southern European afternoon sunlight bathing coastal towns.</p>
+          <span class="tag">Gradient</span>
+          <span class="tag">Warmth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sienna">&#10070;</div>
+          <h3>Wrought-Iron Details</h3>
+          <p>Thin decorative lines, scrollwork borders, and delicate ornamental dividers inspired by balcony railings and courtyard gates of Mediterranean villas.</p>
+          <span class="tag">Ornament</span>
+          <span class="tag">Detail</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--lavender">&#10022;</div>
+          <h3>Stucco Textures</h3>
+          <p>Subtle grainy, plaster-like background surfaces evoke hand-plastered Mediterranean walls, adding tactile depth without overwhelming content.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Surface</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <h2>Warmth, Craft &amp; Timeless Beauty</h2>
+      <p>From terracotta courtyards to azure horizons, the Mediterranean celebrates artisanal elegance</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--whitewash" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Surfaces</h2>
+      <p class="section-subtitle">all the Mediterranean warmth, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-stucco"></div>
+          <div class="effect-caption">
+            <h4>Stucco Plaster</h4>
+            <p>SVG noise filter creates the tactile feel of sun-baked, hand-plastered walls.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-azure-sea"></div>
+          <div class="effect-caption">
+            <h4>Azure Sea Gradient</h4>
+            <p>Layered blue gradients with radial light shimmer evoke Mediterranean waters.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-mosaic"></div>
+          <div class="effect-caption">
+            <h4>Mosaic Tilework</h4>
+            <p>Diamond-pattern backgrounds from CSS gradients reference zellige and azulejo.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-golden-hour"></div>
+          <div class="effect-caption">
+            <h4>Golden Hour Glow</h4>
+            <p>Warm radial gradients and pulsing light capture afternoon sun on terracotta.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-olive-grove"></div>
+          <div class="effect-caption">
+            <h4>Olive Grove</h4>
+            <p>Layered green gradients with dappled light evoke sun through olive branches.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-arch"></div>
+          <div class="effect-caption">
+            <h4>Terracotta Archway</h4>
+            <p>CSS border-radius arches on warm gradients recall Moorish doorways and passages.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TILE BAND ===== -->
+  <div class="tile-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--stucco">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Warm Buttons</h2>
+      <p class="section-subtitle">terracotta, azure, olive &amp; outlined</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Terracotta Primary</a>
+        <a href="#" class="btn btn-azure">Azure Sea</a>
+        <a href="#" class="btn btn-olive">Olive Grove</a>
+        <a href="#" class="btn btn-outline">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--whitewash">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The Mediterranean is not a style &mdash; it is a feeling. The warmth of sun-baked earth, the coolness of azure waters, the timeless elegance of civilizations that built arched doorways and mosaic courtyards thousands of years ago.
+        </blockquote>
+        <cite>&mdash; The Spirit of Mediterranean Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ARCHED CTA SECTION ===== -->
+  <section class="section section--stucco">
+    <div class="container">
+      <div class="arched-container">
+        <h2>Warmed by Sun, Cooled by Sea</h2>
+        <span class="handwritten">natural, inviting &amp; grounded in centuries of craft</span>
+        <p>
+          The Mediterranean aesthetic balances curated warmth with intentional ornamentation. Anchor your designs in terracotta and sandy neutrals, elevate with strategic touches of azure blue, and let generous breathing room evoke the open plazas of coastal towns.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TILE BAND ===== -->
+  <div class="tile-band tile-band--thick"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Mediterranean</h3>
+      <p>
+        A design aesthetic reference celebrating the warm, sun-drenched visual language of the Mediterranean &mdash; terracotta, azure, olive, and golden hour &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-ornament">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Mediterranean &bull; Warmed by sun, cooled by sea</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ethereal -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Nunito:wght@300;400;500&family=Raleway:wght@200;300;400&family=La+Belle+Aurore&family=Prata&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --eth-pearl: #FAF8FF;
+      --eth-mist: #F0ECF5;
+      --eth-opal: #E6E0F3;
+
+      /* --- Purple / Lavender Spectrum --- */
+      --eth-lavender-haze: #DDD3EC;
+      --eth-wisteria: #C4B1DC;
+      --eth-soft-lilac: #B59AD8;
+
+      /* --- Warm Accents --- */
+      --eth-blush-cloud: #F2DAE0;
+      --eth-rose-quartz: #E8C1CA;
+      --eth-champagne: #F5EDD6;
+
+      /* --- Cool Accents --- */
+      --eth-powder-blue: #D4E4F7;
+      --eth-sky-veil: #BDD5F0;
+      --eth-seafoam: #D5EDE6;
+
+      /* --- Text --- */
+      --eth-text-primary: #5E4F78;
+      --eth-text-body: #8A7CA8;
+      --eth-text-muted: #9B93A8;
+
+      /* --- Signature Gradients --- */
+      --eth-gradient-haze: linear-gradient(135deg, #F0ECF5, #DDD3EC, #D4E4F7);
+      --eth-gradient-blush: linear-gradient(135deg, #F2DAE0, #DDD3EC, #E6E0F3);
+      --eth-gradient-dawn: linear-gradient(180deg, #FAF8FF, #F0ECF5, #DDD3EC);
+      --eth-gradient-iridescent: linear-gradient(135deg, #D4E4F7, #DDD3EC, #F2DAE0, #D5EDE6);
+
+      /* --- Glow --- */
+      --eth-glow-soft: 0 0 40px rgba(181, 154, 216, 0.15);
+      --eth-glow-warm: 0 0 40px rgba(242, 218, 224, 0.2);
+      --eth-glow-cool: 0 0 40px rgba(212, 228, 247, 0.2);
+
+      /* --- Glass --- */
+      --eth-glass-bg: rgba(255, 255, 255, 0.45);
+      --eth-glass-border: rgba(181, 154, 216, 0.15);
+      --eth-glass-blur: 20px;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--eth-text-body);
+      background-color: var(--eth-pearl);
+      overflow-x: hidden;
+      letter-spacing: 0.01em;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', 'Georgia', serif;
+      font-weight: 300;
+      color: var(--eth-text-primary);
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       AMBIENT BACKGROUND ORBS
+       ============================================ */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.45;
+    }
+
+    .orb--1 {
+      width: 500px;
+      height: 500px;
+      background: var(--eth-lavender-haze);
+      top: -10%;
+      left: -5%;
+      animation: orbFloat 18s ease-in-out infinite alternate;
+    }
+
+    .orb--2 {
+      width: 400px;
+      height: 400px;
+      background: var(--eth-blush-cloud);
+      top: 30%;
+      right: -8%;
+      animation: orbFloat 22s ease-in-out infinite alternate-reverse;
+    }
+
+    .orb--3 {
+      width: 350px;
+      height: 350px;
+      background: var(--eth-powder-blue);
+      bottom: -5%;
+      left: 20%;
+      animation: orbFloat 15s ease-in-out infinite alternate;
+    }
+
+    .orb--4 {
+      width: 300px;
+      height: 300px;
+      background: var(--eth-seafoam);
+      top: 60%;
+      left: -10%;
+      animation: orbFloat 20s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(25px, -30px) scale(1.06); }
+      66% { transform: translate(-20px, 15px) scale(0.94); }
+      100% { transform: translate(10px, -10px) scale(1.02); }
+    }
+
+    /* All content above orbs */
+    .page-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 40px;
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.5rem;
+      color: var(--eth-text-primary);
+      letter-spacing: 0.08em;
+      transition: color 0.4s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--eth-soft-lilac);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 0.88rem;
+      letter-spacing: 0.05em;
+      color: var(--eth-text-muted);
+      transition: color 0.4s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--eth-text-primary);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(ellipse, rgba(212, 228, 247, 0.4) 0%, transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      animation: heroFloat 12s ease-in-out infinite alternate;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -15%;
+      right: -10%;
+      width: 50%;
+      height: 50%;
+      background: radial-gradient(ellipse, rgba(242, 218, 224, 0.35) 0%, transparent 70%);
+      filter: blur(60px);
+      pointer-events: none;
+      animation: heroFloat 15s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes heroFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(30px, -20px) scale(1.05); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-script {
+      font-family: 'La Belle Aurore', cursive;
+      font-size: 1.3rem;
+      color: var(--eth-wisteria);
+      margin-bottom: 1rem;
+      display: block;
+      letter-spacing: 0.02em;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      letter-spacing: 0.03em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-tagline {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--eth-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+      font-size: 1.15rem;
+      color: var(--eth-text-muted);
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.9;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--eth-gradient-blush);
+      color: var(--eth-text-primary);
+      border: none;
+      border-radius: 50px;
+      padding: 14px 40px;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      text-decoration: none;
+      box-shadow: var(--eth-glow-warm);
+      transition: box-shadow 0.5s ease, transform 0.4s ease;
+    }
+
+    .btn:hover {
+      box-shadow:
+        0 0 50px rgba(232, 193, 202, 0.3),
+        0 4px 20px rgba(181, 154, 216, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      border: 1px solid var(--eth-glass-border);
+      box-shadow: none;
+      color: var(--eth-text-body);
+    }
+
+    .btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: var(--eth-glow-soft);
+      border-color: var(--eth-wisteria);
+    }
+
+    .btn--lilac {
+      background: var(--eth-gradient-haze);
+      box-shadow: var(--eth-glow-soft);
+    }
+
+    .btn--lilac:hover {
+      box-shadow:
+        0 0 50px rgba(181, 154, 216, 0.25),
+        0 4px 20px rgba(181, 154, 216, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .btn--glass {
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--eth-glass-border);
+      box-shadow: var(--eth-glow-cool);
+      color: var(--eth-text-primary);
+    }
+
+    .btn--glass:hover {
+      box-shadow:
+        0 0 50px rgba(212, 228, 247, 0.3),
+        0 4px 20px rgba(181, 154, 216, 0.1);
+      transform: translateY(-2px);
+      border-color: var(--eth-wisteria);
+    }
+
+    /* ============================================
+       SOFT DIVIDER
+       ============================================ */
+    .divider {
+      width: 120px;
+      height: 2px;
+      margin: 80px auto;
+      background: var(--eth-gradient-iridescent);
+      border: none;
+      border-radius: 2px;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--eth-text-muted);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      text-align: center;
+      color: var(--eth-text-primary);
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .section-subtitle {
+      font-family: 'La Belle Aurore', cursive;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      text-align: center;
+      color: var(--eth-wisteria);
+      margin-bottom: 56px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--eth-text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--eth-lavender-haze);
+      opacity: 0.5;
+    }
+
+    .typo-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--eth-text-primary);
+      line-height: 1.1;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--eth-text-primary);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 200;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--eth-text-body);
+      line-height: 1.4;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--eth-text-body);
+      margin-bottom: 8px;
+    }
+
+    .typo-script {
+      font-family: 'La Belle Aurore', cursive;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      color: var(--eth-wisteria);
+      line-height: 1.5;
+    }
+
+    .typo-label {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--eth-text-muted);
+    }
+
+    .typo-right {
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(var(--eth-glass-blur));
+      -webkit-backdrop-filter: blur(var(--eth-glass-blur));
+      border: 1px solid var(--eth-glass-border);
+      border-radius: 24px;
+      padding: 36px;
+      box-shadow: var(--eth-glow-soft);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(181, 154, 216, 0.1);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--eth-text-muted);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 20px;
+      overflow: hidden;
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--eth-glass-border);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+      box-shadow: var(--eth-glow-soft);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 60px rgba(181, 154, 216, 0.2),
+        0 8px 32px rgba(181, 154, 216, 0.08);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 0.92rem;
+      color: var(--eth-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--eth-text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(var(--eth-glass-blur));
+      -webkit-backdrop-filter: blur(var(--eth-glass-blur));
+      border: 1px solid var(--eth-glass-border);
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--eth-glow-soft);
+      transition: box-shadow 0.5s ease, transform 0.5s ease;
+    }
+
+    .card:hover {
+      box-shadow:
+        0 0 60px rgba(181, 154, 216, 0.2),
+        0 8px 32px rgba(181, 154, 216, 0.08);
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.4rem;
+    }
+
+    .card-icon--lavender {
+      background: rgba(181, 154, 216, 0.15);
+    }
+
+    .card-icon--blush {
+      background: rgba(242, 218, 224, 0.25);
+    }
+
+    .card-icon--blue {
+      background: rgba(212, 228, 247, 0.25);
+    }
+
+    .card-icon--seafoam {
+      background: rgba(213, 237, 230, 0.3);
+    }
+
+    .card-icon--champagne {
+      background: rgba(245, 237, 214, 0.3);
+    }
+
+    .card-icon--opal {
+      background: rgba(230, 224, 243, 0.3);
+    }
+
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.93rem;
+      color: var(--eth-text-muted);
+      line-height: 1.75;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      padding: 3px 14px;
+      border-radius: 50px;
+      border: 1px solid var(--eth-glass-border);
+      color: var(--eth-text-muted);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.4s ease;
+    }
+
+    .card .tag:hover {
+      background: rgba(181, 154, 216, 0.12);
+      border-color: var(--eth-wisteria);
+      color: var(--eth-text-primary);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid var(--eth-glass-border);
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: var(--eth-glow-soft);
+      transition: transform 0.5s ease, box-shadow 0.5s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 0 60px rgba(181, 154, 216, 0.2),
+        0 8px 32px rgba(181, 154, 216, 0.08);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Soft Gradient Haze */
+    .effect-haze {
+      background:
+        radial-gradient(ellipse at 25% 40%, rgba(212, 228, 247, 0.6) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 60%, rgba(242, 218, 224, 0.5) 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 90%, rgba(221, 211, 236, 0.4) 0%, transparent 50%),
+        var(--eth-mist);
+      animation: hazeShift 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes hazeShift {
+      0% { filter: hue-rotate(0deg) brightness(1); }
+      100% { filter: hue-rotate(8deg) brightness(1.03); }
+    }
+
+    .effect-haze::after {
+      content: 'HAZE';
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2rem;
+      color: var(--eth-text-primary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 2: Iridescent Shimmer */
+    .effect-shimmer {
+      background: var(--eth-gradient-iridescent);
+      background-size: 300% 100%;
+      animation: shimmerFlow 8s ease-in-out infinite;
+    }
+
+    @keyframes shimmerFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .effect-shimmer::after {
+      content: 'SHIMMER';
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2rem;
+      color: var(--eth-text-primary);
+      letter-spacing: 0.15em;
+      text-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+      z-index: 1;
+    }
+
+    /* Effect 3: Frosted Glass */
+    .effect-frost {
+      background: var(--eth-gradient-dawn);
+      position: relative;
+    }
+
+    .effect-frost::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 10%;
+      right: 10%;
+      bottom: 15%;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 20px;
+    }
+
+    .effect-frost::after {
+      content: 'GLASS';
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2rem;
+      color: var(--eth-text-primary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 4: Ambient Glow Orbs */
+    .effect-orbs {
+      background: var(--eth-pearl);
+      overflow: hidden;
+    }
+
+    .effect-orbs::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 60%;
+      height: 80%;
+      background: radial-gradient(ellipse, rgba(181, 154, 216, 0.4) 0%, transparent 70%);
+      filter: blur(30px);
+      animation: orbPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes orbPulse {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+      100% { transform: translate(20px, -10px) scale(1.1); opacity: 0.8; }
+    }
+
+    .effect-orbs .orb-secondary {
+      position: absolute;
+      bottom: -20%;
+      right: -10%;
+      width: 50%;
+      height: 70%;
+      background: radial-gradient(ellipse, rgba(242, 218, 224, 0.4) 0%, transparent 70%);
+      filter: blur(30px);
+      animation: orbPulse 8s ease-in-out infinite alternate-reverse;
+      pointer-events: none;
+    }
+
+    .effect-orbs::after {
+      content: 'GLOW';
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2rem;
+      color: var(--eth-text-primary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+      text-shadow: 0 0 40px rgba(181, 154, 216, 0.3);
+    }
+
+    /* Effect 5: Soft Blur Diffusion */
+    .effect-diffusion {
+      background: linear-gradient(135deg, var(--eth-lavender-haze), var(--eth-powder-blue), var(--eth-blush-cloud));
+    }
+
+    .effect-diffusion::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+      filter: blur(20px);
+      animation: diffusionPulse 5s ease-in-out infinite;
+    }
+
+    @keyframes diffusionPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+      50% { transform: translate(-50%, -50%) scale(1.8); opacity: 1; }
+    }
+
+    .effect-diffusion::after {
+      content: 'DIFFUSE';
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2rem;
+      color: white;
+      letter-spacing: 0.15em;
+      z-index: 1;
+      text-shadow: 0 0 20px rgba(181, 154, 216, 0.4);
+    }
+
+    /* Effect 6: Gradient Text Shimmer */
+    .effect-text-shimmer {
+      background: var(--eth-mist);
+    }
+
+    .effect-text-shimmer::after {
+      content: 'ETHEREAL';
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2.5rem;
+      letter-spacing: 0.2em;
+      background: var(--eth-gradient-iridescent);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerFlow 8s ease-in-out infinite;
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 18px 22px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.15rem;
+      color: var(--eth-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--eth-text-muted);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 60px 40px;
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(var(--eth-glass-blur));
+      -webkit-backdrop-filter: blur(var(--eth-glass-blur));
+      border: 1px solid var(--eth-glass-border);
+      border-radius: 32px;
+      box-shadow: var(--eth-glow-soft);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--eth-lavender-haze);
+      position: absolute;
+      top: 10px;
+      left: 28px;
+      line-height: 1;
+      opacity: 0.6;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-style: italic;
+      color: var(--eth-text-primary);
+      line-height: 1.65;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .quote-block cite {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      color: var(--eth-text-muted);
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      text-align: center;
+      padding: 60px 40px 120px;
+    }
+
+    .cta-inner {
+      background: var(--eth-glass-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--eth-glass-border);
+      border-radius: 32px;
+      padding: 70px 50px;
+      max-width: 720px;
+      margin: 0 auto;
+      box-shadow: var(--eth-glow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -20%;
+      width: 50%;
+      height: 80%;
+      background: radial-gradient(ellipse, rgba(212, 228, 247, 0.25) 0%, transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .cta-inner::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      left: -20%;
+      width: 50%;
+      height: 80%;
+      background: radial-gradient(ellipse, rgba(242, 218, 224, 0.2) 0%, transparent 70%);
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .cta h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta .cta-script {
+      font-family: 'La Belle Aurore', cursive;
+      font-size: 1.1rem;
+      color: var(--eth-wisteria);
+      margin-bottom: 1rem;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta p {
+      color: var(--eth-text-muted);
+      margin-bottom: 2rem;
+      max-width: 440px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta .btn-group {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      text-align: center;
+      padding: 60px 40px 32px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: var(--eth-gradient-iridescent);
+      opacity: 0.3;
+    }
+
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.4rem;
+      color: var(--eth-text-primary);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+
+    .footer-desc {
+      font-size: 0.88rem;
+      color: var(--eth-text-muted);
+      max-width: 460px;
+      margin: 0 auto 24px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: var(--eth-text-muted);
+      letter-spacing: 0.04em;
+      transition: color 0.4s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--eth-text-primary);
+    }
+
+    .footer-divider-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .footer-divider-dots span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--eth-lavender-haze);
+      opacity: 0.5;
+    }
+
+    .footer-copy {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      color: var(--eth-text-muted);
+      letter-spacing: 0.03em;
+      opacity: 0.6;
+    }
+
+    .footer-copy a {
+      color: var(--eth-wisteria);
+    }
+
+    /* ============================================
+       IRIDESCENT TEXT SHIMMER
+       ============================================ */
+    .shimmer-text {
+      background: var(--eth-gradient-iridescent);
+      background-size: 300% 100%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: shimmerFlow 8s ease-in-out infinite;
+    }
+
+    /* ============================================
+       FADE-IN ANIMATION
+       ============================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       SECTION BACKGROUNDS
+       ============================================ */
+    .section--pearl {
+      background: var(--eth-pearl);
+    }
+
+    .section--mist {
+      background: var(--eth-mist);
+    }
+
+    .section--gradient {
+      background: var(--eth-gradient-dawn);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 20px 24px;
+      }
+
+      .nav-links {
+        gap: 20px;
+      }
+
+      .hero {
+        min-height: 75vh;
+        padding: 60px 24px;
+      }
+
+      .section {
+        padding: clamp(48px, 8vw, 80px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 30px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-inner {
+        padding: 50px 28px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.85rem;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .orb {
+        opacity: 0.3;
+        filter: blur(60px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-links {
+        gap: 14px;
+      }
+
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .orb--1, .orb--2, .orb--3, .orb--4 {
+        animation: none;
+      }
+
+      .hero::before,
+      .hero::after {
+        animation: none;
+      }
+
+      .effect-haze {
+        animation: none;
+      }
+
+      .effect-shimmer {
+        animation: none;
+      }
+
+      .effect-orbs::before {
+        animation: none;
+      }
+
+      .effect-diffusion::before {
+        animation: none;
+      }
+
+      .effect-text-shimmer::after {
+        animation: none;
+      }
+
+      .shimmer-text {
+        animation: none;
+      }
+
+      .card, .color-chip, .effect-demo, .btn, .card .tag {
+        transition: none;
+      }
+
+      .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient glow orbs -->
+  <div class="orb orb--1"></div>
+  <div class="orb orb--2"></div>
+  <div class="orb orb--3"></div>
+  <div class="orb orb--4"></div>
+
+  <div class="page-content">
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+      <a href="#" class="nav-logo">Ethereal</a>
+      <div class="nav-links">
+        <a href="#hero">Atmosphere</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <header class="hero" id="hero">
+      <div class="hero-content">
+        <p class="hero-tagline">Design Aesthetic Reference</p>
+        <span class="hero-script">a place of gentle light</span>
+        <h1>Ethereal</h1>
+        <p class="hero-desc">
+          A dreamy, soft, and otherworldly design aesthetic built on light diffusion, pastel hazes, blurred edges, and luminous glow &mdash; where every surface breathes and every edge dissolves into atmosphere.
+        </p>
+        <div class="hero-buttons">
+          <a href="#components" class="btn">Explore Components</a>
+          <a href="#palette" class="btn btn--ghost">View Palette</a>
+        </div>
+      </div>
+    </header>
+
+    <hr class="divider">
+
+    <!-- ===== TYPOGRAPHY SECTION ===== -->
+    <section class="section section--pearl" id="typography">
+      <div class="container">
+        <p class="section-label">Typography</p>
+        <h2 class="section-title">Thin, Airy &amp; Luminous</h2>
+        <p class="section-subtitle">light weights, generous spacing, whispered elegance</p>
+
+        <div class="typo-showcase">
+          <div class="typo-left">
+            <div class="typo-sample">
+              <p class="typo-sample-label">Display / Cormorant Garamond 300</p>
+              <p class="typo-display">Gentle Light</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Heading / Cormorant Garamond 400</p>
+              <p class="typo-heading">Dissolved Boundaries</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Subheading / Raleway 200</p>
+              <p class="typo-subheading">Luminous &amp; Weightless</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Body / Nunito 300</p>
+              <p class="typo-body">Soft rounded sans-serif for comfortable reading. Every word floats within an atmosphere of gentle luminescence rather than sitting on a rigid scaffold.</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Script / La Belle Aurore</p>
+              <p class="typo-script">whispered calligraphy</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Label / Nunito 400 Uppercase</p>
+              <p class="typo-label">Navigation &amp; Interface Labels</p>
+            </div>
+          </div>
+          <div class="typo-right fade-in">
+            <h3>Type Scale</h3>
+            <div class="typo-scale">
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">5.5rem</span>
+                <span style="font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 2rem; color: var(--eth-text-primary);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">2.8rem</span>
+                <span style="font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 1.6rem; color: var(--eth-text-primary);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1.4rem</span>
+                <span style="font-family: 'Raleway', sans-serif; font-weight: 200; font-size: 1.2rem; color: var(--eth-text-body); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1.2rem</span>
+                <span style="font-family: 'La Belle Aurore', cursive; font-size: 1.1rem; color: var(--eth-wisteria);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1rem</span>
+                <span style="font-family: 'Nunito', sans-serif; font-weight: 300; font-size: 1rem; color: var(--eth-text-body);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">0.8rem</span>
+                <span style="font-family: 'Nunito', sans-serif; font-weight: 400; font-size: 0.8rem; color: var(--eth-text-muted); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(181, 154, 216, 0.15);">
+              <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+              <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+                <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: var(--eth-text-primary);">Cormorant Garamond 300</strong> + <strong style="font-family: 'Nunito', sans-serif; font-weight: 300;">Nunito 300</strong><br>
+                <span style="color: var(--eth-text-muted); font-size: 0.85rem;">Classical elegance meets soft warmth</span>
+              </p>
+              <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+                <strong style="font-family: 'Prata', serif; color: var(--eth-text-primary);">Prata</strong> + <strong style="font-family: 'Raleway', sans-serif; font-weight: 300;">Raleway 300</strong><br>
+                <span style="color: var(--eth-text-muted); font-size: 0.85rem;">High-contrast drama with delicate lightness</span>
+              </p>
+              <p style="font-size: 0.92rem; line-height: 1.7;">
+                <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 400; color: var(--eth-text-primary);">Cormorant Garamond 400</strong> + <strong style="font-family: 'Raleway', sans-serif; font-weight: 300;">Raleway 300</strong><br>
+                <span style="color: var(--eth-text-muted); font-size: 0.85rem;">Traditional refinement, modern airiness</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===== COLOR PALETTE SECTION ===== -->
+    <section class="section section--mist" id="palette">
+      <div class="container">
+        <p class="section-label">Color Palette</p>
+        <h2 class="section-title">Pastel Luminescence</h2>
+        <p class="section-subtitle">colors that emit their own quiet light</p>
+
+        <div class="palette-grid">
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #FAF8FF;"></div>
+            <div class="color-info">
+              <div class="color-name">Pearl White</div>
+              <div class="color-hex">#FAF8FF</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #F0ECF5;"></div>
+            <div class="color-info">
+              <div class="color-name">Morning Mist</div>
+              <div class="color-hex">#F0ECF5</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #DDD3EC;"></div>
+            <div class="color-info">
+              <div class="color-name">Lavender Haze</div>
+              <div class="color-hex">#DDD3EC</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #C4B1DC;"></div>
+            <div class="color-info">
+              <div class="color-name">Wisteria</div>
+              <div class="color-hex">#C4B1DC</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #B59AD8;"></div>
+            <div class="color-info">
+              <div class="color-name">Soft Lilac</div>
+              <div class="color-hex">#B59AD8</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #F2DAE0;"></div>
+            <div class="color-info">
+              <div class="color-name">Blush Cloud</div>
+              <div class="color-hex">#F2DAE0</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #E8C1CA;"></div>
+            <div class="color-info">
+              <div class="color-name">Rose Quartz</div>
+              <div class="color-hex">#E8C1CA</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #D4E4F7;"></div>
+            <div class="color-info">
+              <div class="color-name">Powder Blue</div>
+              <div class="color-hex">#D4E4F7</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #BDD5F0;"></div>
+            <div class="color-info">
+              <div class="color-name">Sky Veil</div>
+              <div class="color-hex">#BDD5F0</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #D5EDE6;"></div>
+            <div class="color-info">
+              <div class="color-name">Seafoam Whisper</div>
+              <div class="color-hex">#D5EDE6</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #F5EDD6;"></div>
+            <div class="color-info">
+              <div class="color-name">Champagne Glow</div>
+              <div class="color-hex">#F5EDD6</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #E6E0F3;"></div>
+            <div class="color-info">
+              <div class="color-name">Opal</div>
+              <div class="color-hex">#E6E0F3</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #8A7CA8;"></div>
+            <div class="color-info">
+              <div class="color-name">Moonstone</div>
+              <div class="color-hex">#8A7CA8</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: #5E4F78;"></div>
+            <div class="color-info">
+              <div class="color-name">Dusk Violet</div>
+              <div class="color-hex">#5E4F78</div>
+            </div>
+          </div>
+          <div class="color-chip fade-in">
+            <div class="color-swatch" style="background: linear-gradient(135deg, #D4E4F7, #DDD3EC, #F2DAE0, #D5EDE6); position: relative;">
+              <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.35) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.25) 0%, transparent 40%);"></div>
+            </div>
+            <div class="color-info">
+              <div class="color-name">Iridescent</div>
+              <div class="color-hex">Gradient</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+    <section class="section section--pearl" id="components">
+      <div class="container">
+        <p class="section-label">Components</p>
+        <h2 class="section-title">Translucent Glass &amp; Soft Glow</h2>
+        <p class="section-subtitle">floating, weightless, luminous</p>
+
+        <div class="card-grid">
+          <div class="card fade-in">
+            <div class="card-icon card-icon--lavender">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="5" stroke="#B59AD8" stroke-width="1.5"/>
+                <path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="#B59AD8" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Radiant Glow</h3>
+            <p>Every element emits a gentle luminescence. Soft halos and ambient light replace hard shadows, creating depth through radiance rather than darkness.</p>
+            <span class="tag">Light</span>
+            <span class="tag">Glow</span>
+          </div>
+          <div class="card fade-in">
+            <div class="card-icon card-icon--blue">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke="#BDD5F0" stroke-width="1.5"/>
+                <path d="M8 12s1.5 3 4 3 4-3 4-3-1.5-3-4-3-4 3-4 3z" stroke="#BDD5F0" stroke-width="1.5"/>
+              </svg>
+            </div>
+            <h3>Dissolved Edges</h3>
+            <p>Boundaries blur and soften. Translucent glass, feathered gradients, and diffused imagery create an atmosphere where form melts into light.</p>
+            <span class="tag">Blur</span>
+            <span class="tag">Soft</span>
+          </div>
+          <div class="card fade-in">
+            <div class="card-icon card-icon--blush">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" stroke="#E8C1CA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h3>Quiet Presence</h3>
+            <p>Space breathes. Generous whitespace is not emptiness but luminous atmosphere, holding each element in a gentle, floating suspension.</p>
+            <span class="tag">Space</span>
+            <span class="tag">Calm</span>
+          </div>
+          <div class="card fade-in">
+            <div class="card-icon card-icon--seafoam">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 22c5.52 0 10-4.48 10-10S17.52 2 12 2 2 6.48 2 12s4.48 10 10 10z" stroke="#8BC5B8" stroke-width="1.5"/>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#8BC5B8" stroke-width="1.5" stroke-linecap="round"/>
+                <line x1="9" y1="9" x2="9.01" y2="9" stroke="#8BC5B8" stroke-width="2" stroke-linecap="round"/>
+                <line x1="15" y1="9" x2="15.01" y2="9" stroke="#8BC5B8" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <h3>Organic Flow</h3>
+            <p>Rounded corners, elliptical blobs, and gently curving lines replace sharp angles. Every shape feels natural, as though shaped by water or wind.</p>
+            <span class="tag">Rounded</span>
+            <span class="tag">Organic</span>
+          </div>
+          <div class="card fade-in">
+            <div class="card-icon card-icon--champagne">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v18M3 12h18" stroke="#D4C08A" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M5.64 5.64l12.73 12.73M18.36 5.64L5.64 18.36" stroke="#D4C08A" stroke-width="1" stroke-linecap="round" opacity="0.5"/>
+              </svg>
+            </div>
+            <h3>Iridescent Surfaces</h3>
+            <p>Occasional rainbow-shimmer effects on surfaces or text suggest light refracting through crystal or pearl, adding a touch of quiet magic.</p>
+            <span class="tag">Shimmer</span>
+            <span class="tag">Crystal</span>
+          </div>
+          <div class="card fade-in">
+            <div class="card-icon card-icon--opal">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <rect x="3" y="3" width="18" height="18" rx="4" stroke="#B59AD8" stroke-width="1.5"/>
+                <path d="M3 9h18M9 3v18" stroke="#B59AD8" stroke-width="1" opacity="0.4"/>
+              </svg>
+            </div>
+            <h3>Translucent Layers</h3>
+            <p>Semi-transparent overlays, frosted-glass panels, and layered washes of color create atmospheric depth without hard separation or borders.</p>
+            <span class="tag">Glass</span>
+            <span class="tag">Layer</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===== EFFECTS SHOWCASE (6 EFFECTS) ===== -->
+    <section class="section section--mist" id="effects">
+      <div class="container">
+        <p class="section-label">Visual Effects</p>
+        <h2 class="section-title">CSS Atmosphere &amp; Glow</h2>
+        <p class="section-subtitle">all the luminous techniques, no image assets needed</p>
+
+        <div class="effects-grid">
+          <div class="effect-demo fade-in">
+            <div class="effect-preview effect-haze"></div>
+            <div class="effect-caption">
+              <h4>Soft Gradient Haze</h4>
+              <p>Overlapping radial gradients in pastels create the signature misty, glowing atmosphere.</p>
+            </div>
+          </div>
+          <div class="effect-demo fade-in">
+            <div class="effect-preview effect-shimmer"></div>
+            <div class="effect-caption">
+              <h4>Iridescent Shimmer</h4>
+              <p>Animated gradient flow across the iridescent spectrum suggests light through crystal.</p>
+            </div>
+          </div>
+          <div class="effect-demo fade-in">
+            <div class="effect-preview effect-frost"></div>
+            <div class="effect-caption">
+              <h4>Frosted Glass</h4>
+              <p>Backdrop-filter blur with translucent white creates the ethereal glassmorphism panel.</p>
+            </div>
+          </div>
+          <div class="effect-demo fade-in">
+            <div class="effect-preview effect-orbs">
+              <span class="orb-secondary"></span>
+            </div>
+            <div class="effect-caption">
+              <h4>Ambient Glow Orbs</h4>
+              <p>Large, softly blurred gradient blobs animate behind content for luminous depth.</p>
+            </div>
+          </div>
+          <div class="effect-demo fade-in">
+            <div class="effect-preview effect-diffusion"></div>
+            <div class="effect-caption">
+              <h4>Soft Blur Diffusion</h4>
+              <p>A pulsing, blurred radial center creates a light-emission effect on pastel backgrounds.</p>
+            </div>
+          </div>
+          <div class="effect-demo fade-in">
+            <div class="effect-preview effect-text-shimmer"></div>
+            <div class="effect-caption">
+              <h4>Gradient Text Shimmer</h4>
+              <p>Background-clip text with animated iridescent gradient produces shimmering typography.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===== BUTTON SHOWCASE (4 BUTTONS) ===== -->
+    <section class="section section--gradient">
+      <div class="container">
+        <p class="section-label">Interactive Elements</p>
+        <h2 class="section-title">Luminous Buttons</h2>
+        <p class="section-subtitle">soft, glowing, weightless</p>
+
+        <div class="button-showcase fade-in">
+          <a href="#" class="btn">Primary Glow</a>
+          <a href="#" class="btn btn--lilac">Lilac Haze</a>
+          <a href="#" class="btn btn--glass">Frosted Glass</a>
+          <a href="#" class="btn btn--ghost">Ghost Whisper</a>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===== BLOCKQUOTE SECTION ===== -->
+    <section class="section section--pearl">
+      <div class="container">
+        <div class="quote-block fade-in">
+          <blockquote>
+            The most beautiful things are not objects, not places &mdash; they are moments of light, suspended between one breath and the next.
+          </blockquote>
+          <cite>&mdash; On Impermanent Beauty</cite>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta">
+      <div class="cta-inner fade-in">
+        <h2>Step into the glow</h2>
+        <span class="cta-script">where softness becomes clarity</span>
+        <p>Join those who design with softness, intention, and light. Beauty begins at the threshold of stillness.</p>
+        <div class="btn-group">
+          <a href="#hero" class="btn">Begin</a>
+          <a href="#" class="btn btn--ghost">Explore Further</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <p class="footer-logo">Ethereal</p>
+      <p class="footer-desc">
+        A design aesthetic reference celebrating dreamy light diffusion, pastel hazes, and luminous glow &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Atmosphere</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-divider-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; <a href="#">Ethereal</a> &bull; Softness is not weakness &mdash; it is light, choosing to be gentle</p>
+    </footer>
+
+  </div>
+
+  <!-- Scroll fade-in script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(
+        function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        },
+        { threshold: 0.15 }
+      );
+
+      document.querySelectorAll('.fade-in').forEach(function(el) {
+        observer.observe(el);
+      });
+    });
+  </script>
+</body>
+</html>

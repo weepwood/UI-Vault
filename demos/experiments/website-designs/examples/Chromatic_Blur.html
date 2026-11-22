@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chromatic Blur -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --cb-bg-primary: #f7f5f2;
+      --cb-bg-secondary: #ede8e3;
+      --cb-bg-glass: rgba(255, 255, 255, 0.55);
+      --cb-bg-glass-border: rgba(255, 255, 255, 0.7);
+
+      /* --- Blur Color Fields --- */
+      --cb-lavender: #c8b8e8;
+      --cb-blush: #e8c4c8;
+      --cb-peach: #f0cdb5;
+      --cb-sky: #b5cce0;
+      --cb-sage: #b8ccba;
+
+      /* --- Accent / Focal Colors --- */
+      --cb-coral: #e07a6b;
+      --cb-rose: #d4728a;
+      --cb-amber: #d4a24e;
+
+      /* --- Text --- */
+      --cb-text-primary: #4a4550;
+      --cb-text-secondary: #8a7f96;
+      --cb-text-muted: #a899b8;
+      --cb-text-body: #7b6fa0;
+
+      /* --- Blur Values --- */
+      --cb-blur-sm: 20px;
+      --cb-blur-md: 40px;
+      --cb-blur-lg: 80px;
+      --cb-blur-xl: 120px;
+      --cb-glass-blur: 16px;
+
+      /* --- Radii --- */
+      --cb-radius-sm: 12px;
+      --cb-radius-md: 20px;
+      --cb-radius-lg: 32px;
+      --cb-radius-pill: 9999px;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--cb-bg-primary);
+      color: var(--cb-text-body);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      line-height: 1.75;
+      overflow-x: hidden;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      color: var(--cb-text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       AMBIENT BACKGROUND LAYER
+       ============================================ */
+    .cb-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .cb-background .blob {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .blob--1 {
+      width: 55vw;
+      height: 55vw;
+      top: -15%;
+      left: -10%;
+      background: radial-gradient(circle, rgba(200,184,232,0.45) 0%, transparent 70%);
+      filter: blur(100px);
+      animation: drift1 28s ease-in-out infinite alternate;
+    }
+
+    .blob--2 {
+      width: 45vw;
+      height: 45vw;
+      top: 10%;
+      right: -15%;
+      background: radial-gradient(circle, rgba(232,196,200,0.4) 0%, transparent 70%);
+      filter: blur(90px);
+      animation: drift2 24s ease-in-out infinite alternate;
+    }
+
+    .blob--3 {
+      width: 50vw;
+      height: 50vw;
+      bottom: -20%;
+      left: 20%;
+      background: radial-gradient(circle, rgba(181,204,224,0.4) 0%, transparent 70%);
+      filter: blur(110px);
+      animation: drift3 32s ease-in-out infinite alternate;
+    }
+
+    .blob--4 {
+      width: 30vw;
+      height: 30vw;
+      top: 45%;
+      left: 55%;
+      background: radial-gradient(circle, rgba(240,205,181,0.3) 0%, transparent 70%);
+      filter: blur(80px);
+      animation: drift1 20s ease-in-out infinite alternate-reverse;
+    }
+
+    .blob--5 {
+      width: 25vw;
+      height: 25vw;
+      bottom: 10%;
+      right: 10%;
+      background: radial-gradient(circle, rgba(184,204,186,0.25) 0%, transparent 70%);
+      filter: blur(70px);
+      animation: drift2 26s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes drift1 {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(4%, -3%) scale(1.06); }
+      100% { transform: translate(-2%, 2%) scale(0.97); }
+    }
+
+    @keyframes drift2 {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(-3%, 4%) scale(0.95); }
+      100% { transform: translate(2%, -1%) scale(1.04); }
+    }
+
+    @keyframes drift3 {
+      0%   { transform: translate(0, 0) scale(1); }
+      50%  { transform: translate(2%, 3%) scale(1.03); }
+      100% { transform: translate(-3%, -2%) scale(0.98); }
+    }
+
+    /* ============================================
+       GRAIN OVERLAY
+       ============================================ */
+    .cb-grain {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* ============================================
+       CONTENT LAYER
+       ============================================ */
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(247, 245, 242, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(200, 184, 232, 0.15);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 16px 40px;
+    }
+
+    .nav__logo {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      color: var(--cb-text-primary);
+      letter-spacing: -0.02em;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav__links a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--cb-text-secondary);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--cb-coral);
+      border-radius: 1px;
+      transition: width 0.2s ease, left 0.2s ease;
+    }
+
+    .nav__links a:hover {
+      color: var(--cb-text-primary);
+    }
+
+    .nav__links a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav__hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--cb-text-primary);
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+      position: relative;
+    }
+
+    .hero__inner {
+      max-width: 720px;
+    }
+
+    .hero__overline {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cb-text-muted);
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+      color: var(--cb-text-primary);
+    }
+
+    /* Chromatic text shift effect */
+    .chromatic-text {
+      position: relative;
+      display: inline;
+    }
+
+    .chromatic-text::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: -3px;
+      color: rgba(200, 184, 232, 0.4);
+      filter: blur(2px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .chromatic-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 3px;
+      color: rgba(232, 196, 200, 0.4);
+      filter: blur(2px);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      margin-bottom: 2.5rem;
+      color: var(--cb-text-body);
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .hero__actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Bokeh circles floating in hero */
+    .hero__bokeh {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      opacity: 0.35;
+      animation: bokehFloat 20s ease-in-out infinite;
+    }
+
+    .hero__bokeh--1 {
+      width: 80px;
+      height: 80px;
+      background: var(--cb-lavender);
+      filter: blur(20px);
+      top: 15%;
+      left: 10%;
+      animation-delay: 0s;
+    }
+
+    .hero__bokeh--2 {
+      width: 50px;
+      height: 50px;
+      background: var(--cb-blush);
+      filter: blur(15px);
+      top: 25%;
+      right: 12%;
+      animation-delay: -5s;
+    }
+
+    .hero__bokeh--3 {
+      width: 100px;
+      height: 100px;
+      background: var(--cb-sky);
+      filter: blur(25px);
+      bottom: 20%;
+      left: 18%;
+      animation-delay: -10s;
+    }
+
+    .hero__bokeh--4 {
+      width: 60px;
+      height: 60px;
+      background: var(--cb-peach);
+      filter: blur(18px);
+      bottom: 30%;
+      right: 8%;
+      animation-delay: -15s;
+    }
+
+    @keyframes bokehFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      25%      { transform: translate(10px, -15px) scale(1.05); }
+      50%      { transform: translate(-5px, 10px) scale(0.95); }
+      75%      { transform: translate(8px, 5px) scale(1.02); }
+    }
+
+    /* ============================================
+       SHARED SECTION STYLES
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section__header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .section__header h2 {
+      font-size: clamp(1.75rem, 3.5vw, 2.5rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .section__header p {
+      font-size: 1.05rem;
+      color: var(--cb-text-secondary);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* Frosted divider */
+    .cb-divider {
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--cb-lavender), var(--cb-blush), var(--cb-sky));
+      border: none;
+      border-radius: 2px;
+      margin: 0 auto;
+      opacity: 0.5;
+      filter: blur(1px);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      border: none;
+      border-radius: var(--cb-radius-pill);
+      padding: 14px 36px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.3s ease, filter 0.3s ease, background 0.3s ease;
+    }
+
+    .btn--primary {
+      background: var(--cb-coral);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(224, 122, 107, 0.25);
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(224, 122, 107, 0.35);
+      filter: brightness(1.05);
+    }
+
+    .btn--primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 12px rgba(224, 122, 107, 0.2);
+    }
+
+    .btn--ghost {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(200, 184, 232, 0.35);
+      color: var(--cb-text-primary);
+      box-shadow: none;
+    }
+
+    .btn--ghost:hover {
+      background: rgba(255, 255, 255, 0.7);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(74, 69, 80, 0.08);
+      border-color: rgba(200, 184, 232, 0.6);
+    }
+
+    .btn--soft {
+      background: rgba(200, 184, 232, 0.2);
+      color: var(--cb-text-primary);
+      box-shadow: none;
+    }
+
+    .btn--soft:hover {
+      background: rgba(200, 184, 232, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn--rose {
+      background: var(--cb-rose);
+      color: #ffffff;
+      box-shadow: 0 4px 20px rgba(212, 114, 138, 0.25);
+    }
+
+    .btn--rose:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(212, 114, 138, 0.35);
+      filter: brightness(1.05);
+    }
+
+    /* ============================================
+       GLASS CARD
+       ============================================ */
+    .glass-card {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(var(--cb-glass-blur));
+      -webkit-backdrop-filter: blur(var(--cb-glass-blur));
+      border: 1px solid var(--cb-bg-glass-border);
+      border-radius: var(--cb-radius-md);
+      padding: 36px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.65);
+      box-shadow: 0 16px 48px rgba(74, 69, 80, 0.1);
+    }
+
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      top: -25px;
+      right: -25px;
+      filter: blur(35px);
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .glass-card:nth-child(1)::after { background: var(--cb-lavender); }
+    .glass-card:nth-child(2)::after { background: var(--cb-blush); }
+    .glass-card:nth-child(3)::after { background: var(--cb-sky); }
+    .glass-card:nth-child(4)::after { background: var(--cb-peach); }
+    .glass-card:nth-child(5)::after { background: var(--cb-sage); }
+    .glass-card:nth-child(6)::after { background: var(--cb-rose); }
+
+    .glass-card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--cb-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .glass-card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .glass-card p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--cb-text-body);
+    }
+
+    /* ============================================
+       GRID LAYOUTS
+       ============================================ */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      padding: var(--section-pad) 40px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .typo-glass {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(var(--cb-glass-blur));
+      -webkit-backdrop-filter: blur(var(--cb-glass-blur));
+      border: 1px solid var(--cb-bg-glass-border);
+      border-radius: var(--cb-radius-lg);
+      padding: 56px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .typo-glass::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      top: -60px;
+      left: -60px;
+      background: rgba(200, 184, 232, 0.25);
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .typo-glass::after {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      bottom: -40px;
+      right: -40px;
+      background: rgba(240, 205, 181, 0.2);
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .typo-glass > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .typo-row {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(200, 184, 232, 0.15);
+    }
+
+    .typo-row:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .typo-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--cb-text-muted);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .typo-display {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: var(--cb-text-primary);
+    }
+
+    .typo-h2 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      font-weight: 600;
+      color: var(--cb-text-primary);
+    }
+
+    .typo-h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--cb-text-primary);
+    }
+
+    .typo-body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--cb-text-body);
+      max-width: 580px;
+    }
+
+    .typo-caption {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      color: var(--cb-text-secondary);
+    }
+
+    .typo-label-text {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cb-text-muted);
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .swatch {
+      text-align: center;
+    }
+
+    .swatch__color {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: var(--cb-radius-md);
+      margin-bottom: 12px;
+      border: 1px solid rgba(200, 184, 232, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .swatch__color:hover {
+      transform: scale(1.05);
+      box-shadow: 0 8px 32px rgba(74, 69, 80, 0.12);
+    }
+
+    .swatch__name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--cb-text-primary);
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .swatch__hex {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      color: var(--cb-text-muted);
+    }
+
+    /* Glass swatch variant for transparent colors */
+    .swatch__color--glass {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--cb-bg-glass-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .swatch__color--glass::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(200,184,232,0.2), rgba(232,196,200,0.2), rgba(181,204,224,0.2));
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effect-card {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(var(--cb-glass-blur));
+      -webkit-backdrop-filter: blur(var(--cb-glass-blur));
+      border: 1px solid var(--cb-bg-glass-border);
+      border-radius: var(--cb-radius-md);
+      padding: 28px;
+      text-align: center;
+    }
+
+    .effect-card__demo {
+      height: 160px;
+      border-radius: var(--cb-radius-sm);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--cb-bg-secondary);
+    }
+
+    .effect-card h3 {
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: var(--cb-text-primary);
+    }
+
+    .effect-card p {
+      font-size: 0.85rem;
+      color: var(--cb-text-secondary);
+    }
+
+    /* Effect 1: Chromatic Aberration Text */
+    .fx-chromatic-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--cb-text-primary);
+      position: relative;
+    }
+
+    .fx-chromatic-text::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: -4px;
+      color: rgba(200, 184, 232, 0.5);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    .fx-chromatic-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 4px;
+      color: rgba(232, 196, 200, 0.5);
+      filter: blur(2px);
+      pointer-events: none;
+    }
+
+    /* Effect 2: Bokeh Lights */
+    .fx-bokeh-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .fx-bokeh {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: bokehFloat 8s ease-in-out infinite;
+    }
+
+    .fx-bokeh--a {
+      width: 40px; height: 40px;
+      background: var(--cb-lavender);
+      filter: blur(10px);
+      top: 20%; left: 15%;
+    }
+
+    .fx-bokeh--b {
+      width: 60px; height: 60px;
+      background: var(--cb-blush);
+      filter: blur(15px);
+      top: 40%; left: 50%;
+      animation-delay: -3s;
+    }
+
+    .fx-bokeh--c {
+      width: 30px; height: 30px;
+      background: var(--cb-sky);
+      filter: blur(8px);
+      top: 60%; left: 70%;
+      animation-delay: -6s;
+    }
+
+    .fx-bokeh--d {
+      width: 50px; height: 50px;
+      background: var(--cb-peach);
+      filter: blur(12px);
+      top: 25%; left: 75%;
+      animation-delay: -2s;
+    }
+
+    .fx-bokeh--e {
+      width: 35px; height: 35px;
+      background: var(--cb-sage);
+      filter: blur(9px);
+      top: 70%; left: 25%;
+      animation-delay: -4s;
+    }
+
+    /* Effect 3: Frosted Glass Panel */
+    .fx-frost-bg {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--cb-lavender), var(--cb-blush), var(--cb-sky));
+    }
+
+    .fx-frost-panel {
+      position: relative;
+      z-index: 1;
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: var(--cb-radius-sm);
+      padding: 16px 24px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--cb-text-primary);
+    }
+
+    /* Effect 4: Color Field Drift */
+    .fx-drift-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      border-radius: var(--cb-radius-sm);
+    }
+
+    .fx-drift-blob {
+      position: absolute;
+      border-radius: 50%;
+    }
+
+    .fx-drift-blob--a {
+      width: 100px; height: 100px;
+      background: rgba(200, 184, 232, 0.5);
+      filter: blur(30px);
+      top: -10%; left: -10%;
+      animation: drift1 12s ease-in-out infinite alternate;
+    }
+
+    .fx-drift-blob--b {
+      width: 80px; height: 80px;
+      background: rgba(232, 196, 200, 0.45);
+      filter: blur(25px);
+      bottom: -10%; right: -10%;
+      animation: drift2 10s ease-in-out infinite alternate;
+    }
+
+    .fx-drift-blob--c {
+      width: 60px; height: 60px;
+      background: rgba(181, 204, 224, 0.4);
+      filter: blur(20px);
+      top: 40%; left: 50%;
+      animation: drift3 14s ease-in-out infinite alternate;
+    }
+
+    /* Effect 5: Gradient Border */
+    .fx-gradient-border {
+      position: relative;
+      padding: 3px;
+      border-radius: var(--cb-radius-md);
+      background: linear-gradient(135deg, var(--cb-lavender), var(--cb-blush), var(--cb-sky), var(--cb-peach));
+      background-size: 200% 200%;
+      animation: borderShift 6s ease infinite;
+    }
+
+    .fx-gradient-border__inner {
+      background: var(--cb-bg-primary);
+      border-radius: calc(var(--cb-radius-md) - 3px);
+      padding: 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--cb-text-primary);
+      text-align: center;
+    }
+
+    @keyframes borderShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Effect 6: Diffused Shadow Depth */
+    .fx-shadow-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 16px;
+      width: 100%;
+    }
+
+    .fx-shadow-layer {
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: var(--cb-radius-sm);
+      padding: 10px 16px;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      color: var(--cb-text-body);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .fx-shadow-layer:nth-child(1) {
+      box-shadow: 0 2px 8px rgba(74, 69, 80, 0.04);
+    }
+
+    .fx-shadow-layer:nth-child(2) {
+      box-shadow: 0 8px 24px rgba(74, 69, 80, 0.06);
+    }
+
+    .fx-shadow-layer:nth-child(3) {
+      box-shadow: 0 16px 48px rgba(74, 69, 80, 0.1);
+    }
+
+    .fx-shadow-layer:hover {
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .cb-blockquote-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .cb-blockquote {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(var(--cb-glass-blur));
+      -webkit-backdrop-filter: blur(var(--cb-glass-blur));
+      border: 1px solid var(--cb-bg-glass-border);
+      border-radius: var(--cb-radius-lg);
+      padding: 48px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cb-blockquote::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      top: -50px;
+      left: -50px;
+      background: rgba(200, 184, 232, 0.2);
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .cb-blockquote::after {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      bottom: -30px;
+      right: -30px;
+      background: rgba(240, 205, 181, 0.2);
+      border-radius: 50%;
+      filter: blur(40px);
+      pointer-events: none;
+    }
+
+    .cb-blockquote__mark {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 4rem;
+      font-weight: 700;
+      color: var(--cb-lavender);
+      line-height: 1;
+      display: block;
+      margin-bottom: 8px;
+      opacity: 0.5;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cb-blockquote p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--cb-text-primary);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cb-blockquote cite {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--cb-text-secondary);
+      font-style: normal;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: var(--section-pad) 40px;
+      position: relative;
+    }
+
+    .cta__inner {
+      background: var(--cb-bg-glass);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--cb-bg-glass-border);
+      border-radius: var(--cb-radius-lg);
+      padding: 72px 48px;
+      max-width: 780px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta__inner::before {
+      content: '';
+      position: absolute;
+      width: 250px;
+      height: 250px;
+      top: -60px;
+      right: -60px;
+      background: rgba(232, 196, 200, 0.3);
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .cta__inner::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      bottom: -50px;
+      left: -50px;
+      background: rgba(181, 204, 224, 0.25);
+      border-radius: 50%;
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .cta__inner h2 {
+      font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta__inner p {
+      font-size: 1.1rem;
+      color: var(--cb-text-body);
+      margin-bottom: 2rem;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta__actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(200, 184, 232, 0.15);
+    }
+
+    .footer__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer__logo {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--cb-text-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .footer__links a {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      color: var(--cb-text-secondary);
+      transition: color 0.2s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--cb-text-primary);
+    }
+
+    .footer__copy {
+      font-size: 0.8rem;
+      color: var(--cb-text-muted);
+    }
+
+    .footer__divider {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--cb-lavender), var(--cb-blush), var(--cb-sky));
+      border: none;
+      border-radius: 1px;
+      margin: 0 auto 24px;
+      opacity: 0.4;
+      filter: blur(0.5px);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav__links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(247, 245, 242, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        flex-direction: column;
+        padding: 20px 40px;
+        gap: 16px;
+        border-bottom: 1px solid rgba(200, 184, 232, 0.15);
+      }
+
+      .nav__links.open {
+        display: flex;
+      }
+
+      .nav__hamburger {
+        display: flex;
+      }
+
+      .nav__hamburger.open span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .nav__hamburger.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .nav__hamburger.open span:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+      }
+
+      .hero {
+        min-height: 70vh;
+        padding: 60px 24px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 8vw, 3rem);
+      }
+
+      .section,
+      .typo-showcase,
+      .cta-section {
+        padding-left: 24px;
+        padding-right: 24px;
+      }
+
+      .typo-glass {
+        padding: 36px 24px;
+      }
+
+      .grid-2,
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 14px;
+      }
+
+      .cb-blockquote {
+        padding: 32px 24px;
+      }
+
+      .cta__inner {
+        padding: 48px 24px;
+      }
+
+      .nav__inner {
+        padding: 16px 24px;
+      }
+
+      .footer {
+        padding: 36px 24px;
+      }
+
+      /* Reduce blur blobs for mobile performance */
+      .blob--4,
+      .blob--5 {
+        display: none;
+      }
+
+      .blob--1,
+      .blob--2,
+      .blob--3 {
+        filter: blur(60px);
+      }
+
+      .hero__bokeh {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero__actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta__actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer__links {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== AMBIENT BACKGROUND ===== -->
+  <div class="cb-background" aria-hidden="true">
+    <div class="blob blob--1"></div>
+    <div class="blob blob--2"></div>
+    <div class="blob blob--3"></div>
+    <div class="blob blob--4"></div>
+    <div class="blob blob--5"></div>
+  </div>
+
+  <!-- ===== GRAIN OVERLAY ===== -->
+  <div class="cb-grain" aria-hidden="true"></div>
+
+  <!-- ===== CONTENT LAYER ===== -->
+  <div class="content">
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+      <div class="nav__inner">
+        <span class="nav__logo">Chromatic Blur</span>
+        <div class="nav__links" id="navLinks">
+          <a href="#hero">Home</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Palette</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+        <button class="nav__hamburger" id="hamburger" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <header class="hero" id="hero">
+      <div class="hero__bokeh hero__bokeh--1" aria-hidden="true"></div>
+      <div class="hero__bokeh hero__bokeh--2" aria-hidden="true"></div>
+      <div class="hero__bokeh hero__bokeh--3" aria-hidden="true"></div>
+      <div class="hero__bokeh hero__bokeh--4" aria-hidden="true"></div>
+      <div class="hero__inner">
+        <span class="hero__overline">Design Aesthetic Reference</span>
+        <h1>
+          Where Light
+          <span class="chromatic-text" data-text="Softly Dissolves">Softly Dissolves</span>
+        </h1>
+        <p>
+          Chromatic Blur embraces the beauty of defocus -- ambient color fields, frosted glass surfaces, and dreamy bokeh elements create interfaces that feel like looking through light itself.
+        </p>
+        <div class="hero__actions">
+          <a href="#components" class="btn btn--primary">Explore Components</a>
+          <a href="#palette" class="btn btn--ghost">View Palette</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== TYPOGRAPHY SHOWCASE ===== -->
+    <section class="typo-showcase" id="typography">
+      <div class="section__header">
+        <h2>Typography Showcase</h2>
+        <p>Light, rounded letterforms that complement the soft color fields beneath them</p>
+      </div>
+      <div class="typo-glass">
+        <div class="typo-row">
+          <span class="typo-label">Display -- DM Sans 700</span>
+          <div class="typo-display">Ambient Horizons</div>
+        </div>
+        <div class="typo-row">
+          <span class="typo-label">Heading 2 -- DM Sans 600</span>
+          <div class="typo-h2">Defocused Color Fields</div>
+        </div>
+        <div class="typo-row">
+          <span class="typo-label">Heading 3 -- DM Sans 600</span>
+          <div class="typo-h3">Frosted Glass Surfaces</div>
+        </div>
+        <div class="typo-row">
+          <span class="typo-label">Body -- Nunito 400</span>
+          <p class="typo-body">
+            Chromatic Blur typography sits atop diffused color beds with careful contrast management, using semi-transparent background chips or subtle text shadows to remain legible against the shifting hues beneath. Generous letter-spacing and line-height create an airy, unhurried reading rhythm.
+          </p>
+        </div>
+        <div class="typo-row">
+          <span class="typo-label">Caption -- Nunito 400</span>
+          <span class="typo-caption">Soft, desaturated tones create ambient backgrounds that shift and breathe.</span>
+        </div>
+        <div class="typo-row">
+          <span class="typo-label">Label -- DM Sans 500 Uppercase</span>
+          <span class="typo-label-text">Interface Component Label</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== COLOR PALETTE SECTION ===== -->
+    <section class="section" id="palette">
+      <div class="section__header">
+        <h2>Color Palette</h2>
+        <p>Soft, chalky pastels for ambient fields with warmer saturated tones for focal accents</p>
+      </div>
+      <div class="palette-grid">
+        <div class="swatch">
+          <div class="swatch__color" style="background: #f7f5f2;"></div>
+          <span class="swatch__name">Cloud White</span>
+          <span class="swatch__hex">#F7F5F2</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #ede8e3;"></div>
+          <span class="swatch__name">Warm Mist</span>
+          <span class="swatch__hex">#EDE8E3</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #c8b8e8;"></div>
+          <span class="swatch__name">Lavender Haze</span>
+          <span class="swatch__hex">#C8B8E8</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #e8c4c8;"></div>
+          <span class="swatch__name">Powder Blush</span>
+          <span class="swatch__hex">#E8C4C8</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #f0cdb5;"></div>
+          <span class="swatch__name">Peach Glow</span>
+          <span class="swatch__hex">#F0CDB5</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #b5cce0;"></div>
+          <span class="swatch__name">Sky Wash</span>
+          <span class="swatch__hex">#B5CCE0</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #b8ccba;"></div>
+          <span class="swatch__name">Sage Mist</span>
+          <span class="swatch__hex">#B8CCBA</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #e07a6b;"></div>
+          <span class="swatch__name">Coral Focus</span>
+          <span class="swatch__hex">#E07A6B</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #d4728a;"></div>
+          <span class="swatch__name">Rose Lens</span>
+          <span class="swatch__hex">#D4728A</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #d4a24e;"></div>
+          <span class="swatch__name">Amber Flare</span>
+          <span class="swatch__hex">#D4A24E</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #7b6fa0;"></div>
+          <span class="swatch__name">Soft Indigo</span>
+          <span class="swatch__hex">#7B6FA0</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #4a4550;"></div>
+          <span class="swatch__name">Charcoal Fog</span>
+          <span class="swatch__hex">#4A4550</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #8a7f96;"></div>
+          <span class="swatch__name">Muted Plum</span>
+          <span class="swatch__hex">#8A7F96</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #a899b8;"></div>
+          <span class="swatch__name">Faded Dusk</span>
+          <span class="swatch__hex">#A899B8</span>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color--glass swatch__color"></div>
+          <span class="swatch__name">Glass Frost</span>
+          <span class="swatch__hex">rgba(255,255,255,0.55)</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== COMPONENT CARDS ===== -->
+    <section class="section" id="components">
+      <div class="section__header">
+        <h2>Component Cards</h2>
+        <p>Frosted glass containers that separate content from the ambient background</p>
+      </div>
+      <div class="grid-3">
+        <div class="glass-card">
+          <div class="glass-card__icon" style="background: rgba(200,184,232,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7b6fa0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+          </div>
+          <h3>Color Field Backgrounds</h3>
+          <p>Oversized radial gradients with heavy Gaussian blur create painterly backgrounds that shift and breathe beneath your content.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card__icon" style="background: rgba(232,196,200,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d4728a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Layered Transparency</h3>
+          <p>Multiple semi-transparent color layers stack to produce rich, complex color interactions. Let the eye blend rather than the computer.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card__icon" style="background: rgba(181,204,224,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#5b8fba" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h3>Bokeh Decorations</h3>
+          <p>Circular, semi-transparent shapes of varying sizes simulate out-of-focus light points, adding depth and whimsy to every composition.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card__icon" style="background: rgba(240,205,181,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d4a24e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22 6 12 13 2 6"/></svg>
+          </div>
+          <h3>Frosted Glass Surfaces</h3>
+          <p>Cards, modals, and navigation use backdrop-filter blur to extend the defocused language into every interactive element.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card__icon" style="background: rgba(184,204,186,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6a8f6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.24 12.24a6 6 0 00-8.49-8.49L5 10.5V19h8.5z"/><line x1="16" y1="8" x2="2" y2="22"/><line x1="17.5" y1="15" x2="9" y2="15"/></svg>
+          </div>
+          <h3>Ambient Animation</h3>
+          <p>Color fields drift, pulse, and shift at glacial speeds -- creating a living, breathing background. The user senses movement rather than sees it.</p>
+        </div>
+        <div class="glass-card">
+          <div class="glass-card__icon" style="background: rgba(212,114,138,0.2);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#d4728a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <h3>Chromatic Separation</h3>
+          <p>Offset color shadows mimic lens chromatic aberration -- red-shifted and blue-shifted layers create that signature defocused glow on headlines.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== EFFECTS SHOWCASE ===== -->
+    <section class="section" id="effects">
+      <div class="section__header">
+        <h2>Effects Showcase</h2>
+        <p>CSS-only techniques that bring the chromatic blur language to life</p>
+      </div>
+      <div class="grid-3">
+        <!-- Effect 1: Chromatic Aberration Text -->
+        <div class="effect-card">
+          <div class="effect-card__demo">
+            <span class="fx-chromatic-text" data-text="Blur">Blur</span>
+          </div>
+          <h3>Chromatic Aberration</h3>
+          <p>Color-separated text shadows using pseudo-elements with offset and blur</p>
+        </div>
+
+        <!-- Effect 2: Bokeh Lights -->
+        <div class="effect-card">
+          <div class="effect-card__demo">
+            <div class="fx-bokeh-container">
+              <div class="fx-bokeh fx-bokeh--a"></div>
+              <div class="fx-bokeh fx-bokeh--b"></div>
+              <div class="fx-bokeh fx-bokeh--c"></div>
+              <div class="fx-bokeh fx-bokeh--d"></div>
+              <div class="fx-bokeh fx-bokeh--e"></div>
+            </div>
+          </div>
+          <h3>Bokeh Light Points</h3>
+          <p>Floating, blurred circles that simulate out-of-focus light sources</p>
+        </div>
+
+        <!-- Effect 3: Frosted Glass Panel -->
+        <div class="effect-card">
+          <div class="effect-card__demo">
+            <div class="fx-frost-bg"></div>
+            <div class="fx-frost-panel">Frosted Surface</div>
+          </div>
+          <h3>Frosted Glass</h3>
+          <p>Translucent panels using backdrop-filter blur over gradient backgrounds</p>
+        </div>
+
+        <!-- Effect 4: Color Field Drift -->
+        <div class="effect-card">
+          <div class="effect-card__demo" style="padding: 0;">
+            <div class="fx-drift-container">
+              <div class="fx-drift-blob fx-drift-blob--a"></div>
+              <div class="fx-drift-blob fx-drift-blob--b"></div>
+              <div class="fx-drift-blob fx-drift-blob--c"></div>
+            </div>
+          </div>
+          <h3>Color Field Drift</h3>
+          <p>Slowly moving gradient blobs that create a living, breathing background</p>
+        </div>
+
+        <!-- Effect 5: Gradient Border -->
+        <div class="effect-card">
+          <div class="effect-card__demo">
+            <div class="fx-gradient-border">
+              <div class="fx-gradient-border__inner">Shifting Border</div>
+            </div>
+          </div>
+          <h3>Gradient Border</h3>
+          <p>An animated multi-color border that shifts through the palette smoothly</p>
+        </div>
+
+        <!-- Effect 6: Diffused Shadow Depth -->
+        <div class="effect-card">
+          <div class="effect-card__demo">
+            <div class="fx-shadow-stack">
+              <div class="fx-shadow-layer">Subtle depth</div>
+              <div class="fx-shadow-layer">Medium depth</div>
+              <div class="fx-shadow-layer">Deep elevation</div>
+            </div>
+          </div>
+          <h3>Diffused Shadows</h3>
+          <p>Large-spread, low-opacity shadows that extend the blur philosophy into depth</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== BUTTON SHOWCASE ===== -->
+    <section class="section">
+      <div class="section__header">
+        <h2>Button Showcase</h2>
+        <p>Soft, rounded buttons with gentle hover states and diffused shadows</p>
+      </div>
+      <div class="button-showcase">
+        <button class="btn btn--primary">Primary Coral</button>
+        <button class="btn btn--ghost">Ghost Glass</button>
+        <button class="btn btn--soft">Soft Lavender</button>
+        <button class="btn btn--rose">Rose Accent</button>
+      </div>
+    </section>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== BLOCKQUOTE SECTION ===== -->
+    <section class="section">
+      <div class="cb-blockquote-wrapper">
+        <blockquote class="cb-blockquote">
+          <span class="cb-blockquote__mark" aria-hidden="true">"</span>
+          <p>
+            The best designs do not demand attention -- they hold it gently, the way soft light holds a room at dusk. Chromatic Blur asks us to see beauty in the imprecise, to find clarity in the dissolve.
+          </p>
+          <cite>-- On the art of ambient interfaces</cite>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ===== FROSTED DIVIDER ===== -->
+    <hr class="cb-divider">
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta-section">
+      <div class="cta__inner">
+        <h2>Begin Your Defocused Journey</h2>
+        <p>
+          Step into a world where blur is the design, color fields breathe like ambient light, and every surface whispers rather than shouts.
+        </p>
+        <div class="cta__actions">
+          <a href="#" class="btn btn--primary">Get Started</a>
+          <a href="#" class="btn btn--ghost">Learn More</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="footer__inner">
+        <span class="footer__logo">Chromatic Blur</span>
+        <hr class="footer__divider">
+        <div class="footer__links">
+          <a href="#hero">Home</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Palette</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+        <p class="footer__copy">Chromatic Blur Design Reference -- Built with defocused color fields, frosted glass, and ambient light.</p>
+      </div>
+    </footer>
+
+  </div><!-- .content -->
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Mobile navigation toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', function() {
+      hamburger.classList.toggle('open');
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile nav when a link is clicked
+    navLinks.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        hamburger.classList.remove('open');
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // Smooth scroll offset for sticky nav
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          var offset = 80;
+          var pos = target.getBoundingClientRect().top + window.pageYOffset - offset;
+          window.scrollTo({ top: pos, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,2196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Streetwear -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Oswald:wght@400;600;700&family=Barlow+Condensed:wght@400;600;700&family=Inter:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;700&family=Archivo+Black&family=Roboto+Mono:wght@400;500&family=Permanent+Marker&family=Russo+One&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Foundation monochromes */
+      --sw-black: #0A0A0A;
+      --sw-white: #FFFFFF;
+      --sw-off-black: #1A1A1A;
+      --sw-charcoal: #2C2C2C;
+      --sw-mid-gray: #808080;
+      --sw-light-gray: #E8E8E8;
+
+      /* Brand accent colors */
+      --sw-red: #E60000;
+      --sw-orange: #FF6B00;
+      --sw-olive: #3D5A1E;
+      --sw-gold: #C4A44A;
+      --sw-navy: #1E3A5F;
+      --sw-purple: #6B21A8;
+
+      /* Material tones */
+      --sw-cement: #D4CBC2;
+      --sw-mocha: #5C4033;
+      --sw-cream: #F5F5DC;
+
+      /* Functional mappings */
+      --sw-bg-primary: var(--sw-black);
+      --sw-bg-surface: var(--sw-off-black);
+      --sw-bg-card: var(--sw-charcoal);
+      --sw-bg-alt: var(--sw-light-gray);
+      --sw-text-primary: var(--sw-white);
+      --sw-text-secondary: var(--sw-mid-gray);
+      --sw-text-inverse: var(--sw-black);
+      --sw-accent-primary: var(--sw-red);
+      --sw-accent-secondary: var(--sw-orange);
+      --sw-accent-premium: var(--sw-gold);
+      --sw-border: var(--sw-charcoal);
+      --sw-border-light: var(--sw-mid-gray);
+
+      /* Spacing */
+      --section-pad: clamp(64px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-family: 'Inter', 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--sw-text-secondary);
+      background: var(--sw-black);
+      overflow-x: hidden;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    h1 {
+      font-family: 'Anton', 'Bebas Neue', Impact, sans-serif;
+      font-size: clamp(4rem, 12vw, 10rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: var(--sw-white);
+    }
+
+    h2 {
+      font-family: 'Oswald', 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+    }
+
+    h3 {
+      font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+    }
+
+    h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+    }
+
+    .mono {
+      font-family: 'Roboto Mono', 'Courier New', monospace;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--dark {
+      background: var(--sw-black);
+    }
+
+    .section--surface {
+      background: var(--sw-off-black);
+    }
+
+    .section--card {
+      background: var(--sw-charcoal);
+    }
+
+    .section--light {
+      background: var(--sw-light-gray);
+      color: var(--sw-text-inverse);
+    }
+
+    .section--light h2,
+    .section--light h3,
+    .section--light h4 {
+      color: var(--sw-black);
+    }
+
+    .section--light .section-label {
+      color: var(--sw-red);
+    }
+
+    .section-label {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sw-red);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--sw-white);
+      margin-bottom: 8px;
+    }
+
+    .section--light .section-title {
+      color: var(--sw-black);
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      text-align: center;
+      color: var(--sw-mid-gray);
+      margin-bottom: 56px;
+      font-weight: 300;
+    }
+
+    .section--light .section-subtitle {
+      color: var(--sw-charcoal);
+    }
+
+    /* ============================================
+       DROP COUNTDOWN BAR
+       ============================================ */
+    .countdown-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--sw-red);
+      color: var(--sw-white);
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1100;
+    }
+
+    .countdown-bar__label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+    }
+
+    .countdown-bar__timer {
+      font-weight: 500;
+      font-size: 0.875rem;
+    }
+
+    .countdown-bar__timer span {
+      display: inline-block;
+      min-width: 2ch;
+      text-align: center;
+    }
+
+    .countdown-bar__timer .sep {
+      opacity: 0.5;
+      padding: 0 2px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      background: var(--sw-black);
+      position: fixed;
+      top: 2.375rem;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--sw-charcoal);
+    }
+
+    .nav__logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav__link {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sw-mid-gray);
+      transition: color 0.2s ease;
+    }
+
+    .nav__link:hover {
+      color: var(--sw-white);
+    }
+
+    .nav__cart {
+      position: relative;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+    }
+
+    .nav__cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 16px;
+      height: 16px;
+      background: var(--sw-red);
+      border-radius: 50%;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.5rem;
+      font-weight: 700;
+    }
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav__hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--sw-white);
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 6rem 2rem 4rem;
+      background: var(--sw-black);
+      overflow: hidden;
+    }
+
+    .hero__bg-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Anton', sans-serif;
+      font-size: 28vw;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      opacity: 0.03;
+      white-space: nowrap;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* CSS-only abstract sneaker silhouette */
+    .hero__visual {
+      position: absolute;
+      top: 50%;
+      right: 5%;
+      transform: translateY(-50%);
+      width: clamp(260px, 35vw, 520px);
+      height: clamp(180px, 24vw, 360px);
+      opacity: 0.12;
+      pointer-events: none;
+    }
+
+    .hero__visual::before {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      left: 5%;
+      width: 90%;
+      height: 50%;
+      background: var(--sw-white);
+      border-radius: 60% 80% 10% 10% / 70% 60% 30% 20%;
+      transform: rotate(-5deg);
+    }
+
+    .hero__visual::after {
+      content: '';
+      position: absolute;
+      bottom: 5%;
+      left: 0;
+      width: 100%;
+      height: 22%;
+      background: var(--sw-red);
+      border-radius: 4px;
+      transform: rotate(-3deg);
+    }
+
+    .hero__diagonal-stripes {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 40%;
+      height: 100%;
+      overflow: hidden;
+      opacity: 0.04;
+      pointer-events: none;
+    }
+
+    .hero__diagonal-stripes::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--sw-white) 0px,
+        var(--sw-white) 8px,
+        transparent 8px,
+        transparent 40px
+      );
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero__tag {
+      display: inline-block;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sw-red);
+      margin-bottom: 1.5rem;
+      padding: 0.375rem 0.75rem;
+      border: 1px solid var(--sw-red);
+    }
+
+    .hero__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4.5rem, 14vw, 12rem);
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero__subtitle {
+      font-size: 1rem;
+      color: var(--sw-mid-gray);
+      max-width: 420px;
+      margin-bottom: 2.5rem;
+      line-height: 1.6;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTON STYLES
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 2.5rem;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      border: 2px solid var(--sw-white);
+      background: var(--sw-white);
+      color: var(--sw-black);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      background: transparent;
+      color: var(--sw-white);
+    }
+
+    .btn::after {
+      content: '\2192';
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover::after {
+      transform: translateX(4px);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--sw-white);
+    }
+
+    .btn--outline:hover {
+      background: var(--sw-white);
+      color: var(--sw-black);
+    }
+
+    .btn--red {
+      background: var(--sw-red);
+      color: var(--sw-white);
+      border-color: var(--sw-red);
+    }
+
+    .btn--red:hover {
+      background: transparent;
+      color: var(--sw-red);
+    }
+
+    .btn--soldout {
+      background: transparent;
+      color: var(--sw-mid-gray);
+      border-color: var(--sw-charcoal);
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    .btn--soldout:hover {
+      background: transparent;
+      color: var(--sw-mid-gray);
+    }
+
+    .btn--soldout::after {
+      display: none;
+    }
+
+    .btn--gold {
+      background: var(--sw-gold);
+      color: var(--sw-black);
+      border-color: var(--sw-gold);
+    }
+
+    .btn--gold:hover {
+      background: transparent;
+      color: var(--sw-gold);
+    }
+
+    /* Dark button for light sections */
+    .btn--dark {
+      background: var(--sw-black);
+      color: var(--sw-white);
+      border-color: var(--sw-black);
+    }
+
+    .btn--dark:hover {
+      background: transparent;
+      color: var(--sw-black);
+    }
+
+    /* ============================================
+       SCROLLING MARQUEE TICKER
+       ============================================ */
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--sw-off-black);
+      border-top: 1px solid var(--sw-charcoal);
+      border-bottom: 1px solid var(--sw-charcoal);
+      padding: 0.875rem 0;
+    }
+
+    .marquee--red {
+      background: var(--sw-red);
+      border-color: var(--sw-red);
+    }
+
+    .marquee--red .marquee__item {
+      color: var(--sw-white);
+    }
+
+    .marquee--red .marquee__sep {
+      color: rgba(255, 255, 255, 0.4);
+    }
+
+    .marquee__track {
+      display: inline-flex;
+      animation: marquee-scroll 25s linear infinite;
+    }
+
+    .marquee__item {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sw-mid-gray);
+      padding: 0 1.5rem;
+    }
+
+    .marquee__sep {
+      color: var(--sw-red);
+      padding: 0 0.25rem;
+    }
+
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .marquee:hover .marquee__track {
+      animation-play-state: paused;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 120px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--sw-red);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--sw-charcoal);
+    }
+
+    .typo-display {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 6vw, 4.5rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      letter-spacing: -0.02em;
+    }
+
+    .typo-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      letter-spacing: 0.04em;
+    }
+
+    .typo-condensed {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      letter-spacing: 0.06em;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--sw-mid-gray);
+      max-width: 40ch;
+    }
+
+    .typo-marker {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--sw-red);
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .typo-mono {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sw-orange);
+    }
+
+    .typo-right h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: var(--sw-mid-gray);
+      margin-bottom: 16px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--sw-charcoal);
+    }
+
+    .typo-scale-size {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--sw-mid-gray);
+      letter-spacing: 0.05em;
+      min-width: 6ch;
+    }
+
+    /* ============================================
+       INDUSTRIAL DIVIDER
+       ============================================ */
+    .industrial-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px 0;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .industrial-divider::before,
+    .industrial-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--sw-charcoal);
+    }
+
+    .industrial-divider span {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      color: var(--sw-mid-gray);
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       COLOR PALETTE GRID
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 2px;
+    }
+
+    .color-chip {
+      background: var(--sw-off-black);
+      overflow: hidden;
+    }
+
+    .color-swatch {
+      width: 100%;
+      aspect-ratio: 1;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px;
+    }
+
+    .color-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--sw-mid-gray);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS (6)
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .card {
+      background: var(--sw-bg-surface);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card__number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 1;
+      color: var(--sw-white);
+      opacity: 0.06;
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      pointer-events: none;
+    }
+
+    .card__badge {
+      display: inline-block;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sw-red);
+      border: 1px solid var(--sw-red);
+      padding: 0.2rem 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--sw-mid-gray);
+      margin-bottom: 1.25rem;
+    }
+
+    .card__tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sw-mid-gray);
+      padding: 0.25rem 0.6rem;
+      border: 1px solid var(--sw-charcoal);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER (HYPE BANNER)
+       ============================================ */
+    .hype-banner {
+      background: var(--sw-off-black);
+      padding: clamp(48px, 8vw, 80px) 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--sw-charcoal);
+      border-bottom: 1px solid var(--sw-charcoal);
+    }
+
+    .hype-banner__watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Anton', sans-serif;
+      font-size: 18vw;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      opacity: 0.03;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+
+    .hype-banner__icons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hype-banner__icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--sw-charcoal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--sw-mid-gray);
+      letter-spacing: 0.1em;
+    }
+
+    .hype-banner h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 0.9;
+      color: var(--sw-white);
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hype-banner p {
+      font-size: 1rem;
+      color: var(--sw-mid-gray);
+      max-width: 500px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES (4)
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+
+    .principle {
+      background: var(--sw-bg-surface);
+      padding: 2.5rem;
+      position: relative;
+    }
+
+    .principle::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--sw-red);
+      transform: scaleY(0);
+      transform-origin: bottom;
+      transition: transform 0.4s ease;
+    }
+
+    .principle:hover::before {
+      transform: scaleY(1);
+    }
+
+    .principle__number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: var(--sw-white);
+      opacity: 0.08;
+      margin-bottom: 0.5rem;
+    }
+
+    .principle h3 {
+      font-family: 'Oswald', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 0.75rem;
+    }
+
+    .principle p {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: var(--sw-mid-gray);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE (6)
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .effect-demo {
+      background: var(--sw-bg-surface);
+      overflow: hidden;
+    }
+
+    .effect-preview {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--sw-mid-gray);
+    }
+
+    /* -- Effect 1: Diagonal Stripes (Off-White reference) -- */
+    .effect-stripes {
+      background: var(--sw-black);
+    }
+
+    .effect-stripes::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--sw-white) 0px,
+        var(--sw-white) 6px,
+        transparent 6px,
+        transparent 28px
+      );
+      opacity: 0.08;
+    }
+
+    .effect-stripes::after {
+      content: 'OFF';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Anton', sans-serif;
+      font-size: 4rem;
+      color: var(--sw-white);
+      opacity: 0.15;
+      letter-spacing: 0.3em;
+    }
+
+    /* -- Effect 2: Sold-Out Overlay -- */
+    .effect-soldout {
+      background: var(--sw-charcoal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-soldout::before {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 60%;
+      background: var(--sw-mid-gray);
+      opacity: 0.15;
+    }
+
+    .effect-soldout::after {
+      content: 'SOLD OUT';
+      position: absolute;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      letter-spacing: 0.3em;
+      color: var(--sw-red);
+      border: 3px solid var(--sw-red);
+      padding: 0.4rem 1.5rem;
+      transform: rotate(-12deg);
+      text-shadow: 0 0 20px rgba(230, 0, 0, 0.3);
+    }
+
+    /* -- Effect 3: Barcode / Industrial Label -- */
+    .effect-barcode {
+      background: var(--sw-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-barcode::before {
+      content: '';
+      position: absolute;
+      width: 50%;
+      height: 55%;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sw-black) 0px,
+        var(--sw-black) 2px,
+        transparent 2px,
+        transparent 4px,
+        var(--sw-black) 4px,
+        var(--sw-black) 5px,
+        transparent 5px,
+        transparent 9px,
+        var(--sw-black) 9px,
+        var(--sw-black) 12px,
+        transparent 12px,
+        transparent 14px,
+        var(--sw-black) 14px,
+        var(--sw-black) 15px,
+        transparent 15px,
+        transparent 18px
+      );
+    }
+
+    .effect-barcode::after {
+      content: 'SW-2024-XL';
+      position: absolute;
+      bottom: 15%;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      color: var(--sw-black);
+    }
+
+    /* -- Effect 4: Hype Glitch -- */
+    .effect-glitch {
+      background: var(--sw-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-glitch::before {
+      content: 'HYPE';
+      font-family: 'Anton', sans-serif;
+      font-size: 3.5rem;
+      letter-spacing: 0.15em;
+      color: var(--sw-white);
+      position: relative;
+      text-shadow:
+        3px 0 var(--sw-red),
+        -3px 0 cyan;
+      animation: glitch-text 3s infinite;
+    }
+
+    @keyframes glitch-text {
+      0%, 90%, 100% {
+        text-shadow: 3px 0 var(--sw-red), -3px 0 cyan;
+        transform: translate(0);
+      }
+      92% {
+        text-shadow: -3px 2px var(--sw-red), 3px -2px cyan;
+        transform: translate(-2px, 1px);
+      }
+      94% {
+        text-shadow: 3px -2px var(--sw-red), -3px 2px cyan;
+        transform: translate(2px, -1px);
+      }
+      96% {
+        text-shadow: -1px 3px var(--sw-red), 1px -3px cyan;
+        transform: translate(1px, 2px);
+      }
+    }
+
+    /* -- Effect 5: Camo Pattern -- */
+    .effect-camo {
+      background:
+        radial-gradient(ellipse 80px 60px at 20% 30%, var(--sw-olive) 0%, transparent 70%),
+        radial-gradient(ellipse 100px 50px at 70% 20%, #2a3a12 0%, transparent 70%),
+        radial-gradient(ellipse 70px 80px at 50% 70%, var(--sw-olive) 0%, transparent 70%),
+        radial-gradient(ellipse 90px 40px at 80% 80%, #4a5a2e 0%, transparent 70%),
+        radial-gradient(ellipse 60px 70px at 10% 80%, #2a3a12 0%, transparent 70%),
+        radial-gradient(ellipse 80px 50px at 40% 10%, #4a5a2e 0%, transparent 70%),
+        linear-gradient(135deg, #3D5A1E 0%, #2a3a12 50%, #4a5a2e 100%);
+    }
+
+    /* -- Effect 6: Zip-Tie Tag -- */
+    .effect-ziptie {
+      background: var(--sw-off-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-ziptie::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 40px;
+      background: var(--sw-orange);
+      clip-path: polygon(0 20%, 8% 0, 92% 0, 100% 20%, 100% 80%, 92% 100%, 8% 100%, 0 80%);
+    }
+
+    .effect-ziptie::after {
+      content: '"DESIGN"';
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      color: var(--sw-black);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE / BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 2.5rem 0;
+    }
+
+    .quote-block::before {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 2px;
+      background: var(--sw-red);
+      margin: 0 auto 2.5rem;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      line-height: 1.4;
+      color: var(--sw-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .quote-block blockquote span {
+      color: var(--sw-red);
+    }
+
+    .quote-block cite {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--sw-mid-gray);
+      font-style: normal;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: clamp(80px, 12vw, 160px) 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background: var(--sw-black);
+    }
+
+    .cta-section__bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .cta-section__bg::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--sw-red) 0px,
+        var(--sw-red) 4px,
+        transparent 4px,
+        transparent 60px
+      );
+      opacity: 0.04;
+    }
+
+    .cta-section .section-label {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      color: var(--sw-mid-gray);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section .btn {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--sw-off-black);
+      border-top: 1px solid var(--sw-charcoal);
+      padding: clamp(48px, 6vw, 80px) 24px;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-content h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sw-white);
+      margin-bottom: 1rem;
+    }
+
+    .footer-content > p {
+      font-size: 0.875rem;
+      color: var(--sw-mid-gray);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sw-mid-gray);
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--sw-white);
+    }
+
+    .footer-bar {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-bar span {
+      width: 24px;
+      height: 2px;
+      background: var(--sw-charcoal);
+    }
+
+    .footer-bar span:nth-child(3) {
+      background: var(--sw-red);
+      width: 40px;
+    }
+
+    .footer-copy {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sw-charcoal);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .marquee__track {
+        animation: none !important;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE: TABLET
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE: MOBILE
+       ============================================ */
+    @media (max-width: 640px) {
+      .countdown-bar {
+        gap: 1rem;
+        font-size: 0.6rem;
+        padding: 0.6rem 1rem;
+      }
+
+      .countdown-bar__timer {
+        font-size: 0.75rem;
+      }
+
+      .nav {
+        top: 2rem;
+        padding: 1rem 1.25rem;
+      }
+
+      .nav__links {
+        display: none;
+      }
+
+      .nav__hamburger {
+        display: flex;
+      }
+
+      .hero {
+        padding: 5rem 1.25rem 3rem;
+        min-height: 90vh;
+      }
+
+      .hero__visual {
+        opacity: 0.06;
+        right: -10%;
+      }
+
+      .hero__title {
+        font-size: clamp(3.5rem, 18vw, 7rem);
+      }
+
+      .hero__buttons {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn {
+        padding: 0.875rem 2rem;
+        font-size: 0.75rem;
+        width: 100%;
+        justify-content: center;
+      }
+
+      .section {
+        padding: clamp(40px, 8vw, 64px) 16px;
+      }
+
+      .section-subtitle {
+        margin-bottom: 36px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        justify-content: center;
+      }
+
+      .footer-links {
+        gap: 1rem;
+      }
+
+      .hype-banner h2 {
+        font-size: clamp(2rem, 10vw, 3.5rem);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== DROP COUNTDOWN BAR ===== -->
+  <div class="countdown-bar">
+    <span class="countdown-bar__label">Next Drop</span>
+    <span class="countdown-bar__timer">
+      <span id="cd-h">04</span><span class="sep">:</span><span id="cd-m">22</span><span class="sep">:</span><span id="cd-s">17</span>
+    </span>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__logo">Streetwear</a>
+    <div class="nav__links">
+      <a href="#hero" class="nav__link">Drop</a>
+      <a href="#typography" class="nav__link">Type</a>
+      <a href="#palette" class="nav__link">Colors</a>
+      <a href="#components" class="nav__link">Components</a>
+      <a href="#effects" class="nav__link">Effects</a>
+    </div>
+    <div style="display: flex; align-items: center; gap: 1.25rem;">
+      <a href="#" class="nav__cart">
+        Cart
+        <span class="nav__cart-badge">2</span>
+      </a>
+      <button class="nav__hamburger" aria-label="Menu" onclick="this.classList.toggle('active')">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero__bg-text">STRTWRK</div>
+    <div class="hero__diagonal-stripes"></div>
+    <div class="hero__visual"></div>
+
+    <div class="hero__content">
+      <span class="hero__tag">SS26 Collection</span>
+      <h1 class="hero__title">Street<br>Wear</h1>
+      <p class="hero__subtitle">
+        Bold logos, high-contrast monochromes, and drop-culture urgency. Where underground authenticity meets luxury precision.
+      </p>
+      <div class="hero__buttons">
+        <a href="#components" class="btn">Shop the Drop</a>
+        <a href="#palette" class="btn btn--outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MARQUEE TICKER ===== -->
+  <div class="marquee">
+    <div class="marquee__track">
+      <span class="marquee__item">Limited Edition</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Exclusive Drop</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Sold Out</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Hype Culture</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Streetwear x Design</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Supreme</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Off-White</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Palace</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Limited Edition</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Exclusive Drop</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Sold Out</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Hype Culture</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Streetwear x Design</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Supreme</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Off-White</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Palace</span><span class="marquee__sep">/</span>
+    </div>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--dark" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Oversized, Bold &amp; Compressed</h2>
+      <p class="section-subtitle">Maximum impact display type paired with clean utilitarian body copy</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Anton</p>
+            <p class="typo-display">Drop Now</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Bebas Neue</p>
+            <p class="typo-heading">Exclusive Release</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Oswald</p>
+            <p class="typo-condensed">Limited Edition Collab</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter</p>
+            <p class="typo-body">Clean and minimal. The streetwear body copy stays out of the way, letting brand identity and product imagery command the space.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Permanent Marker</p>
+            <p class="typo-marker">Skate or Die</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Mono / Roboto Mono</p>
+            <p class="typo-mono">SW-2024-XL // 04:22:17</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">10rem</span>
+              <span style="font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--sw-white); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--sw-white); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Oswald', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--sw-white); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--sw-white); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--sw-mid-gray);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.875rem</span>
+              <span style="font-family: 'Roboto Mono', monospace; font-weight: 500; font-size: 0.875rem; color: var(--sw-orange); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--sw-charcoal);">
+            <h3 style="margin-bottom: 14px;">Font Pairings</h3>
+            <p style="font-size: 0.875rem; line-height: 1.7; margin-bottom: 14px;">
+              <strong style="font-family: 'Anton', sans-serif; color: var(--sw-white); text-transform: uppercase;">Anton</strong> + <strong style="color: var(--sw-white);">Inter</strong><br>
+              <span style="color: var(--sw-mid-gray); font-size: 0.8rem;">Classic streetwear e-commerce &mdash; bold hero text with clean descriptions</span>
+            </p>
+            <p style="font-size: 0.875rem; line-height: 1.7; margin-bottom: 14px;">
+              <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--sw-white); text-transform: uppercase;">Bebas Neue</strong> + <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--sw-white);">Space Grotesk</strong><br>
+              <span style="color: var(--sw-mid-gray); font-size: 0.8rem;">Drop-culture landing page &mdash; compressed urgency with modern body</span>
+            </p>
+            <p style="font-size: 0.875rem; line-height: 1.7;">
+              <strong style="font-family: 'Archivo Black', sans-serif; color: var(--sw-white); text-transform: uppercase;">Archivo Black</strong> + <strong style="font-family: 'Roboto Mono', monospace; color: var(--sw-orange);">Roboto Mono</strong><br>
+              <span style="color: var(--sw-mid-gray); font-size: 0.8rem;">Industrial streetwear &mdash; heavy display with utilitarian monospace</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INDUSTRIAL DIVIDER ===== -->
+  <div class="section--dark" style="padding: 0;">
+    <div class="industrial-divider">
+      <span>001</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--surface" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Monochrome Foundation</h2>
+      <p class="section-subtitle">High-contrast blacks and whites with strategic accent discipline</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0A0A0A;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Black</div>
+            <div class="color-hex">#0A0A0A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A1A;"></div>
+          <div class="color-info">
+            <div class="color-name">Off-Black</div>
+            <div class="color-hex">#1A1A1A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C2C2C;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal</div>
+            <div class="color-hex">#2C2C2C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #808080;"></div>
+          <div class="color-info">
+            <div class="color-name">Mid-Gray</div>
+            <div class="color-hex">#808080</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8E8E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Gray</div>
+            <div class="color-hex">#E8E8E8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E60000;"></div>
+          <div class="color-info">
+            <div class="color-name">Supreme Red</div>
+            <div class="color-hex">#E60000</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF6B00;"></div>
+          <div class="color-info">
+            <div class="color-name">Industrial Orange</div>
+            <div class="color-hex">#FF6B00</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3D5A1E;"></div>
+          <div class="color-info">
+            <div class="color-name">Military Olive</div>
+            <div class="color-hex">#3D5A1E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A44A;"></div>
+          <div class="color-info">
+            <div class="color-name">Gold</div>
+            <div class="color-hex">#C4A44A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1E3A5F;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Navy</div>
+            <div class="color-hex">#1E3A5F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4CBC2;"></div>
+          <div class="color-info">
+            <div class="color-name">Cement</div>
+            <div class="color-hex">#D4CBC2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C4033;"></div>
+          <div class="color-info">
+            <div class="color-name">Mocha</div>
+            <div class="color-hex">#5C4033</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F5DC;"></div>
+          <div class="color-info">
+            <div class="color-name">Cream</div>
+            <div class="color-hex">#F5F5DC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B21A8;"></div>
+          <div class="color-info">
+            <div class="color-name">Hype Purple</div>
+            <div class="color-hex">#6B21A8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE TICKER (RED) ===== -->
+  <div class="marquee marquee--red">
+    <div class="marquee__track">
+      <span class="marquee__item">New Arrivals</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Drop 003</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Collab Season</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Members Only</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Register Now</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Coming Soon</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">New Arrivals</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Drop 003</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Collab Season</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Members Only</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Register Now</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Coming Soon</span><span class="marquee__sep">/</span>
+    </div>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+  <section class="section section--dark" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Streetwear Design Elements</h2>
+      <p class="section-subtitle">The visual vocabulary of hype culture and drop mechanics</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card__number">01</div>
+          <span class="card__badge">Core</span>
+          <h3>Bold Logo Dominance</h3>
+          <p>Oversized brand logos and wordmarks serve as the primary visual anchor, occupying full-screen hero space. The logo is king &mdash; if it does not dominate, the design has failed.</p>
+          <div class="card__tags">
+            <span class="tag">Branding</span>
+            <span class="tag">Identity</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__number">02</div>
+          <span class="card__badge">Urgency</span>
+          <h3>Drop Countdown Timers</h3>
+          <p>Countdown clocks, "SOLD OUT" badges, and RSVP waitlists create artificial scarcity. Every element communicates "now or never" to drive the hype cycle.</p>
+          <div class="card__tags">
+            <span class="tag">Timer</span>
+            <span class="tag">Scarcity</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__number">03</div>
+          <span class="card__badge">Layout</span>
+          <h3>Asymmetric Grid Disruption</h3>
+          <p>Intentionally broken grid layouts where images overlap, text bleeds off edges, and elements are offset. Dynamic tension mirrors the uncontrolled energy of the street.</p>
+          <div class="card__tags">
+            <span class="tag">Grid</span>
+            <span class="tag">Tension</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__number">04</div>
+          <span class="card__badge">Detail</span>
+          <h3>Industrial Utilitarian Cues</h3>
+          <p>Zip-tie motifs, barcode elements, warehouse numbering, size tags, and label-inspired UI. Influenced by Off-White and Heron Preston's utilitarian approach.</p>
+          <div class="card__tags">
+            <span class="tag">Off-White</span>
+            <span class="tag">Labels</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__number">05</div>
+          <span class="card__badge">Motion</span>
+          <h3>Scrolling Marquee Tickers</h3>
+          <p>Horizontal auto-scrolling text strips announcing drops, brand names, or slogans. Evokes LED signage and event banners, breaking vertical flow with lateral energy.</p>
+          <div class="card__tags">
+            <span class="tag">Marquee</span>
+            <span class="tag">Animation</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card__number">06</div>
+          <span class="card__badge">Collab</span>
+          <h3>Cross-Brand Lockups</h3>
+          <p>The "x" collab branding, split logos, and dual-brand lockups reflect the streetwear obsession with collaborative releases. Two brands, one product, maximum hype.</p>
+          <div class="card__tags">
+            <span class="tag">Collab</span>
+            <span class="tag">Branding</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HYPE BANNER (DECORATIVE) ===== -->
+  <div class="hype-banner">
+    <div class="hype-banner__watermark">EXCLUSIVE</div>
+    <div class="hype-banner__icons">
+      <div class="hype-banner__icon">SW</div>
+      <div class="hype-banner__icon" style="border-color: var(--sw-red); color: var(--sw-red);">X</div>
+      <div class="hype-banner__icon">DS</div>
+    </div>
+    <h2>Culture Before<br>Commerce</h2>
+    <p>The design references the community, the movement, and the lifestyle before it references the transaction</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES (4) ===== -->
+  <section class="section section--dark">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Streetwear Philosophy</h2>
+      <p class="section-subtitle">Scarcity, confidence, authenticity, urgency</p>
+
+      <div class="principles-grid">
+        <div class="principle">
+          <div class="principle__number">01</div>
+          <h3>Scarcity Drives Design</h3>
+          <p>Every visual choice reinforces the idea that what is being shown is limited, exclusive, and time-sensitive. Display sold-out products to reinforce FOMO. Keep unavailable items visible &mdash; the sold-out experience is as important as the available experience.</p>
+        </div>
+        <div class="principle">
+          <div class="principle__number">02</div>
+          <h3>Confidence Over Explanation</h3>
+          <p>Minimal copy, no over-selling. The product and brand speak for themselves through visual authority. Less UI, more impact &mdash; navigation and interface chrome are minimized to let imagery, typography, and brand identity fill the space.</p>
+        </div>
+        <div class="principle">
+          <div class="principle__number">03</div>
+          <h3>Street Authenticity Meets Luxury</h3>
+          <p>The rawness of underground culture paired with the precision of high-fashion presentation. Monochrome palettes convey seriousness and editorial authority. Strategic pops of a single brand hue create instant recognition.</p>
+        </div>
+        <div class="principle">
+          <div class="principle__number">04</div>
+          <h3>Mobile-First Always</h3>
+          <p>Streetwear audiences live on their phones. The mobile experience is the primary experience, not a responsive afterthought. The phone is where drops are copped, hype is built, and culture is consumed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INDUSTRIAL DIVIDER ===== -->
+  <div class="section--dark" style="padding: 0;">
+    <div class="industrial-divider">
+      <span>002</span>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE (6) ===== -->
+  <section class="section section--dark" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS-Only Techniques</h2>
+      <p class="section-subtitle">All streetwear textures and effects, zero image assets</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-stripes"></div>
+          <div class="effect-caption">
+            <h4>Diagonal Stripes</h4>
+            <p>Off-White inspired repeating linear gradient creates the iconic industrial stripe motif.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-soldout"></div>
+          <div class="effect-caption">
+            <h4>Sold-Out Stamp</h4>
+            <p>Rotated border and text stamp overlay communicates scarcity with visual energy.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-barcode"></div>
+          <div class="effect-caption">
+            <h4>Barcode Label</h4>
+            <p>Repeating linear gradient bars with monospace product codes for industrial detailing.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-glitch"></div>
+          <div class="effect-caption">
+            <h4>Hype Glitch</h4>
+            <p>RGB split text-shadow with subtle animation creates digital disruption energy.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-camo"></div>
+          <div class="effect-caption">
+            <h4>BAPE Camo</h4>
+            <p>Layered radial gradients in military olive tones build an organic camouflage pattern.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-ziptie"></div>
+          <div class="effect-caption">
+            <h4>Zip-Tie Tag</h4>
+            <p>Industrial orange label with clip-path and quoted text references Off-White's signature detailing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE TICKER ===== -->
+  <div class="marquee">
+    <div class="marquee__track">
+      <span class="marquee__item">Stussy</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Supreme</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">BAPE</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Palace</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Off-White</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Fear of God</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Heron Preston</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Stussy</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Supreme</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">BAPE</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Palace</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Off-White</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Fear of God</span><span class="marquee__sep">/</span>
+      <span class="marquee__item">Heron Preston</span><span class="marquee__sep">/</span>
+    </div>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE (4 VARIANTS) ===== -->
+  <section class="section section--light">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Hype Buttons</h2>
+      <p class="section-subtitle">Bold, high-contrast CTAs with streetwear confidence</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--dark">Shop Now</a>
+        <a href="#" class="btn btn--red">Add to Cart</a>
+        <a href="#" class="btn btn--gold">Premium Access</a>
+        <a href="#" class="btn btn--soldout">Sold Out</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The design should feel simultaneously like a <span>gallery</span>, a <span>skate shop</span>, and a <span>VIP waiting room</span>. If it fits comfortably on screen, it is too small.
+        </blockquote>
+        <cite>&mdash; The Streetwear Design Philosophy</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-section__bg"></div>
+    <p class="section-label">Don't Sleep</p>
+    <h2>Cop The<br>Drop</h2>
+    <p>
+      Streetwear digital design channels premium-yet-raw energy. Monochrome foundations, oversized type, drop-culture urgency, and brand-first visual hierarchy &mdash; all without a single image asset.
+    </p>
+    <a href="#hero" class="btn">Back to Top</a>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Streetwear</h3>
+      <p>
+        A design aesthetic reference capturing the energy of hype culture, the urgency of limited drops, and the bold visual confidence of the streetwear movement. All CSS, no images.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Drop</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-bar">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Streetwear &bull; Culture Before Commerce</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS: COUNTDOWN TIMER ===== -->
+  <script>
+    (function() {
+      // Countdown timer - counts down from a set duration
+      var targetTime = Date.now() + (4 * 3600 + 22 * 60 + 17) * 1000;
+
+      function updateCountdown() {
+        var remaining = Math.max(0, targetTime - Date.now());
+        var h = Math.floor(remaining / 3600000);
+        var m = Math.floor((remaining % 3600000) / 60000);
+        var s = Math.floor((remaining % 60000) / 1000);
+
+        var hEl = document.getElementById('cd-h');
+        var mEl = document.getElementById('cd-m');
+        var sEl = document.getElementById('cd-s');
+
+        if (hEl) hEl.textContent = h.toString().padStart(2, '0');
+        if (mEl) mEl.textContent = m.toString().padStart(2, '0');
+        if (sEl) sEl.textContent = s.toString().padStart(2, '0');
+
+        if (remaining > 0) {
+          requestAnimationFrame(updateCountdown);
+        }
+      }
+
+      updateCountdown();
+    })();
+  </script>
+
+</body>
+</html>

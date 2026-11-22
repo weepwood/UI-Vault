@@ -1,0 +1,2095 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Geometric Modernism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700;900&family=Work+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Primary Colors --- */
+      --gm-red: #DD0100;
+      --gm-yellow: #FAC901;
+      --gm-blue: #225095;
+
+      /* --- Hover / Active States --- */
+      --gm-red-dark: #B30009;
+      --gm-yellow-dark: #D4A800;
+      --gm-blue-dark: #1A3D72;
+
+      /* --- Neutrals --- */
+      --gm-black: #000000;
+      --gm-near-black: #1A1A1A;
+      --gm-dark-gray: #3C3C3C;
+      --gm-medium-gray: #B0B0B0;
+      --gm-light-gray: #E8E8E8;
+      --gm-off-white: #F5F5F5;
+      --gm-white: #FFFFFF;
+
+      /* --- Functional Accents --- */
+      --gm-accent-orange: #FF6B35;
+      --gm-accent-green: #2E8B57;
+
+      /* --- Backgrounds --- */
+      --gm-bg-primary: #FFFFFF;
+      --gm-bg-secondary: #F5F5F5;
+      --gm-bg-dark: #1A1A1A;
+      --gm-bg-accent: #E8E8E8;
+
+      /* --- Text --- */
+      --gm-text-primary: #000000;
+      --gm-text-secondary: #3C3C3C;
+      --gm-text-muted: #B0B0B0;
+      --gm-text-inverse: #FFFFFF;
+
+      /* --- Borders --- */
+      --gm-border-heavy: 4px solid #000000;
+      --gm-border-medium: 3px solid #000000;
+      --gm-border-light: 1px solid #B0B0B0;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gm-text-secondary);
+      background-color: var(--gm-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Jost', 'Futura', 'Century Gothic', sans-serif;
+      font-weight: 700;
+      color: var(--gm-text-primary);
+      line-height: 1.05;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 40px;
+      border-bottom: 4px solid var(--gm-black);
+      position: sticky;
+      top: 0;
+      background: var(--gm-white);
+      z-index: 500;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: var(--gm-black);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .logo-mark {
+      display: flex;
+      gap: 4px;
+      align-items: flex-end;
+    }
+
+    .logo-mark .sq {
+      width: 14px;
+      height: 14px;
+      background: var(--gm-red);
+    }
+
+    .logo-mark .ci {
+      width: 14px;
+      height: 14px;
+      background: var(--gm-blue);
+      border-radius: 50%;
+    }
+
+    .logo-mark .tr {
+      width: 0;
+      height: 0;
+      border-left: 7px solid transparent;
+      border-right: 7px solid transparent;
+      border-bottom: 14px solid var(--gm-yellow);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--gm-black);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--gm-red);
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gm-red);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 100px 40px;
+      gap: 60px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content {
+      flex: 1;
+      max-width: 560px;
+      z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gm-dark-gray);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      line-height: 0.92;
+    }
+
+    .hero h1 .red { color: var(--gm-red); }
+    .hero h1 .blue { color: var(--gm-blue); }
+    .hero h1 .yellow { color: var(--gm-yellow); }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--gm-dark-gray);
+      margin-bottom: 2.5rem;
+      max-width: 440px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Hero visual -- geometric composition */
+    .hero-visual {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .composition {
+      position: relative;
+      width: clamp(260px, 30vw, 400px);
+      height: clamp(260px, 30vw, 400px);
+    }
+
+    .composition__circle {
+      position: absolute;
+      width: 45%;
+      height: 45%;
+      background: var(--gm-blue);
+      border-radius: 50%;
+      top: 5%;
+      right: 8%;
+    }
+
+    .composition__square {
+      position: absolute;
+      width: 37.5%;
+      height: 37.5%;
+      background: var(--gm-red);
+      bottom: 10%;
+      left: 2.5%;
+    }
+
+    .composition__triangle {
+      position: absolute;
+      width: 0;
+      height: 0;
+      border-left: clamp(40px, 5vw, 70px) solid transparent;
+      border-right: clamp(40px, 5vw, 70px) solid transparent;
+      border-bottom: clamp(70px, 8.5vw, 120px) solid var(--gm-yellow);
+      top: 40%;
+      left: 35%;
+    }
+
+    .composition__line-h {
+      position: absolute;
+      height: 4px;
+      width: 80%;
+      background: var(--gm-black);
+      top: 50%;
+      left: 10%;
+    }
+
+    .composition__line-v {
+      position: absolute;
+      width: 4px;
+      height: 70%;
+      background: var(--gm-black);
+      top: 15%;
+      left: 50%;
+    }
+
+    /* Background geometric accent */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: -80px;
+      width: 300px;
+      height: 300px;
+      background: var(--gm-yellow);
+      opacity: 0.12;
+      z-index: 0;
+      transform: rotate(15deg);
+    }
+
+    /* ============================================
+       GEOMETRIC DIVIDER BAND
+       ============================================ */
+    .geo-band {
+      display: flex;
+      height: 4px;
+      width: 100%;
+      background: var(--gm-black);
+    }
+
+    .geo-band--thick {
+      height: 8px;
+    }
+
+    .geo-band--shapes {
+      height: 48px;
+      background: var(--gm-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      overflow: hidden;
+    }
+
+    .geo-band--shapes .band-sq {
+      width: 16px;
+      height: 16px;
+      background: var(--gm-red);
+      flex-shrink: 0;
+    }
+
+    .geo-band--shapes .band-ci {
+      width: 16px;
+      height: 16px;
+      background: var(--gm-blue);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .geo-band--shapes .band-tr {
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 16px solid var(--gm-yellow);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--white {
+      background: var(--gm-bg-primary);
+    }
+
+    .section--off-white {
+      background: var(--gm-bg-secondary);
+      border-top: 4px solid var(--gm-black);
+      border-bottom: 4px solid var(--gm-black);
+    }
+
+    .section--light-gray {
+      background: var(--gm-bg-accent);
+    }
+
+    .section--dark {
+      background: var(--gm-bg-dark);
+      color: var(--gm-text-inverse);
+    }
+
+    .section-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gm-red);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      text-align: center;
+      color: var(--gm-text-primary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 1.1rem;
+      text-align: center;
+      color: var(--gm-dark-gray);
+      margin-bottom: 56px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section--dark .section-label {
+      color: var(--gm-yellow);
+    }
+
+    .section--dark .section-title {
+      color: var(--gm-white);
+    }
+
+    .section--dark .section-subtitle {
+      color: var(--gm-medium-gray);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--gm-black);
+      color: var(--gm-white);
+      border: 3px solid var(--gm-black);
+      border-radius: 0;
+      padding: 14px 40px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn:hover {
+      background: var(--gm-red);
+      border-color: var(--gm-red);
+      transform: translateY(-2px);
+    }
+
+    .btn--red {
+      background: var(--gm-red);
+      border-color: var(--gm-red);
+    }
+
+    .btn--red:hover {
+      background: var(--gm-red-dark);
+      border-color: var(--gm-red-dark);
+    }
+
+    .btn--blue {
+      background: var(--gm-blue);
+      border-color: var(--gm-blue);
+    }
+
+    .btn--blue:hover {
+      background: var(--gm-blue-dark);
+      border-color: var(--gm-blue-dark);
+    }
+
+    .btn--yellow {
+      background: var(--gm-yellow);
+      border-color: var(--gm-yellow);
+      color: var(--gm-black);
+    }
+
+    .btn--yellow:hover {
+      background: var(--gm-yellow-dark);
+      border-color: var(--gm-yellow-dark);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--gm-black);
+    }
+
+    .btn--outline:hover {
+      background: var(--gm-black);
+      color: var(--gm-white);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gm-red);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gm-light-gray);
+    }
+
+    .typo-display {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--gm-black);
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--gm-black);
+      line-height: 1.05;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Jost', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 500;
+      color: var(--gm-dark-gray);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gm-text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .typo-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gm-dark-gray);
+    }
+
+    .typo-caption {
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: var(--gm-dark-gray);
+      line-height: 1.5;
+    }
+
+    .typo-right {
+      background: var(--gm-white);
+      border: 3px solid var(--gm-black);
+      padding: 36px;
+      position: relative;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 36px;
+      height: 36px;
+      background: var(--gm-blue);
+    }
+
+    .typo-right h3 {
+      font-family: 'Jost', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gm-light-gray);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--gm-dark-gray);
+      min-width: 55px;
+      text-align: right;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 4px;
+      background: var(--gm-black);
+      border: 4px solid var(--gm-black);
+    }
+
+    .color-chip {
+      background: var(--gm-white);
+      transition: transform 0.2s ease;
+    }
+
+    .color-chip:hover {
+      transform: scale(1.04);
+      z-index: 2;
+    }
+
+    .color-swatch {
+      height: 100px;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Jost', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--gm-black);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--gm-dark-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--gm-white);
+      border: 3px solid var(--gm-black);
+      padding: 32px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 36px;
+      height: 36px;
+      background: var(--gm-red);
+    }
+
+    .card--blue::before {
+      background: var(--gm-blue);
+    }
+
+    .card--yellow::before {
+      background: var(--gm-yellow);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-shape {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 20px;
+    }
+
+    .card-shape--circle {
+      background: var(--gm-blue);
+      border-radius: 50%;
+    }
+
+    .card-shape--square {
+      background: var(--gm-red);
+    }
+
+    .card-shape--triangle {
+      width: 0;
+      height: 0;
+      border-left: 24px solid transparent;
+      border-right: 24px solid transparent;
+      border-bottom: 48px solid var(--gm-yellow);
+      background: transparent;
+    }
+
+    .card h3 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--gm-text-primary);
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--gm-dark-gray);
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 14px;
+      border: 2px solid var(--gm-black);
+      color: var(--gm-black);
+      margin-right: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      background: var(--gm-black);
+      color: var(--gm-white);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      border: 3px solid var(--gm-black);
+      overflow: hidden;
+      background: var(--gm-white);
+    }
+
+    .effect-preview {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Mondrian Grid */
+    .effect-mondrian {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 1fr 1fr 1fr;
+      gap: 4px;
+      background: var(--gm-black);
+      padding: 0;
+    }
+
+    .effect-mondrian .mc {
+      background: var(--gm-white);
+    }
+
+    .effect-mondrian .mc--red {
+      background: var(--gm-red);
+      grid-row: span 2;
+    }
+
+    .effect-mondrian .mc--blue {
+      background: var(--gm-blue);
+    }
+
+    .effect-mondrian .mc--yellow {
+      background: var(--gm-yellow);
+      grid-column: span 2;
+    }
+
+    /* Effect 2: Rotating Square */
+    .effect-rotation {
+      background: var(--gm-off-white);
+    }
+
+    .effect-rotation .rotation-container {
+      position: relative;
+      width: 120px;
+      height: 120px;
+    }
+
+    .effect-rotation .rot-sq {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 80px;
+      border: 3px solid var(--gm-black);
+      animation: rotateSq 12s linear infinite;
+    }
+
+    .effect-rotation .rot-sq:nth-child(1) {
+      background: rgba(221, 1, 0, 0.15);
+      animation-duration: 12s;
+    }
+
+    .effect-rotation .rot-sq:nth-child(2) {
+      background: rgba(34, 80, 149, 0.15);
+      animation-duration: 18s;
+      animation-direction: reverse;
+      width: 60px;
+      height: 60px;
+    }
+
+    .effect-rotation .rot-sq:nth-child(3) {
+      background: rgba(250, 201, 1, 0.2);
+      animation-duration: 24s;
+      width: 100px;
+      height: 100px;
+    }
+
+    @keyframes rotateSq {
+      from { transform: translate(-50%, -50%) rotate(0deg); }
+      to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Effect 3: Concentric Circles */
+    .effect-concentric {
+      background: var(--gm-white);
+    }
+
+    .effect-concentric .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid var(--gm-black);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .effect-concentric .ring:nth-child(1) {
+      width: 180px;
+      height: 180px;
+      border-color: var(--gm-blue);
+    }
+
+    .effect-concentric .ring:nth-child(2) {
+      width: 140px;
+      height: 140px;
+      border-color: var(--gm-red);
+    }
+
+    .effect-concentric .ring:nth-child(3) {
+      width: 100px;
+      height: 100px;
+      border-color: var(--gm-yellow);
+      border-width: 4px;
+    }
+
+    .effect-concentric .ring:nth-child(4) {
+      width: 60px;
+      height: 60px;
+      background: var(--gm-blue);
+    }
+
+    /* Effect 4: Grid Pattern */
+    .effect-gridpattern {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 39px,
+          var(--gm-black) 39px,
+          var(--gm-black) 40px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 39px,
+          var(--gm-black) 39px,
+          var(--gm-black) 40px
+        );
+      background-color: var(--gm-off-white);
+    }
+
+    .effect-gridpattern .grid-accent-sq {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      background: var(--gm-red);
+      top: 40px;
+      left: 40px;
+    }
+
+    .effect-gridpattern .grid-accent-ci {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: var(--gm-blue);
+      border-radius: 50%;
+      bottom: 40px;
+      right: 40px;
+      opacity: 0.8;
+    }
+
+    .effect-gridpattern .grid-accent-rect {
+      position: absolute;
+      width: 80px;
+      height: 40px;
+      background: var(--gm-yellow);
+      top: 80px;
+      right: 80px;
+    }
+
+    /* Effect 5: Diagonal Lines */
+    .effect-diagonal {
+      background:
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 14px,
+          var(--gm-black) 14px,
+          var(--gm-black) 16px
+        );
+      background-color: var(--gm-off-white);
+    }
+
+    .effect-diagonal .diag-block {
+      position: relative;
+      z-index: 1;
+      padding: 16px 24px;
+      background: var(--gm-red);
+      color: var(--gm-white);
+      font-family: 'Jost', sans-serif;
+      font-weight: 900;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    /* Effect 6: Overlapping Shapes */
+    .effect-overlap {
+      background: var(--gm-white);
+    }
+
+    .effect-overlap .ov-shape {
+      position: absolute;
+    }
+
+    .effect-overlap .ov-sq {
+      width: 120px;
+      height: 120px;
+      background: var(--gm-red);
+      top: 20px;
+      left: 30px;
+      opacity: 0.85;
+    }
+
+    .effect-overlap .ov-ci {
+      width: 130px;
+      height: 130px;
+      background: var(--gm-blue);
+      border-radius: 50%;
+      top: 50px;
+      left: 100px;
+      opacity: 0.8;
+    }
+
+    .effect-overlap .ov-tri {
+      width: 0;
+      height: 0;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 100px solid var(--gm-yellow);
+      bottom: 20px;
+      right: 30px;
+      opacity: 0.9;
+    }
+
+    .effect-overlap .ov-line {
+      width: 80%;
+      height: 4px;
+      background: var(--gm-black);
+      top: 110px;
+      left: 10%;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+      border-top: 3px solid var(--gm-black);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--gm-black);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--gm-dark-gray);
+    }
+
+    /* ============================================
+       MONDRIAN BANNER
+       ============================================ */
+    .mondrian-banner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 140px 80px;
+      gap: 4px;
+      background: var(--gm-black);
+      border-top: 4px solid var(--gm-black);
+      border-bottom: 4px solid var(--gm-black);
+    }
+
+    .mondrian-cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: var(--gm-white);
+    }
+
+    .mondrian-cell--red {
+      background: var(--gm-red);
+      color: var(--gm-white);
+      grid-row: span 2;
+    }
+
+    .mondrian-cell--blue {
+      background: var(--gm-blue);
+      color: var(--gm-white);
+    }
+
+    .mondrian-cell--yellow {
+      background: var(--gm-yellow);
+      color: var(--gm-black);
+      grid-column: span 2;
+    }
+
+    .mondrian-cell h2 {
+      font-family: 'Jost', sans-serif;
+      font-weight: 900;
+      font-size: clamp(1.2rem, 2.5vw, 2rem);
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: inherit;
+    }
+
+    .mondrian-cell p {
+      font-family: 'Jost', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: inherit;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      border-left: 6px solid var(--gm-red);
+      padding-left: 40px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Jost', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      line-height: 1.2;
+      text-transform: uppercase;
+      color: var(--gm-black);
+      margin-bottom: 20px;
+    }
+
+    .quote-block cite {
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      color: var(--gm-dark-gray);
+      font-style: normal;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CTA SECTION (STATEMENT BANNER)
+       ============================================ */
+    .cta-section {
+      background: var(--gm-red);
+      color: var(--gm-white);
+      text-align: center;
+      padding: 100px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      border: 4px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border: 4px solid rgba(255, 255, 255, 0.1);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      color: var(--gm-white);
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section p {
+      font-size: 1.2rem;
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+      opacity: 0.9;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section .btn {
+      background: var(--gm-white);
+      color: var(--gm-red);
+      border-color: var(--gm-white);
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section .btn:hover {
+      background: var(--gm-black);
+      color: var(--gm-white);
+      border-color: var(--gm-black);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--gm-near-black);
+      padding: 64px 40px 28px;
+      color: var(--gm-text-inverse);
+      border-top: 4px solid var(--gm-black);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo .f-sq {
+      width: 12px;
+      height: 12px;
+      background: var(--gm-red);
+    }
+
+    .footer-logo .f-ci {
+      width: 12px;
+      height: 12px;
+      background: var(--gm-blue);
+      border-radius: 50%;
+    }
+
+    .footer-logo .f-tr {
+      width: 0;
+      height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 12px solid var(--gm-yellow);
+    }
+
+    .footer p {
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .footer-links a {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gm-red);
+    }
+
+    .footer-shapes {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      opacity: 0.25;
+    }
+
+    .footer-shapes .fs-sq {
+      width: 10px;
+      height: 10px;
+      background: var(--gm-red);
+    }
+
+    .footer-shapes .fs-ci {
+      width: 10px;
+      height: 10px;
+      background: var(--gm-blue);
+      border-radius: 50%;
+    }
+
+    .footer-shapes .fs-tr {
+      width: 0;
+      height: 0;
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-bottom: 10px solid var(--gm-yellow);
+    }
+
+    .footer-shapes .fs-line {
+      width: 40px;
+      height: 2px;
+      background: var(--gm-white);
+    }
+
+    .footer-copy {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 16px 20px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.78rem;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 24px;
+        gap: 40px;
+      }
+
+      .hero-content {
+        max-width: 100%;
+      }
+
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-buttons {
+        justify-content: center;
+      }
+
+      .hero::before {
+        width: 200px;
+        height: 200px;
+        top: -40px;
+        right: -40px;
+      }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .mondrian-banner {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+      }
+
+      .mondrian-cell {
+        padding: 24px;
+      }
+
+      .mondrian-cell--red {
+        grid-row: auto;
+      }
+
+      .mondrian-cell--yellow {
+        grid-column: auto;
+      }
+
+      .quote-block {
+        padding-left: 24px;
+      }
+
+      .cta-section {
+        padding: 64px 24px;
+      }
+
+      .footer {
+        padding: 48px 20px 24px;
+      }
+
+      .footer-links {
+        gap: 20px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.82rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.72rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+
+      .composition {
+        width: 220px;
+        height: 220px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .effect-rotation .rot-sq {
+        animation: none;
+      }
+
+      .card,
+      .btn,
+      .color-chip,
+      .tag,
+      .nav-links a::after {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span class="logo-mark">
+        <span class="sq"></span>
+        <span class="ci"></span>
+        <span class="tr"></span>
+      </span>
+      Geometric Modernism
+    </a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1><span class="red">Geo</span><span class="blue">metric</span> <span class="yellow">Modern</span>ism</h1>
+      <p>
+        Pure geometric forms, primary colors, and compositions governed by mathematical precision. Rooted in Bauhaus, De Stijl, and the Swiss International Typographic Style.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--red">Explore Components</a>
+        <a href="#palette" class="btn btn--outline">View Palette</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="composition">
+        <div class="composition__circle"></div>
+        <div class="composition__square"></div>
+        <div class="composition__triangle"></div>
+        <div class="composition__line-h"></div>
+        <div class="composition__line-v"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== GEOMETRIC BAND ===== -->
+  <div class="geo-band--shapes">
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--white" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Geometric Sans-Serif Precision</h2>
+      <p class="section-subtitle">Typefaces built from circles, straight lines, and uniform stroke widths</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Jost 900</p>
+            <p class="typo-display">Form Follows Function</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Jost 700</p>
+            <p class="typo-heading">Universal Visual Language</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Jost 500</p>
+            <p class="typo-subheading">Mathematical Grid Structure</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Work Sans 400</p>
+            <p class="typo-body">Clean, functional, and readable at sustained lengths. Every element earns its place through geometric justification and rational composition.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Jost 500</p>
+            <p class="typo-label">Buttons &amp; Interface Labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Work Sans 400</p>
+            <p class="typo-caption">Secondary text for annotations, metadata, and supplementary information.</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Jost', sans-serif; font-size: 2rem; font-weight: 900; color: var(--gm-black); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Jost', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--gm-black); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'Jost', sans-serif; font-size: 1.15rem; font-weight: 500; color: var(--gm-dark-gray); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Work Sans', sans-serif; font-size: 1rem; color: var(--gm-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Work Sans', sans-serif; font-size: 0.85rem; color: var(--gm-dark-gray);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Jost', sans-serif; font-weight: 500; font-size: 0.8rem; color: var(--gm-dark-gray); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 3px solid var(--gm-black);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Jost', sans-serif; font-weight: 900; color: var(--gm-red);">Jost 900</strong> + <strong style="font-family: 'Work Sans', sans-serif;">Work Sans 400</strong><br>
+              <span style="color: var(--gm-dark-gray); font-size: 0.85rem;">Authentic Bauhaus-Futura spirit with rigorous authority</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Jost', sans-serif; font-weight: 700; color: var(--gm-blue);">Jost 700</strong> + <strong style="font-family: 'Work Sans', sans-serif;">Work Sans 400</strong><br>
+              <span style="color: var(--gm-dark-gray); font-size: 0.85rem;">Clean geometric consistency for versatile layouts</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Jost', sans-serif; font-weight: 700; color: var(--gm-black);">Jost 700</strong> + <strong style="font-family: 'Jost', sans-serif; font-weight: 400;">Jost 400</strong><br>
+              <span style="color: var(--gm-dark-gray); font-size: 0.85rem;">Monofamily precision for maximum geometric unity</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEOMETRIC BAND ===== -->
+  <div class="geo-band geo-band--thick"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--off-white" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Primary Colors &amp; Stark Neutrals</h2>
+      <p class="section-subtitle">Red, yellow, and blue anchored by absolute black and white</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #DD0100;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Red</div>
+            <div class="color-hex">#DD0100</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B30009;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Red</div>
+            <div class="color-hex">#B30009</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAC901;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Yellow</div>
+            <div class="color-hex">#FAC901</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A800;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Yellow</div>
+            <div class="color-hex">#D4A800</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #225095;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Blue</div>
+            <div class="color-hex">#225095</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A3D72;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Blue</div>
+            <div class="color-hex">#1A3D72</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #000000;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure Black</div>
+            <div class="color-hex">#000000</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A1A;"></div>
+          <div class="color-info">
+            <div class="color-name">Near Black</div>
+            <div class="color-hex">#1A1A1A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3C3C3C;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Gray</div>
+            <div class="color-hex">#3C3C3C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B0B0B0;"></div>
+          <div class="color-info">
+            <div class="color-name">Medium Gray</div>
+            <div class="color-hex">#B0B0B0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8E8E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Gray</div>
+            <div class="color-hex">#E8E8E8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F5F5; border-bottom: 1px solid #E8E8E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Off-White</div>
+            <div class="color-hex">#F5F5F5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF; border-bottom: 1px solid #E8E8E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF6B35;"></div>
+          <div class="color-info">
+            <div class="color-name">Accent Orange</div>
+            <div class="color-hex">#FF6B35</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2E8B57;"></div>
+          <div class="color-info">
+            <div class="color-name">Accent Green</div>
+            <div class="color-hex">#2E8B57</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEOMETRIC BAND ===== -->
+  <div class="geo-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--white" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Geometric Cards &amp; Elements</h2>
+      <p class="section-subtitle">Sharp-edged, grid-locked, built from fundamental shapes</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-shape card-shape--square"></div>
+          <h3>Primary Geometry</h3>
+          <p>Circles, squares, and triangles are the fundamental building blocks. All visual elements derive from these archetypal forms without exception.</p>
+          <span class="tag">Shapes</span>
+          <span class="tag">Foundation</span>
+        </div>
+        <div class="card card--blue">
+          <div class="card-shape card-shape--circle"></div>
+          <h3>Grid Architecture</h3>
+          <p>Strict modular grids govern every element's placement and proportion. The underlying 12-column grid is the structural backbone of every composition.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Structure</span>
+        </div>
+        <div class="card card--yellow">
+          <div class="card-shape card-shape--triangle"></div>
+          <h3>Primary Palette</h3>
+          <p>Red, yellow, and blue command the palette in flat, unmodulated fills with maximum chromatic intensity. No gradients, no compromise.</p>
+          <span class="tag">Color</span>
+          <span class="tag">Bauhaus</span>
+        </div>
+        <div class="card">
+          <div class="card-shape card-shape--circle"></div>
+          <h3>Type as Graphic Form</h3>
+          <p>Headlines are treated as visual shapes equal in compositional weight to geometric forms and color blocks. Futura-inspired faces dominate.</p>
+          <span class="tag">Typography</span>
+          <span class="tag">Display</span>
+        </div>
+        <div class="card card--yellow">
+          <div class="card-shape card-shape--square"></div>
+          <h3>Active Whitespace</h3>
+          <p>Negative space is an active, calculated component of the design. It creates rhythm and breathing room between geometric elements with deliberate intent.</p>
+          <span class="tag">Space</span>
+          <span class="tag">Rhythm</span>
+        </div>
+        <div class="card card--blue">
+          <div class="card-shape card-shape--triangle"></div>
+          <h3>Dynamic Equilibrium</h3>
+          <p>Asymmetric compositions achieve visual balance through calculated weight distribution. Diagonal elements inject kinetic energy into ordered arrangements.</p>
+          <span class="tag">Balance</span>
+          <span class="tag">Tension</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MONDRIAN BANNER ===== -->
+  <div class="mondrian-banner">
+    <div class="mondrian-cell mondrian-cell--red">
+      <h2>Reduce to Fundamentals</h2>
+    </div>
+    <div class="mondrian-cell mondrian-cell--blue">
+      <p>Circle = Blue</p>
+    </div>
+    <div class="mondrian-cell">
+      <p>Square = Red</p>
+    </div>
+    <div class="mondrian-cell mondrian-cell--yellow">
+      <p>Triangle = Yellow</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--off-white" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Geometric Techniques</h2>
+      <p class="section-subtitle">Bold shapes, strict grids, and intersecting forms -- all pure CSS</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-mondrian">
+            <div class="mc mc--red"></div>
+            <div class="mc mc--blue"></div>
+            <div class="mc"></div>
+            <div class="mc"></div>
+            <div class="mc mc--yellow"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Mondrian Grid</h4>
+            <p>CSS Grid recreates the iconic De Stijl composition with primary color cells and thick black dividers.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-rotation">
+            <div class="rotation-container">
+              <div class="rot-sq"></div>
+              <div class="rot-sq"></div>
+              <div class="rot-sq"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Rotating Squares</h4>
+            <p>Layered rotating squares create dynamic geometric compositions through CSS transforms and animation.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-concentric">
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+            <div class="ring"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Concentric Rings</h4>
+            <p>Nested circles in primary colors create depth and focus through pure geometric layering.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gridpattern">
+            <div class="grid-accent-sq"></div>
+            <div class="grid-accent-ci"></div>
+            <div class="grid-accent-rect"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Grid + Shapes</h4>
+            <p>Repeating linear gradients form a precise grid; primary-color shapes snap to intersections.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-diagonal">
+            <div class="diag-block">Order</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Diagonal Stripes</h4>
+            <p>Angled repeating gradients create kinetic energy; solid color blocks anchor the composition.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-overlap">
+            <div class="ov-shape ov-sq"></div>
+            <div class="ov-shape ov-ci"></div>
+            <div class="ov-shape ov-tri"></div>
+            <div class="ov-shape ov-line"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Overlapping Forms</h4>
+            <p>Intersecting geometric shapes create depth and compositional energy within the flat aesthetic.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEOMETRIC BAND ===== -->
+  <div class="geo-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Geometric Buttons</h2>
+      <p class="section-subtitle">Sharp, flat, and decisive -- no rounded corners allowed</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Default Black</a>
+        <a href="#" class="btn btn--red">Primary Red</a>
+        <a href="#" class="btn btn--blue">Primary Blue</a>
+        <a href="#" class="btn btn--outline">Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEOMETRIC BAND ===== -->
+  <div class="geo-band geo-band--thick"></div>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--off-white">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Every element must earn its place through functional and geometric justification. There is no room for ambiguity, sentimentality, or decorative excess.
+        </blockquote>
+        <cite>&mdash; The Principles of Geometric Modernism</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <h2>Form Follows Function</h2>
+    <p>
+      Geometric Modernism distills design to its most elemental components -- strong shapes, primary colors, and compositions governed by mathematical precision rather than intuition or ornament.
+    </p>
+    <a href="#hero" class="btn">Back to the Top</a>
+  </section>
+
+  <!-- ===== GEOMETRIC BAND ===== -->
+  <div class="geo-band--shapes">
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+    <span class="band-sq"></span>
+    <span class="band-ci"></span>
+    <span class="band-tr"></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="f-sq"></span>
+        <span class="f-ci"></span>
+        <span class="f-tr"></span>
+        Geometric Modernism
+      </div>
+      <p>
+        A design aesthetic reference celebrating the universal visual language of pure geometry -- circles, squares, triangles, primary colors, and mathematical precision. All CSS, no image assets.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-shapes">
+        <span class="fs-sq"></span>
+        <span class="fs-line"></span>
+        <span class="fs-ci"></span>
+        <span class="fs-line"></span>
+        <span class="fs-tr"></span>
+        <span class="fs-line"></span>
+        <span class="fs-sq"></span>
+        <span class="fs-line"></span>
+        <span class="fs-ci"></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Geometric Modernism &bull; Reduce to Fundamentals</p>
+    </div>
+  </footer>
+
+</body>
+</html>

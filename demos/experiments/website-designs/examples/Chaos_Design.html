@@ -1,0 +1,2089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chaos Design -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rubik+Glitch&family=Permanent+Marker&family=Space+Grotesk:wght@300;400;700&family=IBM+Plex+Mono:wght@400;700&family=Bungee&family=Anton&family=Syne:wght@400;700;800&family=Special+Elite&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Base Tones --- */
+      --chaos-void: #0a0a0a;
+      --chaos-dirty-white: #f0ede5;
+      --chaos-concrete: #4a4a4a;
+      --chaos-navy: #0a0a2e;
+
+      /* --- Neon Accents --- */
+      --chaos-neon-green: #39ff14;
+      --chaos-magenta: #ff0090;
+      --chaos-acid-yellow: #e8ff00;
+      --chaos-electric-blue: #0066ff;
+      --chaos-purple: #7b00ff;
+      --chaos-cyan: #00ffff;
+
+      /* --- Warm Clashes --- */
+      --chaos-red: #ff1a1a;
+      --chaos-orange: #ff5e00;
+
+      /* --- Secondary Tones --- */
+      --chaos-slime: #a8ff00;
+      --chaos-pink: #ff6ec7;
+
+      /* --- Functional Mappings --- */
+      --chaos-bg-primary: var(--chaos-void);
+      --chaos-bg-alt: var(--chaos-navy);
+      --chaos-bg-surface: var(--chaos-dirty-white);
+      --chaos-text-primary: var(--chaos-dirty-white);
+      --chaos-text-inverse: var(--chaos-void);
+      --chaos-accent-primary: var(--chaos-neon-green);
+      --chaos-accent-secondary: var(--chaos-magenta);
+      --chaos-accent-tertiary: var(--chaos-acid-yellow);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: auto;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Space Grotesk', 'IBM Plex Mono', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--chaos-text-primary);
+      background-color: var(--chaos-bg-primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-family: 'Bebas Neue', 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+      transform: rotate(-3deg);
+    }
+
+    h2 {
+      font-family: 'Bungee', 'Syne', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transform: rotate(1.5deg);
+      color: var(--chaos-neon-green);
+    }
+
+    h3 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      transform: rotate(-1deg);
+      color: var(--chaos-magenta);
+    }
+
+    h4 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: var(--chaos-acid-yellow);
+    }
+
+    /* Global noise overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .chaos-nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      padding: 1rem 1.5rem;
+      background: var(--chaos-void);
+      border-bottom: 4px solid var(--chaos-neon-green);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      overflow: hidden;
+    }
+
+    .chaos-nav-logo {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: 1.3rem;
+      color: var(--chaos-neon-green);
+      text-shadow: 2px 2px 0 var(--chaos-magenta), -1px -1px 0 var(--chaos-cyan);
+      margin-right: auto;
+      transform: rotate(-2deg);
+      transition: all 0.15s ease;
+    }
+
+    .chaos-nav-logo:hover {
+      color: var(--chaos-acid-yellow);
+      transform: rotate(3deg) scale(1.1);
+    }
+
+    .chaos-nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .chaos-nav-links a {
+      font-family: 'Bungee', 'Bebas Neue', sans-serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--chaos-dirty-white);
+      text-decoration: none;
+      padding: 0.35rem 0.9rem;
+      border: 2px solid var(--chaos-neon-green);
+      transition: all 0.15s ease;
+    }
+
+    .chaos-nav-links a:nth-child(1) { transform: rotate(-2deg); border-color: var(--chaos-magenta); }
+    .chaos-nav-links a:nth-child(2) { transform: rotate(3deg); background: var(--chaos-purple); }
+    .chaos-nav-links a:nth-child(3) { transform: rotate(-1deg); border-color: var(--chaos-acid-yellow); }
+    .chaos-nav-links a:nth-child(4) { transform: rotate(2.5deg); background: var(--chaos-orange); color: var(--chaos-void); }
+    .chaos-nav-links a:nth-child(5) { transform: rotate(-3deg); border-color: var(--chaos-cyan); }
+
+    .chaos-nav-links a:hover {
+      background: var(--chaos-neon-green);
+      color: var(--chaos-void);
+      transform: rotate(0deg) scale(1.1);
+      z-index: 10;
+    }
+
+    /* Background interference pattern */
+    .chaos-nav::before {
+      content: 'CHAOS CHAOS CHAOS CHAOS CHAOS';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%) rotate(-1deg);
+      font-family: 'Anton', sans-serif;
+      font-size: 3rem;
+      color: rgba(57, 255, 20, 0.04);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.3em;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .chaos-hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      background: var(--chaos-void);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Layered background interference */
+    .chaos-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 30px,
+          rgba(255, 0, 144, 0.05) 30px,
+          rgba(255, 0, 144, 0.05) 32px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 40px,
+          rgba(57, 255, 20, 0.04) 40px,
+          rgba(57, 255, 20, 0.04) 42px
+        ),
+        radial-gradient(
+          ellipse at 20% 30%,
+          rgba(123, 0, 255, 0.12) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 80% 70%,
+          rgba(0, 255, 255, 0.08) 0%,
+          transparent 50%
+        );
+      pointer-events: none;
+    }
+
+    /* Scanline overlay on hero */
+    .chaos-hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.04) 2px,
+        rgba(0, 0, 0, 0.04) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .chaos-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 14vw, 12rem);
+      text-transform: uppercase;
+      line-height: 0.85;
+      letter-spacing: -0.02em;
+      transform: rotate(-4deg);
+      position: relative;
+      z-index: 2;
+      background: linear-gradient(
+        135deg,
+        var(--chaos-neon-green),
+        var(--chaos-acid-yellow),
+        var(--chaos-magenta),
+        var(--chaos-cyan)
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-align: center;
+    }
+
+    .chaos-hero .hero-subtitle {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: clamp(1.2rem, 4vw, 2.5rem);
+      color: var(--chaos-magenta);
+      text-shadow: 2px 2px 0 var(--chaos-cyan), -1px -1px 0 var(--chaos-acid-yellow);
+      transform: rotate(2deg);
+      margin-top: 1rem;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .chaos-hero .hero-tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5em;
+      color: var(--chaos-concrete);
+      transform: rotate(2deg);
+      margin-top: 1.5rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .chaos-hero .hero-desc {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      color: rgba(240, 237, 229, 0.7);
+      max-width: 560px;
+      margin: 1.5rem auto 2rem;
+      line-height: 1.75;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Floating debris elements */
+    .debris {
+      position: absolute;
+      font-family: 'Permanent Marker', cursive;
+      color: var(--chaos-concrete);
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .debris-1 { top: 8%; left: 4%; font-size: 2.5rem; transform: rotate(22deg); }
+    .debris-2 { bottom: 15%; right: 6%; font-size: 1.8rem; transform: rotate(-18deg); }
+    .debris-3 { top: 60%; left: 80%; font-size: 1.2rem; transform: rotate(35deg); color: var(--chaos-magenta); opacity: 0.06; }
+    .debris-4 { top: 20%; right: 12%; font-size: 3rem; transform: rotate(-30deg); color: var(--chaos-cyan); opacity: 0.05; }
+    .debris-5 { bottom: 25%; left: 15%; font-size: 1rem; transform: rotate(45deg); color: var(--chaos-acid-yellow); opacity: 0.07; }
+
+    /* ============================================
+       CHAOS DIVIDER
+       ============================================ */
+    .chaos-divider {
+      height: 6px;
+      border: none;
+      background: linear-gradient(90deg,
+        var(--chaos-neon-green),
+        var(--chaos-magenta),
+        var(--chaos-acid-yellow),
+        var(--chaos-cyan),
+        var(--chaos-purple),
+        var(--chaos-orange)
+      );
+      position: relative;
+    }
+
+    .chaos-divider::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: inherit;
+      transform: translateY(10px);
+      opacity: 0.3;
+    }
+
+    /* ============================================
+       CONTENT SECTIONS
+       ============================================ */
+    .content-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 4rem 2rem;
+      position: relative;
+    }
+
+    .content-section h2 {
+      font-family: 'Bungee', sans-serif;
+      font-size: clamp(1.5rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      color: var(--chaos-neon-green);
+      transform: rotate(1.5deg);
+      margin-bottom: 2rem;
+      text-shadow: 3px 3px 0 var(--chaos-magenta), -2px -2px 0 rgba(0, 255, 255, 0.3);
+    }
+
+    .content-section h3 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.1rem, 3vw, 1.8rem);
+      color: var(--chaos-magenta);
+      transform: rotate(-1deg);
+      margin: 2rem 0 1rem;
+    }
+
+    .content-section p {
+      font-size: 1rem;
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--chaos-concrete);
+      margin-bottom: 8px;
+      transform: rotate(-0.5deg);
+    }
+
+    /* Dark section background */
+    .section--dark {
+      background: var(--chaos-void);
+    }
+
+    .section--navy {
+      background: var(--chaos-navy);
+    }
+
+    .section--surface {
+      background: var(--chaos-dirty-white);
+      color: var(--chaos-text-inverse);
+    }
+
+    .section--surface h2 {
+      color: var(--chaos-purple);
+      text-shadow: 3px 3px 0 var(--chaos-orange), -2px -2px 0 rgba(57, 255, 20, 0.3);
+    }
+
+    .section--surface h3 {
+      color: var(--chaos-red);
+    }
+
+    .section--surface .section-label {
+      color: var(--chaos-concrete);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .typo-sample-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--chaos-neon-green);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--chaos-neon-green), transparent);
+    }
+
+    .typo-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: var(--chaos-acid-yellow);
+      line-height: 0.9;
+      text-transform: uppercase;
+      transform: rotate(-2deg);
+      text-shadow: 3px 3px 0 var(--chaos-magenta);
+    }
+
+    .typo-heading-sample {
+      font-family: 'Bungee', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      color: var(--chaos-neon-green);
+      text-transform: uppercase;
+      transform: rotate(1deg);
+    }
+
+    .typo-subheading {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--chaos-magenta);
+      transform: rotate(-1.5deg);
+    }
+
+    .typo-body-sample {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--chaos-dirty-white);
+    }
+
+    .typo-mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: var(--chaos-cyan);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-glitch {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      color: var(--chaos-acid-yellow);
+      text-shadow: 3px 3px 0 var(--chaos-magenta), -2px -2px 0 var(--chaos-cyan);
+    }
+
+    .typo-typewriter {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--chaos-dirty-white);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-syne {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--chaos-orange);
+      transform: skewX(-4deg);
+    }
+
+    .typo-right {
+      background: var(--chaos-navy);
+      border: 3px solid var(--chaos-neon-green);
+      padding: 2rem;
+      position: relative;
+      transform: rotate(1deg);
+      box-shadow: 6px 6px 0 var(--chaos-magenta);
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(57, 255, 20, 0.03) 8px, rgba(57, 255, 20, 0.03) 10px);
+      pointer-events: none;
+    }
+
+    .typo-right h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      color: var(--chaos-acid-yellow);
+      transform: rotate(-0.5deg);
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(57, 255, 20, 0.15);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--chaos-concrete);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--chaos-navy);
+      border: 2px solid var(--chaos-neon-green);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .color-chip:nth-child(odd) {
+      transform: rotate(-1.5deg);
+    }
+
+    .color-chip:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+
+    .color-chip:hover {
+      transform: rotate(0deg) scale(1.05);
+      box-shadow: 4px 4px 0 var(--chaos-magenta), -3px -3px 0 var(--chaos-cyan);
+      z-index: 5;
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Scanline overlay on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.08) 2px,
+        rgba(0, 0, 0, 0.08) 4px
+      );
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.8rem;
+      color: var(--chaos-dirty-white);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--chaos-neon-green);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CHAOS CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin: 2rem 0;
+    }
+
+    .chaos-card {
+      background: var(--chaos-navy);
+      border: 3px solid var(--chaos-neon-green);
+      padding: 1.8rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .chaos-card:nth-child(1) {
+      transform: rotate(-2deg);
+      border-color: var(--chaos-magenta);
+      box-shadow: 6px 6px 0 var(--chaos-acid-yellow);
+    }
+    .chaos-card:nth-child(2) {
+      transform: rotate(1.5deg);
+      border-color: var(--chaos-cyan);
+      box-shadow: -5px 7px 0 var(--chaos-purple);
+    }
+    .chaos-card:nth-child(3) {
+      transform: rotate(-1deg);
+      border-color: var(--chaos-orange);
+      box-shadow: 7px -4px 0 var(--chaos-neon-green);
+    }
+    .chaos-card:nth-child(4) {
+      transform: rotate(2.5deg);
+      border-color: var(--chaos-acid-yellow);
+      box-shadow: -6px 5px 0 var(--chaos-red);
+    }
+    .chaos-card:nth-child(5) {
+      transform: rotate(-3deg);
+      border-color: var(--chaos-pink);
+      box-shadow: 5px 8px 0 var(--chaos-electric-blue);
+    }
+    .chaos-card:nth-child(6) {
+      transform: rotate(1deg);
+      border-color: var(--chaos-slime);
+      box-shadow: -4px -6px 0 var(--chaos-magenta);
+    }
+
+    .chaos-card:hover {
+      transform: rotate(0deg) scale(1.03);
+      z-index: 10;
+      box-shadow:
+        -6px -6px 0 var(--chaos-cyan),
+        6px 6px 0 var(--chaos-orange);
+    }
+
+    /* Diagonal stripe noise overlay on cards */
+    .chaos-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(57, 255, 20, 0.03) 8px,
+        rgba(57, 255, 20, 0.03) 10px
+      );
+      pointer-events: none;
+    }
+
+    /* Misaligned accent bar */
+    .chaos-card::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      right: -8px;
+      width: 6px;
+      height: 60%;
+      background: var(--chaos-magenta);
+      transform: rotate(3deg);
+    }
+
+    .chaos-card h4 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      color: var(--chaos-acid-yellow);
+      margin-bottom: 0.75rem;
+      transform: rotate(-0.5deg);
+      position: relative;
+    }
+
+    .chaos-card p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      opacity: 0.85;
+      position: relative;
+    }
+
+    .chaos-card .card-tag {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 2px 10px;
+      border: 1px solid var(--chaos-neon-green);
+      color: var(--chaos-neon-green);
+      margin-top: 12px;
+      transform: rotate(1deg);
+      position: relative;
+      transition: all 0.15s ease;
+    }
+
+    .chaos-card .card-tag:hover {
+      background: var(--chaos-neon-green);
+      color: var(--chaos-void);
+    }
+
+    /* Card icon markers */
+    .card-marker {
+      font-family: 'Bungee', sans-serif;
+      font-size: 2rem;
+      margin-bottom: 10px;
+      display: block;
+      position: relative;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 3px solid var(--chaos-neon-green);
+      background: var(--chaos-navy);
+      position: relative;
+    }
+
+    .effect-demo:nth-child(odd) {
+      transform: rotate(-1deg);
+    }
+
+    .effect-demo:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Glitch Distortion */
+    .effect-glitch {
+      background: var(--chaos-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-glitch-text {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: 3rem;
+      color: var(--chaos-acid-yellow);
+      position: relative;
+      display: inline-block;
+    }
+
+    .effect-glitch-text::before,
+    .effect-glitch-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .effect-glitch-text::before {
+      color: var(--chaos-cyan);
+      z-index: -1;
+      animation: chaos-glitch-shift 3s infinite steps(20);
+    }
+
+    .effect-glitch-text::after {
+      color: var(--chaos-magenta);
+      z-index: -2;
+      animation: chaos-glitch-shift 2.5s infinite steps(15) reverse;
+    }
+
+    @keyframes chaos-glitch-shift {
+      0%, 100% { clip-path: inset(0 0 95% 0); transform: translate(0); }
+      10% { clip-path: inset(20% 0 60% 0); transform: translate(-3px, 1px); }
+      20% { clip-path: inset(50% 0 30% 0); transform: translate(3px, -1px); }
+      30% { clip-path: inset(10% 0 80% 0); transform: translate(-2px, 2px); }
+      40% { clip-path: inset(70% 0 10% 0); transform: translate(2px, 0); }
+      50% { clip-path: inset(40% 0 40% 0); transform: translate(-1px, -2px); }
+      60% { clip-path: inset(80% 0 5% 0); transform: translate(3px, 1px); }
+      70% { clip-path: inset(5% 0 70% 0); transform: translate(-3px, -1px); }
+      80% { clip-path: inset(60% 0 20% 0); transform: translate(1px, 2px); }
+      90% { clip-path: inset(30% 0 50% 0); transform: translate(-2px, 0); }
+    }
+
+    /* Effect 2: Chromatic Aberration */
+    .effect-chromatic {
+      background: var(--chaos-navy);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-chromatic-box {
+      width: 120px;
+      height: 120px;
+      border: 4px solid var(--chaos-dirty-white);
+      position: relative;
+      transform: rotate(15deg);
+    }
+
+    .effect-chromatic-box::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 4px solid var(--chaos-magenta);
+      transform: translate(4px, -3px);
+      opacity: 0.7;
+    }
+
+    .effect-chromatic-box::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 4px solid var(--chaos-cyan);
+      transform: translate(-4px, 3px);
+      opacity: 0.7;
+    }
+
+    /* Effect 3: Neon Pulse */
+    .effect-neon-pulse {
+      background: var(--chaos-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-neon-pulse-text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      text-transform: uppercase;
+      color: var(--chaos-neon-green);
+      text-shadow:
+        0 0 10px var(--chaos-neon-green),
+        0 0 20px var(--chaos-neon-green),
+        0 0 40px rgba(57, 255, 20, 0.5),
+        0 0 80px rgba(57, 255, 20, 0.2);
+      animation: neonPulse 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonPulse {
+      0% {
+        text-shadow:
+          0 0 10px var(--chaos-neon-green),
+          0 0 20px var(--chaos-neon-green),
+          0 0 40px rgba(57, 255, 20, 0.5),
+          0 0 80px rgba(57, 255, 20, 0.2);
+      }
+      100% {
+        text-shadow:
+          0 0 5px var(--chaos-magenta),
+          0 0 15px var(--chaos-magenta),
+          0 0 30px rgba(255, 0, 144, 0.5),
+          0 0 60px rgba(255, 0, 144, 0.2);
+        color: var(--chaos-magenta);
+      }
+    }
+
+    /* Effect 4: Noise Grain */
+    .effect-noise {
+      background: linear-gradient(135deg, var(--chaos-purple), var(--chaos-electric-blue), var(--chaos-magenta));
+      position: relative;
+    }
+
+    .effect-noise::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .effect-noise::after {
+      content: 'GRAIN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-5deg);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      color: var(--chaos-dirty-white);
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 5: Collision Gradients */
+    .effect-collision {
+      background:
+        radial-gradient(circle at 20% 30%, var(--chaos-neon-green) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, var(--chaos-magenta) 0%, transparent 40%),
+        radial-gradient(circle at 50% 10%, var(--chaos-acid-yellow) 0%, transparent 30%),
+        radial-gradient(circle at 70% 40%, var(--chaos-cyan) 0%, transparent 35%),
+        var(--chaos-void);
+      animation: collisionShift 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes collisionShift {
+      0% { filter: hue-rotate(0deg) saturate(1.2); }
+      50% { filter: hue-rotate(30deg) saturate(1.5); }
+      100% { filter: hue-rotate(-20deg) saturate(1); }
+    }
+
+    .effect-collision::after {
+      content: 'CLASH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(3deg);
+      font-family: 'Anton', sans-serif;
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      color: var(--chaos-dirty-white);
+      text-shadow: 2px 2px 0 var(--chaos-void);
+      z-index: 1;
+    }
+
+    /* Effect 6: Diagonal Stripe Interference */
+    .effect-stripes {
+      background: var(--chaos-void);
+      position: relative;
+    }
+
+    .effect-stripes::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          var(--chaos-neon-green) 10px,
+          var(--chaos-neon-green) 12px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 14px,
+          var(--chaos-magenta) 14px,
+          var(--chaos-magenta) 16px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 20px,
+          var(--chaos-acid-yellow) 20px,
+          var(--chaos-acid-yellow) 22px
+        );
+      opacity: 0.2;
+      animation: stripeScroll 12s linear infinite;
+    }
+
+    @keyframes stripeScroll {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(40px, 40px); }
+    }
+
+    .effect-stripes::after {
+      content: 'STATIC';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-2deg);
+      font-family: 'Bungee', sans-serif;
+      font-size: 2rem;
+      color: var(--chaos-acid-yellow);
+      text-shadow: 2px 2px 0 var(--chaos-magenta);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 14px 16px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1rem;
+      color: var(--chaos-acid-yellow);
+      margin-bottom: 4px;
+      transform: rotate(-0.5deg);
+    }
+
+    .effect-caption p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.5;
+      color: var(--chaos-concrete);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .chaos-button {
+      display: inline-block;
+      padding: 0.7rem 2rem;
+      font-family: 'Bebas Neue', 'Anton', sans-serif;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--chaos-void);
+      background: var(--chaos-neon-green);
+      border: 3px solid var(--chaos-magenta);
+      cursor: pointer;
+      position: relative;
+      transform: rotate(-1.5deg);
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+
+    .chaos-button:hover {
+      background: var(--chaos-magenta);
+      color: var(--chaos-dirty-white);
+      border-color: var(--chaos-acid-yellow);
+      transform: rotate(2deg) scale(1.08);
+      box-shadow:
+        4px 4px 0 var(--chaos-acid-yellow),
+        -3px -3px 0 var(--chaos-cyan);
+    }
+
+    .chaos-button:active {
+      transform: rotate(-0.5deg) scale(0.95);
+    }
+
+    /* Offset shadow label */
+    .chaos-button::after {
+      content: attr(data-label);
+      position: absolute;
+      top: -14px;
+      right: -12px;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.6rem;
+      color: var(--chaos-acid-yellow);
+      transform: rotate(8deg);
+      pointer-events: none;
+    }
+
+    /* Button variant: Acid */
+    .chaos-button--acid {
+      background: var(--chaos-acid-yellow);
+      border-color: var(--chaos-cyan);
+      color: var(--chaos-void);
+      transform: rotate(2deg);
+    }
+
+    .chaos-button--acid:hover {
+      background: var(--chaos-purple);
+      color: var(--chaos-dirty-white);
+      border-color: var(--chaos-neon-green);
+      transform: rotate(-1.5deg) scale(1.08);
+    }
+
+    /* Button variant: Outline */
+    .chaos-button--outline {
+      background: transparent;
+      color: var(--chaos-neon-green);
+      border-color: var(--chaos-neon-green);
+      transform: rotate(-2.5deg);
+    }
+
+    .chaos-button--outline:hover {
+      background: var(--chaos-neon-green);
+      color: var(--chaos-void);
+      border-color: var(--chaos-magenta);
+      transform: rotate(1deg) scale(1.08);
+    }
+
+    /* Button variant: Danger */
+    .chaos-button--danger {
+      background: var(--chaos-red);
+      border-color: var(--chaos-orange);
+      color: var(--chaos-dirty-white);
+      transform: rotate(3deg);
+    }
+
+    .chaos-button--danger:hover {
+      background: var(--chaos-orange);
+      color: var(--chaos-void);
+      border-color: var(--chaos-acid-yellow);
+      transform: rotate(-2deg) scale(1.08);
+      box-shadow:
+        4px 4px 0 var(--chaos-red),
+        -3px -3px 0 var(--chaos-acid-yellow);
+    }
+
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 0;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .chaos-quote {
+      max-width: 740px;
+      margin: 0 auto;
+      padding: 3rem 2.5rem;
+      background: var(--chaos-navy);
+      border: 3px solid var(--chaos-acid-yellow);
+      position: relative;
+      transform: rotate(-1deg);
+      box-shadow:
+        8px 8px 0 var(--chaos-magenta),
+        -4px -4px 0 var(--chaos-cyan);
+    }
+
+    .chaos-quote::before {
+      content: '"';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 10rem;
+      color: var(--chaos-neon-green);
+      opacity: 0.15;
+      position: absolute;
+      top: -30px;
+      left: 20px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .chaos-quote::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 8px,
+        rgba(232, 255, 0, 0.02) 8px,
+        rgba(232, 255, 0, 0.02) 10px
+      );
+      pointer-events: none;
+    }
+
+    .chaos-quote blockquote {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--chaos-dirty-white);
+      max-width: 560px;
+      margin: 0 auto 1.2rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+      transform: rotate(0.5deg);
+    }
+
+    .chaos-quote cite {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1rem;
+      color: var(--chaos-magenta);
+      font-style: normal;
+      display: block;
+      position: relative;
+      z-index: 1;
+      transform: rotate(-1deg);
+      text-align: right;
+    }
+
+    .chaos-quote cite::before {
+      content: '-- ';
+      color: var(--chaos-acid-yellow);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .chaos-cta {
+      background: var(--chaos-navy);
+      padding: 5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .chaos-cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 30px,
+          rgba(255, 0, 144, 0.04) 30px,
+          rgba(255, 0, 144, 0.04) 32px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 40px,
+          rgba(57, 255, 20, 0.03) 40px,
+          rgba(57, 255, 20, 0.03) 42px
+        ),
+        radial-gradient(
+          ellipse at 30% 50%,
+          rgba(123, 0, 255, 0.1) 0%,
+          transparent 50%
+        ),
+        radial-gradient(
+          ellipse at 70% 50%,
+          rgba(0, 255, 255, 0.06) 0%,
+          transparent 50%
+        );
+      pointer-events: none;
+    }
+
+    .chaos-cta .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .chaos-cta h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      text-transform: uppercase;
+      line-height: 0.9;
+      transform: rotate(-3deg);
+      background: linear-gradient(135deg, var(--chaos-neon-green), var(--chaos-acid-yellow), var(--chaos-magenta));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1.5rem;
+      text-shadow: none;
+    }
+
+    .chaos-cta p {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      color: rgba(240, 237, 229, 0.7);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+      transform: rotate(0.5deg);
+    }
+
+    .chaos-cta .cta-subtext {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.8rem;
+      color: var(--chaos-concrete);
+      margin-top: 1.5rem;
+      transform: rotate(1deg);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .chaos-footer {
+      background: var(--chaos-void);
+      padding: 3rem 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      border-top: 4px solid var(--chaos-neon-green);
+    }
+
+    .chaos-footer::before {
+      content: 'CHAOS CHAOS CHAOS CHAOS CHAOS CHAOS CHAOS CHAOS';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      transform: translateY(-50%) rotate(-1deg);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      color: rgba(57, 255, 20, 0.03);
+      white-space: nowrap;
+      pointer-events: none;
+      letter-spacing: 0.2em;
+    }
+
+    .chaos-footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .chaos-footer h3 {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: 1.5rem;
+      color: var(--chaos-neon-green);
+      margin-bottom: 8px;
+      text-shadow: 2px 2px 0 var(--chaos-magenta);
+    }
+
+    .chaos-footer p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: rgba(240, 237, 229, 0.5);
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Bungee', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--chaos-dirty-white);
+      padding: 0.3rem 0.8rem;
+      border: 1px solid var(--chaos-concrete);
+      transition: all 0.15s ease;
+    }
+
+    .footer-links a:nth-child(1) { transform: rotate(-1deg); border-color: var(--chaos-magenta); }
+    .footer-links a:nth-child(2) { transform: rotate(2deg); border-color: var(--chaos-neon-green); }
+    .footer-links a:nth-child(3) { transform: rotate(-1.5deg); border-color: var(--chaos-acid-yellow); }
+    .footer-links a:nth-child(4) { transform: rotate(1deg); border-color: var(--chaos-cyan); }
+    .footer-links a:nth-child(5) { transform: rotate(-2deg); border-color: var(--chaos-orange); }
+
+    .footer-links a:hover {
+      background: var(--chaos-neon-green);
+      color: var(--chaos-void);
+      transform: rotate(0deg) scale(1.1);
+    }
+
+    .footer-glitch-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 1.5rem;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.2rem;
+      opacity: 0.15;
+      color: var(--chaos-neon-green);
+    }
+
+    .footer-copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(240, 237, 229, 0.2);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .chaos-nav {
+        padding: 0.8rem 1rem;
+        gap: 8px;
+      }
+
+      .chaos-nav-logo {
+        font-size: 1rem;
+        margin-right: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      .chaos-nav-links {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .chaos-nav-links a {
+        padding: 0.25rem 0.6rem;
+        font-size: 0.65rem;
+      }
+
+      .chaos-hero {
+        min-height: 75vh;
+        padding: 3rem 1rem;
+      }
+
+      .chaos-hero h1 {
+        font-size: clamp(3rem, 12vw, 6rem);
+        transform: rotate(-5deg);
+      }
+
+      .content-section {
+        padding: 3rem 1rem;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+      }
+
+      .color-swatch {
+        height: 65px;
+      }
+
+      .chaos-quote {
+        padding: 2rem 1.5rem;
+        transform: rotate(0deg);
+      }
+
+      .button-showcase {
+        gap: 16px;
+      }
+
+      .chaos-button {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+      }
+
+      .chaos-cta {
+        padding: 3rem 1rem;
+      }
+
+      .chaos-footer {
+        padding: 2rem 1rem 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 50px;
+      }
+
+      .color-info {
+        padding: 6px 8px;
+      }
+
+      .color-name {
+        font-size: 0.65rem;
+      }
+
+      .color-hex {
+        font-size: 0.55rem;
+      }
+
+      .chaos-hero .hero-subtitle {
+        font-size: clamp(0.9rem, 3vw, 1.4rem);
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-glitch-text::before,
+      .effect-glitch-text::after {
+        animation: none;
+      }
+
+      .effect-neon-pulse-text {
+        animation: none;
+      }
+
+      .effect-collision {
+        animation: none;
+      }
+
+      .effect-stripes::before {
+        animation: none;
+      }
+
+      .chaos-card,
+      .chaos-button,
+      .color-chip,
+      .chaos-nav-links a,
+      .chaos-nav-logo,
+      .footer-links a,
+      .chaos-card .card-tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="chaos-nav">
+    <a href="#" class="chaos-nav-logo">CHAOS//DESIGN</a>
+    <div class="chaos-nav-links">
+      <a href="#hero">Destroy</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Glitch</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="chaos-hero" id="hero">
+    <span class="debris debris-1">BREAK</span>
+    <span class="debris debris-2">RULES</span>
+    <span class="debris debris-3">ENTROPY</span>
+    <span class="debris debris-4">DESTROY</span>
+    <span class="debris debris-5">REPEAT</span>
+
+    <h1>Chaos<br>Design</h1>
+    <p class="hero-subtitle">Beautiful Wreckage</p>
+    <p class="hero-tagline">// design aesthetic reference // controlled entropy //</p>
+    <p class="hero-desc">
+      The intentionally messy, maximalist web aesthetic that treats every rule of conventional design as a suggestion to be violated. If it looks wrong by traditional standards, it is probably right.
+    </p>
+    <div class="hero-buttons">
+      <a href="#components" class="chaos-button" data-label="click!">Explore The Wreckage</a>
+      <a href="#palette" class="chaos-button chaos-button--acid" data-label="wow">View Clashing Colors</a>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="content-section section--dark" id="typography">
+    <p class="section-label">// Typography //</p>
+    <h2>Mixed &amp; Clashing Type</h2>
+    <p style="margin-bottom: 2rem;">Multiple font families, weights, sizes, and styles coexist within a single composition. Every letterform should feel like it wandered in from a different design project entirely.</p>
+
+    <div class="typo-showcase">
+      <div class="typo-left">
+        <div class="typo-sample">
+          <p class="typo-sample-label">Display / Bebas Neue</p>
+          <p class="typo-display">SMASH EVERYTHING</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Heading / Bungee</p>
+          <p class="typo-heading-sample">LOUD BLOCKY PROTEST</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Annotation / Permanent Marker</p>
+          <p class="typo-subheading">scrawled on the walls</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Glitch / Rubik Glitch</p>
+          <p class="typo-glitch">Digital Debris</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Body / Space Grotesk</p>
+          <p class="typo-body-sample">Clean geometric text with a technical edge. The calm eye of the typographic hurricane, providing one readable path through the chaos.</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Mono / IBM Plex Mono</p>
+          <p class="typo-mono">clinical_precision.execute() // cold detachment</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Typewriter / Special Elite</p>
+          <p class="typo-typewriter">Distressed mechanical texture from another era, each keystroke slightly misaligned.</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Expressive / Syne 800</p>
+          <p class="typo-syne">Warped Rebellion</p>
+        </div>
+      </div>
+      <div class="typo-right">
+        <h3>Type Scale</h3>
+        <div class="typo-scale">
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">8rem</span>
+            <span style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--chaos-acid-yellow); text-transform: uppercase;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">3.5rem</span>
+            <span style="font-family: 'Bungee', sans-serif; font-size: 1.5rem; color: var(--chaos-neon-green); text-transform: uppercase;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">2rem</span>
+            <span style="font-family: 'Permanent Marker', cursive; font-size: 1.3rem; color: var(--chaos-magenta);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1.5rem</span>
+            <span style="font-family: 'Rubik Glitch', cursive; font-size: 1.2rem; color: var(--chaos-acid-yellow);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1rem</span>
+            <span style="font-family: 'Space Grotesk', sans-serif; font-size: 1rem; color: var(--chaos-dirty-white);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.85rem</span>
+            <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.85rem; color: var(--chaos-cyan);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.95rem</span>
+            <span style="font-family: 'Special Elite', monospace; font-size: 0.95rem; color: var(--chaos-dirty-white);">Aa</span>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; padding-top: 16px; border-top: 2px solid rgba(57, 255, 20, 0.2);">
+          <h3 style="margin-bottom: 10px;">Font Pairings</h3>
+          <div style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: var(--chaos-concrete); line-height: 1.8;">
+            <p style="max-width: none; margin-bottom: 6px;"><span style="color: var(--chaos-acid-yellow);">Bebas + Rubik Glitch</span> / IBM Plex Mono<br><span style="color: var(--chaos-concrete);">Industrial demolition meets clinical precision</span></p>
+            <p style="max-width: none; margin-bottom: 6px;"><span style="color: var(--chaos-neon-green);">Permanent Marker</span> / Space Grotesk<br><span style="color: var(--chaos-concrete);">Hand-scrawled chaos vs clean geometry</span></p>
+            <p style="max-width: none; margin-bottom: 6px;"><span style="color: var(--chaos-magenta);">Bungee + Anton</span> / Special Elite<br><span style="color: var(--chaos-concrete);">Screaming headlines over typewriter body</span></p>
+            <p style="max-width: none;"><span style="color: var(--chaos-orange);">Syne 800</span> / IBM Plex Mono<br><span style="color: var(--chaos-concrete);">Expressive rebellion + cold detachment</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="content-section section--navy" id="palette">
+    <p class="section-label">// Color Palette //</p>
+    <h2>Maximum Clash</h2>
+    <p style="margin-bottom: 2rem;">Colors selected specifically because they clash. Neon accents slam into deep darks. If your palette looks pleasant, you are doing it wrong.</p>
+
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #0a0a0a;"></div>
+        <div class="color-info">
+          <p class="color-name">Void Black</p>
+          <p class="color-hex">#0A0A0A</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #f0ede5;"></div>
+        <div class="color-info">
+          <p class="color-name">Dirty White</p>
+          <p class="color-hex">#F0EDE5</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #39ff14;"></div>
+        <div class="color-info">
+          <p class="color-name">Toxic Neon Green</p>
+          <p class="color-hex">#39FF14</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #ff0090;"></div>
+        <div class="color-info">
+          <p class="color-name">Hot Magenta</p>
+          <p class="color-hex">#FF0090</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #e8ff00;"></div>
+        <div class="color-info">
+          <p class="color-name">Acid Yellow</p>
+          <p class="color-hex">#E8FF00</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #0066ff;"></div>
+        <div class="color-info">
+          <p class="color-name">Electric Blue</p>
+          <p class="color-hex">#0066FF</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #7b00ff;"></div>
+        <div class="color-info">
+          <p class="color-name">Bruise Purple</p>
+          <p class="color-hex">#7B00FF</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #ff1a1a;"></div>
+        <div class="color-info">
+          <p class="color-name">Danger Red</p>
+          <p class="color-hex">#FF1A1A</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #ff5e00;"></div>
+        <div class="color-info">
+          <p class="color-name">Rust Orange</p>
+          <p class="color-hex">#FF5E00</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #a8ff00;"></div>
+        <div class="color-info">
+          <p class="color-name">Slime Green</p>
+          <p class="color-hex">#A8FF00</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #ff6ec7;"></div>
+        <div class="color-info">
+          <p class="color-name">Bubblegum Pink</p>
+          <p class="color-hex">#FF6EC7</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #0a0a2e;"></div>
+        <div class="color-info">
+          <p class="color-name">Midnight Navy</p>
+          <p class="color-hex">#0A0A2E</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #4a4a4a;"></div>
+        <div class="color-info">
+          <p class="color-name">Concrete Gray</p>
+          <p class="color-hex">#4A4A4A</p>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background-color: #00ffff;"></div>
+        <div class="color-info">
+          <p class="color-name">Glitch Cyan</p>
+          <p class="color-hex">#00FFFF</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="content-section section--dark" id="components">
+    <p class="section-label">// Components //</p>
+    <h2>Chaos Cards</h2>
+    <p style="margin-bottom: 2rem;">No element should match its neighbor. Internal inconsistency is the goal. If two components look like they belong to the same system, one of them needs to change.</p>
+
+    <div class="card-grid">
+      <div class="chaos-card">
+        <span class="card-marker" style="color: var(--chaos-magenta);">///</span>
+        <h4>Break Rules With Knowledge</h4>
+        <p>Understand conventional design deeply enough to violate it with surgical precision. Ignorant chaos is just a broken website.</p>
+        <span class="card-tag">principle</span>
+      </div>
+      <div class="chaos-card">
+        <span class="card-marker" style="color: var(--chaos-cyan);">###</span>
+        <h4>Tension As Composition</h4>
+        <p>Use clashing colors, misaligned elements, and scale conflicts to create visual friction that demands attention and refuses to let the eye rest.</p>
+        <span class="card-tag">technique</span>
+      </div>
+      <div class="chaos-card">
+        <span class="card-marker" style="color: var(--chaos-neon-green);">***</span>
+        <h4>Emotion Over Usability</h4>
+        <p>Prioritize visceral impact, surprise, and memorability over frictionless user experience. Make them feel something first.</p>
+        <span class="card-tag">philosophy</span>
+      </div>
+      <div class="chaos-card">
+        <span class="card-marker" style="color: var(--chaos-acid-yellow);">!!!</span>
+        <h4>Controlled Entropy</h4>
+        <p>The chaos must feel intentional, not accidental. Every broken grid line and clashing color is a conscious decision placed with care.</p>
+        <span class="card-tag">core</span>
+      </div>
+      <div class="chaos-card">
+        <span class="card-marker" style="color: var(--chaos-orange);">@@@</span>
+        <h4>Overwhelm As Engagement</h4>
+        <p>The viewer should feel the visual equivalent of walking into a room where everything is happening at once. Overstimulation drives exploration.</p>
+        <span class="card-tag">strategy</span>
+      </div>
+      <div class="chaos-card">
+        <span class="card-marker" style="color: var(--chaos-pink);">&amp;&amp;&amp;</span>
+        <h4>Humor And Irreverence</h4>
+        <p>Chaos Design should never take itself too seriously. Absurdity, playfulness, and visual jokes are essential ingredients of every composition.</p>
+        <span class="card-tag">attitude</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== EFFECTS SHOWCASE SECTION ===== -->
+  <section class="content-section section--navy" id="effects">
+    <p class="section-label">// Effects Showcase //</p>
+    <h2>CSS-Only Chaos</h2>
+    <p style="margin-bottom: 2rem;">Distorted and glitchy visual effects signal digital rebellion. Warped visuals, chromatic aberration, scan-line artifacts, and animated unpredictability.</p>
+
+    <div class="effects-grid">
+      <!-- Effect 1: Glitch Distortion -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-glitch">
+          <span class="effect-glitch-text" data-text="GLITCH">GLITCH</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Glitch Distortion</h4>
+          <p>Chromatic text splitting with clip-path animation. Cyan and magenta layers shift independently.</p>
+        </div>
+      </div>
+
+      <!-- Effect 2: Chromatic Aberration -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-chromatic">
+          <div class="effect-chromatic-box"></div>
+        </div>
+        <div class="effect-caption">
+          <h4>Chromatic Aberration</h4>
+          <p>Split-channel color shift creates RGB separation. Simulates broken screen or analog distortion.</p>
+        </div>
+      </div>
+
+      <!-- Effect 3: Neon Pulse -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-neon-pulse">
+          <span class="effect-neon-pulse-text">NEON</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Neon Pulse</h4>
+          <p>Glowing text-shadow oscillates between neon green and hot magenta. Digital sign flicker energy.</p>
+        </div>
+      </div>
+
+      <!-- Effect 4: Noise Grain -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-noise"></div>
+        <div class="effect-caption">
+          <h4>Noise Grain Texture</h4>
+          <p>SVG fractal noise overlay with mix-blend-mode. Adds raw, unpolished surface texture to any element.</p>
+        </div>
+      </div>
+
+      <!-- Effect 5: Collision Gradients -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-collision"></div>
+        <div class="effect-caption">
+          <h4>Collision Gradients</h4>
+          <p>Overlapping radial gradients in clashing neon hues with animated hue-rotation and saturation shift.</p>
+        </div>
+      </div>
+
+      <!-- Effect 6: Diagonal Stripe Interference -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-stripes"></div>
+        <div class="effect-caption">
+          <h4>Stripe Interference</h4>
+          <p>Three layers of repeating diagonal stripes in clashing colors create animated moire-like visual static.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== BUTTON SHOWCASE SECTION ===== -->
+  <section class="content-section section--dark">
+    <p class="section-label">// Button Showcase //</p>
+    <h2>Smash These</h2>
+    <p style="margin-bottom: 2rem;">Hover effects should surprise. If the user can guess what will happen, the chaos is too tame. Each button variant clashes with its neighbors deliberately.</p>
+
+    <div class="button-showcase">
+      <a href="#" class="chaos-button" data-label="primary!">Primary Chaos</a>
+      <a href="#" class="chaos-button chaos-button--acid" data-label="acid!">Acid Attack</a>
+      <a href="#" class="chaos-button chaos-button--outline" data-label="ghost!">Outline Void</a>
+      <a href="#" class="chaos-button chaos-button--danger" data-label="danger!">Danger Zone</a>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="content-section section--navy">
+    <p class="section-label">// Wisdom From The Wreckage //</p>
+    <div class="chaos-quote">
+      <blockquote>
+        The best Chaos Design practitioners understand grid systems, color theory, and typographic hierarchy so thoroughly that they can break those systems with precision &mdash; creating controlled entropy rather than accidental mess.
+      </blockquote>
+      <cite>The Chaos Design Manifesto</cite>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="chaos-cta">
+    <div class="cta-content">
+      <h2>Embrace<br>The Chaos</h2>
+      <p>Nothing hits harder than deliberate, beautiful chaos. For the right audience and the right message, conventional design rules are just suggestions waiting to be violated.</p>
+      <div class="hero-buttons">
+        <a href="#hero" class="chaos-button" data-label="go!">Back To The Top</a>
+        <a href="#components" class="chaos-button chaos-button--outline" data-label="more!">Explore Again</a>
+      </div>
+      <p class="cta-subtext">// designed to be shared precisely because it is visually startling //</p>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="chaos-divider">
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="chaos-footer">
+    <div class="chaos-footer-content">
+      <h3>CHAOS//DESIGN</h3>
+      <p>Intentionally messy. Deliberately beautiful. Every broken rule is a conscious decision.</p>
+
+      <div class="footer-links">
+        <a href="#hero">Destroy</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+
+      <div class="footer-glitch-row">
+        <span>///</span>
+        <span>###</span>
+        <span>***</span>
+        <span>!!!</span>
+        <span>@@@</span>
+        <span>&amp;&amp;&amp;</span>
+        <span>///</span>
+      </div>
+
+      <p class="footer-copy">CHAOS DESIGN // Design Aesthetic Reference // Break Rules With Full Knowledge</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS: Randomized card tilts on load ===== -->
+  <script>
+    (function() {
+      // Add slight random rotation variance to cards on load
+      const cards = document.querySelectorAll('.chaos-card');
+      cards.forEach(function(card, i) {
+        const baseTilt = [-2, 1.5, -1, 2.5, -3, 1][i] || 0;
+        const variance = (Math.random() - 0.5) * 1.5;
+        const finalTilt = baseTilt + variance;
+        card.style.setProperty('--tilt', finalTilt);
+      });
+
+      // Randomize color chip rotations slightly
+      const chips = document.querySelectorAll('.color-chip');
+      chips.forEach(function(chip) {
+        const rotation = (Math.random() - 0.5) * 5;
+        chip.style.transform = 'rotate(' + rotation + 'deg)';
+      });
+
+      // Randomize effect demo rotations
+      const effects = document.querySelectorAll('.effect-demo');
+      effects.forEach(function(eff) {
+        const rotation = (Math.random() - 0.5) * 4;
+        eff.style.transform = 'rotate(' + rotation + 'deg)';
+      });
+    })();
+  </script>
+</body>
+</html>

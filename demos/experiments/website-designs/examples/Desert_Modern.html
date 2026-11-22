@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Desert Modern -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;500;600&family=Work+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Outfit:wght@400;500;600&family=DM+Sans:wght@400;500;600&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Sand and warm whites */
+      --desert-sand: #F2E6D0;
+      --desert-warm-white: #FAF3EB;
+      --desert-sandstone: #D8B49A;
+      --desert-dust: #C4B09A;
+
+      /* Terracotta and clay */
+      --desert-adobe: #C67B5C;
+      --desert-terracotta: #B85A3A;
+      --desert-sienna: #A0522D;
+      --desert-sunset-coral: #D4856A;
+
+      /* Browns and darks */
+      --desert-canyon: #5C3D2E;
+      --desert-mesa-red: #9B4F3A;
+      --desert-basalt: #2E2A27;
+
+      /* Greens */
+      --desert-sage: #8A9A6C;
+      --desert-dried-sage: #6B7F5E;
+
+      /* Cool accents */
+      --desert-sky: #7CA5B8;
+      --desert-ochre: #C49F2E;
+
+      /* Functional mappings */
+      --desert-bg-primary: var(--desert-warm-white);
+      --desert-bg-secondary: var(--desert-sand);
+      --desert-bg-dark: var(--desert-canyon);
+      --desert-bg-card: var(--desert-warm-white);
+      --desert-text-primary: var(--desert-canyon);
+      --desert-text-secondary: var(--desert-dust);
+      --desert-text-on-dark: var(--desert-sand);
+      --desert-accent: var(--desert-adobe);
+      --desert-accent-secondary: var(--desert-sage);
+      --desert-border: var(--desert-dust);
+      --desert-heading: var(--desert-terracotta);
+      --desert-link: var(--desert-sky);
+
+      /* Shadows */
+      --desert-shadow-sm: 0 2px 8px rgba(46, 42, 39, 0.06);
+      --desert-shadow-md: 0 4px 16px rgba(46, 42, 39, 0.08);
+      --desert-shadow-lg: 0 8px 32px rgba(46, 42, 39, 0.12);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Work Sans', -apple-system, sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      color: var(--desert-text-primary);
+      background-color: var(--desert-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Josefin Sans', Futura, sans-serif;
+      color: var(--desert-heading);
+      font-weight: 400;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 300;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+
+    h4 {
+      font-size: 1rem;
+    }
+
+    p {
+      margin-bottom: 1.25rem;
+      max-width: 68ch;
+    }
+
+    /* Subtle adobe plaster texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='6' height='6' fill='%23f2e6d0'/%3E%3Crect width='1' height='1' x='2' y='3' fill='%23dccbb2' fill-opacity='0.4'/%3E%3Crect width='1' height='1' x='4' y='1' fill='%23dccbb2' fill-opacity='0.3'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.1rem 3rem;
+      background: rgba(250, 243, 235, 0.92);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--desert-border);
+    }
+
+    .nav-logo {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--desert-canyon);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--desert-terracotta);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--desert-canyon);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1.5px;
+      background: var(--desert-terracotta);
+      transition: width 0.35s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--desert-terracotta);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile menu toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--desert-canyon);
+      margin: 5px 0;
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--desert-bg-secondary);
+      overflow: hidden;
+    }
+
+    /* Decorative sun circle */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(196, 159, 46, 0.15) 0%,
+        rgba(198, 123, 92, 0.06) 50%,
+        transparent 70%
+      );
+      top: -100px;
+      right: 8%;
+      pointer-events: none;
+      animation: sunPulse 8s ease-in-out infinite;
+    }
+
+    @keyframes sunPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.85; }
+    }
+
+    /* Desert horizon gradient at bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(
+        to top,
+        rgba(242, 230, 208, 0.6) 0%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    /* CSS-only mountain silhouettes */
+    .hero-mountains {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .hero-mountains::before {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: -5%;
+      width: 60%;
+      height: 180px;
+      background: var(--desert-dust);
+      opacity: 0.15;
+      clip-path: polygon(0% 100%, 15% 35%, 28% 55%, 42% 20%, 55% 50%, 70% 30%, 85% 60%, 100% 40%, 100% 100%);
+    }
+
+    .hero-mountains::after {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      right: -5%;
+      width: 65%;
+      height: 160px;
+      background: var(--desert-sandstone);
+      opacity: 0.12;
+      clip-path: polygon(0% 60%, 12% 30%, 25% 50%, 40% 15%, 55% 45%, 68% 25%, 82% 55%, 95% 35%, 100% 50%, 100% 100%, 0% 100%);
+    }
+
+    /* CSS-only cactus */
+    .hero-cactus {
+      position: absolute;
+      bottom: 40px;
+      left: 8%;
+      width: 24px;
+      height: 100px;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+
+    .hero-cactus::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 100%;
+      background: var(--desert-dried-sage);
+      border-radius: 7px 7px 2px 2px;
+    }
+
+    .hero-cactus::after {
+      content: '';
+      position: absolute;
+      bottom: 45px;
+      left: -8px;
+      width: 10px;
+      height: 40px;
+      background: var(--desert-dried-sage);
+      border-radius: 5px 5px 0 0;
+      box-shadow: 22px 10px 0 0 var(--desert-dried-sage);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      margin-bottom: 1.5rem;
+      color: var(--desert-canyon);
+    }
+
+    .hero-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--desert-adobe);
+      margin-bottom: 1rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--desert-terracotta);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.95rem 2.5rem;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.35s ease;
+      display: inline-block;
+    }
+
+    .btn-primary {
+      background: var(--desert-adobe);
+      color: var(--desert-warm-white);
+    }
+
+    .btn-primary:hover {
+      background: var(--desert-terracotta);
+      color: var(--desert-warm-white);
+      box-shadow: 0 4px 20px rgba(184, 90, 58, 0.25);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--desert-adobe);
+      border: 1.5px solid var(--desert-adobe);
+    }
+
+    .btn-secondary:hover {
+      background: var(--desert-adobe);
+      color: var(--desert-warm-white);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--desert-canyon);
+      padding: 0.95rem 1.2rem;
+      border-bottom: 1.5px solid var(--desert-canyon);
+      border-radius: 0;
+    }
+
+    .btn-ghost:hover {
+      color: var(--desert-terracotta);
+      border-bottom-color: var(--desert-terracotta);
+    }
+
+    .btn-sage {
+      background: var(--desert-sage);
+      color: var(--desert-warm-white);
+    }
+
+    .btn-sage:hover {
+      background: var(--desert-dried-sage);
+      box-shadow: 0 4px 20px rgba(107, 127, 94, 0.25);
+    }
+
+    /* ============================================
+       ZIGZAG DIVIDER
+       ============================================ */
+    .zigzag {
+      background:
+        linear-gradient(135deg, var(--desert-adobe) 25%, transparent 25%) -10px 0,
+        linear-gradient(225deg, var(--desert-adobe) 25%, transparent 25%) -10px 0,
+        linear-gradient(315deg, var(--desert-adobe) 25%, transparent 25%),
+        linear-gradient(45deg, var(--desert-adobe) 25%, transparent 25%);
+      background-size: 20px 10px;
+      background-repeat: repeat-x;
+      height: 10px;
+      opacity: 0.2;
+    }
+
+    /* Diamond divider */
+    .divider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 3rem 0;
+    }
+
+    .divider-line {
+      width: 60px;
+      height: 1px;
+      background: var(--desert-dust);
+    }
+
+    .divider-diamond {
+      width: 7px;
+      height: 7px;
+      background: var(--desert-adobe);
+      transform: rotate(45deg);
+    }
+
+    /* ============================================
+       SECTIONS
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 2rem;
+    }
+
+    .section--sand {
+      background: var(--desert-bg-secondary);
+    }
+
+    .section--dark {
+      background: var(--desert-bg-dark);
+      color: var(--desert-text-on-dark);
+    }
+
+    .section--dark h2,
+    .section--dark h3 {
+      color: var(--desert-sunset-coral);
+    }
+
+    .section--dark p {
+      color: var(--desert-sandstone);
+    }
+
+    .section--glow {
+      background: linear-gradient(
+        160deg,
+        var(--desert-warm-white) 0%,
+        var(--desert-sand) 40%,
+        rgba(212, 133, 106, 0.08) 100%
+      );
+    }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--desert-adobe);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.15rem;
+      color: var(--desert-dust);
+      margin-bottom: 3.5rem;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--desert-dust);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--desert-adobe);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-display {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--desert-canyon);
+      line-height: 1.1;
+    }
+
+    .typo-heading {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--desert-terracotta);
+      line-height: 1.2;
+    }
+
+    .typo-serif-display {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--desert-canyon);
+      line-height: 1.3;
+    }
+
+    .typo-body {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--desert-canyon);
+      letter-spacing: 0.01em;
+    }
+
+    .typo-accent {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--desert-terracotta);
+      line-height: 1.6;
+    }
+
+    .typo-ui {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--desert-sage);
+    }
+
+    .typo-right h3 {
+      color: var(--desert-canyon);
+      margin-bottom: 1rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(196, 176, 154, 0.3);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--desert-dust);
+      min-width: 60px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .color-chip {
+      background: var(--desert-warm-white);
+      border: 1px solid var(--desert-border);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--desert-shadow-md);
+    }
+
+    .color-swatch {
+      height: 80px;
+      width: 100%;
+    }
+
+    .color-info {
+      padding: 0.75rem;
+    }
+
+    .color-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: var(--desert-canyon);
+      letter-spacing: 0.02em;
+      margin-bottom: 0.2rem;
+    }
+
+    .color-hex {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--desert-dust);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--desert-bg-card);
+      border: 1px solid var(--desert-border);
+      border-top: 3px solid var(--desert-adobe);
+      border-radius: 2px;
+      padding: 2rem;
+      transition: box-shadow 0.4s ease, transform 0.4s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--desert-shadow-lg);
+      transform: translateY(-3px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      border-radius: 2px;
+      font-size: 1.2rem;
+    }
+
+    .card-icon--terracotta {
+      background: rgba(198, 123, 92, 0.1);
+      color: var(--desert-adobe);
+    }
+
+    .card-icon--sage {
+      background: rgba(138, 154, 108, 0.1);
+      color: var(--desert-sage);
+    }
+
+    .card-icon--sky {
+      background: rgba(124, 165, 184, 0.1);
+      color: var(--desert-sky);
+    }
+
+    .card-icon--ochre {
+      background: rgba(196, 159, 46, 0.1);
+      color: var(--desert-ochre);
+    }
+
+    .card-icon--canyon {
+      background: rgba(92, 61, 46, 0.1);
+      color: var(--desert-canyon);
+    }
+
+    .card-icon--coral {
+      background: rgba(212, 133, 106, 0.1);
+      color: var(--desert-sunset-coral);
+    }
+
+    .card h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      color: var(--desert-canyon);
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--desert-dust);
+      line-height: 1.7;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--desert-sage);
+      background: rgba(138, 154, 108, 0.1);
+      padding: 0.25rem 0.7rem;
+      border-radius: 2px;
+      margin-right: 0.4rem;
+      margin-top: 0.75rem;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .effect-demo {
+      background: var(--desert-bg-card);
+      border: 1px solid var(--desert-border);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--desert-shadow-md);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      color: var(--desert-canyon);
+      margin-bottom: 0.4rem;
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      color: var(--desert-dust);
+      line-height: 1.6;
+      margin-bottom: 0;
+    }
+
+    /* Effect 1: Adobe Plaster Texture */
+    .effect-adobe {
+      background-color: var(--desert-sand);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='6' height='6' fill='%23f2e6d0'/%3E%3Crect width='1' height='1' x='2' y='3' fill='%23dccbb2' fill-opacity='0.3'/%3E%3Crect width='1' height='1' x='4' y='1' fill='%23dccbb2' fill-opacity='0.2'/%3E%3C/svg%3E");
+    }
+
+    .effect-adobe::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 25% 30%, rgba(198, 123, 92, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 70%, rgba(160, 82, 45, 0.06) 0%, transparent 50%);
+    }
+
+    /* Effect 2: Desert Sunset Gradient */
+    .effect-sunset {
+      background: linear-gradient(
+        180deg,
+        #7CA5B8 0%,
+        #D4856A 35%,
+        #C67B5C 50%,
+        #C49F2E 70%,
+        #F2E6D0 100%
+      );
+    }
+
+    /* Effect 3: Southwestern Zigzag Pattern */
+    .effect-zigzag {
+      background-color: var(--desert-sandstone);
+      background-image:
+        linear-gradient(135deg, var(--desert-adobe) 25%, transparent 25%),
+        linear-gradient(225deg, var(--desert-adobe) 25%, transparent 25%),
+        linear-gradient(315deg, var(--desert-adobe) 25%, transparent 25%),
+        linear-gradient(45deg, var(--desert-adobe) 25%, transparent 25%);
+      background-size: 30px 15px;
+      background-position: 0 0, 15px 0, 15px -7.5px, 0 7.5px;
+      opacity: 0.9;
+    }
+
+    .effect-zigzag::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 0%, rgba(242, 230, 208, 0.5) 100%);
+    }
+
+    /* Effect 4: Rammed Earth Layers */
+    .effect-rammed-earth {
+      background:
+        linear-gradient(180deg,
+          #D8B49A 0%, #D8B49A 12%,
+          #C4B09A 12%, #C4B09A 20%,
+          #C67B5C 20%, #C67B5C 28%,
+          #B85A3A 28%, #B85A3A 34%,
+          #F2E6D0 34%, #F2E6D0 44%,
+          #A0522D 44%, #A0522D 50%,
+          #D8B49A 50%, #D8B49A 60%,
+          #C4B09A 60%, #C4B09A 68%,
+          #5C3D2E 68%, #5C3D2E 74%,
+          #D4856A 74%, #D4856A 82%,
+          #F2E6D0 82%, #F2E6D0 90%,
+          #C67B5C 90%, #C67B5C 100%
+        );
+    }
+
+    /* Effect 5: Desert Sky with Sun */
+    .effect-desert-sky {
+      background: linear-gradient(
+        180deg,
+        #5C3D2E 0%,
+        #7CA5B8 5%,
+        #a8c4d4 30%,
+        #D4856A 65%,
+        #C49F2E 85%,
+        #F2E6D0 100%
+      );
+    }
+
+    .effect-desert-sky::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196, 159, 46, 0.7) 0%, rgba(212, 133, 106, 0.3) 60%, transparent 70%);
+      top: 30px;
+      right: 40px;
+    }
+
+    .effect-desert-sky::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50px;
+      background: var(--desert-canyon);
+      clip-path: polygon(0% 60%, 8% 30%, 18% 50%, 28% 15%, 38% 45%, 48% 20%, 58% 55%, 68% 25%, 78% 50%, 88% 35%, 100% 50%, 100% 100%, 0% 100%);
+    }
+
+    /* Effect 6: Woven Textile Pattern */
+    .effect-woven {
+      background-color: var(--desert-sand);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 8px,
+          rgba(92, 61, 46, 0.06) 8px,
+          rgba(92, 61, 46, 0.06) 10px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 8px,
+          rgba(92, 61, 46, 0.06) 8px,
+          rgba(92, 61, 46, 0.06) 10px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 18px,
+          rgba(198, 123, 92, 0.08) 18px,
+          rgba(198, 123, 92, 0.08) 20px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 18px,
+          rgba(198, 123, 92, 0.08) 18px,
+          rgba(198, 123, 92, 0.08) 20px
+        );
+    }
+
+    .effect-woven::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 20px,
+          rgba(138, 154, 108, 0.04) 20px,
+          rgba(138, 154, 108, 0.04) 22px
+        );
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE / BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      position: relative;
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2.5rem 3rem;
+      border-left: 3px solid var(--desert-adobe);
+      background: rgba(242, 230, 208, 0.35);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--desert-adobe);
+      opacity: 0.25;
+      position: absolute;
+      top: 0.3rem;
+      left: 0.8rem;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.35rem;
+      line-height: 1.6;
+      color: var(--desert-canyon);
+      max-width: none;
+      margin-bottom: 0;
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'Outfit', sans-serif;
+      font-style: normal;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--desert-dust);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 3rem;
+      position: relative;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 40px;
+      height: 3px;
+      background: var(--desert-adobe);
+    }
+
+    .cta-container h2 {
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-container .lead {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-weight: 300;
+      font-size: 1.15rem;
+      line-height: 1.6;
+      color: var(--desert-terracotta);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-container p {
+      margin: 0 auto 2rem;
+      color: var(--desert-dust);
+      font-size: 0.95rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--desert-basalt);
+      color: var(--desert-sandstone);
+      padding: 4rem 2rem 2rem;
+    }
+
+    .footer-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .footer h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      color: var(--desert-sand);
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .footer p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--desert-dust);
+      max-width: 36ch;
+    }
+
+    .footer ul li {
+      margin-bottom: 0.5rem;
+    }
+
+    .footer ul a {
+      font-size: 0.88rem;
+      color: var(--desert-sandstone);
+      transition: color 0.3s ease;
+    }
+
+    .footer ul a:hover {
+      color: var(--desert-sunset-coral);
+    }
+
+    .footer-bottom {
+      max-width: 1140px;
+      margin: 3rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(196, 176, 154, 0.2);
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--desert-dust);
+      letter-spacing: 0.03em;
+    }
+
+    .footer-divider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 2rem auto;
+    }
+
+    .footer-divider span {
+      width: 5px;
+      height: 5px;
+      background: var(--desert-adobe);
+      transform: rotate(45deg);
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .fade-in {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .hero::before {
+        animation: none;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE - TABLET
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE - MOBILE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1rem 1.5rem;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(250, 243, 235, 0.98);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border-bottom: 1px solid var(--desert-border);
+        padding: 1rem 1.5rem;
+        gap: 0;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 0.75rem 0;
+        border-bottom: 1px solid rgba(196, 176, 154, 0.2);
+      }
+
+      .nav-links a:last-child {
+        border-bottom: none;
+      }
+
+      .nav-links a::after {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: 3rem 1.5rem;
+      }
+
+      .hero-cactus {
+        display: none;
+      }
+
+      .section {
+        padding: 3.5rem 1.5rem;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .quote-block {
+        padding: 2rem 1.5rem 2rem 2rem;
+      }
+
+      .quote-block blockquote {
+        font-size: 1.15rem;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+        gap: 0.75rem;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .cta-container {
+        padding: 2rem 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: clamp(2rem, 10vw, 3rem);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Desert Modern</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+      <a href="#buttons">Buttons</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-mountains"></div>
+    <div class="hero-cactus"></div>
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Desert Modern</h1>
+      <p class="hero-subtitle">Contemporary architecture rooted in the timeless warmth of Southwestern landscape and light.</p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ZIGZAG ACCENT ===== -->
+  <div class="zigzag"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Geometric, Clean &amp; Architectural</h2>
+      <p class="section-subtitle">mid-century precision softened by organic warmth</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Josefin Sans Light</p>
+            <p class="typo-display">Desert Vista</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / DM Sans</p>
+            <p class="typo-heading">Clean Modern Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Serif Display / Cormorant Garamond</p>
+            <p class="typo-serif-display">Refined editorial warmth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Work Sans</p>
+            <p class="typo-body">Open, readable body text that breathes like desert air. Desert Modern typography is unhurried and generous with space -- never crowded, never fussy.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Libre Baskerville Italic</p>
+            <p class="typo-accent">Pull quotes and accent text with warm serif character</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Outfit</p>
+            <p class="typo-ui">Navigation &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5rem</span>
+              <span style="font-family: 'Josefin Sans', sans-serif; font-size: 1.8rem; font-weight: 300; color: var(--desert-canyon); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 1.4rem; font-weight: 500; color: var(--desert-terracotta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; font-weight: 300; font-style: italic; color: var(--desert-canyon);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.15rem</span>
+              <span style="font-family: 'Libre Baskerville', serif; font-size: 1rem; font-style: italic; color: var(--desert-terracotta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Work Sans', sans-serif; font-size: 1rem; color: var(--desert-canyon);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.82rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 0.82rem; color: var(--desert-sage); text-transform: uppercase; letter-spacing: 0.08em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--desert-dust);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Josefin Sans', sans-serif; font-weight: 400; color: var(--desert-terracotta);">Josefin Sans</strong> + <strong style="font-family: 'Work Sans', sans-serif;">Work Sans</strong><br>
+              <span style="color: var(--desert-dust); font-size: 0.85rem;">Mid-century elegance with warm readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'DM Sans', sans-serif; font-weight: 500; color: var(--desert-terracotta);">DM Sans</strong> + <strong style="font-family: 'Work Sans', sans-serif;">Inter</strong><br>
+              <span style="color: var(--desert-dust); font-size: 0.85rem;">Clean contemporary, highly functional</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 400; color: var(--desert-terracotta);">Cormorant Garamond</strong> + <strong style="font-family: 'Work Sans', sans-serif;">Work Sans</strong><br>
+              <span style="color: var(--desert-dust); font-size: 0.85rem;">Editorial refinement with approachable body</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-line"></span>
+    <span class="divider-diamond"></span>
+    <span class="divider-line"></span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--sand" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Extracted from the Landscape</h2>
+      <p class="section-subtitle">terracotta clay, bleached sand, sage brush, and desert twilight</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2E6D0;"></div>
+          <div class="color-info">
+            <div class="color-name">Desert Sand</div>
+            <div class="color-hex">#F2E6D0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF3EB;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm White</div>
+            <div class="color-hex">#FAF3EB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C67B5C;"></div>
+          <div class="color-info">
+            <div class="color-name">Adobe Clay</div>
+            <div class="color-hex">#C67B5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B85A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta</div>
+            <div class="color-hex">#B85A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A0522D;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Sienna</div>
+            <div class="color-hex">#A0522D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C3D2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Canyon Brown</div>
+            <div class="color-hex">#5C3D2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D8B49A;"></div>
+          <div class="color-info">
+            <div class="color-name">Sandstone</div>
+            <div class="color-hex">#D8B49A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8A9A6C;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Green</div>
+            <div class="color-hex">#8A9A6C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7F5E;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Sage</div>
+            <div class="color-hex">#6B7F5E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7CA5B8;"></div>
+          <div class="color-info">
+            <div class="color-name">Desert Sky</div>
+            <div class="color-hex">#7CA5B8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4856A;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunset Coral</div>
+            <div class="color-hex">#D4856A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C49F2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Ochre Gold</div>
+            <div class="color-hex">#C49F2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9B4F3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Mesa Red</div>
+            <div class="color-hex">#9B4F3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4B09A;"></div>
+          <div class="color-info">
+            <div class="color-name">Dust Storm</div>
+            <div class="color-hex">#C4B09A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2E2A27;"></div>
+          <div class="color-info">
+            <div class="color-name">Basalt</div>
+            <div class="color-hex">#2E2A27</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ZIGZAG ACCENT ===== -->
+  <div class="zigzag"></div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Architectural Modules</h2>
+      <p class="section-subtitle">clean forms, warm materials, and honest structure</p>
+
+      <div class="card-grid">
+        <div class="card fade-in">
+          <div class="card-icon card-icon--terracotta">&#9674;</div>
+          <h3>Adobe Textures</h3>
+          <p>Subtle plaster, stucco, and rammed earth surface textures that reference the handbuilt walls of Southwestern architecture.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Surface</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--sage">&#9651;</div>
+          <h3>Geometric Patterns</h3>
+          <p>Chevrons, diamonds, and zigzag motifs inspired by Navajo weaving and Cahuilla basketry, used as decorative accents and borders.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Cultural</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--sky">&#9675;</div>
+          <h3>Glass &amp; Steel</h3>
+          <p>The cool modern counterpoint: expansive glass walls, thin steel frames, and clean lines that evoke mid-century Palm Springs architecture.</p>
+          <span class="tag">Structure</span>
+          <span class="tag">Modern</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--ochre">&#9733;</div>
+          <h3>Desert Botanicals</h3>
+          <p>Saguaro cacti, prickly pear, agave, and Joshua trees as recurring visual motifs -- the native flora of the arid landscape.</p>
+          <span class="tag">Nature</span>
+          <span class="tag">Botanical</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--canyon">&#9632;</div>
+          <h3>Shadow Play</h3>
+          <p>Strong directional shadows that reference the sharp, high-contrast light of desert sun, lending depth to cards and typographic elements.</p>
+          <span class="tag">Light</span>
+          <span class="tag">Depth</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--coral">&#9830;</div>
+          <h3>Warm Neutrals</h3>
+          <p>Sandy beiges, warm whites, and taupe dominate the visual field with terracotta and sage as deliberate punctuation marks.</p>
+          <span class="tag">Palette</span>
+          <span class="tag">Warmth</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-line"></span>
+    <span class="divider-diamond"></span>
+    <span class="divider-line"></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--sand" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Techniques</h2>
+      <p class="section-subtitle">all the warmth and materiality, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-adobe"></div>
+          <div class="effect-caption">
+            <h4>Adobe Plaster</h4>
+            <p>SVG noise pattern creates the matte, sun-baked surface of hand-troweled adobe walls.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-sunset"></div>
+          <div class="effect-caption">
+            <h4>Desert Sunset</h4>
+            <p>Multi-stop linear gradient from sky blue through coral to warm gold captures the evening horizon.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-zigzag"></div>
+          <div class="effect-caption">
+            <h4>Southwestern Zigzag</h4>
+            <p>Rotated linear gradients tile into the classic chevron pattern of Southwestern textiles.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-rammed-earth"></div>
+          <div class="effect-caption">
+            <h4>Rammed Earth</h4>
+            <p>Horizontal color bands in earthy tones simulate the layered geological strata of canyon walls.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-desert-sky"></div>
+          <div class="effect-caption">
+            <h4>Desert Landscape</h4>
+            <p>Gradient sky, radial sun glow, and clipped polygon mountains -- a full scene in pure CSS.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-woven"></div>
+          <div class="effect-caption">
+            <h4>Woven Textile</h4>
+            <p>Overlapping repeating gradients at different scales create a warp-and-weft weaving pattern.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ZIGZAG ACCENT ===== -->
+  <div class="zigzag"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--glow" id="buttons">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Buttons &amp; Actions</h2>
+      <p class="section-subtitle">matte, honed finishes with clean architectural form</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Terracotta</a>
+        <a href="#" class="btn btn-secondary">Secondary Outline</a>
+        <a href="#" class="btn btn-ghost">Ghost Underline</a>
+        <a href="#" class="btn btn-sage">Sage Accent</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="quote-block fade-in">
+        <blockquote>
+          The desert teaches you to remove everything that is not essential. What remains is honest, beautiful, and enduring -- like the horizon itself.
+        </blockquote>
+        <cite>&mdash; The Philosophy of Desert Modern Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Let the Landscape Lead</h2>
+        <p class="lead">strip away the unnecessary, honor natural materials, and create beauty through honest form</p>
+        <p>
+          Desert Modern balances warmth and restraint, nature and industry. Its palette is drawn from terracotta clay, bleached sand, sage brush, and the deep indigo of desert twilight. Every element earns its place.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ZIGZAG ACCENT ===== -->
+  <div class="zigzag"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h4>Desert Modern</h4>
+        <p>A design aesthetic reference celebrating the warm, grounded visual language of mid-century desert architecture -- terracotta, sand, sage, and honest materials, all without a single image asset.</p>
+      </div>
+      <div>
+        <h4>Sections</h4>
+        <ul>
+          <li><a href="#hero">Overview</a></li>
+          <li><a href="#typography">Typography</a></li>
+          <li><a href="#palette">Colors</a></li>
+          <li><a href="#components">Components</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#effects">Effects</a></li>
+          <li><a href="#buttons">Buttons</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-divider">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="footer-bottom">
+      Design Aesthetic Reference &bull; Desert Modern &bull; Where the desert meets design
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Mobile navigation toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', function() {
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile nav when a link is clicked
+    navLinks.querySelectorAll('a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // Scroll-triggered fade-in animations
+    (function() {
+      var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReduced) {
+        // Make all fade-in elements visible immediately
+        document.querySelectorAll('.fade-in').forEach(function(el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.fade-in').forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Op Art -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500;700&family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Core black & white */
+      --op-black: #000000;
+      --op-white: #ffffff;
+      --op-near-black: #1a1a1a;
+      --op-off-white: #f0f0f0;
+      --op-gray: #808080;
+      --op-charcoal: #333333;
+
+      /* Complementary pair: Red / Green */
+      --op-red: #ff0000;
+      --op-green: #00ff00;
+
+      /* Complementary pair: Blue / Orange */
+      --op-blue: #0000ff;
+      --op-orange: #ff8c00;
+
+      /* Complementary pair: Violet / Yellow */
+      --op-violet: #8b00ff;
+      --op-yellow: #ffd700;
+
+      /* Accent colors */
+      --op-cyan: #00ced1;
+      --op-hot-pink: #ff1493;
+      --op-neon-green: #39ff14;
+
+      /* Semantic tokens */
+      --op-bg-primary: #ffffff;
+      --op-bg-dark: #000000;
+      --op-bg-soft: #f0f0f0;
+      --op-text-primary: #000000;
+      --op-text-inverse: #ffffff;
+      --op-text-secondary: #333333;
+
+      /* Pattern tokens */
+      --op-stripe-width: 4px;
+      --op-pattern-speed: 20s;
+
+      /* Spacing */
+      --section-pad: clamp(72px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--op-text-secondary);
+      background-color: var(--op-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--op-text-primary);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+      background: var(--op-white);
+      border-bottom: 3px solid var(--op-black);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--op-black);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .nav-logo-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-black) 0px, var(--op-black) 3px,
+        var(--op-white) 3px, var(--op-white) 6px
+      );
+      border: 2px solid var(--op-black);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--op-black);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-black) 0px, var(--op-black) 2px,
+        transparent 2px, transparent 4px
+      );
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--op-black);
+      overflow: hidden;
+    }
+
+    .hero-pattern {
+      position: absolute;
+      inset: 0;
+      background: repeating-conic-gradient(
+        var(--op-black) 0deg 5deg,
+        var(--op-white) 5deg 10deg
+      );
+      background-position: center;
+      opacity: 0.12;
+      animation: hero-rotate 60s linear infinite;
+    }
+
+    @keyframes hero-rotate {
+      0% { transform: rotate(0deg) scale(1.5); }
+      100% { transform: rotate(360deg) scale(1.5); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+      padding: 64px 48px;
+      background: rgba(0, 0, 0, 0.88);
+      border: 2px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .hero-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--op-gray);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      color: var(--op-white);
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.03em;
+      line-height: 0.92;
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(90deg, var(--op-red), var(--op-hot-pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--op-off-white);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 40px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      border: 3px solid var(--op-black);
+      border-radius: 0;
+      text-decoration: none;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent 0px, transparent 2px,
+        rgba(255, 255, 255, 0.12) 2px, rgba(255, 255, 255, 0.12) 4px
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::before {
+      opacity: 1;
+    }
+
+    .btn--primary {
+      background: var(--op-black);
+      color: var(--op-white);
+      border-color: var(--op-white);
+    }
+
+    .btn--primary:hover {
+      background: var(--op-white);
+      color: var(--op-black);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--op-white);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .btn--outline:hover {
+      background: var(--op-white);
+      color: var(--op-black);
+      border-color: var(--op-white);
+    }
+
+    .btn--dark {
+      background: var(--op-black);
+      color: var(--op-white);
+      border-color: var(--op-black);
+    }
+
+    .btn--dark:hover {
+      background: transparent;
+      color: var(--op-black);
+    }
+
+    .btn--inverse {
+      background: var(--op-white);
+      color: var(--op-black);
+      border-color: var(--op-black);
+    }
+
+    .btn--inverse:hover {
+      background: var(--op-black);
+      color: var(--op-white);
+    }
+
+    .btn--red {
+      background: var(--op-red);
+      color: var(--op-white);
+      border-color: var(--op-red);
+    }
+
+    .btn--red:hover {
+      background: var(--op-white);
+      color: var(--op-red);
+    }
+
+    .btn--blue {
+      background: var(--op-blue);
+      color: var(--op-white);
+      border-color: var(--op-blue);
+    }
+
+    .btn--blue:hover {
+      background: var(--op-white);
+      color: var(--op-blue);
+    }
+
+    /* ============================================
+       STRIPE DIVIDERS
+       ============================================ */
+    .stripe-divider {
+      width: 100%;
+      height: 12px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-black) 0px, var(--op-black) 3px,
+        var(--op-white) 3px, var(--op-white) 6px
+      );
+    }
+
+    .stripe-divider--color {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-red) 0px, var(--op-red) 4px,
+        var(--op-green) 4px, var(--op-green) 8px
+      );
+    }
+
+    .stripe-divider--warm {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-blue) 0px, var(--op-blue) 4px,
+        var(--op-orange) 4px, var(--op-orange) 8px
+      );
+    }
+
+    .stripe-divider--electric {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-violet) 0px, var(--op-violet) 4px,
+        var(--op-yellow) 4px, var(--op-yellow) 8px
+      );
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--white {
+      background: var(--op-white);
+    }
+
+    .section--off-white {
+      background: var(--op-off-white);
+      border-top: 3px solid var(--op-black);
+      border-bottom: 3px solid var(--op-black);
+    }
+
+    .section--dark {
+      background: var(--op-black);
+      color: var(--op-white);
+    }
+
+    .section--dark .section-label { color: var(--op-gray); }
+    .section--dark .section-title { color: var(--op-white); }
+    .section--dark .section-subtitle { color: var(--op-gray); }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--op-gray);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      text-align: center;
+      color: var(--op-text-primary);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      text-align: center;
+      color: var(--op-charcoal);
+      margin-bottom: 56px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       OP ART GEOMETRIC DIVIDER
+       ============================================ */
+    .op-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .op-divider::before,
+    .op-divider::after {
+      content: '';
+      flex: 1;
+      height: 3px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-black) 0px, var(--op-black) 4px,
+        transparent 4px, transparent 8px
+      );
+    }
+
+    .op-divider span {
+      width: 20px;
+      height: 20px;
+      margin: 0 16px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-black) 0px, var(--op-black) 2px,
+        var(--op-white) 2px, var(--op-white) 4px
+      );
+      border: 2px solid var(--op-black);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--op-gray);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--op-off-white);
+    }
+
+    .typo-display {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--op-black);
+      line-height: 1.0;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+
+    .typo-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--op-black);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .typo-subheading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: var(--op-charcoal);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--op-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .typo-caption {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: var(--op-gray);
+      line-height: 1.5;
+    }
+
+    .typo-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--op-near-black);
+    }
+
+    .typo-right {
+      background: var(--op-off-white);
+      padding: 36px;
+      border: 3px solid var(--op-black);
+    }
+
+    .typo-right h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--op-gray);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--op-white);
+      border: 3px solid var(--op-black);
+      transition: transform 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--op-black);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--op-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--op-white);
+      border: 3px solid var(--op-black);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+      position: relative;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-black) 0px, var(--op-black) 4px,
+        var(--op-white) 4px, var(--op-white) 8px
+      );
+    }
+
+    .card:nth-child(2)::before {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-red) 0px, var(--op-red) 4px,
+        var(--op-green) 4px, var(--op-green) 8px
+      );
+    }
+
+    .card:nth-child(3)::before {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-blue) 0px, var(--op-blue) 4px,
+        var(--op-orange) 4px, var(--op-orange) 8px
+      );
+    }
+
+    .card:nth-child(4)::before {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-violet) 0px, var(--op-violet) 4px,
+        var(--op-yellow) 4px, var(--op-yellow) 8px
+      );
+    }
+
+    .card:nth-child(5)::before {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-hot-pink) 0px, var(--op-hot-pink) 4px,
+        var(--op-cyan) 4px, var(--op-cyan) 8px
+      );
+    }
+
+    .card:nth-child(6)::before {
+      background: repeating-linear-gradient(
+        45deg,
+        var(--op-black) 0px, var(--op-black) 4px,
+        var(--op-white) 4px, var(--op-white) 8px
+      );
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+      margin-top: 8px;
+    }
+
+    .card-icon--rings {
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-black) 0px, var(--op-black) 4px,
+        var(--op-white) 4px, var(--op-white) 8px
+      );
+      border: 2px solid var(--op-black);
+    }
+
+    .card-icon--red {
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-red) 0px, var(--op-red) 4px,
+        var(--op-white) 4px, var(--op-white) 8px
+      );
+      border: 2px solid var(--op-red);
+    }
+
+    .card-icon--blue {
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-blue) 0px, var(--op-blue) 4px,
+        var(--op-white) 4px, var(--op-white) 8px
+      );
+      border: 2px solid var(--op-blue);
+    }
+
+    .card-icon--violet {
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-violet) 0px, var(--op-violet) 4px,
+        var(--op-white) 4px, var(--op-white) 8px
+      );
+      border: 2px solid var(--op-violet);
+    }
+
+    .card-icon--checker {
+      background:
+        repeating-conic-gradient(
+          var(--op-black) 0% 25%,
+          var(--op-white) 0% 50%
+        ) 50% / 14px 14px;
+      border: 2px solid var(--op-black);
+    }
+
+    .card-icon--stripes {
+      background: repeating-linear-gradient(
+        45deg,
+        var(--op-black) 0px, var(--op-black) 3px,
+        var(--op-white) 3px, var(--op-white) 6px
+      );
+      border: 2px solid var(--op-black);
+    }
+
+    .card-body {
+      padding: 32px;
+      padding-top: 24px;
+    }
+
+    .card-body h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--op-black);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    .card-body p {
+      font-size: 0.95rem;
+      color: var(--op-charcoal);
+      line-height: 1.65;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border: 2px solid var(--op-black);
+      color: var(--op-black);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--op-black);
+      color: var(--op-white);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 3px solid var(--op-black);
+      background: var(--op-white);
+    }
+
+    .effect-preview {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Concentric Rings */
+    .effect-concentric {
+      background: var(--op-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-concentric::before {
+      content: '';
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle at center,
+        var(--op-black) 0px, var(--op-black) 8px,
+        var(--op-white) 8px, var(--op-white) 16px
+      );
+      animation: op-pulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes op-pulse {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.08); }
+    }
+
+    /* Effect 2: Moire Interference */
+    .effect-moire {
+      background: var(--op-white);
+    }
+
+    .effect-moire .moire-layer-1,
+    .effect-moire .moire-layer-2 {
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+    }
+
+    .effect-moire .moire-layer-1 {
+      background: repeating-linear-gradient(
+        0deg,
+        var(--op-black) 0px, var(--op-black) 2px,
+        transparent 2px, transparent 6px
+      );
+      opacity: 0.5;
+    }
+
+    .effect-moire .moire-layer-2 {
+      background: repeating-linear-gradient(
+        3deg,
+        var(--op-black) 0px, var(--op-black) 2px,
+        transparent 2px, transparent 6px
+      );
+      opacity: 0.5;
+      animation: moire-drift 30s linear infinite;
+    }
+
+    @keyframes moire-drift {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(6deg); }
+    }
+
+    /* Effect 3: Chromatic Vibration */
+    .effect-vibration {
+      background: repeating-linear-gradient(
+        0deg,
+        var(--op-red) 0px, var(--op-red) 4px,
+        var(--op-green) 4px, var(--op-green) 8px
+      );
+    }
+
+    .effect-vibration::after {
+      content: 'VIBRATE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--op-white);
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      letter-spacing: 0.1em;
+    }
+
+    /* Effect 4: Checkerboard Warp */
+    .effect-checkerboard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--op-white);
+    }
+
+    .effect-checkerboard::before {
+      content: '';
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background:
+        repeating-conic-gradient(
+          var(--op-black) 0% 25%,
+          var(--op-white) 0% 50%
+        ) 50% / 24px 24px;
+      animation: check-pulse 3s ease-in-out infinite alternate;
+    }
+
+    .effect-checkerboard::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 190px;
+      height: 190px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        transparent 0%, transparent 35%,
+        rgba(255, 255, 255, 0.3) 65%,
+        rgba(255, 255, 255, 0.8) 100%
+      );
+    }
+
+    @keyframes check-pulse {
+      0% { background-size: 24px 24px; }
+      100% { background-size: 18px 18px; }
+    }
+
+    /* Effect 5: Radial Starburst */
+    .effect-starburst {
+      background: var(--op-black);
+    }
+
+    .effect-starburst::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300%;
+      height: 300%;
+      background: repeating-conic-gradient(
+        from 0deg,
+        var(--op-white) 0deg 2deg,
+        var(--op-black) 2deg 4deg
+      );
+      opacity: 0.3;
+      animation: starburst-spin 40s linear infinite;
+    }
+
+    .effect-starburst::after {
+      content: 'RADIATE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.8rem;
+      color: var(--op-white);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    @keyframes starburst-spin {
+      0% { transform: translate(-50%, -50%) rotate(0deg); }
+      100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    /* Effect 6: Blue/Orange Diagonal Stripes */
+    .effect-diagonal {
+      background: repeating-linear-gradient(
+        45deg,
+        var(--op-blue) 0px, var(--op-blue) 6px,
+        var(--op-orange) 6px, var(--op-orange) 12px
+      );
+    }
+
+    .effect-diagonal::after {
+      content: 'TENSION';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--op-white);
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      letter-spacing: 0.1em;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--op-black);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--op-gray);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 56px 40px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--op-white);
+      border: 3px solid var(--op-black);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-black) 0px, var(--op-black) 3px,
+        var(--op-white) 3px, var(--op-white) 6px
+      );
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-black) 0px, var(--op-black) 3px,
+        var(--op-white) 3px, var(--op-white) 6px
+      );
+    }
+
+    .quote-mark {
+      font-family: 'Syne', sans-serif;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--op-black);
+      opacity: 0.08;
+      line-height: 0.5;
+      margin-bottom: 12px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      color: var(--op-near-black);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--op-gray);
+      font-style: normal;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      background: var(--op-black);
+      padding: 100px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-pattern {
+      position: absolute;
+      inset: 0;
+      background: repeating-conic-gradient(
+        var(--op-black) 0deg 3deg,
+        var(--op-white) 3deg 6deg
+      );
+      opacity: 0.06;
+      animation: cta-spin 80s linear infinite;
+    }
+
+    @keyframes cta-spin {
+      0% { transform: rotate(0deg) scale(2); }
+      100% { transform: rotate(360deg) scale(2); }
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 6vw, 4rem);
+      color: var(--op-white);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .cta p {
+      font-size: 1.15rem;
+      color: var(--op-gray);
+      max-width: 500px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--op-near-black);
+      border-top: 3px solid var(--op-black);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--op-off-white);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--op-white) 0px, var(--op-white) 4px,
+        var(--op-black) 4px, var(--op-black) 8px
+      );
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .footer-logo-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle,
+        var(--op-white) 0px, var(--op-white) 2px,
+        var(--op-near-black) 2px, var(--op-near-black) 4px
+      );
+      border: 2px solid var(--op-white);
+    }
+
+    .footer h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--op-white);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(240, 240, 240, 0.5);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(240, 240, 240, 0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--op-white);
+    }
+
+    .footer-pattern {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .footer-pattern-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.15) 0px, rgba(255, 255, 255, 0.15) 3px,
+        transparent 3px, transparent 6px
+      );
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(240, 240, 240, 0.2);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 16px 20px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        min-height: 70vh;
+      }
+
+      .hero-content {
+        padding: 40px 24px;
+        margin: 0 16px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 10vw, 4rem);
+      }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .section {
+        padding: clamp(48px, 8vw, 80px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 12px;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.82rem;
+      }
+
+      .footer-links {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-icon"></span>
+      Op Art
+    </a>
+    <div class="nav-links">
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#cards">Cards</a>
+      <a href="#effects">Effects</a>
+      <a href="#buttons">Buttons</a>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero">
+    <div class="hero-pattern"></div>
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1>Optical<br><span class="accent">Illusion</span><br>Art</h1>
+      <p>Geometric patterns creating visual movement and depth through contrast, repetition, and mathematical precision on flat, static surfaces.</p>
+      <div class="hero-buttons">
+        <a href="#effects" class="btn btn--primary">Explore Effects</a>
+        <a href="#cards" class="btn btn--outline">View Components</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Divider -->
+  <div class="stripe-divider"></div>
+
+  <!-- ============================================
+       TYPOGRAPHY SECTION
+       ============================================ -->
+  <section id="typography" class="section section--white">
+    <div class="container">
+      <p class="section-label">Typographic System</p>
+      <h2 class="section-title">Typography</h2>
+      <p class="section-subtitle">Geometric sans-serifs engineered on the same grid as the patterns -- authoritative, precise, and supremely legible amid perceptual turbulence.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Syne 800</p>
+            <p class="typo-display">Perception Is The Medium</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Space Grotesk 700</p>
+            <p class="typo-heading">Precision Over Expression</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Space Grotesk 500</p>
+            <p class="typo-subheading">Contrast Is Energy</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body">Op Art exploits the mechanics of human perception to produce illusions of movement, vibration, warping, and depth from entirely flat, static surfaces. The movement crystallized in the early 1960s.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Inter 400</p>
+            <p class="typo-caption">Bridget Riley, Victor Vasarely, Richard Anuszkiewicz -- 1965 MoMA exhibition</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Space Grotesk 500</p>
+            <p class="typo-label">Optical Pattern Field</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family:'Syne',sans-serif;font-weight:800;font-size:2rem;text-transform:uppercase;letter-spacing:-0.03em;">Display</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.5rem;text-transform:uppercase;">Heading</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:1.2rem;text-transform:uppercase;letter-spacing:0.04em;">Subheading</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family:'Inter',sans-serif;font-size:1rem;">Body text reads clearly amid optical patterns</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family:'Inter',sans-serif;font-size:0.85rem;color:#808080;">Caption and secondary information</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.1em;">Label Text</span>
+            </div>
+          </div>
+          <div style="margin-top:24px;">
+            <p>The geometric sans-serif faces echo Op Art's mathematical precision: clean hard edges, calculated spacing, and exact proportional relationships. Every letterform feels engineered on the same grid as the patterns themselves.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Divider -->
+  <div class="stripe-divider--color" style="width:100%;height:12px;background:repeating-linear-gradient(90deg,var(--op-red) 0px,var(--op-red) 4px,var(--op-green) 4px,var(--op-green) 8px);"></div>
+
+  <!-- ============================================
+       COLOR PALETTE SECTION
+       ============================================ -->
+  <section id="palette" class="section section--off-white">
+    <div class="container">
+      <p class="section-label">Chromatic System</p>
+      <h2 class="section-title">Color Palette</h2>
+      <p class="section-subtitle">Rooted in maximum perceptual contrast -- pure black and white foundation with complementary pairs for chromatic vibration effects.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #000000;"></div>
+          <div class="color-info">
+            <p class="color-name">Pure Black</p>
+            <p class="color-hex">#000000</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #FFFFFF; border-bottom: 1px solid #e0e0e0;"></div>
+          <div class="color-info">
+            <p class="color-name">Pure White</p>
+            <p class="color-hex">#FFFFFF</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #1A1A1A;"></div>
+          <div class="color-info">
+            <p class="color-name">Near Black</p>
+            <p class="color-hex">#1A1A1A</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #F0F0F0; border-bottom: 1px solid #e0e0e0;"></div>
+          <div class="color-info">
+            <p class="color-name">Off White</p>
+            <p class="color-hex">#F0F0F0</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #808080;"></div>
+          <div class="color-info">
+            <p class="color-name">Neutral Gray</p>
+            <p class="color-hex">#808080</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #FF0000;"></div>
+          <div class="color-info">
+            <p class="color-name">Vibrant Red</p>
+            <p class="color-hex">#FF0000</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #00FF00;"></div>
+          <div class="color-info">
+            <p class="color-name">Vibrant Green</p>
+            <p class="color-hex">#00FF00</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #0000FF;"></div>
+          <div class="color-info">
+            <p class="color-name">Pure Blue</p>
+            <p class="color-hex">#0000FF</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #FF8C00;"></div>
+          <div class="color-info">
+            <p class="color-name">Vivid Orange</p>
+            <p class="color-hex">#FF8C00</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #8B00FF;"></div>
+          <div class="color-info">
+            <p class="color-name">Electric Violet</p>
+            <p class="color-hex">#8B00FF</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #FFD700;"></div>
+          <div class="color-info">
+            <p class="color-name">Bright Yellow</p>
+            <p class="color-hex">#FFD700</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #00CED1;"></div>
+          <div class="color-info">
+            <p class="color-name">Cyan Teal</p>
+            <p class="color-hex">#00CED1</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #FF1493;"></div>
+          <div class="color-info">
+            <p class="color-name">Hot Pink</p>
+            <p class="color-hex">#FF1493</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #39FF14;"></div>
+          <div class="color-info">
+            <p class="color-name">Neon Green</p>
+            <p class="color-hex">#39FF14</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #333333;"></div>
+          <div class="color-info">
+            <p class="color-name">Charcoal</p>
+            <p class="color-hex">#333333</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Divider -->
+  <div class="stripe-divider"></div>
+
+  <!-- ============================================
+       CARD GRID SECTION
+       ============================================ -->
+  <section id="cards" class="section section--white">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Card Grid</h2>
+      <p class="section-subtitle">Clean card components with optical pattern borders and solid interiors -- depth through contrast between patterned frames and content areas.</p>
+
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon card-icon--rings"></div>
+            <h3>Concentric Rings</h3>
+            <p>Repeating radial gradients create the classic tunneling effect -- circles within circles that appear to recede infinitely into depth.</p>
+            <span class="tag">Radial</span>
+            <span class="tag">Depth</span>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon card-icon--red"></div>
+            <h3>Chromatic Vibration</h3>
+            <p>Complementary colors of equal saturation placed in direct adjacency produce the most aggressive retinal stimulation -- boundaries shimmer and pulse.</p>
+            <span class="tag">Color</span>
+            <span class="tag">Contrast</span>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon card-icon--blue"></div>
+            <h3>Moire Interference</h3>
+            <p>Overlapping striped layers with slight angular differences produce shimmering secondary patterns perceived by the brain but absent from the actual artwork.</p>
+            <span class="tag">Pattern</span>
+            <span class="tag">Illusion</span>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon card-icon--violet"></div>
+            <h3>Figure-Ground Ambiguity</h3>
+            <p>Compositions where foreground and background swap depending on the viewer's focal point, creating unstable spatial relationships that keep the eye in constant motion.</p>
+            <span class="tag">Perception</span>
+            <span class="tag">Spatial</span>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon card-icon--checker"></div>
+            <h3>Warped Grid Distortion</h3>
+            <p>Regular grids with controlled deformations -- bulges, pinches, waves -- that make flat surfaces appear to swell into three-dimensional forms.</p>
+            <span class="tag">3D Effect</span>
+            <span class="tag">Warp</span>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <div class="card-body">
+            <div class="card-icon card-icon--stripes"></div>
+            <h3>Mathematical Precision</h3>
+            <p>Spacing, angle, and proportion are calculated rather than intuited. Many Op Art works can be described by formulas -- clean edges with no room for gestural looseness.</p>
+            <span class="tag">Geometry</span>
+            <span class="tag">System</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Divider -->
+  <div style="width:100%;height:12px;background:repeating-linear-gradient(90deg,var(--op-blue) 0px,var(--op-blue) 4px,var(--op-orange) 4px,var(--op-orange) 8px);"></div>
+
+  <!-- ============================================
+       EFFECTS SHOWCASE SECTION
+       ============================================ -->
+  <section id="effects" class="section section--dark">
+    <div class="container">
+      <p class="section-label">CSS Techniques</p>
+      <h2 class="section-title">Effects Showcase</h2>
+      <p class="section-subtitle" style="color: var(--op-gray);">Pure CSS optical illusions -- repeating gradients, conic patterns, and mathematical precision recreate the perceptual phenomena of classic Op Art.</p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Concentric Rings -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-concentric"></div>
+          <div class="effect-caption">
+            <h4>Concentric Rings</h4>
+            <p>Repeating radial gradient creates a tunneling depth illusion with alternating black and white rings.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Moire Interference -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-moire">
+            <div class="moire-layer-1"></div>
+            <div class="moire-layer-2"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Moire Interference</h4>
+            <p>Two striped layers at a slight angular offset produce a shimmering secondary pattern in pure CSS.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Chromatic Vibration -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-vibration"></div>
+          <div class="effect-caption">
+            <h4>Chromatic Vibration</h4>
+            <p>Red-green complementary stripes create boundary shimmer -- the classic Op Art retinal stimulation.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Checkerboard Warp -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-checkerboard"></div>
+          <div class="effect-caption">
+            <h4>Checkerboard Warp</h4>
+            <p>Conic-gradient checkerboard in a circular mask with radial fade creates a spherical bulge illusion.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Radial Starburst -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-starburst"></div>
+          <div class="effect-caption">
+            <h4>Radial Starburst</h4>
+            <p>A slowly rotating conic gradient with narrow stripe angles creates a hypnotic radiating pattern.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Diagonal Tension -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-diagonal"></div>
+          <div class="effect-caption">
+            <h4>Diagonal Tension</h4>
+            <p>Blue-orange complementary diagonal stripes create directional chromatic vibration and kinetic energy.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Divider -->
+  <div style="width:100%;height:12px;background:repeating-linear-gradient(90deg,var(--op-violet) 0px,var(--op-violet) 4px,var(--op-yellow) 4px,var(--op-yellow) 8px);"></div>
+
+  <!-- ============================================
+       BUTTON SHOWCASE SECTION
+       ============================================ -->
+  <section id="buttons" class="section section--white">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Button Styles</h2>
+      <p class="section-subtitle">Buttons with striped patterns that animate on hover, creating micro-scale Op Art vibration effects contained within interactive elements.</p>
+
+      <div class="button-showcase">
+        <button class="btn btn--dark">Explore Patterns</button>
+        <button class="btn btn--inverse">View Gallery</button>
+        <button class="btn btn--red">Chromatic</button>
+        <button class="btn btn--blue">Interference</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       BLOCKQUOTE SECTION
+       ============================================ -->
+  <section class="section section--off-white">
+    <div class="container">
+      <div class="quote-block">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>
+          The paintings are not Op Art. They are my art. The eye is the most important organ a painter has. What concerns me is the nature of my visual experience.
+        </blockquote>
+        <cite>Bridget Riley, 1965</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stripe Divider -->
+  <div class="stripe-divider"></div>
+
+  <!-- ============================================
+       CTA SECTION
+       ============================================ -->
+  <section class="cta">
+    <div class="cta-pattern"></div>
+    <div class="cta-content">
+      <h2>See The<br>Unseen</h2>
+      <p>The artwork exists in the viewer's nervous system, not just on the surface. Experience the power of perception as medium.</p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn--primary">Start Creating</a>
+        <a href="#" class="btn btn--outline">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">
+        <span class="footer-logo-icon"></span>
+        <h3>Op Art</h3>
+      </div>
+      <p>Optical Art -- geometric patterns exploiting the mechanics of human perception since 1964. Precision, contrast, and mathematical rigor.</p>
+      <div class="footer-links">
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#cards">Cards</a>
+        <a href="#effects">Effects</a>
+        <a href="#buttons">Buttons</a>
+      </div>
+      <div class="footer-pattern">
+        <span class="footer-pattern-circle"></span>
+      </div>
+      <p class="footer-copy">Op Art Design Reference -- CSS-only aesthetic demonstration. No images. No JavaScript.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

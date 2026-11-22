@@ -1,0 +1,1880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anti Design -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;700&family=Rubik+Glitch&family=Syne:wght@400;700;800&family=IBM+Plex+Mono:wght@400;700&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Backgrounds */
+      --anti-bg-void: #0d0d0d;
+      --anti-bg-dirty: #f0ede5;
+      --anti-bg-navy: #0a0a2e;
+
+      /* Neon accents */
+      --anti-neon-green: #39ff14;
+      --anti-hot-magenta: #ff0090;
+      --anti-acid-yellow: #e8ff00;
+      --anti-electric-blue: #0055ff;
+      --anti-bruise-purple: #7b00ff;
+      --anti-danger-red: #ff1a1a;
+      --anti-rust-orange: #ff5e00;
+      --anti-slime-green: #a8ff00;
+      --anti-bubblegum: #ff6ec7;
+      --anti-glitch-cyan: #00f5ff;
+
+      /* Neutrals */
+      --anti-concrete: #4a4a4a;
+      --anti-static: #b0b0b0;
+
+      /* Utility */
+      --anti-glow-spread: 0 0 20px;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--anti-bg-dirty);
+      background: var(--anti-bg-void);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1, h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      line-height: 0.9;
+    }
+
+    h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      text-transform: none;
+    }
+
+    code, .mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+    }
+
+    /* ============================================
+       NOISE OVERLAY (whole page)
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: overlay;
+    }
+
+    /* ============================================
+       TICKER MARQUEE
+       ============================================ */
+    .ticker {
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--anti-neon-green);
+      color: var(--anti-bg-void);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 5px 0;
+      border-bottom: 2px solid var(--anti-hot-magenta);
+    }
+
+    .ticker span {
+      display: inline-block;
+      animation: scroll-ticker 18s linear infinite;
+      padding-left: 100%;
+    }
+
+    @keyframes scroll-ticker {
+      from { transform: translateX(0); }
+      to { transform: translateX(-100%); }
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0;
+      padding: 14px 24px;
+      background: var(--anti-bg-void);
+      border-bottom: 2px solid var(--anti-neon-green);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: 1.3rem;
+      color: var(--anti-neon-green);
+      margin-right: 24px;
+      text-shadow: 0 0 8px rgba(57, 255, 20, 0.4);
+      transition: all 0.15s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--anti-hot-magenta);
+      text-shadow: 0 0 12px rgba(255, 0, 144, 0.5);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .nav-links a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--anti-bg-dirty);
+      padding: 8px 18px;
+      border: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .nav-links a:nth-child(odd) {
+      transform: translateY(-2px);
+    }
+
+    .nav-links a:nth-child(even) {
+      transform: translateY(3px);
+      color: var(--anti-neon-green);
+    }
+
+    .nav-links a:hover {
+      border-color: var(--anti-hot-magenta);
+      color: var(--anti-hot-magenta);
+      transform: skewX(-5deg);
+      background: rgba(255, 0, 144, 0.08);
+    }
+
+    .nav::after {
+      content: '///';
+      margin-left: auto;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--anti-concrete);
+      letter-spacing: 0.3em;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 40px 60px;
+      position: relative;
+      overflow: hidden;
+      background: var(--anti-bg-void);
+    }
+
+    /* Scan lines */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(57, 255, 20, 0.03) 2px,
+        rgba(57, 255, 20, 0.03) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Oversized background text */
+    .hero::after {
+      content: 'BREAK';
+      position: absolute;
+      right: -5%;
+      bottom: 5%;
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(8rem, 22vw, 20rem);
+      font-weight: 900;
+      color: rgba(255, 0, 144, 0.05);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(5rem, 14vw, 13rem);
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      line-height: 0.85;
+      margin-left: -0.04em;
+    }
+
+    .hero h1 .clash {
+      color: var(--anti-hot-magenta);
+      display: block;
+      transform: translateX(8vw) skewX(-4deg);
+    }
+
+    .hero .subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: clamp(0.8rem, 1.2vw, 1rem);
+      color: var(--anti-static);
+      margin-top: 28px;
+      max-width: 55ch;
+      line-height: 1.8;
+      transform: rotate(0.5deg);
+    }
+
+    .hero .subtitle span {
+      color: var(--anti-acid-yellow);
+      text-decoration: line-through;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 36px;
+      background: var(--anti-hot-magenta);
+      color: var(--anti-bg-void);
+      border: 3px solid var(--anti-neon-green);
+      padding: 14px 36px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transform: rotate(1deg);
+      position: relative;
+      transition: all 0.15s ease;
+    }
+
+    .hero-cta:hover {
+      background: var(--anti-neon-green);
+      color: var(--anti-bg-void);
+      border-color: var(--anti-hot-magenta);
+      transform: rotate(-2deg) scale(1.08);
+      box-shadow: 0 0 20px var(--anti-neon-green);
+    }
+
+    .hero-cta::after {
+      content: '\2197';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 0.9rem;
+      color: var(--anti-acid-yellow);
+      background: var(--anti-bg-void);
+      padding: 2px 4px;
+    }
+
+    /* Decorative floating shapes in hero */
+    .hero-shape {
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-shape--1 {
+      top: 15%;
+      right: 10%;
+      width: 120px;
+      height: 120px;
+      border: 3px solid var(--anti-acid-yellow);
+      transform: rotate(15deg);
+      opacity: 0.3;
+    }
+
+    .hero-shape--2 {
+      bottom: 20%;
+      right: 25%;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 3px solid var(--anti-bruise-purple);
+      opacity: 0.25;
+    }
+
+    .hero-shape--3 {
+      top: 40%;
+      right: 5%;
+      width: 0;
+      height: 0;
+      border-left: 40px solid transparent;
+      border-right: 40px solid transparent;
+      border-bottom: 70px solid var(--anti-danger-red);
+      opacity: 0.15;
+      transform: rotate(-20deg);
+    }
+
+    .hero-shape--4 {
+      bottom: 30%;
+      left: 60%;
+      width: 200px;
+      height: 4px;
+      background: var(--anti-glitch-cyan);
+      transform: rotate(-8deg);
+      opacity: 0.2;
+    }
+
+    /* ============================================
+       DIVIDER TICKER
+       ============================================ */
+    .divider-ticker {
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--anti-acid-yellow);
+      color: var(--anti-bg-void);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      padding: 4px 0;
+      transform: rotate(-0.5deg);
+      margin: -2px 0;
+    }
+
+    .divider-ticker span {
+      display: inline-block;
+      animation: scroll-ticker 14s linear infinite;
+      padding-left: 100%;
+    }
+
+    .divider-ticker--magenta {
+      background: var(--anti-hot-magenta);
+      transform: rotate(0.3deg);
+    }
+
+    .divider-ticker--green {
+      background: var(--anti-neon-green);
+      transform: rotate(-0.3deg);
+    }
+
+    /* ============================================
+       SECTION FOUNDATIONS
+       ============================================ */
+    .section {
+      padding: 80px 40px;
+      position: relative;
+    }
+
+    .section--void {
+      background: var(--anti-bg-void);
+    }
+
+    .section--navy {
+      background: var(--anti-bg-navy);
+    }
+
+    .section--dirty {
+      background: var(--anti-bg-dirty);
+      color: var(--anti-bg-void);
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--anti-concrete);
+      margin-bottom: 12px;
+    }
+
+    .section--dirty .section-label {
+      color: var(--anti-concrete);
+    }
+
+    .section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      line-height: 0.95;
+      margin-bottom: 32px;
+    }
+
+    .section--dirty h2 {
+      color: var(--anti-bg-void);
+    }
+
+    .section h2 em {
+      font-style: normal;
+      color: var(--anti-hot-magenta);
+    }
+
+    .section-intro {
+      font-size: 1rem;
+      color: var(--anti-static);
+      max-width: 65ch;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    .section--dirty .section-intro {
+      color: var(--anti-concrete);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 40px;
+      margin-top: 40px;
+    }
+
+    .type-specimen {
+      padding: 32px 24px;
+      border: 2px solid var(--anti-concrete);
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .type-specimen:hover {
+      border-color: var(--anti-neon-green);
+    }
+
+    .type-specimen::before {
+      content: attr(data-label);
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--anti-danger-red);
+      background: var(--anti-bg-void);
+      padding: 0 8px;
+    }
+
+    .type-specimen .sample {
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .type-specimen .meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--anti-concrete);
+      line-height: 1.6;
+    }
+
+    .type-specimen .meta span {
+      color: var(--anti-acid-yellow);
+    }
+
+    .type-bebas .sample {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+    }
+
+    .type-rubik .sample {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--anti-hot-magenta);
+      line-height: 1;
+    }
+
+    .type-syne .sample {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      color: var(--anti-acid-yellow);
+      transform: skewX(-3deg);
+    }
+
+    .type-space .sample {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--anti-bg-dirty);
+      line-height: 1.7;
+    }
+
+    .type-mono .sample {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--anti-glitch-cyan);
+      line-height: 1.6;
+    }
+
+    .type-unbounded .sample {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--anti-rust-orange);
+      line-height: 1;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+
+    .swatch {
+      position: relative;
+      aspect-ratio: 1 / 1;
+      border: 2px solid rgba(240, 237, 229, 0.1);
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      transition: transform 0.2s ease;
+      cursor: crosshair;
+    }
+
+    .swatch:nth-child(odd) {
+      transform: rotate(-1deg);
+    }
+
+    .swatch:nth-child(even) {
+      transform: rotate(1.5deg);
+    }
+
+    .swatch:hover {
+      transform: rotate(0deg) scale(1.08);
+      z-index: 10;
+      box-shadow: 0 0 24px rgba(57, 255, 20, 0.2);
+    }
+
+    .swatch-name {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      line-height: 1.3;
+    }
+
+    .swatch-hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+
+    .swatch--light .swatch-name,
+    .swatch--light .swatch-hex {
+      color: var(--anti-bg-void);
+    }
+
+    .swatch--dark .swatch-name,
+    .swatch--dark .swatch-hex {
+      color: var(--anti-bg-dirty);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: var(--anti-bg-void);
+      border: 2px solid var(--anti-neon-green);
+      padding: 28px 24px;
+      position: relative;
+      transform: rotate(-1deg);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:nth-child(2) {
+      transform: rotate(1.5deg);
+      border-color: var(--anti-hot-magenta);
+    }
+
+    .card:nth-child(3) {
+      transform: rotate(-0.5deg);
+      border-color: var(--anti-acid-yellow);
+    }
+
+    .card:nth-child(4) {
+      transform: rotate(2deg);
+      border-color: var(--anti-bruise-purple);
+    }
+
+    .card:nth-child(5) {
+      transform: rotate(-1.8deg);
+      border-color: var(--anti-electric-blue);
+    }
+
+    .card:nth-child(6) {
+      transform: rotate(0.8deg);
+      border-color: var(--anti-rust-orange);
+    }
+
+    .card:hover {
+      transform: rotate(0deg) scale(1.03);
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.15);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: -4px;
+      right: 4px;
+      bottom: -4px;
+      border: 1px solid var(--anti-hot-magenta);
+      z-index: -1;
+    }
+
+    .card::after {
+      content: attr(data-tag);
+      position: absolute;
+      top: -12px;
+      right: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--anti-danger-red);
+      background: var(--anti-bg-void);
+      padding: 2px 8px;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .card-icon--clash {
+      background: linear-gradient(135deg, var(--anti-neon-green) 0%, var(--anti-hot-magenta) 100%);
+      clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+    }
+
+    .card-icon--grid {
+      border: 3px solid var(--anti-acid-yellow);
+      position: relative;
+    }
+
+    .card-icon--grid::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--anti-acid-yellow);
+    }
+
+    .card-icon--grid::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--anti-acid-yellow);
+    }
+
+    .card-icon--noise {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--anti-glitch-cyan) 0px,
+        var(--anti-glitch-cyan) 2px,
+        transparent 2px,
+        transparent 4px
+      );
+      opacity: 0.7;
+    }
+
+    .card-icon--scale {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+    }
+
+    .card-icon--scale span {
+      display: block;
+      background: var(--anti-bruise-purple);
+    }
+
+    .card-icon--skew {
+      background: var(--anti-rust-orange);
+      transform: skewX(-12deg);
+    }
+
+    .card-icon--layer {
+      position: relative;
+    }
+
+    .card-icon--layer span {
+      position: absolute;
+      border: 2px solid;
+    }
+
+    .card-icon--layer span:nth-child(1) {
+      width: 32px;
+      height: 32px;
+      top: 0;
+      left: 0;
+      border-color: var(--anti-neon-green);
+    }
+
+    .card-icon--layer span:nth-child(2) {
+      width: 32px;
+      height: 32px;
+      top: 8px;
+      left: 8px;
+      border-color: var(--anti-hot-magenta);
+    }
+
+    .card-icon--layer span:nth-child(3) {
+      width: 32px;
+      height: 32px;
+      top: 16px;
+      left: 16px;
+      border-color: var(--anti-acid-yellow);
+    }
+
+    .card-number {
+      font-family: 'Unbounded', sans-serif;
+      font-size: 3rem;
+      font-weight: 900;
+      color: var(--anti-bruise-purple);
+      opacity: 0.3;
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .card h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: var(--anti-bg-dirty);
+      margin-bottom: 12px;
+      transform: skewX(-2deg);
+    }
+
+    .card p {
+      font-size: 0.9rem;
+      color: var(--anti-static);
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    .effect-box {
+      min-height: 220px;
+      border: 2px solid var(--anti-concrete);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s ease;
+    }
+
+    .effect-box:hover {
+      border-color: var(--anti-neon-green);
+    }
+
+    .effect-box::after {
+      content: attr(data-effect);
+      position: absolute;
+      bottom: 12px;
+      left: 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--anti-static);
+      z-index: 5;
+    }
+
+    /* Effect 1: Glitch Text */
+    .effect--glitch {
+      background: var(--anti-bg-void);
+    }
+
+    .glitch {
+      position: relative;
+      display: inline-block;
+      font-family: 'Rubik Glitch', cursive;
+      font-size: 3rem;
+      color: var(--anti-bg-dirty);
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .glitch::before {
+      color: var(--anti-glitch-cyan);
+      clip-path: inset(0 0 60% 0);
+      transform: translate(-3px, -2px);
+      animation: glitch-top 2.5s infinite linear alternate;
+    }
+
+    .glitch::after {
+      color: var(--anti-hot-magenta);
+      clip-path: inset(60% 0 0 0);
+      transform: translate(3px, 2px);
+      animation: glitch-bottom 3s infinite linear alternate;
+    }
+
+    @keyframes glitch-top {
+      0%, 90% { transform: translate(-3px, -2px); }
+      92% { transform: translate(4px, -1px); }
+      94% { transform: translate(-2px, 1px); }
+      96% { transform: translate(3px, -3px); }
+      100% { transform: translate(-3px, -2px); }
+    }
+
+    @keyframes glitch-bottom {
+      0%, 88% { transform: translate(3px, 2px); }
+      90% { transform: translate(-4px, 1px); }
+      93% { transform: translate(2px, -2px); }
+      96% { transform: translate(-3px, 3px); }
+      100% { transform: translate(3px, 2px); }
+    }
+
+    /* Effect 2: Scan Lines */
+    .effect--scanlines {
+      background: var(--anti-bg-navy);
+    }
+
+    .effect--scanlines .effect-demo {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect--scanlines .effect-demo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(57, 255, 20, 0.06) 2px,
+        rgba(57, 255, 20, 0.06) 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .effect--scanlines .effect-demo span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      text-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 3: Misaligned Borders */
+    .effect--misaligned {
+      background: var(--anti-bg-void);
+    }
+
+    .misaligned-demo {
+      width: 160px;
+      height: 100px;
+      position: relative;
+      border: 2px solid var(--anti-neon-green);
+    }
+
+    .misaligned-demo::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: -4px;
+      right: 4px;
+      bottom: -4px;
+      border: 2px solid var(--anti-hot-magenta);
+      z-index: -1;
+    }
+
+    .misaligned-demo::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: -8px;
+      bottom: -8px;
+      border: 1px solid var(--anti-acid-yellow);
+      opacity: 0.4;
+      z-index: -2;
+    }
+
+    .misaligned-demo span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--anti-static);
+      letter-spacing: 0.1em;
+    }
+
+    /* Effect 4: Chromatic Aberration */
+    .effect--chromatic {
+      background: var(--anti-bg-void);
+    }
+
+    .chromatic-text {
+      font-family: 'Unbounded', sans-serif;
+      font-weight: 900;
+      font-size: 2.5rem;
+      color: var(--anti-bg-dirty);
+      position: relative;
+    }
+
+    .chromatic-text::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: -3px;
+      color: var(--anti-glitch-cyan);
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    .chromatic-text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 3px;
+      color: var(--anti-danger-red);
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    /* Effect 5: Neon Glow */
+    .effect--neon {
+      background: var(--anti-bg-void);
+    }
+
+    .neon-demo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem;
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      text-shadow:
+        0 0 7px var(--anti-neon-green),
+        0 0 10px var(--anti-neon-green),
+        0 0 21px var(--anti-neon-green),
+        0 0 42px rgba(57, 255, 20, 0.5),
+        0 0 82px rgba(57, 255, 20, 0.3);
+      animation: neon-flicker 4s infinite;
+    }
+
+    @keyframes neon-flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow:
+          0 0 7px var(--anti-neon-green),
+          0 0 10px var(--anti-neon-green),
+          0 0 21px var(--anti-neon-green),
+          0 0 42px rgba(57, 255, 20, 0.5),
+          0 0 82px rgba(57, 255, 20, 0.3);
+      }
+      20%, 24%, 55% {
+        text-shadow: none;
+      }
+    }
+
+    /* Effect 6: Noise Texture */
+    .effect--noise {
+      background: var(--anti-bg-navy);
+    }
+
+    .noise-demo {
+      width: 180px;
+      height: 120px;
+      position: relative;
+      background: linear-gradient(135deg, var(--anti-bruise-purple) 0%, var(--anti-hot-magenta) 100%);
+    }
+
+    .noise-demo::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .noise-demo span {
+      position: absolute;
+      bottom: 8px;
+      left: 12px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--anti-bg-dirty);
+      z-index: 2;
+      letter-spacing: 0.1em;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: center;
+      margin-top: 40px;
+    }
+
+    /* Button variant 1: Primary (magenta/green clash) */
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s ease;
+      border: none;
+    }
+
+    .btn::after {
+      content: '\2197';
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      font-size: 0.9rem;
+      color: var(--anti-acid-yellow);
+      background: var(--anti-bg-void);
+      padding: 2px 4px;
+    }
+
+    .btn--primary {
+      background: var(--anti-hot-magenta);
+      color: var(--anti-bg-void);
+      border: 3px solid var(--anti-neon-green);
+      transform: rotate(1deg);
+    }
+
+    .btn--primary:hover {
+      background: var(--anti-neon-green);
+      color: var(--anti-bg-void);
+      border-color: var(--anti-hot-magenta);
+      transform: rotate(-2deg) scale(1.08);
+      box-shadow: var(--anti-glow-spread) var(--anti-neon-green);
+    }
+
+    .btn--primary:active {
+      transform: rotate(0deg) scale(0.95);
+      box-shadow: none;
+    }
+
+    /* Button variant 2: Outline (danger) */
+    .btn--outline {
+      background: transparent;
+      color: var(--anti-danger-red);
+      border: 3px solid var(--anti-danger-red);
+      transform: rotate(-1.5deg);
+    }
+
+    .btn--outline::after {
+      color: var(--anti-danger-red);
+    }
+
+    .btn--outline:hover {
+      background: var(--anti-danger-red);
+      color: var(--anti-bg-void);
+      transform: rotate(1deg) scale(1.08);
+      box-shadow: var(--anti-glow-spread) var(--anti-danger-red);
+    }
+
+    /* Button variant 3: Ghost (acid) */
+    .btn--ghost {
+      background: transparent;
+      color: var(--anti-acid-yellow);
+      border: 2px dashed var(--anti-acid-yellow);
+      transform: rotate(0.5deg);
+    }
+
+    .btn--ghost::after {
+      color: var(--anti-neon-green);
+    }
+
+    .btn--ghost:hover {
+      background: rgba(232, 255, 0, 0.1);
+      border-style: solid;
+      transform: skewX(-5deg) scale(1.05);
+      box-shadow: var(--anti-glow-spread) rgba(232, 255, 0, 0.3);
+    }
+
+    /* Button variant 4: Glitch (purple chaos) */
+    .btn--glitch {
+      background: var(--anti-bruise-purple);
+      color: var(--anti-bg-dirty);
+      border: 3px solid var(--anti-glitch-cyan);
+      transform: rotate(-0.8deg);
+    }
+
+    .btn--glitch::after {
+      color: var(--anti-bubblegum);
+    }
+
+    .btn--glitch:hover {
+      background: var(--anti-glitch-cyan);
+      color: var(--anti-bg-void);
+      border-color: var(--anti-bruise-purple);
+      transform: rotate(2deg) scale(1.08);
+      box-shadow: var(--anti-glow-spread) var(--anti-glitch-cyan);
+      animation: btn-glitch-shake 0.3s infinite;
+    }
+
+    @keyframes btn-glitch-shake {
+      0% { transform: rotate(2deg) scale(1.08) translate(0, 0); }
+      25% { transform: rotate(2deg) scale(1.08) translate(-2px, 1px); }
+      50% { transform: rotate(2deg) scale(1.08) translate(2px, -1px); }
+      75% { transform: rotate(2deg) scale(1.08) translate(-1px, -1px); }
+      100% { transform: rotate(2deg) scale(1.08) translate(0, 0); }
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .anti-quote {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 40px;
+      border: 2px solid var(--anti-neon-green);
+      position: relative;
+      transform: rotate(-0.5deg);
+    }
+
+    .anti-quote::before {
+      content: 'MANIFESTO';
+      position: absolute;
+      top: -12px;
+      left: 24px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      color: var(--anti-danger-red);
+      background: var(--anti-bg-void);
+      padding: 0 8px;
+    }
+
+    .anti-quote::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: -6px;
+      right: 6px;
+      bottom: -6px;
+      border: 1px solid var(--anti-hot-magenta);
+      z-index: -1;
+    }
+
+    .anti-quote blockquote {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.3rem, 2.5vw, 2rem);
+      color: var(--anti-acid-yellow);
+      line-height: 1.4;
+      margin-bottom: 24px;
+    }
+
+    .anti-quote blockquote em {
+      color: var(--anti-hot-magenta);
+      font-style: normal;
+      text-decoration: line-through;
+    }
+
+    .anti-quote cite {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--anti-static);
+      font-style: normal;
+    }
+
+    .anti-quote cite span {
+      color: var(--anti-neon-green);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: 100px 40px;
+      background: var(--anti-bg-navy);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: 'REVOLT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Unbounded', sans-serif;
+      font-size: clamp(6rem, 18vw, 16rem);
+      font-weight: 900;
+      color: rgba(123, 0, 255, 0.06);
+      text-transform: uppercase;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-section h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      line-height: 0.85;
+      margin-bottom: 24px;
+    }
+
+    .cta-section h2 span {
+      color: var(--anti-hot-magenta);
+      display: block;
+      transform: translateX(4vw) skewX(-3deg);
+    }
+
+    .cta-section p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      color: var(--anti-static);
+      max-width: 50ch;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 40px;
+      background: var(--anti-bg-void);
+      border-top: 3px solid var(--anti-neon-green);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .footer-left {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--anti-concrete);
+      letter-spacing: 0.1em;
+    }
+
+    .footer-left span {
+      color: var(--anti-danger-red);
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 16px;
+    }
+
+    .footer-right a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--anti-neon-green);
+      transition: color 0.15s ease;
+    }
+
+    .footer-right a:hover {
+      color: var(--anti-hot-magenta);
+    }
+
+    .footer-glitch {
+      font-family: 'Rubik Glitch', cursive;
+      font-size: 1rem;
+      color: var(--anti-neon-green);
+      text-shadow: 0 0 6px rgba(57, 255, 20, 0.3);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 60px 20px 40px;
+      }
+
+      .hero h1 .clash {
+        transform: translateX(4vw) skewX(-2deg);
+      }
+
+      .section {
+        padding: 60px 20px;
+      }
+
+      .nav {
+        padding: 10px 16px;
+      }
+
+      .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+      }
+
+      .nav::after {
+        display: none;
+      }
+
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .type-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 10px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .anti-quote {
+        padding: 32px 20px;
+      }
+
+      .cta-section {
+        padding: 60px 20px;
+      }
+
+      .footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: clamp(3rem, 16vw, 5rem);
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links a {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+      }
+
+      .swatch {
+        aspect-ratio: auto;
+        min-height: 80px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .ticker span,
+      .divider-ticker span {
+        animation: none;
+        padding-left: 0;
+      }
+
+      .glitch::before,
+      .glitch::after {
+        animation: none;
+        transform: none;
+      }
+
+      .neon-demo {
+        animation: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===== TICKER ===== -->
+  <div class="ticker" aria-hidden="true">
+    <span>/// ANTI DESIGN -- BREAK THE GRID -- REJECT HARMONY -- EMBRACE CHAOS -- DESTROY CONVENTION -- RULES ARE PRISONS -- UGLY IS STRATEGY -- COLLIDE EVERYTHING /// ANTI DESIGN -- BREAK THE GRID -- REJECT HARMONY -- EMBRACE CHAOS -- DESTROY CONVENTION -- RULES ARE PRISONS -- UGLY IS STRATEGY -- COLLIDE EVERYTHING ///</span>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#hero" class="nav-logo" data-text="[ANTI]">[ANTI]</a>
+    <div class="nav-links">
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+      <a href="#buttons">Buttons</a>
+      <a href="#quote">Manifesto</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-shape hero-shape--1"></div>
+    <div class="hero-shape hero-shape--2"></div>
+    <div class="hero-shape hero-shape--3"></div>
+    <div class="hero-shape hero-shape--4"></div>
+
+    <div class="hero-content">
+      <p style="font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--anti-concrete); margin-bottom: 16px;">Design Aesthetic Reference</p>
+      <h1>Anti<span class="clash">Design</span></h1>
+      <p class="subtitle">
+        The deliberate, confrontational rejection of every polished convention.<br>
+        Born from <span>Italian Radical Design</span> and the rage of David Carson's Ray Gun.<br>
+        Where conventional design soothes, this <span>burns it down</span>.
+      </p>
+      <a href="#components" class="hero-cta">Enter the Chaos</a>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-ticker" aria-hidden="true">
+    <span>ERROR ERROR ERROR -- GRID NOT FOUND -- ALIGNMENT FAILED -- HARMONY.EXE HAS STOPPED -- CTRL+Z DENIED -- ERROR ERROR ERROR -- GRID NOT FOUND -- ALIGNMENT FAILED -- HARMONY.EXE HAS STOPPED -- CTRL+Z DENIED --</span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SHOWCASE ===== -->
+  <section class="section section--void" id="typography">
+    <p class="section-label">// 001 -- Typography</p>
+    <h2>Fonts That <em>Fight</em></h2>
+    <p class="section-intro">Anti Design typography is deliberately confrontational. Fonts are mismatched, oversized, stretched, overlapping, and frequently illegible on purpose. Three to four typefaces fighting for attention creates the characteristic tension.</p>
+
+    <div class="type-grid">
+      <div class="type-specimen type-bebas" data-label="Display / Headlines">
+        <div class="sample">BEBAS NEUE</div>
+        <div class="meta">
+          <span>Bebas Neue</span> / 400<br>
+          Compressed uppercase display. Loud, industrial, unapologetic.
+        </div>
+      </div>
+
+      <div class="type-specimen type-rubik" data-label="Glitch / Accent">
+        <div class="sample">Rubik Glitch</div>
+        <div class="meta">
+          <span>Rubik Glitch</span> / 400<br>
+          Digital chaos personified. Hero accents and broken headers.
+        </div>
+      </div>
+
+      <div class="type-specimen type-syne" data-label="Expressive / Headings">
+        <div class="sample">Syne Bold 800</div>
+        <div class="meta">
+          <span>Syne</span> / 800<br>
+          Quirky geometric shapes. Expressive rebellion with skew.
+        </div>
+      </div>
+
+      <div class="type-specimen type-space" data-label="Body / Text">
+        <div class="sample">Space Grotesk provides the angular geometric body text that creates a techy tension against the display faces above.</div>
+        <div class="meta">
+          <span>Space Grotesk</span> / 300, 400, 700<br>
+          Angular geometry for readable body text.
+        </div>
+      </div>
+
+      <div class="type-specimen type-mono" data-label="Code / Labels">
+        <div class="sample">IBM Plex Mono :: raw code<br>&gt; clinical precision_</div>
+        <div class="meta">
+          <span>IBM Plex Mono</span> / 400, 700<br>
+          Monospace for system labels, raw code feel.
+        </div>
+      </div>
+
+      <div class="type-specimen type-unbounded" data-label="Impact / Oversized">
+        <div class="sample">UNBOUNDED</div>
+        <div class="meta">
+          <span>Unbounded</span> / 900<br>
+          Rounded but aggressive. Oversized background text.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-ticker divider-ticker--magenta" aria-hidden="true">
+    <span>UGLY IS A STRATEGY -- NOT LAZINESS -- UGLY IS A STRATEGY -- NOT LAZINESS -- UGLY IS A STRATEGY -- NOT LAZINESS -- UGLY IS A STRATEGY -- NOT LAZINESS --</span>
+  </div>
+
+  <!-- ===== COLOR PALETTE ===== -->
+  <section class="section section--navy" id="palette">
+    <p class="section-label">// 002 -- Color Palette</p>
+    <h2>Colors That <em>Clash</em></h2>
+    <p class="section-intro">Neon accents slam into dark backgrounds, warm and cool tones fight for dominance, and traditional color theory rules are intentionally violated. The goal is visual friction.</p>
+
+    <div class="palette-grid">
+      <div class="swatch swatch--dark" style="background: #0d0d0d;">
+        <span class="swatch-name">Void Black</span>
+        <span class="swatch-hex">#0D0D0D</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #f0ede5;">
+        <span class="swatch-name" style="color: #0d0d0d;">Dirty White</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#F0EDE5</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #39ff14;">
+        <span class="swatch-name" style="color: #0d0d0d;">Toxic Neon Green</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#39FF14</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #ff0090;">
+        <span class="swatch-name">Hot Magenta</span>
+        <span class="swatch-hex">#FF0090</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #e8ff00;">
+        <span class="swatch-name" style="color: #0d0d0d;">Acid Yellow</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#E8FF00</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #0055ff;">
+        <span class="swatch-name">Electric Blue</span>
+        <span class="swatch-hex">#0055FF</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #7b00ff;">
+        <span class="swatch-name">Bruise Purple</span>
+        <span class="swatch-hex">#7B00FF</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #ff1a1a;">
+        <span class="swatch-name">Danger Red</span>
+        <span class="swatch-hex">#FF1A1A</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #4a4a4a;">
+        <span class="swatch-name">Concrete Gray</span>
+        <span class="swatch-hex">#4A4A4A</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #ff5e00;">
+        <span class="swatch-name">Rust Orange</span>
+        <span class="swatch-hex">#FF5E00</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #a8ff00;">
+        <span class="swatch-name" style="color: #0d0d0d;">Slime Green</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#A8FF00</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #ff6ec7;">
+        <span class="swatch-name" style="color: #0d0d0d;">Bubblegum Pink</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#FF6EC7</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #0a0a2e;">
+        <span class="swatch-name">Midnight Navy</span>
+        <span class="swatch-hex">#0A0A2E</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #b0b0b0;">
+        <span class="swatch-name" style="color: #0d0d0d;">Static Gray</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#B0B0B0</span>
+      </div>
+      <div class="swatch swatch--dark" style="background: #00f5ff;">
+        <span class="swatch-name" style="color: #0d0d0d;">Glitch Cyan</span>
+        <span class="swatch-hex" style="color: #0d0d0d;">#00F5FF</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-ticker divider-ticker--green" aria-hidden="true">
+    <span>COLLISION IS COMPOSITION -- TENSION AS TOOL -- REJECT UNIFORMITY -- CONFRONT THE VIEWER -- COLLISION IS COMPOSITION -- TENSION AS TOOL -- REJECT UNIFORMITY -- CONFRONT THE VIEWER --</span>
+  </div>
+
+  <!-- ===== COMPONENT CARDS ===== -->
+  <section class="section section--void" id="components">
+    <p class="section-label">// 003 -- Components</p>
+    <h2>Cards of <em>Chaos</em></h2>
+    <p class="section-intro">Each card is a collision of misaligned borders, aggressive type, and deliberate rotation. Nothing aligns. Nothing matches. That is the point.</p>
+
+    <div class="card-grid">
+      <div class="card" data-tag="ERROR">
+        <div class="card-icon card-icon--clash"></div>
+        <div class="card-number">01</div>
+        <h3>Break Rules With Intention</h3>
+        <p>Understand conventional design deeply enough to violate it with purpose. Chaos without knowledge is just mess. Every broken grid is a conscious decision.</p>
+      </div>
+
+      <div class="card" data-tag="WARN">
+        <div class="card-icon card-icon--grid"></div>
+        <div class="card-number">02</div>
+        <h3>Destroy the Grid</h3>
+        <p>If a grid exists, violate it visually. Offset elements by inconsistent amounts. Let content bleed across column boundaries. Alignment is the enemy.</p>
+      </div>
+
+      <div class="card" data-tag="FAULT">
+        <div class="card-icon card-icon--noise"></div>
+        <div class="card-number">03</div>
+        <h3>Embrace Digital Glitch</h3>
+        <p>Warped images, pixel displacement, chromatic aberration, and scan-line artifacts signal digital rebellion. Corruption is the new composition.</p>
+      </div>
+
+      <div class="card" data-tag="VOID">
+        <div class="card-icon card-icon--scale">
+          <span style="width: 8px; height: 16px;"></span>
+          <span style="width: 8px; height: 32px;"></span>
+          <span style="width: 8px; height: 48px;"></span>
+        </div>
+        <div class="card-number">04</div>
+        <h3>Scale Extremes</h3>
+        <p>Combine absurdly large elements with tiny ones in the same viewport. Conventional size hierarchy does not apply. Invert the expectations.</p>
+      </div>
+
+      <div class="card" data-tag="NULL">
+        <div class="card-icon card-icon--skew"></div>
+        <div class="card-number">05</div>
+        <h3>Rotation and Skew</h3>
+        <p>Apply small random rotations and skew transforms to elements that should be straight. Nothing is level. Nothing is plumb. Stability is boring.</p>
+      </div>
+
+      <div class="card" data-tag="CRASH">
+        <div class="card-icon card-icon--layer">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div class="card-number">06</div>
+        <h3>Layer Everything</h3>
+        <p>Overlap text on images, images on other images, UI chrome on content. Z-index warfare creates unexpected stacking orders. Depth through collision.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-ticker" aria-hidden="true">
+    <span>FUNCTION IS OVERRATED -- EMOTION OVER USABILITY -- PROVOKE DONT PLEASE -- MEMORABILITY OVER COMFORT -- FUNCTION IS OVERRATED -- EMOTION OVER USABILITY -- PROVOKE DONT PLEASE -- MEMORABILITY OVER COMFORT --</span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--navy" id="effects">
+    <p class="section-label">// 004 -- Visual Effects</p>
+    <h2>CSS <em>Weapons</em></h2>
+    <p class="section-intro">All effects built purely with CSS. No images, no libraries, no compromises. Scan lines, glitch text, chromatic aberration, neon glow, noise textures, and misaligned borders.</p>
+
+    <div class="effects-grid">
+      <div class="effect-box effect--glitch" data-effect="Glitch Text">
+        <span class="glitch" data-text="GLITCH">GLITCH</span>
+      </div>
+
+      <div class="effect-box effect--scanlines" data-effect="Scan Lines">
+        <div class="effect-demo">
+          <span>TERMINAL</span>
+        </div>
+      </div>
+
+      <div class="effect-box effect--misaligned" data-effect="Misaligned Borders">
+        <div class="misaligned-demo">
+          <span>offset: -4px</span>
+        </div>
+      </div>
+
+      <div class="effect-box effect--chromatic" data-effect="Chromatic Aberration">
+        <span class="chromatic-text" data-text="SHIFT">SHIFT</span>
+      </div>
+
+      <div class="effect-box effect--neon" data-effect="Neon Glow">
+        <span class="neon-demo">NEON</span>
+      </div>
+
+      <div class="effect-box effect--noise" data-effect="Noise Texture">
+        <div class="noise-demo">
+          <span>feTurbulence</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-ticker divider-ticker--magenta" aria-hidden="true">
+    <span>BREAK BREAK BREAK -- RULES WERE MADE TO BE VIOLATED -- BREAK BREAK BREAK -- RULES WERE MADE TO BE VIOLATED --</span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--void" id="buttons">
+    <p class="section-label">// 005 -- Interactive Elements</p>
+    <h2>Buttons That <em>Attack</em></h2>
+    <p class="section-intro">Four button variants that refuse to sit still. Misaligned pseudo-elements, neon glow on hover, rotation shifts, and glitch shake effects. Every click is a confrontation.</p>
+
+    <div class="button-showcase">
+      <button class="btn btn--primary">Primary Chaos</button>
+      <button class="btn btn--outline">Danger Zone</button>
+      <button class="btn btn--ghost">Ghost Signal</button>
+      <button class="btn btn--glitch">Glitch Mode</button>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section section--navy" id="quote">
+    <div class="anti-quote">
+      <blockquote>
+        "Anti Design is not random noise -- it is intentional chaos. Every broken grid, every clashing neon, every overlapping text block is a conscious decision to <em>provoke a reaction</em>."
+      </blockquote>
+      <cite>-- The Anti Design Manifesto / <span>Est. 1960s Italy</span></cite>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Stop<span>Designing</span></h2>
+      <p>Start destroying. The grid is a cage. Harmony is compliance. Comfort is forgettable. Break everything with purpose and build something that refuses to be ignored.</p>
+      <a href="#hero" class="btn btn--primary" style="font-size: 1.4rem; padding: 18px 48px;">Revolt Now</a>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-ticker divider-ticker--green" aria-hidden="true">
+    <span>/// EOF -- SYSTEM CORRUPTED -- NO FURTHER OUTPUT -- /// EOF -- SYSTEM CORRUPTED -- NO FURTHER OUTPUT -- /// EOF -- SYSTEM CORRUPTED -- NO FURTHER OUTPUT --</span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-left">
+      <span>[ERR]</span> Anti Design &copy; 2026 -- <span class="footer-glitch">All rules violated</span>
+    </div>
+    <div class="footer-right">
+      <a href="#hero">Top</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </footer>
+
+  <!-- ===== MINIMAL JS: Smooth scroll for nav ===== -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

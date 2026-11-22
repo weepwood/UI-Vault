@@ -1,0 +1,2158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Variable Typography -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:slnt,wght@-10..0,100..900&family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&family=Fraunces:ital,opsz,wght@0,9..144,100..900;1,9..144,100..900&family=Recursive:slnt,wght,CASL,CRSV,MONO@-15..0,300..1000,0..1,0..1,0..1&family=Outfit:wght@100..900&family=DM+Sans:opsz,wght@9..40,100..1000&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --vt-bg-dark: #0d0d0d;
+      --vt-bg-charcoal: #1a1a2e;
+      --vt-bg-graphite: #2d2d3a;
+      --vt-bg-light: #f5f5f0;
+      --vt-bg-whisper: #e8e8ec;
+      --vt-bg-navy: #0f172a;
+
+      /* --- Text --- */
+      --vt-text-primary: #ffffff;
+      --vt-text-secondary: #c8c8d8;
+      --vt-text-muted: #9090a8;
+      --vt-text-dark: #0d0d0d;
+      --vt-text-body: #5a5a72;
+
+      /* --- Accents --- */
+      --vt-accent-blue: #2962ff;
+      --vt-accent-violet: #7c3aed;
+      --vt-accent-coral: #ff6b6b;
+      --vt-accent-green: #10b981;
+      --vt-accent-amber: #f59e0b;
+
+      /* --- Borders & Chrome --- */
+      --vt-border: #c8c8d8;
+      --vt-border-subtle: rgba(200, 200, 216, 0.15);
+      --vt-border-focus: var(--vt-accent-blue);
+
+      /* --- Surfaces --- */
+      --vt-surface-glass: rgba(255, 255, 255, 0.04);
+      --vt-surface-elevated: rgba(255, 255, 255, 0.06);
+      --vt-surface-hover: rgba(41, 98, 255, 0.08);
+
+      /* --- Shadows --- */
+      --vt-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+      --vt-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.2);
+      --vt-shadow-lg: 0 12px 48px rgba(0, 0, 0, 0.3);
+      --vt-shadow-glow-blue: 0 0 20px rgba(41, 98, 255, 0.15);
+      --vt-shadow-glow-violet: 0 0 20px rgba(124, 58, 237, 0.15);
+
+      /* --- Transitions --- */
+      --vt-transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+      --vt-transition-base: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+      --vt-transition-slow: 600ms cubic-bezier(0.4, 0, 0.2, 1);
+      --vt-transition-font: 400ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      /* --- Font Axis Defaults --- */
+      --vt-wght-light: 300;
+      --vt-wght-regular: 400;
+      --vt-wght-medium: 500;
+      --vt-wght-bold: 700;
+      --vt-wght-black: 900;
+      --vt-wdth-condensed: 75;
+      --vt-wdth-normal: 100;
+      --vt-wdth-expanded: 125;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      line-height: 1.7;
+      letter-spacing: -0.01em;
+      color: var(--vt-text-secondary);
+      background-color: var(--vt-bg-dark);
+      overflow-x: hidden;
+      font-optical-sizing: auto;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--vt-text-primary);
+      font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 1;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(13, 13, 13, 0.92);
+      backdrop-filter: blur(16px) saturate(1.2);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      border-bottom: 1px solid var(--vt-border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 1.25rem;
+      font-variation-settings: 'wght' 800, 'wdth' 110;
+      letter-spacing: -0.03em;
+      color: var(--vt-text-primary);
+      transition: font-variation-settings var(--vt-transition-font);
+    }
+
+    .nav-logo:hover {
+      font-variation-settings: 'wght' 950, 'wdth' 130;
+      color: var(--vt-text-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-variation-settings: 'wght' 400;
+      color: var(--vt-text-muted);
+      padding: 0.25rem 0;
+      position: relative;
+      transition: color var(--vt-transition-fast),
+                  font-variation-settings var(--vt-transition-font);
+    }
+
+    .nav-links a:hover {
+      color: var(--vt-text-primary);
+      font-variation-settings: 'wght' 700;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--vt-accent-blue);
+      transition: width var(--vt-transition-base);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: var(--vt-bg-dark);
+      padding: 100px 24px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Subtle grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(200, 200, 216, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(200, 200, 216, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Radial accent glow */
+    .hero-glow {
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(41, 98, 255, 0.06) 0%,
+        rgba(124, 58, 237, 0.03) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 900px;
+    }
+
+    .hero-tagline {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(0.8rem, 1.5vw, 1rem);
+      font-variation-settings: 'wght' 400;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--vt-accent-blue);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: clamp(3.5rem, 3rem + 8vw, 10rem);
+      line-height: 0.9;
+      letter-spacing: -0.05em;
+      color: var(--vt-text-primary);
+      margin-bottom: 16px;
+    }
+
+    /* Per-character wave animation for hero title */
+    .hero-title-char {
+      display: inline-block;
+      animation: char-wave 3s ease-in-out infinite;
+    }
+
+    @keyframes char-wave {
+      0%, 100% { font-variation-settings: 'wght' 100, 'wdth' 100; }
+      50% { font-variation-settings: 'wght' 900, 'wdth' 125; }
+    }
+
+    .hero-title-char:nth-child(1)  { animation-delay: 0.0s; }
+    .hero-title-char:nth-child(2)  { animation-delay: 0.08s; }
+    .hero-title-char:nth-child(3)  { animation-delay: 0.16s; }
+    .hero-title-char:nth-child(4)  { animation-delay: 0.24s; }
+    .hero-title-char:nth-child(5)  { animation-delay: 0.32s; }
+    .hero-title-char:nth-child(6)  { animation-delay: 0.40s; }
+    .hero-title-char:nth-child(7)  { animation-delay: 0.48s; }
+    .hero-title-char:nth-child(8)  { animation-delay: 0.56s; }
+
+    /* Second line of hero */
+    .hero-title-line2 .hero-title-char:nth-child(1) { animation-delay: 0.10s; }
+    .hero-title-line2 .hero-title-char:nth-child(2) { animation-delay: 0.18s; }
+    .hero-title-line2 .hero-title-char:nth-child(3) { animation-delay: 0.26s; }
+    .hero-title-line2 .hero-title-char:nth-child(4) { animation-delay: 0.34s; }
+    .hero-title-line2 .hero-title-char:nth-child(5) { animation-delay: 0.42s; }
+    .hero-title-line2 .hero-title-char:nth-child(6) { animation-delay: 0.50s; }
+    .hero-title-line2 .hero-title-char:nth-child(7) { animation-delay: 0.58s; }
+    .hero-title-line2 .hero-title-char:nth-child(8) { animation-delay: 0.66s; }
+    .hero-title-line2 .hero-title-char:nth-child(9) { animation-delay: 0.74s; }
+    .hero-title-line2 .hero-title-char:nth-child(10) { animation-delay: 0.82s; }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 0.8rem + 1vw, 1.4rem);
+      font-variation-settings: 'wght' 300;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--vt-text-muted);
+      margin-bottom: 16px;
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+      font-variation-settings: 'wght' 350;
+      color: var(--vt-text-secondary);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Axis label bar beneath hero */
+    .axis-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+      padding: 14px 24px;
+      background: var(--vt-bg-charcoal);
+      border-top: 1px solid var(--vt-border-subtle);
+      border-bottom: 1px solid var(--vt-border-subtle);
+    }
+
+    .axis-bar-item {
+      font-family: 'Recursive', monospace;
+      font-size: 0.75rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--vt-text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .axis-bar-value {
+      color: var(--vt-accent-blue);
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 600;
+    }
+
+    .axis-bar-dot {
+      width: 4px;
+      height: 4px;
+      background: var(--vt-accent-violet);
+      border-radius: 50%;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.875rem;
+      font-variation-settings: 'wght' 500;
+      letter-spacing: 0.01em;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      border: 1px solid var(--vt-accent-blue);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--vt-transition-base),
+                  font-variation-settings var(--vt-transition-font);
+    }
+
+    .btn-primary {
+      background: var(--vt-accent-blue);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      font-variation-settings: 'wght' 700;
+      background: #1a4fd9;
+      box-shadow: var(--vt-shadow-glow-blue);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary:active {
+      font-variation-settings: 'wght' 800;
+      transform: translateY(0);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--vt-accent-blue);
+    }
+
+    .btn-ghost:hover {
+      font-variation-settings: 'wght' 700;
+      background: var(--vt-surface-hover);
+    }
+
+    .btn-violet {
+      background: var(--vt-accent-violet);
+      border-color: var(--vt-accent-violet);
+      color: #ffffff;
+    }
+
+    .btn-violet:hover {
+      font-variation-settings: 'wght' 700;
+      background: #6d28d9;
+      box-shadow: var(--vt-shadow-glow-violet);
+      transform: translateY(-1px);
+    }
+
+    .btn-display {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 1.1rem;
+      padding: 1rem 2.5rem;
+      font-variation-settings: 'wght' 400, 'wdth' 100;
+      background: var(--vt-accent-blue);
+      border-color: var(--vt-accent-blue);
+      color: #ffffff;
+    }
+
+    .btn-display:hover {
+      font-variation-settings: 'wght' 700, 'wdth' 115;
+      background: #1a4fd9;
+      box-shadow: var(--vt-shadow-glow-blue);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--dark {
+      background: var(--vt-bg-dark);
+    }
+
+    .section--charcoal {
+      background: var(--vt-bg-charcoal);
+    }
+
+    .section--graphite {
+      background: var(--vt-bg-graphite);
+    }
+
+    .section--navy {
+      background: var(--vt-bg-navy);
+    }
+
+    .section--light {
+      background: var(--vt-bg-light);
+      color: var(--vt-text-dark);
+    }
+
+    .section--light .section-label { color: var(--vt-accent-blue); }
+    .section--light .section-title { color: var(--vt-text-dark); }
+    .section--light .section-subtitle { color: var(--vt-text-body); }
+
+    .section--whisper {
+      background: var(--vt-bg-whisper);
+      color: var(--vt-text-dark);
+    }
+
+    .section--whisper .section-label { color: var(--vt-accent-violet); }
+    .section--whisper .section-title { color: var(--vt-text-dark); }
+    .section--whisper .section-subtitle { color: var(--vt-text-body); }
+
+    .section-label {
+      font-family: 'Recursive', monospace;
+      font-size: 0.8rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--vt-accent-blue);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-variation-settings: 'opsz' 72, 'SOFT' 20, 'WONK' 1;
+      text-align: center;
+      color: var(--vt-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      font-variation-settings: 'wght' 300;
+      text-align: center;
+      color: var(--vt-text-muted);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       AXIS DIVIDER
+       ============================================ */
+    .axis-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .axis-divider::before,
+    .axis-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--vt-border-subtle), transparent);
+    }
+
+    .axis-divider span {
+      padding: 0 18px;
+      font-family: 'Recursive', monospace;
+      font-size: 0.75rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      letter-spacing: 0.1em;
+      color: var(--vt-text-muted);
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Recursive', monospace;
+      font-size: 0.72rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--vt-accent-blue);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--vt-border-subtle);
+    }
+
+    .typo-display {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      color: var(--vt-text-primary);
+      animation: breathe-weight 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes breathe-weight {
+      from { font-variation-settings: 'wght' 100, 'wdth' 100; }
+      to { font-variation-settings: 'wght' 900, 'wdth' 125; }
+    }
+
+    .typo-heading {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 1;
+      color: var(--vt-text-primary);
+      line-height: 1.15;
+    }
+
+    .typo-subheading {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-variation-settings: 'wght' 600;
+      color: var(--vt-text-secondary);
+      line-height: 1.3;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      font-variation-settings: 'wght' 380;
+      line-height: 1.8;
+      color: var(--vt-text-secondary);
+    }
+
+    .typo-code {
+      font-family: 'Recursive', monospace;
+      font-size: 0.95rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      color: var(--vt-accent-green);
+      line-height: 1.6;
+    }
+
+    .typo-interactive {
+      font-family: 'Recursive', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-variation-settings: 'CASL' 0, 'wght' 400;
+      color: var(--vt-text-secondary);
+      transition: font-variation-settings var(--vt-transition-font), color var(--vt-transition-fast);
+      cursor: pointer;
+    }
+
+    .typo-interactive:hover {
+      font-variation-settings: 'CASL' 1, 'wght' 700;
+      color: var(--vt-accent-blue);
+    }
+
+    .typo-right {
+      background: var(--vt-surface-glass);
+      border-radius: 12px;
+      padding: 36px;
+      border: 1px solid var(--vt-border-subtle);
+    }
+
+    .typo-right h3 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 1.3rem;
+      font-variation-settings: 'opsz' 24, 'SOFT' 40, 'WONK' 1;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      font-variation-settings: 'wght' 380;
+      line-height: 1.75;
+      color: var(--vt-text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--vt-border-subtle);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Recursive', monospace;
+      font-size: 0.7rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      color: var(--vt-text-muted);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--vt-surface-glass);
+      border: 1px solid var(--vt-border-subtle);
+      transition: transform var(--vt-transition-base), box-shadow var(--vt-transition-base);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--vt-shadow-md);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-variation-settings: 'wght' 500;
+      color: var(--vt-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Recursive', monospace;
+      font-size: 0.7rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      color: var(--vt-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--vt-surface-glass);
+      border: 1px solid var(--vt-border-subtle);
+      border-radius: 12px;
+      padding: 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color var(--vt-transition-base),
+                  box-shadow var(--vt-transition-base);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--vt-accent-blue),
+        var(--vt-accent-violet),
+        transparent
+      );
+      opacity: 0.4;
+      transition: opacity var(--vt-transition-base);
+    }
+
+    .card:hover {
+      border-color: rgba(41, 98, 255, 0.25);
+      box-shadow: var(--vt-shadow-glow-blue);
+    }
+
+    .card:hover::before {
+      opacity: 0.8;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+      background: var(--vt-surface-elevated);
+      border: 1px solid var(--vt-border-subtle);
+    }
+
+    .card-icon--blue { background: rgba(41, 98, 255, 0.12); }
+    .card-icon--violet { background: rgba(124, 58, 237, 0.12); }
+    .card-icon--coral { background: rgba(255, 107, 107, 0.12); }
+    .card-icon--green { background: rgba(16, 185, 129, 0.12); }
+    .card-icon--amber { background: rgba(245, 158, 11, 0.12); }
+    .card-icon--navy { background: rgba(15, 23, 42, 0.4); border-color: rgba(41, 98, 255, 0.2); }
+
+    .card h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem;
+      font-variation-settings: 'wght' 600;
+      letter-spacing: -0.02em;
+      color: var(--vt-text-primary);
+      margin-bottom: 10px;
+      transition: font-variation-settings var(--vt-transition-font);
+    }
+
+    .card:hover h3 {
+      font-variation-settings: 'wght' 800;
+    }
+
+    .card p {
+      font-size: 0.93rem;
+      font-variation-settings: 'wght' 380;
+      line-height: 1.7;
+      color: var(--vt-text-muted);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Recursive', monospace;
+      font-size: 0.68rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 450;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--vt-border-subtle);
+      color: var(--vt-text-muted);
+      margin-top: 16px;
+      margin-right: 6px;
+      transition: all var(--vt-transition-base);
+    }
+
+    .tag:hover {
+      background: var(--vt-surface-hover);
+      color: var(--vt-accent-blue);
+      border-color: var(--vt-accent-blue);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--vt-border-subtle);
+      background: var(--vt-surface-glass);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Breathing Weight */
+    .effect-breathing {
+      background: var(--vt-bg-navy);
+    }
+
+    .effect-breathing-text {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 3rem;
+      letter-spacing: -0.04em;
+      color: var(--vt-text-primary);
+      animation: breathe-weight 4s ease-in-out infinite alternate;
+    }
+
+    /* Effect 2: Weight Wave */
+    .effect-wave {
+      background: var(--vt-bg-dark);
+    }
+
+    .effect-wave-text {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 2.5rem;
+      letter-spacing: -0.02em;
+      color: var(--vt-text-primary);
+      display: flex;
+    }
+
+    .effect-wave-text span {
+      display: inline-block;
+      animation: weight-wave 2.5s ease-in-out infinite;
+    }
+
+    @keyframes weight-wave {
+      0%, 100% { font-variation-settings: 'wght' 200; }
+      50% { font-variation-settings: 'wght' 900; }
+    }
+
+    .effect-wave-text span:nth-child(1)  { animation-delay: calc(0 * 0.1s); }
+    .effect-wave-text span:nth-child(2)  { animation-delay: calc(1 * 0.1s); }
+    .effect-wave-text span:nth-child(3)  { animation-delay: calc(2 * 0.1s); }
+    .effect-wave-text span:nth-child(4)  { animation-delay: calc(3 * 0.1s); }
+    .effect-wave-text span:nth-child(5)  { animation-delay: calc(4 * 0.1s); }
+    .effect-wave-text span:nth-child(6)  { animation-delay: calc(5 * 0.1s); }
+    .effect-wave-text span:nth-child(7)  { animation-delay: calc(6 * 0.1s); }
+    .effect-wave-text span:nth-child(8)  { animation-delay: calc(7 * 0.1s); }
+
+    /* Effect 3: Width Oscillation */
+    .effect-width {
+      background: var(--vt-bg-charcoal);
+    }
+
+    .effect-width-text {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 3.2rem;
+      letter-spacing: -0.03em;
+      color: var(--vt-text-primary);
+      animation: width-osc 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes width-osc {
+      0%   { font-variation-settings: 'wght' 400, 'wdth' 25; }
+      50%  { font-variation-settings: 'wght' 600, 'wdth' 100; }
+      100% { font-variation-settings: 'wght' 400, 'wdth' 151; }
+    }
+
+    /* Effect 4: Casual Transition */
+    .effect-casual {
+      background: var(--vt-bg-graphite);
+    }
+
+    .effect-casual-text {
+      font-family: 'Recursive', sans-serif;
+      font-size: 2rem;
+      color: var(--vt-text-primary);
+      animation: casual-shift 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes casual-shift {
+      0%   { font-variation-settings: 'CASL' 0, 'wght' 300, 'MONO' 0; color: var(--vt-text-secondary); }
+      100% { font-variation-settings: 'CASL' 1, 'wght' 800, 'MONO' 0; color: var(--vt-accent-coral); }
+    }
+
+    /* Effect 5: Gradient + Type */
+    .effect-gradient-type {
+      background: linear-gradient(135deg, var(--vt-bg-navy), var(--vt-bg-charcoal));
+      position: relative;
+    }
+
+    .effect-gradient-type::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(41, 98, 255, 0.08) 0%,
+        rgba(124, 58, 237, 0.08) 50%,
+        rgba(255, 107, 107, 0.06) 100%
+      );
+      pointer-events: none;
+    }
+
+    .effect-gradient-text {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 2.5rem;
+      font-variation-settings: 'opsz' 72, 'SOFT' 0, 'WONK' 1;
+      background: linear-gradient(135deg, var(--vt-accent-blue), var(--vt-accent-violet), var(--vt-accent-coral));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+      animation: gradient-type-breathe 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradient-type-breathe {
+      0%   { font-variation-settings: 'opsz' 9, 'SOFT' 100, 'WONK' 0; }
+      100% { font-variation-settings: 'opsz' 144, 'SOFT' 0, 'WONK' 1; }
+    }
+
+    /* Effect 6: Mono/Sans Toggle Pulse */
+    .effect-mono {
+      background: var(--vt-bg-dark);
+      border-top: 1px solid var(--vt-border-subtle);
+    }
+
+    .effect-mono-text {
+      font-family: 'Recursive', monospace;
+      font-size: 1.4rem;
+      letter-spacing: 0.02em;
+      color: var(--vt-accent-green);
+      animation: mono-toggle 4s steps(1) infinite;
+    }
+
+    @keyframes mono-toggle {
+      0%, 49%  { font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400; letter-spacing: 0.02em; }
+      50%, 100% { font-variation-settings: 'MONO' 0, 'CASL' 1, 'wght' 600; letter-spacing: -0.01em; }
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-variation-settings: 'wght' 600;
+      color: var(--vt-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      font-variation-settings: 'wght' 380;
+      line-height: 1.6;
+      color: var(--vt-text-muted);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .type-banner {
+      background: var(--vt-bg-navy);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .type-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(41, 98, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(41, 98, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .banner-wave-row {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      color: var(--vt-text-primary);
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .banner-wave-row span {
+      display: inline-block;
+      animation: weight-wave 3s ease-in-out infinite;
+    }
+
+    .banner-wave-row span:nth-child(odd) { animation-delay: 0s; }
+    .banner-wave-row span:nth-child(even) { animation-delay: 0.3s; }
+    .banner-wave-row span:nth-child(3n) { animation-delay: 0.6s; }
+
+    .type-banner h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-variation-settings: 'opsz' 72, 'SOFT' 50, 'WONK' 1;
+      color: var(--vt-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .type-banner p {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      font-variation-settings: 'wght' 300;
+      color: var(--vt-text-muted);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .principle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      background: var(--vt-surface-glass);
+      border-radius: 12px;
+      padding: 28px 32px;
+      border: 1px solid var(--vt-border-subtle);
+      transition: border-color var(--vt-transition-base), box-shadow var(--vt-transition-base);
+    }
+
+    .principle-item:hover {
+      border-color: rgba(41, 98, 255, 0.2);
+      box-shadow: var(--vt-shadow-glow-blue);
+    }
+
+    .principle-number {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 1.4rem;
+      font-variation-settings: 'wght' 800, 'wdth' 110;
+      color: var(--vt-accent-blue);
+      background: rgba(41, 98, 255, 0.08);
+      border: 1px solid rgba(41, 98, 255, 0.15);
+    }
+
+    .principle-text h3 {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.15rem;
+      font-variation-settings: 'wght' 600;
+      letter-spacing: -0.02em;
+      color: var(--vt-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .principle-text p {
+      font-size: 0.95rem;
+      font-variation-settings: 'wght' 380;
+      line-height: 1.75;
+      color: var(--vt-text-muted);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--vt-surface-glass);
+      border-radius: 12px;
+      border: 1px solid var(--vt-border-subtle);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--vt-accent-violet), transparent);
+      opacity: 0.5;
+    }
+
+    .quote-mark {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: 5rem;
+      font-variation-settings: 'opsz' 144, 'SOFT' 100, 'WONK' 1;
+      color: var(--vt-accent-blue);
+      opacity: 0.15;
+      line-height: 0.5;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      font-variation-settings: 'opsz' 24, 'SOFT' 50, 'WONK' 1;
+      color: var(--vt-text-primary);
+      max-width: 540px;
+      margin: 0 auto 20px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      font-variation-settings: 'wght' 400;
+      color: var(--vt-text-muted);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--vt-surface-glass);
+      border-radius: 16px;
+      padding: 64px 48px;
+      text-align: center;
+      border: 1px solid var(--vt-border-subtle);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--vt-accent-blue), var(--vt-accent-violet), var(--vt-accent-coral), var(--vt-accent-green));
+    }
+
+    .cta-container h2 {
+      font-family: 'Fraunces', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-variation-settings: 'opsz' 72, 'SOFT' 30, 'WONK' 1;
+      margin-bottom: 12px;
+    }
+
+    .cta-container .cta-accent {
+      font-family: 'Recursive', sans-serif;
+      font-size: clamp(1rem, 1.5vw, 1.15rem);
+      font-variation-settings: 'CASL' 1, 'wght' 400;
+      color: var(--vt-accent-blue);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      font-variation-settings: 'wght' 380;
+      line-height: 1.8;
+      color: var(--vt-text-secondary);
+      margin-bottom: 28px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--vt-bg-charcoal);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--vt-text-secondary);
+      border-top: 1px solid var(--vt-border-subtle);
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Roboto Flex', sans-serif;
+      font-size: 1.5rem;
+      font-variation-settings: 'wght' 800, 'wdth' 110;
+      color: var(--vt-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      font-variation-settings: 'wght' 350;
+      color: var(--vt-text-muted);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-variation-settings: 'wght' 400;
+      color: var(--vt-text-muted);
+      transition: color var(--vt-transition-fast), font-variation-settings var(--vt-transition-font);
+    }
+
+    .footer-links a:hover {
+      color: var(--vt-accent-blue);
+      font-variation-settings: 'wght' 700;
+    }
+
+    .footer-axis-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-axis-tag {
+      font-family: 'Recursive', monospace;
+      font-size: 0.7rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      letter-spacing: 0.06em;
+      color: var(--vt-text-muted);
+      opacity: 0.4;
+      padding: 4px 10px;
+      border: 1px solid var(--vt-border-subtle);
+      border-radius: 4px;
+    }
+
+    .footer-copy {
+      font-family: 'Recursive', monospace;
+      font-size: 0.72rem;
+      font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 350;
+      color: var(--vt-text-muted);
+      opacity: 0.35;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 14px;
+        padding: 24px;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 28px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.65rem 1.5rem;
+        font-size: 0.82rem;
+      }
+
+      .axis-bar {
+        gap: 16px;
+        flex-wrap: wrap;
+        padding: 12px 16px;
+      }
+
+      .axis-bar-item {
+        font-size: 0.65rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+
+      .nav-links {
+        gap: 8px;
+      }
+
+      .footer-axis-row {
+        gap: 10px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-title-char,
+      .typo-display,
+      .effect-breathing-text,
+      .effect-wave-text span,
+      .effect-width-text,
+      .effect-casual-text,
+      .effect-gradient-text,
+      .effect-mono-text,
+      .banner-wave-row span {
+        animation: none !important;
+      }
+
+      .typo-display {
+        font-variation-settings: 'wght' 700, 'wdth' 100;
+      }
+
+      .hero-title-char {
+        font-variation-settings: 'wght' 600, 'wdth' 100;
+      }
+
+      .effect-breathing-text {
+        font-variation-settings: 'wght' 600, 'wdth' 100;
+      }
+
+      .effect-wave-text span {
+        font-variation-settings: 'wght' 600;
+      }
+
+      .effect-width-text {
+        font-variation-settings: 'wght' 500, 'wdth' 100;
+      }
+
+      .effect-casual-text {
+        font-variation-settings: 'CASL' 0.5, 'wght' 500, 'MONO' 0;
+      }
+
+      .effect-gradient-text {
+        font-variation-settings: 'opsz' 48, 'SOFT' 50, 'WONK' 1;
+      }
+
+      .effect-mono-text {
+        font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400;
+      }
+
+      .nav-logo,
+      .nav-links a,
+      .btn,
+      .card,
+      .card h3,
+      .color-chip,
+      .tag,
+      .typo-interactive,
+      .principle-item,
+      .footer-links a {
+        transition: color var(--vt-transition-fast),
+                    background var(--vt-transition-fast) !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">VarType</a>
+    <div class="nav-links">
+      <a href="#hero">Hero</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-glow"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>
+        <span class="hero-title-line1"><span class="hero-title-char">V</span><span class="hero-title-char">a</span><span class="hero-title-char">r</span><span class="hero-title-char">i</span><span class="hero-title-char">a</span><span class="hero-title-char">b</span><span class="hero-title-char">l</span><span class="hero-title-char">e</span></span><br>
+        <span class="hero-title-line2"><span class="hero-title-char">T</span><span class="hero-title-char">y</span><span class="hero-title-char">p</span><span class="hero-title-char">o</span><span class="hero-title-char">g</span><span class="hero-title-char">r</span><span class="hero-title-char">a</span><span class="hero-title-char">p</span><span class="hero-title-char">h</span><span class="hero-title-char">y</span></span>
+      </h1>
+      <p class="hero-subtitle">Dynamic Axes &bull; Fluid Weight &bull; Kinetic Letterforms</p>
+      <p class="hero-desc">
+        A design aesthetic where typefaces are not static artifacts but living, breathing systems &mdash; shifting weight, width, and expression in response to viewport, interaction, and time.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-ghost">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== AXIS BAR ===== -->
+  <div class="axis-bar">
+    <span class="axis-bar-item">wght <span class="axis-bar-value">100&ndash;1000</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">wdth <span class="axis-bar-value">25&ndash;151</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">opsz <span class="axis-bar-value">8&ndash;144</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">CASL <span class="axis-bar-value">0&ndash;1</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">SOFT <span class="axis-bar-value">0&ndash;100</span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--dark" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Type Is the Interface</h2>
+      <p class="section-subtitle">Variable fonts with fluid axes replace static type families</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Roboto Flex</p>
+            <p class="typo-display">Fluid Type</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Fraunces</p>
+            <p class="typo-heading">Expressive Serif Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Outfit</p>
+            <p class="typo-subheading">Clean Geometric Subheadings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter</p>
+            <p class="typo-body">Precise humanist sans-serif for long-form reading. Variable weight allows fine-tuned typographic color across every breakpoint.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Code / Recursive Mono</p>
+            <p class="typo-code">font-variation-settings: 'wght' 700;</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Interactive / Recursive (hover me)</p>
+            <p class="typo-interactive">Casual to Linear Transition</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">7rem</span>
+              <span style="font-family: 'Roboto Flex', sans-serif; font-size: 1.8rem; font-variation-settings: 'wght' 900, 'wdth' 110; color: var(--vt-text-primary); letter-spacing: -0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.4rem</span>
+              <span style="font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; font-variation-settings: 'opsz' 48, 'SOFT' 30, 'WONK' 1; color: var(--vt-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-size: 1.2rem; font-variation-settings: 'wght' 600; color: var(--vt-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; font-variation-settings: 'wght' 400; color: var(--vt-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.9rem</span>
+              <span style="font-family: 'Recursive', monospace; font-size: 0.9rem; font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 400; color: var(--vt-accent-green);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Recursive', monospace; font-size: 0.8rem; font-variation-settings: 'MONO' 1, 'CASL' 0, 'wght' 500; color: var(--vt-text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--vt-border-subtle);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 48, 'SOFT' 30; color: var(--vt-accent-blue);">Fraunces 800</strong> + <strong style="font-variation-settings: 'wght' 500;">Inter 400</strong><br>
+              <span style="color: var(--vt-text-muted); font-size: 0.85rem;">Expressive editorial serif meets precise Swiss sans</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Roboto Flex', sans-serif; font-variation-settings: 'wght' 700, 'wdth' 120; color: var(--vt-accent-blue);">Roboto Flex</strong> + <strong style="font-family: 'DM Sans', sans-serif; font-variation-settings: 'wght' 400;">DM Sans</strong><br>
+              <span style="color: var(--vt-text-muted); font-size: 0.85rem;">Dynamic expanded display with clean geometric body</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Recursive', sans-serif; font-variation-settings: 'CASL' 1, 'wght' 800; color: var(--vt-accent-blue);">Recursive Casual</strong> + <strong style="font-family: 'Recursive', sans-serif; font-variation-settings: 'CASL' 0, 'wght' 400;">Recursive Linear</strong><br>
+              <span style="color: var(--vt-text-muted); font-size: 0.85rem;">Same family casual-to-linear shift for unified personality</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AXIS DIVIDER ===== -->
+  <div class="section--dark" style="padding: 0;">
+    <div class="axis-divider">
+      <span>font-variation-settings</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--charcoal" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Restrained &amp; High-Contrast</h2>
+      <p class="section-subtitle">Neutral surfaces let dynamic typography carry the visual weight</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0d0d0d;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink Black</div>
+            <div class="color-hex">#0D0D0D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a1a2e;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal</div>
+            <div class="color-hex">#1A1A2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2d2d3a;"></div>
+          <div class="color-info">
+            <div class="color-name">Graphite</div>
+            <div class="color-hex">#2D2D3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5a5a72;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Mid</div>
+            <div class="color-hex">#5A5A72</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9090a8;"></div>
+          <div class="color-info">
+            <div class="color-name">Cool Gray</div>
+            <div class="color-hex">#9090A8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c8c8d8;"></div>
+          <div class="color-info">
+            <div class="color-name">Silver Wire</div>
+            <div class="color-hex">#C8C8D8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f5f5f0;"></div>
+          <div class="color-info">
+            <div class="color-name">Paper White</div>
+            <div class="color-hex">#F5F5F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffffff;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2962ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Signal Blue</div>
+            <div class="color-hex">#2962FF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7c3aed;"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Violet</div>
+            <div class="color-hex">#7C3AED</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff6b6b;"></div>
+          <div class="color-info">
+            <div class="color-name">Kinetic Coral</div>
+            <div class="color-hex">#FF6B6B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #10b981;"></div>
+          <div class="color-info">
+            <div class="color-name">Axis Green</div>
+            <div class="color-hex">#10B981</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f59e0b;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Amber</div>
+            <div class="color-hex">#F59E0B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0f172a;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Navy</div>
+            <div class="color-hex">#0F172A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e8e8ec;"></div>
+          <div class="color-info">
+            <div class="color-name">Whisper Gray</div>
+            <div class="color-hex">#E8E8EC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AXIS BAR ===== -->
+  <div class="axis-bar">
+    <span class="axis-bar-item">MONO <span class="axis-bar-value">0&ndash;1</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">CRSV <span class="axis-bar-value">0&ndash;1</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">slnt <span class="axis-bar-value">-15&ndash;0</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">WONK <span class="axis-bar-value">0&ndash;1</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">GRAD <span class="axis-bar-value">-200&ndash;150</span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--dark" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Axis-Driven Interfaces</h2>
+      <p class="section-subtitle">Type weight, width, and expression as interactive states</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--blue">
+            <span style="font-family: 'Roboto Flex', sans-serif; font-variation-settings: 'wght' 900, 'wdth' 120; font-size: 1.2rem; color: var(--vt-accent-blue);">W</span>
+          </div>
+          <h3>Weight Transitions</h3>
+          <p>Smooth interpolation from Thin to Black weight on hover, scroll, or time-based triggers creates organic emphasis shifts across the interface.</p>
+          <span class="tag">wght</span>
+          <span class="tag">hover</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--violet">
+            <span style="font-family: 'Roboto Flex', sans-serif; font-variation-settings: 'wght' 600, 'wdth' 140; font-size: 1.2rem; color: var(--vt-accent-violet);">W</span>
+          </div>
+          <h3>Responsive Width</h3>
+          <p>The wdth axis compresses or expands letterforms fluidly to fit containers, replacing abrupt font-size changes with graceful typographic reflow.</p>
+          <span class="tag">wdth</span>
+          <span class="tag">responsive</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">
+            <span style="font-family: 'Fraunces', serif; font-variation-settings: 'opsz' 144, 'SOFT' 0; font-size: 1.3rem; color: var(--vt-accent-green);">O</span>
+          </div>
+          <h3>Optical Size Intelligence</h3>
+          <p>The opsz axis adjusts stroke contrast and detail level automatically &mdash; thicker strokes at small sizes, refined detail at large display sizes.</p>
+          <span class="tag">opsz</span>
+          <span class="tag">legibility</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--coral">
+            <span style="font-family: 'Roboto Flex', sans-serif; font-size: 1.1rem; color: var(--vt-accent-coral);">
+              <span style="font-variation-settings: 'wght' 200;">A</span><span style="font-variation-settings: 'wght' 500;">A</span><span style="font-variation-settings: 'wght' 900;">A</span>
+            </span>
+          </div>
+          <h3>Per-Character Animation</h3>
+          <p>Individual letters receive staggered animation delays, creating cascading weight waves that ripple through words like kinetic sculptures.</p>
+          <span class="tag">animation</span>
+          <span class="tag">stagger</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">
+            <span style="font-family: 'Recursive', sans-serif; font-variation-settings: 'CASL' 1, 'wght' 700; font-size: 1.2rem; color: var(--vt-accent-amber);">C</span>
+          </div>
+          <h3>Custom Axis Expression</h3>
+          <p>Designer-defined axes like CASL (casualness), SOFT (softness), and WONK (wonkiness) add personality dimensions beyond standard weight and width.</p>
+          <span class="tag">CASL</span>
+          <span class="tag">SOFT</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--navy">
+            <span style="font-family: 'Recursive', monospace; font-variation-settings: 'MONO' 1, 'wght' 600; font-size: 1rem; color: var(--vt-accent-blue);">&lt;/&gt;</span>
+          </div>
+          <h3>Scroll-Linked Axes</h3>
+          <p>Scroll position maps directly to font axis values, letting users explore the typeface's design space through natural page interaction.</p>
+          <span class="tag">scroll</span>
+          <span class="tag">JS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE TYPE BANNER ===== -->
+  <div class="type-banner">
+    <div class="banner-content">
+      <div class="banner-wave-row">
+        <span style="font-variation-settings: 'wght' 100, 'wdth' 80;">T&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 300, 'wdth' 90;">y&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 500, 'wdth' 100;">p&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 700, 'wdth' 110;">e&nbsp;</span>
+        <span>&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 800, 'wdth' 115;">i&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 600, 'wdth' 105;">s&nbsp;</span>
+        <span>&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 400, 'wdth' 95;">A&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 200, 'wdth' 85;">l&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 100, 'wdth' 75;">i&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 300, 'wdth' 90;">v&nbsp;</span>
+        <span style="font-variation-settings: 'wght' 600, 'wdth' 110;">e</span>
+      </div>
+      <h2>Motion With Meaning</h2>
+      <p>Every animated axis change communicates emphasis, hierarchy, or state &mdash; never animation for its own sake</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--dark">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Variable Typography Philosophy</h2>
+      <p class="section-subtitle">Parametric thinking applied to every typographic decision</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-number">01</div>
+          <div class="principle-text">
+            <h3>Type Is the Interface</h3>
+            <p>Typography is not decoration layered onto a layout; it is the layout, the interaction surface, and the primary visual expression. Variable font behavior replaces traditional hero imagery.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">02</div>
+          <div class="principle-text">
+            <h3>Fluidity Over Snapshots</h3>
+            <p>Prefer smooth interpolation across axis ranges over discrete jumps between fixed styles. The design space between a font's minimum and maximum values is a continuous, explorable landscape.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">03</div>
+          <div class="principle-text">
+            <h3>Restraint Amplifies Impact</h3>
+            <p>Because the typography itself is dynamic and expressive, surrounding elements &mdash; color, imagery, decoration &mdash; should be restrained. Neutral palettes let kinetic type carry the page.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">04</div>
+          <div class="principle-text">
+            <h3>Progressive Enhancement</h3>
+            <p>Variable font features enhance the experience but degrade gracefully. Static fallback fonts must still produce a usable, attractive design. Performance is a feature, not a cost.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AXIS DIVIDER ===== -->
+  <div class="section--dark" style="padding: 0;">
+    <div class="axis-divider">
+      <span>@keyframes</span>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--dark" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Axis Animations</h2>
+      <p class="section-subtitle">All effects driven by font-variation-settings, no image assets</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-breathing">
+            <span class="effect-breathing-text">Breathe</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Breathing Weight</h4>
+            <p>Looping wght 100-900 animation creates an organic, living typographic pulse.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-wave">
+            <span class="effect-wave-text"><span>W</span><span>e</span><span>i</span><span>g</span><span>h</span><span>t</span><span>&nbsp;</span><span>W</span><span>a</span><span>v</span><span>e</span></span>
+          </div>
+          <div class="effect-caption">
+            <h4>Staggered Weight Wave</h4>
+            <p>Per-character delayed weight animation creates a cascading ripple effect.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-width">
+            <span class="effect-width-text">Expand</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Width Oscillation</h4>
+            <p>The wdth axis sweeps from condensed to expanded, reshaping letterforms in place.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-casual">
+            <span class="effect-casual-text">Casual &harr; Linear</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Casual Axis Shift</h4>
+            <p>Recursive's CASL axis transitions from formal linear to playful casual letterforms.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gradient-type">
+            <span class="effect-gradient-text">Gradient</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Gradient + Axis Motion</h4>
+            <p>Background-clip text with Fraunces opsz/SOFT axis animation for editorial drama.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-mono">
+            <span class="effect-mono-text">mono &rarr; sans</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Mono/Sans Toggle</h4>
+            <p>Recursive's MONO axis flips between monospace and proportional spacing.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AXIS BAR ===== -->
+  <div class="axis-bar">
+    <span class="axis-bar-item">transition <span class="axis-bar-value">400ms</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">easing <span class="axis-bar-value">cubic-bezier</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">fallback <span class="axis-bar-value">system-ui</span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--charcoal">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Axis-Driven Buttons</h2>
+      <p class="section-subtitle">Weight and width shift on hover instead of color alone</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Action</a>
+        <a href="#" class="btn btn-violet">Violet Accent</a>
+        <a href="#" class="btn btn-display">Display Width</a>
+        <a href="#" class="btn btn-ghost">Ghost Variant</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">&ldquo;</span>
+        <blockquote>
+          Variable Typography rejects the notion that a typeface is a fixed artifact. It treats the design space between a font's minimum and maximum axis values as a continuous, explorable landscape.
+        </blockquote>
+        <cite>&mdash; The Variable Typography Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--charcoal">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Explore the Design Space</h2>
+        <span class="cta-accent">font-variation-settings: 'wght' 100..900, 'wdth' 75..125;</span>
+        <p>
+          Variable Typography treats every typeface as a living system. Weight, width, optical size, and custom axes form a multidimensional space that responds to viewport, interaction, and time. Start with Roboto Flex, Inter, and Fraunces &mdash; then let the axes breathe.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AXIS BAR ===== -->
+  <div class="axis-bar">
+    <span class="axis-bar-item">fonts <span class="axis-bar-value">6 variable</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">axes <span class="axis-bar-value">12+ total</span></span>
+    <span class="axis-bar-dot"></span>
+    <span class="axis-bar-item">images <span class="axis-bar-value">0</span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>VarType</h3>
+      <p>
+        A design aesthetic reference celebrating variable font technology &mdash; dynamic axes, fluid weight, and kinetic letterforms. All typography, no image assets.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Hero</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-axis-row">
+        <span class="footer-axis-tag">wght</span>
+        <span class="footer-axis-tag">wdth</span>
+        <span class="footer-axis-tag">opsz</span>
+        <span class="footer-axis-tag">CASL</span>
+        <span class="footer-axis-tag">MONO</span>
+        <span class="footer-axis-tag">SOFT</span>
+        <span class="footer-axis-tag">WONK</span>
+        <span class="footer-axis-tag">GRAD</span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Variable Typography &bull; Type is the interface</p>
+    </div>
+  </footer>
+
+  <script>
+    // Scroll-linked weight animation for demo purposes
+    // Maps scroll progress to hero title weight when in view
+    (function() {
+      const hero = document.querySelector('.hero h1');
+      if (!hero) return;
+
+      // Check for reduced motion preference
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (prefersReducedMotion) return;
+
+      // Smooth scroll-linked axis control for interactive demo
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    })();
+  </script>
+
+</body>
+</html>

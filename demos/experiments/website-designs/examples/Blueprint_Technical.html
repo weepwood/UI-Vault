@@ -1,0 +1,2565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blueprint Technical -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&family=IBM+Plex+Mono:wght@300;400;500;700&family=Rajdhani:wght@300;400;500;600;700&family=Chakra+Petch:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Backgrounds */
+      --bp-bg-primary: #0a1628;
+      --bp-bg-secondary: #0d2137;
+      --bp-bg-surface: #132d4a;
+      --bp-bg-elevated: #1a3a5c;
+
+      /* Cyan spectrum */
+      --bp-cyan: #00b4d8;
+      --bp-cyan-bright: #00e5ff;
+      --bp-cyan-pale: #90e0ef;
+      --bp-cyan-faded: #4a8ba8;
+      --bp-cyan-construction: #2a5a7a;
+
+      /* Neutrals */
+      --bp-white: #ffffff;
+      --bp-white-ink: #e0f4ff;
+      --bp-gray-title: #8badc4;
+      --bp-grid-line: #1a3a5c;
+
+      /* Semantic accents */
+      --bp-red: #ff4c4c;
+      --bp-green: #00c853;
+      --bp-amber: #ffb300;
+
+      /* Glow effects */
+      --bp-glow-cyan: rgba(0, 180, 216, 0.3);
+      --bp-glow-cyan-strong: rgba(0, 229, 255, 0.4);
+      --bp-glow-red: rgba(255, 76, 76, 0.3);
+      --bp-glow-green: rgba(0, 200, 83, 0.3);
+
+      /* Borders */
+      --bp-border: rgba(0, 180, 216, 0.25);
+      --bp-border-strong: rgba(0, 180, 216, 0.5);
+      --bp-border-grid: rgba(26, 58, 92, 0.6);
+
+      /* Functional mappings */
+      --bp-text-primary: var(--bp-white-ink);
+      --bp-text-secondary: var(--bp-cyan-pale);
+      --bp-text-muted: var(--bp-gray-title);
+      --bp-accent: var(--bp-cyan);
+      --bp-accent-bright: var(--bp-cyan-bright);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Share Tech Mono', 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      letter-spacing: 0.04em;
+      color: var(--bp-text-primary);
+      background-color: var(--bp-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Orbitron', 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-bright);
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+
+    h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+    }
+
+    h3 {
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 500;
+      color: var(--bp-cyan);
+    }
+
+    /* ============================================
+       GRID BACKGROUND OVERLAY
+       ============================================ */
+    .bp-grid-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(
+          rgba(0, 180, 216, 0.04) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(0, 180, 216, 0.04) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          rgba(0, 180, 216, 0.08) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(0, 180, 216, 0.08) 1px,
+          transparent 1px
+        );
+      background-size:
+        20px 20px,
+        20px 20px,
+        100px 100px,
+        100px 100px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--bp-border);
+      background: rgba(10, 22, 40, 0.95);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--bp-cyan) 0px,
+        var(--bp-cyan) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+      opacity: 0.3;
+    }
+
+    .nav-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-bright);
+      transition: text-shadow 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      text-shadow: 0 0 12px var(--bp-glow-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-pale);
+      position: relative;
+      padding-bottom: 2px;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a::before {
+      content: '[ ';
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .nav-links a::after {
+      content: ' ]';
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--bp-cyan-bright);
+    }
+
+    .nav-links a:hover::before,
+    .nav-links a:hover::after {
+      opacity: 1;
+    }
+
+    /* ============================================
+       CONTAINER
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bp-cyan);
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--bp-cyan);
+    }
+
+    .section-title {
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 300;
+      color: var(--bp-text-muted);
+      margin-bottom: 3rem;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       SECTION DIVIDER
+       ============================================ */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0;
+      padding: 2rem 2rem;
+      background: var(--bp-bg-primary);
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-divider__line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--bp-cyan) 10%,
+        var(--bp-cyan) 90%,
+        transparent
+      );
+      opacity: 0.3;
+    }
+
+    .section-divider__marker {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 1px solid var(--bp-cyan);
+      border-radius: 50%;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--bp-cyan);
+      letter-spacing: 0.05em;
+      flex-shrink: 0;
+    }
+
+    .section-divider__label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-faded);
+      white-space: nowrap;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      padding: 8rem 2rem 6rem;
+      text-align: center;
+      overflow: hidden;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: var(--bp-bg-primary);
+      cursor: crosshair;
+    }
+
+    /* Crosshair circle at center */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 120px;
+      height: 120px;
+      transform: translate(-50%, -50%);
+      border: 1px solid rgba(0, 180, 216, 0.08);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Plus sign at center */
+    .hero::after {
+      content: '+';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 3rem;
+      color: rgba(0, 180, 216, 0.06);
+      pointer-events: none;
+    }
+
+    /* Vertical crosshair line */
+    .hero-crosshair-v {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: rgba(0, 180, 216, 0.04);
+      pointer-events: none;
+    }
+
+    /* Horizontal crosshair line */
+    .hero-crosshair-h {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: rgba(0, 180, 216, 0.04);
+      pointer-events: none;
+    }
+
+    /* Corner registration marks */
+    .hero-reg-mark {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      pointer-events: none;
+    }
+
+    .hero-reg-mark--tl {
+      top: 40px;
+      left: 40px;
+      border-top: 1px solid rgba(0, 180, 216, 0.15);
+      border-left: 1px solid rgba(0, 180, 216, 0.15);
+    }
+
+    .hero-reg-mark--tr {
+      top: 40px;
+      right: 40px;
+      border-top: 1px solid rgba(0, 180, 216, 0.15);
+      border-right: 1px solid rgba(0, 180, 216, 0.15);
+    }
+
+    .hero-reg-mark--bl {
+      bottom: 40px;
+      left: 40px;
+      border-bottom: 1px solid rgba(0, 180, 216, 0.15);
+      border-left: 1px solid rgba(0, 180, 216, 0.15);
+    }
+
+    .hero-reg-mark--br {
+      bottom: 40px;
+      right: 40px;
+      border-bottom: 1px solid rgba(0, 180, 216, 0.15);
+      border-right: 1px solid rgba(0, 180, 216, 0.15);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bp-cyan);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.2rem, 6vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bp-white-ink);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 0 30px rgba(0, 229, 255, 0.15);
+    }
+
+    .hero-subtitle {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--bp-cyan-pale);
+      max-width: 640px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-dimension {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-top: 3rem;
+      opacity: 0.4;
+    }
+
+    .hero-dimension span {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--bp-cyan);
+      letter-spacing: 0.1em;
+    }
+
+    .hero-dimension::before,
+    .hero-dimension::after {
+      content: '';
+      width: 80px;
+      height: 1px;
+      background: var(--bp-cyan);
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Annotation coordinates */
+    .hero-coord {
+      position: absolute;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: rgba(0, 180, 216, 0.2);
+      letter-spacing: 0.08em;
+      pointer-events: none;
+    }
+
+    .hero-coord--tl { top: 56px; left: 56px; }
+    .hero-coord--br { bottom: 56px; right: 56px; }
+
+    /* ============================================
+       BLUEPRINT BUTTONS
+       ============================================ */
+    .bp-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.75rem;
+      border: 1px solid var(--bp-cyan);
+      background: transparent;
+      color: var(--bp-cyan);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .bp-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -6px;
+      width: 6px;
+      height: 1px;
+      background: var(--bp-cyan);
+      opacity: 0.5;
+    }
+
+    .bp-btn::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -6px;
+      width: 6px;
+      height: 1px;
+      background: var(--bp-cyan);
+      opacity: 0.5;
+    }
+
+    .bp-btn:hover {
+      background: rgba(0, 180, 216, 0.1);
+      box-shadow:
+        0 0 15px rgba(0, 180, 216, 0.15),
+        inset 0 0 15px rgba(0, 180, 216, 0.05);
+      color: var(--bp-cyan-bright);
+      border-color: var(--bp-cyan-bright);
+    }
+
+    .bp-btn:active {
+      background: rgba(0, 180, 216, 0.2);
+      transform: scale(0.98);
+    }
+
+    .bp-btn--secondary {
+      border-style: dashed;
+      border-color: var(--bp-cyan-faded);
+      color: var(--bp-cyan-faded);
+    }
+
+    .bp-btn--secondary:hover {
+      border-style: solid;
+      border-color: var(--bp-cyan);
+      color: var(--bp-cyan);
+    }
+
+    .bp-btn--bright {
+      border-color: var(--bp-cyan-bright);
+      color: var(--bp-cyan-bright);
+      background: rgba(0, 229, 255, 0.06);
+    }
+
+    .bp-btn--bright:hover {
+      background: rgba(0, 229, 255, 0.15);
+      box-shadow:
+        0 0 20px rgba(0, 229, 255, 0.2),
+        inset 0 0 20px rgba(0, 229, 255, 0.06);
+    }
+
+    .bp-btn--green {
+      border-color: var(--bp-green);
+      color: var(--bp-green);
+    }
+
+    .bp-btn--green::before,
+    .bp-btn--green::after {
+      background: var(--bp-green);
+    }
+
+    .bp-btn--green:hover {
+      background: rgba(0, 200, 83, 0.1);
+      box-shadow:
+        0 0 15px var(--bp-glow-green),
+        inset 0 0 15px rgba(0, 200, 83, 0.05);
+      color: #00e676;
+      border-color: #00e676;
+    }
+
+    .bp-btn--amber {
+      border-color: var(--bp-amber);
+      color: var(--bp-amber);
+    }
+
+    .bp-btn--amber::before,
+    .bp-btn--amber::after {
+      background: var(--bp-amber);
+    }
+
+    .bp-btn--amber:hover {
+      background: rgba(255, 179, 0, 0.1);
+      box-shadow: 0 0 15px rgba(255, 179, 0, 0.15);
+      color: #ffc107;
+      border-color: #ffc107;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+      align-self: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px dashed var(--bp-cyan-construction);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-faded);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bp-white-ink);
+      text-shadow: 0 0 30px rgba(0, 229, 255, 0.12);
+    }
+
+    .typo-heading {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-bright);
+    }
+
+    .typo-subheading {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--bp-cyan);
+    }
+
+    .typo-body {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      font-weight: 400;
+      line-height: 1.8;
+      color: var(--bp-text-primary);
+    }
+
+    .typo-annotation {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-pale);
+      opacity: 0.7;
+    }
+
+    .typo-mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.92rem;
+      font-weight: 400;
+      color: var(--bp-cyan-pale);
+      line-height: 1.7;
+    }
+
+    .typo-right {
+      background: rgba(13, 33, 55, 0.5);
+      border: 1px solid var(--bp-border);
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Corner brackets on type right panel */
+    .typo-right::before,
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--bp-cyan);
+      border-style: solid;
+      pointer-events: none;
+    }
+
+    .typo-right::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .typo-right::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .typo-right h3 {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      margin-bottom: 1.5rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid rgba(0, 180, 216, 0.1);
+    }
+
+    .typo-scale-size {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--bp-cyan-faded);
+      letter-spacing: 0.08em;
+      min-width: 60px;
+    }
+
+    .typo-pairing {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--bp-border);
+    }
+
+    .typo-pairing h3 {
+      margin-bottom: 1rem;
+    }
+
+    .typo-pairing-item {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .typo-pairing-item strong {
+      color: var(--bp-cyan);
+    }
+
+    .typo-pairing-item .mood {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--bp-cyan-faded);
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border: 1px solid var(--bp-border);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      position: relative;
+    }
+
+    /* Corner bracket marks on color chips */
+    .color-chip::before,
+    .color-chip::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: var(--bp-cyan);
+      border-style: solid;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .color-chip::before {
+      top: -1px;
+      left: -1px;
+      border-width: 1px 0 0 1px;
+    }
+
+    .color-chip::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 1px 1px 0;
+    }
+
+    .color-chip:hover {
+      border-color: var(--bp-border-strong);
+      box-shadow: 0 0 15px rgba(0, 180, 216, 0.08);
+    }
+
+    .color-swatch {
+      height: 90px;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+      background: var(--bp-bg-secondary);
+    }
+
+    .color-name {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--bp-text-primary);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .color-hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--bp-text-muted);
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       BLUEPRINT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      position: relative;
+      background: rgba(13, 33, 55, 0.8);
+      border: 1px solid var(--bp-border);
+      padding: 2rem;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Corner bracket marks */
+    .card::before,
+    .card::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-color: var(--bp-cyan);
+      border-style: solid;
+      pointer-events: none;
+    }
+
+    .card::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .card::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .card:hover {
+      border-color: var(--bp-border-strong);
+      box-shadow:
+        0 0 20px rgba(0, 180, 216, 0.08),
+        inset 0 0 30px rgba(0, 180, 216, 0.03);
+    }
+
+    .card-number {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--bp-cyan-faded);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--bp-cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+
+    /* Crosshair inside icon */
+    .card-icon::before {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 1px;
+      background: var(--bp-cyan);
+      opacity: 0.3;
+    }
+
+    .card-icon::after {
+      content: '';
+      position: absolute;
+      width: 1px;
+      height: 10px;
+      background: var(--bp-cyan);
+      opacity: 0.3;
+    }
+
+    .card-icon-inner {
+      width: 20px;
+      height: 20px;
+      position: relative;
+    }
+
+    .card h3 {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      color: var(--bp-cyan-bright);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 0.85rem;
+      line-height: 1.75;
+      color: var(--bp-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border: 1px solid var(--bp-cyan-construction);
+      color: var(--bp-cyan-faded);
+      margin-top: 1rem;
+      margin-right: 6px;
+      transition: all 0.25s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--bp-cyan);
+      color: var(--bp-cyan);
+      background: rgba(0, 180, 216, 0.06);
+    }
+
+    /* Card icon shapes - CSS only */
+    .icon-grid {
+      width: 20px;
+      height: 20px;
+      background:
+        linear-gradient(var(--bp-cyan) 1px, transparent 1px),
+        linear-gradient(90deg, var(--bp-cyan) 1px, transparent 1px);
+      background-size: 5px 5px;
+      opacity: 0.8;
+    }
+
+    .icon-crosshair {
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--bp-cyan);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .icon-crosshair::before {
+      content: '+';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--bp-cyan);
+    }
+
+    .icon-dimension {
+      width: 20px;
+      height: 2px;
+      background: var(--bp-cyan);
+      position: relative;
+    }
+
+    .icon-dimension::before,
+    .icon-dimension::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      width: 1px;
+      height: 10px;
+      background: var(--bp-cyan);
+    }
+
+    .icon-dimension::before { left: 0; }
+    .icon-dimension::after { right: 0; }
+
+    .icon-bracket {
+      width: 18px;
+      height: 18px;
+      border: none;
+      position: relative;
+    }
+
+    .icon-bracket::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--bp-cyan);
+      border-left: 2px solid var(--bp-cyan);
+    }
+
+    .icon-bracket::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid var(--bp-cyan);
+      border-right: 2px solid var(--bp-cyan);
+    }
+
+    .icon-layers {
+      width: 20px;
+      height: 16px;
+      position: relative;
+    }
+
+    .icon-layers span {
+      display: block;
+      width: 100%;
+      height: 1px;
+      background: var(--bp-cyan);
+      position: absolute;
+    }
+
+    .icon-layers span:nth-child(1) { top: 0; }
+    .icon-layers span:nth-child(2) { top: 5px; }
+    .icon-layers span:nth-child(3) { top: 10px; }
+    .icon-layers span:nth-child(4) { top: 15px; }
+
+    .icon-hex {
+      width: 22px;
+      height: 20px;
+      position: relative;
+    }
+
+    .icon-hex::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(30deg);
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--bp-cyan);
+    }
+
+    .icon-hex::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(60deg);
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--bp-cyan);
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border: 1px solid var(--bp-border);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .effect-demo::before,
+    .effect-demo::after {
+      content: '';
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-color: var(--bp-cyan);
+      border-style: solid;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .effect-demo::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .effect-demo::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem;
+      background: var(--bp-bg-secondary);
+      border-top: 1px solid var(--bp-border);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--bp-cyan-bright);
+      margin-bottom: 0.4rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: var(--bp-text-muted);
+    }
+
+    /* Effect 1: Grid Overlay */
+    .effect-grid-overlay {
+      background: var(--bp-bg-primary);
+      background-image:
+        linear-gradient(rgba(0, 180, 216, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 180, 216, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(0, 180, 216, 0.12) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 180, 216, 0.12) 1px, transparent 1px);
+      background-size: 16px 16px, 16px 16px, 80px 80px, 80px 80px;
+    }
+
+    .effect-grid-overlay::after {
+      content: '+';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 2.5rem;
+      color: rgba(0, 229, 255, 0.2);
+      z-index: 1;
+    }
+
+    /* Effect 2: Scan Line */
+    .effect-scanline {
+      background: linear-gradient(180deg, var(--bp-bg-primary) 0%, var(--bp-bg-secondary) 100%);
+    }
+
+    .effect-scanline::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 180, 216, 0.03) 2px,
+        rgba(0, 180, 216, 0.03) 4px
+      );
+      z-index: 1;
+    }
+
+    .effect-scanline-beam {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--bp-cyan-bright), transparent);
+      opacity: 0.4;
+      animation: scanBeam 3s ease-in-out infinite;
+      z-index: 2;
+    }
+
+    @keyframes scanBeam {
+      0%, 100% { top: 0; opacity: 0.4; }
+      50% { top: calc(100% - 2px); opacity: 0.15; }
+    }
+
+    /* Effect 3: Corner Bracket Frame */
+    .effect-brackets {
+      background: var(--bp-bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .bracket-box {
+      width: 120px;
+      height: 80px;
+      position: relative;
+      border: 1px dashed rgba(0, 180, 216, 0.2);
+      animation: bracketPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes bracketPulse {
+      0%, 100% { border-color: rgba(0, 180, 216, 0.15); }
+      50% { border-color: rgba(0, 180, 216, 0.3); }
+    }
+
+    .bracket-box::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid var(--bp-cyan);
+      border-left: 2px solid var(--bp-cyan);
+    }
+
+    .bracket-box::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      right: -4px;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid var(--bp-cyan);
+      border-right: 2px solid var(--bp-cyan);
+    }
+
+    .bracket-box-inner::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid var(--bp-cyan);
+      border-right: 2px solid var(--bp-cyan);
+    }
+
+    .bracket-box-inner::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: -4px;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid var(--bp-cyan);
+      border-left: 2px solid var(--bp-cyan);
+    }
+
+    .bracket-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--bp-cyan);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    /* Effect 4: Dimension Lines */
+    .effect-dimensions {
+      background: var(--bp-bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px;
+    }
+
+    .dim-line {
+      display: flex;
+      align-items: center;
+      width: 80%;
+    }
+
+    .dim-line__tick {
+      width: 1px;
+      height: 12px;
+      background: var(--bp-cyan-faded);
+      flex-shrink: 0;
+    }
+
+    .dim-line__bar {
+      flex: 1;
+      height: 1px;
+      background: var(--bp-cyan-faded);
+    }
+
+    .dim-line__value {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--bp-cyan-pale);
+      padding: 0 8px;
+      background: var(--bp-bg-primary);
+      white-space: nowrap;
+    }
+
+    .dim-line__arrow-l,
+    .dim-line__arrow-r {
+      width: 0;
+      height: 0;
+      flex-shrink: 0;
+    }
+
+    .dim-line__arrow-l {
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-right: 5px solid var(--bp-cyan-faded);
+    }
+
+    .dim-line__arrow-r {
+      border-top: 3px solid transparent;
+      border-bottom: 3px solid transparent;
+      border-left: 5px solid var(--bp-cyan-faded);
+    }
+
+    /* Effect 5: Glow Pulse */
+    .effect-glow {
+      background: var(--bp-bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .glow-circle {
+      width: 80px;
+      height: 80px;
+      border: 1px solid var(--bp-cyan);
+      border-radius: 50%;
+      position: relative;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% {
+        box-shadow: 0 0 10px rgba(0, 180, 216, 0.1), 0 0 30px rgba(0, 180, 216, 0.05);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(0, 180, 216, 0.3), 0 0 50px rgba(0, 180, 216, 0.1);
+      }
+    }
+
+    .glow-circle::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -15px;
+      right: -15px;
+      height: 1px;
+      background: rgba(0, 180, 216, 0.2);
+    }
+
+    .glow-circle::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: -15px;
+      bottom: -15px;
+      width: 1px;
+      background: rgba(0, 180, 216, 0.2);
+    }
+
+    .glow-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--bp-cyan-bright);
+      box-shadow: 0 0 8px var(--bp-glow-cyan-strong);
+    }
+
+    /* Effect 6: Line Draw / Border Trace */
+    .effect-trace {
+      background: var(--bp-bg-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trace-box {
+      width: 100px;
+      height: 60px;
+      border: 1px solid var(--bp-cyan);
+      position: relative;
+      animation: borderTrace 4s ease-out infinite;
+    }
+
+    @keyframes borderTrace {
+      0% { clip-path: polygon(0 0, 0 0, 0 0, 0 0); }
+      25% { clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); }
+      50% { clip-path: polygon(0 0, 100% 0, 100% 100%, 100% 100%); }
+      75% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+      100% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    }
+
+    .trace-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      color: var(--bp-cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .trace-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 0.7em;
+      background: var(--bp-cyan-bright);
+      margin-left: 2px;
+      animation: cursorBlink 1s step-end infinite;
+      vertical-align: middle;
+    }
+
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE / CALLOUT
+       ============================================ */
+    .quote-block {
+      position: relative;
+      padding: 3rem 3rem 3rem 3.5rem;
+      border-left: 2px solid var(--bp-cyan);
+      background: rgba(13, 33, 55, 0.5);
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 16px;
+      height: 16px;
+      border-top: 2px solid var(--bp-cyan);
+      border-left: 2px solid var(--bp-cyan);
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: -1px;
+      width: 16px;
+      height: 16px;
+      border-bottom: 2px solid var(--bp-cyan);
+      border-left: 2px solid var(--bp-cyan);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.05rem;
+      line-height: 1.9;
+      color: var(--bp-cyan-pale);
+      font-style: normal;
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 1.25rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      color: var(--bp-cyan-faded);
+      text-transform: uppercase;
+      font-style: normal;
+    }
+
+    .quote-annotation {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      color: rgba(0, 180, 216, 0.2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3rem;
+      border: 1px solid var(--bp-border);
+      position: relative;
+      background: rgba(13, 33, 55, 0.4);
+    }
+
+    .cta-container::before,
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--bp-cyan);
+      border-style: solid;
+      pointer-events: none;
+    }
+
+    .cta-container::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .cta-container::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .cta-inner {
+      position: relative;
+    }
+
+    .cta-inner::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid var(--bp-cyan);
+      border-right: 2px solid var(--bp-cyan);
+      pointer-events: none;
+      /* offset by padding to place at container edge */
+      top: -3rem;
+      right: -3rem;
+    }
+
+    .cta-inner::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: -1px;
+      width: 20px;
+      height: 20px;
+      border-bottom: 2px solid var(--bp-cyan);
+      border-left: 2px solid var(--bp-cyan);
+      pointer-events: none;
+      bottom: -3rem;
+      left: -3rem;
+    }
+
+    .cta-annotation {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-faded);
+      margin-bottom: 1rem;
+    }
+
+    .cta-container h2 {
+      margin-bottom: 1rem;
+    }
+
+    .cta-container p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--bp-text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    /* ============================================
+       FOOTER - TITLE BLOCK
+       ============================================ */
+    .footer {
+      background: var(--bp-bg-secondary);
+      border-top: 1px solid var(--bp-border);
+      padding: 3rem 2rem 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--bp-cyan) 0px,
+        var(--bp-cyan) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+      opacity: 0.3;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .footer-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 3rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      color: var(--bp-cyan-bright);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.78rem;
+      color: var(--bp-text-muted);
+      max-width: 400px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-faded);
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--bp-cyan-bright);
+    }
+
+    /* Title block - engineering footer */
+    .title-block {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1px;
+      border: 1px solid var(--bp-border);
+      margin-top: 2rem;
+    }
+
+    .title-block-cell {
+      padding: 8px 12px;
+      border: 1px solid var(--bp-border);
+      background: rgba(10, 22, 40, 0.6);
+    }
+
+    .title-block-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--bp-cyan-faded);
+      margin-bottom: 2px;
+    }
+
+    .title-block-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--bp-text-primary);
+      letter-spacing: 0.04em;
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: rgba(139, 173, 196, 0.4);
+      letter-spacing: 0.08em;
+      text-align: center;
+      margin-top: 1.5rem;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 0.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.7rem;
+      }
+
+      .hero {
+        padding: 6rem 20px 4rem;
+        min-height: 80vh;
+      }
+
+      .hero-reg-mark { display: none; }
+      .hero-coord { display: none; }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .bp-btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.72rem;
+      }
+
+      .quote-block {
+        padding: 2rem 1.5rem 2rem 2rem;
+      }
+
+      .cta-container {
+        padding: 2rem 1.5rem;
+      }
+
+      .cta-inner::before,
+      .cta-inner::after {
+        display: none;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+
+      .title-block {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.65rem;
+      }
+
+      .color-hex {
+        font-size: 0.55rem;
+      }
+
+      .title-block {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-scanline-beam,
+      .trace-box,
+      .glow-circle,
+      .bracket-box {
+        animation: none;
+      }
+
+      .trace-cursor {
+        animation: none;
+        opacity: 1;
+      }
+
+      .card, .bp-btn, .color-chip, .tag, .nav-logo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Grid background overlay -->
+  <div class="bp-grid-bg"></div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Blueprint</a>
+    <div class="nav-links">
+      <a href="#hero">Schematic</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Specs</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Crosshair construction lines -->
+    <div class="hero-crosshair-v"></div>
+    <div class="hero-crosshair-h"></div>
+
+    <!-- Registration marks at corners -->
+    <div class="hero-reg-mark hero-reg-mark--tl"></div>
+    <div class="hero-reg-mark hero-reg-mark--tr"></div>
+    <div class="hero-reg-mark hero-reg-mark--bl"></div>
+    <div class="hero-reg-mark hero-reg-mark--br"></div>
+
+    <!-- Coordinate annotations -->
+    <span class="hero-coord hero-coord--tl">x: 0.00 &nbsp; y: 0.00</span>
+    <span class="hero-coord hero-coord--br">x: 1920.00 &nbsp; y: 1080.00</span>
+
+    <div class="hero-content">
+      <span class="hero-label">// Design Aesthetic Reference &mdash; Rev 1.0</span>
+      <h1 class="hero-title">Blueprint<br>Technical</h1>
+      <p class="hero-subtitle">
+        Cyan-on-dark schematics. Precision line work. Engineering-grade clarity.
+        A design language built on the visual conventions of architectural drafting
+        and the cyanotype reproduction process.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="bp-btn bp-btn--bright">View Specifications</a>
+        <a href="#palette" class="bp-btn bp-btn--secondary">Color Reference</a>
+      </div>
+      <div class="hero-dimension">
+        <span>1440px &times; 900px &mdash; scale 1:1</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">01</span>
+    <span class="section-divider__label">Typography</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">Section 01 // Typography</p>
+      <h2 class="section-title">Monospaced Precision</h2>
+      <p class="section-subtitle">geometric sans-serifs and fixed-width drafting letterforms</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Orbitron 900</p>
+            <p class="typo-display">Schematic</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Chakra Petch 600</p>
+            <p class="typo-heading">Engineering Clarity</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Rajdhani 500</p>
+            <p class="typo-subheading">Condensed Technical Labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / IBM Plex Mono 400</p>
+            <p class="typo-body">Fixed-width precision for body text. Every character occupies the same horizontal space, enforcing the mechanical uniformity of plotters and terminal output.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Annotation / Share Tech Mono 400</p>
+            <p class="typo-annotation">Ref: A-001 // dimension callout // 0.7rem // uppercase</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Distinctive / Space Mono 400</p>
+            <p class="typo-mono">Pull quotes and callout text with editorial character and monospaced discipline.</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Orbitron', sans-serif; font-weight: 900; font-size: 1.6rem; color: var(--bp-white-ink);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.0rem</span>
+              <span style="font-family: 'Chakra Petch', sans-serif; font-weight: 600; font-size: 1.3rem; color: var(--bp-cyan-bright);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Rajdhani', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--bp-cyan);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.95rem</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; color: var(--bp-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.78rem</span>
+              <span style="font-family: 'Share Tech Mono', monospace; font-size: 0.78rem; color: var(--bp-cyan-pale);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.70rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--bp-cyan-faded); text-transform: uppercase; letter-spacing: 0.08em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Orbitron', sans-serif;">Orbitron 700</strong> + <strong style="font-family: 'Share Tech Mono', monospace;">Share Tech Mono</strong>
+              <span class="mood">Technical futurism with drafting-table readability</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Chakra Petch', sans-serif;">Chakra Petch 600</strong> + <strong style="font-family: 'IBM Plex Mono', monospace;">IBM Plex Mono</strong>
+              <span class="mood">Modern engineering document with neutral precision</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Rajdhani', sans-serif;">Rajdhani 600</strong> + <strong style="font-family: 'Space Mono', monospace;">Space Mono</strong>
+              <span class="mood">Condensed industrial labeling with distinctive character</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">02</span>
+    <span class="section-divider__label">Color Reference</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section" id="palette">
+    <div class="container">
+      <p class="section-label">Section 02 // Color Palette</p>
+      <h2 class="section-title">Cyanotype Spectrum</h2>
+      <p class="section-subtitle">derived from Prussian blue chemistry and modern CAD displays</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0A1628;"></div>
+          <div class="color-info">
+            <div class="color-name">Blueprint Dark</div>
+            <div class="color-hex">#0A1628</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0D2137;"></div>
+          <div class="color-info">
+            <div class="color-name">Blueprint Navy</div>
+            <div class="color-hex">#0D2137</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #132D4A;"></div>
+          <div class="color-info">
+            <div class="color-name">Schematic Blue</div>
+            <div class="color-hex">#132D4A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A3A5C;"></div>
+          <div class="color-info">
+            <div class="color-name">Grid Line</div>
+            <div class="color-hex">#1A3A5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00B4D8;"></div>
+          <div class="color-info">
+            <div class="color-name">Dimension Cyan</div>
+            <div class="color-hex">#00B4D8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00E5FF;"></div>
+          <div class="color-info">
+            <div class="color-name">Bright Cyan</div>
+            <div class="color-hex">#00E5FF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #90E0EF;"></div>
+          <div class="color-info">
+            <div class="color-name">Pale Blueprint</div>
+            <div class="color-hex">#90E0EF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E0F4FF;"></div>
+          <div class="color-info">
+            <div class="color-name">White Ink</div>
+            <div class="color-hex">#E0F4FF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF4C4C;"></div>
+          <div class="color-info">
+            <div class="color-name">Annotation Red</div>
+            <div class="color-hex">#FF4C4C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00C853;"></div>
+          <div class="color-info">
+            <div class="color-name">Approval Green</div>
+            <div class="color-hex">#00C853</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFB300;"></div>
+          <div class="color-info">
+            <div class="color-name">Caution Amber</div>
+            <div class="color-hex">#FFB300</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A8BA8;"></div>
+          <div class="color-info">
+            <div class="color-name">Faded Cyan</div>
+            <div class="color-hex">#4A8BA8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2A5A7A;"></div>
+          <div class="color-info">
+            <div class="color-name">Construction Dash</div>
+            <div class="color-hex">#2A5A7A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8BADC4;"></div>
+          <div class="color-info">
+            <div class="color-name">Title Block Gray</div>
+            <div class="color-hex">#8BADC4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">03</span>
+    <span class="section-divider__label">Components</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <p class="section-label">Section 03 // Component Specifications</p>
+      <h2 class="section-title">Schematic Panels</h2>
+      <p class="section-subtitle">every element measured, specified, and intentionally placed</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-number">Spec A-001</span>
+          <div class="card-icon">
+            <div class="icon-grid"></div>
+          </div>
+          <h3>Grid Substrate</h3>
+          <p>A visible graph-paper grid at low opacity (3-8%) underlies all content, reinforcing the drafting-paper context and ensuring absolute alignment.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Structure</span>
+        </div>
+        <div class="card">
+          <span class="card-number">Spec A-002</span>
+          <div class="card-icon">
+            <div class="icon-crosshair"></div>
+          </div>
+          <h3>Crosshair Motifs</h3>
+          <p>Alignment targets, registration marks, and center-point crosshairs serve as both decorative and structural anchors across the interface.</p>
+          <span class="tag">Motif</span>
+          <span class="tag">Precision</span>
+        </div>
+        <div class="card">
+          <span class="card-number">Spec A-003</span>
+          <div class="card-icon">
+            <div class="icon-dimension"></div>
+          </div>
+          <h3>Dimension Callouts</h3>
+          <p>Decorative measurement lines with arrow terminators and pixel values annotate spacing and proportions alongside key layout elements.</p>
+          <span class="tag">Annotation</span>
+          <span class="tag">Measure</span>
+        </div>
+        <div class="card">
+          <span class="card-number">Spec A-004</span>
+          <div class="card-icon">
+            <div class="icon-bracket"></div>
+          </div>
+          <h3>Corner Brackets</h3>
+          <p>L-shaped bracket marks at container corners replace continuous borders, referencing crop marks and the framing conventions of engineering drawings.</p>
+          <span class="tag">Frame</span>
+          <span class="tag">Container</span>
+        </div>
+        <div class="card">
+          <span class="card-number">Spec A-005</span>
+          <div class="card-icon">
+            <div class="icon-layers">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <h3>Uniform Line Work</h3>
+          <p>All lines maintain a consistent 1px or 2px weight. Hierarchy is created through opacity variation rather than stroke thickness, following drafting convention.</p>
+          <span class="tag">Stroke</span>
+          <span class="tag">Hierarchy</span>
+        </div>
+        <div class="card">
+          <span class="card-number">Spec A-006</span>
+          <div class="card-icon">
+            <div class="icon-hex"></div>
+          </div>
+          <h3>Technical Metadata</h3>
+          <p>Coordinates, section numbers, revision labels, and timestamps appear as subtle ambient content in margins and footers, mirroring drawing-sheet conventions.</p>
+          <span class="tag">Data</span>
+          <span class="tag">Ambient</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">04</span>
+    <span class="section-divider__label">Visual Effects</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <p class="section-label">Section 04 // Visual Effects</p>
+      <h2 class="section-title">CSS Techniques</h2>
+      <p class="section-subtitle">restrained, purposeful motion -- like a plotter tracing a line</p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Grid Overlay -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-grid-overlay"></div>
+          <div class="effect-caption">
+            <h4>Graph-Paper Grid</h4>
+            <p>Layered linear gradients create a two-scale grid substrate with 20px minor and 100px major divisions.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Scan Line -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-scanline">
+            <div class="effect-scanline-beam"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Scan Line Sweep</h4>
+            <p>Repeating horizontal lines with a traveling beam suggest a technical display or oscilloscope readout.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Corner Brackets -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-brackets">
+            <div class="bracket-box">
+              <div class="bracket-box-inner">
+                <span class="bracket-label">Component</span>
+              </div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Bracket Framing</h4>
+            <p>L-shaped corner marks via pseudo-elements create the crop-mark framing of technical drawings.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Dimension Lines -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-dimensions">
+            <div class="dim-line">
+              <div class="dim-line__tick"></div>
+              <div class="dim-line__arrow-l"></div>
+              <div class="dim-line__bar"></div>
+              <div class="dim-line__value">320px</div>
+              <div class="dim-line__bar"></div>
+              <div class="dim-line__arrow-r"></div>
+              <div class="dim-line__tick"></div>
+            </div>
+            <div class="dim-line">
+              <div class="dim-line__tick"></div>
+              <div class="dim-line__arrow-l"></div>
+              <div class="dim-line__bar"></div>
+              <div class="dim-line__value">24rem</div>
+              <div class="dim-line__bar"></div>
+              <div class="dim-line__arrow-r"></div>
+              <div class="dim-line__tick"></div>
+            </div>
+            <div class="dim-line">
+              <div class="dim-line__tick"></div>
+              <div class="dim-line__arrow-l"></div>
+              <div class="dim-line__bar"></div>
+              <div class="dim-line__value">8px grid</div>
+              <div class="dim-line__bar"></div>
+              <div class="dim-line__arrow-r"></div>
+              <div class="dim-line__tick"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Dimension Annotations</h4>
+            <p>Arrow-terminated measurement lines with centered value labels annotate element sizes and spacing.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Glow Pulse -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-glow">
+            <div class="glow-circle">
+              <div class="glow-dot"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Cyan Glow Pulse</h4>
+            <p>Subtle box-shadow animation creates a breathing glow effect on circular crosshair targets.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Border Trace -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-trace">
+            <div class="trace-box">
+              <span class="trace-label">draw-on<span class="trace-cursor"></span></span>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Border Trace Draw-On</h4>
+            <p>Clip-path animation traces the border path of an element, mimicking a plotter pen drawing a rectangle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">05</span>
+    <span class="section-divider__label">Interactive Elements</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Section 05 // Button Variants</p>
+      <h2 class="section-title">Control Panel</h2>
+      <p class="section-subtitle">precision switches with measurement tick marks</p>
+
+      <div class="button-showcase">
+        <a href="#" class="bp-btn">Primary Action</a>
+        <a href="#" class="bp-btn bp-btn--bright">Bright Variant</a>
+        <a href="#" class="bp-btn bp-btn--green">Approved</a>
+        <a href="#" class="bp-btn bp-btn--secondary">Secondary Dashed</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">06</span>
+    <span class="section-divider__label">Annotation</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-annotation">Note: REF-Q001</span>
+        <blockquote>
+          Blueprint Technical is not merely "blue and white." It is a philosophy of informational clarity through engineering convention. Every visual element serves an informational or structural purpose; ornament is replaced by measurement notation.
+        </blockquote>
+        <cite>&mdash; Blueprint Technical Design Specification, Rev 1.0</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION DIVIDER ===== -->
+  <div class="section-divider">
+    <span class="section-divider__line"></span>
+    <span class="section-divider__marker">07</span>
+    <span class="section-divider__label">Summary</span>
+    <span class="section-divider__line"></span>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-inner">
+          <p class="cta-annotation">// End of Specification Document</p>
+          <h2>Begin Drafting</h2>
+          <p>
+            Translate the precision of architectural drawing into digital interfaces.
+            Cyan-on-dark schematics, uniform stroke weights, corner brackets,
+            and measurement annotations &mdash; every pixel measured, every element placed with intent.
+          </p>
+          <a href="#hero" class="bp-btn bp-btn--bright">Return to Origin &nbsp; (0, 0)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <h3>Blueprint Technical</h3>
+          <p>
+            A design aesthetic reference built on the visual language of architectural
+            and engineering technical drawings. Cyan luminance against deep dark fields,
+            precision line work, and engineering-grade typographic discipline.
+          </p>
+        </div>
+        <div class="footer-links">
+          <a href="#hero">Schematic</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Palette</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+      </div>
+
+      <!-- Engineering title block -->
+      <div class="title-block">
+        <div class="title-block-cell">
+          <div class="title-block-label">Project</div>
+          <div class="title-block-value">Blueprint Technical</div>
+        </div>
+        <div class="title-block-cell">
+          <div class="title-block-label">Document</div>
+          <div class="title-block-value">Design Aesthetic Ref</div>
+        </div>
+        <div class="title-block-cell">
+          <div class="title-block-label">Revision</div>
+          <div class="title-block-value">Rev 1.0</div>
+        </div>
+        <div class="title-block-cell">
+          <div class="title-block-label">Date</div>
+          <div class="title-block-value">2026-03-04</div>
+        </div>
+        <div class="title-block-cell">
+          <div class="title-block-label">Scale</div>
+          <div class="title-block-value">1:1 @ 96dpi</div>
+        </div>
+        <div class="title-block-cell">
+          <div class="title-block-label">Sheet</div>
+          <div class="title-block-value">1 of 1</div>
+        </div>
+      </div>
+
+      <p class="footer-copy">Design Aesthetic Reference &bull; Blueprint Technical &bull; All dimensions in pixels unless noted</p>
+    </div>
+  </footer>
+
+  <!-- ===== MINIMAL JS: Copy hex on click ===== -->
+  <script>
+    document.querySelectorAll('.color-hex').forEach(function(el) {
+      el.style.cursor = 'pointer';
+      el.title = 'Click to copy';
+      el.addEventListener('click', function() {
+        var hex = this.textContent;
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(hex).then(function() {
+            el.textContent = 'Copied!';
+            setTimeout(function() { el.textContent = hex; }, 1200);
+          });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

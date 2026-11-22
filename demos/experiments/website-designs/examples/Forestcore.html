@@ -1,0 +1,2105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Forestcore -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Caveat:wght@400;500;600;700&family=Nunito:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      --fc-deep-canopy: #1B3A2A;
+      --fc-moss: #4A6741;
+      --fc-fern: #6B8E5A;
+      --fc-lichen: #8B9E7E;
+      --fc-bark: #5C4033;
+      --fc-earth: #3B2F2F;
+      --fc-mushroom: #C4A882;
+      --fc-fallen-leaf: #A0764A;
+      --fc-fog: #B8BAB0;
+      --fc-mist: #E8E4DC;
+      --fc-birch: #F2EDE6;
+      --fc-toadstool: #8B4A3A;
+      --fc-pine: #2E4B3A;
+      --fc-wildflower: #6B5B7B;
+      --fc-dappled-gold: #C9A84C;
+
+      /* --- Shadows --- */
+      --fc-shadow-sm: 0 2px 8px rgba(59, 47, 47, 0.08);
+      --fc-shadow-md: 0 4px 16px rgba(59, 47, 47, 0.12);
+      --fc-shadow-lg: 0 8px 32px rgba(59, 47, 47, 0.16);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--fc-earth);
+      background-color: var(--fc-mist);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', Garamond, serif;
+      color: var(--fc-moss);
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--fc-bark);
+      border-bottom: 2px solid var(--fc-pine);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: 0 3px 12px rgba(59, 47, 47, 0.3);
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(180deg, rgba(59, 47, 47, 0.15), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--fc-fern);
+      letter-spacing: 0.04em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--fc-dappled-gold);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--fc-mist);
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--fc-dappled-gold);
+      background: rgba(74, 103, 65, 0.15);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: var(--fc-deep-canopy);
+      padding: 100px 24px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Dappled light effect */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 25% 80%, rgba(107, 142, 90, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 20%, rgba(201, 168, 76, 0.08) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 50%, rgba(139, 74, 58, 0.05) 0%, transparent 60%),
+        radial-gradient(circle 80px at 15% 30%, rgba(201, 168, 76, 0.07) 0%, transparent 100%),
+        radial-gradient(circle 60px at 65% 70%, rgba(201, 168, 76, 0.06) 0%, transparent 100%),
+        radial-gradient(circle 40px at 85% 45%, rgba(107, 142, 90, 0.08) 0%, transparent 100%);
+      pointer-events: none;
+      animation: dappledShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes dappledShift {
+      0% { opacity: 0.8; }
+      50% { opacity: 1; }
+      100% { opacity: 0.85; }
+    }
+
+    /* Forest floor gradient at bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100px;
+      background: linear-gradient(180deg, transparent, rgba(27, 58, 42, 0.5));
+      pointer-events: none;
+    }
+
+    /* Floating mist particles */
+    .hero-mist {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse 300px 80px at 10% 85%, rgba(232, 228, 220, 0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 250px 60px at 50% 90%, rgba(232, 228, 220, 0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 200px 70px at 80% 80%, rgba(232, 228, 220, 0.04) 0%, transparent 100%);
+      pointer-events: none;
+      animation: mistDrift 25s ease-in-out infinite alternate;
+    }
+
+    @keyframes mistDrift {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(30px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tagline {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--fc-lichen);
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 9vw, 6.5rem);
+      font-weight: 600;
+      color: var(--fc-dappled-gold);
+      margin-bottom: 8px;
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+    }
+
+    .hero-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      color: rgba(139, 158, 126, 0.9);
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: rgba(232, 228, 220, 0.80);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative fern SVGs in hero */
+    .hero-fern {
+      position: absolute;
+      bottom: 30px;
+      left: 4%;
+      z-index: 2;
+      opacity: 0.1;
+      animation: fernSway 8s ease-in-out infinite;
+    }
+
+    .hero-fern-right {
+      left: auto;
+      right: 4%;
+      animation-delay: -4s;
+      transform: scaleX(-1);
+    }
+
+    @keyframes fernSway {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(2deg); }
+    }
+
+    .hero-fern-right {
+      animation-name: fernSwayRight;
+    }
+
+    @keyframes fernSwayRight {
+      0%, 100% { transform: scaleX(-1) rotate(0deg); }
+      50% { transform: scaleX(-1) rotate(2deg); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.95rem;
+      font-weight: 400;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(242, 237, 230, 0.08), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: var(--fc-moss);
+      color: var(--fc-birch);
+      border: 1px solid var(--fc-pine);
+      box-shadow: 0 2px 8px rgba(46, 75, 58, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--fc-pine);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(46, 75, 58, 0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 1px 4px rgba(46, 75, 58, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--fc-mist);
+      border: 1.5px solid rgba(232, 228, 220, 0.4);
+    }
+
+    .btn-outline:hover {
+      background: rgba(232, 228, 220, 0.08);
+      border-color: var(--fc-mist);
+      transform: translateY(-2px);
+    }
+
+    .btn-leaf {
+      background: linear-gradient(135deg, var(--fc-fallen-leaf), var(--fc-dappled-gold));
+      color: var(--fc-earth);
+      border: 1px solid rgba(160, 118, 74, 0.3);
+      box-shadow: 0 2px 8px rgba(160, 118, 74, 0.25);
+    }
+
+    .btn-leaf:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(160, 118, 74, 0.35);
+    }
+
+    .btn-bark {
+      background: var(--fc-bark);
+      color: var(--fc-mushroom);
+      border: 1px solid rgba(92, 64, 51, 0.5);
+      box-shadow: 0 2px 8px rgba(59, 47, 47, 0.2);
+    }
+
+    .btn-bark:hover {
+      background: var(--fc-earth);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 47, 47, 0.3);
+    }
+
+    /* ============================================
+       MOSS BAND DIVIDER
+       ============================================ */
+    .moss-band {
+      display: flex;
+      height: 6px;
+      width: 100%;
+    }
+
+    .moss-band--thick {
+      height: 4px;
+    }
+
+    .moss-band span { flex: 1; }
+    .moss-band span:nth-child(1) { background: var(--fc-pine); }
+    .moss-band span:nth-child(2) { background: var(--fc-moss); }
+    .moss-band span:nth-child(3) { background: var(--fc-fern); }
+    .moss-band span:nth-child(4) { background: var(--fc-lichen); }
+    .moss-band span:nth-child(5) { background: var(--fc-moss); }
+    .moss-band span:nth-child(6) { background: var(--fc-pine); }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--mist {
+      background-color: var(--fc-mist);
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(74, 103, 65, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(74, 103, 65, 0.03) 0%, transparent 40%);
+    }
+
+    .section--birch {
+      background: var(--fc-birch);
+    }
+
+    .section--mushroom {
+      background: var(--fc-mushroom);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(59, 47, 47, 0.015) 3px,
+          rgba(59, 47, 47, 0.015) 4px
+        );
+    }
+
+    .section--canopy {
+      background: var(--fc-deep-canopy);
+      color: var(--fc-mist);
+    }
+
+    .section--canopy .section-label { color: var(--fc-dappled-gold); }
+    .section--canopy .section-title { color: var(--fc-mist); }
+    .section--canopy .section-subtitle { color: var(--fc-lichen); }
+
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--fc-fallen-leaf);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 600;
+      text-align: center;
+      color: var(--fc-moss);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      text-align: center;
+      color: var(--fc-bark);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       FERN DIVIDER
+       ============================================ */
+    .fern-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+      gap: 20px;
+    }
+
+    .fern-divider::before,
+    .fern-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--fc-lichen), transparent);
+    }
+
+    .fern-divider span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--fc-moss);
+      letter-spacing: 0.15em;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--fc-fallen-leaf);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--fc-lichen);
+      opacity: 0.5;
+    }
+
+    .typo-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 600;
+      color: var(--fc-moss);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 500;
+      color: var(--fc-pine);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--fc-earth);
+      margin-bottom: 8px;
+    }
+
+    .typo-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      color: var(--fc-bark);
+      line-height: 1.5;
+    }
+
+    .typo-ui {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--fc-lichen);
+    }
+
+    .typo-right {
+      background: var(--fc-birch);
+      border-radius: 12px 14px 12px 16px;
+      padding: 36px;
+      border: 1px solid var(--fc-lichen);
+      box-shadow: var(--fc-shadow-sm);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(139, 158, 126, 0.3);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--fc-lichen);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px 14px 12px 16px;
+      overflow: hidden;
+      background: var(--fc-birch);
+      border: 1px solid var(--fc-lichen);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--fc-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--fc-shadow-lg);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle moss texture overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.04) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--fc-earth);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--fc-lichen);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--fc-birch);
+      border: 1px solid var(--fc-lichen);
+      border-radius: 12px 14px 12px 16px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow:
+        0 2px 8px rgba(59, 47, 47, 0.10),
+        0 0 0 1px rgba(74, 103, 65, 0.08);
+    }
+
+    /* Moss-green gradient top strip */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--fc-moss), var(--fc-fern), var(--fc-lichen));
+      border-radius: 12px 14px 0 0;
+    }
+
+    /* Bottom-right fern glow */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at bottom right, rgba(107, 142, 90, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 8px 28px rgba(59, 47, 47, 0.14),
+        0 0 0 1px rgba(74, 103, 65, 0.12);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .card-icon--moss {
+      background: linear-gradient(135deg, var(--fc-moss), var(--fc-fern));
+      box-shadow: 0 4px 12px rgba(74, 103, 65, 0.25);
+    }
+
+    .card-icon--bark {
+      background: linear-gradient(135deg, var(--fc-bark), var(--fc-fallen-leaf));
+      box-shadow: 0 4px 12px rgba(92, 64, 51, 0.25);
+    }
+
+    .card-icon--gold {
+      background: linear-gradient(135deg, var(--fc-fallen-leaf), var(--fc-dappled-gold));
+      box-shadow: 0 4px 12px rgba(201, 168, 76, 0.25);
+    }
+
+    .card-icon--pine {
+      background: linear-gradient(135deg, var(--fc-pine), var(--fc-moss));
+      box-shadow: 0 4px 12px rgba(46, 75, 58, 0.25);
+    }
+
+    .card-icon--toadstool {
+      background: linear-gradient(135deg, var(--fc-toadstool), var(--fc-fallen-leaf));
+      box-shadow: 0 4px 12px rgba(139, 74, 58, 0.25);
+    }
+
+    .card-icon--wildflower {
+      background: linear-gradient(135deg, var(--fc-wildflower), var(--fc-lichen));
+      box-shadow: 0 4px 12px rgba(107, 91, 123, 0.25);
+    }
+
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--fc-moss);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--fc-earth);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Caveat', cursive;
+      font-size: 0.88rem;
+      padding: 2px 12px;
+      border-radius: 4px;
+      color: var(--fc-bark);
+      background: var(--fc-mushroom);
+      margin-top: 14px;
+      margin-right: 6px;
+      opacity: 0.85;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--fc-fallen-leaf);
+      color: var(--fc-birch);
+      opacity: 1;
+    }
+
+    /* ============================================
+       BOTANICAL MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--fc-deep-canopy);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle 60px at 15% 25%, rgba(201, 168, 76, 0.08), transparent),
+        radial-gradient(circle 40px at 45% 15%, rgba(201, 168, 76, 0.06), transparent),
+        radial-gradient(circle 80px at 70% 60%, rgba(201, 168, 76, 0.07), transparent),
+        radial-gradient(circle 35px at 85% 35%, rgba(201, 168, 76, 0.05), transparent),
+        radial-gradient(circle 50px at 30% 75%, rgba(107, 142, 90, 0.06), transparent);
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 2rem;
+      opacity: 0.35;
+    }
+
+    .motif-row span {
+      animation: motifFloat 5s ease-in-out infinite;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.7s; }
+    .motif-row span:nth-child(3) { animation-delay: -1.4s; }
+    .motif-row span:nth-child(4) { animation-delay: -2.1s; }
+    .motif-row span:nth-child(5) { animation-delay: -2.8s; }
+
+    @keyframes motifFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 600;
+      color: var(--fc-mushroom);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      color: var(--fc-lichen);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: 12px 14px 12px 16px;
+      overflow: hidden;
+      border: 1px solid var(--fc-lichen);
+      background: var(--fc-birch);
+      box-shadow: var(--fc-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--fc-shadow-md);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-label {
+      position: relative;
+      z-index: 2;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    /* 1. Dappled Light */
+    .effect-dappled {
+      background: var(--fc-deep-canopy);
+    }
+
+    .effect-dappled::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle 60px at 15% 25%, rgba(201, 168, 76, 0.15), transparent),
+        radial-gradient(circle 40px at 45% 15%, rgba(201, 168, 76, 0.12), transparent),
+        radial-gradient(circle 80px at 70% 60%, rgba(201, 168, 76, 0.13), transparent),
+        radial-gradient(circle 35px at 85% 35%, rgba(201, 168, 76, 0.10), transparent),
+        radial-gradient(circle 50px at 30% 75%, rgba(107, 142, 90, 0.10), transparent),
+        radial-gradient(circle 45px at 60% 40%, rgba(201, 168, 76, 0.08), transparent);
+      animation: dappledPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes dappledPulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.05); }
+    }
+
+    .effect-dappled .effect-label { color: var(--fc-dappled-gold); }
+
+    /* 2. Moss Texture */
+    .effect-moss {
+      background-color: var(--fc-mist);
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(74, 103, 65, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(74, 103, 65, 0.06) 0%, transparent 40%),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(59, 47, 47, 0.02) 3px,
+          rgba(59, 47, 47, 0.02) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 5px,
+          rgba(74, 103, 65, 0.015) 5px,
+          rgba(74, 103, 65, 0.015) 6px
+        );
+    }
+
+    .effect-moss .effect-label { color: var(--fc-moss); }
+
+    /* 3. Bark Grain */
+    .effect-bark {
+      background-color: var(--fc-bark);
+      background-image:
+        repeating-linear-gradient(
+          180deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.02) 1px,
+          rgba(255, 255, 255, 0.02) 2px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 60px,
+          rgba(0, 0, 0, 0.1) 60px,
+          rgba(0, 0, 0, 0.1) 62px
+        ),
+        linear-gradient(
+          90deg,
+          #5C4033 0%,
+          #6B4C3B 25%,
+          #5C4033 50%,
+          #704F42 75%,
+          #5C4033 100%
+        );
+    }
+
+    .effect-bark .effect-label { color: var(--fc-mushroom); }
+
+    /* 4. Morning Fog */
+    .effect-fog {
+      background: linear-gradient(180deg, var(--fc-deep-canopy), var(--fc-pine));
+      overflow: hidden;
+    }
+
+    .effect-fog::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(180deg,
+          transparent 0%,
+          rgba(232, 228, 220, 0.06) 30%,
+          rgba(232, 228, 220, 0.12) 50%,
+          rgba(232, 228, 220, 0.06) 70%,
+          transparent 100%
+        ),
+        radial-gradient(ellipse 400px 100px at 30% 50%, rgba(232, 228, 220, 0.10) 0%, transparent 100%),
+        radial-gradient(ellipse 300px 80px at 70% 45%, rgba(232, 228, 220, 0.08) 0%, transparent 100%);
+      animation: fogDrift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes fogDrift {
+      0% { transform: translateX(-20px); opacity: 0.8; }
+      100% { transform: translateX(20px); opacity: 1; }
+    }
+
+    .effect-fog .effect-label { color: var(--fc-fog); }
+
+    /* 5. Lichen Pattern */
+    .effect-lichen {
+      background: var(--fc-pine);
+      overflow: hidden;
+    }
+
+    .effect-lichen::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle 12px at 15% 20%, rgba(139, 158, 126, 0.3), transparent),
+        radial-gradient(circle 18px at 40% 60%, rgba(139, 158, 126, 0.25), transparent),
+        radial-gradient(circle 10px at 70% 30%, rgba(196, 168, 130, 0.2), transparent),
+        radial-gradient(circle 15px at 85% 75%, rgba(139, 158, 126, 0.22), transparent),
+        radial-gradient(circle 8px at 25% 80%, rgba(196, 168, 130, 0.18), transparent),
+        radial-gradient(circle 14px at 55% 15%, rgba(139, 158, 126, 0.2), transparent),
+        radial-gradient(circle 20px at 30% 45%, rgba(107, 142, 90, 0.15), transparent),
+        radial-gradient(circle 11px at 75% 55%, rgba(196, 168, 130, 0.2), transparent),
+        radial-gradient(circle 16px at 90% 20%, rgba(107, 142, 90, 0.18), transparent),
+        radial-gradient(circle 9px at 50% 85%, rgba(139, 158, 126, 0.22), transparent);
+    }
+
+    .effect-lichen .effect-label { color: var(--fc-mushroom); }
+
+    /* 6. Canopy Layers */
+    .effect-canopy {
+      background: linear-gradient(180deg, #0F261A 0%, var(--fc-deep-canopy) 100%);
+      overflow: hidden;
+    }
+
+    .effect-canopy::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(180deg,
+          rgba(46, 75, 58, 0.6) 0%,
+          transparent 15%
+        ),
+        linear-gradient(180deg,
+          transparent 20%,
+          rgba(74, 103, 65, 0.15) 30%,
+          transparent 40%
+        ),
+        linear-gradient(180deg,
+          transparent 45%,
+          rgba(107, 142, 90, 0.1) 55%,
+          transparent 65%
+        ),
+        radial-gradient(ellipse at 50% 0%, rgba(201, 168, 76, 0.06) 0%, transparent 60%);
+    }
+
+    .effect-canopy .effect-label { color: var(--fc-fern); }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--fc-moss);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--fc-bark);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--fc-deep-canopy);
+      border-radius: 12px 14px 12px 16px;
+      position: relative;
+      box-shadow: var(--fc-shadow-md);
+      overflow: hidden;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(107, 142, 90, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(201, 168, 76, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--fc-dappled-gold);
+      opacity: 0.15;
+      position: absolute;
+      top: -5px;
+      left: 32px;
+      line-height: 1;
+      z-index: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 500;
+      font-style: italic;
+      color: var(--fc-mushroom);
+      max-width: 560px;
+      margin: 0 auto 18px;
+      line-height: 1.6;
+      position: relative;
+      z-index: 2;
+    }
+
+    .quote-block cite {
+      font-family: 'Caveat', cursive;
+      font-size: 1.15rem;
+      color: var(--fc-lichen);
+      font-style: normal;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: var(--fc-mushroom);
+      border-radius: 12px 14px 12px 16px;
+      padding: 56px 40px;
+      text-align: center;
+      max-width: 680px;
+      margin: 0 auto;
+      border: 1px solid rgba(92, 64, 51, 0.15);
+      box-shadow: var(--fc-shadow-md);
+    }
+
+    .cta-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 600;
+      color: var(--fc-deep-canopy);
+      margin-bottom: 8px;
+    }
+
+    .cta-section .cta-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--fc-bark);
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .cta-section p {
+      color: var(--fc-earth);
+      margin-bottom: 28px;
+      max-width: 450px;
+      margin-left: auto;
+      margin-right: auto;
+      font-size: 1rem;
+      line-height: 1.8;
+    }
+
+    .cta-section .input-group {
+      display: flex;
+      gap: 12px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    .cta-section input[type="email"] {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid var(--fc-lichen);
+      border-radius: 8px;
+      background: var(--fc-birch);
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.9rem;
+      color: var(--fc-earth);
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .cta-section input[type="email"]:focus {
+      border-color: var(--fc-moss);
+      box-shadow: 0 0 0 3px rgba(74, 103, 65, 0.1);
+    }
+
+    .cta-section input[type="email"]::placeholder {
+      color: var(--fc-fog);
+    }
+
+    .cta-section button {
+      background: var(--fc-moss);
+      color: var(--fc-birch);
+      border: 1px solid var(--fc-pine);
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(46, 75, 58, 0.20);
+    }
+
+    .cta-section button:hover {
+      background: var(--fc-pine);
+      box-shadow: 0 4px 12px rgba(46, 75, 58, 0.30);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--fc-deep-canopy);
+      padding: 56px 24px 28px;
+      text-align: center;
+      color: var(--fc-fog);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg,
+        var(--fc-pine),
+        var(--fc-moss),
+        var(--fc-fern),
+        var(--fc-moss),
+        var(--fc-pine));
+    }
+
+    /* Subtle forest floor texture */
+    .footer::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 25% 80%, rgba(107, 142, 90, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 30%, rgba(201, 168, 76, 0.03) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--fc-fern);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.92rem;
+      color: rgba(184, 186, 176, 0.65);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--fc-lichen);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--fc-dappled-gold);
+    }
+
+    .footer-botanical {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      opacity: 0.25;
+    }
+
+    .footer-botanical svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .footer-note {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--fc-fog);
+      opacity: 0.5;
+      margin-bottom: 8px;
+    }
+
+    .footer-copy {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(184, 186, 176, 0.3);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.95rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-fern {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-section {
+        padding: 40px 24px;
+      }
+
+      .cta-section .input-group {
+        flex-direction: column;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.88rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before,
+      .hero-mist,
+      .effect-dappled::before,
+      .effect-fog::before {
+        animation: none;
+      }
+
+      .motif-row span {
+        animation: none;
+      }
+
+      .hero-fern {
+        animation: none;
+      }
+
+      .card, .effect-demo, .btn, .color-chip, .tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Forestcore</a>
+    <div class="nav-links">
+      <a href="#hero">Canopy</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Flora</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-mist"></div>
+
+    <!-- Decorative fern left -->
+    <svg class="hero-fern" width="80" height="140" viewBox="0 0 80 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 140 L40 20" stroke="#4A6741" stroke-width="2" opacity="0.6"/>
+      <path d="M40 110 Q20 95 10 80" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M40 95 Q18 80 8 60" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M40 80 Q22 65 12 45" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M40 65 Q25 52 15 35" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M40 50 Q28 40 20 25" stroke="#4A6741" stroke-width="1.2" fill="none" opacity="0.3"/>
+      <path d="M40 110 Q60 95 70 80" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M40 95 Q62 80 72 60" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M40 80 Q58 65 68 45" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M40 65 Q55 52 65 35" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M40 50 Q52 40 60 25" stroke="#4A6741" stroke-width="1.2" fill="none" opacity="0.3"/>
+    </svg>
+
+    <!-- Decorative fern right -->
+    <svg class="hero-fern hero-fern-right" width="80" height="140" viewBox="0 0 80 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M40 140 L40 20" stroke="#4A6741" stroke-width="2" opacity="0.6"/>
+      <path d="M40 110 Q20 95 10 80" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M40 95 Q18 80 8 60" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M40 80 Q22 65 12 45" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M40 65 Q25 52 15 35" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M40 50 Q28 40 20 25" stroke="#4A6741" stroke-width="1.2" fill="none" opacity="0.3"/>
+      <path d="M40 110 Q60 95 70 80" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.5"/>
+      <path d="M40 95 Q62 80 72 60" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.45"/>
+      <path d="M40 80 Q58 65 68 45" stroke="#4A6741" stroke-width="1.5" fill="none" opacity="0.4"/>
+      <path d="M40 65 Q55 52 65 35" stroke="#6B8E5A" stroke-width="1.5" fill="none" opacity="0.35"/>
+      <path d="M40 50 Q52 40 60 25" stroke="#4A6741" stroke-width="1.2" fill="none" opacity="0.3"/>
+    </svg>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Forestcore</h1>
+      <p class="hero-subtitle">where moss meets morning light</p>
+      <p class="hero-desc">
+        A nature-immersive aesthetic rooted in the dark, whimsical imagery of deep woodlands &mdash; dappled light through dense canopy, moss-covered stones, mushroom clusters on fallen logs, and the still silence of fog rolling between ancient trees.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore the Grove</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== MOSS BAND ===== -->
+  <div class="moss-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--mist" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Organic Serifs &amp; Field Notes</h2>
+      <p class="section-subtitle">warm humanist faces rooted in naturalist tradition</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cormorant Garamond 600</p>
+            <p class="typo-display">Deep Woods</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cormorant Garamond 500</p>
+            <p class="typo-heading">Beneath the Canopy</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Libre Baskerville</p>
+            <p class="typo-body">Warm serif text for contemplative long-form reading. Forestcore typography balances rustic warmth with readable elegance, like a naturalist's journal.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Handwritten / Caveat</p>
+            <p class="typo-handwritten">field notes from the forest floor</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Nunito</p>
+            <p class="typo-ui">Navigation &amp; Interface Elements</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 2rem; color: var(--fc-moss);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.5rem; color: var(--fc-pine);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--fc-bark);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Libre Baskerville', serif; font-size: 1rem; color: var(--fc-earth);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.82rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 0.82rem; color: var(--fc-lichen); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--fc-lichen);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--fc-moss);">Cormorant Garamond 600</strong> + <strong>Libre Baskerville</strong><br>
+              <span style="color: var(--fc-bark); font-size: 0.85rem;">Elegant naturalist journal</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Caveat', cursive; font-weight: 700; color: var(--fc-moss);">Caveat 700</strong> + <strong>Libre Baskerville</strong><br>
+              <span style="color: var(--fc-bark); font-size: 0.85rem;">Hand-lettered field guide</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 500; color: var(--fc-moss);">Cormorant Garamond 500</strong> + <strong style="font-family: 'Nunito', sans-serif;">Nunito</strong><br>
+              <span style="color: var(--fc-bark); font-size: 0.85rem;">Refined woodland with modern clarity</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FERN DIVIDER ===== -->
+  <div class="section--mist" style="padding: 0;">
+    <div class="fern-divider">
+      <span>&#8258;</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--birch" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Woodland Floor &amp; Canopy</h2>
+      <p class="section-subtitle">deep greens, warm browns, misty greys &amp; dappled gold</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B3A2A;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Canopy</div>
+            <div class="color-hex">#1B3A2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A6741;"></div>
+          <div class="color-info">
+            <div class="color-name">Moss Green</div>
+            <div class="color-hex">#4A6741</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B8E5A;"></div>
+          <div class="color-info">
+            <div class="color-name">Fern Frond</div>
+            <div class="color-hex">#6B8E5A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B9E7E;"></div>
+          <div class="color-info">
+            <div class="color-name">Lichen Sage</div>
+            <div class="color-hex">#8B9E7E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C4033;"></div>
+          <div class="color-info">
+            <div class="color-name">Bark Brown</div>
+            <div class="color-hex">#5C4033</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B2F2F;"></div>
+          <div class="color-info">
+            <div class="color-name">Damp Earth</div>
+            <div class="color-hex">#3B2F2F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A882;"></div>
+          <div class="color-info">
+            <div class="color-name">Mushroom Tan</div>
+            <div class="color-hex">#C4A882</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A0764A;"></div>
+          <div class="color-info">
+            <div class="color-name">Fallen Leaf</div>
+            <div class="color-hex">#A0764A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8BAB0;"></div>
+          <div class="color-info">
+            <div class="color-name">Fog Grey</div>
+            <div class="color-hex">#B8BAB0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8E4DC;"></div>
+          <div class="color-info">
+            <div class="color-name">Morning Mist</div>
+            <div class="color-hex">#E8E4DC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2EDE6;"></div>
+          <div class="color-info">
+            <div class="color-name">Birch White</div>
+            <div class="color-hex">#F2EDE6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B4A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Toadstool Red</div>
+            <div class="color-hex">#8B4A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2E4B3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Pine Needle</div>
+            <div class="color-hex">#2E4B3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B5B7B;"></div>
+          <div class="color-info">
+            <div class="color-name">Wildflower Violet</div>
+            <div class="color-hex">#6B5B7B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #C9A84C, #D4B65C, #C9A84C); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.25) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.15) 0%, transparent 40%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Dappled Gold</div>
+            <div class="color-hex">#C9A84C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MOSS BAND ===== -->
+  <div class="moss-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--mist" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Woodland Discoveries</h2>
+      <p class="section-subtitle">each path reveals something quietly magnificent</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--moss">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2 L12 22 M12 18 Q6 14 3 8 M12 14 Q7 10 5 5 M12 18 Q18 14 21 8 M12 14 Q17 10 19 5" stroke="#F2EDE6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Dappled Glades</h3>
+          <p>Sunlight filters through layered leaves, casting shifting patterns of gold and green across the mossy ground. Each step changes the light and the story the forest tells.</p>
+          <span class="tag">canopy</span>
+          <span class="tag">light</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--toadstool">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="12" cy="10" rx="9" ry="7" stroke="#F2EDE6" stroke-width="1.5"/>
+              <circle cx="9" cy="8" r="1.5" fill="#F2EDE6" opacity="0.5"/>
+              <circle cx="15" cy="7" r="1" fill="#F2EDE6" opacity="0.4"/>
+              <rect x="10" y="16" width="4" height="5" rx="1.5" stroke="#F2EDE6" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Mushroom Circles</h3>
+          <p>Hidden beneath bracken and bark, fairy rings emerge after autumn rain &mdash; clusters of toadstool caps in amber, cream, and deep umber arranged by invisible hands.</p>
+          <span class="tag">fungi</span>
+          <span class="tag">floor</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--bark">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="12" cy="14" rx="8" ry="5" stroke="#F2EDE6" stroke-width="1.5"/>
+              <ellipse cx="12" cy="12" rx="6" ry="3" stroke="#F2EDE6" stroke-width="1" opacity="0.5"/>
+              <path d="M6 14 Q4 10 6 6 Q8 3 12 2 Q16 3 18 6 Q20 10 18 14" stroke="#F2EDE6" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
+          <h3>Mossy Stones</h3>
+          <p>Where the brook bends, stones wear thick cloaks of emerald moss, and the water moves with a murmur that sounds older than the trees that line its banks.</p>
+          <span class="tag">stream</span>
+          <span class="tag">moss</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--pine">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2 L5 10 L8 10 L3 18 L21 18 L16 10 L19 10 Z" stroke="#F2EDE6" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+              <rect x="10" y="18" width="4" height="4" stroke="#F2EDE6" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Ancient Conifers</h3>
+          <p>Towering pines and spruces form cathedral columns in the old-growth forest, their needle-carpeted floor silent underfoot, the air thick with resinous warmth.</p>
+          <span class="tag">trees</span>
+          <span class="tag">old-growth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--gold">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="12" r="4" stroke="#3B2F2F" stroke-width="1.5"/>
+              <path d="M12 2 V6 M12 18 V22 M2 12 H6 M18 12 H22 M5 5 L7.8 7.8 M16.2 16.2 L19 19 M19 5 L16.2 7.8 M7.8 16.2 L5 19" stroke="#3B2F2F" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Dappled Gold</h3>
+          <p>Golden hour in the forest transforms the understory into a shimmering cathedral of warm light, catching dew on spider silk and turning bark to bronze.</p>
+          <span class="tag">light</span>
+          <span class="tag">golden hour</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--wildflower">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="10" r="3" stroke="#F2EDE6" stroke-width="1.5"/>
+              <path d="M12 13 V20 M8 17 Q10 15 12 16 M16 17 Q14 15 12 16" stroke="#F2EDE6" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+              <circle cx="8" cy="8" r="2" stroke="#F2EDE6" stroke-width="1" opacity="0.5"/>
+              <circle cx="16" cy="8" r="2" stroke="#F2EDE6" stroke-width="1" opacity="0.5"/>
+            </svg>
+          </div>
+          <h3>Woodland Blooms</h3>
+          <p>Rare wildflowers push through the leaf litter in spring &mdash; violets, wood anemones, and foxglove creating quiet splashes of color against the green and brown.</p>
+          <span class="tag">wildflower</span>
+          <span class="tag">spring</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOTANICAL MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&#127811;</span>
+        <span>&#127812;</span>
+        <span>&#127807;</span>
+        <span>&#127812;</span>
+        <span>&#127811;</span>
+      </div>
+      <h2>Moss, Mushrooms &amp; Morning Mist</h2>
+      <p>the forest breathes slowly, and so should your design</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--mist" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Atmosphere</h2>
+      <p class="section-subtitle">all the woodland techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-dappled">
+            <span class="effect-label" style="color: var(--fc-dappled-gold);">DAPPLED</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Dappled Sunlight</h4>
+            <p>Layered radial gradients with gold tones simulate light filtering through leaf gaps.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-moss">
+            <span class="effect-label" style="color: var(--fc-moss);">MOSS</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Moss Texture</h4>
+            <p>Fine repeating gradients create an organic, living surface without image assets.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-bark">
+            <span class="effect-label" style="color: var(--fc-mushroom);">BARK</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Bark Grain</h4>
+            <p>Layered linear gradients recreate the rough, vertical texture of tree bark.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-fog">
+            <span class="effect-label" style="color: var(--fc-fog);">FOG</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Morning Fog</h4>
+            <p>Translucent gradient layers with gentle animation evoke mist drifting between trees.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-lichen">
+            <span class="effect-label" style="color: var(--fc-mushroom);">LICHEN</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Lichen Patches</h4>
+            <p>Scattered radial gradients of varying sizes mimic organic lichen growing on stone.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-canopy">
+            <span class="effect-label" style="color: var(--fc-fern);">CANOPY</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Canopy Layers</h4>
+            <p>Stacked horizontal gradient bands create the illusion of looking up through forest layers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MOSS BAND ===== -->
+  <div class="moss-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--birch">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Woodland Buttons</h2>
+      <p class="section-subtitle">organic, tactile &amp; rooted</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Moss Primary</a>
+        <a href="#" class="btn btn-leaf">Fallen Leaf</a>
+        <a href="#" class="btn btn-bark">Bark &amp; Wood</a>
+        <a href="#" class="btn btn-outline" style="color: var(--fc-earth); border-color: var(--fc-lichen);">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--mist">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">&ldquo;</span>
+        <blockquote>
+          The clearest way into the universe is through a forest wilderness. In every walk with nature one receives far more than he seeks.
+        </blockquote>
+        <cite>&mdash; John Muir</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--birch">
+    <div class="container">
+      <div class="cta-section">
+        <h3>Join the Trail</h3>
+        <span class="cta-handwritten">woodland notes &amp; seasonal reflections</span>
+        <p>
+          Receive quiet observations from the forest floor &mdash; seasonal field notes, botanical discoveries, and design inspiration drawn from ancient groves.
+        </p>
+        <div class="input-group">
+          <input type="email" placeholder="your@email.com" aria-label="Email address">
+          <button type="button">Subscribe</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MOSS BAND ===== -->
+  <div class="moss-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Forestcore</h3>
+      <p>
+        A design aesthetic reference celebrating the moody, atmospheric beauty of deep woodlands &mdash; moss, mushrooms, and morning mist, all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Canopy</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Flora</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-botanical">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22 V6 M12 18 Q6 14 3 8 M12 14 Q7 10 5 5 M12 18 Q18 14 21 8 M12 14 Q17 10 19 5" stroke="#8B9E7E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="12" cy="10" rx="8" ry="6" stroke="#8B9E7E" stroke-width="1.5"/>
+          <circle cx="9" cy="8" r="1.5" fill="#8B9E7E" opacity="0.4"/>
+          <circle cx="15" cy="9" r="1" fill="#8B9E7E" opacity="0.3"/>
+          <rect x="10" y="15" width="4" height="5" rx="1.5" stroke="#8B9E7E" stroke-width="1.5"/>
+        </svg>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 22 V6 M12 18 Q6 14 3 8 M12 14 Q7 10 5 5 M12 18 Q18 14 21 8 M12 14 Q17 10 19 5" stroke="#8B9E7E" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <p class="footer-note">designed with moss, mushrooms &amp; morning mist</p>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Forestcore &bull; All paths lead deeper</p>
+    </div>
+  </footer>
+
+</body>
+</html>

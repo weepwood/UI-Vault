@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retro Computing -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=VT323&family=Press+Start+2P&family=Share+Tech+Mono&family=IBM+Plex+Mono:wght@400;500;600&family=Silkscreen&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --retro-bg-black: #0a0a0a;
+      --retro-bg-screen: #0d1b0d;
+      --retro-bg-dos-blue: #0000aa;
+
+      /* --- Green Phosphor --- */
+      --retro-green: #33ff00;
+      --retro-green-dim: #1a8a00;
+      --retro-green-bright: #66ff33;
+
+      /* --- Amber Phosphor --- */
+      --retro-amber: #ffb000;
+      --retro-amber-dim: #996600;
+      --retro-amber-bright: #ffcc33;
+
+      /* --- White Phosphor --- */
+      --retro-white: #c0c0c0;
+      --retro-white-bright: #ffffff;
+
+      /* --- CGA Accents --- */
+      --retro-cyan: #55ffff;
+      --retro-red: #ff5555;
+      --retro-yellow: #ffff55;
+      --retro-border: #555555;
+
+      /* --- Glow Effects --- */
+      --retro-glow-green: 0 0 5px rgba(51, 255, 0, 0.6),
+                          0 0 20px rgba(51, 255, 0, 0.2),
+                          0 0 60px rgba(51, 255, 0, 0.06);
+      --retro-glow-amber: 0 0 5px rgba(255, 176, 0, 0.6),
+                          0 0 20px rgba(255, 176, 0, 0.2),
+                          0 0 60px rgba(255, 176, 0, 0.06);
+      --retro-glow-white: 0 0 5px rgba(255, 255, 255, 0.4),
+                          0 0 20px rgba(255, 255, 255, 0.15);
+      --retro-glow-cyan: 0 0 5px rgba(85, 255, 255, 0.6),
+                         0 0 20px rgba(85, 255, 255, 0.2);
+      --retro-glow-red: 0 0 5px rgba(255, 85, 85, 0.6),
+                        0 0 20px rgba(255, 85, 85, 0.2);
+
+      /* --- Scanline --- */
+      --retro-scanline-color: rgba(0, 0, 0, 0.12);
+      --retro-scanline-size: 4px;
+
+      /* --- Timing --- */
+      --retro-blink-speed: 1s;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(48px, 7vw, 80px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      background: var(--retro-bg-black);
+      color: var(--retro-green);
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-rendering: optimizeLegibility;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       GLOBAL SCANLINE OVERLAY
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        var(--retro-scanline-color) 2px,
+        var(--retro-scanline-color) var(--retro-scanline-size)
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       CRT FLICKER (subtle)
+       ============================================ */
+    @keyframes crt-flicker {
+      0%   { opacity: 0.97; }
+      5%   { opacity: 1; }
+      10%  { opacity: 0.98; }
+      15%  { opacity: 1; }
+      50%  { opacity: 0.99; }
+      100% { opacity: 1; }
+    }
+
+    body {
+      animation: crt-flicker 0.15s infinite;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'VT323', monospace;
+      font-weight: 400;
+      color: var(--retro-green-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.3;
+      text-shadow: var(--retro-glow-green);
+      overflow-wrap: break-word;
+    }
+
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+    h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 1rem; }
+    h3 { font-size: 1.3rem; margin-bottom: 0.75rem; }
+
+    p { margin-bottom: 1rem; }
+
+    a {
+      color: var(--retro-green-bright);
+      text-decoration: underline;
+      transition: color 0.15s, text-shadow 0.15s;
+    }
+
+    a:hover {
+      color: var(--retro-green);
+      text-shadow: 0 0 6px rgba(51, 255, 0, 0.4);
+    }
+
+    /* ============================================
+       KEYFRAME ANIMATIONS
+       ============================================ */
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    @keyframes typing {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes boot-fade {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes screen-on {
+      0% {
+        transform: scaleY(0.005) scaleX(0.3);
+        filter: brightness(10);
+      }
+      20% {
+        transform: scaleY(0.005) scaleX(1);
+        filter: brightness(3);
+      }
+      40% {
+        transform: scaleY(1) scaleX(1);
+        filter: brightness(1.5);
+      }
+      100% {
+        transform: scaleY(1) scaleX(1);
+        filter: brightness(1);
+      }
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { text-shadow: var(--retro-glow-green); }
+      50% { text-shadow: 0 0 8px rgba(51, 255, 0, 0.8), 0 0 30px rgba(51, 255, 0, 0.35), 0 0 80px rgba(51, 255, 0, 0.12); }
+    }
+
+    @keyframes hue-shift {
+      0% { filter: hue-rotate(0deg); }
+      50% { filter: hue-rotate(20deg); }
+      100% { filter: hue-rotate(0deg); }
+    }
+
+    @keyframes static-noise {
+      0% { background-position: 0 0; }
+      10% { background-position: -5% -10%; }
+      20% { background-position: -15% 5%; }
+      30% { background-position: 7% -25%; }
+      40% { background-position: -5% 25%; }
+      50% { background-position: -15% 10%; }
+      60% { background-position: 15% 0%; }
+      70% { background-position: 0% 15%; }
+      80% { background-position: 3% 35%; }
+      90% { background-position: -10% 10%; }
+      100% { background-position: 0 0; }
+    }
+
+    @keyframes scroll-glitch {
+      0% { transform: translateX(0); }
+      2% { transform: translateX(4px); }
+      4% { transform: translateX(-2px); }
+      5% { transform: translateX(0); }
+      100% { transform: translateX(0); }
+    }
+
+    @keyframes amber-flicker {
+      0%, 100% { opacity: 1; }
+      92% { opacity: 1; }
+      93% { opacity: 0.8; }
+      94% { opacity: 1; }
+    }
+
+    /* ============================================
+       CURSOR BLINK
+       ============================================ */
+    .cursor::after {
+      content: '\2588';
+      animation: blink var(--retro-blink-speed) step-end infinite;
+      margin-left: 2px;
+    }
+
+    /* ============================================
+       BOOT SEQUENCE
+       ============================================ */
+    .boot-line {
+      opacity: 0;
+      animation: boot-fade 0.1s ease-out forwards;
+    }
+    .boot-line:nth-child(1) { animation-delay: 0.3s; }
+    .boot-line:nth-child(2) { animation-delay: 0.7s; }
+    .boot-line:nth-child(3) { animation-delay: 1.1s; }
+    .boot-line:nth-child(4) { animation-delay: 1.5s; }
+    .boot-line:nth-child(5) { animation-delay: 2.0s; }
+    .boot-line:nth-child(6) { animation-delay: 2.5s; }
+    .boot-line:nth-child(7) { animation-delay: 3.0s; }
+    .boot-line:nth-child(8) { animation-delay: 3.5s; }
+
+    .boot-ok { color: var(--retro-green-bright); }
+    .boot-label { color: var(--retro-green-dim); }
+    .boot-value { color: var(--retro-green); }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      border-bottom: 1px solid var(--retro-green-dim);
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav__logo {
+      font-family: 'VT323', monospace;
+      font-size: 1.3rem;
+      color: var(--retro-green-bright);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-shadow: 0 0 6px rgba(51, 255, 0, 0.4);
+    }
+
+    .nav__logo::before {
+      content: 'C:\\> ';
+      color: var(--retro-green-dim);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav__links a {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--retro-green-dim);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.15s, text-shadow 0.15s;
+    }
+
+    .nav__links a:hover {
+      color: var(--retro-green);
+      text-shadow: 0 0 6px rgba(51, 255, 0, 0.4);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 85vh;
+      padding: 80px 24px;
+      overflow: hidden;
+      background: var(--retro-bg-black);
+    }
+
+    /* CRT screen inner glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(51, 255, 0, 0.03) 0%,
+        transparent 50%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Vignette */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 35%,
+        rgba(0, 0, 0, 0.7) 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero__grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(51, 255, 0, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(51, 255, 0, 0.03) 1px, transparent 1px);
+      background-size: 1ch 1.6em;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 5;
+      max-width: 70ch;
+    }
+
+    .hero__tagline {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.8rem;
+      color: var(--retro-green-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero__title {
+      font-family: 'VT323', monospace;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      color: var(--retro-green);
+      text-shadow: var(--retro-glow-green);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.1;
+    }
+
+    .hero__subtitle {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(0.55rem, 1.2vw, 0.75rem);
+      color: var(--retro-amber);
+      text-shadow: var(--retro-glow-amber);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero__desc {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--retro-green-dim);
+      font-size: 1rem;
+      max-width: 60ch;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero__typed {
+      display: inline-block;
+      overflow: hidden;
+      white-space: nowrap;
+      border-right: 2px solid var(--retro-green);
+      animation:
+        typing 2.5s steps(35, end) forwards,
+        blink var(--retro-blink-speed) step-end infinite;
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--retro-green);
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      background: transparent;
+      color: var(--retro-green);
+      border: 1px solid var(--retro-green);
+      padding: 10px 28px;
+      font-family: 'VT323', monospace;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, box-shadow 0.15s;
+    }
+
+    .btn:hover {
+      background: var(--retro-green);
+      color: var(--retro-bg-black);
+      box-shadow: var(--retro-glow-green);
+      text-shadow: none;
+    }
+
+    .btn--bracket {
+      border: none;
+      padding: 10px 16px;
+    }
+
+    .btn--bracket::before { content: '[ '; }
+    .btn--bracket::after { content: ' ]'; }
+
+    .btn--bracket:hover {
+      background: transparent;
+      color: var(--retro-green-bright);
+      text-shadow: var(--retro-glow-green);
+      box-shadow: none;
+    }
+
+    .btn--amber {
+      color: var(--retro-amber);
+      border-color: var(--retro-amber);
+    }
+
+    .btn--amber:hover {
+      background: var(--retro-amber);
+      color: var(--retro-bg-black);
+      box-shadow: var(--retro-glow-amber);
+    }
+
+    .btn--fkey {
+      font-size: 0.85rem;
+      padding: 6px 14px;
+      border: 1px solid var(--retro-border);
+      color: var(--retro-white);
+    }
+
+    .btn--fkey:hover {
+      background: var(--retro-white);
+      color: var(--retro-bg-black);
+      box-shadow: var(--retro-glow-white);
+    }
+
+    .btn--dos {
+      background: var(--retro-bg-dos-blue);
+      color: var(--retro-yellow);
+      border: 1px solid var(--retro-yellow);
+    }
+
+    .btn--dos:hover {
+      background: var(--retro-yellow);
+      color: var(--retro-bg-dos-blue);
+      box-shadow: 0 0 10px rgba(255, 255, 85, 0.3);
+    }
+
+    /* ============================================
+       SECTIONS (shared)
+       ============================================ */
+    .section {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: var(--section-pad) 24px;
+      border-top: 1px solid var(--retro-green-dim);
+    }
+
+    .section--dos-blue {
+      background: var(--retro-bg-dos-blue);
+      max-width: 100%;
+      border-top-color: var(--retro-border);
+    }
+
+    .section--dos-blue .section__inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section--screen {
+      background: var(--retro-bg-screen);
+      max-width: 100%;
+      border-top-color: var(--retro-green-dim);
+    }
+
+    .section--screen .section__inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section__header {
+      margin-bottom: 2rem;
+    }
+
+    .section__header::before {
+      content: '>>> ';
+      color: var(--retro-green-dim);
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .section__label {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.65rem;
+      color: var(--retro-green-dim);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section__label::before {
+      content: '// ';
+    }
+
+    /* ============================================
+       ASCII DIVIDER
+       ============================================ */
+    .ascii-divider {
+      text-align: center;
+      color: var(--retro-green-dim);
+      padding: 16px 0;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      user-select: none;
+      overflow: hidden;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .type-showcase {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .type-row {
+      border: 1px solid var(--retro-green-dim);
+      padding: 24px;
+      position: relative;
+    }
+
+    .type-row__label {
+      position: absolute;
+      top: -0.7em;
+      left: 16px;
+      background: var(--retro-bg-black);
+      padding: 0 8px;
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.6rem;
+      color: var(--retro-green-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .type-display {
+      font-family: 'VT323', monospace;
+      font-size: clamp(2rem, 4.5vw, 3.5rem);
+      color: var(--retro-green);
+      text-shadow: var(--retro-glow-green);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+    }
+
+    .type-heading {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(0.7rem, 1.5vw, 1rem);
+      color: var(--retro-green-bright);
+      text-shadow: var(--retro-glow-green);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.8;
+    }
+
+    .type-body {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      color: var(--retro-green);
+      line-height: 1.7;
+    }
+
+    .type-body-alt {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--retro-green);
+      line-height: 1.7;
+    }
+
+    .type-small {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.65rem;
+      color: var(--retro-green-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      line-height: 2;
+    }
+
+    .type-amber {
+      color: var(--retro-amber);
+      text-shadow: var(--retro-glow-amber);
+    }
+
+    .type-white {
+      color: var(--retro-white);
+      text-shadow: var(--retro-glow-white);
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .swatch {
+      border: 1px solid var(--retro-border);
+      padding: 0;
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .swatch:hover {
+      border-color: var(--retro-green);
+      box-shadow: 0 0 8px rgba(51, 255, 0, 0.15);
+    }
+
+    .swatch__color {
+      height: 64px;
+      position: relative;
+    }
+
+    .swatch__info {
+      padding: 10px 12px;
+      background: var(--retro-bg-black);
+    }
+
+    .swatch__name {
+      font-family: 'VT323', monospace;
+      font-size: 0.95rem;
+      color: var(--retro-green-bright);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+
+    .swatch__hex {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--retro-green-dim);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--retro-bg-black);
+      border: 1px solid var(--retro-green-dim);
+      padding: 20px 24px;
+      position: relative;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      border-color: var(--retro-green);
+      box-shadow: 0 0 8px rgba(51, 255, 0, 0.12);
+    }
+
+    .card--double {
+      border: 3px double var(--retro-green-dim);
+    }
+
+    .card--double:hover {
+      border-color: var(--retro-green);
+    }
+
+    .card__icon {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.5rem;
+      color: var(--retro-green);
+      margin-bottom: 12px;
+      user-select: none;
+    }
+
+    .card__label {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.6rem;
+      color: var(--retro-green-dim);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--retro-green-dim);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       DOS BANNER
+       ============================================ */
+    .dos-banner {
+      background: var(--retro-bg-dos-blue);
+      padding: 40px 24px;
+      text-align: center;
+      position: relative;
+      border-top: 2px solid var(--retro-border);
+      border-bottom: 2px solid var(--retro-border);
+    }
+
+    .dos-banner__title-bar {
+      background: var(--retro-white);
+      color: var(--retro-bg-dos-blue);
+      display: inline-block;
+      padding: 4px 24px;
+      font-family: 'VT323', monospace;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1.5rem;
+    }
+
+    .dos-banner p {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--retro-yellow);
+      font-size: 0.95rem;
+      max-width: 60ch;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .dos-banner__art {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--retro-cyan);
+      font-size: 0.7rem;
+      line-height: 1.2;
+      margin-top: 1.5rem;
+      white-space: pre;
+      display: inline-block;
+      text-align: left;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .principle {
+      border: 1px solid var(--retro-green-dim);
+      padding: 24px;
+      position: relative;
+    }
+
+    .principle__number {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      color: var(--retro-amber);
+      text-shadow: var(--retro-glow-amber);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .principle h3 {
+      font-family: 'VT323', monospace;
+      color: var(--retro-green-bright);
+      margin-bottom: 0.75rem;
+    }
+
+    .principle p {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--retro-green-dim);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .effect-box {
+      border: 1px solid var(--retro-green-dim);
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+
+    .effect-box:hover {
+      border-color: var(--retro-green);
+    }
+
+    .effect-box__label {
+      position: absolute;
+      bottom: 8px;
+      left: 12px;
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.55rem;
+      color: var(--retro-green-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      z-index: 5;
+    }
+
+    /* Effect 1: Phosphor Glow */
+    .effect--glow {
+      background: var(--retro-bg-black);
+    }
+
+    .effect--glow .effect__text {
+      font-family: 'VT323', monospace;
+      font-size: 2rem;
+      color: var(--retro-green);
+      text-shadow: var(--retro-glow-green);
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    /* Effect 2: CRT Scanlines */
+    .effect--scanlines {
+      background: var(--retro-bg-screen);
+    }
+
+    .effect--scanlines::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 0, 0, 0.25) 1px,
+        rgba(0, 0, 0, 0.25) 3px
+      );
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .effect--scanlines .effect__text {
+      font-family: 'VT323', monospace;
+      font-size: 1.5rem;
+      color: var(--retro-green);
+      z-index: 2;
+      position: relative;
+    }
+
+    /* Effect 3: Amber Terminal */
+    .effect--amber {
+      background: #0a0800;
+    }
+
+    .effect--amber .effect__text {
+      font-family: 'VT323', monospace;
+      font-size: 1.5rem;
+      color: var(--retro-amber);
+      text-shadow: var(--retro-glow-amber);
+      animation: amber-flicker 4s ease-in-out infinite;
+    }
+
+    /* Effect 4: Screen Noise */
+    .effect--noise {
+      background: var(--retro-bg-black);
+    }
+
+    .effect--noise::before {
+      content: '';
+      position: absolute;
+      inset: -50%;
+      width: 200%;
+      height: 200%;
+      background-image:
+        radial-gradient(circle, var(--retro-green-dim) 1px, transparent 1px);
+      background-size: 3px 3px;
+      opacity: 0.08;
+      animation: static-noise 0.5s steps(5) infinite;
+      pointer-events: none;
+    }
+
+    .effect--noise .effect__text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      color: var(--retro-green);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Effect 5: DOS Blue */
+    .effect--dos {
+      background: var(--retro-bg-dos-blue);
+      border-color: var(--retro-border);
+    }
+
+    .effect--dos:hover {
+      border-color: var(--retro-cyan);
+    }
+
+    .effect--dos .effect__text {
+      font-family: 'VT323', monospace;
+      font-size: 1.3rem;
+      color: var(--retro-yellow);
+    }
+
+    .effect--dos .effect__frame {
+      position: absolute;
+      inset: 8px;
+      border: 1px solid var(--retro-white);
+    }
+
+    .effect--dos .effect__frame-title {
+      position: absolute;
+      top: -0.6em;
+      left: 12px;
+      background: var(--retro-bg-dos-blue);
+      padding: 0 6px;
+      font-family: 'VT323', monospace;
+      font-size: 0.9rem;
+      color: var(--retro-white-bright);
+    }
+
+    /* Effect 6: Vignette */
+    .effect--vignette {
+      background: var(--retro-bg-screen);
+    }
+
+    .effect--vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(0, 0, 0, 0.7) 100%
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .effect--vignette .effect__text {
+      font-family: 'VT323', monospace;
+      font-size: 1.5rem;
+      color: var(--retro-green);
+      text-shadow: var(--retro-glow-green);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .terminal-quote {
+      background: var(--retro-bg-screen);
+      border: 1px solid var(--retro-green-dim);
+      padding: 28px 28px 28px 32px;
+      position: relative;
+      max-width: 70ch;
+      margin: 0 auto;
+    }
+
+    .terminal-quote::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--retro-green);
+      box-shadow: 0 0 8px rgba(51, 255, 0, 0.4);
+    }
+
+    .terminal-quote__header {
+      display: flex;
+      justify-content: space-between;
+      margin: -28px -28px 16px -32px;
+      padding: 4px 12px;
+      background: var(--retro-green-dim);
+      color: var(--retro-bg-black);
+      font-family: 'VT323', monospace;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .terminal-quote blockquote {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1rem;
+      color: var(--retro-green);
+      line-height: 1.7;
+      font-style: normal;
+    }
+
+    .terminal-quote__author {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.6rem;
+      color: var(--retro-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    .terminal-quote__author::before {
+      content: '-- ';
+      color: var(--retro-green-dim);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      text-align: center;
+      padding: var(--section-pad) 24px;
+      max-width: 960px;
+      margin: 0 auto;
+      border-top: 1px solid var(--retro-green-dim);
+      position: relative;
+    }
+
+    .cta__box {
+      border: 3px double var(--retro-green-dim);
+      padding: 48px 32px;
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .cta__box-title {
+      position: absolute;
+      top: -0.7em;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--retro-bg-black);
+      padding: 0 12px;
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.6rem;
+      color: var(--retro-green-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      white-space: nowrap;
+    }
+
+    .cta h2 {
+      margin-bottom: 1rem;
+    }
+
+    .cta p {
+      color: var(--retro-green-dim);
+      margin-bottom: 2rem;
+      max-width: 50ch;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       STATUS BAR (FOOTER)
+       ============================================ */
+    .status-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+      background: var(--retro-green-dim);
+      color: var(--retro-bg-black);
+      padding: 4px 24px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .status-bar__section {
+      display: flex;
+      gap: 20px;
+    }
+
+    .status-bar__fkey {
+      display: inline-flex;
+      gap: 4px;
+    }
+
+    .status-bar__fkey span:first-child {
+      color: var(--retro-bg-black);
+      font-weight: bold;
+    }
+
+    .status-bar__fkey span:last-child {
+      color: var(--retro-bg-screen);
+    }
+
+    /* ============================================
+       TERMINAL BLOCK
+       ============================================ */
+    .terminal {
+      background: var(--retro-bg-screen);
+      border: 1px solid var(--retro-green-dim);
+      padding: 20px 24px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+
+    .terminal__bar {
+      display: flex;
+      justify-content: space-between;
+      background: var(--retro-green-dim);
+      color: var(--retro-bg-black);
+      margin: -20px -24px 16px;
+      padding: 4px 12px;
+      font-family: 'VT323', monospace;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .terminal .prompt { color: var(--retro-green-bright); }
+    .terminal .output { color: var(--retro-green); }
+    .terminal .comment { color: var(--retro-green-dim); }
+    .terminal .error { color: var(--retro-red); }
+    .terminal .info { color: var(--retro-cyan); }
+    .terminal .warn { color: var(--retro-yellow); }
+    .terminal .amber { color: var(--retro-amber); }
+
+    /* ============================================
+       PREFERS-REDUCED-MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      .hero__typed {
+        width: auto !important;
+        border-right: none;
+      }
+
+      .boot-line {
+        opacity: 1 !important;
+      }
+
+      body {
+        animation: none;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .nav__links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        min-height: 70vh;
+        padding: 60px 16px;
+      }
+
+      .hero__title {
+        font-size: clamp(1.8rem, 8vw, 3rem);
+      }
+
+      .card-grid,
+      .effects-grid,
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        text-align: center;
+      }
+
+      .status-bar {
+        flex-direction: column;
+        padding: 8px 16px;
+        text-align: center;
+      }
+
+      .status-bar__section {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .section {
+        padding: 40px 16px;
+      }
+
+      .dos-banner {
+        padding: 32px 16px;
+      }
+
+      .dos-banner__art {
+        font-size: 0.5rem;
+      }
+
+      .terminal-quote {
+        padding: 24px 20px 24px 24px;
+      }
+
+      .terminal-quote__header {
+        margin: -24px -20px 16px -24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero__subtitle {
+        font-size: 0.5rem;
+        letter-spacing: 0.06em;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .nav__links {
+        gap: 12px;
+        font-size: 0.8rem;
+      }
+
+      .dos-banner__art {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__logo">TERMINAL.SYS</a>
+    <ul class="nav__links">
+      <li><a href="#typography">TYPE</a></li>
+      <li><a href="#palette">COLORS</a></li>
+      <li><a href="#components">MODULES</a></li>
+      <li><a href="#principles">SYSTEM</a></li>
+      <li><a href="#effects">EFFECTS</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero__grid"></div>
+    <div class="hero__content">
+      <p class="hero__tagline">// Design Aesthetic Reference</p>
+      <h1 class="hero__title">Retro Computing</h1>
+      <p class="hero__subtitle">Phosphor Glow &amp; Command Lines</p>
+      <p class="hero__desc">
+        <span class="hero__typed">The CRT terminal awaits your input...</span>
+      </p>
+
+      <!-- Boot sequence -->
+      <div class="terminal" style="text-align: left; max-width: 520px; margin: 0 auto 2rem;">
+        <div class="terminal__bar">
+          <span>BIOS POST v1.2</span>
+          <span>640K OK</span>
+        </div>
+<span class="boot-line"><span class="boot-label">Checking RAM ............</span> <span class="boot-ok">640K OK</span></span>
+<span class="boot-line"><span class="boot-label">Floppy Drive A: ........</span> <span class="boot-ok">1.44MB</span></span>
+<span class="boot-line"><span class="boot-label">Hard Disk C: ...........</span> <span class="boot-value">20MB</span></span>
+<span class="boot-line"><span class="boot-label">Video Adapter ..........</span> <span class="boot-ok">CGA</span></span>
+<span class="boot-line"><span class="boot-label">Loading COMMAND.COM .....</span> <span class="boot-ok">OK</span></span>
+<span class="boot-line"><span class="prompt">C:\> </span><span class="output">DESIGN.EXE --aesthetic=retro-computing</span></span>
+<span class="boot-line"><span class="info">Initializing phosphor display...</span></span>
+<span class="boot-line"><span class="boot-ok">READY.</span> <span class="cursor"></span></span>
+      </div>
+
+      <div class="hero__buttons">
+        <a href="#components" class="btn">EXECUTE</a>
+        <a href="#palette" class="btn btn--bracket">VIEW SOURCE</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ASCII DIVIDER ===== -->
+  <div class="ascii-divider">+======================================[ SYSTEM READY ]======================================+</div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <span class="section__label">Font Stack</span>
+    <h2 class="section__header">Typography Showcase</h2>
+
+    <div class="type-showcase">
+      <!-- Display / VT323 -->
+      <div class="type-row">
+        <span class="type-row__label">VT323 -- Display</span>
+        <p class="type-display">SYSTEM BOOT COMPLETE</p>
+        <p class="type-display type-amber" style="font-size: clamp(1.5rem, 3vw, 2.5rem); margin-top: 8px;">Amber phosphor variant</p>
+      </div>
+
+      <!-- Heading / Press Start 2P -->
+      <div class="type-row">
+        <span class="type-row__label">Press Start 2P -- Headings</span>
+        <p class="type-heading">8-BIT DISPLAY HEADERS</p>
+        <p class="type-heading" style="margin-top: 8px; color: var(--retro-cyan); text-shadow: var(--retro-glow-cyan);">For game-inspired interfaces</p>
+      </div>
+
+      <!-- Body / Share Tech Mono -->
+      <div class="type-row">
+        <span class="type-row__label">Share Tech Mono -- Body</span>
+        <p class="type-body">The command line interface represents the purest form of human-computer interaction. Every keystroke is a direct instruction, every response an immediate acknowledgment. In the glow of a green phosphor terminal, there are no distractions -- only purpose.</p>
+      </div>
+
+      <!-- Body Alt / IBM Plex Mono -->
+      <div class="type-row">
+        <span class="type-row__label">IBM Plex Mono -- Body Alt</span>
+        <p class="type-body-alt">Designed with IBM heritage in mind, this typeface carries the DNA of mainframe computing through every character. The rigid grid, the mechanical precision, the unwavering consistency -- each glyph occupies its cell with quiet authority.</p>
+      </div>
+
+      <!-- Small / Silkscreen -->
+      <div class="type-row">
+        <span class="type-row__label">Silkscreen -- Labels &amp; UI</span>
+        <p class="type-small">Status: Online | Mode: Text | Resolution: 80x25 | Buffer: 640K</p>
+        <p class="type-small" style="margin-top: 8px;">F1=Help  F2=Save  F3=Open  F5=Refresh  F10=Quit</p>
+      </div>
+
+      <!-- Pairing Demo / Space Mono -->
+      <div class="type-row">
+        <span class="type-row__label">Space Mono -- Display Alt</span>
+        <p style="font-family: 'Space Mono', monospace; font-size: 1.1rem; color: var(--retro-green-bright); text-shadow: var(--retro-glow-green); letter-spacing: 0.03em;">Retro-futuristic terminal output with a typographic edge. Space Mono brings personality to the monospaced grid while honoring its mechanical roots.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ASCII DIVIDER ===== -->
+  <div class="ascii-divider">|--------- DIR C:\PALETTE ---------|</div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section" id="palette">
+    <span class="section__label">Color System</span>
+    <h2 class="section__header">Color Palette</h2>
+    <p style="color: var(--retro-green-dim); margin-bottom: 2rem; max-width: 70ch;">Rooted in the actual phosphor colors of monochrome CRT monitors -- P1 green, P3 amber, and P4 white -- with CGA accent colors for information hierarchy.</p>
+
+    <div class="palette-grid">
+      <div class="swatch">
+        <div class="swatch__color" style="background: #0a0a0a;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Terminal Black</div>
+          <div class="swatch__hex">#0A0A0A</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #0d1b0d;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Deep Screen</div>
+          <div class="swatch__hex">#0D1B0D</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #33ff00;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Phosphor Green</div>
+          <div class="swatch__hex">#33FF00</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #1a8a00;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Dim Green</div>
+          <div class="swatch__hex">#1A8A00</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #66ff33;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Glow Green</div>
+          <div class="swatch__hex">#66FF33</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #ffb000;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Amber Primary</div>
+          <div class="swatch__hex">#FFB000</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #996600;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Dim Amber</div>
+          <div class="swatch__hex">#996600</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #ffcc33;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Bright Amber</div>
+          <div class="swatch__hex">#FFCC33</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #c0c0c0;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">CRT White</div>
+          <div class="swatch__hex">#C0C0C0</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #0000aa;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">DOS Blue</div>
+          <div class="swatch__hex">#0000AA</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #55ffff;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">DOS Cyan</div>
+          <div class="swatch__hex">#55FFFF</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #ff5555;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">DOS Red</div>
+          <div class="swatch__hex">#FF5555</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #ffff55;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">DOS Yellow</div>
+          <div class="swatch__hex">#FFFF55</div>
+        </div>
+      </div>
+
+      <div class="swatch">
+        <div class="swatch__color" style="background: #555555;"></div>
+        <div class="swatch__info">
+          <div class="swatch__name">Border Gray</div>
+          <div class="swatch__hex">#555555</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ASCII DIVIDER ===== -->
+  <div class="ascii-divider">+------[ LOADING MODULES ]------+</div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section" id="components">
+    <span class="section__label">UI Modules</span>
+    <h2 class="section__header">Component Cards</h2>
+
+    <div class="card-grid">
+      <!-- Card 1 -->
+      <div class="card">
+        <div class="card__icon">[&gt;_]</div>
+        <div class="card__label">Module 01</div>
+        <h3>Command Prompt</h3>
+        <p>The blinking cursor awaits. Direct keyboard input with immediate system response. No abstraction, no intermediary -- just raw human-machine dialogue at the speed of thought.</p>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="card card--double">
+        <div class="card__icon">[|||]</div>
+        <div class="card__label">Module 02</div>
+        <h3>Scanline Display</h3>
+        <p>Horizontal line artifacts from the electron beam sweeping across phosphor coatings. Rendered as semi-transparent repeating gradients that add authentic CRT texture to any surface.</p>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="card">
+        <div class="card__icon">[*.*]</div>
+        <div class="card__label">Module 03</div>
+        <h3>File Manager</h3>
+        <p>Dual-pane directory listings inspired by Norton Commander and Midnight Commander. Function keys mapped to actions, inverted color bars for selections, box-drawing borders.</p>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="card card--double">
+        <div class="card__icon">[~#~]</div>
+        <div class="card__label">Module 04</div>
+        <h3>ASCII Borders</h3>
+        <p>Box-drawing characters form the skeleton of every interface. Single lines for standard frames, double lines for emphasis, corners and T-junctions for complex layouts.</p>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="card">
+        <div class="card__icon">[0x0]</div>
+        <div class="card__label">Module 05</div>
+        <h3>Hex Editor</h3>
+        <p>Raw data displayed in hexadecimal columns alongside ASCII representations. Fixed-width grids of memory addresses, byte values, and printable character translations.</p>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="card card--double">
+        <div class="card__icon">[PWR]</div>
+        <div class="card__label">Module 06</div>
+        <h3>Boot Sequence</h3>
+        <p>POST diagnostics scrolling line by line. Memory checks, device enumeration, driver loading -- each step rendered sequentially with staggered animation delays.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOS BANNER ===== -->
+  <div class="dos-banner">
+    <div class="dos-banner__title-bar">NORTON COMMANDER 5.0</div>
+    <p>
+      The text-mode era defined a generation of computing. Before windows and mice, there were keyboards and command lines. Before pixels and vectors, there were character cells and box-drawing glyphs. This was computing at its most honest.
+    </p>
+    <div class="dos-banner__art">
+   ____________________________
+  |  ________________________  |
+  | |  C:\>_                 | |
+  | |                        | |
+  | |  READY.                | |
+  | |________________________| |
+  |   O    O    O    O    O    |
+  |____________________________|
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section" id="principles">
+    <span class="section__label">System Config</span>
+    <h2 class="section__header">Design Principles</h2>
+
+    <div class="principles-grid">
+      <div class="principle">
+        <span class="principle__number">01</span>
+        <h3>The Screen Is the Light Source</h3>
+        <p>Text glows against darkness, never the reverse. Every character emits phosphor light into the void of an unpowered CRT. Dark backgrounds are not a stylistic choice -- they are the physical reality of the medium.</p>
+      </div>
+
+      <div class="principle">
+        <span class="principle__number">02</span>
+        <h3>Embrace the Constraints</h3>
+        <p>Fixed grids, limited colors, monospaced type, no images. The 80-column, 25-row character grid is sacred. Hierarchy comes from brightness and formatting -- uppercase, borders, inverted colors -- not font size variation.</p>
+      </div>
+
+      <div class="principle">
+        <span class="principle__number">03</span>
+        <h3>Every Character Has Purpose</h3>
+        <p>Nothing decorative for its own sake. In a world where each character cell is a scarce resource, every glyph on screen must earn its place. Information density is a virtue. Empty space is wasted display area.</p>
+      </div>
+
+      <div class="principle">
+        <span class="principle__number">04</span>
+        <h3>Reference Real Systems</h3>
+        <p>Authenticity matters. Draw from DOS, VT100, Apple II, Commodore 64, Norton Commander, Turbo Pascal. Real systems with real constraints, not fictional terminal aesthetics invented for cinema alone.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ASCII DIVIDER ===== -->
+  <div class="ascii-divider">|===[ VISUAL EFFECTS PROCESSOR ]===|</div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <span class="section__label">VFX Engine</span>
+    <h2 class="section__header">Effects Showcase</h2>
+    <p style="color: var(--retro-green-dim); margin-bottom: 2rem;">Six CSS-only effects that recreate the physical characteristics of CRT displays and early computing interfaces.</p>
+
+    <div class="effects-grid">
+      <!-- Effect 1: Phosphor Glow -->
+      <div class="effect-box effect--glow">
+        <span class="effect__text">GLOW_</span>
+        <span class="effect-box__label">Phosphor Bloom</span>
+      </div>
+
+      <!-- Effect 2: CRT Scanlines -->
+      <div class="effect-box effect--scanlines">
+        <span class="effect__text">SCANLINES ACTIVE</span>
+        <span class="effect-box__label">CRT Scanlines</span>
+      </div>
+
+      <!-- Effect 3: Amber Terminal -->
+      <div class="effect-box effect--amber">
+        <span class="effect__text">AMBER MODE</span>
+        <span class="effect-box__label">Amber Phosphor</span>
+      </div>
+
+      <!-- Effect 4: Static Noise -->
+      <div class="effect-box effect--noise">
+        <span class="effect__text">SIGNAL_NOISE::0x3F</span>
+        <span class="effect-box__label">Static Noise</span>
+      </div>
+
+      <!-- Effect 5: DOS Blue -->
+      <div class="effect-box effect--dos">
+        <div class="effect__frame">
+          <span class="effect__frame-title"> Alert </span>
+        </div>
+        <span class="effect__text">PRESS ANY KEY</span>
+        <span class="effect-box__label" style="color: var(--retro-white);">DOS Dialog</span>
+      </div>
+
+      <!-- Effect 6: Vignette -->
+      <div class="effect-box effect--vignette">
+        <span class="effect__text">CRT EDGE FADE</span>
+        <span class="effect-box__label">Vignette</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ASCII DIVIDER ===== -->
+  <div class="ascii-divider">+------[ INPUT DEVICES ]------+</div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <span class="section__label">Input Controls</span>
+    <h2 class="section__header">Button Showcase</h2>
+
+    <div class="button-showcase">
+      <a href="#" class="btn">EXECUTE</a>
+      <a href="#" class="btn btn--bracket">SELECT</a>
+      <a href="#" class="btn btn--amber">WARNING</a>
+      <a href="#" class="btn btn--fkey"><span style="font-weight: bold;">F1</span> HELP</a>
+      <a href="#" class="btn btn--dos">FORMAT C:</a>
+    </div>
+
+    <div style="margin-top: 2rem;">
+      <div class="terminal" style="max-width: 600px; margin: 0 auto;">
+        <div class="terminal__bar">
+          <span>INPUT.SYS</span>
+          <span>ACTIVE</span>
+        </div>
+<span class="prompt">C:\></span> <span class="output">btn --style=green</span>       <span class="comment">; Default terminal button</span>
+<span class="prompt">C:\></span> <span class="output">btn --style=bracket</span>    <span class="comment">; Text-mode bracket style</span>
+<span class="prompt">C:\></span> <span class="output">btn --style=amber</span>      <span class="comment">; Amber phosphor warning</span>
+<span class="prompt">C:\></span> <span class="output">btn --style=fkey</span>       <span class="comment">; Function key compact</span>
+<span class="prompt">C:\></span> <span class="output">btn --style=dos-blue</span>   <span class="comment">; Norton Commander style</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section">
+    <span class="section__label">System Log</span>
+    <h2 class="section__header">Terminal Wisdom</h2>
+
+    <div class="terminal-quote">
+      <div class="terminal-quote__header">
+        <span>QUOTE.TXT</span>
+        <span>READ ONLY</span>
+      </div>
+      <blockquote>
+        "The screen is a window through which one looks into a world that is limited only by the imagination of the programmer. In that phosphor glow, we found a universe that responded to our every command -- and in responding, taught us to think in ways no other medium could."
+      </blockquote>
+      <span class="terminal-quote__author">The Art of Terminal Design, 1987</span>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta">
+    <div class="cta__box">
+      <span class="cta__box-title">// Call to Action</span>
+      <h2>Initialize Your Terminal</h2>
+      <p>Load DESIGN.EXE and begin building interfaces that honor the phosphor-lit heritage of personal computing. The cursor is blinking. The system awaits.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="#hero" class="btn">RUN DESIGN.EXE</a>
+        <a href="#" class="btn btn--bracket">READ DOCS</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER / STATUS BAR ===== -->
+  <footer class="status-bar">
+    <div class="status-bar__section">
+      <span class="status-bar__fkey"><span>F1</span><span>Help</span></span>
+      <span class="status-bar__fkey"><span>F2</span><span>Save</span></span>
+      <span class="status-bar__fkey"><span>F5</span><span>Copy</span></span>
+      <span class="status-bar__fkey"><span>F6</span><span>Move</span></span>
+      <span class="status-bar__fkey"><span>F8</span><span>Delete</span></span>
+      <span class="status-bar__fkey"><span>F10</span><span>Quit</span></span>
+    </div>
+    <div class="status-bar__section">
+      <span>Retro Computing Aesthetic</span>
+      <span id="clock"></span>
+    </div>
+  </footer>
+
+  <!-- ===== MINIMAL VANILLA JS ===== -->
+  <script>
+    // Status bar clock
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const el = document.getElementById('clock');
+      if (el) el.textContent = h + ':' + m + ':' + s;
+    }
+    updateClock();
+    setInterval(updateClock, 1000);
+
+    // Nav link active state highlighting
+    document.querySelectorAll('.nav__links a').forEach(function(link) {
+      link.addEventListener('mouseenter', function() {
+        this.style.color = 'var(--retro-green)';
+        this.style.textShadow = '0 0 6px rgba(51, 255, 0, 0.4)';
+      });
+      link.addEventListener('mouseleave', function() {
+        this.style.color = '';
+        this.style.textShadow = '';
+      });
+    });
+  </script>
+
+</body>
+</html>

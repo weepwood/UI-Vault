@@ -1,0 +1,2171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Soft Gradient -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Warm gradient anchors --- */
+      --sg-dawn-rose: #f4a0c0;
+      --sg-petal-pink: #fddde6;
+      --sg-sunset-peach: #ffccb6;
+      --sg-golden-haze: #ffe0a3;
+      --sg-coral-bloom: #ff8a80;
+
+      /* --- Cool gradient anchors --- */
+      --sg-aurora-mint: #a8e6cf;
+      --sg-soft-teal: #88d8c0;
+      --sg-sky-whisper: #b8d4e3;
+
+      /* --- Purple spectrum --- */
+      --sg-lavender-mist: #c3b1e1;
+      --sg-lilac-dream: #d4b8e0;
+
+      /* --- Neutrals --- */
+      --sg-cloud-white: #f9f7f4;
+      --sg-snow: #ffffff;
+      --sg-soft-charcoal: #3d3d4e;
+      --sg-muted-slate: #6b7280;
+      --sg-deep-indigo: #2d2b55;
+
+      /* --- Functional Tokens --- */
+      --sg-text-primary: var(--sg-soft-charcoal);
+      --sg-text-secondary: var(--sg-muted-slate);
+      --sg-surface-primary: var(--sg-cloud-white);
+      --sg-surface-card: var(--sg-snow);
+      --sg-accent-primary: var(--sg-dawn-rose);
+      --sg-accent-secondary: var(--sg-soft-teal);
+
+      /* --- Gradient Presets --- */
+      --sg-gradient-warm: linear-gradient(135deg, var(--sg-dawn-rose), var(--sg-sunset-peach), var(--sg-golden-haze));
+      --sg-gradient-cool: linear-gradient(135deg, var(--sg-sky-whisper), var(--sg-aurora-mint), var(--sg-soft-teal));
+      --sg-gradient-aurora: linear-gradient(135deg, var(--sg-lavender-mist), var(--sg-dawn-rose), var(--sg-sunset-peach), var(--sg-aurora-mint));
+
+      /* --- Shadows --- */
+      --sg-shadow-sm: 0 2px 8px rgba(244, 160, 192, 0.12);
+      --sg-shadow-md: 0 4px 20px rgba(244, 160, 192, 0.15);
+      --sg-shadow-lg: 0 8px 40px rgba(195, 177, 225, 0.18);
+
+      /* --- Radii --- */
+      --sg-radius-sm: 12px;
+      --sg-radius-md: 20px;
+      --sg-radius-lg: 32px;
+      --sg-radius-full: 9999px;
+
+      /* --- Transitions --- */
+      --sg-transition-gentle: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --sg-transition-slow: 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--sg-text-primary);
+      background-color: var(--sg-cloud-white);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      color: var(--sg-text-primary);
+    }
+
+    /* Grain texture overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(249, 247, 244, 0.6);
+      backdrop-filter: blur(20px) saturate(1.2);
+      -webkit-backdrop-filter: blur(20px) saturate(1.2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      transition: all var(--sg-transition-gentle);
+    }
+
+    .nav--scrolled {
+      background: rgba(249, 247, 244, 0.88);
+      box-shadow: 0 2px 20px rgba(195, 177, 225, 0.12);
+    }
+
+    .nav-logo {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.35rem;
+      background: var(--sg-gradient-aurora);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: opacity var(--sg-transition-gentle);
+    }
+
+    .nav-logo:hover {
+      opacity: 0.8;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--sg-text-secondary);
+      position: relative;
+      transition: color var(--sg-transition-gentle);
+    }
+
+    .nav-links a:hover {
+      color: var(--sg-text-primary);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--sg-gradient-warm);
+      border-radius: 1px;
+      transition: width var(--sg-transition-gentle);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 6rem 2rem;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-color: var(--sg-cloud-white);
+      background-image:
+        radial-gradient(ellipse at 15% 25%, rgba(244, 160, 192, 0.35) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 15%, rgba(184, 212, 227, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 45% 75%, rgba(195, 177, 225, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 90% 70%, rgba(168, 230, 207, 0.3) 0%, transparent 45%),
+        radial-gradient(ellipse at 5% 85%, rgba(255, 224, 163, 0.3) 0%, transparent 45%);
+      z-index: 0;
+    }
+
+    /* Aurora blobs */
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.4;
+      animation: auroraFloat 20s ease-in-out infinite alternate;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-blob--rose {
+      width: 55vw;
+      height: 55vw;
+      top: -20%;
+      left: -10%;
+      background: linear-gradient(135deg, var(--sg-dawn-rose), var(--sg-lavender-mist));
+    }
+
+    .hero-blob--mint {
+      width: 50vw;
+      height: 50vw;
+      bottom: -20%;
+      right: -10%;
+      background: linear-gradient(135deg, var(--sg-aurora-mint), var(--sg-sky-whisper));
+      animation-delay: -7s;
+    }
+
+    .hero-blob--peach {
+      width: 40vw;
+      height: 40vw;
+      top: 30%;
+      left: 25%;
+      background: linear-gradient(180deg, var(--sg-sunset-peach), var(--sg-lilac-dream));
+      filter: blur(100px);
+      opacity: 0.3;
+      animation: auroraFloat 18s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes auroraFloat {
+      0% {
+        transform: translate(0, 0) scale(1) rotate(0deg);
+      }
+      33% {
+        transform: translate(30px, -20px) scale(1.05) rotate(2deg);
+      }
+      66% {
+        transform: translate(-20px, 15px) scale(0.95) rotate(-1deg);
+      }
+      100% {
+        transform: translate(10px, -10px) scale(1.02) rotate(1deg);
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .hero-tagline {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--sg-text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.75rem, 6vw, 4.5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+      color: var(--sg-text-primary);
+    }
+
+    .gradient-text {
+      background: var(--sg-gradient-aurora);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--sg-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: var(--sg-radius-full);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all var(--sg-transition-gentle);
+      line-height: 1.4;
+    }
+
+    .btn-primary {
+      background: var(--sg-gradient-warm);
+      color: var(--sg-soft-charcoal);
+      box-shadow: 0 4px 15px rgba(244, 160, 192, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 25px rgba(244, 160, 192, 0.45);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 10px rgba(244, 160, 192, 0.3);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.5);
+      color: var(--sg-soft-charcoal);
+      border: 1px solid rgba(244, 160, 192, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.75);
+      border-color: rgba(244, 160, 192, 0.5);
+      box-shadow: 0 4px 15px rgba(195, 177, 225, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--sg-dawn-rose);
+      border: none;
+      padding: 0.75rem 1.5rem;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(244, 160, 192, 0.08);
+    }
+
+    .btn-cool {
+      background: var(--sg-gradient-cool);
+      color: var(--sg-soft-charcoal);
+      box-shadow: 0 4px 15px rgba(136, 216, 192, 0.3);
+    }
+
+    .btn-cool:hover {
+      box-shadow: 0 6px 25px rgba(136, 216, 192, 0.45);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--cloud {
+      background: var(--sg-cloud-white);
+    }
+
+    .section--mesh {
+      background-color: var(--sg-cloud-white);
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(244, 160, 192, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 75% 20%, rgba(184, 212, 227, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 50% 70%, rgba(195, 177, 225, 0.12) 0%, transparent 50%);
+    }
+
+    .section--tinted {
+      background-color: var(--sg-petal-pink);
+      background-image:
+        radial-gradient(circle at 80% 40%, rgba(168, 230, 207, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 20% 60%, rgba(184, 212, 227, 0.15) 0%, transparent 50%);
+    }
+
+    .section--indigo {
+      background: var(--sg-deep-indigo);
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .section--indigo .section-label { color: var(--sg-golden-haze); }
+    .section--indigo .section-title { color: var(--sg-snow); }
+    .section--indigo .section-subtitle { color: var(--sg-lavender-mist); }
+
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--sg-dawn-rose);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.75rem, 3.5vw, 2.75rem);
+      font-weight: 600;
+      text-align: center;
+      color: var(--sg-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      text-align: center;
+      color: var(--sg-text-secondary);
+      margin-bottom: 56px;
+    }
+
+    /* ============================================
+       WAVY SECTION DIVIDER
+       ============================================ */
+    .wave-divider {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+      display: block;
+    }
+
+    .wave-divider svg {
+      position: relative;
+      display: block;
+      width: calc(100% + 2px);
+      height: 80px;
+    }
+
+    .wave-fill--cloud { fill: var(--sg-cloud-white); }
+    .wave-fill--pink { fill: var(--sg-petal-pink); }
+    .wave-fill--indigo { fill: var(--sg-deep-indigo); }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sg-dawn-rose);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(244, 160, 192, 0.3), transparent);
+    }
+
+    .typo-display {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--sg-text-primary);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .typo-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--sg-text-primary);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .typo-subhead {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--sg-text-secondary);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .typo-body-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--sg-text-primary);
+      letter-spacing: 0.01em;
+      margin-bottom: 4px;
+    }
+
+    .typo-friendly {
+      font-family: 'Rubik', sans-serif;
+      font-weight: 400;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--sg-text-secondary);
+      line-height: 1.6;
+    }
+
+    .typo-ui-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--sg-muted-slate);
+    }
+
+    .typo-right {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--sg-radius-md);
+      padding: 36px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: var(--sg-shadow-md);
+    }
+
+    .typo-right h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(244, 160, 192, 0.15);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--sg-muted-slate);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: var(--sg-radius-md);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: transform var(--sg-transition-gentle), box-shadow var(--sg-transition-gentle);
+      box-shadow: var(--sg-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--sg-shadow-lg);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 500;
+      font-size: 0.88rem;
+      color: var(--sg-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--sg-muted-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: var(--sg-radius-md);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all var(--sg-transition-gentle);
+      box-shadow: var(--sg-shadow-md);
+    }
+
+    .card:hover {
+      background: rgba(255, 255, 255, 0.8);
+      box-shadow: var(--sg-shadow-lg);
+      transform: translateY(-4px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--sg-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .card-icon--warm {
+      background: var(--sg-gradient-warm);
+      box-shadow: 0 4px 12px rgba(244, 160, 192, 0.25);
+    }
+
+    .card-icon--cool {
+      background: var(--sg-gradient-cool);
+      box-shadow: 0 4px 12px rgba(136, 216, 192, 0.25);
+    }
+
+    .card-icon--lavender {
+      background: linear-gradient(135deg, var(--sg-lavender-mist), var(--sg-lilac-dream));
+      box-shadow: 0 4px 12px rgba(195, 177, 225, 0.25);
+    }
+
+    .card-icon--aurora {
+      background: var(--sg-gradient-aurora);
+      box-shadow: 0 4px 12px rgba(195, 177, 225, 0.2);
+    }
+
+    .card-icon--peach {
+      background: linear-gradient(135deg, var(--sg-sunset-peach), var(--sg-golden-haze));
+      box-shadow: 0 4px 12px rgba(255, 204, 182, 0.25);
+    }
+
+    .card-icon--rose {
+      background: linear-gradient(135deg, var(--sg-dawn-rose), var(--sg-coral-bloom));
+      box-shadow: 0 4px 12px rgba(244, 160, 192, 0.25);
+    }
+
+    .card h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--sg-text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--sg-text-secondary);
+      line-height: 1.6;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      padding: 4px 14px;
+      border-radius: var(--sg-radius-full);
+      background: rgba(212, 184, 224, 0.15);
+      color: var(--sg-muted-slate);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all var(--sg-transition-gentle);
+    }
+
+    .tag:hover {
+      background: rgba(244, 160, 192, 0.2);
+      color: var(--sg-text-primary);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: var(--sg-radius-md);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: var(--sg-shadow-sm);
+      transition: all var(--sg-transition-gentle);
+    }
+
+    .effect-demo:hover {
+      box-shadow: var(--sg-shadow-lg);
+      transform: translateY(-3px);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--sg-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--sg-muted-slate);
+    }
+
+    /* --- Mesh Gradient Effect --- */
+    .effect-mesh {
+      background-color: var(--sg-cloud-white);
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(244, 160, 192, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 75% 20%, rgba(184, 212, 227, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 50% 70%, rgba(195, 177, 225, 0.45) 0%, transparent 50%),
+        radial-gradient(circle at 85% 65%, rgba(168, 230, 207, 0.4) 0%, transparent 45%);
+      background-size: 200% 200%;
+      animation: meshDrift 20s ease-in-out infinite alternate;
+    }
+
+    .effect-mesh::after {
+      content: 'MESH';
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--sg-soft-charcoal);
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+
+    @keyframes meshDrift {
+      0% { background-position: 0% 0%; }
+      25% { background-position: 50% 25%; }
+      50% { background-position: 100% 50%; }
+      75% { background-position: 50% 75%; }
+      100% { background-position: 0% 100%; }
+    }
+
+    /* --- Aurora Effect --- */
+    .effect-aurora {
+      background: linear-gradient(180deg, #2d2b55 0%, #3d3d4e 100%);
+      overflow: hidden;
+    }
+
+    .effect-aurora::before {
+      content: '';
+      position: absolute;
+      width: 150%;
+      height: 60%;
+      top: 10%;
+      left: -25%;
+      background: linear-gradient(90deg,
+        rgba(168, 230, 207, 0) 0%,
+        rgba(168, 230, 207, 0.4) 20%,
+        rgba(195, 177, 225, 0.5) 40%,
+        rgba(244, 160, 192, 0.4) 60%,
+        rgba(255, 204, 182, 0.3) 80%,
+        rgba(184, 212, 227, 0) 100%
+      );
+      filter: blur(25px);
+      border-radius: 50%;
+      animation: auroraSweep 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes auroraSweep {
+      0% { transform: translateX(-10%) rotate(-3deg) scaleY(0.8); }
+      50% { transform: translateX(10%) rotate(2deg) scaleY(1.2); }
+      100% { transform: translateX(-5%) rotate(-1deg) scaleY(0.9); }
+    }
+
+    .effect-aurora::after {
+      content: 'AURORA';
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.12em;
+      z-index: 1;
+      position: relative;
+    }
+
+    /* --- Frosted Glass Effect --- */
+    .effect-glass {
+      background-color: var(--sg-petal-pink);
+      background-image:
+        radial-gradient(circle at 30% 40%, rgba(195, 177, 225, 0.5) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(168, 230, 207, 0.4) 0%, transparent 50%);
+    }
+
+    .effect-glass-inner {
+      background: rgba(255, 255, 255, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: var(--sg-radius-sm);
+      padding: 20px 28px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--sg-text-primary);
+      letter-spacing: 0.05em;
+      z-index: 1;
+    }
+
+    /* --- Gradient Border Effect --- */
+    .effect-gradient-border {
+      background: var(--sg-cloud-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-gradient-border-inner {
+      width: 140px;
+      height: 140px;
+      border-radius: var(--sg-radius-md);
+      background: var(--sg-snow);
+      position: relative;
+      isolation: isolate;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--sg-text-primary);
+    }
+
+    .effect-gradient-border-inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: var(--sg-radius-md);
+      padding: 2px;
+      background: var(--sg-gradient-aurora);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      z-index: -1;
+    }
+
+    /* --- Soft Glow Effect --- */
+    .effect-glow {
+      background: var(--sg-cloud-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-glow-orb {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: var(--sg-gradient-warm);
+      box-shadow:
+        0 0 30px rgba(244, 160, 192, 0.4),
+        0 0 60px rgba(244, 160, 192, 0.2),
+        0 0 100px rgba(255, 204, 182, 0.15);
+      animation: glowPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% {
+        box-shadow:
+          0 0 30px rgba(244, 160, 192, 0.4),
+          0 0 60px rgba(244, 160, 192, 0.2),
+          0 0 100px rgba(255, 204, 182, 0.15);
+        transform: scale(1);
+      }
+      100% {
+        box-shadow:
+          0 0 40px rgba(244, 160, 192, 0.5),
+          0 0 80px rgba(244, 160, 192, 0.3),
+          0 0 120px rgba(255, 204, 182, 0.2);
+        transform: scale(1.05);
+      }
+    }
+
+    /* --- Blob Morph Effect --- */
+    .effect-blob {
+      background: linear-gradient(135deg, var(--sg-petal-pink), var(--sg-cloud-white));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-blob-shape {
+      width: 120px;
+      height: 120px;
+      background: var(--sg-gradient-aurora);
+      border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+      animation: blobMorph 10s ease-in-out infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes blobMorph {
+      0%, 100% { border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%; }
+      25% { border-radius: 45% 55% 40% 60% / 55% 45% 60% 40%; }
+      50% { border-radius: 50% 50% 45% 55% / 40% 55% 50% 50%; }
+      75% { border-radius: 55% 45% 60% 40% / 60% 40% 45% 55%; }
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--sg-deep-indigo);
+      padding: 72px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: -10%;
+      width: 60%;
+      height: 160%;
+      background: linear-gradient(135deg, rgba(244, 160, 192, 0.15), rgba(195, 177, 225, 0.1));
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .motif-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -30%;
+      right: -10%;
+      width: 50%;
+      height: 150%;
+      background: linear-gradient(135deg, rgba(168, 230, 207, 0.12), rgba(184, 212, 227, 0.08));
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .motif-orb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: orbFloat 5s ease-in-out infinite;
+    }
+
+    .motif-orb:nth-child(1) { background: var(--sg-dawn-rose); }
+    .motif-orb:nth-child(2) { background: var(--sg-sunset-peach); animation-delay: -0.7s; }
+    .motif-orb:nth-child(3) { background: var(--sg-golden-haze); animation-delay: -1.4s; }
+    .motif-orb:nth-child(4) { background: var(--sg-aurora-mint); animation-delay: -2.1s; }
+    .motif-orb:nth-child(5) { background: var(--sg-sky-whisper); animation-delay: -2.8s; }
+    .motif-orb:nth-child(6) { background: var(--sg-lavender-mist); animation-delay: -3.5s; }
+    .motif-orb:nth-child(7) { background: var(--sg-lilac-dream); animation-delay: -4.2s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--sg-snow);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-banner p {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--sg-lavender-mist);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES (FEATURE LIST)
+       ============================================ */
+    .principles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .principle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--sg-radius-md);
+      padding: 28px 32px;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      transition: all var(--sg-transition-gentle);
+      box-shadow: var(--sg-shadow-sm);
+    }
+
+    .principle-item:hover {
+      transform: translateX(8px);
+      box-shadow: var(--sg-shadow-md);
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    .principle-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: var(--sg-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .principle-icon--1 {
+      background: var(--sg-gradient-warm);
+      box-shadow: 0 4px 12px rgba(244, 160, 192, 0.2);
+    }
+
+    .principle-icon--2 {
+      background: var(--sg-gradient-cool);
+      box-shadow: 0 4px 12px rgba(136, 216, 192, 0.2);
+    }
+
+    .principle-icon--3 {
+      background: linear-gradient(135deg, var(--sg-lavender-mist), var(--sg-dawn-rose));
+      box-shadow: 0 4px 12px rgba(195, 177, 225, 0.2);
+    }
+
+    .principle-icon--4 {
+      background: linear-gradient(135deg, var(--sg-sunset-peach), var(--sg-golden-haze));
+      box-shadow: 0 4px 12px rgba(255, 204, 182, 0.2);
+    }
+
+    .principle-text h3 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--sg-text-primary);
+      margin-bottom: 6px;
+    }
+
+    .principle-text p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--sg-text-secondary);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 56px 40px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-radius: var(--sg-radius-lg);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      position: relative;
+      box-shadow: var(--sg-shadow-md);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'DM Serif Display', serif;
+      font-size: 7rem;
+      background: var(--sg-gradient-warm);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.3;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--sg-text-primary);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      color: var(--sg-text-secondary);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 620px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.55);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border-radius: var(--sg-radius-lg);
+      padding: 64px 48px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      box-shadow: var(--sg-shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--sg-gradient-aurora);
+      border-radius: var(--sg-radius-lg) var(--sg-radius-lg) 0 0;
+    }
+
+    .cta-container h2 {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .cta-container .cta-sub {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--sg-text-secondary);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--sg-text-secondary);
+      margin-bottom: 28px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--sg-deep-indigo);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.85);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: 20%;
+      width: 60%;
+      height: 100%;
+      background: radial-gradient(ellipse, rgba(244, 160, 192, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      background: var(--sg-gradient-aurora);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.5);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.4);
+      transition: color var(--sg-transition-gentle);
+    }
+
+    .footer-links a:hover {
+      color: var(--sg-dawn-rose);
+    }
+
+    .footer-dots {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .footer-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.35;
+    }
+
+    .footer-dot:nth-child(1) { background: var(--sg-dawn-rose); }
+    .footer-dot:nth-child(2) { background: var(--sg-sunset-peach); }
+    .footer-dot:nth-child(3) { background: var(--sg-golden-haze); }
+    .footer-dot:nth-child(4) { background: var(--sg-aurora-mint); }
+    .footer-dot:nth-child(5) { background: var(--sg-lavender-mist); }
+
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 4px;
+      }
+
+      .nav-toggle span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--sg-text-secondary);
+        border-radius: 2px;
+        transition: all var(--sg-transition-gentle);
+      }
+
+      .nav-links--open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(249, 247, 244, 0.95);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 1.5rem 2rem;
+        gap: 1.25rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 85vh;
+      }
+
+      .section {
+        padding: clamp(48px, 8vw, 80px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 14px;
+        padding: 24px;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 24px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.65rem 1.5rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* Desktop: show toggle only on mobile */
+    @media (min-width: 769px) {
+      .nav-toggle {
+        display: none;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-blob,
+      .effect-mesh,
+      .effect-aurora::before,
+      .effect-glow-orb,
+      .effect-blob-shape,
+      .motif-orb,
+      .motif-banner::before {
+        animation: none;
+      }
+
+      .card, .color-chip, .effect-demo, .principle-item,
+      .btn, .tag, .nav, .nav-links a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">Soft Gradient</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-blob hero-blob--rose"></div>
+    <div class="hero-blob hero-blob--mint"></div>
+    <div class="hero-blob hero-blob--peach"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1><span class="gradient-text">Soft Gradient</span></h1>
+      <p class="hero-subtitle">
+        Dreamy color transitions, aurora-inspired luminosity, and gentle chromatic blending &mdash; interfaces that feel painted by light.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C150,80 350,0 600,40 C850,80 1050,0 1200,40 L1200,80 L0,80 Z" class="wave-fill--cloud"/>
+    </svg>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cloud" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Clarity, Lightness &amp; Warmth</h2>
+      <p class="section-subtitle">geometric sans-serifs with rounded warmth, refined serifs for elegance</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Outfit 700</p>
+            <p class="typo-display">Dreamy Light</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / DM Serif Display</p>
+            <p class="typo-heading">Elegant Gradient Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Outfit 300</p>
+            <p class="typo-subhead">Soft, airy subheadings that breathe</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body-text">Clean, highly legible body text with open letter-spacing. Optimized for reading against gradient-tinted backgrounds with medium weight and generous line height.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Friendly / Rubik 400</p>
+            <p class="typo-friendly">Rounded, approachable text for buttons and tags</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Inter 600</p>
+            <p class="typo-ui-label">Interface Labels &amp; Captions</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4.5rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 700; font-size: 2rem; color: var(--sg-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.75rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--sg-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.75rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 300; font-size: 1.2rem; color: var(--sg-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--sg-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Rubik', sans-serif; font-size: 1rem; color: var(--sg-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--sg-muted-slate); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(244, 160, 192, 0.2);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Outfit', sans-serif; color: var(--sg-dawn-rose);">Outfit 600</strong> + <strong>Inter 400</strong><br>
+              <span style="color: var(--sg-muted-slate); font-size: 0.85rem;">Modern, clean, professional softness</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--sg-dawn-rose);">DM Serif Display</strong> + <strong style="font-family: 'Rubik', sans-serif;">Rubik 400</strong><br>
+              <span style="color: var(--sg-muted-slate); font-size: 0.85rem;">Elegant warmth, editorial quality</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Outfit', sans-serif; color: var(--sg-dawn-rose);">Outfit 300</strong> + <strong style="font-family: 'Rubik', sans-serif;">Rubik 300</strong><br>
+              <span style="color: var(--sg-muted-slate); font-size: 0.85rem;">Ultra-light, airy, wellness-focused</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C200,0 400,80 600,40 C800,0 1000,80 1200,40 L1200,80 L0,80 Z" class="wave-fill--pink"/>
+    </svg>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--tinted" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Neo-Pastel Luminosity</h2>
+      <p class="section-subtitle">sunrise spectra, aurora phenomena, and atmospheric warmth</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f4a0c0;"></div>
+          <div class="color-info">
+            <div class="color-name">Dawn Rose</div>
+            <div class="color-hex">#F4A0C0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #fddde6;"></div>
+          <div class="color-info">
+            <div class="color-name">Petal Pink</div>
+            <div class="color-hex">#FDDDE6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffccb6;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunset Peach</div>
+            <div class="color-hex">#FFCCB6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffe0a3;"></div>
+          <div class="color-info">
+            <div class="color-name">Golden Haze</div>
+            <div class="color-hex">#FFE0A3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a8e6cf;"></div>
+          <div class="color-info">
+            <div class="color-name">Aurora Mint</div>
+            <div class="color-hex">#A8E6CF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #88d8c0;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Teal</div>
+            <div class="color-hex">#88D8C0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b8d4e3;"></div>
+          <div class="color-info">
+            <div class="color-name">Sky Whisper</div>
+            <div class="color-hex">#B8D4E3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c3b1e1;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender Mist</div>
+            <div class="color-hex">#C3B1E1</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d4b8e0;"></div>
+          <div class="color-info">
+            <div class="color-name">Lilac Dream</div>
+            <div class="color-hex">#D4B8E0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff8a80;"></div>
+          <div class="color-info">
+            <div class="color-name">Coral Bloom</div>
+            <div class="color-hex">#FF8A80</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f9f7f4;"></div>
+          <div class="color-info">
+            <div class="color-name">Cloud White</div>
+            <div class="color-hex">#F9F7F4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3d3d4e;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Charcoal</div>
+            <div class="color-hex">#3D3D4E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6b7280;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Slate</div>
+            <div class="color-hex">#6B7280</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2d2b55;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Indigo</div>
+            <div class="color-hex">#2D2B55</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #c3b1e1, #f4a0c0, #ffccb6, #a8e6cf); position: relative;">
+            <div style="position: absolute; inset: 0; backdrop-filter: blur(0px); background: transparent;"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Aurora Blend</div>
+            <div class="color-hex">Gradient</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider" style="background: var(--sg-petal-pink);">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,60 C200,20 400,80 600,40 C800,0 1000,60 1200,30 L1200,80 L0,80 Z" class="wave-fill--cloud"/>
+    </svg>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--mesh" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Frosted Glass &amp; Gentle Elevation</h2>
+      <p class="section-subtitle">translucent surfaces floating above atmospheric color fields</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--warm">&#9678;</div>
+          <h3>Mesh Gradient Backgrounds</h3>
+          <p>Multiple overlapping radial gradients blend together to create organic, multi-directional color fields that feel hand-painted rather than computed.</p>
+          <span class="tag">Background</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--cool">&#10052;</div>
+          <h3>Frosted Glass Containers</h3>
+          <p>Cards and modals use backdrop-filter blur over gradient backgrounds, creating depth through translucency rather than shadow alone.</p>
+          <span class="tag">Glassmorphism</span>
+          <span class="tag">Depth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--lavender">&#10022;</div>
+          <h3>Aurora-Inspired Motion</h3>
+          <p>Undulating bands of soft color reference the northern lights, animated with slow breathing keyframe movements across the viewport.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">Atmosphere</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--aurora">&#9711;</div>
+          <h3>Rounded Geometry</h3>
+          <p>Border radii of 16-32px on cards, fully rounded pill buttons, and soft circular accents reinforce the gentle, approachable character throughout.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Shape</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--peach">&#9681;</div>
+          <h3>Gradient Text Fills</h3>
+          <p>Display typography carries gradient fills via background-clip, used sparingly on hero headlines for a luminous, multi-hued effect.</p>
+          <span class="tag">Typography</span>
+          <span class="tag">Visual</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rose">&#9670;</div>
+          <h3>Subtle Grain Texture</h3>
+          <p>A fine noise texture at very low opacity layered over gradients adds tactile quality and prevents banding artifacts in smooth transitions.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Detail</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+      </div>
+      <h2>Color as Atmosphere, Not Decoration</h2>
+      <p>Gradients establish the environmental mood of the entire composition, like natural light</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--cloud">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Soft Gradient Philosophy</h2>
+      <p class="section-subtitle">softness, atmosphere, translucency, and intentional subtlety</p>
+
+      <div class="principles-list">
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--1">&#9673;</div>
+          <div class="principle-text">
+            <h3>Softness Over Sharpness</h3>
+            <p>Every edge, shadow, and transition should feel gentle. Nothing should jolt or jar the viewer. Replace hard lines with diffused borders, swap solid drops for colored glows, and let every interaction ease rather than snap.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--2">&#9675;</div>
+          <div class="principle-text">
+            <h3>Depth Through Translucency</h3>
+            <p>Hierarchy is established by layering translucent surfaces over gradient fields rather than by stark color contrast or heavy borders. Frosted glass panels create visual depth while letting the atmospheric background breathe through.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--3">&#10047;</div>
+          <div class="principle-text">
+            <h3>Intentional Subtlety</h3>
+            <p>Restraint is key &mdash; gradients should feel like natural light, not a color explosion. Two or three harmonious hues per gradient, never a full rainbow. Progressive disclosure of complexity rewards closer inspection.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--4">&#9788;</div>
+          <div class="principle-text">
+            <h3>Warmth and Approachability</h3>
+            <p>The aesthetic communicates human warmth. Even blue-dominant palettes carry enough warm undertone to feel inviting rather than clinical. Generous whitespace filled with gradient color makes empty areas feel intentional and luminous.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,50 C300,0 600,80 900,30 C1050,5 1150,50 1200,40 L1200,80 L0,80 Z" class="wave-fill--cloud"/>
+    </svg>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--cloud" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Atmospheric Techniques</h2>
+      <p class="section-subtitle">all dreamy effects achieved with pure CSS, no image assets</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-mesh"></div>
+          <div class="effect-caption">
+            <h4>Mesh Gradient</h4>
+            <p>Layered radial gradients at different positions create organic, painterly color blends.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-aurora"></div>
+          <div class="effect-caption">
+            <h4>Aurora Borealis</h4>
+            <p>Blurred gradient bands over dark backgrounds simulate the undulating northern lights.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-glass">
+            <div class="effect-glass-inner">Frosted Glass</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Frosted Glass</h4>
+            <p>Backdrop-filter blur with translucent white creates depth over gradient fields.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gradient-border">
+            <div class="effect-gradient-border-inner">Gradient<br>Border</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Gradient Border</h4>
+            <p>CSS mask compositing creates a gradient stroke around any element.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-glow">
+            <div class="effect-glow-orb"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Soft Glow</h4>
+            <p>Layered colored box-shadows create a warm, luminous orb that pulses gently.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-blob">
+            <div class="effect-blob-shape"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Organic Blob</h4>
+            <p>Animated border-radius creates fluid, morphing shapes that echo natural forms.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C200,70 400,10 600,50 C800,80 1000,20 1200,50 L1200,80 L0,80 Z" class="wave-fill--pink"/>
+    </svg>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--tinted">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Gentle Gradient Buttons</h2>
+      <p class="section-subtitle">warm pills, frosted glass, and ghost variants</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Warm Gradient</a>
+        <a href="#" class="btn btn-cool">Cool Gradient</a>
+        <a href="#" class="btn btn-secondary">Frosted Glass</a>
+        <a href="#" class="btn btn-ghost">Ghost Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider" style="background: var(--sg-petal-pink);">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,40 C150,0 350,80 600,35 C850,0 1050,70 1200,40 L1200,80 L0,80 Z" class="wave-fill--cloud"/>
+    </svg>
+  </div>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--mesh">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Soft Gradient design treats the entire canvas as a living, breathing color field &mdash; serene, sophisticated, and effortlessly modern, like light refracting through morning mist.
+        </blockquote>
+        <cite>&mdash; The Soft Gradient Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--cloud">
+    <div class="container">
+      <div class="cta-container">
+        <h2><span class="gradient-text">Paint with Light</span></h2>
+        <span class="cta-sub">serenity, sophistication, warmth</span>
+        <p>
+          The Soft Gradient aesthetic embraces dreamy color transitions, frosted glass depth, aurora-inspired motion, and intentional subtlety. Let every interface feel atmospheric, calming, and effortlessly modern.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1200 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0,30 C300,70 600,10 900,50 C1100,70 1180,30 1200,40 L1200,80 L0,80 Z" class="wave-fill--indigo"/>
+    </svg>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Soft Gradient</h3>
+      <p>
+        A design aesthetic reference celebrating dreamy color transitions, frosted glass depth, and aurora-inspired luminosity. All effects achieved with pure CSS &mdash; no image assets.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-dots">
+        <span class="footer-dot"></span>
+        <span class="footer-dot"></span>
+        <span class="footer-dot"></span>
+        <span class="footer-dot"></span>
+        <span class="footer-dot"></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Soft Gradient &bull; Painted by light</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Navigation scroll effect
+    const nav = document.getElementById('nav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset;
+      if (currentScroll > 60) {
+        nav.classList.add('nav--scrolled');
+      } else {
+        nav.classList.remove('nav--scrolled');
+      }
+      lastScroll = currentScroll;
+    }, { passive: true });
+
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    if (navToggle && navLinks) {
+      navToggle.addEventListener('click', () => {
+        navLinks.classList.toggle('nav-links--open');
+      });
+
+      // Close mobile nav on link click
+      navLinks.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('nav-links--open');
+        });
+      });
+    }
+  </script>
+</body>
+</html>

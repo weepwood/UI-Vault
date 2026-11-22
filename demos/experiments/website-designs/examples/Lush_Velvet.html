@@ -1,0 +1,1869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lush Velvet -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Raleway:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Velvet Backgrounds --- */
+      --velvet-noir: #1A0A12;
+      --velvet-deep: #2D1225;
+      --velvet-plum: #4A1942;
+      --velvet-mauve: #6B1D4A;
+
+      /* --- Jewel Tones --- */
+      --velvet-ruby: #8B1A3A;
+      --velvet-amethyst: #6E2C6B;
+      --velvet-emerald: #1B4D3E;
+      --velvet-sapphire: #0F3460;
+
+      /* --- Metallics --- */
+      --velvet-gold: #D4AF37;
+      --velvet-champagne: #C9A96E;
+      --velvet-rose-gold: #B76E79;
+
+      /* --- Text Tones --- */
+      --velvet-cream: #F5E6D3;
+      --velvet-ivory: #E8D5C4;
+      --velvet-taupe: #A89080;
+      --velvet-bistre: #3D2B1F;
+
+      /* --- Functional Aliases --- */
+      --bg-primary: var(--velvet-noir);
+      --bg-surface: var(--velvet-deep);
+      --bg-elevated: var(--velvet-plum);
+      --text-primary: var(--velvet-cream);
+      --text-secondary: var(--velvet-ivory);
+      --text-muted: var(--velvet-taupe);
+      --accent-primary: var(--velvet-gold);
+      --accent-action: var(--velvet-ruby);
+      --border-subtle: rgba(212, 175, 55, 0.15);
+      --border-accent: rgba(212, 175, 55, 0.4);
+
+      /* --- Shadows --- */
+      --shadow-soft: 0 8px 32px rgba(26, 10, 18, 0.6);
+      --shadow-pillowed: 0 4px 20px rgba(26, 10, 18, 0.4), 0 1px 4px rgba(26, 10, 18, 0.3);
+      --shadow-glow: 0 0 30px rgba(139, 26, 58, 0.2);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Raleway', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 300;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      letter-spacing: 0.03em;
+      color: var(--text-primary);
+      background-color: var(--bg-primary);
+      overflow-x: hidden;
+    }
+
+    /* Velvet fabric grain overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      color: var(--velvet-gold);
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      background: linear-gradient(
+        180deg,
+        rgba(26, 10, 18, 0.95) 0%,
+        rgba(26, 10, 18, 0.85) 100%
+      );
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--velvet-gold);
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-brand:hover {
+      color: var(--velvet-champagne);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--velvet-ivory);
+      padding: 0.5rem 0;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--velvet-gold);
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover {
+      color: var(--velvet-gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(139, 26, 58, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(110, 44, 107, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 70%, rgba(27, 77, 62, 0.1) 0%, transparent 35%),
+        var(--bg-primary);
+    }
+
+    /* Animated ambient glow */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 26, 58, 0.15) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: velvetBreathe 8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes velvetBreathe {
+      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
+    }
+
+    .hero-label {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--velvet-champagne);
+      margin-bottom: 2rem;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(
+        135deg,
+        var(--velvet-gold) 0%,
+        var(--velvet-champagne) 40%,
+        var(--velvet-gold) 60%,
+        var(--velvet-rose-gold) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-subtitle {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      color: var(--velvet-ivory);
+      max-width: 600px;
+      margin: 0 auto 3rem;
+      line-height: 1.8;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      padding: 1rem 2.5rem;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+
+    .btn-primary {
+      color: var(--velvet-cream);
+      background: linear-gradient(135deg, var(--velvet-ruby) 0%, #A02050 50%, var(--velvet-ruby) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #A02050 0%, #B82860 50%, #A02050 100%);
+      border-color: var(--velvet-gold);
+      box-shadow: 0 4px 20px rgba(139, 26, 58, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:hover::after {
+      left: 100%;
+    }
+
+    .btn-secondary {
+      color: var(--velvet-gold);
+      background: transparent;
+      border: 1px solid var(--velvet-gold);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-emerald {
+      color: var(--velvet-cream);
+      background: linear-gradient(135deg, var(--velvet-emerald) 0%, #1E6B52 50%, var(--velvet-emerald) 100%);
+      border: 1px solid rgba(27, 77, 62, 0.5);
+    }
+
+    .btn-emerald:hover {
+      background: linear-gradient(135deg, #1E6B52 0%, #238B6A 50%, #1E6B52 100%);
+      border-color: var(--velvet-champagne);
+      box-shadow: 0 4px 20px rgba(27, 77, 62, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .btn-amethyst {
+      color: var(--velvet-cream);
+      background: linear-gradient(135deg, var(--velvet-amethyst) 0%, #8A3888 50%, var(--velvet-amethyst) 100%);
+      border: 1px solid rgba(110, 44, 107, 0.5);
+    }
+
+    .btn-amethyst:hover {
+      background: linear-gradient(135deg, #8A3888 0%, #A048A0 50%, #8A3888 100%);
+      border-color: var(--velvet-champagne);
+      box-shadow: 0 4px 20px rgba(110, 44, 107, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       GOLD ORNAMENTAL DIVIDER
+       ============================================ */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 0 auto;
+      max-width: 400px;
+      padding: 2rem 2rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--velvet-gold), transparent);
+    }
+
+    .divider-diamond {
+      width: 8px;
+      height: 8px;
+      background: var(--velvet-gold);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section-alt {
+      background: linear-gradient(
+        180deg,
+        var(--bg-primary) 0%,
+        var(--bg-surface) 20%,
+        var(--bg-surface) 80%,
+        var(--bg-primary) 100%
+      );
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--velvet-rose-gold);
+      text-align: center;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .section-header h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .section-header p {
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      font-size: 1.05rem;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--velvet-rose-gold);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-subtle), transparent);
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--velvet-gold), var(--velvet-champagne), var(--velvet-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--velvet-gold);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-elegant {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--velvet-champagne);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--velvet-cream);
+      margin-bottom: 8px;
+    }
+
+    .typo-sans {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      letter-spacing: 0.04em;
+      color: var(--velvet-ivory);
+      line-height: 1.7;
+    }
+
+    .typo-label {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--velvet-champagne);
+    }
+
+    .typo-right {
+      background: linear-gradient(145deg, rgba(45, 18, 37, 0.9) 0%, rgba(45, 18, 37, 0.7) 100%);
+      border-radius: 12px;
+      padding: 2.5rem;
+      border: 1px solid var(--border-subtle);
+      box-shadow: var(--shadow-pillowed);
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+      color: var(--velvet-ivory);
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--velvet-taupe);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px;
+      overflow: hidden;
+      background: linear-gradient(145deg, rgba(45, 18, 37, 0.9), rgba(45, 18, 37, 0.7));
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+      box-shadow: var(--shadow-pillowed);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-pillowed), var(--shadow-glow);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Velvet pile directional light on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at 30% 30%, rgba(255, 255, 255, 0.12) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--velvet-cream);
+      margin-bottom: 2px;
+      letter-spacing: 0.03em;
+    }
+
+    .color-hex {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--velvet-taupe);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(45, 18, 37, 0.9) 0%, rgba(45, 18, 37, 0.7) 100%);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 2.5rem;
+      box-shadow: var(--shadow-pillowed);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gold sheen line at top of cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--velvet-champagne) 20%,
+        var(--velvet-gold) 50%,
+        var(--velvet-champagne) 80%,
+        transparent 100%
+      );
+      opacity: 0.4;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-pillowed), var(--shadow-glow);
+      border-color: var(--border-accent);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      position: relative;
+      border: 1px solid var(--border-subtle);
+    }
+
+    .card-icon--ruby {
+      background: linear-gradient(135deg, var(--velvet-ruby), #A02050);
+      box-shadow: 0 4px 14px rgba(139, 26, 58, 0.35);
+    }
+
+    .card-icon--amethyst {
+      background: linear-gradient(135deg, var(--velvet-amethyst), #8A3888);
+      box-shadow: 0 4px 14px rgba(110, 44, 107, 0.35);
+    }
+
+    .card-icon--emerald {
+      background: linear-gradient(135deg, var(--velvet-emerald), #1E6B52);
+      box-shadow: 0 4px 14px rgba(27, 77, 62, 0.35);
+    }
+
+    .card-icon--sapphire {
+      background: linear-gradient(135deg, var(--velvet-sapphire), #1A4A80);
+      box-shadow: 0 4px 14px rgba(15, 52, 96, 0.35);
+    }
+
+    .card-icon--gold {
+      background: linear-gradient(135deg, var(--velvet-gold), var(--velvet-champagne));
+      box-shadow: 0 4px 14px rgba(212, 175, 55, 0.3);
+    }
+
+    .card-icon--rose {
+      background: linear-gradient(135deg, var(--velvet-rose-gold), #D08090);
+      box-shadow: 0 4px 14px rgba(183, 110, 121, 0.35);
+    }
+
+    .card h3 {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: var(--velvet-gold);
+    }
+
+    .card p {
+      color: var(--velvet-ivory);
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      color: var(--velvet-champagne);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.35s ease;
+    }
+
+    .tag:hover {
+      background: rgba(212, 175, 55, 0.15);
+      border-color: var(--velvet-gold);
+      color: var(--velvet-gold);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      background: linear-gradient(145deg, rgba(45, 18, 37, 0.9), rgba(45, 18, 37, 0.7));
+      box-shadow: var(--shadow-pillowed);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-pillowed), var(--shadow-glow);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Velvet Texture */
+    .effect-velvet-texture {
+      background-color: var(--velvet-deep);
+      background-image:
+        radial-gradient(ellipse at 30% 20%, rgba(75, 25, 66, 0.4) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 80%, rgba(45, 18, 37, 0.5) 0%, transparent 50%);
+    }
+
+    .effect-velvet-texture::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      pointer-events: none;
+    }
+
+    .effect-velvet-texture::after {
+      content: 'VELVET';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--velvet-champagne);
+      text-shadow: 0 2px 8px rgba(26, 10, 18, 0.6);
+      z-index: 1;
+    }
+
+    /* Effect 2: Gold Shimmer */
+    .effect-gold-shimmer {
+      background: linear-gradient(135deg, var(--velvet-noir) 0%, var(--velvet-deep) 100%);
+    }
+
+    .effect-gold-shimmer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        transparent 20%,
+        rgba(212, 175, 55, 0.08) 30%,
+        rgba(212, 175, 55, 0.15) 40%,
+        rgba(201, 169, 110, 0.1) 50%,
+        rgba(212, 175, 55, 0.08) 60%,
+        transparent 70%
+      );
+      background-size: 200% 200%;
+      animation: goldShimmer 4s ease-in-out infinite;
+    }
+
+    @keyframes goldShimmer {
+      0% { background-position: 200% 200%; }
+      100% { background-position: -200% -200%; }
+    }
+
+    .effect-gold-shimmer::after {
+      content: 'SHIMMER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #D4AF37 0%, #F5E6D3 30%, #D4AF37 50%, #C9A96E 80%, #D4AF37 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: textShimmer 6s linear infinite;
+      z-index: 1;
+    }
+
+    @keyframes textShimmer {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* Effect 3: Jewel Radial */
+    .effect-jewel-radial {
+      background:
+        radial-gradient(ellipse at 25% 40%, rgba(139, 26, 58, 0.6) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 60%, rgba(110, 44, 107, 0.5) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 90%, rgba(27, 77, 62, 0.4) 0%, transparent 40%),
+        var(--velvet-noir);
+    }
+
+    .effect-jewel-radial::after {
+      content: 'JEWEL';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--velvet-cream);
+      text-shadow: 0 0 20px rgba(139, 26, 58, 0.5), 0 0 40px rgba(110, 44, 107, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 4: Pillowed Depth */
+    .effect-pillowed {
+      background: linear-gradient(145deg, var(--velvet-deep) 0%, var(--velvet-plum) 50%, var(--velvet-deep) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-pillowed::before {
+      content: '';
+      position: absolute;
+      width: 60%;
+      height: 55%;
+      border-radius: 16px;
+      background: linear-gradient(145deg, rgba(74, 25, 66, 0.6), rgba(45, 18, 37, 0.8));
+      box-shadow:
+        0 8px 32px rgba(26, 10, 18, 0.5),
+        0 2px 8px rgba(26, 10, 18, 0.4),
+        inset 0 1px 0 rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.12);
+    }
+
+    .effect-pillowed::after {
+      content: 'DEPTH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--velvet-gold);
+      z-index: 1;
+    }
+
+    /* Effect 5: Ruby Glow */
+    .effect-ruby-glow {
+      background: var(--velvet-noir);
+    }
+
+    .effect-ruby-glow::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 26, 58, 0.4) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: rubyPulse 5s ease-in-out infinite;
+    }
+
+    @keyframes rubyPulse {
+      0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(0.8); }
+      50% { opacity: 1; transform: translate(-50%, -50%) scale(1.2); }
+    }
+
+    .effect-ruby-glow::after {
+      content: 'GLOW';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--velvet-ruby), var(--velvet-amethyst), var(--velvet-ruby));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      z-index: 1;
+    }
+
+    /* Effect 6: Draped Layers */
+    .effect-draped {
+      background: var(--velvet-noir);
+      overflow: hidden;
+    }
+
+    .effect-draped::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -10%;
+      width: 120%;
+      height: 140%;
+      background:
+        linear-gradient(160deg, transparent 30%, rgba(74, 25, 66, 0.3) 35%, transparent 40%),
+        linear-gradient(150deg, transparent 45%, rgba(107, 29, 74, 0.25) 50%, transparent 55%),
+        linear-gradient(170deg, transparent 60%, rgba(45, 18, 37, 0.35) 65%, transparent 70%),
+        linear-gradient(155deg, transparent 15%, rgba(139, 26, 58, 0.15) 20%, transparent 25%);
+    }
+
+    .effect-draped::after {
+      content: 'DRAPED';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      font-style: italic;
+      color: var(--velvet-champagne);
+      text-shadow: 0 2px 10px rgba(26, 10, 18, 0.5);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--velvet-gold);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--velvet-taupe);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      text-align: center;
+      padding: 6rem 2rem;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(110, 44, 107, 0.1) 0%, transparent 50%),
+        var(--bg-primary);
+    }
+
+    .quote-block {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      padding: 3rem 2rem;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--velvet-gold), transparent);
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--velvet-gold), transparent);
+    }
+
+    blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--velvet-cream);
+      max-width: 700px;
+      margin: 0 auto 2rem;
+      line-height: 1.5;
+      position: relative;
+    }
+
+    blockquote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 5rem;
+      color: var(--velvet-gold);
+      opacity: 0.25;
+      position: absolute;
+      top: -2rem;
+      left: -1.5rem;
+      line-height: 1;
+    }
+
+    .quote-author {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--velvet-champagne);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 6rem 2rem;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(139, 26, 58, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 30%, rgba(110, 44, 107, 0.1) 0%, transparent 40%),
+        var(--bg-surface);
+    }
+
+    .cta-container {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 4rem 3rem;
+      background: linear-gradient(145deg, rgba(45, 18, 37, 0.8), rgba(45, 18, 37, 0.5));
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gold shimmer line at top */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--velvet-champagne),
+        var(--velvet-gold),
+        var(--velvet-champagne),
+        transparent
+      );
+      opacity: 0.5;
+    }
+
+    .cta-container h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .cta-container .cta-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--velvet-champagne);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .cta-container p {
+      color: var(--velvet-ivory);
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 520px;
+      margin: 0 auto 2rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 4rem 2rem 2rem;
+      border-top: 1px solid var(--border-subtle);
+      text-align: center;
+      background: var(--bg-primary);
+      position: relative;
+    }
+
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--velvet-gold);
+      margin-bottom: 1rem;
+    }
+
+    .footer p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .footer-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--velvet-ivory);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--velvet-gold);
+    }
+
+    .footer-ornament {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 2rem;
+      opacity: 0.3;
+    }
+
+    .footer-ornament span {
+      width: 6px;
+      height: 6px;
+      background: var(--velvet-gold);
+      transform: rotate(45deg);
+    }
+
+    .footer-copy {
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .nav-links {
+        gap: 1.25rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .hero {
+        padding: 4rem 1.5rem;
+        min-height: 80vh;
+      }
+
+      .section {
+        padding: clamp(48px, 6vw, 72px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.85rem 2rem;
+        font-size: 0.78rem;
+      }
+
+      .cta-container {
+        padding: 3rem 2rem;
+      }
+
+      .quote-block {
+        padding: 2rem 1rem;
+      }
+
+      .footer {
+        padding: 3rem 1.5rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.72rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before {
+        animation: none;
+      }
+
+      .effect-gold-shimmer::before,
+      .effect-gold-shimmer::after,
+      .effect-ruby-glow::before {
+        animation: none;
+      }
+
+      .card, .btn, .color-chip, .tag, .effect-demo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Velour</a>
+    <div class="nav-links">
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#collection">Collection</a>
+      <a href="#effects">Effects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <span class="hero-label">Design Aesthetic Reference</span>
+    <h1 class="hero-title">Lush Velvet</h1>
+    <p class="hero-subtitle">
+      Rich textured surfaces, deep jewel tones, and tactile depth
+      woven into every detail. An aesthetic that invites you to linger.
+    </p>
+    <div class="hero-actions">
+      <a href="#collection" class="btn btn-primary">Explore Collection</a>
+      <a href="#palette" class="btn btn-secondary">View Palette</a>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-diamond"></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Typography</span>
+        <h2>Refined, Confident &amp; Warm</h2>
+        <p>Elegant serifs paired with airy sans-serifs &mdash; timeless sophistication with a touch of sensuality.</p>
+      </div>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display</p>
+            <p class="typo-display">Opulent Surfaces</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display</p>
+            <p class="typo-heading">Jewel-Tone Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Elegant / Cormorant Garamond</p>
+            <p class="typo-elegant">Graceful curves and classical proportions</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora</p>
+            <p class="typo-body">Warm serif text for comfortable extended reading. Calligraphy-rooted with moderate contrast, designed to invite lingering over every sentence.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Sans-Serif / Raleway</p>
+            <p class="typo-sans">Clean, light-weight sans-serif with generous letter-spacing for an airy, luxurious reading experience.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Raleway 500</p>
+            <p class="typo-label">Navigation &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">7rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; background: linear-gradient(135deg, var(--velvet-gold), var(--velvet-champagne)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 600; color: var(--velvet-gold);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; font-weight: 300; font-style: italic; color: var(--velvet-champagne);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: var(--velvet-cream);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Raleway', sans-serif; font-weight: 300; font-size: 0.95rem; color: var(--velvet-ivory);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Raleway', sans-serif; font-weight: 500; font-size: 0.75rem; color: var(--velvet-champagne); text-transform: uppercase; letter-spacing: 0.2em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--border-subtle);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--velvet-gold);">Playfair Display</strong> + <strong style="color: var(--velvet-cream);">Raleway (300)</strong><br>
+              <span style="color: var(--velvet-taupe); font-size: 0.82rem;">Classic luxury, high contrast between display and text</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cormorant Garamond', serif; color: var(--velvet-gold);">Cormorant Garamond</strong> + <strong style="color: var(--velvet-cream);">Raleway (300)</strong><br>
+              <span style="color: var(--velvet-taupe); font-size: 0.82rem;">Graceful traditional headings with clean modern body</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--velvet-gold);">Playfair Display</strong> + <strong style="font-family: 'Lora', serif; color: var(--velvet-cream);">Lora</strong><br>
+              <span style="color: var(--velvet-taupe); font-size: 0.82rem;">All-serif warmth, literary and intimate</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-diamond"></span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section-alt" id="palette">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Color Palette</span>
+        <h2>Jewel Tones &amp; Gold Metallics</h2>
+        <p>Deeply saturated hues drawn from precious stones, warmed by candlelight, and deepened by shadow.</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A0A12;"></div>
+          <div class="color-info">
+            <div class="color-name">Velvet Noir</div>
+            <div class="color-hex">#1A0A12</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D1225;"></div>
+          <div class="color-info">
+            <div class="color-name">Velvet Deep</div>
+            <div class="color-hex">#2D1225</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A1942;"></div>
+          <div class="color-info">
+            <div class="color-name">Plum</div>
+            <div class="color-hex">#4A1942</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B1D4A;"></div>
+          <div class="color-info">
+            <div class="color-name">Mauve</div>
+            <div class="color-hex">#6B1D4A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B1A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Ruby</div>
+            <div class="color-hex">#8B1A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6E2C6B;"></div>
+          <div class="color-info">
+            <div class="color-name">Amethyst</div>
+            <div class="color-hex">#6E2C6B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B4D3E;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald</div>
+            <div class="color-hex">#1B4D3E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0F3460;"></div>
+          <div class="color-info">
+            <div class="color-name">Sapphire</div>
+            <div class="color-hex">#0F3460</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #D4AF37, #F5E6D3, #D4AF37); position: relative;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.25) 0%, transparent 60%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Gold</div>
+            <div class="color-hex">#D4AF37</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9A96E;"></div>
+          <div class="color-info">
+            <div class="color-name">Champagne</div>
+            <div class="color-hex">#C9A96E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B76E79;"></div>
+          <div class="color-info">
+            <div class="color-name">Rose Gold</div>
+            <div class="color-hex">#B76E79</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5E6D3;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Cream</div>
+            <div class="color-hex">#F5E6D3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8D5C4;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Ivory</div>
+            <div class="color-hex">#E8D5C4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A89080;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Taupe</div>
+            <div class="color-hex">#A89080</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3D2B1F;"></div>
+          <div class="color-info">
+            <div class="color-name">Bistre</div>
+            <div class="color-hex">#3D2B1F</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-diamond"></span>
+  </div>
+
+  <!-- ===== CARDS SECTION ===== -->
+  <section class="section" id="collection">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">The Collection</span>
+        <h2>Curated Velvet Experiences</h2>
+        <p>Each piece is crafted with intention, layered with meaning, and finished with the reverence that fine materials deserve.</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--ruby">&#9830;</div>
+          <h3>Ruby Parlour</h3>
+          <p>Deep crimson surfaces that absorb light and release warmth. A space designed for intimate conversations and quiet confidence.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Warmth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--emerald">&#9827;</div>
+          <h3>Emerald Chamber</h3>
+          <p>Forest depths translated into fabric and form. Cool jewel tones balanced with gold accents create grounding sophistication.</p>
+          <span class="tag">Depth</span>
+          <span class="tag">Balance</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amethyst">&#9829;</div>
+          <h3>Amethyst Suite</h3>
+          <p>Purple twilight captured in plush surfaces. Where the boundary between comfort and artistry dissolves entirely.</p>
+          <span class="tag">Luxury</span>
+          <span class="tag">Comfort</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sapphire">&#9733;</div>
+          <h3>Sapphire Gallery</h3>
+          <p>Deep blue serenity translated into fabric surfaces. A contemplative space where every shadow tells a story of quiet refinement.</p>
+          <span class="tag">Serenity</span>
+          <span class="tag">Refinement</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#10022;</div>
+          <h3>Gold Accents</h3>
+          <p>Metallic highlights used as jewelry, not wallpaper. Each gleaming detail earns its place through restraint and precision.</p>
+          <span class="tag">Metallic</span>
+          <span class="tag">Restraint</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rose">&#10047;</div>
+          <h3>Rose Boudoir</h3>
+          <p>Warm pink metallics blush against deep plum backgrounds. An intimate palette that speaks in whispers of romantic opulence.</p>
+          <span class="tag">Intimate</span>
+          <span class="tag">Romance</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-diamond"></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section-alt" id="effects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Visual Effects</span>
+        <h2>CSS Textures &amp; Techniques</h2>
+        <p>Tactile surface simulations crafted entirely with CSS &mdash; no image assets required.</p>
+      </div>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-velvet-texture"></div>
+          <div class="effect-caption">
+            <h4>Velvet Texture</h4>
+            <p>Noise overlays and radial gradients simulate the grain and pile of velvet fabric.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gold-shimmer"></div>
+          <div class="effect-caption">
+            <h4>Gold Shimmer</h4>
+            <p>Animated gradient sweeps create the gleam of metallic accents catching light.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-jewel-radial"></div>
+          <div class="effect-caption">
+            <h4>Jewel Radial Glow</h4>
+            <p>Overlapping radial gradients in ruby, amethyst, and emerald create jewel-toned depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-pillowed"></div>
+          <div class="effect-caption">
+            <h4>Pillowed Depth</h4>
+            <p>Soft spread shadows and subtle borders create cushioned, upholstered-feeling elements.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-ruby-glow"></div>
+          <div class="effect-caption">
+            <h4>Ruby Pulse</h4>
+            <p>Breathing radial glow animation creates an ambient warmth emanating from the surface.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-draped"></div>
+          <div class="effect-caption">
+            <h4>Draped Layers</h4>
+            <p>Angled linear gradients suggest fabric folds and layered translucent velvet panels.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-diamond"></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Interactive Elements</span>
+        <h2>Velvet Buttons</h2>
+        <p>Weighted transitions and soft glows create tactile, luxurious interactive elements.</p>
+      </div>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Ruby Primary</a>
+        <a href="#" class="btn btn-secondary">Gold Outlined</a>
+        <a href="#" class="btn btn-emerald">Emerald Accent</a>
+        <a href="#" class="btn btn-amethyst">Amethyst Action</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="quote-section">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Luxury is not about the price tag. It is about the feeling
+          of surfaces that have been considered, of colors steeped
+          until they reach their truest depth.
+        </blockquote>
+        <span class="quote-author">&mdash; The Velour Atelier</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Experience the Aesthetic</h2>
+        <span class="cta-tagline">texture, depth, and warmth in every detail</span>
+        <p>
+          The Lush Velvet design system embraces richness through material quality &mdash; color depth, fabric texture, pillowed shadows, and gold accents used as jewelry. Ground every surface in warm noir, then let the jewel tones breathe.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <span class="divider-diamond"></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer" id="contact">
+    <div class="container">
+      <div class="footer-brand">Velour</div>
+      <p>
+        A design aesthetic reference celebrating the rich, tactile, jewel-toned visual language of Lush Velvet. Deep surfaces, gold accents, and pillowed depth &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#collection">Collection</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-ornament">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Lush Velvet &bull; Tactile digital luxury</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,2138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Textured Minimalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Manrope:wght@300;400;500&family=Source+Serif+4:wght@300;400;500&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --tm-bg-primary: #FAF7F2;
+      --tm-bg-surface: #F3EDE4;
+      --tm-bg-surface-alt: #E8E0D4;
+      --tm-bg-hover: #C9B9A8;
+
+      /* --- Borders --- */
+      --tm-border: #D5CCC0;
+      --tm-border-light: rgba(213, 204, 192, 0.5);
+
+      /* --- Text --- */
+      --tm-text-primary: #3D3833;
+      --tm-text-body: #6B6359;
+      --tm-text-secondary: #9C9488;
+      --tm-text-muted: #B8AFA4;
+      --tm-text-heading: #2A2622;
+
+      /* --- Accents --- */
+      --tm-accent-sage: #8B9A7E;
+      --tm-accent-clay: #C4A882;
+      --tm-accent-concrete: #A3998E;
+      --tm-accent-copper: #B5A089;
+      --tm-accent-moss: #7A8B72;
+      --tm-accent-parchment: #C9B9A8;
+
+      /* --- Shadows (warm-toned) --- */
+      --tm-shadow-sm: 0 1px 3px rgba(61, 56, 51, 0.04);
+      --tm-shadow-md: 0 2px 8px rgba(61, 56, 51, 0.06);
+      --tm-shadow-lg: 0 4px 16px rgba(61, 56, 51, 0.08);
+
+      /* --- Radius --- */
+      --tm-radius-sm: 3px;
+      --tm-radius-md: 6px;
+      --tm-radius-lg: 10px;
+
+      /* --- Transitions --- */
+      --tm-transition: 0.3s ease;
+      --tm-transition-slow: 0.5s ease;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Work Sans', system-ui, sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--tm-text-body);
+      background-color: var(--tm-bg-primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Lora', 'Source Serif 4', Georgia, serif;
+      font-weight: 400;
+      color: var(--tm-text-heading);
+      line-height: 1.3;
+    }
+
+    h1 {
+      font-size: 2.75rem;
+      letter-spacing: -0.015em;
+      line-height: 1.15;
+    }
+
+    h2 {
+      font-size: 1.75rem;
+      letter-spacing: 0.005em;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      letter-spacing: 0.01em;
+    }
+
+    h4 {
+      font-family: 'Manrope', 'Work Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tm-text-secondary);
+    }
+
+    p {
+      max-width: 38em;
+      margin-bottom: 1.5em;
+    }
+
+    /* Global paper grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      opacity: 0.4;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.06'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--tm-border-light);
+      padding: 0.9rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: box-shadow var(--tm-transition);
+    }
+
+    .nav--scrolled {
+      box-shadow: 0 1px 8px rgba(61, 56, 51, 0.06);
+    }
+
+    .nav-brand {
+      font-family: 'Lora', serif;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: var(--tm-text-heading);
+      letter-spacing: 0.01em;
+      transition: color var(--tm-transition);
+    }
+
+    .nav-brand:hover {
+      color: var(--tm-accent-sage);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      color: var(--tm-text-secondary);
+      font-family: 'Manrope', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      padding: 0.4rem 0.9rem;
+      border-radius: var(--tm-radius-sm);
+      transition: color var(--tm-transition), background var(--tm-transition);
+    }
+
+    .nav-links a:hover {
+      color: var(--tm-text-primary);
+      background: rgba(61, 56, 51, 0.04);
+    }
+
+    .nav-links a.active {
+      color: var(--tm-accent-sage);
+      background: rgba(139, 154, 126, 0.08);
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--tm-text-primary);
+      margin: 5px 0;
+      border-radius: 1px;
+      transition: all var(--tm-transition);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      background: var(--tm-bg-surface);
+      padding: clamp(4rem, 10vw, 7rem) 2rem;
+      overflow: hidden;
+      text-align: left;
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Linen texture overlay on hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='1' y='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='8' x='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='8' height='1' y='4' fill='%236B6359' opacity='0.15'/%3E%3Crect width='1' height='8' x='4' fill='%236B6359' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    /* Warm gradient wash */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(196, 168, 130, 0.04) 0%,
+        transparent 50%,
+        rgba(139, 154, 126, 0.03) 100%
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-label {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--tm-accent-sage);
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Lora', serif;
+      font-weight: 400;
+      font-size: clamp(2.5rem, 6vw, 3.5rem);
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      color: var(--tm-text-heading);
+      max-width: 14em;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--tm-text-body);
+      max-width: 32em;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative element: floating organic shape */
+    .hero-deco {
+      position: absolute;
+      right: 6%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 280px;
+      height: 280px;
+      border-radius: 60% 40% 55% 45% / 50% 55% 45% 50%;
+      background: linear-gradient(145deg, var(--tm-bg-surface-alt) 0%, var(--tm-accent-parchment) 100%);
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .hero-deco::before {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border-radius: 55% 45% 50% 50% / 45% 60% 40% 55%;
+      border: 1px solid var(--tm-border-light);
+    }
+
+    .hero-deco::after {
+      content: '';
+      position: absolute;
+      inset: 50px;
+      border-radius: 50% 50% 45% 55% / 55% 45% 55% 45%;
+      border: 1px solid var(--tm-border-light);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 2rem;
+      position: relative;
+    }
+
+    .section--surface {
+      background: var(--tm-bg-surface);
+      position: relative;
+    }
+
+    .section--surface::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='1' y='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='8' x='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='8' height='1' y='4' fill='%236B6359' opacity='0.15'/%3E%3Crect width='1' height='8' x='4' fill='%236B6359' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    .section--surface-alt {
+      background: var(--tm-bg-surface-alt);
+      position: relative;
+    }
+
+    .section--surface-alt::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='1' height='1' x='2' y='1' fill='%236B6359' opacity='0.6'/%3E%3Crect width='1' height='1' x='5' y='4' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='1' x='0' y='3' fill='%236B6359' opacity='0.4'/%3E%3Crect width='1' height='1' x='3' y='5' fill='%236B6359' opacity='0.5'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='1' height='1' x='7' y='2' fill='%239C9488' opacity='0.4'/%3E%3Crect width='1' height='1' x='1' y='8' fill='%239C9488' opacity='0.3'/%3E%3Crect width='2' height='1' x='4' y='6' fill='%239C9488' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 6px 6px, 10px 10px;
+      pointer-events: none;
+    }
+
+    .section--dark {
+      background: var(--tm-text-heading);
+      color: var(--tm-bg-surface);
+    }
+
+    .section--dark .section-label { color: var(--tm-accent-sage); }
+    .section--dark .section-title { color: var(--tm-bg-primary); }
+    .section--dark .section-subtitle { color: var(--tm-accent-parchment); }
+
+    .section-label {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--tm-accent-sage);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Lora', serif;
+      font-weight: 400;
+      font-size: clamp(1.75rem, 4vw, 2.25rem);
+      color: var(--tm-text-heading);
+      margin-bottom: 0.5rem;
+      line-height: 1.25;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      color: var(--tm-text-secondary);
+      max-width: 36em;
+      margin-bottom: 3rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--tm-border) 25%,
+        var(--tm-border) 75%,
+        transparent 100%
+      );
+      margin: 4rem auto;
+      max-width: 60%;
+    }
+
+    .divider-dot {
+      border: none;
+      height: auto;
+      text-align: center;
+      margin: 4rem auto;
+      background: none;
+    }
+
+    .divider-dot::before {
+      content: '\00B7\2003\00B7\2003\00B7';
+      font-size: 1.5rem;
+      color: var(--tm-text-muted);
+      letter-spacing: 0.3em;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+    }
+
+    .typo-sample-label {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--tm-accent-sage);
+      margin-bottom: 0.35rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--tm-border-light);
+    }
+
+    .typo-display {
+      font-family: 'Lora', serif;
+      font-weight: 400;
+      font-size: clamp(2.2rem, 4.5vw, 3rem);
+      color: var(--tm-text-heading);
+      line-height: 1.12;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-heading {
+      font-family: 'Source Serif 4', serif;
+      font-weight: 400;
+      font-size: clamp(1.4rem, 2.5vw, 1.85rem);
+      color: var(--tm-text-heading);
+      line-height: 1.25;
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-decorative {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+      color: var(--tm-text-primary);
+      line-height: 1.45;
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-body-sample {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--tm-text-body);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-caption {
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.88rem;
+      color: var(--tm-text-secondary);
+      line-height: 1.6;
+    }
+
+    .typo-label-sample {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tm-text-secondary);
+    }
+
+    .typo-right {
+      background: var(--tm-bg-surface);
+      border-radius: var(--tm-radius-lg);
+      padding: 2.5rem;
+      border: 1px solid var(--tm-border-light);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='1' height='1' x='1' y='0' fill='%236B6359' opacity='0.5'/%3E%3Crect width='1' height='1' x='4' y='3' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='1' x='0' y='5' fill='%236B6359' opacity='0.4'/%3E%3C/svg%3E");
+      background-size: 6px 6px;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .typo-right h3 {
+      font-family: 'Lora', serif;
+      font-size: 1.35rem;
+      margin-bottom: 1rem;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--tm-border-light);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--tm-text-muted);
+      min-width: 50px;
+      text-align: right;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .color-chip {
+      border-radius: var(--tm-radius-lg);
+      overflow: hidden;
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-light);
+      transition: transform var(--tm-transition), box-shadow var(--tm-transition);
+      box-shadow: var(--tm-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--tm-shadow-md);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 0.75rem 0.85rem;
+    }
+
+    .color-name {
+      font-family: 'Lora', serif;
+      font-size: 0.82rem;
+      color: var(--tm-text-heading);
+      margin-bottom: 2px;
+      font-weight: 400;
+    }
+
+    .color-hex {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--tm-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-light);
+      border-radius: var(--tm-radius-lg);
+      padding: 2rem 2.25rem;
+      position: relative;
+      overflow: hidden;
+      transition:
+        box-shadow var(--tm-transition),
+        transform var(--tm-transition);
+      box-shadow: var(--tm-shadow-sm);
+    }
+
+    /* Paper grain overlay on cards */
+    .card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='1' height='1' x='1' y='0' fill='%236B6359' opacity='0.5'/%3E%3Crect width='1' height='1' x='4' y='3' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='1' x='0' y='5' fill='%236B6359' opacity='0.4'/%3E%3C/svg%3E");
+      background-size: 6px 6px;
+      pointer-events: none;
+      border-radius: inherit;
+    }
+
+    .card:hover {
+      box-shadow: var(--tm-shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .card-accent {
+      width: 32px;
+      height: 3px;
+      border-radius: 2px;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-accent--sage { background: var(--tm-accent-sage); }
+    .card-accent--clay { background: var(--tm-accent-clay); }
+    .card-accent--concrete { background: var(--tm-accent-concrete); }
+    .card-accent--copper { background: var(--tm-accent-copper); }
+    .card-accent--moss { background: var(--tm-accent-moss); }
+    .card-accent--parchment { background: var(--tm-accent-parchment); }
+
+    .card h3 {
+      font-family: 'Lora', serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      margin-bottom: 0.75rem;
+      color: var(--tm-text-heading);
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--tm-text-body);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: var(--tm-radius-sm);
+      border: 1px solid var(--tm-border);
+      color: var(--tm-text-secondary);
+      margin-top: 1rem;
+      margin-right: 4px;
+      transition: all var(--tm-transition);
+    }
+
+    .tag:hover {
+      background: var(--tm-accent-sage);
+      color: var(--tm-bg-primary);
+      border-color: var(--tm-accent-sage);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .banner {
+      position: relative;
+      background: var(--tm-bg-surface-alt);
+      padding: 4rem 2rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(139, 154, 126, 0.04) 30%,
+        rgba(196, 168, 130, 0.05) 70%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    .banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='1' y='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='8' x='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='8' height='1' y='4' fill='%236B6359' opacity='0.15'/%3E%3Crect width='1' height='8' x='4' fill='%236B6359' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .banner-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      line-height: 1.5;
+      color: var(--tm-text-primary);
+      max-width: 32em;
+      margin: 0 auto 1rem;
+    }
+
+    .banner-attr {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tm-text-muted);
+    }
+
+    /* Decorative lines flanking the banner */
+    .banner-lines {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .banner-lines span {
+      display: block;
+      height: 1px;
+      width: 60px;
+      background: var(--tm-border);
+    }
+
+    .banner-lines-icon {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--tm-accent-clay);
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+
+    .principle {
+      padding: 2rem;
+      position: relative;
+    }
+
+    .principle-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 2.5rem;
+      color: var(--tm-border);
+      line-height: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .principle h3 {
+      font-family: 'Lora', serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--tm-text-heading);
+      margin-bottom: 0.75rem;
+    }
+
+    .principle p {
+      font-size: 0.92rem;
+      color: var(--tm-text-body);
+      line-height: 1.7;
+      margin-bottom: 0;
+    }
+
+    .principle::after {
+      content: '';
+      position: absolute;
+      top: 2rem;
+      right: 0;
+      width: 1px;
+      height: calc(100% - 4rem);
+      background: linear-gradient(to bottom, transparent, var(--tm-border-light), transparent);
+    }
+
+    .principle:last-child::after {
+      display: none;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .effect-demo {
+      border-radius: var(--tm-radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--tm-border-light);
+      background: var(--tm-bg-surface);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-info {
+      padding: 1rem 1.25rem;
+    }
+
+    .effect-name {
+      font-family: 'Lora', serif;
+      font-weight: 400;
+      font-size: 0.95rem;
+      color: var(--tm-text-heading);
+      margin-bottom: 0.25rem;
+    }
+
+    .effect-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: var(--tm-text-secondary);
+      line-height: 1.5;
+    }
+
+    /* Effect 1: Linen Weave */
+    .effect-linen {
+      background: var(--tm-bg-surface);
+    }
+
+    .effect-linen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='8' height='1' y='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='8' x='0' fill='%236B6359' opacity='0.3'/%3E%3Crect width='8' height='1' y='4' fill='%236B6359' opacity='0.15'/%3E%3Crect width='1' height='8' x='4' fill='%236B6359' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    .effect-linen::after {
+      content: 'Linen';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--tm-text-muted);
+      z-index: 1;
+    }
+
+    /* Effect 2: Paper Grain */
+    .effect-paper {
+      background: var(--tm-bg-primary);
+    }
+
+    .effect-paper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 1;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+    }
+
+    .effect-paper::after {
+      content: 'Paper';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--tm-text-muted);
+      z-index: 1;
+    }
+
+    /* Effect 3: Concrete Surface */
+    .effect-concrete {
+      background: var(--tm-bg-surface-alt);
+    }
+
+    .effect-concrete::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='6'%3E%3Crect width='1' height='1' x='2' y='1' fill='%236B6359' opacity='0.6'/%3E%3Crect width='1' height='1' x='5' y='4' fill='%236B6359' opacity='0.3'/%3E%3Crect width='1' height='1' x='0' y='3' fill='%236B6359' opacity='0.4'/%3E%3Crect width='1' height='1' x='3' y='5' fill='%236B6359' opacity='0.5'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10'%3E%3Crect width='1' height='1' x='7' y='2' fill='%239C9488' opacity='0.4'/%3E%3Crect width='1' height='1' x='1' y='8' fill='%239C9488' opacity='0.3'/%3E%3Crect width='2' height='1' x='4' y='6' fill='%239C9488' opacity='0.2'/%3E%3C/svg%3E");
+      background-size: 6px 6px, 10px 10px;
+      pointer-events: none;
+    }
+
+    .effect-concrete::after {
+      content: 'Concrete';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--tm-text-secondary);
+      z-index: 1;
+    }
+
+    /* Effect 4: Warm Shadow Depth */
+    .effect-shadow-depth {
+      background: var(--tm-bg-surface);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    .effect-shadow-depth .shadow-stack {
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+
+    .shadow-layer {
+      width: 70px;
+      height: 70px;
+      background: var(--tm-bg-primary);
+      border-radius: var(--tm-radius-md);
+      border: 1px solid var(--tm-border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--tm-text-muted);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .shadow-layer--sm { box-shadow: var(--tm-shadow-sm); }
+    .shadow-layer--md { box-shadow: var(--tm-shadow-md); }
+    .shadow-layer--lg { box-shadow: var(--tm-shadow-lg); }
+
+    /* Effect 5: Gradient Wash */
+    .effect-gradient {
+      background: linear-gradient(
+        160deg,
+        var(--tm-bg-surface) 0%,
+        #F0E8DC 30%,
+        #EAE2D6 50%,
+        var(--tm-bg-surface-alt) 100%
+      );
+    }
+
+    .effect-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        210deg,
+        rgba(139, 154, 126, 0.06) 0%,
+        transparent 40%,
+        rgba(196, 168, 130, 0.05) 100%
+      );
+      pointer-events: none;
+    }
+
+    .effect-gradient::after {
+      content: 'Gradient';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--tm-text-secondary);
+      z-index: 1;
+    }
+
+    /* Effect 6: Tonal Layering */
+    .effect-layers {
+      background: var(--tm-bg-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .layer-stack {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+
+    .tonal-layer {
+      position: absolute;
+      border-radius: var(--tm-radius-lg);
+    }
+
+    .tonal-layer:nth-child(1) {
+      width: 85%;
+      height: 85%;
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-light);
+    }
+
+    .tonal-layer:nth-child(2) {
+      width: 65%;
+      height: 65%;
+      background: var(--tm-bg-surface-alt);
+      border: 1px solid var(--tm-border-light);
+    }
+
+    .tonal-layer:nth-child(3) {
+      width: 45%;
+      height: 45%;
+      background: var(--tm-accent-parchment);
+      border: 1px solid var(--tm-border-light);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      color: var(--tm-text-body);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       BUTTONS SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'Manrope', 'Work Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition:
+        background var(--tm-transition),
+        box-shadow var(--tm-transition),
+        color var(--tm-transition),
+        border-color var(--tm-transition),
+        transform var(--tm-transition);
+    }
+
+    .btn-primary {
+      padding: 0.7rem 1.8rem;
+      background: var(--tm-text-primary);
+      color: var(--tm-bg-primary);
+      border: none;
+      border-radius: var(--tm-radius-md);
+    }
+
+    .btn-primary:hover {
+      background: var(--tm-text-heading);
+      box-shadow: var(--tm-shadow-md);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+      transition-duration: 0.1s;
+    }
+
+    .btn-secondary {
+      padding: 0.65rem 1.75rem;
+      background: transparent;
+      color: var(--tm-text-body);
+      border: 1px solid var(--tm-border);
+      border-radius: var(--tm-radius-md);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--tm-accent-sage);
+      color: var(--tm-text-primary);
+      background: rgba(139, 154, 126, 0.06);
+    }
+
+    .btn-ghost {
+      padding: 0.5rem 1rem;
+      background: transparent;
+      color: var(--tm-accent-sage);
+      border: none;
+      border-radius: var(--tm-radius-md);
+    }
+
+    .btn-ghost:hover {
+      color: var(--tm-text-primary);
+    }
+
+    .btn-ghost .btn-arrow {
+      display: inline-block;
+      transition: transform var(--tm-transition);
+    }
+
+    .btn-ghost:hover .btn-arrow {
+      transform: translateX(3px);
+    }
+
+    .btn-accent {
+      padding: 0.7rem 1.8rem;
+      background: var(--tm-accent-sage);
+      color: var(--tm-bg-primary);
+      border: none;
+      border-radius: var(--tm-radius-md);
+    }
+
+    .btn-accent:hover {
+      background: var(--tm-accent-moss);
+      box-shadow: var(--tm-shadow-md);
+    }
+
+    .btn-accent:active {
+      transform: scale(0.98);
+      transition-duration: 0.1s;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .blockquote-section {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    blockquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.4rem;
+      line-height: 1.6;
+      color: var(--tm-text-primary);
+      border-left: 2px solid var(--tm-accent-parchment);
+      padding-left: 1.5rem;
+      margin: 2rem 0;
+      max-width: 32em;
+    }
+
+    blockquote cite {
+      display: block;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tm-text-muted);
+      margin-top: 1rem;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      text-align: center;
+      position: relative;
+      padding: clamp(4rem, 8vw, 7rem) 2rem;
+    }
+
+    .cta .section-title {
+      max-width: 18em;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--tm-text-heading);
+      padding: 3rem 2rem 2rem;
+      color: var(--tm-text-muted);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--tm-accent-sage) 25%,
+        var(--tm-accent-clay) 50%,
+        var(--tm-accent-sage) 75%,
+        transparent 100%
+      );
+      opacity: 0.3;
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+
+    .footer-brand {
+      font-family: 'Lora', serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--tm-bg-surface);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-desc {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--tm-text-muted);
+      max-width: 28em;
+    }
+
+    .footer-heading {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tm-accent-parchment);
+      margin-bottom: 0.85rem;
+    }
+
+    .footer-link {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: var(--tm-text-muted);
+      padding: 0.25rem 0;
+      transition: color var(--tm-transition);
+    }
+
+    .footer-link:hover {
+      color: var(--tm-bg-surface);
+    }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 2.5rem auto 0;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(184, 175, 164, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.04em;
+      color: rgba(184, 175, 164, 0.6);
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .footer-bottom-links a {
+      color: rgba(184, 175, 164, 0.6);
+      transition: color var(--tm-transition);
+    }
+
+    .footer-bottom-links a:hover {
+      color: var(--tm-bg-surface);
+    }
+
+    /* ============================================
+       PREFERS-REDUCED-MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .hero-deco {
+        display: none;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .principle::after {
+        display: none;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .nav-links {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .nav-links.open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(250, 247, 242, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--tm-border-light);
+        gap: 0;
+      }
+
+      .nav-links.open a {
+        display: block;
+        padding: 0.6rem 0;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 3.5rem 1.5rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 1.25rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-brand">Textured Minimalism</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#typography" class="active">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#principles">Principles</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero">
+    <div class="hero-deco"></div>
+    <div class="hero-content">
+      <span class="hero-label">Design Aesthetic Reference</span>
+      <h1>Textured Minimalism</h1>
+      <p class="hero-desc">Where restraint meets tactility. A refined design philosophy that reintroduces the warmth of natural surfaces -- linen weave, paper grain, concrete, plaster -- into sparse, carefully composed digital layouts.</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary">Explore the System</button>
+        <button class="btn btn-secondary">View Principles</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ -->
+  <section class="section" id="typography">
+    <div class="container">
+      <h4 class="section-label">Typography</h4>
+      <h2 class="section-title">Quiet Confidence in Type</h2>
+      <p class="section-subtitle">Humanist serifs for headings, clean sans-serifs for body. Weight usage trends toward light and regular -- nothing shouts, everything breathes.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <div class="typo-sample-label">Display -- Lora 400</div>
+            <div class="typo-display">Beauty lives in the details of simple things.</div>
+          </div>
+
+          <div class="typo-sample">
+            <div class="typo-sample-label">Heading -- Source Serif 4, 400</div>
+            <div class="typo-heading">Texture serves warmth, not decoration</div>
+          </div>
+
+          <div class="typo-sample">
+            <div class="typo-sample-label">Decorative -- Cormorant Garamond 300i</div>
+            <div class="typo-decorative">The narrow tonal range between barely there and quietly present</div>
+          </div>
+
+          <div class="typo-sample">
+            <div class="typo-sample-label">Body -- Inter 400</div>
+            <div class="typo-body-sample">Textured Minimalism achieves a visual warmth that flat minimalism cannot. A single linen-grain background makes a screen feel like a physical object.</div>
+          </div>
+
+          <div class="typo-sample">
+            <div class="typo-sample-label">Caption -- Work Sans 300</div>
+            <div class="typo-caption">Muted tones and generous proportions create unhurried reading experiences for editorial and artisan contexts.</div>
+          </div>
+
+          <div class="typo-sample">
+            <div class="typo-sample-label">Label -- Manrope 500</div>
+            <div class="typo-label-sample">Material / Surface / Craft / Restraint</div>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <p>The typographic hierarchy uses tonal shifts, weight changes, and spacing adjustments rather than dramatic color contrasts. Letter-spacing is considered, line-heights are generous.</p>
+
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.75rem</span>
+              <span style="font-family:'Lora',serif; font-size:2rem; color:var(--tm-text-heading); line-height:1.15;">Display</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.75rem</span>
+              <span style="font-family:'Lora',serif; font-size:1.5rem; color:var(--tm-text-heading); line-height:1.2;">Heading</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family:'Source Serif 4',serif; font-size:1.15rem; color:var(--tm-text-heading); line-height:1.3;">Subheading</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family:'Inter',sans-serif; font-size:1rem; color:var(--tm-text-body); line-height:1.75;">Body text</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family:'Work Sans',sans-serif; font-size:0.85rem; font-weight:300; color:var(--tm-text-secondary);">Caption</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family:'Manrope',sans-serif; font-size:0.72rem; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; color:var(--tm-text-secondary);">Label</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============================================
+       COLOR PALETTE
+       ============================================ -->
+  <section class="section" id="palette">
+    <div class="container">
+      <h4 class="section-label">Color Palette</h4>
+      <h2 class="section-title">Drawn From Natural Materials</h2>
+      <p class="section-subtitle">Colors feel like they were mixed from earth, stone, plant matter, and raw textile. The palette sits within a narrow range of low saturation and medium-to-high lightness.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#FAF7F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Cotton White</div>
+            <div class="color-hex">#FAF7F2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#F3EDE4;"></div>
+          <div class="color-info">
+            <div class="color-name">Linen Cream</div>
+            <div class="color-hex">#F3EDE4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#E8E0D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Canvas</div>
+            <div class="color-hex">#E8E0D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#D5CCC0;"></div>
+          <div class="color-info">
+            <div class="color-name">Sandstone</div>
+            <div class="color-hex">#D5CCC0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#B8AFA4;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Stone</div>
+            <div class="color-hex">#B8AFA4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#9C9488;"></div>
+          <div class="color-info">
+            <div class="color-name">Weathered Taupe</div>
+            <div class="color-hex">#9C9488</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#6B6359;"></div>
+          <div class="color-info">
+            <div class="color-name">Driftwood</div>
+            <div class="color-hex">#6B6359</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#3D3833;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Bark</div>
+            <div class="color-hex">#3D3833</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#2A2622;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Umber</div>
+            <div class="color-hex">#2A2622</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#8B9A7E;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Sage</div>
+            <div class="color-hex">#8B9A7E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#C4A882;"></div>
+          <div class="color-info">
+            <div class="color-name">Clay Terracotta</div>
+            <div class="color-hex">#C4A882</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#A3998E;"></div>
+          <div class="color-info">
+            <div class="color-name">Concrete Gray</div>
+            <div class="color-hex">#A3998E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#B5A089;"></div>
+          <div class="color-info">
+            <div class="color-name">Oxidized Copper</div>
+            <div class="color-hex">#B5A089</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#7A8B72;"></div>
+          <div class="color-info">
+            <div class="color-name">Moss</div>
+            <div class="color-hex">#7A8B72</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background:#C9B9A8;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#C9B9A8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-dot">
+
+  <!-- ============================================
+       COMPONENT CARDS (6)
+       ============================================ -->
+  <section class="section section--surface" id="components">
+    <div class="container">
+      <h4 class="section-label">Components</h4>
+      <h2 class="section-title">Surface & Structure</h2>
+      <p class="section-subtitle">Each component is designed with subtle texture overlays and warm shadows that reference the physical world of paper, linen, and stone.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-accent card-accent--sage"></div>
+          <h3>Linen Texture</h3>
+          <p>A woven crosshatch pattern applied at extremely low opacity, creating the tactile impression of natural fabric beneath content without visual clutter.</p>
+          <span class="tag">Surface</span>
+          <span class="tag">Background</span>
+        </div>
+
+        <div class="card">
+          <div class="card-accent card-accent--clay"></div>
+          <h3>Paper Grain</h3>
+          <p>SVG noise-based texture simulating handmade paper fiber. Applied as a fixed overlay across the entire page to unify all surfaces under one material language.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Overlay</span>
+        </div>
+
+        <div class="card">
+          <div class="card-accent card-accent--concrete"></div>
+          <h3>Warm Shadows</h3>
+          <p>Shadows use warm-toned rgba values drawn from the Charcoal Bark color, never cool or sharp. They suggest weight and surface contact rather than elevation.</p>
+          <span class="tag">Depth</span>
+          <span class="tag">Shadow</span>
+        </div>
+
+        <div class="card">
+          <div class="card-accent card-accent--copper"></div>
+          <h3>Tonal Borders</h3>
+          <p>Separation between elements is achieved through spacing and tonal shifts. When borders appear, they use the Sandstone tone at reduced opacity, barely visible.</p>
+          <span class="tag">Structure</span>
+          <span class="tag">Border</span>
+        </div>
+
+        <div class="card">
+          <div class="card-accent card-accent--moss"></div>
+          <h3>Muted Accents</h3>
+          <p>Accent colors are drawn from natural materials: dried sage, clay terracotta, oxidized copper. Never saturated or synthetic -- always desaturated and earthy.</p>
+          <span class="tag">Color</span>
+          <span class="tag">Accent</span>
+        </div>
+
+        <div class="card">
+          <div class="card-accent card-accent--parchment"></div>
+          <h3>Slow Transitions</h3>
+          <p>All hover states and transitions use 0.3-0.5s easing curves. Nothing bounces, flashes, or demands attention. The interface rewards careful, unhurried interaction.</p>
+          <span class="tag">Motion</span>
+          <span class="tag">Transition</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       DECORATIVE BANNER
+       ============================================ -->
+  <div class="banner">
+    <div class="banner-content">
+      <div class="banner-lines">
+        <span></span>
+        <div class="banner-lines-icon"></div>
+        <span></span>
+      </div>
+      <p class="banner-quote">"Less is more" need not mean "less is sterile." Texture reintroduces the tactile qualities of the physical world into digital spaces -- making screens feel like objects you could almost touch.</p>
+      <span class="banner-attr">-- The Philosophy of Textured Minimalism</span>
+    </div>
+  </div>
+
+  <!-- ============================================
+       DESIGN PRINCIPLES (4)
+       ============================================ -->
+  <section class="section" id="principles">
+    <div class="container">
+      <h4 class="section-label">Design Principles</h4>
+      <h2 class="section-title">Guiding Philosophy</h2>
+      <p class="section-subtitle">Four foundational principles that define every decision within the Textured Minimalism system.</p>
+
+      <div class="principles-grid">
+        <div class="principle">
+          <div class="principle-number">01</div>
+          <h3>Texture Serves Warmth</h3>
+          <p>Every texture applied must make the design feel more human and tactile. If it merely adds visual noise, remove it. The texture should be felt more than seen.</p>
+        </div>
+
+        <div class="principle">
+          <div class="principle-number">02</div>
+          <h3>Restraint Is Foundation</h3>
+          <p>The design should feel like every element was carefully considered and only the essential ones were kept. Abundance is the enemy; each removal is an improvement.</p>
+        </div>
+
+        <div class="principle">
+          <div class="principle-number">03</div>
+          <h3>Whitespace Is Content</h3>
+          <p>Negative space communicates calm, quality, and intention. Never fill space simply because it is available. The breathing room between elements is the design itself.</p>
+        </div>
+
+        <div class="principle">
+          <div class="principle-number">04</div>
+          <h3>Warmth Over Precision</h3>
+          <p>Favor organic tones, slightly imperfect textures, and humanist typefaces over machine-perfect geometry and clinical color. Let the human hand be felt in every surface.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============================================
+       EFFECTS SHOWCASE (6 CSS-only effects)
+       ============================================ -->
+  <section class="section section--surface" id="effects">
+    <div class="container">
+      <h4 class="section-label">Effects Showcase</h4>
+      <h2 class="section-title">Surface Treatments</h2>
+      <p class="section-subtitle">Six CSS-only techniques for creating tactile surface depth. Each texture is applied at low opacity, adding ambient warmth without visual clutter.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-info">
+            <div class="effect-name">Linen Weave</div>
+            <div class="effect-desc">SVG crosshatch pattern at 0.035 opacity simulating natural fabric weave.</div>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-paper"></div>
+          <div class="effect-info">
+            <div class="effect-name">Paper Grain</div>
+            <div class="effect-desc">feTurbulence-based noise pattern creating handmade paper fiber texture.</div>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-concrete"></div>
+          <div class="effect-info">
+            <div class="effect-name">Concrete Surface</div>
+            <div class="effect-desc">Layered dot patterns at varying scales simulating raw plaster finish.</div>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-shadow-depth">
+            <div class="shadow-stack">
+              <div class="shadow-layer shadow-layer--sm">sm</div>
+              <div class="shadow-layer shadow-layer--md">md</div>
+              <div class="shadow-layer shadow-layer--lg">lg</div>
+            </div>
+          </div>
+          <div class="effect-info">
+            <div class="effect-name">Warm Shadow Scale</div>
+            <div class="effect-desc">Three levels of warm-toned box-shadow at 0.04, 0.06, and 0.08 alpha.</div>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-gradient"></div>
+          <div class="effect-info">
+            <div class="effect-name">Gradient Wash</div>
+            <div class="effect-desc">Gentle tonal gradient blending surface tones with sage and clay accents.</div>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-layers">
+            <div class="layer-stack">
+              <div class="tonal-layer"></div>
+              <div class="tonal-layer"></div>
+              <div class="tonal-layer">Depth</div>
+            </div>
+          </div>
+          <div class="effect-info">
+            <div class="effect-name">Tonal Layering</div>
+            <div class="effect-desc">Nested surfaces stepping through the palette to create spatial depth.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider-dot">
+
+  <!-- ============================================
+       BUTTON SHOWCASE (4 variants)
+       ============================================ -->
+  <section class="section">
+    <div class="container">
+      <h4 class="section-label">Buttons</h4>
+      <h2 class="section-title">Interaction with Restraint</h2>
+      <p class="section-subtitle">Four button variants that maintain the quiet, understated character of the system. Uppercase Manrope labels with generous letter-spacing and gentle hover transitions.</p>
+
+      <div class="button-showcase">
+        <button class="btn btn-primary">Primary Action</button>
+        <button class="btn btn-secondary">Secondary</button>
+        <button class="btn btn-accent">Sage Accent</button>
+        <button class="btn btn-ghost">Explore More <span class="btn-arrow">&rarr;</span></button>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ============================================
+       BLOCKQUOTE
+       ============================================ -->
+  <section class="section section--surface-alt">
+    <div class="container">
+      <div class="blockquote-section">
+        <h4 class="section-label">Editorial Voice</h4>
+        <blockquote>
+          The design should reference the physical world of paper, linen, concrete, and stone, reminding the viewer that craft exists behind the screen. Slow experience by design -- the interface invites careful reading and quiet exploration.
+          <cite>-- Textured Minimalism Design Principles</cite>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       CTA SECTION
+       ============================================ -->
+  <section class="section section--surface cta">
+    <div class="container">
+      <h4 class="section-label">Get Started</h4>
+      <h2 class="section-title">Build with Quiet Sophistication</h2>
+      <p class="section-subtitle">Apply the Textured Minimalism system to your next project. Warm surfaces, restrained typography, and tactile depth -- design that ages gracefully.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary">Start Building</button>
+        <button class="btn btn-secondary">Read the Guide</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <div class="footer-brand">Textured Minimalism</div>
+        <p class="footer-desc">A refined design philosophy bridging stark minimalism and the warmth of the physical world. Restrained in structure, rich in surface detail.</p>
+      </div>
+      <div>
+        <div class="footer-heading">System</div>
+        <a href="#typography" class="footer-link">Typography</a>
+        <a href="#palette" class="footer-link">Color Palette</a>
+        <a href="#components" class="footer-link">Components</a>
+        <a href="#effects" class="footer-link">Effects</a>
+      </div>
+      <div>
+        <div class="footer-heading">Resources</div>
+        <a href="#" class="footer-link">Design Guide</a>
+        <a href="#" class="footer-link">CSS Variables</a>
+        <a href="#" class="footer-link">Font Pairings</a>
+        <a href="#" class="footer-link">Templates</a>
+      </div>
+      <div>
+        <div class="footer-heading">Related</div>
+        <a href="#" class="footer-link">Japandi</a>
+        <a href="#" class="footer-link">Wabi-Sabi</a>
+        <a href="#" class="footer-link">Scandinavian</a>
+        <a href="#" class="footer-link">Flat Design</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>Textured Minimalism -- Design Aesthetic Reference</span>
+      <div class="footer-bottom-links">
+        <a href="#">Principles</a>
+        <a href="#">Typography</a>
+        <a href="#">Palette</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       JAVASCRIPT
+       ============================================ -->
+  <script>
+    // Sticky nav scroll shadow
+    (function() {
+      const nav = document.getElementById('nav');
+      let ticking = false;
+
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            if (window.scrollY > 10) {
+              nav.classList.add('nav--scrolled');
+            } else {
+              nav.classList.remove('nav--scrolled');
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    })();
+
+    // Mobile nav toggle
+    (function() {
+      const toggle = document.getElementById('navToggle');
+      const links = document.getElementById('navLinks');
+
+      toggle.addEventListener('click', function() {
+        links.classList.toggle('open');
+      });
+
+      // Close mobile nav when clicking a link
+      links.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          links.classList.remove('open');
+        });
+      });
+    })();
+
+    // Active nav link highlighting on scroll
+    (function() {
+      const sections = document.querySelectorAll('section[id]');
+      const navLinks = document.querySelectorAll('.nav-links a');
+
+      function updateActiveLink() {
+        let current = '';
+        sections.forEach(function(section) {
+          var sectionTop = section.offsetTop - 120;
+          if (window.scrollY >= sectionTop) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(function(link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      var scrollTicking = false;
+      window.addEventListener('scroll', function() {
+        if (!scrollTicking) {
+          window.requestAnimationFrame(function() {
+            updateActiveLink();
+            scrollTicking = false;
+          });
+          scrollTicking = true;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

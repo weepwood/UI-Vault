@@ -1,0 +1,2038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pointillism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Canvas --- */
+      --pt-canvas: #FAF6EF;
+      --pt-white: #FFFFFF;
+
+      /* --- Blues --- */
+      --pt-blue: #2E5FA1;
+      --pt-blue-deep: #1A3D7A;
+      --pt-blue-light: #6A9FD8;
+
+      /* --- Warm Accents --- */
+      --pt-orange: #E8841A;
+      --pt-vermilion: #D94423;
+      --pt-yellow: #F5C623;
+      --pt-yellow-light: #FBE87A;
+
+      /* --- Greens --- */
+      --pt-green: #2D8F5E;
+      --pt-viridian: #1B7A5A;
+
+      /* --- Cool Accents --- */
+      --pt-violet: #7B4FA0;
+      --pt-rose: #C4456A;
+
+      /* --- Earth Tones --- */
+      --pt-sienna: #B56A3A;
+
+      /* --- Neutrals --- */
+      --pt-slate: #4A4E5A;
+      --pt-charcoal: #2C2F36;
+      --pt-gray-light: #C8C4BC;
+
+      /* --- Functional Mappings --- */
+      --pt-bg-primary: var(--pt-canvas);
+      --pt-bg-surface: var(--pt-white);
+      --pt-text-primary: var(--pt-charcoal);
+      --pt-text-secondary: var(--pt-slate);
+      --pt-accent: var(--pt-blue);
+      --pt-accent-warm: var(--pt-orange);
+      --pt-accent-strong: var(--pt-vermilion);
+      --pt-border: var(--pt-gray-light);
+
+      /* --- Dot Effect Variables --- */
+      --pt-dot-size: 4px;
+      --pt-dot-gap: 6px;
+      --pt-dot-opacity: 0.7;
+
+      /* --- Shadows --- */
+      --pt-shadow-sm: 0 2px 12px rgba(46, 95, 161, 0.06);
+      --pt-shadow-md: 0 4px 20px rgba(46, 95, 161, 0.10);
+      --pt-shadow-lg: 0 8px 32px rgba(46, 95, 161, 0.14);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Source Sans 3', 'Segoe UI', Tahoma, sans-serif;
+      font-weight: 400;
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--pt-charcoal);
+      background-color: var(--pt-bg-primary);
+      overflow-x: hidden;
+      letter-spacing: 0.01em;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      line-height: 1.2;
+      color: var(--pt-blue-deep);
+      letter-spacing: -0.01em;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 900;
+    }
+
+    h2 {
+      font-size: 2rem;
+    }
+
+    h3 {
+      font-size: 1.375rem;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--pt-canvas);
+      border-bottom: 3px dotted var(--pt-blue);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      backdrop-filter: blur(8px);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--pt-blue-deep);
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-logo::after {
+      content: '\25CF';
+      color: var(--pt-orange);
+      margin-left: 0.25rem;
+      font-size: 0.75rem;
+      vertical-align: super;
+    }
+
+    .nav-logo:hover {
+      color: var(--pt-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      color: var(--pt-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      position: relative;
+      padding-bottom: 0.25rem;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--pt-orange);
+      transform: translateX(-50%) scale(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--pt-blue);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      transform: translateX(-50%) scale(1);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem;
+      overflow: hidden;
+      background-color: var(--pt-canvas);
+    }
+
+    /* Multi-color dot field behind hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, var(--pt-blue) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--pt-orange) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--pt-green) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-violet) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-yellow) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-rose) 0.8px, transparent 0.8px),
+        radial-gradient(circle, var(--pt-vermilion) 0.8px, transparent 0.8px);
+      background-size:
+        20px 20px,
+        28px 28px,
+        16px 16px,
+        24px 24px,
+        14px 14px,
+        22px 22px,
+        18px 18px;
+      background-position:
+        0 0,
+        10px 14px,
+        5px 8px,
+        12px 3px,
+        7px 11px,
+        3px 17px,
+        15px 6px;
+      opacity: 0.25;
+      z-index: 0;
+      animation: dotShimmer 8s ease-in-out infinite;
+    }
+
+    @keyframes dotShimmer {
+      0%, 100% {
+        background-position:
+          0 0,
+          10px 14px,
+          5px 8px,
+          12px 3px,
+          7px 11px,
+          3px 17px,
+          15px 6px;
+        opacity: 0.25;
+      }
+      33% {
+        background-position:
+          1px 1px,
+          11px 15px,
+          6px 9px,
+          13px 4px,
+          8px 12px,
+          4px 18px,
+          16px 7px;
+        opacity: 0.30;
+      }
+      66% {
+        background-position:
+          -1px 0px,
+          9px 13px,
+          4px 7px,
+          11px 2px,
+          6px 10px,
+          2px 16px,
+          14px 5px;
+        opacity: 0.22;
+      }
+    }
+
+    /* Radial glow center */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(ellipse, rgba(250, 246, 239, 0.8) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .hero-dots {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .hero-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      animation: dotPulse 3s ease-in-out infinite;
+    }
+
+    .hero-dots span:nth-child(1) { background: var(--pt-blue); animation-delay: 0s; }
+    .hero-dots span:nth-child(2) { background: var(--pt-orange); animation-delay: 0.3s; }
+    .hero-dots span:nth-child(3) { background: var(--pt-yellow); animation-delay: 0.6s; }
+    .hero-dots span:nth-child(4) { background: var(--pt-green); animation-delay: 0.9s; }
+    .hero-dots span:nth-child(5) { background: var(--pt-violet); animation-delay: 1.2s; }
+    .hero-dots span:nth-child(6) { background: var(--pt-rose); animation-delay: 1.5s; }
+    .hero-dots span:nth-child(7) { background: var(--pt-vermilion); animation-delay: 1.8s; }
+
+    @keyframes dotPulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+
+    .hero-tagline {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 300;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--pt-slate);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 900;
+      color: var(--pt-blue-deep);
+      margin-bottom: 0.5rem;
+      line-height: 1.05;
+    }
+
+    .hero-subtitle {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      color: var(--pt-slate);
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+
+    .hero-desc {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--pt-text-secondary);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      border: none;
+      border-radius: 999px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary {
+      background-color: var(--pt-blue);
+      color: var(--pt-white);
+    }
+
+    .btn-primary::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.3) 1px, transparent 1px);
+      background-size: 6px 6px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--pt-blue-deep);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(46, 95, 161, 0.3);
+    }
+
+    .btn-primary:hover::after {
+      opacity: 1;
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 6px rgba(46, 95, 161, 0.2);
+    }
+
+    .btn-warm {
+      background-color: var(--pt-orange);
+      color: var(--pt-white);
+    }
+
+    .btn-warm::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px);
+      background-size: 6px 6px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-warm:hover {
+      background-color: #CF7215;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(232, 132, 26, 0.3);
+    }
+
+    .btn-warm:hover::after {
+      opacity: 1;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--pt-blue);
+      border: 2px dotted var(--pt-blue);
+    }
+
+    .btn-outline:hover {
+      background: var(--pt-blue);
+      color: var(--pt-white);
+      border-style: solid;
+      transform: translateY(-2px);
+    }
+
+    .btn-green {
+      background-color: var(--pt-green);
+      color: var(--pt-white);
+    }
+
+    .btn-green::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.25) 1px, transparent 1px);
+      background-size: 6px 6px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn-green:hover {
+      background-color: var(--pt-viridian);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(45, 143, 94, 0.3);
+    }
+
+    .btn-green:hover::after {
+      opacity: 1;
+    }
+
+    /* ============================================
+       DOT DIVIDER
+       ============================================ */
+    .dot-divider {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      padding: 2rem 0;
+    }
+
+    .dot-divider span {
+      border-radius: 50%;
+      opacity: 0.7;
+    }
+
+    .dot-divider span:nth-child(odd) {
+      width: 8px;
+      height: 8px;
+      background: var(--pt-blue);
+    }
+
+    .dot-divider span:nth-child(even) {
+      width: 6px;
+      height: 6px;
+      background: var(--pt-orange);
+    }
+
+    .dot-divider span:nth-child(3n) {
+      background: var(--pt-yellow);
+    }
+
+    .dot-divider span:nth-child(5n) {
+      background: var(--pt-green);
+      width: 7px;
+      height: 7px;
+    }
+
+    .dot-divider span:nth-child(7n) {
+      background: var(--pt-violet);
+      width: 10px;
+      height: 10px;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--canvas {
+      background: var(--pt-canvas);
+    }
+
+    .section--stippled {
+      background-color: var(--pt-canvas);
+      background-image:
+        radial-gradient(circle, rgba(46, 95, 161, 0.10) 1px, transparent 1px),
+        radial-gradient(circle, rgba(232, 132, 26, 0.08) 1px, transparent 1px);
+      background-size: 14px 14px, 20px 20px;
+      background-position: 0 0, 7px 10px;
+    }
+
+    .section--blue-deep {
+      background: var(--pt-blue-deep);
+      color: var(--pt-canvas);
+    }
+
+    .section--blue-deep .section-label { color: var(--pt-yellow); }
+    .section--blue-deep .section-title { color: var(--pt-white); }
+    .section--blue-deep .section-subtitle { color: var(--pt-blue-light); }
+
+    .section-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 300;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--pt-orange);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--pt-blue-deep);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      text-align: center;
+      color: var(--pt-slate);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--pt-orange);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--pt-gray-light);
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--pt-blue-deep);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--pt-blue-deep);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-serif-body {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--pt-slate);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.75;
+      color: var(--pt-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .typo-caption {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 300;
+      font-size: 0.875rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--pt-slate);
+    }
+
+    .typo-elegant {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--pt-violet);
+      line-height: 1.3;
+    }
+
+    .typo-right {
+      background: var(--pt-white);
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: var(--pt-shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      background:
+        radial-gradient(circle at 2px 2px, var(--pt-blue) 0.5px, transparent 0.5px);
+      background-size: 8px 8px;
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dotted var(--pt-gray-light);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--pt-slate);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--pt-white);
+      box-shadow: var(--pt-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--pt-shadow-lg);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dot overlay on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.2) 1px, transparent 1px);
+      background-size: 5px 5px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--pt-blue-deep);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--pt-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--pt-white);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--pt-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Dot-pattern border effect */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      border: 2px solid transparent;
+      background:
+        radial-gradient(circle at 2px 2px, var(--pt-blue) 1px, transparent 1px)
+        border-box;
+      background-size: 8px 8px;
+      -webkit-mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.3;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--pt-shadow-lg);
+    }
+
+    .card:hover::before {
+      opacity: 0.7;
+    }
+
+    .card-dot {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-dot--blue {
+      background:
+        radial-gradient(circle, var(--pt-blue) 2px, transparent 2px),
+        var(--pt-blue-light);
+      background-size: 6px 6px;
+    }
+
+    .card-dot--orange {
+      background:
+        radial-gradient(circle, var(--pt-orange) 2px, transparent 2px),
+        var(--pt-yellow-light);
+      background-size: 6px 6px;
+    }
+
+    .card-dot--green {
+      background:
+        radial-gradient(circle, var(--pt-green) 2px, transparent 2px),
+        #B3E6CC;
+      background-size: 6px 6px;
+    }
+
+    .card-dot--violet {
+      background:
+        radial-gradient(circle, var(--pt-violet) 2px, transparent 2px),
+        #D4B8E8;
+      background-size: 6px 6px;
+    }
+
+    .card-dot--rose {
+      background:
+        radial-gradient(circle, var(--pt-rose) 2px, transparent 2px),
+        #F0C4D4;
+      background-size: 6px 6px;
+    }
+
+    .card-dot--sienna {
+      background:
+        radial-gradient(circle, var(--pt-sienna) 2px, transparent 2px),
+        #E8C9AD;
+      background-size: 6px 6px;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--pt-blue-deep);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--pt-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      background: var(--pt-yellow-light);
+      color: var(--pt-charcoal);
+      margin-top: 1rem;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--pt-orange);
+      color: var(--pt-white);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--pt-white);
+      box-shadow: var(--pt-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--pt-shadow-md);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--pt-blue-deep);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--pt-slate);
+    }
+
+    /* Effect 1: Stippled Canvas */
+    .effect-stippled {
+      background-color: var(--pt-canvas);
+      background-image:
+        radial-gradient(circle, var(--pt-blue) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-orange) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-yellow) 1px, transparent 1px);
+      background-size: 12px 12px, 18px 18px, 15px 15px;
+      background-position: 0 0, 6px 9px, 3px 4px;
+    }
+
+    .effect-stippled::after {
+      content: 'POINTILLISME';
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--pt-blue-deep);
+      text-shadow: 0 1px 3px rgba(250, 246, 239, 0.8);
+      z-index: 1;
+    }
+
+    /* Effect 2: Complementary Contrast */
+    .effect-complement {
+      background:
+        radial-gradient(circle, var(--pt-blue) 2px, transparent 2px),
+        radial-gradient(circle, var(--pt-orange) 2px, transparent 2px);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+      background-color: var(--pt-canvas);
+      animation: complementShift 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes complementShift {
+      0% { background-size: 8px 8px; }
+      100% { background-size: 10px 10px; }
+    }
+
+    .effect-complement::after {
+      content: 'CONTRAST';
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--pt-white);
+      text-shadow: 0 2px 8px rgba(26, 61, 122, 0.6);
+      z-index: 1;
+    }
+
+    /* Effect 3: Optical Mix */
+    .effect-optical {
+      background:
+        radial-gradient(circle, var(--pt-blue) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--pt-yellow) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--pt-vermilion) 1px, transparent 1px);
+      background-size: 6px 6px, 9px 9px, 7px 7px;
+      background-position: 0 0, 3px 3px, 1px 5px;
+      background-color: var(--pt-canvas);
+    }
+
+    .effect-optical::after {
+      content: 'MELANGE OPTIQUE';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--pt-blue-deep);
+      text-shadow: 0 1px 4px rgba(250, 246, 239, 0.9);
+      z-index: 1;
+    }
+
+    /* Effect 4: Dot Density Gradient */
+    .effect-density {
+      background:
+        radial-gradient(ellipse at 30% 50%, var(--pt-blue-deep) 0%, transparent 60%),
+        radial-gradient(circle, var(--pt-blue) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--pt-violet) 1px, transparent 1px);
+      background-size: 100% 100%, 10px 10px, 14px 14px;
+      background-position: 0 0, 0 0, 5px 7px;
+      background-color: var(--pt-canvas);
+    }
+
+    .effect-density::after {
+      content: 'DEPTH';
+      position: absolute;
+      right: 24px;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--pt-canvas);
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Luminous Shimmer */
+    .effect-luminous {
+      background:
+        radial-gradient(circle, var(--pt-yellow) 1.5px, transparent 1.5px),
+        radial-gradient(circle, var(--pt-orange) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-rose) 0.8px, transparent 0.8px);
+      background-size: 10px 10px, 14px 14px, 12px 12px;
+      background-position: 0 0, 5px 7px, 2px 3px;
+      background-color: var(--pt-canvas);
+      animation: shimmerGlow 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes shimmerGlow {
+      0% {
+        background-position: 0 0, 5px 7px, 2px 3px;
+      }
+      100% {
+        background-position: 2px 2px, 7px 9px, 4px 5px;
+      }
+    }
+
+    .effect-luminous::after {
+      content: 'LUMIERE';
+      position: absolute;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--pt-blue-deep);
+      text-shadow: 0 1px 6px rgba(250, 246, 239, 0.9);
+      z-index: 1;
+    }
+
+    /* Effect 6: Halftone Dissolve */
+    .effect-halftone {
+      background: linear-gradient(135deg, var(--pt-blue) 0%, var(--pt-viridian) 50%, var(--pt-blue-deep) 100%);
+    }
+
+    .effect-halftone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255, 255, 255, 0.35) 2px, transparent 2px);
+      background-size: 7px 7px;
+      animation: halftoneScale 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes halftoneScale {
+      0% { background-size: 7px 7px; }
+      100% { background-size: 9px 9px; }
+    }
+
+    .effect-halftone::after {
+      content: 'SEURAT';
+      position: absolute;
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: var(--pt-white);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 3rem 2rem;
+      margin: 0 auto;
+      max-width: 740px;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, var(--pt-blue) 1px, transparent 1px),
+        radial-gradient(circle, var(--pt-orange) 1px, transparent 1px);
+      background-size: 10px 10px, 14px 14px;
+      background-position: 0 0, 5px 7px;
+      opacity: 0.06;
+      border-radius: 16px;
+    }
+
+    .quote-mark {
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      color: var(--pt-blue);
+      opacity: 0.15;
+      line-height: 0.6;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: clamp(1.15rem, 2.5vw, 1.4rem);
+      line-height: 1.65;
+      color: var(--pt-blue-deep);
+      max-width: 560px;
+      margin: 0 auto 1.25rem;
+      border-left: 4px dotted var(--pt-blue);
+      padding-left: 1.5rem;
+      text-align: left;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-block cite {
+      font-family: 'Source Sans 3', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--pt-slate);
+      font-style: normal;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+      background: var(--pt-blue-deep);
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(255, 255, 255, 0.08) 1.5px, transparent 1.5px),
+        radial-gradient(circle, rgba(232, 132, 26, 0.12) 1px, transparent 1px),
+        radial-gradient(circle, rgba(245, 198, 35, 0.08) 1px, transparent 1px);
+      background-size: 16px 16px, 22px 22px, 18px 18px;
+      background-position: 0 0, 8px 11px, 4px 6px;
+      animation: ctaDots 10s ease-in-out infinite;
+    }
+
+    @keyframes ctaDots {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 0.8; }
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: var(--pt-white);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      font-family: 'Lora', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--pt-blue-light);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    .cta-dots {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .cta-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: dotPulse 3s ease-in-out infinite;
+    }
+
+    .cta-dots span:nth-child(1) { background: var(--pt-orange); animation-delay: 0s; }
+    .cta-dots span:nth-child(2) { background: var(--pt-yellow); animation-delay: 0.4s; }
+    .cta-dots span:nth-child(3) { background: var(--pt-white); animation-delay: 0.8s; }
+    .cta-dots span:nth-child(4) { background: var(--pt-yellow); animation-delay: 1.2s; }
+    .cta-dots span:nth-child(5) { background: var(--pt-orange); animation-delay: 1.6s; }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background-color: var(--pt-charcoal);
+      padding: 3.5rem 2rem 1.5rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle, rgba(46, 95, 161, 0.15) 1px, transparent 1px),
+        radial-gradient(circle, rgba(232, 132, 26, 0.10) 1px, transparent 1px);
+      background-size: 18px 18px, 24px 24px;
+      background-position: 0 0, 9px 12px;
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--pt-blue-light);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Lora', serif;
+      font-size: 0.92rem;
+      color: rgba(200, 196, 188, 0.6);
+      max-width: 480px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: rgba(200, 196, 188, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--pt-orange);
+    }
+
+    .footer-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-dots span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      opacity: 0.3;
+    }
+
+    .footer-dots span:nth-child(1) { background: var(--pt-blue); }
+    .footer-dots span:nth-child(2) { background: var(--pt-orange); }
+    .footer-dots span:nth-child(3) { background: var(--pt-yellow); }
+    .footer-dots span:nth-child(4) { background: var(--pt-green); }
+    .footer-dots span:nth-child(5) { background: var(--pt-violet); }
+    .footer-dots span:nth-child(6) { background: var(--pt-rose); }
+    .footer-dots span:nth-child(7) { background: var(--pt-vermilion); }
+
+    .footer-border-top {
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      background:
+        radial-gradient(circle at 3px 1.5px, var(--pt-blue) 1.5px, transparent 1.5px),
+        radial-gradient(circle at 3px 1.5px, var(--pt-orange) 1.5px, transparent 1.5px);
+      background-size: 8px 3px, 12px 3px;
+      background-position: 0 0, 4px 0;
+    }
+
+    .footer-copy {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(200, 196, 188, 0.3);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.8rem;
+      }
+
+      .hero {
+        min-height: 70vh;
+        padding: 3.5rem 1.5rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .quote-block blockquote {
+        font-size: 1.1rem;
+      }
+
+      .footer {
+        padding: 3rem 1rem 1.5rem;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.65rem 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      .cta-section {
+        padding: 3.5rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.75rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+
+      .hero-dots span {
+        width: 9px;
+        height: 9px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero::before,
+      .effect-complement,
+      .effect-luminous,
+      .effect-halftone::before,
+      .cta-section::before {
+        animation: none;
+      }
+
+      .hero-dots span,
+      .cta-dots span {
+        animation: none;
+        opacity: 0.8;
+      }
+
+      .card, .color-chip, .effect-demo, .btn, .tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Pointillisme</a>
+    <div class="nav-links">
+      <a href="#hero" class="active">Gallery</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#technique">Technique</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Pointillism</h1>
+      <p class="hero-subtitle">
+        Where science meets art &mdash; thousands of pure color dots
+        merge into luminous, shimmering compositions
+      </p>
+      <p class="hero-desc">
+        A design language rooted in Georges Seurat's Neo-Impressionist technique of applying small, distinct dots of unmixed color, relying on the viewer's eye to optically blend them into rich, vibrant imagery full of light.
+      </p>
+      <div class="hero-buttons">
+        <a href="#technique" class="btn btn-primary">Explore the Technique</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="dot-divider">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--canvas" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Refined Serifs &amp; Clean Sans</h2>
+      <p class="section-subtitle">clarity and warmth, anchoring the eye against stippled texture</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display 900</p>
+            <p class="typo-display">Every Dot Tells a Story</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cormorant Garamond 600</p>
+            <p class="typo-heading">The Luminous Surface of Light</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Lora Italic</p>
+            <p class="typo-serif-body">Pure color, placed with scientific precision and artistic warmth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Source Sans 3</p>
+            <p class="typo-body">Clean modern sans-serif for comfortable reading. The crisp letterforms serve as anchors of clarity against the richly textured dot-stippled backdrop of the Pointillist canvas.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Source Sans 3 Light</p>
+            <p class="typo-caption">Neo-Impressionism &bull; Optical Mixing &bull; 1886</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Elegant / Cormorant Garamond 700</p>
+            <p class="typo-elegant">Un dimanche a La Grande Jatte</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4.5rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--pt-blue-deep);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 600; color: var(--pt-blue-deep);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1.2rem; font-style: italic; color: var(--pt-slate);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.06rem</span>
+              <span style="font-family: 'Source Sans 3', sans-serif; font-size: 1rem; color: var(--pt-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.875rem</span>
+              <span style="font-family: 'Source Sans 3', sans-serif; font-weight: 300; font-size: 0.875rem; color: var(--pt-slate); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500; color: var(--pt-slate); letter-spacing: 0.02em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 2px dotted var(--pt-gray-light);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--pt-blue-deep);">Playfair Display</strong> + <strong>Source Sans 3</strong><br>
+              <span style="color: var(--pt-slate); font-size: 0.85rem;">Classic gallery -- refined serif headlines with clean modern body</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cormorant Garamond', serif; color: var(--pt-blue-deep);">Cormorant Garamond</strong> + <strong style="font-family: 'Lora', serif;">Lora</strong><br>
+              <span style="color: var(--pt-slate); font-size: 0.85rem;">Full-serif elegance -- French literary warmth throughout</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--pt-blue-deep);">Playfair Display</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--pt-slate); font-size: 0.85rem;">High contrast -- bold artistic display with neutral, crisp body</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="dot-divider">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--stippled" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Spectral Purity &amp; Complementary Light</h2>
+      <p class="section-subtitle">pure pigment hues from Seurat's palette, blended only by the eye</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6EF;"></div>
+          <div class="color-info">
+            <div class="color-name">Canvas Cream</div>
+            <div class="color-hex">#FAF6EF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2E5FA1;"></div>
+          <div class="color-info">
+            <div class="color-name">Seurat Blue</div>
+            <div class="color-hex">#2E5FA1</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A3D7A;"></div>
+          <div class="color-info">
+            <div class="color-name">Cobalt Deep</div>
+            <div class="color-hex">#1A3D7A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8841A;"></div>
+          <div class="color-info">
+            <div class="color-name">Signac Orange</div>
+            <div class="color-hex">#E8841A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D94423;"></div>
+          <div class="color-info">
+            <div class="color-name">Vermilion</div>
+            <div class="color-hex">#D94423</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5C623;"></div>
+          <div class="color-info">
+            <div class="color-name">Cadmium Yellow</div>
+            <div class="color-hex">#F5C623</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FBE87A;"></div>
+          <div class="color-info">
+            <div class="color-name">Lemon Light</div>
+            <div class="color-hex">#FBE87A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D8F5E;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald Dot</div>
+            <div class="color-hex">#2D8F5E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B7A5A;"></div>
+          <div class="color-info">
+            <div class="color-name">Viridian</div>
+            <div class="color-hex">#1B7A5A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7B4FA0;"></div>
+          <div class="color-info">
+            <div class="color-name">Violet Dusk</div>
+            <div class="color-hex">#7B4FA0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4456A;"></div>
+          <div class="color-info">
+            <div class="color-name">Rose Madder</div>
+            <div class="color-hex">#C4456A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B56A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Sienna</div>
+            <div class="color-hex">#B56A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A4E5A;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Shadow</div>
+            <div class="color-hex">#4A4E5A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C2F36;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Charcoal</div>
+            <div class="color-hex">#2C2F36</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="dot-divider">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TECHNIQUE CARDS (6 CARDS) ===== -->
+  <section class="section section--canvas" id="technique">
+    <div class="container">
+      <p class="section-label">Technique</p>
+      <h2 class="section-title">The Science of Optical Mixing</h2>
+      <p class="section-subtitle">dot by dot, layer by layer, light emerges from the canvas</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-dot card-dot--blue"></div>
+          <h3>Pure Color</h3>
+          <p>Every dot is a single, unmixed hue -- blue, orange, yellow, green -- applied directly to the canvas. The eye does the blending, producing colors more luminous than any mixture on a palette.</p>
+          <span class="tag">Chromatic Purity</span>
+        </div>
+
+        <div class="card">
+          <div class="card-dot card-dot--orange"></div>
+          <h3>Complementary Contrast</h3>
+          <p>Blue dots beside orange. Red beside green. Violet beside yellow. Each pair intensifies the other through simultaneous contrast, producing vibrancy impossible with pre-mixed color.</p>
+          <span class="tag">Color Theory</span>
+        </div>
+
+        <div class="card">
+          <div class="card-dot card-dot--green"></div>
+          <h3>Emergent Beauty</h3>
+          <p>Step back, and thousands of individual dots coalesce into shimmering landscapes, figures bathed in sunlight, and reflections dancing on water. The whole is greater than its parts.</p>
+          <span class="tag">Optical Fusion</span>
+        </div>
+
+        <div class="card">
+          <div class="card-dot card-dot--violet"></div>
+          <h3>Density as Value</h3>
+          <p>Larger, densely packed dots create shadow regions; smaller, sparser dots let the bright canvas show through for highlights. Tonal variation emerges from dot scale and spacing alone.</p>
+          <span class="tag">Halftone Principle</span>
+        </div>
+
+        <div class="card">
+          <div class="card-dot card-dot--rose"></div>
+          <h3>Luminous Surface</h3>
+          <p>Because unmixed colors and white gaps between dots reflect more light, the overall palette reads as bright, sunlit, and airy -- reminiscent of Seurat's outdoor riverside scenes.</p>
+          <span class="tag">Light &amp; Air</span>
+        </div>
+
+        <div class="card">
+          <div class="card-dot card-dot--sienna"></div>
+          <h3>Canvas Participation</h3>
+          <p>White space between dots is not empty; it is an active design element. The warm cream ground contributes brightness, breathability, and luminosity to every surface and composition.</p>
+          <span class="tag">Negative Space</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section section--canvas">
+    <div class="quote-block">
+      <span class="quote-mark">&ldquo;</span>
+      <blockquote>
+        Some say they see poetry in my paintings; I see only science. I apply the principles of optics, and that is all.
+      </blockquote>
+      <cite>&mdash; Georges Seurat, founder of Neo-Impressionism</cite>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="dot-divider">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== CSS EFFECTS SECTION (6 EFFECTS) ===== -->
+  <section class="section section--stippled" id="effects">
+    <div class="container">
+      <p class="section-label">CSS Effects</p>
+      <h2 class="section-title">Dot-Based Visual Techniques</h2>
+      <p class="section-subtitle">pure CSS stippled textures, optical mixing, and luminous shimmer</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-stippled"></div>
+          <div class="effect-caption">
+            <h4>Stippled Canvas</h4>
+            <p>Multi-color radial-gradient dots layered at different spacings create a dense Pointillist surface texture.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-complement"></div>
+          <div class="effect-caption">
+            <h4>Complementary Contrast</h4>
+            <p>Blue and orange dots alternate in a checkerboard, demonstrating Chevreul's law of simultaneous contrast.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-optical"></div>
+          <div class="effect-caption">
+            <h4>Optical Mixing</h4>
+            <p>Three colors at fine scale blend perceptually into a unified warm tone -- the core Pointillist principle.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-density"></div>
+          <div class="effect-caption">
+            <h4>Dot Density Gradient</h4>
+            <p>A radial gradient overlaid on dot patterns creates depth -- dense dots in shadow, sparse in light areas.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-luminous"></div>
+          <div class="effect-caption">
+            <h4>Luminous Shimmer</h4>
+            <p>Warm-palette dots with subtle position animation evoke the shimmering quality of sunlight on Seurat's canvases.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-halftone"></div>
+          <div class="effect-caption">
+            <h4>Halftone Dissolve</h4>
+            <p>White dot overlay on a gradient mimics halftone printing -- Pointillism's direct descendant in the print world.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="dot-divider">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE (4 BUTTONS) ===== -->
+  <section class="section section--canvas">
+    <div class="container">
+      <p class="section-label">Buttons</p>
+      <h2 class="section-title">Dot-Stippled Interactions</h2>
+      <p class="section-subtitle">pill shapes with stippled hover textures and complementary color pairings</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Seurat Blue</a>
+        <a href="#" class="btn btn-warm">Signac Orange</a>
+        <a href="#" class="btn btn-green">Emerald Dot</a>
+        <a href="#" class="btn btn-outline">Dotted Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <div class="cta-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <h2>Begin Your Composition</h2>
+      <p>
+        Every great canvas starts with a single dot. Build luminous, vibrant interfaces
+        where beauty emerges from the deliberate arrangement of simple elements.
+      </p>
+      <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+        <a href="#" class="btn btn-warm">Start Painting</a>
+        <a href="#technique" class="btn btn-outline" style="color: var(--pt-white); border-color: rgba(255,255,255,0.5);">Learn the Technique</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-border-top"></div>
+    <div class="footer-content">
+      <h3>Pointillisme</h3>
+      <p>
+        A design aesthetic celebrating the luminous power of discrete color dots,
+        optical mixing, and the patient beauty of emergence &mdash; from canvas to screen.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Gallery</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#technique">Technique</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Pointillism Design Reference &bull; Inspired by Georges Seurat &amp; Paul Signac</p>
+    </div>
+  </footer>
+
+</body>
+</html>

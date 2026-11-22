@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nature Distilled -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=DM+Serif+Display&family=Inter:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds & Neutrals --- */
+      --nd-raw-linen: #F5F0EB;
+      --nd-parchment: #EDE6DB;
+      --nd-warm-sand: #D9CEBF;
+      --nd-bone-white: #FAF7F3;
+
+      /* --- Mid Tones --- */
+      --nd-driftwood: #B8A99A;
+      --nd-mushroom: #9C9084;
+      --nd-stone-grey: #A3A095;
+      --nd-blush-clay: #C9A99B;
+
+      /* --- Earth Accents --- */
+      --nd-clay: #B07D62;
+      --nd-terracotta: #A8644B;
+      --nd-soil-brown: #5C4033;
+      --nd-dark-earth: #3B2A1F;
+
+      /* --- Botanical Accents --- */
+      --nd-dried-sage: #8A9178;
+      --nd-muted-olive: #6B6D4E;
+      --nd-deep-moss: #4A5240;
+
+      /* --- Functional Tokens --- */
+      --nd-bg: var(--nd-raw-linen);
+      --nd-bg-alt: var(--nd-parchment);
+      --nd-text: var(--nd-soil-brown);
+      --nd-heading: var(--nd-dark-earth);
+      --nd-accent: var(--nd-clay);
+      --nd-accent-hover: var(--nd-terracotta);
+      --nd-link: var(--nd-terracotta);
+      --nd-surface: var(--nd-bone-white);
+      --nd-border: var(--nd-warm-sand);
+      --nd-muted: var(--nd-mushroom);
+      --nd-success: var(--nd-dried-sage);
+
+      /* --- Shadows --- */
+      --nd-shadow-sm: 0 2px 12px rgba(92, 64, 51, 0.06);
+      --nd-shadow-md: 0 4px 20px rgba(92, 64, 51, 0.08);
+      --nd-shadow-lg: 0 8px 32px rgba(92, 64, 51, 0.12);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.06rem;
+      line-height: 1.85;
+      color: var(--nd-text);
+      background-color: var(--nd-bg);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      color: var(--nd-heading);
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+    }
+
+    /* Subtle linen-paper texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(245, 240, 235, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(217, 206, 191, 0.6);
+      transition: background 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.3rem;
+      color: var(--nd-heading);
+      letter-spacing: -0.02em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--nd-clay);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--nd-mushroom);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--nd-clay);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--nd-clay);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 90vh;
+      padding: 100px 40px 90px;
+      background:
+        linear-gradient(
+          170deg,
+          var(--nd-parchment) 0%,
+          var(--nd-raw-linen) 40%,
+          var(--nd-bone-white) 100%
+        );
+      overflow: hidden;
+      text-align: center;
+    }
+
+    /* Grain texture overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23grain)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* Decorative organic shape - top right */
+    .hero-organic-shape {
+      position: absolute;
+      top: -80px;
+      right: -60px;
+      width: 400px;
+      height: 400px;
+      border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+      background: radial-gradient(ellipse at 40% 40%, rgba(176, 125, 98, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      animation: organicFloat 20s ease-in-out infinite;
+    }
+
+    /* Decorative organic shape - bottom left */
+    .hero-organic-shape-2 {
+      position: absolute;
+      bottom: -100px;
+      left: -80px;
+      width: 500px;
+      height: 500px;
+      border-radius: 40% 60% 55% 45% / 55% 45% 55% 45%;
+      background: radial-gradient(ellipse at 60% 60%, rgba(138, 145, 120, 0.05) 0%, transparent 70%);
+      pointer-events: none;
+      animation: organicFloat 25s ease-in-out infinite reverse;
+    }
+
+    @keyframes organicFloat {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(10px, -8px) rotate(2deg); }
+      66% { transform: translate(-6px, 5px) rotate(-1deg); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 780px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--nd-clay);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      color: var(--nd-heading);
+      line-height: 1.1;
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--nd-clay);
+      margin-bottom: 20px;
+    }
+
+    .hero-desc {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(0.98rem, 1.5vw, 1.15rem);
+      color: var(--nd-mushroom);
+      max-width: 580px;
+      margin: 0 auto 40px;
+      line-height: 1.85;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 32px;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .btn-primary {
+      color: var(--nd-bone-white);
+      background: var(--nd-clay);
+      box-shadow: 0 2px 8px rgba(176, 125, 98, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--nd-terracotta);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(168, 100, 75, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 1px 4px rgba(168, 100, 75, 0.2);
+    }
+
+    .btn-outline {
+      color: var(--nd-clay);
+      background: transparent;
+      border: 1.5px solid var(--nd-clay);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      color: var(--nd-bone-white);
+      background: var(--nd-clay);
+      box-shadow: 0 2px 8px rgba(176, 125, 98, 0.2);
+    }
+
+    .btn-sage {
+      color: var(--nd-bone-white);
+      background: var(--nd-dried-sage);
+      box-shadow: 0 2px 8px rgba(138, 145, 120, 0.2);
+    }
+
+    .btn-sage:hover {
+      background: var(--nd-muted-olive);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(107, 109, 78, 0.25);
+    }
+
+    .btn-dark {
+      color: var(--nd-bone-white);
+      background: var(--nd-dark-earth);
+      box-shadow: 0 2px 8px rgba(59, 42, 31, 0.2);
+    }
+
+    .btn-dark:hover {
+      background: var(--nd-soil-brown);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 16px rgba(92, 64, 51, 0.25);
+    }
+
+    /* ============================================
+       STRATA BAND (Geological Divider)
+       ============================================ */
+    .strata-band {
+      display: flex;
+      height: 4px;
+      width: 100%;
+    }
+
+    .strata-band--thick {
+      height: 6px;
+    }
+
+    .strata-band span { flex: 1; }
+    .strata-band span:nth-child(1) { background: var(--nd-warm-sand); }
+    .strata-band span:nth-child(2) { background: var(--nd-driftwood); }
+    .strata-band span:nth-child(3) { background: var(--nd-clay); }
+    .strata-band span:nth-child(4) { background: var(--nd-dried-sage); }
+    .strata-band span:nth-child(5) { background: var(--nd-terracotta); }
+    .strata-band span:nth-child(6) { background: var(--nd-mushroom); }
+    .strata-band span:nth-child(7) { background: var(--nd-muted-olive); }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--linen {
+      background: var(--nd-raw-linen);
+    }
+
+    .section--parchment {
+      background: var(--nd-parchment);
+      position: relative;
+    }
+
+    /* Linen weave texture for parchment sections */
+    .section--parchment::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(92, 64, 51, 0.008) 3px,
+          rgba(92, 64, 51, 0.008) 6px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(92, 64, 51, 0.006) 3px,
+          rgba(92, 64, 51, 0.006) 6px
+        );
+      pointer-events: none;
+    }
+
+    .section--bone {
+      background: var(--nd-bone-white);
+    }
+
+    .section--dark {
+      background: var(--nd-dark-earth);
+      color: var(--nd-parchment);
+    }
+
+    .section--dark .section-label { color: var(--nd-clay); }
+    .section--dark .section-title { color: var(--nd-bone-white); }
+    .section--dark .section-subtitle { color: var(--nd-driftwood); }
+
+    .section-label {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--nd-clay);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      text-align: center;
+      color: var(--nd-heading);
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.05rem, 2.5vw, 1.35rem);
+      font-weight: 400;
+      font-style: italic;
+      text-align: center;
+      color: var(--nd-mushroom);
+      margin-bottom: 52px;
+    }
+
+    /* ============================================
+       NATURE DISTILLED DIVIDER
+       ============================================ */
+    .nd-divider {
+      position: relative;
+      height: 6px;
+      margin: 0 auto;
+      max-width: 120px;
+      padding: 32px 0;
+      background: transparent;
+    }
+
+    .nd-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--nd-driftwood) 20%,
+        var(--nd-clay) 50%,
+        var(--nd-driftwood) 80%,
+        transparent 100%
+      );
+    }
+
+    .nd-divider::after {
+      content: '';
+      position: absolute;
+      top: calc(50% + 4px);
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--nd-warm-sand) 30%,
+        var(--nd-warm-sand) 70%,
+        transparent 100%
+      );
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--nd-clay);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--nd-warm-sand);
+    }
+
+    .typo-display {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--nd-dark-earth);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+
+    .typo-heading {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--nd-dark-earth);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-elegant {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 500;
+      color: var(--nd-clay);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.06rem;
+      line-height: 1.85;
+      color: var(--nd-soil-brown);
+      margin-bottom: 8px;
+    }
+
+    .typo-italic {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--nd-terracotta);
+      line-height: 1.5;
+    }
+
+    .typo-ui {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-weight: 500;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--nd-muted-olive);
+    }
+
+    .typo-right {
+      background: var(--nd-bone-white);
+      border-radius: 12px;
+      padding: 36px;
+      border: 1px solid var(--nd-warm-sand);
+    }
+
+    .typo-right h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(217, 206, 191, 0.6);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--nd-muted-olive);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--nd-bone-white);
+      border: 1px solid var(--nd-warm-sand);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--nd-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--nd-shadow-md);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle paper grain on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='80' height='80' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='80' height='80' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 0.88rem;
+      color: var(--nd-dark-earth);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--nd-mushroom);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--nd-bone-white);
+      border: 1px solid var(--nd-warm-sand);
+      border-radius: 12px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: var(--nd-shadow-sm);
+    }
+
+    /* Paper texture on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    /* Bottom earth-tone accent line on cards */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--nd-clay), transparent);
+      border-radius: 0 0 12px 12px;
+      opacity: 0.4;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--nd-shadow-lg);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .card-icon--clay {
+      background: var(--nd-parchment);
+      color: var(--nd-clay);
+      box-shadow: 0 2px 8px rgba(176, 125, 98, 0.1);
+    }
+
+    .card-icon--sage {
+      background: rgba(138, 145, 120, 0.12);
+      color: var(--nd-dried-sage);
+      box-shadow: 0 2px 8px rgba(138, 145, 120, 0.1);
+    }
+
+    .card-icon--terracotta {
+      background: rgba(168, 100, 75, 0.1);
+      color: var(--nd-terracotta);
+      box-shadow: 0 2px 8px rgba(168, 100, 75, 0.1);
+    }
+
+    .card-icon--earth {
+      background: rgba(92, 64, 51, 0.08);
+      color: var(--nd-soil-brown);
+      box-shadow: 0 2px 8px rgba(92, 64, 51, 0.08);
+    }
+
+    .card-icon--olive {
+      background: rgba(107, 109, 78, 0.1);
+      color: var(--nd-muted-olive);
+      box-shadow: 0 2px 8px rgba(107, 109, 78, 0.1);
+    }
+
+    .card-icon--mushroom {
+      background: rgba(156, 144, 132, 0.12);
+      color: var(--nd-mushroom);
+      box-shadow: 0 2px 8px rgba(156, 144, 132, 0.1);
+    }
+
+    .card h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.3rem;
+      color: var(--nd-heading);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--nd-text);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 14px;
+      border-radius: 6px;
+      border: 1px solid var(--nd-warm-sand);
+      color: var(--nd-muted-olive);
+      margin-top: 16px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--nd-clay);
+      color: var(--nd-bone-white);
+      border-color: var(--nd-clay);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--nd-warm-sand);
+      background: var(--nd-bone-white);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Warm Earth Gradient */
+    .effect-earth-gradient {
+      background: linear-gradient(
+        135deg,
+        var(--nd-parchment) 0%,
+        var(--nd-warm-sand) 25%,
+        var(--nd-blush-clay) 50%,
+        var(--nd-driftwood) 75%,
+        var(--nd-parchment) 100%
+      );
+      animation: earthGradient 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes earthGradient {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
+    }
+
+    .effect-earth-gradient::after {
+      content: 'WARM';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2rem;
+      color: var(--nd-soil-brown);
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+
+    /* Effect 2: Linen Weave Texture */
+    .effect-linen {
+      background-color: var(--nd-parchment);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 64, 51, 0.04) 2px,
+          rgba(92, 64, 51, 0.04) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 64, 51, 0.03) 2px,
+          rgba(92, 64, 51, 0.03) 4px
+        );
+    }
+
+    .effect-linen::after {
+      content: 'LINEN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--nd-soil-brown);
+      letter-spacing: 0.12em;
+      z-index: 1;
+    }
+
+    /* Effect 3: Clay Grain */
+    .effect-clay-grain {
+      background: linear-gradient(145deg, var(--nd-clay), var(--nd-terracotta));
+    }
+
+    .effect-clay-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='200' height='200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .effect-clay-grain::after {
+      content: 'CLAY';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--nd-bone-white);
+      text-shadow: 1px 1px 3px rgba(92, 64, 51, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 4: Moss Gradient */
+    .effect-moss {
+      background: linear-gradient(135deg, var(--nd-deep-moss), var(--nd-dried-sage), var(--nd-muted-olive));
+      position: relative;
+    }
+
+    .effect-moss::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(250, 247, 243, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(250, 247, 243, 0.06) 0%, transparent 40%);
+    }
+
+    .effect-moss::after {
+      content: 'MOSS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2rem;
+      color: var(--nd-bone-white);
+      text-shadow: 1px 1px 3px rgba(74, 82, 64, 0.4);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Stone Surface */
+    .effect-stone {
+      background-color: var(--nd-stone-grey);
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 8px,
+          rgba(255, 255, 255, 0.015) 8px,
+          rgba(255, 255, 255, 0.015) 16px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 8px,
+          rgba(0, 0, 0, 0.015) 8px,
+          rgba(0, 0, 0, 0.015) 16px
+        );
+    }
+
+    .effect-stone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='150' height='150' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='150' height='150' filter='url(%23s)' opacity='0.08'/%3E%3C/svg%3E");
+      mix-blend-mode: soft-light;
+    }
+
+    .effect-stone::after {
+      content: 'STONE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Inter', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--nd-bone-white);
+      text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    /* Effect 6: Warm Shadow Layers */
+    .effect-shadow-layers {
+      background: var(--nd-raw-linen);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-shadow-layers .shadow-box {
+      width: 100px;
+      height: 100px;
+      background: var(--nd-bone-white);
+      border-radius: 12px;
+      border: 1px solid var(--nd-warm-sand);
+      box-shadow:
+        0 2px 4px rgba(92, 64, 51, 0.04),
+        0 4px 8px rgba(92, 64, 51, 0.06),
+        0 8px 16px rgba(92, 64, 51, 0.06),
+        0 16px 32px rgba(92, 64, 51, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: shadowPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes shadowPulse {
+      0% {
+        box-shadow:
+          0 2px 4px rgba(92, 64, 51, 0.04),
+          0 4px 8px rgba(92, 64, 51, 0.06),
+          0 8px 16px rgba(92, 64, 51, 0.06),
+          0 16px 32px rgba(92, 64, 51, 0.05);
+      }
+      100% {
+        box-shadow:
+          0 4px 8px rgba(92, 64, 51, 0.06),
+          0 8px 16px rgba(92, 64, 51, 0.08),
+          0 16px 32px rgba(92, 64, 51, 0.08),
+          0 32px 64px rgba(92, 64, 51, 0.06);
+        transform: translateY(-4px);
+      }
+    }
+
+    .effect-shadow-layers .shadow-box span {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 0.9rem;
+      color: var(--nd-clay);
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.05rem;
+      color: var(--nd-dark-earth);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--nd-mushroom);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 48px 0 48px 36px;
+      border-left: 3px solid var(--nd-clay);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 6rem;
+      color: var(--nd-clay);
+      opacity: 0.15;
+      position: absolute;
+      top: 8px;
+      left: 36px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--nd-soil-brown);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 20px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--nd-muted);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--nd-bone-white);
+      border: 1px solid var(--nd-warm-sand);
+      border-radius: 16px;
+      padding: 64px 48px;
+      text-align: center;
+      box-shadow: var(--nd-shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .cta-container > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--nd-heading);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .cta-container .cta-italic {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--nd-clay);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--nd-text);
+      margin-bottom: 32px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--nd-dark-earth);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--nd-driftwood);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(250, 247, 243, 0.006) 3px,
+          rgba(250, 247, 243, 0.006) 6px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(250, 247, 243, 0.004) 3px,
+          rgba(250, 247, 243, 0.004) 6px
+        );
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.6rem;
+      color: var(--nd-clay);
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .footer p {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 0.92rem;
+      color: rgba(184, 169, 154, 0.7);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.8;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: rgba(184, 169, 154, 0.5);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--nd-clay);
+    }
+
+    .footer-botanical {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .footer-botanical span {
+      display: block;
+      width: 1px;
+      height: 20px;
+      background: linear-gradient(180deg, var(--nd-clay), transparent);
+      opacity: 0.3;
+    }
+
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: rgba(184, 169, 154, 0.3);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.76rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-organic-shape,
+      .hero-organic-shape-2 {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 36px 0 36px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 24px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-organic-shape,
+      .hero-organic-shape-2 {
+        animation: none;
+      }
+
+      .effect-earth-gradient {
+        animation: none;
+      }
+
+      .effect-shadow-layers .shadow-box {
+        animation: none;
+      }
+
+      .card, .color-chip, .tag, .btn {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Nature Distilled</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-organic-shape"></div>
+    <div class="hero-organic-shape-2"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Design Aesthetic Reference</p>
+      <h1>Nature Distilled</h1>
+      <p class="hero-subtitle">Raw materials, refined into quiet sophistication</p>
+      <p class="hero-desc">
+        A muted, earth-toned design language that draws its essence from soil, wood, clay, and dried botanical matter &mdash; distilled to tonal and textural fundamentals for interfaces that feel grounded, warm, and enduring.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STRATA BAND ===== -->
+  <div class="strata-band strata-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--linen" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Calm, Editorial &amp; Organic</h2>
+      <p class="section-subtitle">elegant serifs, humanist clarity, measured confidence</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / DM Serif Display</p>
+            <p class="typo-display">Quiet Warmth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / DM Serif Display</p>
+            <p class="typo-heading">Grounded in Earth Tones</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Cormorant Garamond</p>
+            <p class="typo-elegant">Refined elegance with organic warmth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora</p>
+            <p class="typo-body">Warm serif text for sustained, comfortable reading. Every letterform carries the organic stroke variation of hand-set type.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Pull Quote / Cormorant Garamond Italic</p>
+            <p class="typo-italic">honor the material, breathe generously</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Inter</p>
+            <p class="typo-ui">Navigation &amp; Interface Text</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--nd-dark-earth);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--nd-dark-earth);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-weight: 500; font-size: 1.3rem; color: var(--nd-clay);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 1.1rem; color: var(--nd-terracotta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.06rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: var(--nd-soil-brown);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.82rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.82rem; color: var(--nd-muted-olive); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--nd-warm-sand);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--nd-clay);">DM Serif Display</strong> + <strong>Lora</strong><br>
+              <span style="color: var(--nd-mushroom); font-size: 0.85rem;">Warm editorial authority with organic, legible body text</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 600; color: var(--nd-clay);">Cormorant Garamond</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--nd-mushroom); font-size: 0.85rem;">Delicate serif grandeur contrasted with geometric clarity</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--nd-clay);">DM Serif Display</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--nd-mushroom); font-size: 0.85rem;">Organic serif display with clean, functional sans-serif body</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="section--linen" style="padding: 0;">
+    <div class="nd-divider"></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--parchment" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Earth, Clay &amp; Dried Botanicals</h2>
+      <p class="section-subtitle">muted tones drawn from soil, linen, stone, and sage</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF7F3;"></div>
+          <div class="color-info">
+            <div class="color-name">Bone White</div>
+            <div class="color-hex">#FAF7F3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F0EB;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Linen</div>
+            <div class="color-hex">#F5F0EB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDE6DB;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#EDE6DB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D9CEBF;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Sand</div>
+            <div class="color-hex">#D9CEBF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9A99B;"></div>
+          <div class="color-info">
+            <div class="color-name">Blush Clay</div>
+            <div class="color-hex">#C9A99B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8A99A;"></div>
+          <div class="color-info">
+            <div class="color-name">Driftwood</div>
+            <div class="color-hex">#B8A99A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A3A095;"></div>
+          <div class="color-info">
+            <div class="color-name">Stone Grey</div>
+            <div class="color-hex">#A3A095</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9C9084;"></div>
+          <div class="color-info">
+            <div class="color-name">Mushroom Grey</div>
+            <div class="color-hex">#9C9084</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B07D62;"></div>
+          <div class="color-info">
+            <div class="color-name">Clay</div>
+            <div class="color-hex">#B07D62</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A8644B;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta</div>
+            <div class="color-hex">#A8644B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8A9178;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Sage</div>
+            <div class="color-hex">#8A9178</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B6D4E;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Olive</div>
+            <div class="color-hex">#6B6D4E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C4033;"></div>
+          <div class="color-info">
+            <div class="color-name">Soil Brown</div>
+            <div class="color-hex">#5C4033</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A5240;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Moss</div>
+            <div class="color-hex">#4A5240</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B2A1F;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Earth</div>
+            <div class="color-hex">#3B2A1F</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRATA BAND ===== -->
+  <div class="strata-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--bone" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Material-Honest Cards</h2>
+      <p class="section-subtitle">like heavy cotton stock resting on a linen surface</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--clay">&#9672;</div>
+          <h3>Tactile Textures</h3>
+          <p>Subtle grain, linen weave, and handmade paper textures layered at low opacity evoke the physical world and counteract flat digital sterility.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Depth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sage">&#9673;</div>
+          <h3>Muted Earth Palette</h3>
+          <p>Colors drawn from skin, wood, soil, and dried botanicals sit close in tonal value, creating harmonious fields punctuated by strategic warmth.</p>
+          <span class="tag">Color</span>
+          <span class="tag">Tone</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--terracotta">&#9671;</div>
+          <h3>Warm Shadows</h3>
+          <p>Shadows cast in warm brown tones rather than pure black maintain cohesive warmth, imitating gentle afternoon light through natural materials.</p>
+          <span class="tag">Shadow</span>
+          <span class="tag">Light</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--earth">&#9670;</div>
+          <h3>Serif-Forward Type</h3>
+          <p>Elegant organic serif typefaces anchor the visual identity, conveying editorial authority and the timeless refinement of botanical journals.</p>
+          <span class="tag">Typography</span>
+          <span class="tag">Editorial</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--olive">&#9674;</div>
+          <h3>Generous Whitespace</h3>
+          <p>Ample warm-toned breathing room between elements communicates calm confidence, letting the muted palette resonate without competition.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Space</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--mushroom">&#9675;</div>
+          <h3>Organic Asymmetry</h3>
+          <p>Slightly off-center compositions and irregular spacing that feel hand-arranged rather than rigidly gridded, echoing natural imperfection.</p>
+          <span class="tag">Organic</span>
+          <span class="tag">Balance</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--linen" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Surfaces</h2>
+      <p class="section-subtitle">matte finishes, natural grain, earthy depth &mdash; no images needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-earth-gradient"></div>
+          <div class="effect-caption">
+            <h4>Warm Earth Gradient</h4>
+            <p>Gentle transitions between adjacent earth tones add depth without jarring color shifts.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-caption">
+            <h4>Linen Weave</h4>
+            <p>Cross-hatched micro-lines at very low opacity evoke the tactile quality of woven fabric.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-clay-grain"></div>
+          <div class="effect-caption">
+            <h4>Clay Grain</h4>
+            <p>SVG noise overlay on terracotta gradients simulates the stippled surface of unglazed ceramics.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-moss"></div>
+          <div class="effect-caption">
+            <h4>Moss Gradient</h4>
+            <p>Botanical green tones with soft radial highlights evoke dappled forest light on living foliage.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stone"></div>
+          <div class="effect-caption">
+            <h4>Stone Surface</h4>
+            <p>Layered noise and diagonal patterns create the cool mineral texture of weathered stone.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-shadow-layers">
+            <div class="shadow-box"><span>Depth</span></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Warm Shadow Stack</h4>
+            <p>Multi-layered warm-toned shadows create naturalistic elevation and material depth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRATA BAND ===== -->
+  <div class="strata-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--parchment">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Understated Buttons</h2>
+      <p class="section-subtitle">matte finish, warm fill, tactile hover states</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Clay</a>
+        <a href="#" class="btn btn-sage">Botanical Sage</a>
+        <a href="#" class="btn btn-dark">Dark Earth</a>
+        <a href="#" class="btn btn-outline">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--bone">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Distill, do not decorate. Strip natural inspiration to its essential tones and textures, and let quiet sophistication speak through understatement.
+        </blockquote>
+        <cite>&mdash; The Nature Distilled Principle</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--linen">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Honor the Material</h2>
+        <span class="cta-italic">warmth with discipline, texture as depth</span>
+        <p>
+          Nature Distilled channels biophilic design through a lens of modern sophistication &mdash; muted earth tones, generous whitespace, tactile texture, and serif-forward typography that feels simultaneously ancient and contemporary.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRATA BAND ===== -->
+  <div class="strata-band strata-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Nature Distilled</h3>
+      <p>
+        A design aesthetic reference celebrating the muted warmth of earth tones, tactile textures, and editorial typography &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-botanical">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Nature Distilled &bull; Quiet sophistication, grounded warmth</p>
+    </div>
+  </footer>
+
+</body>
+</html>

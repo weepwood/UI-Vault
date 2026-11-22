@@ -1,0 +1,2437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ukiyo-e -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Blues */
+      --ukiyo-ai: #1B4B7A;
+      --ukiyo-hanada: #2D5F8A;
+
+      /* Reds / Warm accents */
+      --ukiyo-shu: #C34A36;
+      --ukiyo-beni: #E8836B;
+      --ukiyo-sakura: #FEEEED;
+
+      /* Greens */
+      --ukiyo-uguisu: #8B9E3C;
+      --ukiyo-moegi: #3B7A57;
+      --ukiyo-matcha: #BEC23F;
+
+      /* Earth / Gold */
+      --ukiyo-kitsune: #C3803A;
+      --ukiyo-kin: #D4AF37;
+      --ukiyo-tobi: #6B4C3B;
+
+      /* Neutrals */
+      --ukiyo-gofun: #F5F0E1;
+      --ukiyo-torinoko: #EDE4D3;
+      --ukiyo-sumi: #1C1C1C;
+      --ukiyo-keshizumi: #3A3632;
+
+      /* Functional aliases */
+      --ukiyo-bg-primary: var(--ukiyo-gofun);
+      --ukiyo-bg-secondary: var(--ukiyo-torinoko);
+      --ukiyo-text-primary: var(--ukiyo-sumi);
+      --ukiyo-text-secondary: var(--ukiyo-keshizumi);
+      --ukiyo-accent-primary: var(--ukiyo-ai);
+      --ukiyo-accent-warm: var(--ukiyo-shu);
+      --ukiyo-border: var(--ukiyo-sumi);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.125rem;
+      letter-spacing: 0.02em;
+      line-height: 1.8;
+      color: var(--ukiyo-keshizumi);
+      background-color: var(--ukiyo-gofun);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+    }
+
+    /* Washi paper texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--ukiyo-gofun);
+      border-bottom: 3px solid var(--ukiyo-sumi);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ukiyo-sumi);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: color 0.3s ease;
+    }
+
+    /* Red seal stamp before brand */
+    .nav-brand::before {
+      content: '';
+      display: inline-block;
+      width: 32px;
+      height: 32px;
+      background: var(--ukiyo-shu);
+      border-radius: 2px;
+      box-shadow: inset 0 0 0 2px rgba(245, 240, 225, 0.3);
+    }
+
+    .nav-brand:hover {
+      color: var(--ukiyo-ai);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ukiyo-keshizumi);
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    /* Ink-brush underline on hover */
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--ukiyo-shu);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--ukiyo-sumi);
+    }
+
+    /* ============================================
+       HERO SECTION -- Woodblock Print Landscape
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 95vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 4rem;
+      background: var(--ukiyo-ai);
+      overflow: hidden;
+    }
+
+    /* Mountain silhouette background */
+    .hero-mountains {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 0;
+    }
+
+    /* Distant mountain range */
+    .hero-mountains::before {
+      content: '';
+      position: absolute;
+      bottom: 200px;
+      left: 0;
+      right: 0;
+      height: 400px;
+      background:
+        /* Mount Fuji silhouette center */
+        radial-gradient(ellipse 35% 100% at 65% 100%, var(--ukiyo-hanada) 0%, transparent 100%),
+        /* Left ridge */
+        radial-gradient(ellipse 50% 80% at 20% 100%, rgba(45, 95, 138, 0.7) 0%, transparent 100%),
+        /* Right ridge */
+        radial-gradient(ellipse 40% 70% at 85% 100%, rgba(45, 95, 138, 0.5) 0%, transparent 100%);
+      z-index: 0;
+    }
+
+    /* Wave pattern at bottom */
+    .hero-waves {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      background: no-repeat bottom center / 100% auto;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 200'%3E%3Cpath d='M0,100 C100,60 200,140 300,100 C400,60 500,140 600,100 C700,60 800,140 900,100 C1000,60 1100,140 1200,100 L1200,200 L0,200Z' fill='%23F5F0E1' stroke='%231C1C1C' stroke-width='2'/%3E%3Cpath d='M0,130 C80,100 160,160 240,130 C320,100 400,160 480,130 C560,100 640,160 720,130 C800,100 880,160 960,130 C1040,100 1120,160 1200,130 L1200,200 L0,200Z' fill='%23EDE4D3' stroke='%231C1C1C' stroke-width='1.5'/%3E%3C/svg%3E");
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    /* Cloud band at top */
+    .hero-clouds {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background: linear-gradient(
+        180deg,
+        var(--ukiyo-gofun) 0%,
+        rgba(245, 240, 225, 0.6) 40%,
+        transparent 100%
+      );
+      z-index: 1;
+    }
+
+    /* Stylized cloud bands floating */
+    .hero-cloud-band {
+      position: absolute;
+      z-index: 1;
+      height: 40px;
+      background: rgba(245, 240, 225, 0.12);
+      border-top: 1px solid rgba(245, 240, 225, 0.15);
+      border-bottom: 1px solid rgba(245, 240, 225, 0.15);
+      border-radius: 50%;
+      animation: cloudDrift 40s linear infinite;
+    }
+
+    .hero-cloud-band:nth-child(1) {
+      top: 25%;
+      left: -10%;
+      width: 50%;
+    }
+
+    .hero-cloud-band:nth-child(2) {
+      top: 40%;
+      right: -5%;
+      left: auto;
+      width: 35%;
+      animation-delay: -15s;
+      animation-duration: 55s;
+    }
+
+    @keyframes cloudDrift {
+      0% { transform: translateX(0); }
+      50% { transform: translateX(30px); }
+      100% { transform: translateX(0); }
+    }
+
+    /* Cherry blossom petals */
+    .hero-petals {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .petal {
+      position: absolute;
+      width: 8px;
+      height: 10px;
+      background: var(--ukiyo-sakura);
+      border-radius: 50% 0 50% 50%;
+      opacity: 0;
+      animation: petalFall linear infinite;
+    }
+
+    .petal:nth-child(1) { left: 10%; animation-duration: 12s; animation-delay: 0s; }
+    .petal:nth-child(2) { left: 25%; animation-duration: 15s; animation-delay: -3s; width: 6px; height: 8px; }
+    .petal:nth-child(3) { left: 40%; animation-duration: 11s; animation-delay: -7s; }
+    .petal:nth-child(4) { left: 60%; animation-duration: 14s; animation-delay: -2s; width: 7px; height: 9px; }
+    .petal:nth-child(5) { left: 75%; animation-duration: 13s; animation-delay: -5s; }
+    .petal:nth-child(6) { left: 88%; animation-duration: 16s; animation-delay: -9s; width: 6px; height: 7px; }
+    .petal:nth-child(7) { left: 50%; animation-duration: 10s; animation-delay: -4s; }
+    .petal:nth-child(8) { left: 33%; animation-duration: 17s; animation-delay: -11s; width: 5px; height: 6px; }
+
+    @keyframes petalFall {
+      0% {
+        transform: translateY(-20px) rotate(0deg) translateX(0);
+        opacity: 0;
+      }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.4; }
+      100% {
+        transform: translateY(100vh) rotate(360deg) translateX(80px);
+        opacity: 0;
+      }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 600px;
+    }
+
+    .hero-tagline {
+      font-family: 'Cinzel', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--ukiyo-kin);
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 900;
+      color: var(--ukiyo-gofun);
+      line-height: 1.05;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ukiyo-torinoko);
+      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-desc {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      color: rgba(245, 240, 225, 0.75);
+      max-width: 480px;
+      line-height: 1.8;
+      margin-bottom: 36px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Vertical text accent on right side of hero */
+    .hero-vertical {
+      position: absolute;
+      top: 50%;
+      right: 3rem;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      color: rgba(245, 240, 225, 0.2);
+      z-index: 2;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.875rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ukiyo-gofun);
+      background: var(--ukiyo-shu);
+      border: 2px solid var(--ukiyo-sumi);
+      padding: 0.75rem 2rem;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.25s ease;
+    }
+
+    .btn:hover {
+      background: var(--ukiyo-sumi);
+      color: var(--ukiyo-gofun);
+      transform: translate(-2px, -2px);
+      box-shadow: 2px 2px 0 var(--ukiyo-shu);
+    }
+
+    .btn:active {
+      transform: translate(0, 0);
+      box-shadow: none;
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--ukiyo-sumi);
+      border: 2px solid var(--ukiyo-sumi);
+    }
+
+    .btn--outline:hover {
+      background: var(--ukiyo-sumi);
+      color: var(--ukiyo-gofun);
+      box-shadow: 2px 2px 0 var(--ukiyo-ai);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--ukiyo-ai);
+      border: none;
+      border-bottom: 2px solid var(--ukiyo-ai);
+      padding: 0.5rem 0;
+    }
+
+    .btn--ghost:hover {
+      color: var(--ukiyo-shu);
+      border-bottom-color: var(--ukiyo-shu);
+      box-shadow: none;
+      transform: none;
+    }
+
+    .btn--indigo {
+      background: var(--ukiyo-ai);
+      color: var(--ukiyo-gofun);
+      border-color: var(--ukiyo-sumi);
+    }
+
+    .btn--indigo:hover {
+      background: var(--ukiyo-sumi);
+      box-shadow: 2px 2px 0 var(--ukiyo-ai);
+    }
+
+    /* Hero button variants */
+    .btn--hero-primary {
+      background: var(--ukiyo-shu);
+      color: var(--ukiyo-gofun);
+      border-color: var(--ukiyo-gofun);
+    }
+
+    .btn--hero-primary:hover {
+      background: var(--ukiyo-gofun);
+      color: var(--ukiyo-sumi);
+      border-color: var(--ukiyo-gofun);
+      box-shadow: 2px 2px 0 var(--ukiyo-shu);
+    }
+
+    .btn--hero-outline {
+      background: transparent;
+      color: var(--ukiyo-gofun);
+      border-color: rgba(245, 240, 225, 0.5);
+    }
+
+    .btn--hero-outline:hover {
+      background: rgba(245, 240, 225, 0.1);
+      border-color: var(--ukiyo-gofun);
+      box-shadow: 2px 2px 0 rgba(245, 240, 225, 0.2);
+    }
+
+    /* ============================================
+       WAVE DIVIDER
+       ============================================ */
+    .wave-divider {
+      width: 100%;
+      height: 80px;
+      background: no-repeat center / 100% auto;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 80'%3E%3Cpath d='M0,40 C40,20 80,60 120,40 C160,20 200,55 240,35 C280,15 320,60 360,40 C400,20 440,55 480,35 C520,15 560,60 600,40 C640,20 680,55 720,35 C760,15 800,40 800,40' fill='none' stroke='%231B4B7A' stroke-width='2.5' stroke-linecap='round'/%3E%3Cpath d='M0,50 C50,30 100,65 150,45 C200,25 250,60 300,45 C350,30 400,65 450,45 C500,25 550,60 600,45 C650,30 700,65 750,45 C800,30 800,50 800,50' fill='none' stroke='%232D5F8A' stroke-width='1.5' stroke-linecap='round' opacity='0.5'/%3E%3C/svg%3E");
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--gofun {
+      background: var(--ukiyo-gofun);
+    }
+
+    .section--torinoko {
+      background: var(--ukiyo-torinoko);
+      background-image:
+        radial-gradient(ellipse at 30% 50%, rgba(195, 128, 58, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse at 80% 30%, rgba(27, 75, 122, 0.03) 0%, transparent 60%);
+    }
+
+    .section--sumi {
+      background: var(--ukiyo-sumi);
+      color: var(--ukiyo-gofun);
+    }
+
+    .section--sumi .section-label { color: var(--ukiyo-kin); }
+    .section--sumi .section-title { color: var(--ukiyo-gofun); }
+    .section--sumi .section-subtitle { color: var(--ukiyo-torinoko); }
+
+    .section--ai {
+      background: var(--ukiyo-ai);
+      color: var(--ukiyo-gofun);
+    }
+
+    .section--ai .section-label { color: var(--ukiyo-kin); }
+    .section--ai .section-title { color: var(--ukiyo-gofun); }
+    .section--ai .section-subtitle { color: var(--ukiyo-torinoko); }
+
+    .section-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--ukiyo-ai);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 900;
+      text-align: center;
+      color: var(--ukiyo-sumi);
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-style: italic;
+      font-weight: 300;
+      text-align: center;
+      color: var(--ukiyo-keshizumi);
+      margin-bottom: 48px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       INK BRUSH DIVIDER
+       ============================================ */
+    .ink-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 24px 0;
+    }
+
+    .ink-divider::before,
+    .ink-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--ukiyo-sumi), transparent);
+      opacity: 0.15;
+    }
+
+    .ink-divider .seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--ukiyo-shu);
+      border-radius: 2px;
+      margin: 0 18px;
+      box-shadow: inset 0 0 0 2px rgba(245, 240, 225, 0.3);
+      position: relative;
+    }
+
+    .ink-divider .seal::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(245, 240, 225, 0.05) 2px,
+        rgba(245, 240, 225, 0.05) 4px
+      );
+      border-radius: 2px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ukiyo-ai);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--ukiyo-torinoko);
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--ukiyo-sumi);
+      line-height: 1.1;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .typo-section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ukiyo-ai);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.125rem;
+      font-weight: 400;
+      line-height: 1.8;
+      letter-spacing: 0.02em;
+      color: var(--ukiyo-keshizumi);
+      margin-bottom: 8px;
+    }
+
+    .typo-body-alt {
+      font-family: 'Crimson Pro', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--ukiyo-keshizumi);
+      margin-bottom: 8px;
+    }
+
+    .typo-caption {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: var(--ukiyo-keshizumi);
+      letter-spacing: 0.03em;
+    }
+
+    .typo-right {
+      background: var(--ukiyo-gofun);
+      border: 2px solid var(--ukiyo-sumi);
+      padding: 36px;
+      position: relative;
+    }
+
+    /* Red seal stamp accent */
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      background: var(--ukiyo-shu);
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(28, 28, 28, 0.1);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--ukiyo-ai);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--ukiyo-gofun);
+      border: 2px solid var(--ukiyo-sumi);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        4px 4px 0 var(--ukiyo-ai),
+        8px 8px 0 rgba(27, 75, 122, 0.15);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid var(--ukiyo-sumi);
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Cinzel', serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--ukiyo-keshizumi);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .color-role {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.72rem;
+      font-style: italic;
+      color: var(--ukiyo-keshizumi);
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--ukiyo-gofun);
+      border: 2px solid var(--ukiyo-sumi);
+      border-radius: 2px;
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        4px 4px 0 var(--ukiyo-ai),
+        8px 8px 0 rgba(27, 75, 122, 0.15);
+    }
+
+    .card-image {
+      width: 100%;
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid var(--ukiyo-sumi);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    /* Red seal stamp accent in corner */
+    .card-body::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 24px;
+      height: 24px;
+      background: var(--ukiyo-shu);
+      border-radius: 2px;
+      opacity: 0.7;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--ukiyo-keshizumi);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 12px;
+      border: 1.5px solid var(--ukiyo-sumi);
+      color: var(--ukiyo-keshizumi);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--ukiyo-sumi);
+      color: var(--ukiyo-gofun);
+    }
+
+    /* Card image decorative fills */
+    .card-img--wave {
+      background: var(--ukiyo-ai);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 160'%3E%3Cpath d='M0,80 C40,50 80,110 120,80 C160,50 200,110 240,80 C280,50 320,110 360,80 C400,50 400,80 400,80 L400,160 L0,160Z' fill='%23F5F0E1' stroke='%231C1C1C' stroke-width='2' opacity='0.3'/%3E%3Cpath d='M0,100 C30,75 60,125 90,100 C120,75 150,120 180,95 C210,70 240,120 270,100 C300,80 330,115 360,95 C390,75 400,100 400,100' fill='none' stroke='%23F5F0E1' stroke-width='1.5' opacity='0.5'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: bottom;
+    }
+
+    .card-img--mountain {
+      background: var(--ukiyo-hanada);
+      background-image:
+        radial-gradient(ellipse 40% 90% at 35% 100%, var(--ukiyo-ai) 0%, transparent 100%),
+        radial-gradient(ellipse 35% 80% at 70% 100%, rgba(27, 75, 122, 0.8) 0%, transparent 100%);
+    }
+
+    .card-img--blossom {
+      background: var(--ukiyo-sakura);
+      background-image:
+        radial-gradient(circle at 25% 35%, var(--ukiyo-beni) 3px, transparent 3px),
+        radial-gradient(circle at 65% 25%, var(--ukiyo-beni) 4px, transparent 4px),
+        radial-gradient(circle at 45% 65%, var(--ukiyo-beni) 3px, transparent 3px),
+        radial-gradient(circle at 80% 60%, var(--ukiyo-beni) 2px, transparent 2px),
+        radial-gradient(circle at 15% 75%, var(--ukiyo-beni) 3px, transparent 3px),
+        radial-gradient(circle at 55% 40%, var(--ukiyo-shu) 2px, transparent 2px);
+    }
+
+    .card-img--ink {
+      background: var(--ukiyo-sumi);
+      background-image:
+        linear-gradient(180deg, transparent 30%, rgba(27, 75, 122, 0.3) 70%, rgba(45, 95, 138, 0.5) 100%);
+    }
+
+    .card-img--bamboo {
+      background: var(--ukiyo-moegi);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 28px,
+          rgba(28, 28, 28, 0.15) 28px,
+          rgba(28, 28, 28, 0.15) 30px,
+          transparent 30px,
+          transparent 32px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 48px,
+          rgba(28, 28, 28, 0.08) 48px,
+          rgba(28, 28, 28, 0.08) 50px
+        );
+    }
+
+    .card-img--gold {
+      background: var(--ukiyo-kitsune);
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(212, 175, 55, 0.2) 10px,
+          rgba(212, 175, 55, 0.2) 12px
+        );
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 2px solid var(--ukiyo-sumi);
+      background: var(--ukiyo-gofun);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 2px solid var(--ukiyo-sumi);
+    }
+
+    /* Effect 1: Hokusai Wave */
+    .effect-wave {
+      background: var(--ukiyo-ai);
+    }
+
+    .effect-wave::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 200'%3E%3Cpath d='M0,120 C50,80 100,160 150,120 C200,80 250,160 300,120 C350,80 400,160 450,120 C500,80 550,160 600,120 L600,200 L0,200Z' fill='%23F5F0E1' stroke='%231C1C1C' stroke-width='3'/%3E%3Cpath d='M-50,140 C0,100 50,175 100,140 C150,105 200,175 250,140 C300,105 350,175 400,140 C450,105 500,175 550,140 C600,105 650,140 650,140' fill='none' stroke='%231C1C1C' stroke-width='2' opacity='0.4'/%3E%3Cpath d='M0,90 C30,70 60,105 90,85 C120,65 150,105 180,90 C210,75 240,105 270,85 C300,65 330,100 360,85 C390,70 420,100 450,85 C480,65 510,100 540,85 C570,70 600,90 600,90' fill='none' stroke='%23EDE4D3' stroke-width='1.5' opacity='0.5'/%3E%3Ccircle cx='150' cy='50' r='25' fill='%23C34A36' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: bottom;
+      animation: waveMotion 8s ease-in-out infinite;
+    }
+
+    @keyframes waveMotion {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(-15px); }
+    }
+
+    .effect-wave::after {
+      content: 'NAMI';
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--ukiyo-gofun);
+      letter-spacing: 0.1em;
+      z-index: 1;
+      opacity: 0.7;
+    }
+
+    /* Effect 2: Washi Paper Texture */
+    .effect-washi {
+      background-color: var(--ukiyo-gofun);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E"),
+        radial-gradient(ellipse at 30% 50%, rgba(195, 128, 58, 0.08) 0%, transparent 70%),
+        radial-gradient(ellipse at 80% 30%, rgba(27, 75, 122, 0.05) 0%, transparent 60%);
+    }
+
+    .effect-washi::after {
+      content: 'WASHI';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      letter-spacing: 0.2em;
+      opacity: 0.3;
+      z-index: 1;
+    }
+
+    /* Effect 3: Sumi Ink Wash */
+    .effect-sumi {
+      background: linear-gradient(
+        135deg,
+        var(--ukiyo-sumi) 0%,
+        var(--ukiyo-keshizumi) 30%,
+        #4a4540 50%,
+        var(--ukiyo-keshizumi) 70%,
+        var(--ukiyo-sumi) 100%
+      );
+    }
+
+    .effect-sumi::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(245, 240, 225, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(245, 240, 225, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(245, 240, 225, 0.04) 0%, transparent 50%);
+    }
+
+    .effect-sumi::after {
+      content: 'SUMI';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--ukiyo-gofun);
+      letter-spacing: 0.15em;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    /* Effect 4: Cloud Band (Kasumi) */
+    .effect-kasumi {
+      background: var(--ukiyo-hanada);
+    }
+
+    .effect-kasumi::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg,
+          transparent 0%,
+          rgba(245, 240, 225, 0.15) 20%,
+          rgba(245, 240, 225, 0.25) 25%,
+          rgba(245, 240, 225, 0.15) 30%,
+          transparent 40%,
+          transparent 55%,
+          rgba(245, 240, 225, 0.1) 65%,
+          rgba(245, 240, 225, 0.2) 70%,
+          rgba(245, 240, 225, 0.1) 75%,
+          transparent 85%
+        );
+      animation: kasumiFade 10s ease-in-out infinite;
+    }
+
+    @keyframes kasumiFade {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .effect-kasumi::after {
+      content: 'KASUMI';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--ukiyo-gofun);
+      letter-spacing: 0.2em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Textile Pattern (Mon) */
+    .effect-mon {
+      background: var(--ukiyo-tobi);
+    }
+
+    .effect-mon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 18px,
+          rgba(245, 240, 225, 0.08) 18px,
+          rgba(245, 240, 225, 0.08) 20px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 18px,
+          rgba(245, 240, 225, 0.08) 18px,
+          rgba(245, 240, 225, 0.08) 20px
+        ),
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 12px,
+          rgba(212, 175, 55, 0.06) 12px,
+          rgba(212, 175, 55, 0.06) 14px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 12px,
+          rgba(212, 175, 55, 0.06) 12px,
+          rgba(212, 175, 55, 0.06) 14px
+        );
+    }
+
+    .effect-mon::after {
+      content: 'MON';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--ukiyo-kin);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 6: Woodblock Registration */
+    .effect-registration {
+      background: var(--ukiyo-gofun);
+      position: relative;
+    }
+
+    .effect-registration::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 3px solid var(--ukiyo-sumi);
+    }
+
+    .effect-registration::after {
+      content: '';
+      position: absolute;
+      inset: 14px;
+      border: 2px solid var(--ukiyo-ai);
+      opacity: 0.3;
+      transform: translate(4px, 4px);
+    }
+
+    .effect-registration-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      z-index: 1;
+    }
+
+    .effect-registration-seal {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      width: 40px;
+      height: 40px;
+      background: var(--ukiyo-shu);
+      border-radius: 2px;
+      z-index: 1;
+      opacity: 0.8;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Crimson Pro', serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--ukiyo-keshizumi);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--ukiyo-sumi);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle wave pattern */
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 200'%3E%3Cpath d='M0,100 C80,70 160,130 240,100 C320,70 400,130 480,100 C560,70 640,130 720,100 C800,70 800,100 800,100 L800,200 L0,200Z' fill='none' stroke='%231B4B7A' stroke-width='1' opacity='0.15'/%3E%3Cpath d='M0,130 C60,100 120,155 180,125 C240,95 300,155 360,130 C420,105 480,155 540,125 C600,95 660,150 720,125 C780,100 800,130 800,130' fill='none' stroke='%232D5F8A' stroke-width='0.8' opacity='0.1'/%3E%3C/svg%3E");
+      background-size: cover;
+      background-position: bottom;
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    /* CSS-only cherry blossom motif */
+    .motif-blossom {
+      width: 24px;
+      height: 24px;
+      background: var(--ukiyo-beni);
+      border-radius: 50% 0 50% 50%;
+      opacity: 0.3;
+      animation: blossomFloat 5s ease-in-out infinite;
+      position: relative;
+    }
+
+    .motif-blossom::before {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      background: var(--ukiyo-beni);
+      border-radius: 50% 0 50% 50%;
+      transform: rotate(90deg);
+      top: -6px;
+      left: 6px;
+    }
+
+    .motif-blossom:nth-child(2) { animation-delay: -0.7s; opacity: 0.25; }
+    .motif-blossom:nth-child(3) { animation-delay: -1.4s; opacity: 0.35; }
+    .motif-blossom:nth-child(4) { animation-delay: -2.1s; opacity: 0.2; }
+    .motif-blossom:nth-child(5) { animation-delay: -2.8s; opacity: 0.3; }
+    .motif-blossom:nth-child(6) { animation-delay: -3.5s; opacity: 0.25; }
+    .motif-blossom:nth-child(7) { animation-delay: -4.2s; opacity: 0.35; }
+
+    @keyframes blossomFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(15deg); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 900;
+      color: var(--ukiyo-gofun);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--ukiyo-kin);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES (FEATURE LIST)
+       ============================================ */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      background: var(--ukiyo-gofun);
+      padding: 28px 32px;
+      border: 2px solid var(--ukiyo-sumi);
+      position: relative;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateX(8px);
+      box-shadow:
+        4px 4px 0 var(--ukiyo-ai),
+        8px 8px 0 rgba(27, 75, 122, 0.1);
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--ukiyo-shu);
+      border-radius: 2px;
+      box-shadow: inset 0 0 0 2px rgba(245, 240, 225, 0.3);
+      position: relative;
+    }
+
+    .feature-icon::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 2px,
+        rgba(245, 240, 225, 0.05) 2px,
+        rgba(245, 240, 225, 0.05) 4px
+      );
+      border-radius: 2px;
+    }
+
+    .feature-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--ukiyo-sumi);
+      margin-bottom: 6px;
+    }
+
+    .feature-text p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--ukiyo-keshizumi);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--ukiyo-gofun);
+      border: 2px solid var(--ukiyo-sumi);
+      position: relative;
+    }
+
+    /* Decorative corner marks */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 40px;
+      height: 40px;
+      border-top: 3px solid var(--ukiyo-ai);
+      border-left: 3px solid var(--ukiyo-ai);
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+      border-bottom: 3px solid var(--ukiyo-ai);
+      border-right: 3px solid var(--ukiyo-ai);
+    }
+
+    .quote-seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--ukiyo-shu);
+      border-radius: 3px;
+      margin-bottom: 24px;
+      box-shadow: inset 0 0 0 2px rgba(245, 240, 225, 0.3);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ukiyo-sumi);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+      letter-spacing: 0.02em;
+    }
+
+    .quote-block cite {
+      font-family: 'Crimson Pro', serif;
+      font-size: 1rem;
+      color: var(--ukiyo-ai);
+      font-style: normal;
+      display: block;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--ukiyo-gofun);
+      border: 3px solid var(--ukiyo-sumi);
+      padding: 60px 48px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Offset shadow frame */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: -8px;
+      bottom: -8px;
+      border: 2px solid var(--ukiyo-ai);
+      z-index: -1;
+      opacity: 0.3;
+    }
+
+    /* Top seal */
+    .cta-seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      background: var(--ukiyo-shu);
+      border-radius: 3px;
+      margin-bottom: 24px;
+      box-shadow: inset 0 0 0 2px rgba(245, 240, 225, 0.3);
+    }
+
+    .cta-container h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      color: var(--ukiyo-sumi);
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .cta-container .cta-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--ukiyo-ai);
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .cta-container p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ukiyo-keshizumi);
+      margin-bottom: 28px;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       SUMI LINE BAND (section divider)
+       ============================================ */
+    .sumi-band {
+      display: flex;
+      height: 4px;
+      width: 100%;
+      background: var(--ukiyo-sumi);
+      position: relative;
+    }
+
+    .sumi-band::after {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--ukiyo-sumi);
+      opacity: 0.3;
+    }
+
+    .sumi-band--colored {
+      height: 6px;
+      background: linear-gradient(90deg,
+        var(--ukiyo-ai) 0%,
+        var(--ukiyo-hanada) 15%,
+        var(--ukiyo-shu) 30%,
+        var(--ukiyo-beni) 45%,
+        var(--ukiyo-kin) 60%,
+        var(--ukiyo-uguisu) 75%,
+        var(--ukiyo-moegi) 90%,
+        var(--ukiyo-kitsune) 100%
+      );
+    }
+
+    .sumi-band--colored::after {
+      display: none;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--ukiyo-sumi);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--ukiyo-gofun);
+      position: relative;
+    }
+
+    /* Subtle washi texture overlay */
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='fn'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23fn)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-seal {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--ukiyo-shu);
+      border-radius: 3px;
+      margin-bottom: 20px;
+      box-shadow: inset 0 0 0 2px rgba(245, 240, 225, 0.3);
+    }
+
+    .footer h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--ukiyo-gofun);
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+
+    .footer p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: rgba(245, 240, 225, 0.6);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(245, 240, 225, 0.4);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--ukiyo-kin);
+    }
+
+    .footer-wave {
+      width: 200px;
+      height: 30px;
+      margin: 0 auto 24px;
+      background: no-repeat center / 100% auto;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 30'%3E%3Cpath d='M0,15 C25,5 50,25 75,15 S125,5 150,15 S175,25 200,15' fill='none' stroke='%231B4B7A' stroke-width='1.5' opacity='0.3'/%3E%3C/svg%3E");
+    }
+
+    .footer-copy {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: rgba(245, 240, 225, 0.25);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+        align-items: center;
+      }
+
+      .hero-vertical {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-item {
+        flex-direction: column;
+        gap: 14px;
+        padding: 24px;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 40px 28px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.8rem;
+      }
+
+      .motif-row {
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+
+      .color-role {
+        display: none;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-cloud-band,
+      .petal,
+      .motif-blossom {
+        animation: none;
+      }
+
+      .effect-wave::before,
+      .effect-kasumi::before {
+        animation: none;
+      }
+
+      .card, .feature-item, .btn, .color-chip, .tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .petal {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Ukiyo-e</a>
+    <div class="nav-links">
+      <a href="#hero">Landscape</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Pigments</a>
+      <a href="#components">Prints</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-mountains">
+      <div class="hero-cloud-band"></div>
+      <div class="hero-cloud-band"></div>
+    </div>
+    <div class="hero-waves"></div>
+    <div class="hero-clouds"></div>
+
+    <!-- Cherry blossom petals -->
+    <div class="hero-petals">
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+      <div class="petal"></div>
+    </div>
+
+    <!-- Vertical text accent -->
+    <div class="hero-vertical">Pictures of the Floating World</div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Ukiyo-e</h1>
+      <p class="hero-subtitle">Pictures of the Floating World &mdash; 浮世絵</p>
+      <p class="hero-desc">
+        A bold, graphic design language rooted in Japanese woodblock printing &mdash; flat color fields, decisive ink outlines, nature motifs, and the elegant tension of asymmetric balance.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--hero-primary">Explore Prints</a>
+        <a href="#palette" class="btn btn--hero-outline">View Pigments</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SUMI LINE BAND ===== -->
+  <div class="sumi-band sumi-band--colored"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--gofun" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Brush, Blade &amp; Ink</h2>
+      <p class="section-subtitle">high-contrast serifs meet calligraphic precision</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display 900</p>
+            <p class="typo-display">Floating World</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display 700</p>
+            <p class="typo-heading">Waves of Kanagawa</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Section Title / Cinzel</p>
+            <p class="typo-section-title">The Art of Woodblock Printing</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Cormorant Garamond</p>
+            <p class="typo-body">Refined serif text with subtle warmth, echoing the hand-set type of traditional Japanese publishing. Each letter carries the weight of ink pressed to washi.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Alternate Body / Crimson Pro</p>
+            <p class="typo-body-alt">A versatile serif with clear stroke variation, suited for subheadings and supporting text passages.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Crimson Pro Italic</p>
+            <p class="typo-caption">The beauty of impermanence, the pathos of things &mdash; mono no aware</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--ukiyo-sumi);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.4rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--ukiyo-sumi);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 1rem; font-weight: 600; color: var(--ukiyo-ai); text-transform: uppercase; letter-spacing: 0.15em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.125rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; font-weight: 400; color: var(--ukiyo-keshizumi);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Crimson Pro', serif; font-size: 0.95rem; font-weight: 400; color: var(--ukiyo-keshizumi);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.875rem</span>
+              <span style="font-family: 'Crimson Pro', serif; font-size: 0.85rem; font-style: italic; color: var(--ukiyo-keshizumi);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--ukiyo-sumi); opacity: 0.15;"></div>
+          <div style="padding-top: 0;">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--ukiyo-sumi);">Playfair Display</strong> + <strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond</strong><br>
+              <span style="font-family: 'Crimson Pro', serif; color: var(--ukiyo-keshizumi); font-size: 0.85rem; font-style: italic;">Refined, high-contrast elegance</span>
+            </p>
+            <p style="font-size: 0.95rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cinzel', serif; color: var(--ukiyo-sumi);">Cinzel</strong> + <strong style="font-family: 'Crimson Pro', serif;">Crimson Pro</strong><br>
+              <span style="font-family: 'Crimson Pro', serif; color: var(--ukiyo-keshizumi); font-size: 0.85rem; font-style: italic;">Formal authority with readable warmth</span>
+            </p>
+            <p style="font-size: 0.95rem; line-height: 1.7;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--ukiyo-sumi);">Playfair Display</strong> + <strong style="font-family: 'Crimson Pro', serif;">Crimson Pro</strong><br>
+              <span style="font-family: 'Crimson Pro', serif; color: var(--ukiyo-keshizumi); font-size: 0.85rem; font-style: italic;">Bold display with versatile body text</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== INK BRUSH DIVIDER ===== -->
+  <div class="section--gofun" style="padding: 0;">
+    <div class="ink-divider">
+      <div class="seal"></div>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--torinoko" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Traditional Pigments</h2>
+      <p class="section-subtitle">indigo, vermillion, and oyster-shell white &mdash; colors of the floating world</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B4B7A;"></div>
+          <div class="color-info">
+            <div class="color-name">Ai-iro</div>
+            <div class="color-hex">#1B4B7A</div>
+            <div class="color-role">Prussian blue</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D5F8A;"></div>
+          <div class="color-info">
+            <div class="color-name">Hanada</div>
+            <div class="color-hex">#2D5F8A</div>
+            <div class="color-role">Light indigo</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C34A36;"></div>
+          <div class="color-info">
+            <div class="color-name">Shu-iro</div>
+            <div class="color-hex">#C34A36</div>
+            <div class="color-role">Vermillion</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8836B;"></div>
+          <div class="color-info">
+            <div class="color-name">Beni-iro</div>
+            <div class="color-hex">#E8836B</div>
+            <div class="color-role">Safflower</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4AF37;"></div>
+          <div class="color-info">
+            <div class="color-name">Kin-iro</div>
+            <div class="color-hex">#D4AF37</div>
+            <div class="color-role">Gold</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B9E3C;"></div>
+          <div class="color-info">
+            <div class="color-name">Uguisu-iro</div>
+            <div class="color-hex">#8B9E3C</div>
+            <div class="color-role">Warbler green</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B7A57;"></div>
+          <div class="color-info">
+            <div class="color-name">Moegi</div>
+            <div class="color-hex">#3B7A57</div>
+            <div class="color-role">Sprouting green</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C3803A;"></div>
+          <div class="color-info">
+            <div class="color-name">Kitsune-iro</div>
+            <div class="color-hex">#C3803A</div>
+            <div class="color-role">Fox color</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F0E1;"></div>
+          <div class="color-info">
+            <div class="color-name">Gofun</div>
+            <div class="color-hex">#F5F0E1</div>
+            <div class="color-role">Oyster white</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDE4D3;"></div>
+          <div class="color-info">
+            <div class="color-name">Torinoko</div>
+            <div class="color-hex">#EDE4D3</div>
+            <div class="color-role">Eggshell</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1C1C1C;"></div>
+          <div class="color-info">
+            <div class="color-name">Sumi</div>
+            <div class="color-hex">#1C1C1C</div>
+            <div class="color-role">Ink black</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FEEEED;"></div>
+          <div class="color-info">
+            <div class="color-name">Sakura-iro</div>
+            <div class="color-hex">#FEEEED</div>
+            <div class="color-role">Cherry blossom</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #BEC23F;"></div>
+          <div class="color-info">
+            <div class="color-name">Matcha</div>
+            <div class="color-hex">#BEC23F</div>
+            <div class="color-role">Green tea</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B4C3B;"></div>
+          <div class="color-info">
+            <div class="color-name">Tobi-iro</div>
+            <div class="color-hex">#6B4C3B</div>
+            <div class="color-role">Kite brown</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3A3632;"></div>
+          <div class="color-info">
+            <div class="color-name">Keshizumi</div>
+            <div class="color-hex">#3A3632</div>
+            <div class="color-role">Charcoal</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SUMI LINE BAND ===== -->
+  <div class="sumi-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--gofun" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Woodblock Print Cards</h2>
+      <p class="section-subtitle">bold outlines, flat color, and seal-stamp accents</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-image card-img--wave"></div>
+          <div class="card-body">
+            <h3>The Great Wave</h3>
+            <p>Stylized wave patterns rendered as bold graphic curves, echoing Hokusai's iconic composition of power and delicacy in motion.</p>
+            <span class="tag">Nami</span>
+            <span class="tag">Pattern</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image card-img--mountain"></div>
+          <div class="card-body">
+            <h3>Distant Mountains</h3>
+            <p>Layered silhouettes in graduated indigo tones create atmospheric depth through overlapping planes, not perspective.</p>
+            <span class="tag">Landscape</span>
+            <span class="tag">Layers</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image card-img--blossom"></div>
+          <div class="card-body">
+            <h3>Cherry Blossoms</h3>
+            <p>Scattered sakura petals against soft pink grounds embody mono no aware &mdash; the bittersweet beauty of transience.</p>
+            <span class="tag">Sakura</span>
+            <span class="tag">Flora</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image card-img--ink"></div>
+          <div class="card-body">
+            <h3>Sumi Ink Lines</h3>
+            <p>Bold, confident contour lines carved into cherry wood blocks define every form &mdash; the foundation of the woodblock aesthetic.</p>
+            <span class="tag">Outline</span>
+            <span class="tag">Key Block</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image card-img--bamboo"></div>
+          <div class="card-body">
+            <h3>Bamboo Grove</h3>
+            <p>Vertical rhythms of bamboo stalks create natural grids, translated as repeating linear patterns with organic irregularity.</p>
+            <span class="tag">Nature</span>
+            <span class="tag">Grid</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image card-img--gold"></div>
+          <div class="card-body">
+            <h3>Gold Leaf Accents</h3>
+            <p>Metallic dust and gold leaf applied to luxury editions, reserved for ornamental borders and prestigious focal points.</p>
+            <span class="tag">Kin</span>
+            <span class="tag">Luxury</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <div class="motif-blossom"></div>
+        <div class="motif-blossom"></div>
+        <div class="motif-blossom"></div>
+        <div class="motif-blossom"></div>
+        <div class="motif-blossom"></div>
+        <div class="motif-blossom"></div>
+        <div class="motif-blossom"></div>
+      </div>
+      <h2>Flatness, Asymmetry &amp; Ma</h2>
+      <p>Where negative space speaks as loudly as ink on paper</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--gofun">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Ukiyo-e Philosophy</h2>
+      <p class="section-subtitle">restraint, bold reduction, and the active power of emptiness</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon"></div>
+          <div class="feature-text">
+            <h3>Ma (間) &mdash; The Power of Negative Space</h3>
+            <p>Empty areas are not absence but active compositional elements. Leave generous breathing room that carries equal visual weight to filled areas, letting forms resonate in their surrounding silence.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"></div>
+          <div class="feature-text">
+            <h3>Fukinsei (不均斉) &mdash; Asymmetric Balance</h3>
+            <p>Visual weight distributed unevenly but harmoniously. Place hero text to one side, let images bleed off-edge, and avoid centering everything &mdash; dynamic tension creates more engaging compositions than static symmetry.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"></div>
+          <div class="feature-text">
+            <h3>Flatness Over Illusion</h3>
+            <p>Depth comes from overlapping planes and scale changes, never from perspective, drop shadows, or gradient shading. Each color area is a discrete, flat field bounded by confident ink lines.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon"></div>
+          <div class="feature-text">
+            <h3>Bold Graphic Reduction</h3>
+            <p>Complex natural forms simplified into essential lines and shapes without losing their character. Every stroke serves a purpose; ornamentation is precise, never excessive. Restraint and economy define the approach.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-divider"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--gofun" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Woodblock Techniques</h2>
+      <p class="section-subtitle">all the floating world atmosphere, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-wave"></div>
+          <div class="effect-caption">
+            <h4>Hokusai Waves</h4>
+            <p>Inline SVG wave patterns with gentle animation create the iconic ukiyo-e water motif.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-washi"></div>
+          <div class="effect-caption">
+            <h4>Washi Paper Texture</h4>
+            <p>SVG noise filter with warm radial gradients recreates the grain of traditional Japanese paper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-sumi"></div>
+          <div class="effect-caption">
+            <h4>Sumi Ink Wash</h4>
+            <p>Multi-stop linear gradient with radial light pools simulates ink wash calligraphy grounds.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-kasumi"></div>
+          <div class="effect-caption">
+            <h4>Cloud Bands (Kasumi)</h4>
+            <p>Horizontal gradient bands create the atmospheric mist dividers used between spatial planes.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-mon"></div>
+          <div class="effect-caption">
+            <h4>Textile Pattern (Mon)</h4>
+            <p>Layered repeating linear gradients create geometric kimono fabric patterns at multiple angles.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-registration">
+            <span class="effect-registration-label">Woodblock Registration</span>
+            <div class="effect-registration-seal"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Registration Marks</h4>
+            <p>Offset border frames mimic the slight misalignment of multi-color woodblock printing passes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SUMI LINE BAND ===== -->
+  <div class="sumi-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--torinoko">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Ink &amp; Seal Buttons</h2>
+      <p class="section-subtitle">bold, flat, and decisive &mdash; like a woodblock stamp</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Vermillion Primary</a>
+        <a href="#" class="btn btn--indigo">Indigo Action</a>
+        <a href="#" class="btn btn--outline">Ink Outline</a>
+        <a href="#" class="btn btn--ghost">Ghost Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--gofun">
+    <div class="container">
+      <div class="quote-block">
+        <div class="quote-seal"></div>
+        <blockquote>
+          In every deliberate line, in every field of flat color, in the silence of empty space &mdash; ukiyo-e teaches that restraint is not absence, but the most powerful form of presence.
+        </blockquote>
+        <cite>&mdash; The Spirit of the Floating World</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--torinoko">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-seal"></div>
+        <h2>Enter the Floating World</h2>
+        <p class="cta-subtitle">bold outlines, flat color, asymmetric harmony</p>
+        <p>
+          The Ukiyo-e aesthetic embraces bold graphic reduction, decisive ink lines, flat unmodulated color, and the active power of negative space. Ground every layout in indigo, vermillion, and oyster-shell white &mdash; then let the waves carry the eye across the composition.
+        </p>
+        <a href="#hero" class="btn">Back to the Summit</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SUMI LINE BAND ===== -->
+  <div class="sumi-band sumi-band--colored"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-seal"></div>
+      <h3>Ukiyo-e</h3>
+      <p>
+        A design aesthetic reference celebrating the bold, graphic visual language of Japanese woodblock printing. Indigo waves, vermillion seals, and oyster-shell paper &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Landscape</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Pigments</a>
+        <a href="#components">Prints</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-wave"></div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Ukiyo-e &bull; Pictures of the Floating World</p>
+    </div>
+  </footer>
+
+</body>
+</html>

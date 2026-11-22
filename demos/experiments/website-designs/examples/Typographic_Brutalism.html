@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Typographic Brutalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Core monochrome */
+      --tb-black: #000000;
+      --tb-white: #ffffff;
+      --tb-offwhite: #f5f5f0;
+      --tb-ink: #0a0a0a;
+      --tb-charcoal: #1a1a1a;
+
+      /* Grays */
+      --tb-warm-gray: #b0ada8;
+      --tb-mid-gray: #6b6b6b;
+      --tb-concrete: #d8d5d0;
+
+      /* Accent: Red */
+      --tb-red: #e63025;
+      --tb-red-dark: #b8201a;
+
+      /* Accent: Yellow */
+      --tb-yellow: #f5d000;
+      --tb-yellow-dark: #c8a800;
+
+      /* Accent: Blue */
+      --tb-blue: #2050e0;
+      --tb-blue-dark: #1838a8;
+
+      /* Accent: Green */
+      --tb-green: #28a828;
+
+      /* Semantic */
+      --tb-bg-primary: #ffffff;
+      --tb-bg-secondary: #f5f5f0;
+      --tb-bg-inverse: #000000;
+      --tb-text-primary: #000000;
+      --tb-text-secondary: #6b6b6b;
+      --tb-text-inverse: #ffffff;
+      --tb-border: #000000;
+      --tb-border-light: #d8d5d0;
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Space Mono', 'Courier New', monospace;
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: var(--tb-text-primary);
+      background-color: var(--tb-bg-primary);
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Anton', 'Impact', sans-serif;
+      font-weight: 400;
+      line-height: 0.9;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--tb-text-primary);
+      margin: 0;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 24px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-white);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--tb-black);
+    }
+
+    .nav-logo:hover {
+      color: var(--tb-red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+    }
+
+    .nav-links li::after {
+      content: '/';
+      margin-left: 8px;
+      font-family: 'Space Mono', monospace;
+      color: var(--tb-warm-gray);
+    }
+
+    .nav-links li:last-child::after {
+      content: '';
+    }
+
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.72rem;
+      color: var(--tb-black);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .nav-links a:hover {
+      color: var(--tb-red);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      padding: 0 32px;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-white);
+    }
+
+    .hero-bg-letter {
+      position: absolute;
+      top: -8%;
+      right: -5%;
+      font-family: 'Anton', sans-serif;
+      font-size: 60vw;
+      line-height: 1;
+      color: var(--tb-offwhite);
+      pointer-events: none;
+      user-select: none;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      padding-bottom: 48px;
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--tb-warm-gray);
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: clamp(4.5rem, 16vw, 14rem);
+      line-height: 0.85;
+      letter-spacing: -0.03em;
+      margin-left: -0.04em;
+    }
+
+    .hero-title .outline {
+      -webkit-text-stroke: 3px var(--tb-black);
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+      max-width: 460px;
+      line-height: 1.65;
+      color: var(--tb-mid-gray);
+      margin-top: 28px;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      margin-top: 32px;
+      background: var(--tb-black);
+      color: var(--tb-white);
+      border: 3px solid var(--tb-black);
+      padding: 16px 44px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: none;
+    }
+
+    .hero-cta:hover {
+      background: var(--tb-white);
+      color: var(--tb-black);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-section {
+      padding: 80px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-offwhite);
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--tb-warm-gray);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: clamp(3rem, 10vw, 9rem);
+      line-height: 0.88;
+      margin-bottom: 48px;
+    }
+
+    .typo-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 60px;
+    }
+
+    .typo-samples {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--tb-warm-gray);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 0.85;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: var(--tb-black);
+    }
+
+    .typo-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 0.92;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--tb-black);
+    }
+
+    .typo-subheading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      color: var(--tb-charcoal);
+    }
+
+    .typo-body {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--tb-mid-gray);
+      max-width: 480px;
+    }
+
+    .typo-mono-label {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--tb-black);
+    }
+
+    .typo-outline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      line-height: 0.9;
+      text-transform: uppercase;
+      -webkit-text-stroke: 2px var(--tb-black);
+      color: transparent;
+    }
+
+    .typo-right {
+      border-left: 3px solid var(--tb-black);
+      padding-left: 40px;
+    }
+
+    .typo-right h3 {
+      font-size: 1.4rem;
+      margin-bottom: 24px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--tb-concrete);
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--tb-warm-gray);
+      min-width: 80px;
+      letter-spacing: 0.06em;
+    }
+
+    .typo-pairings {
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 3px solid var(--tb-black);
+    }
+
+    .typo-pairings h3 {
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+    }
+
+    .pairing-item {
+      margin-bottom: 16px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+    }
+
+    .pairing-item .pairing-label {
+      color: var(--tb-mid-gray);
+      font-size: 0.72rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-section {
+      padding: 80px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-white);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0;
+      border: 3px solid var(--tb-black);
+    }
+
+    .color-chip {
+      border-right: 3px solid var(--tb-black);
+      border-bottom: 3px solid var(--tb-black);
+    }
+
+    .color-chip:nth-child(5n) {
+      border-right: none;
+    }
+
+    .color-swatch {
+      height: 100px;
+      border-bottom: 3px solid var(--tb-black);
+    }
+
+    .color-info {
+      padding: 12px 14px;
+      background: var(--tb-white);
+    }
+
+    .color-name {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tb-black);
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--tb-mid-gray);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .cards-section {
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-offwhite);
+    }
+
+    .cards-header {
+      padding: 80px 32px 48px;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      border-top: 3px solid var(--tb-black);
+    }
+
+    .card {
+      border-right: 3px solid var(--tb-black);
+      position: relative;
+      overflow: hidden;
+      background: var(--tb-offwhite);
+    }
+
+    .card:nth-child(3n) {
+      border-right: none;
+    }
+
+    .card:nth-child(n+4) {
+      border-top: 3px solid var(--tb-black);
+    }
+
+    .card-number {
+      position: absolute;
+      top: -24px;
+      right: 8px;
+      font-family: 'Anton', sans-serif;
+      font-size: 10rem;
+      line-height: 1;
+      color: var(--tb-concrete);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .card-header {
+      background: var(--tb-black);
+      color: var(--tb-white);
+      padding: 18px 24px;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-body {
+      padding: 24px;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--tb-mid-gray);
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-tags {
+      padding: 0 24px 20px;
+      display: flex;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.6rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border: 2px solid var(--tb-black);
+      color: var(--tb-black);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER / MARQUEE
+       ============================================ */
+    .marquee {
+      overflow: hidden;
+      white-space: nowrap;
+      background: var(--tb-black);
+      color: var(--tb-white);
+      padding: 14px 0;
+      border-bottom: 4px solid var(--tb-black);
+    }
+
+    .marquee-inner {
+      display: inline-block;
+      animation: marquee-scroll 25s linear infinite;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .marquee-inner span {
+      margin-right: 80px;
+    }
+
+    @keyframes marquee-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-section {
+      padding: 80px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-white);
+    }
+
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0;
+      border: 3px solid var(--tb-black);
+    }
+
+    .principle {
+      padding: 40px 32px;
+      border-bottom: 3px solid var(--tb-black);
+      border-right: 3px solid var(--tb-black);
+      position: relative;
+    }
+
+    .principle:nth-child(2n) {
+      border-right: none;
+    }
+
+    .principle:nth-child(n+3) {
+      border-bottom: none;
+    }
+
+    .principle-number {
+      font-family: 'Anton', sans-serif;
+      font-size: 5rem;
+      line-height: 0.85;
+      color: var(--tb-concrete);
+      margin-bottom: 16px;
+    }
+
+    .principle h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+      line-height: 1;
+    }
+
+    .principle p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.65;
+      color: var(--tb-mid-gray);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-section {
+      padding: 80px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-offwhite);
+    }
+
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 3px solid var(--tb-black);
+    }
+
+    .effect-demo {
+      border-right: 3px solid var(--tb-black);
+      border-bottom: 3px solid var(--tb-black);
+      overflow: hidden;
+    }
+
+    .effect-demo:nth-child(3n) {
+      border-right: none;
+    }
+
+    .effect-demo:nth-child(n+4) {
+      border-bottom: none;
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 3px solid var(--tb-black);
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+      background: var(--tb-white);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+
+    .effect-caption p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      line-height: 1.5;
+      color: var(--tb-mid-gray);
+    }
+
+    /* Effect 1: Extreme Scale Type */
+    .effect-scale-type {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--tb-black);
+      color: var(--tb-white);
+    }
+
+    .effect-scale-type span {
+      font-family: 'Anton', sans-serif;
+      font-size: 14rem;
+      line-height: 0.75;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    /* Effect 2: Outline Text */
+    .effect-outline-text {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--tb-white);
+    }
+
+    .effect-outline-text span {
+      font-family: 'Anton', sans-serif;
+      font-size: 8rem;
+      line-height: 0.85;
+      text-transform: uppercase;
+      -webkit-text-stroke: 3px var(--tb-black);
+      color: transparent;
+    }
+
+    /* Effect 3: Tight Stack */
+    .effect-tight-stack {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 20px 16px;
+      background: var(--tb-white);
+    }
+
+    .effect-tight-stack span {
+      font-family: 'Anton', sans-serif;
+      font-size: 3.2rem;
+      line-height: 0.82;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--tb-black);
+    }
+
+    .effect-tight-stack span:nth-child(2) {
+      color: var(--tb-red);
+    }
+
+    /* Effect 4: Monospace Grid */
+    .effect-mono-grid {
+      display: flex;
+      align-items: flex-start;
+      padding: 12px;
+      background: var(--tb-charcoal);
+      color: var(--tb-green);
+      font-family: 'Space Mono', monospace;
+      font-size: 0.55rem;
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+      overflow: hidden;
+    }
+
+    /* Effect 5: Red Block */
+    .effect-red-block {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--tb-red);
+    }
+
+    .effect-red-block span {
+      font-family: 'Anton', sans-serif;
+      font-size: 6rem;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--tb-white);
+    }
+
+    /* Effect 6: Letter Spacing Extreme */
+    .effect-wide-track {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: var(--tb-black);
+      color: var(--tb-white);
+    }
+
+    .effect-wide-track span {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+    }
+
+    .effect-wide-track .wide {
+      letter-spacing: 1.2em;
+    }
+
+    .effect-wide-track .tight {
+      letter-spacing: -0.04em;
+      font-family: 'Anton', sans-serif;
+      font-size: 3rem;
+    }
+
+    /* ============================================
+       RULE DIVIDER
+       ============================================ */
+    .thick-rule {
+      height: 8px;
+      background: var(--tb-black);
+      border: none;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .buttons-section {
+      padding: 80px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-white);
+    }
+
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: center;
+      margin-top: 48px;
+    }
+
+    .btn {
+      display: inline-block;
+      background: var(--tb-black);
+      color: var(--tb-white);
+      border: 3px solid var(--tb-black);
+      padding: 16px 40px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: none;
+    }
+
+    .btn:hover {
+      background: var(--tb-white);
+      color: var(--tb-black);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--tb-black);
+    }
+
+    .btn-outline:hover {
+      background: var(--tb-black);
+      color: var(--tb-white);
+    }
+
+    .btn-red {
+      background: var(--tb-red);
+      border-color: var(--tb-red);
+    }
+
+    .btn-red:hover {
+      background: var(--tb-black);
+      border-color: var(--tb-black);
+    }
+
+    .btn-text {
+      background: none;
+      border: none;
+      color: var(--tb-black);
+      padding: 0;
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      border-bottom: 4px solid var(--tb-black);
+    }
+
+    .btn-text:hover {
+      color: var(--tb-red);
+      border-color: var(--tb-red);
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      padding: 80px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-offwhite);
+    }
+
+    .quote-block {
+      max-width: 800px;
+      border-left: 8px solid var(--tb-black);
+      padding-left: 40px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: var(--tb-black);
+      margin-bottom: 24px;
+    }
+
+    .quote-block cite {
+      font-family: 'Space Mono', monospace;
+      font-style: normal;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--tb-mid-gray);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: 100px 32px;
+      border-bottom: 4px solid var(--tb-black);
+      background: var(--tb-red);
+      color: var(--tb-white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-bg-text {
+      position: absolute;
+      top: 50%;
+      right: -5%;
+      transform: translateY(-50%);
+      font-family: 'Anton', sans-serif;
+      font-size: 40vw;
+      line-height: 1;
+      text-transform: uppercase;
+      color: var(--tb-red-dark);
+      opacity: 0.3;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-title {
+      font-size: clamp(3rem, 10vw, 8rem);
+      line-height: 0.88;
+      margin-bottom: 24px;
+      color: var(--tb-white);
+    }
+
+    .cta-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(0.78rem, 1.1vw, 0.95rem);
+      max-width: 480px;
+      line-height: 1.65;
+      color: var(--tb-white);
+      opacity: 0.8;
+      margin-bottom: 40px;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: var(--tb-white);
+      color: var(--tb-red);
+      border: 3px solid var(--tb-white);
+      padding: 16px 44px;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: none;
+    }
+
+    .cta-btn:hover {
+      background: var(--tb-black);
+      color: var(--tb-white);
+      border-color: var(--tb-black);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--tb-black);
+      color: var(--tb-white);
+      padding: 60px 32px 36px;
+    }
+
+    .footer-statement {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3rem, 10vw, 8rem);
+      text-transform: uppercase;
+      line-height: 0.9;
+      margin-bottom: 48px;
+    }
+
+    .footer-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tb-warm-gray);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      color: var(--tb-warm-gray);
+    }
+
+    .footer-links a:hover {
+      color: var(--tb-white);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card:nth-child(3n) {
+        border-right: 3px solid var(--tb-black);
+      }
+
+      .card:nth-child(2n) {
+        border-right: none;
+      }
+
+      .card:nth-child(n+3) {
+        border-top: 3px solid var(--tb-black);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effect-demo:nth-child(3n) {
+        border-right: 3px solid var(--tb-black);
+      }
+
+      .effect-demo:nth-child(2n) {
+        border-right: none;
+      }
+
+      .effect-demo:nth-child(n+3) {
+        border-bottom: 3px solid var(--tb-black);
+      }
+
+      .effect-demo:nth-child(n+5) {
+        border-bottom: none;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .typo-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .typo-right {
+        border-left: none;
+        padding-left: 0;
+        border-top: 3px solid var(--tb-black);
+        padding-top: 40px;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principle {
+        border-right: none;
+      }
+
+      .principle:nth-child(n+3) {
+        border-bottom: 3px solid var(--tb-black);
+      }
+
+      .principle:last-child {
+        border-bottom: none;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .color-chip:nth-child(5n) {
+        border-right: 3px solid var(--tb-black);
+      }
+
+      .color-chip:nth-child(3n) {
+        border-right: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        flex-direction: column;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 20px;
+      }
+
+      .hero {
+        padding: 0 20px;
+        min-height: 80vh;
+      }
+
+      .hero-content {
+        padding-bottom: 36px;
+      }
+
+      .typo-section,
+      .palette-section,
+      .principles-section,
+      .effects-section,
+      .buttons-section,
+      .quote-section {
+        padding: 56px 20px;
+      }
+
+      .cards-header {
+        padding: 56px 20px 36px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        border-right: none;
+        border-bottom: 3px solid var(--tb-black);
+      }
+
+      .card:last-child {
+        border-bottom: none;
+      }
+
+      .card:nth-child(3n) {
+        border-right: none;
+      }
+
+      .card:nth-child(n+3) {
+        border-top: none;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effect-demo {
+        border-right: none;
+        border-bottom: 3px solid var(--tb-black);
+      }
+
+      .effect-demo:last-child {
+        border-bottom: none;
+      }
+
+      .effect-demo:nth-child(3n),
+      .effect-demo:nth-child(2n) {
+        border-right: none;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .color-chip:nth-child(3n) {
+        border-right: 3px solid var(--tb-black);
+      }
+
+      .color-chip:nth-child(2n) {
+        border-right: none;
+      }
+
+      .color-chip:nth-child(5n) {
+        border-right: 3px solid var(--tb-black);
+      }
+
+      .cta-section {
+        padding: 60px 20px;
+      }
+
+      .footer {
+        padding: 48px 20px 28px;
+      }
+
+      .footer-meta {
+        flex-direction: column;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .quote-block {
+        padding-left: 24px;
+        border-left-width: 6px;
+      }
+
+      .button-grid {
+        gap: 16px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .marquee-inner {
+        animation: none;
+      }
+
+      .effect-scale-type span,
+      .cta-bg-text,
+      .hero-bg-letter {
+        animation: none;
+      }
+
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Brutalist Type</a>
+    <ul class="nav-links">
+      <li><a href="#typography">Type</a></li>
+      <li><a href="#palette">Colors</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-letter">T</div>
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference -- Typographic Brutalism</p>
+      <h1 class="hero-title">
+        Type<br>
+        <span class="outline">Is</span><br>
+        Everything
+      </h1>
+      <p class="hero-subtitle">
+        A typography-dominant branch of brutalist design that treats
+        letterforms as the primary structural and visual material.
+        The content is the design. The words are the interface.
+        The rawness is the point.
+      </p>
+      <a href="#typography" class="hero-cta">Explore</a>
+    </div>
+  </section>
+
+  <!-- ===== MARQUEE BANNER ===== -->
+  <div class="marquee">
+    <div class="marquee-inner">
+      <span>Oversized</span>
+      <span>Raw</span>
+      <span>Monospaced</span>
+      <span>Confrontational</span>
+      <span>Typographic</span>
+      <span>Brutalism</span>
+      <span>Oversized</span>
+      <span>Raw</span>
+      <span>Monospaced</span>
+      <span>Confrontational</span>
+      <span>Typographic</span>
+      <span>Brutalism</span>
+    </div>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SHOWCASE ===== -->
+  <section class="typo-section" id="typography">
+    <p class="section-label">Typography</p>
+    <h2 class="section-title">Raw Type<br>At Full Scale</h2>
+
+    <div class="typo-grid">
+      <div class="typo-samples">
+        <div>
+          <p class="typo-sample-label">Display / Anton</p>
+          <p class="typo-display">Scale Is Power</p>
+        </div>
+        <div>
+          <p class="typo-sample-label">Heading / Bebas Neue</p>
+          <p class="typo-heading">Condensed Gothic Headlines</p>
+        </div>
+        <div>
+          <p class="typo-sample-label">Subheading / Space Grotesk</p>
+          <p class="typo-subheading">Geometric Sans With Character</p>
+        </div>
+        <div>
+          <p class="typo-sample-label">Body / Space Mono</p>
+          <p class="typo-body">Raw monospaced text for body copy. The mechanical quality of monospace type reinforces the brutalist ethos -- evoking terminal output, typewriter manuscripts, and raw code.</p>
+        </div>
+        <div>
+          <p class="typo-sample-label">Label / Space Mono Bold</p>
+          <p class="typo-mono-label">System Caps Tracking 0.14em</p>
+        </div>
+        <div>
+          <p class="typo-sample-label">Outline / Anton Stroked</p>
+          <p class="typo-outline">Hollow Forms</p>
+        </div>
+      </div>
+
+      <div class="typo-right">
+        <h3>Type Scale</h3>
+        <div class="typo-scale">
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">14rem</span>
+            <span style="font-family:'Anton',sans-serif;font-size:2.2rem;color:var(--tb-black);text-transform:uppercase;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">9rem</span>
+            <span style="font-family:'Anton',sans-serif;font-size:1.6rem;color:var(--tb-black);text-transform:uppercase;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">3.5rem</span>
+            <span style="font-family:'Bebas Neue',sans-serif;font-size:1.3rem;color:var(--tb-black);text-transform:uppercase;letter-spacing:0.04em;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1.8rem</span>
+            <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:1.1rem;color:var(--tb-charcoal);text-transform:uppercase;">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.95rem</span>
+            <span style="font-family:'Space Mono',monospace;font-size:0.95rem;color:var(--tb-mid-gray);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.75rem</span>
+            <span style="font-family:'Space Mono',monospace;font-weight:700;font-size:0.75rem;color:var(--tb-black);text-transform:uppercase;letter-spacing:0.14em;">AA</span>
+          </div>
+        </div>
+
+        <div class="typo-pairings">
+          <h3>Font Pairings</h3>
+          <div class="pairing-item">
+            <strong style="font-family:'Anton',sans-serif;color:var(--tb-red);font-size:1.1rem;text-transform:uppercase;">Anton</strong> + <strong>Space Mono</strong><br>
+            <span class="pairing-label">Maximum contrast: massive condensed meets raw monospace</span>
+          </div>
+          <div class="pairing-item">
+            <strong style="font-family:'Bebas Neue',sans-serif;color:var(--tb-red);font-size:1.1rem;text-transform:uppercase;letter-spacing:0.04em;">Bebas Neue</strong> + <strong>Space Mono</strong><br>
+            <span class="pairing-label">Poster-style headlines with clean terminal body</span>
+          </div>
+          <div class="pairing-item">
+            <strong style="font-family:'Space Grotesk',sans-serif;font-weight:700;color:var(--tb-red);font-size:1rem;text-transform:uppercase;">Space Grotesk</strong> + <strong>Space Mono</strong><br>
+            <span class="pairing-label">Same family lineage; geometric consistency with mono rawness</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THICK RULE DIVIDER ===== -->
+  <div class="thick-rule"></div>
+
+  <!-- ===== COLOR PALETTE ===== -->
+  <section class="palette-section" id="palette">
+    <p class="section-label">Color Palette</p>
+    <h2 class="section-title">Black, White<br>&amp; One Accent</h2>
+
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#000000;"></div>
+        <div class="color-info">
+          <div class="color-name">Pure Black</div>
+          <div class="color-hex">#000000</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#ffffff;border-bottom:none;"></div>
+        <div class="color-info" style="border-top:3px solid var(--tb-black);">
+          <div class="color-name">Pure White</div>
+          <div class="color-hex">#FFFFFF</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#f5f5f0;"></div>
+        <div class="color-info">
+          <div class="color-name">Off-White</div>
+          <div class="color-hex">#F5F5F0</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#1a1a1a;"></div>
+        <div class="color-info">
+          <div class="color-name">Dark Charcoal</div>
+          <div class="color-hex">#1A1A1A</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#0a0a0a;"></div>
+        <div class="color-info">
+          <div class="color-name">Ink</div>
+          <div class="color-hex">#0A0A0A</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#b0ada8;"></div>
+        <div class="color-info">
+          <div class="color-name">Warm Gray</div>
+          <div class="color-hex">#B0ADA8</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#6b6b6b;"></div>
+        <div class="color-info">
+          <div class="color-name">Mid Gray</div>
+          <div class="color-hex">#6B6B6B</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#d8d5d0;"></div>
+        <div class="color-info">
+          <div class="color-name">Concrete</div>
+          <div class="color-hex">#D8D5D0</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#e63025;"></div>
+        <div class="color-info">
+          <div class="color-name">Signal Red</div>
+          <div class="color-hex">#E63025</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#f5d000;"></div>
+        <div class="color-info">
+          <div class="color-name">Industrial Yellow</div>
+          <div class="color-hex">#F5D000</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#2050e0;"></div>
+        <div class="color-info">
+          <div class="color-name">Flat Blue</div>
+          <div class="color-hex">#2050E0</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#b8201a;"></div>
+        <div class="color-info">
+          <div class="color-name">Deep Red</div>
+          <div class="color-hex">#B8201A</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#28a828;"></div>
+        <div class="color-info">
+          <div class="color-name">Raw Green</div>
+          <div class="color-hex">#28A828</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#c8a800;"></div>
+        <div class="color-info">
+          <div class="color-name">Dark Yellow</div>
+          <div class="color-hex">#C8A800</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background:#1838a8;"></div>
+        <div class="color-info">
+          <div class="color-name">Dark Blue</div>
+          <div class="color-hex">#1838A8</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="cards-section" id="components">
+    <div class="cards-header">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Built From<br>Type Alone</h2>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-number">01</div>
+        <div class="card-header">Oversized Headlines</div>
+        <div class="card-body">
+          Single words or short phrases scaled to fill the entire screen width.
+          Letterforms become graphic elements, not mere text. The headline
+          is the layout.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Scale</span>
+          <span class="tag">Display</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-number">02</div>
+        <div class="card-header">Monospace Body Text</div>
+        <div class="card-body">
+          Raw, mechanical monospace type for body copy evokes terminal output
+          and typewriter manuscripts. The unpolished rhythm of fixed-width
+          characters signals authenticity.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Mono</span>
+          <span class="tag">Raw</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-number">03</div>
+        <div class="card-header">Thick Horizontal Rules</div>
+        <div class="card-body">
+          4px-8px solid black lines between sections create an industrial,
+          newspaper-like cadence. The visible structural seams reveal the
+          construction of the page.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Divider</span>
+          <span class="tag">Structure</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-number">04</div>
+        <div class="card-header">Outline Letterforms</div>
+        <div class="card-body">
+          Hollow text created with -webkit-text-stroke and transparent fill.
+          The skeletal letterform exposes the anatomy of type, turning
+          structure into decoration.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Stroke</span>
+          <span class="tag">Display</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-number">05</div>
+        <div class="card-header">Text As Texture</div>
+        <div class="card-body">
+          Repeated words, dense monospace paragraphs, and oversized characters
+          cropped by viewport edges. Type becomes pattern and surface rather
+          than only readable content.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Texture</span>
+          <span class="tag">Pattern</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-number">06</div>
+        <div class="card-header">Extreme Scale Contrast</div>
+        <div class="card-body">
+          A 200px headline beside 12px body copy. The dramatic hierarchical
+          tension forces the eye through the composition. Size difference
+          is the primary navigation cue.
+        </div>
+        <div class="card-tags">
+          <span class="tag">Hierarchy</span>
+          <span class="tag">Contrast</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER / MARQUEE ===== -->
+  <div class="marquee" style="background:var(--tb-red);border-color:var(--tb-red);">
+    <div class="marquee-inner">
+      <span>Type Is Structure</span>
+      <span>//</span>
+      <span>Scale Communicates Hierarchy</span>
+      <span>//</span>
+      <span>Rawness Is Intentional</span>
+      <span>//</span>
+      <span>Whitespace Is Active</span>
+      <span>//</span>
+      <span>Type Is Structure</span>
+      <span>//</span>
+      <span>Scale Communicates Hierarchy</span>
+      <span>//</span>
+      <span>Rawness Is Intentional</span>
+      <span>//</span>
+      <span>Whitespace Is Active</span>
+      <span>//</span>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="principles-section" id="principles">
+    <p class="section-label">Design Principles</p>
+    <h2 class="section-title">The Brutalist<br>Type Philosophy</h2>
+
+    <div class="principles-grid" style="margin-top:48px;">
+      <div class="principle">
+        <div class="principle-number">01</div>
+        <h3>Type Is Structure</h3>
+        <p>Letterforms replace images, icons, and decorative elements as the primary building material of the layout. Typography carries every ounce of the visual and structural weight.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-number">02</div>
+        <h3>Scale Communicates Hierarchy</h3>
+        <p>The size difference between elements is the primary navigation cue, not color or iconography. A 14rem headline beside 0.85rem body copy -- the gap is the point.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-number">03</div>
+        <h3>Rawness Is Intentional</h3>
+        <p>Unpolished, system-default, or deliberately harsh typographic choices signal authenticity and rejection of corporate smoothness. If it looks too clean, reintroduce tension.</p>
+      </div>
+      <div class="principle">
+        <div class="principle-number">04</div>
+        <h3>Friction Over Comfort</h3>
+        <p>Layouts are meant to provoke attention, not provide frictionless scanning. Discomfort is a valid design outcome. The collision of massive and tiny generates visual dynamism.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THICK RULE DIVIDER ===== -->
+  <div class="thick-rule"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="effects-section" id="effects">
+    <p class="section-label">Visual Effects</p>
+    <h2 class="section-title">CSS-Only<br>Type Effects</h2>
+
+    <div class="effects-grid" style="margin-top:48px;">
+      <!-- Effect 1: Extreme Scale -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-scale-type">
+          <span>Ag</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Extreme Scale Type</h4>
+          <p>Viewport-filling letterforms that function as graphic elements. clamp() and vw units ensure responsive dominance.</p>
+        </div>
+      </div>
+
+      <!-- Effect 2: Outline Text -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-outline-text">
+          <span>RAW</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Outline Letterforms</h4>
+          <p>-webkit-text-stroke with transparent fill creates hollow skeletal type that exposes letterform anatomy.</p>
+        </div>
+      </div>
+
+      <!-- Effect 3: Tight Line Stack -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-tight-stack">
+          <span>Tight</span>
+          <span>Negative</span>
+          <span>Leading</span>
+          <span>Stacked</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Tight Line Stacking</h4>
+          <p>Lines set at 0.82 line-height overlap and compress, creating dense typographic blocks of visual weight.</p>
+        </div>
+      </div>
+
+      <!-- Effect 4: Monospace Terminal -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-mono-grid">
+          <pre style="margin:0;font:inherit;">01 TYPE IS STRUCTURE
+02 SCALE = HIERARCHY
+03 RAW !== BROKEN
+04 WHITESPACE: ACTIVE
+05 FRICTION > COMFORT
+06 CONTENT == INTERFACE
+07 CONTRAST -> ENERGY
+08 HONESTY OF MEDIUM
+09 NO DECORATION
+10 ----------------
+11 FONT: SPACE MONO
+12 WEIGHT: 400 / 700
+13 SIZE: 0.95REM
+14 LEADING: 1.65
+15 TRACKING: DEFAULT
+16 CASE: UPPER
+17 ----------------</pre>
+        </div>
+        <div class="effect-caption">
+          <h4>Terminal Monospace</h4>
+          <p>Raw monospaced text evoking terminal output and code. Green-on-dark for maximum developer-culture authenticity.</p>
+        </div>
+      </div>
+
+      <!-- Effect 5: Red Block Accent -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-red-block">
+          <span>No.</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Signal Red Block</h4>
+          <p>Single high-impact accent color on flat background. White type on red creates confrontational emphasis.</p>
+        </div>
+      </div>
+
+      <!-- Effect 6: Wide Tracking -->
+      <div class="effect-demo">
+        <div class="effect-preview effect-wide-track">
+          <span class="wide">WIDE</span>
+          <span class="tight">TIGHT</span>
+          <span class="wide">TRACK</span>
+        </div>
+        <div class="effect-caption">
+          <h4>Extreme Letter-Spacing</h4>
+          <p>Massively tracked uppercase vs. ultra-tight condensed type. The friction between spacing extremes creates tension.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THICK RULE DIVIDER ===== -->
+  <div class="thick-rule"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="buttons-section">
+    <p class="section-label">Interactive Elements</p>
+    <h2 class="section-title">Brutalist Buttons</h2>
+
+    <div class="button-grid">
+      <a href="#" class="btn">Primary Action</a>
+      <a href="#" class="btn btn-outline">Outline</a>
+      <a href="#" class="btn btn-red">Signal Red</a>
+      <a href="#" class="btn btn-text">Text Link</a>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="quote-section">
+    <div class="quote-block">
+      <blockquote>
+        The content is the design. The words are the interface. The rawness is the point. There is no hiding behind stock imagery or decorative chrome.
+      </blockquote>
+      <cite>-- Typographic Brutalism Manifesto</cite>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-bg-text">TB</div>
+    <div class="cta-content">
+      <h2 class="cta-title">Start<br>Building<br>With Type</h2>
+      <p class="cta-subtitle">
+        Strip away imagery, illustration, and ornament. Let typography carry
+        the entire visual and structural weight. Scale is the tool.
+        Contrast is the language. The screen is the concrete.
+      </p>
+      <a href="#hero" class="cta-btn">Back to Top</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-statement">Words<br>Are<br>Enough.</div>
+    <div class="footer-meta">
+      <span>Design Aesthetic Reference</span>
+      <ul class="footer-links">
+        <li><a href="#typography">Type</a></li>
+        <li><a href="#palette">Colors</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#effects">Effects</a></li>
+      </ul>
+      <span>Typographic Brutalism</span>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Scroll-based reveal for sections
+    (function() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.08 });
+
+      document.querySelectorAll('.card, .principle, .effect-demo').forEach(function(el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        el.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+        observer.observe(el);
+      });
+    })();
+
+    // Smooth anchor scroll (fallback for older browsers)
+    document.querySelectorAll('a[href^="#"]').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

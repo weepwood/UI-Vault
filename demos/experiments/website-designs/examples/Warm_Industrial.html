@@ -1,0 +1,2352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Warm Industrial -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Oswald:wght@400;500;600;700&family=Barlow+Condensed:wght@400;500;600;700&family=Source+Sans+3:wght@300;400;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@400;500;700&family=Roboto+Slab:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Cool structural tones */
+      --wi-charcoal: #2B2D2F;
+      --wi-concrete: #4A4D50;
+      --wi-silver: #7A7D82;
+      --wi-plaster: #B8B2A8;
+
+      /* Warm base tones */
+      --wi-linen: #F0EBE1;
+      --wi-parchment: #FAF7F2;
+
+      /* Warm accent tones */
+      --wi-walnut: #5C3D2E;
+      --wi-leather: #8B5E3C;
+      --wi-cognac: #C48A3F;
+      --wi-edison: #E8B44C;
+      --wi-copper: #B87333;
+
+      /* Material accents */
+      --wi-brick: #9C4A3A;
+      --wi-patina: #5E7A6A;
+      --wi-rust: #8B4513;
+      --wi-forge: #1A1A1C;
+
+      /* Functional assignments */
+      --wi-bg-primary: var(--wi-linen);
+      --wi-bg-secondary: var(--wi-parchment);
+      --wi-bg-dark: var(--wi-charcoal);
+      --wi-bg-surface: var(--wi-parchment);
+      --wi-text-primary: var(--wi-forge);
+      --wi-text-secondary: var(--wi-concrete);
+      --wi-text-muted: var(--wi-silver);
+      --wi-text-on-dark: var(--wi-linen);
+      --wi-accent-primary: var(--wi-cognac);
+      --wi-accent-warm: var(--wi-edison);
+      --wi-accent-metallic: var(--wi-copper);
+      --wi-border: var(--wi-plaster);
+      --wi-border-strong: var(--wi-silver);
+
+      /* Shadows */
+      --wi-shadow-sm: 0 1px 3px rgba(26, 26, 28, 0.06), 0 6px 16px rgba(26, 26, 28, 0.04);
+      --wi-shadow-md: 0 2px 6px rgba(26, 26, 28, 0.08), 0 12px 28px rgba(26, 26, 28, 0.06);
+      --wi-shadow-lg: 0 4px 12px rgba(26, 26, 28, 0.1), 0 20px 40px rgba(26, 26, 28, 0.08);
+      --wi-shadow-warm: 0 4px 16px rgba(196, 138, 63, 0.2);
+
+      /* Spacing */
+      --section-pad: clamp(60px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Source Sans 3', 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+      color: var(--wi-text-primary);
+      background: var(--wi-bg-primary);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Oswald', 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.15;
+      color: var(--wi-walnut);
+    }
+
+    h1 { font-size: clamp(2rem, 5vw, 3.5rem); }
+    h2 { font-size: clamp(1.5rem, 3.5vw, 2.25rem); }
+    h3 { font-size: clamp(1.1rem, 2.5vw, 1.5rem); letter-spacing: 0.08em; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--wi-charcoal);
+      padding: 0 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 64px;
+      border-bottom: 3px solid var(--wi-copper);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+      color: var(--wi-edison);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-logo-icon {
+      width: 24px;
+      height: 24px;
+      border: 2px solid var(--wi-copper);
+      border-radius: 50%;
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-logo-icon::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--wi-edison);
+      box-shadow: 0 0 8px rgba(232, 180, 76, 0.6);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--wi-plaster);
+      text-decoration: none;
+      padding: 4px 0;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--wi-cognac);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--wi-edison);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-hamburger span {
+      width: 24px;
+      height: 2px;
+      background: var(--wi-plaster);
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+      background: var(--wi-charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Concrete noise texture */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* Warm Edison glow from below */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 70%;
+      height: 55%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(232, 180, 76, 0.1) 0%,
+        rgba(196, 138, 63, 0.05) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 800px;
+    }
+
+    .hero-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--wi-copper);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-size: clamp(3rem, 10vw, 7rem);
+      letter-spacing: 0.08em;
+      line-height: 1.0;
+      color: var(--wi-linen);
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.35rem);
+      color: var(--wi-plaster);
+      line-height: 1.65;
+      max-width: 540px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-divider {
+      width: 60px;
+      height: 3px;
+      background: var(--wi-copper);
+      margin: 0 auto 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative steel beam elements */
+    .hero-beam {
+      position: absolute;
+      background: var(--wi-concrete);
+      opacity: 0.12;
+    }
+
+    .hero-beam--left {
+      width: 3px;
+      height: 100%;
+      left: 8%;
+      top: 0;
+    }
+
+    .hero-beam--right {
+      width: 3px;
+      height: 100%;
+      right: 8%;
+      top: 0;
+    }
+
+    .hero-beam--top {
+      width: 100%;
+      height: 2px;
+      top: 12%;
+      left: 0;
+    }
+
+    /* Rivet dots on beams */
+    .hero-rivet {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--wi-silver);
+      opacity: 0.15;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    /* Edison bulb decorative element */
+    .hero-bulb {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 5;
+    }
+
+    .hero-bulb-wire {
+      width: 1px;
+      height: 40px;
+      background: var(--wi-silver);
+      opacity: 0.3;
+    }
+
+    .hero-bulb-glass {
+      width: 28px;
+      height: 38px;
+      border: 1.5px solid rgba(196, 138, 63, 0.3);
+      border-radius: 50% 50% 6px 6px;
+      position: relative;
+    }
+
+    .hero-bulb-glass::after {
+      content: '';
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--wi-edison);
+      box-shadow:
+        0 0 12px rgba(232, 180, 76, 0.4),
+        0 0 40px rgba(232, 180, 76, 0.15);
+      animation: filament-flicker 4s ease-in-out infinite;
+    }
+
+    .hero-bulb-cap {
+      width: 14px;
+      height: 8px;
+      border: 1.5px solid rgba(196, 138, 63, 0.3);
+      border-top: none;
+      border-radius: 0 0 3px 3px;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(196, 138, 63, 0.2) 2px,
+        rgba(196, 138, 63, 0.2) 3px
+      );
+    }
+
+    @keyframes filament-flicker {
+      0%, 100% { opacity: 0.85; box-shadow: 0 0 12px rgba(232,180,76,0.4), 0 0 40px rgba(232,180,76,0.15); }
+      50% { opacity: 1; box-shadow: 0 0 16px rgba(232,180,76,0.5), 0 0 56px rgba(232,180,76,0.2); }
+      73% { opacity: 0.9; }
+      74% { opacity: 0.7; }
+      75% { opacity: 0.95; }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 13px 32px;
+      border: 2px solid var(--wi-linen);
+      background: var(--wi-linen);
+      color: var(--wi-walnut);
+      border-radius: 3px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .btn:hover {
+      background: var(--wi-cognac);
+      border-color: var(--wi-cognac);
+      color: var(--wi-forge);
+      box-shadow: 0 4px 16px rgba(196, 138, 63, 0.3);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--wi-linen);
+    }
+
+    .btn--ghost:hover {
+      background: var(--wi-linen);
+      border-color: var(--wi-linen);
+      color: var(--wi-walnut);
+      box-shadow: 0 4px 16px rgba(240, 235, 225, 0.15);
+    }
+
+    .btn--walnut {
+      background: var(--wi-walnut);
+      border-color: var(--wi-walnut);
+      color: var(--wi-linen);
+    }
+
+    .btn--walnut:hover {
+      background: var(--wi-cognac);
+      border-color: var(--wi-cognac);
+      color: var(--wi-forge);
+      box-shadow: var(--wi-shadow-warm);
+    }
+
+    .btn--copper {
+      background: linear-gradient(135deg, var(--wi-copper), var(--wi-cognac), var(--wi-edison));
+      border: none;
+      color: var(--wi-forge);
+      padding: 15px 34px;
+    }
+
+    .btn--copper:hover {
+      background: linear-gradient(135deg, var(--wi-edison), var(--wi-cognac), var(--wi-copper));
+      box-shadow: 0 4px 20px rgba(184, 115, 51, 0.35);
+    }
+
+    .btn--outline-dark {
+      background: transparent;
+      border-color: var(--wi-walnut);
+      color: var(--wi-walnut);
+    }
+
+    .btn--outline-dark:hover {
+      background: var(--wi-walnut);
+      color: var(--wi-linen);
+      box-shadow: 0 4px 12px rgba(92, 61, 46, 0.2);
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--wi-plaster);
+      margin: 0;
+    }
+
+    .divider--beam {
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--wi-plaster) 15%,
+        var(--wi-silver) 50%,
+        var(--wi-plaster) 85%,
+        transparent 100%
+      );
+    }
+
+    .divider--copper {
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        var(--wi-copper),
+        var(--wi-cognac),
+        var(--wi-edison),
+        var(--wi-cognac),
+        var(--wi-copper)
+      );
+      width: 120px;
+      margin: 0 auto;
+    }
+
+    .divider--rivet {
+      height: 1px;
+      background: var(--wi-plaster);
+      position: relative;
+    }
+
+    .divider--rivet::before,
+    .divider--rivet::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--wi-silver);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .divider--rivet::before { left: 20px; }
+    .divider--rivet::after { right: 20px; }
+
+    /* ============================================
+       SECTIONS
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 40px;
+    }
+
+    .section--light {
+      background: var(--wi-bg-primary);
+    }
+
+    .section--parchment {
+      background: var(--wi-bg-secondary);
+    }
+
+    .section--warm {
+      background: linear-gradient(180deg, var(--wi-linen) 0%, #EDE6DA 100%);
+    }
+
+    .section--dark {
+      background: var(--wi-charcoal);
+      color: var(--wi-linen);
+      position: relative;
+    }
+
+    .section--dark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .section--dark h2 {
+      color: var(--wi-edison);
+    }
+
+    .section--dark p {
+      color: var(--wi-plaster);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--wi-copper);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--wi-walnut);
+      margin-bottom: 8px;
+    }
+
+    .section--dark .section-label {
+      color: var(--wi-cognac);
+    }
+
+    .section--dark .section-title {
+      color: var(--wi-edison);
+    }
+
+    .section-subtitle {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--wi-leather);
+    }
+
+    .section--dark .section-subtitle {
+      color: var(--wi-plaster);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--wi-plaster);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--wi-silver);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      letter-spacing: 0.08em;
+      line-height: 1.0;
+      color: var(--wi-charcoal);
+    }
+
+    .typo-heading {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.15;
+      color: var(--wi-walnut);
+    }
+
+    .typo-subheading {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--wi-leather);
+    }
+
+    .typo-body {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--wi-concrete);
+    }
+
+    .typo-serif {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--wi-leather);
+    }
+
+    .typo-slab {
+      font-family: 'Roboto Slab', serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--wi-walnut);
+    }
+
+    .typo-right {
+      background: var(--wi-parchment);
+      border: 1px solid var(--wi-plaster);
+      border-radius: 4px;
+      padding: 32px;
+      position: relative;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wi-copper), var(--wi-cognac), var(--wi-edison));
+      border-radius: 4px 4px 0 0;
+    }
+
+    .typo-right h3 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--wi-walnut);
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(184, 178, 168, 0.4);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: var(--wi-silver);
+      font-weight: 500;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      background: var(--wi-parchment);
+      border: 1px solid var(--wi-plaster);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .color-chip:hover {
+      box-shadow: var(--wi-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px;
+    }
+
+    .color-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--wi-walnut);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'DM Sans', monospace;
+      font-size: 0.72rem;
+      color: var(--wi-silver);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--wi-parchment);
+      border: 1px solid var(--wi-plaster);
+      border-radius: 4px;
+      padding: 32px;
+      position: relative;
+      box-shadow: var(--wi-shadow-sm);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wi-copper), var(--wi-cognac), var(--wi-edison));
+      border-radius: 4px 4px 0 0;
+    }
+
+    .card:hover {
+      border-color: var(--wi-cognac);
+      box-shadow: var(--wi-shadow-md);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      position: relative;
+    }
+
+    .card-icon--steel {
+      background: var(--wi-concrete);
+      color: var(--wi-linen);
+    }
+
+    .card-icon--copper {
+      background: linear-gradient(135deg, var(--wi-copper), var(--wi-cognac));
+      color: var(--wi-forge);
+    }
+
+    .card-icon--wood {
+      background: var(--wi-walnut);
+      color: var(--wi-edison);
+    }
+
+    .card-icon--brick {
+      background: var(--wi-brick);
+      color: var(--wi-linen);
+    }
+
+    .card-icon--patina {
+      background: var(--wi-patina);
+      color: var(--wi-linen);
+    }
+
+    .card-icon--leather {
+      background: var(--wi-leather);
+      color: var(--wi-edison);
+    }
+
+    .card h3 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--wi-walnut);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--wi-concrete);
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--wi-copper);
+      border: 1px solid var(--wi-copper);
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-right: 6px;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--wi-forge);
+      padding: 60px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(122, 125, 130, 0.03) 0px,
+          rgba(122, 125, 130, 0.03) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        linear-gradient(180deg, #1A1A1C, #2B2D2F, #1A1A1C);
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .motif-bolt {
+      width: 16px;
+      height: 16px;
+      border: 2px solid var(--wi-silver);
+      border-radius: 50%;
+      position: relative;
+      opacity: 0.4;
+    }
+
+    .motif-bolt::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 8px;
+      height: 2px;
+      background: var(--wi-silver);
+    }
+
+    .motif-bolt::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-45deg);
+      width: 8px;
+      height: 2px;
+      background: var(--wi-silver);
+    }
+
+    .motif-banner h2 {
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      letter-spacing: 0.1em;
+      background: linear-gradient(135deg, #8B5E3C, #B87333, #D4A04A, #E8B44C, #D4A04A, #B87333);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--wi-plaster);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .principle-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border: 2px solid var(--wi-copper);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .principle-icon-inner {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Balance icon - two contrasting bars */
+    .principle-icon--balance .principle-icon-inner {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .principle-icon--balance .principle-icon-inner::before {
+      content: '';
+      width: 20px;
+      height: 6px;
+      background: var(--wi-concrete);
+      border-radius: 1px;
+    }
+
+    .principle-icon--balance .principle-icon-inner::after {
+      content: '';
+      width: 20px;
+      height: 6px;
+      background: var(--wi-cognac);
+      border-radius: 1px;
+    }
+
+    /* Texture icon - layered lines */
+    .principle-icon--texture .principle-icon-inner {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          var(--wi-cognac) 0px,
+          var(--wi-cognac) 2px,
+          transparent 2px,
+          transparent 5px
+        );
+      border-radius: 2px;
+    }
+
+    /* Structure icon - grid */
+    .principle-icon--structure .principle-icon-inner {
+      border: 2px solid var(--wi-cognac);
+      position: relative;
+    }
+
+    .principle-icon--structure .principle-icon-inner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1px;
+      height: 100%;
+      background: var(--wi-cognac);
+    }
+
+    .principle-icon--structure .principle-icon-inner::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 1px;
+      background: var(--wi-cognac);
+    }
+
+    /* Warmth icon - glow circle */
+    .principle-icon--warmth .principle-icon-inner {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--wi-edison);
+      box-shadow: 0 0 10px rgba(232, 180, 76, 0.5), 0 0 24px rgba(232, 180, 76, 0.2);
+    }
+
+    .principle-text h3 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--wi-walnut);
+      margin-bottom: 8px;
+    }
+
+    .principle-text p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--wi-concrete);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .effect-demo {
+      background: var(--wi-parchment);
+      border: 1px solid var(--wi-plaster);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      box-shadow: var(--wi-shadow-md);
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--wi-walnut);
+      margin-bottom: 6px;
+    }
+
+    .effect-caption p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--wi-silver);
+    }
+
+    /* Effect 1: Brushed Metal */
+    .effect-brushed-metal {
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(122, 125, 130, 0.04) 0px,
+          rgba(122, 125, 130, 0.04) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        linear-gradient(180deg, #3A3C3F, #4A4D50, #3A3C3F);
+    }
+
+    .effect-brushed-metal::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 10%;
+      width: 80%;
+      height: 60%;
+      background: linear-gradient(
+        135deg,
+        transparent 0%,
+        rgba(255,255,255,0.03) 40%,
+        rgba(255,255,255,0.06) 50%,
+        rgba(255,255,255,0.03) 60%,
+        transparent 100%
+      );
+    }
+
+    /* Effect 2: Concrete Noise */
+    .effect-concrete {
+      background: #4A4D50;
+      position: relative;
+    }
+
+    .effect-concrete::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      opacity: 0.8;
+    }
+
+    .effect-concrete::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(74,77,80,0) 0%, rgba(74,77,80,0.3) 100%);
+    }
+
+    /* Effect 3: Copper Gradient */
+    .effect-copper-gradient {
+      background: linear-gradient(
+        135deg,
+        #5C3D2E 0%,
+        #8B5E3C 20%,
+        #B87333 40%,
+        #D4A04A 55%,
+        #E8B44C 65%,
+        #D4A04A 75%,
+        #B87333 85%,
+        #8B5E3C 100%
+      );
+      position: relative;
+    }
+
+    .effect-copper-gradient::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        transparent 0%,
+        rgba(0,0,0,0.08) 50%,
+        transparent 100%
+      );
+    }
+
+    /* Effect 4: Edison Glow */
+    .effect-edison-glow {
+      background: var(--wi-charcoal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-edison-glow::before {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--wi-edison);
+      opacity: 0.9;
+      box-shadow:
+        0 0 20px rgba(232, 180, 76, 0.5),
+        0 0 60px rgba(232, 180, 76, 0.3),
+        0 0 100px rgba(232, 180, 76, 0.15),
+        0 0 160px rgba(196, 138, 63, 0.08);
+      animation: glow-pulse 3s ease-in-out infinite;
+    }
+
+    .effect-edison-glow::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #FFF3D4;
+      z-index: 1;
+    }
+
+    @keyframes glow-pulse {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    /* Effect 5: Brick Pattern */
+    .effect-brick {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 24px,
+          #7A3B2E 24px,
+          #7A3B2E 26px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 0px,
+          transparent 48px,
+          #7A3B2E 48px,
+          #7A3B2E 50px
+        );
+      background-color: #9C4A3A;
+      position: relative;
+    }
+
+    .effect-brick::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent 0px,
+          transparent 24px,
+          #7A3B2E 24px,
+          #7A3B2E 26px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent 24px,
+          transparent 72px,
+          #7A3B2E 72px,
+          #7A3B2E 74px
+        );
+      transform: translateY(13px);
+    }
+
+    .effect-brick::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      opacity: 0.7;
+    }
+
+    /* Effect 6: Wood Grain */
+    .effect-wood-grain {
+      background:
+        repeating-linear-gradient(
+          2deg,
+          rgba(92, 61, 46, 0.1) 0px,
+          rgba(92, 61, 46, 0.1) 1px,
+          transparent 1px,
+          transparent 4px
+        ),
+        repeating-linear-gradient(
+          178deg,
+          rgba(139, 94, 60, 0.08) 0px,
+          rgba(139, 94, 60, 0.08) 1px,
+          transparent 1px,
+          transparent 7px
+        ),
+        linear-gradient(
+          180deg,
+          #6B4A35 0%,
+          #8B5E3C 15%,
+          #7A5035 30%,
+          #8B5E3C 50%,
+          #6B4A35 65%,
+          #8B5E3C 80%,
+          #7A5035 100%
+        );
+      position: relative;
+    }
+
+    .effect-wood-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        175deg,
+        transparent 0px,
+        transparent 20px,
+        rgba(92, 61, 46, 0.12) 20px,
+        rgba(92, 61, 46, 0.12) 21px,
+        transparent 21px,
+        transparent 45px
+      );
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 48px 40px;
+      background: var(--wi-parchment);
+      border: 1px solid var(--wi-plaster);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wi-copper), var(--wi-cognac), var(--wi-edison));
+      border-radius: 2px;
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wi-copper), var(--wi-cognac), var(--wi-edison));
+      border-radius: 2px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      line-height: 1.7;
+      color: var(--wi-walnut);
+      margin-bottom: 20px;
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4rem;
+      line-height: 0.5;
+      display: block;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, var(--wi-copper), var(--wi-edison));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .quote-block cite {
+      font-family: 'Oswald', sans-serif;
+      font-style: normal;
+      font-weight: 500;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--wi-silver);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: var(--section-pad) 40px;
+      background: var(--wi-charcoal);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60%;
+      height: 80%;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(232, 180, 76, 0.06) 0%,
+        rgba(196, 138, 63, 0.03) 40%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .cta-container {
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      padding: 48px;
+      border: 1px solid rgba(184, 115, 51, 0.2);
+      border-radius: 4px;
+    }
+
+    .cta-container h2 {
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      letter-spacing: 0.08em;
+      color: var(--wi-linen);
+      margin-bottom: 12px;
+    }
+
+    .cta-container .cta-serif {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--wi-cognac);
+      margin-bottom: 20px;
+    }
+
+    .cta-container p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--wi-plaster);
+      margin-bottom: 32px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--wi-forge);
+      padding: 60px 40px 40px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--wi-copper), var(--wi-cognac), var(--wi-edison), var(--wi-cognac), var(--wi-copper));
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-content h3 {
+      font-family: 'Bebas Neue', 'Oswald', sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: 0.1em;
+      color: var(--wi-edison);
+      margin-bottom: 12px;
+    }
+
+    .footer-content > p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--wi-silver);
+      max-width: 500px;
+      margin: 0 auto 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 400;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--wi-plaster);
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--wi-edison);
+    }
+
+    .footer-rivets {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .footer-rivet {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--wi-concrete);
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.3);
+    }
+
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: var(--wi-concrete);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       MOBILE RESPONSIVE
+       ============================================ */
+    @media (max-width: 900px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: var(--wi-charcoal);
+        flex-direction: column;
+        padding: 20px;
+        gap: 16px;
+        border-bottom: 2px solid var(--wi-copper);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .section {
+        padding: var(--section-pad) 20px;
+      }
+
+      .hero {
+        padding: 60px 20px;
+        min-height: 70vh;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .hero-beam--left,
+      .hero-beam--right {
+        display: none;
+      }
+
+      .motif-banner {
+        padding: 40px 20px;
+      }
+
+      .cta-container {
+        padding: 32px 20px;
+      }
+
+      .quote-block {
+        padding: 36px 24px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer {
+        padding: 40px 20px 32px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-icon"></span>
+      Warm Industrial
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero">Forge</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <div class="nav-hamburger" id="navToggle" onclick="document.getElementById('navLinks').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Structural beam lines -->
+    <div class="hero-beam hero-beam--left"></div>
+    <div class="hero-beam hero-beam--right"></div>
+    <div class="hero-beam hero-beam--top"></div>
+
+    <!-- Rivet details -->
+    <div class="hero-rivet" style="top: 12%; left: 8%; transform: translate(-50%, -50%);"></div>
+    <div class="hero-rivet" style="top: 12%; right: 8%; transform: translate(50%, -50%);"></div>
+    <div class="hero-rivet" style="top: 30%; left: 8%; transform: translateX(-50%);"></div>
+    <div class="hero-rivet" style="top: 60%; right: 8%; transform: translateX(50%);"></div>
+
+    <!-- Edison bulb decoration -->
+    <div class="hero-bulb">
+      <div class="hero-bulb-wire"></div>
+      <div class="hero-bulb-glass"></div>
+      <div class="hero-bulb-cap"></div>
+    </div>
+
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1 class="hero-title">Warm Industrial</h1>
+      <p class="hero-subtitle">
+        Where raw steel meets reclaimed wood, and Edison bulbs cast an amber glow across weathered brick and aged leather.
+      </p>
+      <div class="hero-divider"></div>
+      <div class="hero-actions">
+        <a href="#components" class="btn">Explore Components</a>
+        <a href="#palette" class="btn btn--ghost">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STRUCTURAL DIVIDER ===== -->
+  <hr class="divider divider--rivet">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--light" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Typography</p>
+        <h2 class="section-title">Stamped Steel &amp; Warm Ink</h2>
+        <p class="section-subtitle">bold condensed headings, humanist body warmth</p>
+      </div>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Bebas Neue</p>
+            <p class="typo-display">Forge &amp; Foundry</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Oswald 600</p>
+            <p class="typo-heading">Structural Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Barlow Condensed 600</p>
+            <p class="typo-subheading">Factory Signage Subheadings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Source Sans 3 400</p>
+            <p class="typo-body">Warm humanist text for comfortable long-form reading. The body type carries the warmth of a handwritten shop ledger, balanced against the structural weight of industrial headings above.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Editorial / Lora Italic</p>
+            <p class="typo-serif">Brushed calligraphic warmth for editorial content and accent text that softens the hard industrial edges.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Roboto Slab 700</p>
+            <p class="typo-slab">Mechanical Precision Labels</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">7rem</span>
+              <span style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--wi-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.25rem</span>
+              <span style="font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 1.5rem; text-transform: uppercase; color: var(--wi-walnut);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; font-size: 1.2rem; text-transform: uppercase; color: var(--wi-leather);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Lora', Georgia, serif; font-style: italic; font-size: 1rem; color: var(--wi-leather);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Source Sans 3', sans-serif; font-size: 1rem; color: var(--wi-concrete);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Oswald', sans-serif; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em; color: var(--wi-silver);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--wi-plaster);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Oswald', sans-serif; color: var(--wi-walnut);">Oswald 600</strong> + <strong style="font-family: 'Source Sans 3', sans-serif;">Source Sans 3</strong><br>
+              <span style="color: var(--wi-silver); font-size: 0.82rem;">Bold industrial structure with readable warmth</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--wi-walnut);">Bebas Neue</strong> + <strong style="font-family: 'Lora', serif; font-style: italic;">Lora</strong><br>
+              <span style="color: var(--wi-silver); font-size: 0.82rem;">Stamped-steel display with editorial softness</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Barlow Condensed', sans-serif; font-weight: 600; color: var(--wi-walnut);">Barlow Condensed</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans</strong><br>
+              <span style="color: var(--wi-silver); font-size: 0.82rem;">Modern factory signage with clean body readability</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COPPER DIVIDER ===== -->
+  <hr class="divider divider--copper">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--warm" id="palette">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Color Palette</p>
+        <h2 class="section-title">Steel, Amber &amp; Aged Copper</h2>
+        <p class="section-subtitle">cool structural grays held in tension with warm organic browns</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2B2D2F;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Steel</div>
+            <div class="color-hex">#2B2D2F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A4D50;"></div>
+          <div class="color-info">
+            <div class="color-name">Concrete Gray</div>
+            <div class="color-hex">#4A4D50</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A7D82;"></div>
+          <div class="color-info">
+            <div class="color-name">Weathered Silver</div>
+            <div class="color-hex">#7A7D82</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8B2A8;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Plaster</div>
+            <div class="color-hex">#B8B2A8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0EBE1;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Linen</div>
+            <div class="color-hex">#F0EBE1</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF7F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment White</div>
+            <div class="color-hex">#FAF7F2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C3D2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Walnut Brown</div>
+            <div class="color-hex">#5C3D2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B5E3C;"></div>
+          <div class="color-info">
+            <div class="color-name">Saddle Leather</div>
+            <div class="color-hex">#8B5E3C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C48A3F;"></div>
+          <div class="color-info">
+            <div class="color-name">Cognac Amber</div>
+            <div class="color-hex">#C48A3F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8B44C;"></div>
+          <div class="color-info">
+            <div class="color-name">Edison Gold</div>
+            <div class="color-hex">#E8B44C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #8B5E3C, #B87333, #D4A04A, #E8B44C, #D4A04A, #B87333); position: relative;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(0,0,0,0.1) 100%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Aged Copper</div>
+            <div class="color-hex">#B87333</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9C4A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Brick Terracotta</div>
+            <div class="color-hex">#9C4A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5E7A6A;"></div>
+          <div class="color-info">
+            <div class="color-name">Patina Green</div>
+            <div class="color-hex">#5E7A6A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B4513;"></div>
+          <div class="color-info">
+            <div class="color-name">Oxidized Rust</div>
+            <div class="color-hex">#8B4513</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A1C;"></div>
+          <div class="color-info">
+            <div class="color-name">Forge Black</div>
+            <div class="color-hex">#1A1A1C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BEAM DIVIDER ===== -->
+  <hr class="divider divider--beam">
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--parchment" id="components">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Components</p>
+        <h2 class="section-title">Material Samples &amp; Workshop Notes</h2>
+        <p class="section-subtitle">each card a specification sheet pinned to the workshop wall</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--steel">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="2" y="8" width="18" height="6" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="11" y1="2" x2="11" y2="8" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="11" y1="14" x2="11" y2="20" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <h3>Exposed Steel Beams</h3>
+          <p>Visible grid structures, thick horizontal rules, and I-beam dividers celebrate structural honesty rather than hiding the framework.</p>
+          <span class="tag">Structure</span>
+          <span class="tag">Grid</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--copper">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="9" r="7" stroke="currentColor" stroke-width="1.5"/>
+              <rect x="8" y="16" width="6" height="4" rx="1" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="9" r="3" fill="currentColor" opacity="0.3"/>
+            </svg>
+          </div>
+          <h3>Edison Bulb Glow</h3>
+          <p>Warm amber radial gradients and subtle flicker animations evoke exposed-filament bulbs casting golden light across the workshop.</p>
+          <span class="tag">Lighting</span>
+          <span class="tag">Animation</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--wood">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="3" y="3" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="3" y1="8" x2="19" y2="8" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+              <line x1="3" y1="13" x2="19" y2="13" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+              <line x1="3" y1="18" x2="19" y2="18" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+            </svg>
+          </div>
+          <h3>Reclaimed Wood Tones</h3>
+          <p>Rich walnut, saddle leather, and cognac amber provide the organic warmth that distinguishes this aesthetic from cold industrial minimalism.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Warmth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--brick">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <rect x="2" y="3" width="8" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="12" y="3" width="8" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="6" y="9" width="8" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="2" y="15" width="8" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+              <rect x="12" y="15" width="8" height="4" rx="0.5" stroke="currentColor" stroke-width="1.2"/>
+            </svg>
+          </div>
+          <h3>Weathered Brick Walls</h3>
+          <p>Brick terracotta surfaces with visible mortar lines and noise texture overlays provide depth and historical industrial grounding.</p>
+          <span class="tag">Surface</span>
+          <span class="tag">Heritage</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--patina">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="11" cy="11" r="4" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+              <circle cx="8" cy="8" r="1.5" fill="currentColor" opacity="0.3"/>
+              <circle cx="14" cy="13" r="2" fill="currentColor" opacity="0.2"/>
+            </svg>
+          </div>
+          <h3>Copper Patina Accents</h3>
+          <p>Metallic gradients from leather brown through copper to Edison gold create premium accent borders, buttons, and decorative details.</p>
+          <span class="tag">Metallic</span>
+          <span class="tag">Accent</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--leather">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+              <path d="M4 6 C4 4, 6 2, 11 2 C16 2, 18 4, 18 6 L18 18 C18 19, 17 20, 16 20 L6 20 C5 20, 4 19, 4 18 Z" stroke="currentColor" stroke-width="1.5"/>
+              <line x1="7" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+              <line x1="7" y1="12" x2="15" y2="12" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+              <line x1="7" y1="16" x2="13" y2="16" stroke="currentColor" stroke-width="1" opacity="0.4"/>
+            </svg>
+          </div>
+          <h3>Aged Leather Textures</h3>
+          <p>Distressed leather tones in cognac and saddle brown add the artisanal warmth of a well-worn workshop notebook or a vintage armchair.</p>
+          <span class="tag">Material</span>
+          <span class="tag">Craft</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <div class="motif-bolt"></div>
+        <div class="motif-bolt"></div>
+        <div class="motif-bolt"></div>
+        <div class="motif-bolt"></div>
+        <div class="motif-bolt"></div>
+        <div class="motif-bolt"></div>
+        <div class="motif-bolt"></div>
+      </div>
+      <h2>Steel, Wood &amp; Amber Light</h2>
+      <p>From converted warehouses to artisanal workshops, warmth earned through honest materials</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--light">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Design Principles</p>
+        <h2 class="section-title">The Workshop Philosophy</h2>
+        <p class="section-subtitle">structural honesty tempered by earned warmth</p>
+      </div>
+
+      <div class="principles-grid">
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--balance">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Balance Temperature Zones</h3>
+            <p>Every cool element -- steel, concrete, gray -- must be paired with a warm counterpart -- wood, leather, amber. Neither temperature should overwhelm; the beauty lives in the tension between them.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--texture">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Let Materials Speak</h3>
+            <p>Surfaces should reveal their true character -- grain, patina, oxidation, wear marks -- rather than being masked by flat digital fills. Even subtle noise overlays add essential material character.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--structure">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Structural Honesty</h3>
+            <p>Design structure should be visible and intentional, not hidden. Grids, borders, frames, and dividers reference architectural steel framing. The skeleton is the ornament.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon principle-icon--warmth">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Amber Warmth as Unifier</h3>
+            <p>A consistent warm color temperature -- as if lit by Edison filaments -- ties disparate elements together. Box-shadows carry a subtle amber tint rather than pure black.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RIVET DIVIDER ===== -->
+  <hr class="divider divider--rivet">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--dark" id="effects">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Visual Effects</p>
+        <h2 class="section-title">CSS Material Textures</h2>
+        <p class="section-subtitle">all industrial surfaces, no image assets required</p>
+      </div>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-brushed-metal"></div>
+          <div class="effect-caption">
+            <h4>Brushed Metal</h4>
+            <p>Fine repeating linear gradients simulate directional brushing on matte steel surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-concrete"></div>
+          <div class="effect-caption">
+            <h4>Concrete Noise</h4>
+            <p>SVG turbulence filter creates the grainy, aggregate texture of raw poured concrete.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-copper-gradient"></div>
+          <div class="effect-caption">
+            <h4>Copper Gradient</h4>
+            <p>Multi-stop gradient sweeping from walnut through copper to Edison gold mimics polished metal.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-edison-glow"></div>
+          <div class="effect-caption">
+            <h4>Edison Glow</h4>
+            <p>Layered radial box-shadows in amber tones with pulse animation evoke warm filament lighting.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-brick"></div>
+          <div class="effect-caption">
+            <h4>Brick Pattern</h4>
+            <p>Offset repeating linear gradients with noise overlay build a weathered brick wall surface.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-wood-grain"></div>
+          <div class="effect-caption">
+            <h4>Wood Grain</h4>
+            <p>Layered angled linear gradients in warm brown tones recreate the natural grain of reclaimed timber.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BEAM DIVIDER ===== -->
+  <hr class="divider divider--beam">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--warm">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Interactive Elements</p>
+        <h2 class="section-title">Industrial Buttons</h2>
+        <p class="section-subtitle">structural weight, warm hover states, clear affordance</p>
+      </div>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--walnut">Primary Walnut</a>
+        <a href="#" class="btn btn--copper">Copper Metallic</a>
+        <a href="#" class="btn btn--outline-dark">Ghost Outline</a>
+        <a href="#" class="btn" style="background: var(--wi-brick); border-color: var(--wi-brick); color: var(--wi-linen);" onmouseover="this.style.background='var(--wi-cognac)'; this.style.borderColor='var(--wi-cognac)'; this.style.color='var(--wi-forge)'" onmouseout="this.style.background='var(--wi-brick)'; this.style.borderColor='var(--wi-brick)'; this.style.color='var(--wi-linen)'">Brick Accent</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--light">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The steel must feel genuinely structural, and the warmth must feel genuinely earned. Neither element should overwhelm the other &mdash; the beauty of the style lies in the balance between the two.
+        </blockquote>
+        <cite>&mdash; The Warm Industrial Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Forge Your Design</h2>
+        <p class="cta-serif">where raw meets refined, and craft meets comfort</p>
+        <p>
+          The Warm Industrial aesthetic balances cool structural grays with organic amber warmth. Ground every layout in charcoal steel and concrete, then let Edison gold and reclaimed wood soften the edges.
+        </p>
+        <a href="#hero" class="btn">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Warm Industrial</h3>
+      <p>
+        A design aesthetic reference celebrating the balance of raw industrial structure and inviting organic warmth. Steel, copper, and Edison glow &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Forge</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-rivets">
+        <div class="footer-rivet"></div>
+        <div class="footer-rivet"></div>
+        <div class="footer-rivet"></div>
+        <div class="footer-rivet"></div>
+        <div class="footer-rivet"></div>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Warm Industrial &bull; Forge &amp; Foundry</p>
+    </div>
+  </footer>
+
+</body>
+</html>

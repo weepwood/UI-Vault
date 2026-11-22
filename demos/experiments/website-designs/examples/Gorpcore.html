@@ -1,0 +1,2159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gorpcore -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&family=Source+Sans+3:wght@300;400;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Oswald:wght@400;500;600;700&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Dark Tones --- */
+      --gorp-charcoal: #2c2c2c;
+      --gorp-slate: #4a4e54;
+      --gorp-granite: #6b7280;
+
+      /* --- Warm Neutrals --- */
+      --gorp-sandstone: #c2a878;
+      --gorp-khaki: #bfb49a;
+      --gorp-clay: #8b6f4e;
+      --gorp-truffle: #5c4a3a;
+
+      /* --- Light Tones --- */
+      --gorp-parchment: #f0ebe0;
+      --gorp-trail-white: #f7f5f0;
+
+      /* --- Greens --- */
+      --gorp-olive: #5c6b47;
+      --gorp-forest: #3d4f2f;
+
+      /* --- Signal Accents --- */
+      --gorp-orange: #e8651a;
+      --gorp-red: #c43e2b;
+      --gorp-yellow: #e3b830;
+      --gorp-sky: #5b8ba0;
+
+      /* --- Functional Mappings --- */
+      --gorp-bg-primary: var(--gorp-parchment);
+      --gorp-bg-secondary: var(--gorp-trail-white);
+      --gorp-bg-dark: var(--gorp-charcoal);
+      --gorp-bg-dark-secondary: var(--gorp-slate);
+      --gorp-text-primary: var(--gorp-charcoal);
+      --gorp-text-secondary: var(--gorp-granite);
+      --gorp-text-on-dark: var(--gorp-trail-white);
+      --gorp-accent: var(--gorp-orange);
+      --gorp-accent-strong: var(--gorp-red);
+      --gorp-border: rgba(107, 114, 128, 0.2);
+      --gorp-border-strong: rgba(44, 44, 44, 0.15);
+
+      /* --- Textures --- */
+      --gorp-topo-opacity: 0.04;
+      --gorp-ripstop-size: 8px;
+
+      /* --- Shadows --- */
+      --gorp-shadow-sm: 0 1px 3px rgba(44, 44, 44, 0.08);
+      --gorp-shadow-md: 0 4px 12px rgba(44, 44, 44, 0.10);
+      --gorp-shadow-lg: 0 8px 24px rgba(44, 44, 44, 0.14);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Source Sans 3', 'Barlow', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      letter-spacing: 0.01em;
+      color: var(--gorp-text-primary);
+      background-color: var(--gorp-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Barlow Condensed', 'Oswald', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gorp-charcoal);
+      line-height: 1.15;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--gorp-charcoal);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      border-bottom: 3px solid var(--gorp-orange);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .nav-logo {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gorp-trail-white);
+      transition: color 0.2s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--gorp-orange);
+    }
+
+    .nav-coord {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--gorp-granite);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gorp-khaki);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--gorp-orange);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--gorp-orange);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      padding: 7rem 2rem 5rem;
+      background: var(--gorp-charcoal);
+      overflow: hidden;
+      text-align: left;
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+    }
+
+    /* Topo-line overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 200 Q100 150 200 180 Q300 210 380 160' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 240 Q80 200 180 220 Q280 240 380 200' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 140 Q100 100 200 120 Q300 140 380 100' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 300 Q100 260 200 280 Q300 300 380 270' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 100 Q140 60 240 80 Q340 100 380 70' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 400px 400px;
+      pointer-events: none;
+    }
+
+    /* Gradient fade for depth */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to top, var(--gorp-charcoal), transparent);
+      pointer-events: none;
+    }
+
+    /* Ripstop grid texture overlay */
+    .hero-ripstop {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(0deg, rgba(247, 245, 240, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247, 245, 240, 0.02) 1px, transparent 1px);
+      background-size: var(--gorp-ripstop-size) var(--gorp-ripstop-size);
+      pointer-events: none;
+    }
+
+    /* Decorative mountain SVG silhouette */
+    .hero-mountains {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 0;
+      opacity: 0.08;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 800px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .hero-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gorp-orange);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.0;
+      color: var(--gorp-trail-white);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gorp-sandstone);
+      margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      color: var(--gorp-khaki);
+      max-width: 560px;
+      margin-bottom: 2rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-elev {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 1;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--gorp-granite);
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* ============================================
+       TRAIL STRIPE BAND
+       ============================================ */
+    .trail-band {
+      display: flex;
+      height: 4px;
+      width: 100%;
+    }
+
+    .trail-band--thick {
+      height: 8px;
+    }
+
+    .trail-band span { flex: 1; }
+    .trail-band span:nth-child(1) { background: var(--gorp-olive); }
+    .trail-band span:nth-child(2) { background: var(--gorp-sandstone); }
+    .trail-band span:nth-child(3) { background: var(--gorp-orange); }
+    .trail-band span:nth-child(4) { background: var(--gorp-clay); }
+    .trail-band span:nth-child(5) { background: var(--gorp-forest); }
+    .trail-band span:nth-child(6) { background: var(--gorp-slate); }
+    .trail-band span:nth-child(7) { background: var(--gorp-truffle); }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.7rem 1.8rem;
+      border-radius: 3px;
+      border: none;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: var(--gorp-shadow-sm);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--gorp-charcoal);
+      color: var(--gorp-trail-white);
+    }
+
+    .btn-primary:hover {
+      background: var(--gorp-slate);
+      box-shadow: var(--gorp-shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .btn-signal {
+      background: var(--gorp-orange);
+      color: #ffffff;
+    }
+
+    .btn-signal:hover {
+      background: #d05a16;
+      box-shadow: 0 4px 16px rgba(232, 101, 26, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--gorp-charcoal);
+      color: var(--gorp-charcoal);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--gorp-charcoal);
+      color: var(--gorp-trail-white);
+    }
+
+    .btn-outline--light {
+      border-color: var(--gorp-khaki);
+      color: var(--gorp-khaki);
+    }
+
+    .btn-outline--light:hover {
+      background: var(--gorp-khaki);
+      color: var(--gorp-charcoal);
+    }
+
+    .btn-olive {
+      background: var(--gorp-olive);
+      color: var(--gorp-trail-white);
+    }
+
+    .btn-olive:hover {
+      background: var(--gorp-forest);
+      box-shadow: var(--gorp-shadow-md);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--parchment {
+      background: var(--gorp-parchment);
+    }
+
+    .section--trail-white {
+      background: var(--gorp-trail-white);
+    }
+
+    .section--charcoal {
+      background: var(--gorp-charcoal);
+      color: var(--gorp-trail-white);
+    }
+
+    .section--charcoal .section-label { color: var(--gorp-orange); }
+    .section--charcoal .section-title { color: var(--gorp-trail-white); }
+    .section--charcoal .section-subtitle { color: var(--gorp-khaki); }
+
+    .section--khaki {
+      background: var(--gorp-khaki);
+    }
+
+    /* Topo background texture for sections */
+    .topo-bg {
+      overflow: hidden;
+    }
+
+    .topo-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: var(--gorp-topo-opacity);
+      background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 200 Q100 150 200 180 Q300 210 380 160' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3Cpath d='M20 220 Q120 170 220 200 Q320 230 380 180' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3Cpath d='M20 240 Q80 200 180 220 Q280 240 380 200' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3Cpath d='M20 140 Q100 100 200 120 Q300 140 380 100' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3Cpath d='M20 100 Q140 60 240 80 Q340 100 380 70' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3Cpath d='M20 300 Q100 260 200 280 Q300 300 380 270' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3Cpath d='M20 340 Q120 300 220 320 Q320 340 380 310' fill='none' stroke='%234A4E54' stroke-width='0.8'/%3E%3C/svg%3E");
+      background-size: 400px 400px;
+      pointer-events: none;
+    }
+
+    /* Ripstop texture for sections */
+    .ripstop-bg {
+      background-image:
+        linear-gradient(0deg, rgba(74, 78, 84, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74, 78, 84, 0.03) 1px, transparent 1px);
+      background-size: var(--gorp-ripstop-size) var(--gorp-ripstop-size);
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gorp-orange);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-align: center;
+      color: var(--gorp-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+      text-align: center;
+      color: var(--gorp-granite);
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    /* ============================================
+       TRAIL DIVIDER
+       ============================================ */
+    .trail-divider {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 24px 0;
+    }
+
+    .trail-divider::before,
+    .trail-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gorp-border-strong);
+    }
+
+    .trail-divider__marker {
+      width: 8px;
+      height: 8px;
+      background: var(--gorp-olive);
+      transform: rotate(45deg);
+      flex-shrink: 0;
+    }
+
+    .trail-divider--signal .trail-divider__marker {
+      background: var(--gorp-orange);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 28px;
+    }
+
+    .typo-sample-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gorp-orange);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gorp-border);
+    }
+
+    .typo-display {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gorp-charcoal);
+      line-height: 1.05;
+      margin-bottom: 4px;
+    }
+
+    .typo-heading {
+      font-family: 'Oswald', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      color: var(--gorp-charcoal);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .typo-body {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gorp-charcoal);
+      margin-bottom: 4px;
+    }
+
+    .typo-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gorp-olive);
+      margin-bottom: 4px;
+    }
+
+    .typo-mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gorp-granite);
+    }
+
+    .typo-signal {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gorp-orange);
+    }
+
+    .typo-right {
+      background: var(--gorp-trail-white);
+      border-radius: 4px;
+      padding: 32px;
+      border: 1px solid var(--gorp-border);
+    }
+
+    .typo-right h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--gorp-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--gorp-granite);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--gorp-trail-white);
+      border: 1px solid var(--gorp-border);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: var(--gorp-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--gorp-shadow-md);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gorp-charcoal);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--gorp-granite);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--gorp-trail-white);
+      border: 1px solid var(--gorp-border);
+      border-radius: 4px;
+      padding: 1.75rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--gorp-shadow-sm);
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
+    }
+
+    /* Top-edge accent stripe */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gorp-olive);
+    }
+
+    .card:hover {
+      box-shadow: var(--gorp-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card--signal::before {
+      background: var(--gorp-orange);
+    }
+
+    .card--sky::before {
+      background: var(--gorp-sky);
+    }
+
+    .card--forest::before {
+      background: var(--gorp-forest);
+    }
+
+    .card--clay::before {
+      background: var(--gorp-clay);
+    }
+
+    .card--yellow::before {
+      background: var(--gorp-yellow);
+    }
+
+    .card__badge {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gorp-trail-white);
+      background: var(--gorp-slate);
+      padding: 0.2em 0.6em;
+      border-radius: 2px;
+    }
+
+    .card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+      background: var(--gorp-parchment);
+      border: 1px solid var(--gorp-border);
+    }
+
+    .card h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gorp-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--gorp-granite);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 0.2em 0.65em;
+      border-radius: 2px;
+      border: 1.5px solid var(--gorp-charcoal);
+      color: var(--gorp-charcoal);
+      background: var(--gorp-parchment);
+      margin-top: 12px;
+      margin-right: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      background: var(--gorp-charcoal);
+      color: var(--gorp-trail-white);
+    }
+
+    .tag--olive {
+      background: var(--gorp-olive);
+      border-color: var(--gorp-olive);
+      color: var(--gorp-trail-white);
+    }
+
+    .tag--olive:hover {
+      background: var(--gorp-forest);
+      border-color: var(--gorp-forest);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid var(--gorp-border);
+      background: var(--gorp-trail-white);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Topographic Lines */
+    .effect-topo {
+      background: var(--gorp-parchment);
+    }
+
+    .effect-topo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 200 Q100 150 200 180 Q300 210 380 160' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 220 Q120 170 220 200 Q320 230 380 180' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 240 Q80 200 180 220 Q280 240 380 200' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 140 Q100 100 200 120 Q300 140 380 100' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 100 Q140 60 240 80 Q340 100 380 70' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 300 Q100 260 200 280 Q300 300 380 270' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 340 Q120 300 220 320 Q320 340 380 310' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3Cpath d='M20 60 Q160 20 260 50 Q360 80 380 40' fill='none' stroke='%234A4E54' stroke-width='1.2'/%3E%3C/svg%3E");
+      background-size: 400px 400px;
+      animation: topoScroll 40s linear infinite;
+    }
+
+    @keyframes topoScroll {
+      from { background-position: 0 0; }
+      to { background-position: 400px 400px; }
+    }
+
+    .effect-topo::after {
+      content: 'TOPO MAP';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gorp-charcoal);
+      z-index: 1;
+    }
+
+    /* Effect 2: Ripstop Nylon */
+    .effect-ripstop {
+      background: var(--gorp-olive);
+    }
+
+    .effect-ripstop::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(0deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 10px 10px;
+    }
+
+    .effect-ripstop::after {
+      content: 'RIPSTOP';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gorp-trail-white);
+      z-index: 1;
+    }
+
+    /* Effect 3: Elevation Gradient */
+    .effect-elevation {
+      background: linear-gradient(
+        180deg,
+        var(--gorp-forest) 0%,
+        var(--gorp-olive) 30%,
+        var(--gorp-sandstone) 60%,
+        var(--gorp-clay) 80%,
+        var(--gorp-truffle) 100%
+      );
+    }
+
+    .effect-elevation::after {
+      content: 'ELEVATION';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gorp-trail-white);
+      text-shadow: 0 2px 8px rgba(44, 44, 44, 0.4);
+      z-index: 1;
+    }
+
+    /* Effect 4: Signal Blaze */
+    .effect-blaze {
+      background: var(--gorp-charcoal);
+      overflow: hidden;
+    }
+
+    .effect-blaze::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, var(--gorp-orange) 0%, rgba(232, 101, 26, 0.4) 40%, transparent 70%);
+      border-radius: 50%;
+      animation: blazePulse 3s ease-in-out infinite;
+    }
+
+    @keyframes blazePulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+      50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+    }
+
+    .effect-blaze::after {
+      content: 'SIGNAL';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gorp-trail-white);
+      z-index: 1;
+    }
+
+    /* Effect 5: Waxed Canvas */
+    .effect-canvas {
+      background-color: var(--gorp-clay);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.02) 2px,
+          rgba(255, 255, 255, 0.02) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+    }
+
+    .effect-canvas::after {
+      content: 'WAXED CANVAS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gorp-trail-white);
+      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 6: Grid Overlay */
+    .effect-grid {
+      background: var(--gorp-slate);
+      overflow: hidden;
+    }
+
+    .effect-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(0deg, rgba(232, 101, 26, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232, 101, 26, 0.15) 1px, transparent 1px);
+      background-size: 40px 40px;
+      animation: gridDrift 20s linear infinite;
+    }
+
+    @keyframes gridDrift {
+      from { background-position: 0 0; }
+      to { background-position: 40px 40px; }
+    }
+
+    .effect-grid::after {
+      content: 'TECH GRID';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gorp-orange);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 14px 16px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gorp-charcoal);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--gorp-granite);
+    }
+
+    /* ============================================
+       GEAR BANNER (Motif Section)
+       ============================================ */
+    .gear-banner {
+      background: var(--gorp-charcoal);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gear-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 200 Q100 150 200 180 Q300 210 380 160' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 240 Q80 200 180 220 Q280 240 380 200' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 140 Q100 100 200 120 Q300 140 380 100' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 300 Q100 260 200 280 Q300 300 380 270' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 400px 400px;
+      pointer-events: none;
+    }
+
+    .gear-banner__content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .gear-banner__icons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 24px;
+      opacity: 0.3;
+    }
+
+    .gear-banner__icons span {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--gorp-khaki);
+      padding: 0.4em 0.8em;
+      border: 1px solid var(--gorp-granite);
+      border-radius: 2px;
+    }
+
+    .gear-banner h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.8rem, 4.5vw, 3rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gorp-trail-white);
+      margin-bottom: 12px;
+    }
+
+    .gear-banner p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
+      color: var(--gorp-khaki);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      padding: 48px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--gorp-trail-white);
+      border-radius: 4px;
+      border: 1px solid var(--gorp-border);
+      border-left: 4px solid var(--gorp-olive);
+      position: relative;
+      box-shadow: var(--gorp-shadow-md);
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, transparent 50%, rgba(92, 107, 71, 0.06) 50%);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--gorp-charcoal);
+      max-width: 580px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gorp-granite);
+      font-style: normal;
+      display: block;
+      text-align: right;
+    }
+
+    .quote-block .quote-elev {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--gorp-granite);
+      opacity: 0.5;
+      text-align: right;
+      margin-top: 8px;
+    }
+
+    /* ============================================
+       FEATURE LIST (Design Principles)
+       ============================================ */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      background: var(--gorp-trail-white);
+      border-radius: 4px;
+      padding: 24px 28px;
+      border: 1px solid var(--gorp-border);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateX(4px);
+      box-shadow: var(--gorp-shadow-md);
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 3px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: var(--gorp-charcoal);
+      color: var(--gorp-orange);
+    }
+
+    .feature-text h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gorp-charcoal);
+      margin-bottom: 4px;
+    }
+
+    .feature-text p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--gorp-granite);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--gorp-charcoal);
+      border-radius: 4px;
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--gorp-shadow-lg);
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg width='400' height='400' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 200 Q100 150 200 180 Q300 210 380 160' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 240 Q80 200 180 220 Q280 240 380 200' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3Cpath d='M20 140 Q100 100 200 120 Q300 140 380 100' fill='none' stroke='%23F0EBE0' stroke-width='1'/%3E%3C/svg%3E");
+      background-size: 400px 400px;
+      pointer-events: none;
+    }
+
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--gorp-orange);
+    }
+
+    .cta-container h2 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--gorp-trail-white);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container .cta-tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gorp-orange);
+      display: block;
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gorp-khaki);
+      max-width: 480px;
+      margin: 0 auto 28px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container .cta-buttons {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--gorp-charcoal);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--gorp-trail-white);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(0deg, rgba(247, 245, 240, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(247, 245, 240, 0.015) 1px, transparent 1px);
+      background-size: var(--gorp-ripstop-size) var(--gorp-ripstop-size);
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gorp-trail-white);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.9rem;
+      color: rgba(247, 245, 240, 0.5);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(247, 245, 240, 0.4);
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gorp-orange);
+    }
+
+    .footer-trail-marks {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .footer-trail-marks span {
+      width: 8px;
+      height: 8px;
+      background: var(--gorp-olive);
+      transform: rotate(45deg);
+      opacity: 0.3;
+    }
+
+    .footer-copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: rgba(247, 245, 240, 0.2);
+    }
+
+    .footer-coord {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.6rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: rgba(247, 245, 240, 0.15);
+      margin-top: 8px;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 1rem;
+        flex-direction: column;
+        height: auto;
+        padding: 10px 16px;
+        gap: 6px;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .nav-coord {
+        display: none;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 4rem;
+        min-height: 75vh;
+      }
+
+      .hero-elev {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-item {
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+      }
+
+      .quote-block {
+        padding: 32px 20px;
+      }
+
+      .cta-container {
+        padding: 40px 24px;
+        margin: 0 8px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.75rem;
+      }
+
+      .gear-banner__icons {
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 48px;
+      }
+
+      .color-info {
+        padding: 6px 8px;
+      }
+
+      .color-name {
+        font-size: 0.72rem;
+      }
+
+      .color-hex {
+        font-size: 0.58rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-topo::before,
+      .effect-blaze::before,
+      .effect-grid::before {
+        animation: none;
+      }
+
+      .card, .feature-item, .btn, .color-chip, .tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <div class="nav-brand">
+      <a href="#" class="nav-logo">Gorpcore</a>
+      <span class="nav-coord">47.6062&deg;N 122.3321&deg;W</span>
+    </div>
+    <div class="nav-links">
+      <a href="#hero" class="active">Base Camp</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Gear</a>
+      <a href="#effects">Terrain</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-ripstop"></div>
+
+    <!-- Decorative mountain silhouette -->
+    <svg class="hero-mountains" viewBox="0 0 1200 200" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 200 L0 140 L80 90 L150 120 L220 60 L300 100 L380 40 L450 80 L520 30 L600 70 L680 20 L750 55 L830 35 L900 75 L970 45 L1050 85 L1120 55 L1200 100 L1200 200 Z" fill="#3d4f2f"/>
+      <path d="M0 200 L0 160 L100 120 L200 150 L300 110 L400 140 L500 100 L600 130 L700 90 L800 120 L900 95 L1000 130 L1100 110 L1200 140 L1200 200 Z" fill="#5c6b47"/>
+    </svg>
+
+    <div class="hero-content">
+      <span class="hero-tag">// Design Aesthetic Reference</span>
+      <h1>Gorpcore</h1>
+      <p class="hero-subtitle">Trail-Tested Design for the Urban Wilderness</p>
+      <p class="hero-desc">
+        An outdoor-utility aesthetic that merges the technical functionality of hiking gear with the confident casualness of modern streetwear. Where performance meets parchment, and every pixel serves a purpose.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-signal">Explore Gear</a>
+        <a href="#palette" class="btn btn-outline--light">View Palette</a>
+      </div>
+    </div>
+
+    <div class="hero-elev">
+      ELEV 4,392 FT<br>
+      TEMP 48&deg;F<br>
+      WIND NW 12 MPH
+    </div>
+  </header>
+
+  <!-- ===== TRAIL BAND ===== -->
+  <div class="trail-band trail-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--parchment topo-bg" id="typography">
+    <div class="container">
+      <p class="section-label">// Typography</p>
+      <h2 class="section-title">Condensed, Utilitarian &amp; Trail-Tested</h2>
+      <p class="section-subtitle">Bold sans-serifs built for legibility at any elevation</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Barlow Condensed 800</p>
+            <p class="typo-display">Summit Ready</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Oswald 600</p>
+            <p class="typo-heading">Trail-Grade Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Source Sans 3 400</p>
+            <p class="typo-body">Clean humanist sans-serif for comfortable long-form reading. Gorpcore typography prioritizes legibility in all conditions, as if designed for a rain-soaked phone screen on the trail.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Archivo 600</p>
+            <p class="typo-label">Subheadings &amp; Button Labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Data / IBM Plex Mono 500</p>
+            <p class="typo-mono">47.6062&deg;N // ELEV 4,392 FT // 1,339M</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Signal / Barlow Condensed 800</p>
+            <p class="typo-signal">High-Visibility Accent</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800; font-size: 2rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gorp-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.25rem</span>
+              <span style="font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--gorp-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Barlow Condensed', sans-serif; font-weight: 700; font-size: 1.15rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--gorp-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Source Sans 3', sans-serif; font-weight: 400; font-size: 1rem; color: var(--gorp-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gorp-olive);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-weight: 500; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--gorp-granite);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--gorp-border);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.88rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Barlow Condensed', sans-serif; color: var(--gorp-orange); text-transform: uppercase; letter-spacing: 0.04em;">Barlow Condensed 700</strong> + <strong>Source Sans 3 400</strong><br>
+              <span style="color: var(--gorp-granite); font-size: 0.82rem;">Technical trail guide: authoritative yet readable</span>
+            </p>
+            <p style="font-size: 0.88rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Oswald', sans-serif; color: var(--gorp-orange); text-transform: uppercase; letter-spacing: 0.03em;">Oswald 600</strong> + <strong>Barlow 400</strong><br>
+              <span style="color: var(--gorp-granite); font-size: 0.82rem;">Rugged outfitter catalog: bold with clean utility</span>
+            </p>
+            <p style="font-size: 0.88rem; line-height: 1.7;">
+              <strong style="font-family: 'Archivo', sans-serif; color: var(--gorp-orange); text-transform: uppercase; letter-spacing: 0.04em;">Archivo 700</strong> + <strong>Source Sans 3 400</strong><br>
+              <span style="color: var(--gorp-granite); font-size: 0.82rem;">Modern gear review: precise and trustworthy</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAIL DIVIDER ===== -->
+  <div class="section--parchment" style="padding: 0;">
+    <div class="trail-divider trail-divider--signal">
+      <span class="trail-divider__marker"></span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--trail-white ripstop-bg" id="palette">
+    <div class="container">
+      <p class="section-label">// Color Palette</p>
+      <h2 class="section-title">Earth Tones &amp; Signal Accents</h2>
+      <p class="section-subtitle">Muted natural foundations punctuated by high-visibility functional color</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2c2c2c;"></div>
+          <div class="color-info">
+            <div class="color-name">Trail Charcoal</div>
+            <div class="color-hex">#2C2C2C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a4e54;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Rock</div>
+            <div class="color-hex">#4A4E54</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6b7280;"></div>
+          <div class="color-info">
+            <div class="color-name">Granite Gray</div>
+            <div class="color-hex">#6B7280</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c2a878;"></div>
+          <div class="color-info">
+            <div class="color-name">Sandstone</div>
+            <div class="color-hex">#C2A878</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #bfb49a;"></div>
+          <div class="color-info">
+            <div class="color-name">Khaki Dust</div>
+            <div class="color-hex">#BFB49A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f0ebe0;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#F0EBE0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f7f5f0;"></div>
+          <div class="color-info">
+            <div class="color-name">Trail White</div>
+            <div class="color-hex">#F7F5F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5c6b47;"></div>
+          <div class="color-info">
+            <div class="color-name">Olive Drab</div>
+            <div class="color-hex">#5C6B47</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3d4f2f;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Canopy</div>
+            <div class="color-hex">#3D4F2F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b6f4e;"></div>
+          <div class="color-info">
+            <div class="color-name">Clay Brown</div>
+            <div class="color-hex">#8B6F4E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5c4a3a;"></div>
+          <div class="color-info">
+            <div class="color-name">Truffle Earth</div>
+            <div class="color-hex">#5C4A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e8651a;"></div>
+          <div class="color-info">
+            <div class="color-name">Signal Orange</div>
+            <div class="color-hex">#E8651A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c43e2b;"></div>
+          <div class="color-info">
+            <div class="color-name">Summit Red</div>
+            <div class="color-hex">#C43E2B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e3b830;"></div>
+          <div class="color-info">
+            <div class="color-name">Safety Yellow</div>
+            <div class="color-hex">#E3B830</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5b8ba0;"></div>
+          <div class="color-info">
+            <div class="color-name">Alpine Sky</div>
+            <div class="color-hex">#5B8BA0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAIL BAND ===== -->
+  <div class="trail-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--parchment topo-bg" id="components">
+    <div class="container">
+      <p class="section-label">// Components</p>
+      <h2 class="section-title">Trail-Ready UI Gear</h2>
+      <p class="section-subtitle">Utilitarian cards with functional detail and restrained elevation</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card__badge">Texture</span>
+          <div class="card__icon">&#9968;</div>
+          <h3>Topographic Patterns</h3>
+          <p>Contour-line SVG patterns used as decorative backgrounds and section overlays, evoking trail maps and geological survey charts.</p>
+          <span class="tag">SVG</span>
+          <span class="tag tag--olive">Background</span>
+        </div>
+        <div class="card card--signal">
+          <span class="card__badge">Accent</span>
+          <div class="card__icon">&#9888;</div>
+          <h3>Signal Color System</h3>
+          <p>High-visibility blaze orange, safety yellow, and alpine red punctuate the neutral palette as functional highlights borrowed from trail markers.</p>
+          <span class="tag">CTA</span>
+          <span class="tag">Alert</span>
+        </div>
+        <div class="card card--sky">
+          <span class="card__badge">Layout</span>
+          <div class="card__icon">&#9638;</div>
+          <h3>Layered Card Depth</h3>
+          <p>UI cards with subtle elevation and top-edge accent stripes reference the layering system of outdoor apparel: base, mid, and shell layers.</p>
+          <span class="tag">Cards</span>
+          <span class="tag tag--olive">Elevation</span>
+        </div>
+        <div class="card card--forest">
+          <span class="card__badge">Material</span>
+          <div class="card__icon">&#9641;</div>
+          <h3>Ripstop Textures</h3>
+          <p>Subtle grid-pattern backgrounds that reference the cross-weave structure of technical ripstop nylon, adding tactile depth to flat surfaces.</p>
+          <span class="tag">CSS Grid</span>
+          <span class="tag">Texture</span>
+        </div>
+        <div class="card card--clay">
+          <span class="card__badge">Identity</span>
+          <div class="card__icon">&#11044;</div>
+          <h3>Badge &amp; Patch Labels</h3>
+          <p>Information presented in badge-like containers and woven-patch-style elements that reference outdoor brand labeling and summit patches.</p>
+          <span class="tag">Badge</span>
+          <span class="tag tag--olive">Label</span>
+        </div>
+        <div class="card card--yellow">
+          <span class="card__badge">Data</span>
+          <div class="card__icon">&#9096;</div>
+          <h3>Coordinate Overlays</h3>
+          <p>GPS coordinates, elevation markers, weather data, and measurement units used as decorative micro-content that reinforces the outdoor context.</p>
+          <span class="tag">Monospace</span>
+          <span class="tag">Detail</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEAR BANNER ===== -->
+  <div class="gear-banner">
+    <div class="gear-banner__content">
+      <div class="gear-banner__icons">
+        <span>Gore-Tex</span>
+        <span>Ripstop</span>
+        <span>DWR Coating</span>
+        <span>YKK Zippers</span>
+        <span>Cordura</span>
+      </div>
+      <h2>Function Dictates Form</h2>
+      <p>Every design element serves a visible purpose. Like a well-packed rucksack, nothing is wasted and everything has its place.</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section section--trail-white">
+    <div class="container">
+      <p class="section-label">// Design Principles</p>
+      <h2 class="section-title">The Gorpcore Philosophy</h2>
+      <p class="section-subtitle">Rugged simplicity, material honesty, and signal through restraint</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">01</div>
+          <div class="feature-text">
+            <h3>Rugged Simplicity</h3>
+            <p>Interfaces should feel durable and uncluttered, as if designed to withstand heavy use on the trail. Every element earns its place through clear function and purpose.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">02</div>
+          <div class="feature-text">
+            <h3>Layered Depth</h3>
+            <p>Compositions build depth through stacked elements, card elevation, and overlapping sections, mirroring the layering philosophy of outdoor apparel systems.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">03</div>
+          <div class="feature-text">
+            <h3>Signal Through Restraint</h3>
+            <p>Accent colors gain their power from scarcity. The muted earth-tone base makes each pop of orange or yellow feel intentional and urgent, like a trail blaze in a dense forest.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">04</div>
+          <div class="feature-text">
+            <h3>Material Honesty</h3>
+            <p>Textures and surfaces reference real-world materials truthfully. Nothing should feel artificially glossy or plasticky. Matte finishes match the tactile quality of technical fabrics.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAIL BAND ===== -->
+  <div class="trail-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--parchment topo-bg" id="effects">
+    <div class="container">
+      <p class="section-label">// Visual Effects</p>
+      <h2 class="section-title">CSS Terrain &amp; Textures</h2>
+      <p class="section-subtitle">All the trail-grade techniques, zero image assets required</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-topo"></div>
+          <div class="effect-caption">
+            <h4>Topographic Lines</h4>
+            <p>SVG contour-line patterns create the signature topo-map background texture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-ripstop"></div>
+          <div class="effect-caption">
+            <h4>Ripstop Nylon</h4>
+            <p>Fine grid lines simulate the cross-weave structure of technical ripstop fabric.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-elevation"></div>
+          <div class="effect-caption">
+            <h4>Elevation Gradient</h4>
+            <p>Multi-stop linear gradient maps terrain from forest floor to alpine summit.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-blaze"></div>
+          <div class="effect-caption">
+            <h4>Signal Blaze</h4>
+            <p>Pulsing radial gradient emulates a trail marker beacon in the darkness.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-canvas"></div>
+          <div class="effect-caption">
+            <h4>Waxed Canvas</h4>
+            <p>Cross-hatched micro-lines over clay tones evoke treated outdoor fabric.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-grid"></div>
+          <div class="effect-caption">
+            <h4>Technical Grid</h4>
+            <p>Animated grid lines reference the precision engineering of outdoor equipment.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAIL BAND ===== -->
+  <div class="trail-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--trail-white ripstop-bg">
+    <div class="container">
+      <p class="section-label">// Interactive Elements</p>
+      <h2 class="section-title">Trail-Ready Buttons</h2>
+      <p class="section-subtitle">Utilitarian, tactile, and built for purpose</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Trail</a>
+        <a href="#" class="btn btn-signal">Signal Orange</a>
+        <a href="#" class="btn btn-olive">Olive Drab</a>
+        <a href="#" class="btn btn-outline">Outlined Ghost</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--parchment">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The best gear disappears into the experience. It doesn't ask for attention &mdash; it earns trust through quiet, relentless reliability. Good design works the same way.
+        </blockquote>
+        <cite>&mdash; The Gorpcore Design Ethos</cite>
+        <p class="quote-elev">47.6062&deg;N 122.3321&deg;W &bull; ELEV 4,392 FT</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--trail-white">
+    <div class="container">
+      <div class="cta-container">
+        <span class="cta-tag">// Ready for the trail</span>
+        <h2>Hit the Trailhead</h2>
+        <p>
+          The Gorpcore aesthetic grounds every layout in olive, sandstone, and charcoal, then lets signal orange cut through with intention. Function first, always.
+        </p>
+        <div class="cta-buttons">
+          <a href="#hero" class="btn btn-signal">Back to Base Camp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TRAIL BAND ===== -->
+  <div class="trail-band trail-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Gorpcore</h3>
+      <p>
+        A design aesthetic reference celebrating the outdoor-utility sensibility where performance gear meets parchment. Olive drab, signal orange, and trail-tested typography &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Base Camp</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Gear</a>
+        <a href="#effects">Terrain</a>
+      </div>
+      <div class="footer-trail-marks">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Gorpcore &bull; Trail-tested since day one</p>
+      <p class="footer-coord">47.6062&deg;N 122.3321&deg;W &bull; ELEV 4,392 FT &bull; UTC-8</p>
+    </div>
+  </footer>
+
+</body>
+</html>

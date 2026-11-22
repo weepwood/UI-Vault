@@ -1,0 +1,2154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vintage Botanical -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Spectral:ital,wght@0,300;0,400;1,400&family=Tangerine:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Paper Tones --- */
+      --vb-cream: #F5EFE0;
+      --vb-vellum: #FAF6ED;
+      --vb-parchment: #EDE4D0;
+      --vb-foxing: #D4C4A8;
+
+      /* --- Botanical Greens --- */
+      --vb-specimen-green: #6B7F5E;
+      --vb-sage: #9EAD8C;
+      --vb-deep-moss: #3E5340;
+
+      /* --- Floral Accents --- */
+      --vb-dusty-rose: #C4979A;
+      --vb-pressed-petal: #DEB5A0;
+      --vb-lavender: #A898B0;
+
+      /* --- Warm Tones --- */
+      --vb-ochre: #C9A84C;
+      --vb-copper: #A67B5B;
+      --vb-plate-border: #8C7B68;
+
+      /* --- Ink Tones --- */
+      --vb-sepia: #5C4833;
+      --vb-faded-indigo: #6B7B8D;
+
+      /* --- Functional Aliases --- */
+      --vb-bg-primary: var(--vb-cream);
+      --vb-bg-surface: var(--vb-vellum);
+      --vb-bg-alt: var(--vb-parchment);
+      --vb-text-primary: var(--vb-sepia);
+      --vb-text-secondary: var(--vb-plate-border);
+      --vb-accent: var(--vb-specimen-green);
+      --vb-border: var(--vb-copper);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Crimson Text', 'Georgia', serif;
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--vb-sepia);
+      background-color: var(--vb-cream);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(92, 72, 51, 0.015) 3px,
+          rgba(92, 72, 51, 0.015) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 4px,
+          rgba(92, 72, 51, 0.01) 4px,
+          rgba(92, 72, 51, 0.01) 5px
+        );
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Libre Baskerville', 'Baskerville', serif;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      line-height: 1.3;
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--vb-vellum);
+      border-bottom: 1px solid var(--vb-foxing);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 32px;
+      right: 32px;
+      height: 1px;
+      background: var(--vb-foxing);
+      opacity: 0.4;
+    }
+
+    .nav-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 18px 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-brand span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      text-transform: none;
+      letter-spacing: 0.02em;
+      color: var(--vb-specimen-green);
+      margin-left: 6px;
+    }
+
+    .nav-brand:hover {
+      color: var(--vb-specimen-green);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Crimson Text', serif;
+      font-size: 1rem;
+      color: var(--vb-sepia);
+      padding: 18px 16px;
+      display: block;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 16px;
+      right: 16px;
+      height: 2px;
+      background: var(--vb-specimen-green);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--vb-specimen-green);
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 1.5px;
+      background: var(--vb-sepia);
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: linear-gradient(180deg, var(--vb-cream) 0%, var(--vb-parchment) 100%);
+      text-align: center;
+      padding: 100px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Aged vignette */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 50%,
+        rgba(92, 72, 51, 0.06) 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Foxing spots overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 12% 30%, rgba(212, 196, 168, 0.35) 0%, transparent 40%),
+        radial-gradient(ellipse at 85% 65%, rgba(212, 196, 168, 0.25) 0%, transparent 35%),
+        radial-gradient(ellipse at 50% 90%, rgba(212, 196, 168, 0.2) 0%, transparent 30%);
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 8px;
+    }
+
+    .hero .hero-latin {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--vb-specimen-green);
+      margin-bottom: 28px;
+    }
+
+    .hero .hero-rule {
+      width: 120px;
+      height: 1px;
+      background: var(--vb-copper);
+      margin: 0 auto 28px;
+      position: relative;
+    }
+
+    .hero .hero-rule::before {
+      content: '\2766';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1rem;
+      color: var(--vb-copper);
+      background: var(--vb-parchment);
+      padding: 0 10px;
+    }
+
+    .hero p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.15rem;
+      color: var(--vb-sepia);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.85;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* CSS-only botanical corner ornaments for hero */
+    .hero-ornament {
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      opacity: 0.15;
+      z-index: 1;
+    }
+
+    .hero-ornament--tl {
+      top: 24px;
+      left: 24px;
+      border-top: 2px solid var(--vb-specimen-green);
+      border-left: 2px solid var(--vb-specimen-green);
+    }
+
+    .hero-ornament--tl::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      width: 40px;
+      height: 40px;
+      border-top: 1px solid var(--vb-copper);
+      border-left: 1px solid var(--vb-copper);
+    }
+
+    .hero-ornament--tr {
+      top: 24px;
+      right: 24px;
+      border-top: 2px solid var(--vb-specimen-green);
+      border-right: 2px solid var(--vb-specimen-green);
+    }
+
+    .hero-ornament--tr::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+      border-top: 1px solid var(--vb-copper);
+      border-right: 1px solid var(--vb-copper);
+    }
+
+    .hero-ornament--bl {
+      bottom: 24px;
+      left: 24px;
+      border-bottom: 2px solid var(--vb-specimen-green);
+      border-left: 2px solid var(--vb-specimen-green);
+    }
+
+    .hero-ornament--bl::before {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      left: 8px;
+      width: 40px;
+      height: 40px;
+      border-bottom: 1px solid var(--vb-copper);
+      border-left: 1px solid var(--vb-copper);
+    }
+
+    .hero-ornament--br {
+      bottom: 24px;
+      right: 24px;
+      border-bottom: 2px solid var(--vb-specimen-green);
+      border-right: 2px solid var(--vb-specimen-green);
+    }
+
+    .hero-ornament--br::before {
+      content: '';
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 40px;
+      height: 40px;
+      border-bottom: 1px solid var(--vb-copper);
+      border-right: 1px solid var(--vb-copper);
+    }
+
+    /* ============================================
+       SECTION CONTAINERS
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--cream {
+      background: var(--vb-cream);
+    }
+
+    .section--vellum {
+      background: var(--vb-vellum);
+    }
+
+    .section--parchment {
+      background: var(--vb-parchment);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .container--wide {
+      max-width: 1100px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.5rem, 3vw, 1.9rem);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+
+    .section-header .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--vb-specimen-green);
+    }
+
+    .section-header .section-number {
+      font-family: 'Spectral', serif;
+      font-size: 0.7rem;
+      color: var(--vb-plate-border);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* ============================================
+       VINE DIVIDER
+       ============================================ */
+    .vine-divider {
+      text-align: center;
+      margin: 0;
+      padding: 32px 0;
+      position: relative;
+      height: auto;
+      background: var(--vb-cream);
+    }
+
+    .vine-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 24px;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 24'%3E%3Cpath d='M20,12 C40,4 60,20 80,12 S120,4 140,12 S160,20 180,12' fill='none' stroke='%236B7F5E' stroke-width='1' opacity='0.5'/%3E%3Cellipse cx='60' cy='8' rx='4' ry='6' fill='%239EAD8C' opacity='0.3' transform='rotate(-20 60 8)'/%3E%3Cellipse cx='100' cy='12' rx='3' ry='5' fill='%239EAD8C' opacity='0.25' transform='rotate(15 100 12)'/%3E%3Cellipse cx='140' cy='8' rx='4' ry='6' fill='%239EAD8C' opacity='0.3' transform='rotate(-10 140 8)'/%3E%3C/svg%3E");
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 24px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Spectral', serif;
+      font-size: 0.72rem;
+      color: var(--vb-faded-indigo);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .typo-sample--display {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .typo-sample--heading {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      letter-spacing: 0.04em;
+      line-height: 1.3;
+    }
+
+    .typo-sample--subheading {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--vb-specimen-green);
+      line-height: 1.4;
+    }
+
+    .typo-sample--body {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.1rem;
+      color: var(--vb-sepia);
+      line-height: 1.85;
+    }
+
+    .typo-sample--caption {
+      font-family: 'Spectral', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--vb-faded-indigo);
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+    }
+
+    .typo-sample--script {
+      font-family: 'Tangerine', cursive;
+      font-size: 2.6rem;
+      color: var(--vb-copper);
+      line-height: 1.2;
+    }
+
+    .typo-scale {
+      background: var(--vb-vellum);
+      border: 1px solid var(--vb-foxing);
+      padding: 28px;
+      position: relative;
+    }
+
+    .typo-scale::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      right: 6px;
+      bottom: 6px;
+      border: 1px solid var(--vb-copper);
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .typo-scale-title {
+      font-family: 'Spectral', serif;
+      font-size: 0.7rem;
+      color: var(--vb-plate-border);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(212, 196, 168, 0.3);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-item .size-label {
+      font-family: 'Spectral', serif;
+      font-size: 0.65rem;
+      color: var(--vb-faded-indigo);
+      min-width: 48px;
+      text-align: right;
+      letter-spacing: 0.04em;
+    }
+
+    .typo-scale-item .size-preview {
+      font-family: 'Libre Baskerville', serif;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      text-align: center;
+    }
+
+    .color-swatch {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--vb-foxing);
+      margin-bottom: 10px;
+      position: relative;
+    }
+
+    .color-swatch::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      right: 4px;
+      bottom: 4px;
+      border: 1px solid rgba(255,255,255,0.2);
+      pointer-events: none;
+    }
+
+    .color-name {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Spectral', serif;
+      font-size: 0.72rem;
+      color: var(--vb-faded-indigo);
+      letter-spacing: 0.04em;
+    }
+
+    .color-role {
+      font-family: 'Spectral', serif;
+      font-style: italic;
+      font-size: 0.68rem;
+      color: var(--vb-plate-border);
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--vb-vellum);
+      border: 1px solid var(--vb-foxing);
+      padding: 32px;
+      position: relative;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      right: 6px;
+      bottom: 6px;
+      border: 1px solid var(--vb-copper);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .card:hover {
+      box-shadow: 0 4px 16px rgba(92, 72, 51, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .card-number {
+      font-family: 'Spectral', serif;
+      font-size: 0.68rem;
+      color: var(--vb-plate-border);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .card h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      margin-bottom: 4px;
+    }
+
+    .card .card-latin {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--vb-specimen-green);
+      margin-bottom: 14px;
+    }
+
+    .card p {
+      font-size: 0.98rem;
+      line-height: 1.75;
+      color: var(--vb-sepia);
+    }
+
+    /* CSS-only card botanical illustrations */
+    .card-botanical {
+      width: 100%;
+      height: 100px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(212, 196, 168, 0.4);
+    }
+
+    .card-botanical .stem {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1.5px;
+      height: 60px;
+      background: var(--vb-specimen-green);
+      opacity: 0.4;
+    }
+
+    .card-botanical .leaf {
+      position: absolute;
+      border-radius: 50% 0 50% 0;
+      border: 1px solid var(--vb-specimen-green);
+      opacity: 0.3;
+    }
+
+    .card-botanical .petal {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid var(--vb-dusty-rose);
+      opacity: 0.3;
+    }
+
+    .card-botanical .center {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--vb-ochre);
+      opacity: 0.25;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .banner {
+      background: var(--vb-deep-moss);
+      padding: 64px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .banner::before {
+      content: '';
+      position: absolute;
+      inset: 12px;
+      border: 1px solid rgba(158, 173, 140, 0.2);
+      pointer-events: none;
+    }
+
+    .banner::after {
+      content: '';
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(158, 173, 140, 0.1);
+      pointer-events: none;
+    }
+
+    .banner-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 700;
+      color: var(--vb-vellum);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 8px;
+    }
+
+    .banner .banner-script {
+      font-family: 'Tangerine', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--vb-sage);
+      margin-bottom: 16px;
+      line-height: 1.1;
+    }
+
+    .banner p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.05rem;
+      color: var(--vb-sage);
+      max-width: 520px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+
+    /* Decorative leaf shapes in banner corners */
+    .banner-leaf {
+      position: absolute;
+      opacity: 0.08;
+    }
+
+    .banner-leaf--1 {
+      top: 20px;
+      left: 20px;
+      width: 60px;
+      height: 100px;
+      border-radius: 50% 0 50% 0;
+      border: 2px solid var(--vb-sage);
+      transform: rotate(-30deg);
+    }
+
+    .banner-leaf--2 {
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 100px;
+      border-radius: 0 50% 0 50%;
+      border: 2px solid var(--vb-sage);
+      transform: rotate(-30deg);
+    }
+
+    .banner-leaf--3 {
+      top: 50%;
+      left: 60px;
+      transform: translateY(-50%) rotate(15deg);
+      width: 35px;
+      height: 60px;
+      border-radius: 50% 0 50% 0;
+      border: 1.5px solid var(--vb-sage);
+    }
+
+    .banner-leaf--4 {
+      top: 50%;
+      right: 60px;
+      transform: translateY(-50%) rotate(-15deg);
+      width: 35px;
+      height: 60px;
+      border-radius: 0 50% 0 50%;
+      border: 1.5px solid var(--vb-sage);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+    }
+
+    .principle {
+      padding: 28px;
+      border: 1px solid var(--vb-foxing);
+      background: var(--vb-vellum);
+      position: relative;
+    }
+
+    .principle::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 20%;
+      right: 20%;
+      height: 3px;
+      background: var(--vb-specimen-green);
+      opacity: 0.45;
+    }
+
+    .principle-number {
+      font-family: 'Spectral', serif;
+      font-size: 0.65rem;
+      color: var(--vb-plate-border);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .principle h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      margin-bottom: 4px;
+    }
+
+    .principle .principle-latin {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--vb-specimen-green);
+      margin-bottom: 12px;
+    }
+
+    .principle p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--vb-sepia);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-card {
+      background: var(--vb-vellum);
+      border: 1px solid var(--vb-foxing);
+      overflow: hidden;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .effect-card:hover {
+      box-shadow: 0 4px 16px rgba(92, 72, 51, 0.1);
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-label {
+      padding: 16px 20px;
+      border-top: 1px solid var(--vb-foxing);
+    }
+
+    .effect-label h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--vb-deep-moss);
+      margin-bottom: 2px;
+    }
+
+    .effect-label p {
+      font-family: 'Spectral', serif;
+      font-style: italic;
+      font-size: 0.8rem;
+      color: var(--vb-faded-indigo);
+      line-height: 1.5;
+    }
+
+    /* Effect 1: Aged Paper Foxing */
+    .effect-foxing {
+      background-color: var(--vb-cream);
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(212, 196, 168, 0.5) 0%, transparent 35%),
+        radial-gradient(ellipse at 70% 20%, rgba(212, 196, 168, 0.4) 0%, transparent 25%),
+        radial-gradient(ellipse at 45% 70%, rgba(212, 196, 168, 0.6) 0%, transparent 30%),
+        radial-gradient(ellipse at 80% 75%, rgba(212, 196, 168, 0.35) 0%, transparent 20%),
+        radial-gradient(ellipse at 30% 85%, rgba(212, 196, 168, 0.45) 0%, transparent 28%),
+        radial-gradient(ellipse at 55% 15%, rgba(212, 196, 168, 0.3) 0%, transparent 22%);
+    }
+
+    /* Effect 2: Watercolor Wash */
+    .effect-watercolor {
+      background: linear-gradient(135deg,
+        rgba(158, 173, 140, 0.15) 0%,
+        rgba(196, 151, 154, 0.2) 25%,
+        rgba(201, 168, 76, 0.12) 50%,
+        rgba(168, 152, 176, 0.18) 75%,
+        rgba(222, 181, 160, 0.15) 100%
+      );
+      position: relative;
+    }
+
+    .effect-watercolor::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(158, 173, 140, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(196, 151, 154, 0.2) 0%, transparent 45%);
+    }
+
+    .effect-watercolor::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(201, 168, 76, 0.15) 0%, transparent 40%),
+        radial-gradient(ellipse at 20% 80%, rgba(168, 152, 176, 0.12) 0%, transparent 35%);
+    }
+
+    /* Effect 3: Stipple Texture */
+    .effect-stipple {
+      background-color: var(--vb-parchment);
+      background-image:
+        radial-gradient(circle at 10% 15%, var(--vb-specimen-green) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 30% 45%, var(--vb-specimen-green) 0.4px, transparent 0.4px),
+        radial-gradient(circle at 50% 25%, var(--vb-specimen-green) 0.6px, transparent 0.6px),
+        radial-gradient(circle at 70% 60%, var(--vb-specimen-green) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 20% 75%, var(--vb-specimen-green) 0.4px, transparent 0.4px),
+        radial-gradient(circle at 85% 35%, var(--vb-specimen-green) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 40% 85%, var(--vb-specimen-green) 0.3px, transparent 0.3px),
+        radial-gradient(circle at 60% 10%, var(--vb-specimen-green) 0.4px, transparent 0.4px),
+        radial-gradient(circle at 90% 80%, var(--vb-specimen-green) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 15% 50%, var(--vb-specimen-green) 0.35px, transparent 0.35px);
+      background-size: 80px 80px;
+      position: relative;
+    }
+
+    .effect-stipple::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 25% 35%, var(--vb-sepia) 0.4px, transparent 0.4px),
+        radial-gradient(circle at 55% 55%, var(--vb-sepia) 0.3px, transparent 0.3px),
+        radial-gradient(circle at 75% 20%, var(--vb-sepia) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 45% 70%, var(--vb-sepia) 0.4px, transparent 0.4px),
+        radial-gradient(circle at 65% 40%, var(--vb-sepia) 0.35px, transparent 0.35px),
+        radial-gradient(circle at 35% 15%, var(--vb-sepia) 0.3px, transparent 0.3px),
+        radial-gradient(circle at 80% 65%, var(--vb-sepia) 0.4px, transparent 0.4px),
+        radial-gradient(circle at 10% 90%, var(--vb-sepia) 0.5px, transparent 0.5px);
+      background-size: 60px 60px;
+      opacity: 0.3;
+    }
+
+    /* Effect 4: Engraving Lines */
+    .effect-engraving {
+      background-color: var(--vb-vellum);
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 72, 51, 0.06) 2px,
+          rgba(92, 72, 51, 0.06) 3px
+        );
+      position: relative;
+    }
+
+    .effect-engraving::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 3px,
+          rgba(92, 72, 51, 0.04) 3px,
+          rgba(92, 72, 51, 0.04) 4px
+        );
+    }
+
+    .effect-engraving::after {
+      content: '';
+      position: absolute;
+      inset: 20%;
+      border: 2px solid var(--vb-plate-border);
+      opacity: 0.15;
+    }
+
+    /* Effect 5: Copper Rule Accent */
+    .effect-copper-rule {
+      background: var(--vb-cream);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .effect-copper-rule .rule-line {
+      width: 60%;
+      height: 1px;
+      background: var(--vb-copper);
+    }
+
+    .effect-copper-rule .rule-line--thin {
+      width: 40%;
+      height: 0.5px;
+      opacity: 0.5;
+    }
+
+    .effect-copper-rule .rule-ornament {
+      width: 20px;
+      height: 20px;
+      border: 1px solid var(--vb-copper);
+      transform: rotate(45deg);
+      position: relative;
+    }
+
+    .effect-copper-rule .rule-ornament::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      right: 3px;
+      bottom: 3px;
+      border: 0.5px solid var(--vb-copper);
+      opacity: 0.6;
+    }
+
+    /* Effect 6: Sepia Vignette */
+    .effect-vignette {
+      background: var(--vb-parchment);
+      position: relative;
+    }
+
+    .effect-vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(92, 72, 51, 0.12) 70%,
+        rgba(92, 72, 51, 0.25) 100%
+      );
+    }
+
+    .effect-vignette::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(92, 72, 51, 0.08) 0%, transparent 10%, transparent 90%, rgba(92, 72, 51, 0.08) 100%),
+        linear-gradient(to bottom, rgba(92, 72, 51, 0.06) 0%, transparent 15%, transparent 85%, rgba(92, 72, 51, 0.06) 100%);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 12px 32px;
+      font-family: 'Libre Baskerville', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      position: relative;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    /* Primary */
+    .btn--primary {
+      background: var(--vb-specimen-green);
+      color: var(--vb-vellum);
+    }
+
+    .btn--primary::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      right: 3px;
+      bottom: 3px;
+      border: 1px solid rgba(250, 246, 237, 0.3);
+      pointer-events: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .btn--primary:hover {
+      background: var(--vb-deep-moss);
+      box-shadow: 0 3px 10px rgba(62, 83, 64, 0.25);
+    }
+
+    .btn--primary:hover::before {
+      border-color: rgba(250, 246, 237, 0.5);
+    }
+
+    /* Outline */
+    .btn--outline {
+      background: transparent;
+      color: var(--vb-specimen-green);
+      border: 1px solid var(--vb-specimen-green);
+    }
+
+    .btn--outline:hover {
+      background: var(--vb-specimen-green);
+      color: var(--vb-vellum);
+    }
+
+    /* Copper */
+    .btn--copper {
+      background: var(--vb-copper);
+      color: var(--vb-vellum);
+    }
+
+    .btn--copper::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      right: 3px;
+      bottom: 3px;
+      border: 1px solid rgba(250, 246, 237, 0.25);
+      pointer-events: none;
+      transition: border-color 0.3s ease;
+    }
+
+    .btn--copper:hover {
+      background: var(--vb-plate-border);
+      box-shadow: 0 3px 10px rgba(140, 123, 104, 0.25);
+    }
+
+    /* Ghost */
+    .btn--ghost {
+      background: transparent;
+      color: var(--vb-sepia);
+      border: 1px solid var(--vb-foxing);
+    }
+
+    .btn--ghost:hover {
+      border-color: var(--vb-copper);
+      color: var(--vb-deep-moss);
+      background: rgba(237, 228, 208, 0.5);
+    }
+
+    .btn-showcase {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      text-align: center;
+      padding: 48px 32px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .quote-section blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 3vw, 1.6rem);
+      font-style: italic;
+      color: var(--vb-deep-moss);
+      line-height: 1.55;
+      margin-bottom: 16px;
+      position: relative;
+      padding: 0 24px;
+    }
+
+    .quote-section blockquote::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      color: var(--vb-sage);
+      position: absolute;
+      top: -16px;
+      left: -10px;
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .quote-section cite {
+      font-family: 'Spectral', serif;
+      font-size: 0.85rem;
+      color: var(--vb-plate-border);
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .quote-rule {
+      width: 60px;
+      height: 1px;
+      background: var(--vb-copper);
+      margin: 20px auto;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      background: var(--vb-parchment);
+      text-align: center;
+      padding: 80px 32px;
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      border: 1px solid var(--vb-copper);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta h2 {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .cta .cta-script {
+      font-family: 'Tangerine', cursive;
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--vb-copper);
+      margin-bottom: 20px;
+      line-height: 1.1;
+    }
+
+    .cta p {
+      font-family: 'Crimson Text', serif;
+      font-size: 1.1rem;
+      color: var(--vb-sepia);
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--vb-deep-moss);
+      padding: 48px 32px;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--vb-copper) 20%,
+        var(--vb-ochre) 50%,
+        var(--vb-copper) 80%,
+        transparent 100%
+      );
+      opacity: 0.4;
+    }
+
+    .footer-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--vb-sage);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .footer-latin {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(158, 173, 140, 0.6);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'Crimson Text', serif;
+      font-size: 0.9rem;
+      color: rgba(158, 173, 140, 0.7);
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--vb-sage);
+    }
+
+    .footer-rule {
+      width: 80px;
+      height: 1px;
+      background: rgba(158, 173, 140, 0.2);
+      margin: 0 auto 20px;
+    }
+
+    .footer-colophon {
+      font-family: 'Spectral', serif;
+      font-size: 0.75rem;
+      color: rgba(158, 173, 140, 0.4);
+      letter-spacing: 0.04em;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 20px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--vb-vellum);
+        border-bottom: 1px solid var(--vb-foxing);
+        flex-direction: column;
+        padding: 8px 0;
+        box-shadow: 0 4px 12px rgba(92, 72, 51, 0.08);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 12px 24px;
+      }
+
+      .nav-links a::after {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      .hero {
+        padding: 72px 24px 56px;
+      }
+
+      .hero-ornament {
+        width: 48px;
+        height: 48px;
+      }
+
+      .hero-ornament--tl::before,
+      .hero-ornament--tr::before,
+      .hero-ornament--bl::before,
+      .hero-ornament--br::before {
+        width: 24px;
+        height: 24px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 14px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .btn-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-showcase .btn {
+        text-align: center;
+      }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .banner {
+        padding: 48px 20px;
+      }
+
+      .banner-leaf--3,
+      .banner-leaf--4 {
+        display: none;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        letter-spacing: 0.08em;
+      }
+
+      .section-header h2 {
+        letter-spacing: 0.04em;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-name {
+        font-size: 0.68rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+
+      .color-role {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Herbarium <span>Botanica</span></a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Specimens</a></li>
+      <li><a href="#principles">Principles</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-ornament hero-ornament--tl"></div>
+    <div class="hero-ornament hero-ornament--tr"></div>
+    <div class="hero-ornament hero-ornament--bl"></div>
+    <div class="hero-ornament hero-ornament--br"></div>
+    <div class="hero-content">
+      <h1>Vintage Botanical</h1>
+      <p class="hero-latin">Illustrationes Plantarum Rariorum</p>
+      <div class="hero-rule"></div>
+      <p>A design aesthetic rooted in the meticulous tradition of 18th-century scientific botanical illustration -- where copperplate engravings, watercolor washes, and aged parchment meet modern interface design.</p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--primary">View Specimens</a>
+        <a href="#palette" class="btn btn--outline">Colour Plates</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== VINE DIVIDER ===== -->
+  <div class="vine-divider"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">Plate I</span>
+        <h2>Typography</h2>
+        <p class="section-subtitle">Typographia et Litterae Formales</p>
+      </div>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <div class="typo-sample-label">Display &middot; Libre Baskerville 700</div>
+            <div class="typo-sample--display">Flora Selecta</div>
+          </div>
+          <div class="typo-sample">
+            <div class="typo-sample-label">Heading &middot; Libre Baskerville 700</div>
+            <div class="typo-sample--heading">Botanical Illustrations of Rare Plants</div>
+          </div>
+          <div class="typo-sample">
+            <div class="typo-sample-label">Subheading &middot; Cormorant Garamond Italic</div>
+            <div class="typo-sample--subheading">Rosa centifolia &amp; Paeonia lactiflora</div>
+          </div>
+          <div class="typo-sample">
+            <div class="typo-sample-label">Body &middot; Crimson Text 400</div>
+            <div class="typo-sample--body">The art of botanical illustration requires both scientific accuracy and aesthetic sensitivity, capturing each vein, pistil, and petal with the precision of a naturalist's hand.</div>
+          </div>
+          <div class="typo-sample">
+            <div class="typo-sample-label">Caption &middot; Spectral Italic</div>
+            <div class="typo-sample--caption">Fig. 12 -- Cross-section of Lilium candidum, showing tepals, stamens, and superior ovary, drawn from life at Kew Gardens, 1823.</div>
+          </div>
+          <div class="typo-sample">
+            <div class="typo-sample-label">Script &middot; Tangerine 400</div>
+            <div class="typo-sample--script">Herbarium Vivum Collectum</div>
+          </div>
+        </div>
+        <div class="typo-right">
+          <div class="typo-scale">
+            <div class="typo-scale-title">Type Scale</div>
+            <div class="typo-scale-item">
+              <span class="size-label">3.5rem</span>
+              <span class="size-preview" style="font-size: 2rem;">Flora</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="size-label">1.9rem</span>
+              <span class="size-preview" style="font-size: 1.5rem;">Herbarium</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="size-label">1.4rem</span>
+              <span class="size-preview" style="font-size: 1.2rem;">Specimen</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="size-label">1.1rem</span>
+              <span class="size-preview" style="font-size: 1rem;">Body text</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="size-label">0.9rem</span>
+              <span class="size-preview" style="font-size: 0.85rem;">Caption text</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="size-label">0.7rem</span>
+              <span class="size-preview" style="font-size: 0.72rem;">PLATE NUMBER</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VINE DIVIDER ===== -->
+  <div class="vine-divider"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--parchment" id="palette">
+    <div class="container container--wide">
+      <div class="section-header">
+        <span class="section-number">Plate II</span>
+        <h2>Colour Palette</h2>
+        <p class="section-subtitle">Pigmenta Naturalia et Tincturae</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5EFE0;"></div>
+          <div class="color-name">Aged Cream</div>
+          <div class="color-hex">#F5EFE0</div>
+          <div class="color-role">Primary background</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6ED;"></div>
+          <div class="color-name">Vellum White</div>
+          <div class="color-hex">#FAF6ED</div>
+          <div class="color-role">Card surfaces</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDE4D0;"></div>
+          <div class="color-name">Parchment Gold</div>
+          <div class="color-hex">#EDE4D0</div>
+          <div class="color-role">Alternate sections</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7F5E;"></div>
+          <div class="color-name">Specimen Green</div>
+          <div class="color-hex">#6B7F5E</div>
+          <div class="color-role">Primary accent</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9EAD8C;"></div>
+          <div class="color-name">Sage Wash</div>
+          <div class="color-hex">#9EAD8C</div>
+          <div class="color-role">Secondary green</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3E5340;"></div>
+          <div class="color-name">Deep Moss</div>
+          <div class="color-hex">#3E5340</div>
+          <div class="color-role">Dark accent</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4979A;"></div>
+          <div class="color-name">Dusty Rose</div>
+          <div class="color-hex">#C4979A</div>
+          <div class="color-role">Floral accent</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #DEB5A0;"></div>
+          <div class="color-name">Pressed Petal</div>
+          <div class="color-hex">#DEB5A0</div>
+          <div class="color-role">Warm tertiary</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9A84C;"></div>
+          <div class="color-name">Ochre Yellow</div>
+          <div class="color-hex">#C9A84C</div>
+          <div class="color-role">Stamen details</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C4833;"></div>
+          <div class="color-name">Sepia Ink</div>
+          <div class="color-hex">#5C4833</div>
+          <div class="color-role">Primary text</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A67B5B;"></div>
+          <div class="color-name">Copper Rule</div>
+          <div class="color-hex">#A67B5B</div>
+          <div class="color-role">Borders &amp; rules</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A898B0;"></div>
+          <div class="color-name">Lavender Mist</div>
+          <div class="color-hex">#A898B0</div>
+          <div class="color-role">Tertiary accent</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4C4A8;"></div>
+          <div class="color-name">Foxing Spot</div>
+          <div class="color-hex">#D4C4A8</div>
+          <div class="color-role">Paper texture</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7B8D;"></div>
+          <div class="color-name">Faded Indigo</div>
+          <div class="color-hex">#6B7B8D</div>
+          <div class="color-role">Annotations</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8C7B68;"></div>
+          <div class="color-name">Plate Border</div>
+          <div class="color-hex">#8C7B68</div>
+          <div class="color-role">Plate edges</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VINE DIVIDER ===== -->
+  <div class="vine-divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container container--wide">
+      <div class="section-header">
+        <span class="section-number">Plate III</span>
+        <h2>Specimen Cards</h2>
+        <p class="section-subtitle">Herbarium Collectiones Selectae</p>
+      </div>
+
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-botanical">
+            <div class="stem"></div>
+            <div class="leaf" style="width:22px; height:38px; left:50%; top:30px; transform:translateX(6px) rotate(25deg);"></div>
+            <div class="leaf" style="width:22px; height:38px; right:50%; top:15px; transform:translateX(-6px) rotate(-30deg) scaleX(-1);"></div>
+            <div class="petal" style="width:28px; height:28px; left:50%; top:2px; transform:translateX(-14px);"></div>
+            <div class="center" style="width:10px; height:10px; left:50%; top:11px; transform:translateX(-5px);"></div>
+          </div>
+          <div class="card-number">Specimen No. 001</div>
+          <h3>Cream Paper Foundations</h3>
+          <div class="card-latin">Chartae Antiquae</div>
+          <p>Warm off-white and ivory tones that simulate aged paper stock, establishing a foundation of warmth and historical resonance throughout the design.</p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-botanical">
+            <div class="stem" style="height:50px;"></div>
+            <div class="leaf" style="width:18px; height:32px; left:50%; top:25px; transform:translateX(8px) rotate(35deg);"></div>
+            <div class="leaf" style="width:18px; height:32px; right:50%; top:35px; transform:translateX(-8px) rotate(-25deg) scaleX(-1);"></div>
+            <div class="leaf" style="width:14px; height:26px; left:50%; top:48px; transform:translateX(4px) rotate(20deg);"></div>
+            <div class="petal" style="width:22px; height:30px; left:50%; top:0; transform:translateX(-11px); border-radius: 50% 50% 0 0;"></div>
+          </div>
+          <div class="card-number">Specimen No. 002</div>
+          <h3>Scientific Annotations</h3>
+          <div class="card-latin">Annotationes Linnaeanae</div>
+          <p>Latin binomial names, measurement notations, and specimen numbering serve as decorative vocabulary, lending an air of scholarly authority.</p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-botanical">
+            <div class="stem" style="height:55px;"></div>
+            <div class="petal" style="width:24px; height:24px; left:calc(50% - 18px); top:5px;"></div>
+            <div class="petal" style="width:24px; height:24px; left:calc(50% + 2px); top:5px;"></div>
+            <div class="petal" style="width:20px; height:24px; left:50%; top:0; transform:translateX(-10px);"></div>
+            <div class="center" style="width:12px; height:12px; left:50%; top:11px; transform:translateX(-6px);"></div>
+            <div class="leaf" style="width:20px; height:34px; left:50%; top:38px; transform:translateX(5px) rotate(30deg);"></div>
+          </div>
+          <div class="card-number">Specimen No. 003</div>
+          <h3>Engraving Textures</h3>
+          <div class="card-latin">Texturae Incisae</div>
+          <p>Delicate hatching, stipple shading, and cross-hatching that reference the copperplate and steel engraving printing techniques of botanical plates.</p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="card-botanical">
+            <div class="stem" style="height:45px; left:45%;"></div>
+            <div class="stem" style="height:40px; left:55%; opacity:0.3;"></div>
+            <div class="leaf" style="width:24px; height:40px; left:40%; top:20px; transform:rotate(-15deg); background:rgba(158,173,140,0.08);"></div>
+            <div class="leaf" style="width:24px; height:40px; left:52%; top:12px; transform:rotate(20deg); background:rgba(158,173,140,0.06);"></div>
+            <div class="leaf" style="width:18px; height:30px; left:60%; top:30px; transform:rotate(10deg);"></div>
+          </div>
+          <div class="card-number">Specimen No. 004</div>
+          <h3>Watercolour Washes</h3>
+          <div class="card-latin">Aquae Colores</div>
+          <p>Soft, translucent colour fields with visible brushwork edges and gentle pigment pooling, applied sparingly to complement the fine linework.</p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <div class="card-botanical">
+            <div class="stem" style="height:65px;"></div>
+            <div class="leaf" style="width:16px; height:28px; left:50%; top:15px; transform:translateX(4px) rotate(40deg);"></div>
+            <div class="leaf" style="width:16px; height:28px; right:50%; top:28px; transform:translateX(-4px) rotate(-35deg) scaleX(-1);"></div>
+            <div class="leaf" style="width:14px; height:24px; left:50%; top:42px; transform:translateX(6px) rotate(30deg);"></div>
+            <div class="leaf" style="width:14px; height:24px; right:50%; top:52px; transform:translateX(-6px) rotate(-25deg) scaleX(-1);"></div>
+            <div class="petal" style="width:16px; height:16px; left:50%; top:2px; transform:translateX(-8px); background:rgba(196,151,154,0.12);"></div>
+          </div>
+          <div class="card-number">Specimen No. 005</div>
+          <h3>Serif Typography</h3>
+          <div class="card-latin">Litterae Transitionalis</div>
+          <p>High-contrast transitional and old-style serifs with visible stroke variation, evoking the typographic conventions of 18th-century naturalist treatises.</p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <div class="card-botanical">
+            <div class="stem" style="height:50px; width:1px; opacity:0.35;"></div>
+            <div class="petal" style="width:32px; height:32px; left:50%; top:4px; transform:translateX(-16px); border:1.5px solid var(--vb-lavender);"></div>
+            <div class="petal" style="width:24px; height:24px; left:50%; top:8px; transform:translateX(-12px); border:1px solid var(--vb-dusty-rose);"></div>
+            <div class="center" style="width:8px; height:8px; left:50%; top:16px; transform:translateX(-4px); background:var(--vb-ochre);"></div>
+            <div class="leaf" style="width:20px; height:36px; left:50%; top:40px; transform:translateX(4px) rotate(25deg);"></div>
+            <div class="leaf" style="width:20px; height:36px; right:50%; top:44px; transform:translateX(-4px) rotate(-20deg) scaleX(-1);"></div>
+          </div>
+          <div class="card-number">Specimen No. 006</div>
+          <h3>Herbarium Layouts</h3>
+          <div class="card-latin">Dispositio Speciminum</div>
+          <p>Elements arranged as if pressed and mounted on herbarium sheets, with generous margins and careful spacing echoing museum-grade presentation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="banner">
+    <div class="banner-leaf banner-leaf--1"></div>
+    <div class="banner-leaf banner-leaf--2"></div>
+    <div class="banner-leaf banner-leaf--3"></div>
+    <div class="banner-leaf banner-leaf--4"></div>
+    <div class="banner-content">
+      <h2>A Living Collection</h2>
+      <div class="banner-script">drawn from nature, preserved in ink</div>
+      <p>Every element suggests something rendered by hand rather than by machine -- stippled textures, delicate ink strokes, and the natural imperfections of letterpress printing on aged stock.</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--vellum" id="principles">
+    <div class="container container--wide">
+      <div class="section-header">
+        <span class="section-number">Plate IV</span>
+        <h2>Design Principles</h2>
+        <p class="section-subtitle">Principia Artis Botanicae</p>
+      </div>
+
+      <div class="principles-grid">
+        <div class="principle">
+          <div class="principle-number">Principium I</div>
+          <h3>Scientific Precision Meets Beauty</h3>
+          <div class="principle-latin">Accuratio et Venustas</div>
+          <p>Every decorative element should feel accurate enough to appear in a naturalist field guide. The aesthetic merges rigorous scientific observation with the careful artistry of hand-rendered illustration.</p>
+        </div>
+
+        <div class="principle">
+          <div class="principle-number">Principium II</div>
+          <h3>Restrained Elegance</h3>
+          <div class="principle-latin">Elegantia Temperata</div>
+          <p>Favour a few well-placed botanical motifs over dense floral wallpaper. Each illustration or ornament is chosen with the curatorial care of a museum conservator selecting pieces for display.</p>
+        </div>
+
+        <div class="principle">
+          <div class="principle-number">Principium III</div>
+          <h3>Generous Negative Space</h3>
+          <div class="principle-latin">Spatium Vacuum</div>
+          <p>Frame content the way a museum mounts a pressed specimen -- with ample breathing room on all sides. Whitespace is not emptiness but a deliberate compositional choice that elevates every element.</p>
+        </div>
+
+        <div class="principle">
+          <div class="principle-number">Principium IV</div>
+          <h3>Handmade Imperfection</h3>
+          <div class="principle-latin">Imperfectio Manufacta</div>
+          <p>Embrace slight irregularities in line weight, colour application, and alignment that suggest hand craftsmanship. The warmth of human touch distinguishes this aesthetic from sterile digital precision.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VINE DIVIDER ===== -->
+  <div class="vine-divider"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--cream" id="effects">
+    <div class="container container--wide">
+      <div class="section-header">
+        <span class="section-number">Plate V</span>
+        <h2>Effects Showcase</h2>
+        <p class="section-subtitle">Technicae Artis et Ornamenti</p>
+      </div>
+
+      <div class="effects-grid">
+        <!-- Effect 1 -->
+        <div class="effect-card">
+          <div class="effect-preview effect-foxing"></div>
+          <div class="effect-label">
+            <h3>Aged Paper Foxing</h3>
+            <p>Radial gradients simulate the foxing spots and discolouration found on antique paper stock.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2 -->
+        <div class="effect-card">
+          <div class="effect-preview effect-watercolor"></div>
+          <div class="effect-label">
+            <h3>Watercolour Wash</h3>
+            <p>Layered translucent gradients create the impression of soft pigment washes bleeding into paper.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3 -->
+        <div class="effect-card">
+          <div class="effect-preview effect-stipple"></div>
+          <div class="effect-label">
+            <h3>Stipple Texture</h3>
+            <p>Tiny radial-gradient dots at varying densities emulate the stippling technique of copperplate engraving.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4 -->
+        <div class="effect-card">
+          <div class="effect-preview effect-engraving"></div>
+          <div class="effect-label">
+            <h3>Cross-Hatch Engraving</h3>
+            <p>Intersecting repeating-linear-gradients produce the cross-hatching found in steel-engraved botanical plates.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5 -->
+        <div class="effect-card">
+          <div class="effect-preview effect-copper-rule">
+            <div class="rule-line rule-line--thin"></div>
+            <div class="rule-line"></div>
+            <div class="rule-ornament"></div>
+            <div class="rule-line"></div>
+            <div class="rule-line rule-line--thin"></div>
+          </div>
+          <div class="effect-label">
+            <h3>Copper Rule Ornament</h3>
+            <p>Warm metallic-toned rules and geometric ornaments reference the gilt tooling of fine bookbinding.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6 -->
+        <div class="effect-card">
+          <div class="effect-preview effect-vignette"></div>
+          <div class="effect-label">
+            <h3>Sepia Vignette</h3>
+            <p>A radial gradient darkening at the edges simulates the natural vignetting of aged photographic plates.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== VINE DIVIDER ===== -->
+  <div class="vine-divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--parchment">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">Plate VI</span>
+        <h2>Button Variants</h2>
+        <p class="section-subtitle">Elementa Interactiva</p>
+      </div>
+
+      <div class="btn-showcase">
+        <a href="#" class="btn btn--primary">Primary Specimen</a>
+        <a href="#" class="btn btn--outline">Outlined Variant</a>
+        <a href="#" class="btn btn--copper">Copper Accent</a>
+        <a href="#" class="btn btn--ghost">Ghost Variant</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="quote-section">
+      <blockquote>
+        In every walk with Nature, one receives far more than he seeks. The botanical artist's task is not to improve upon the specimen but to reveal the beauty already present in its structure.
+      </blockquote>
+      <div class="quote-rule"></div>
+      <cite>After John Muir &middot; Naturalist, 1838--1914</cite>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta">
+    <div class="cta-content">
+      <h2>Begin Your Collection</h2>
+      <div class="cta-script">ad herbarium perpetuum</div>
+      <p>Explore the full Vintage Botanical design system -- from aged parchment textures and copperplate engravings to muted watercolour palettes and scholarly serif typography.</p>
+      <div class="hero-buttons">
+        <a href="#" class="btn btn--primary">Browse the Herbarium</a>
+        <a href="#" class="btn btn--outline">Read the Field Guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-brand">Herbarium Botanica</div>
+    <div class="footer-latin">Collectio Illustrationum Plantarum</div>
+    <div class="footer-links">
+      <a href="#">Specimens</a>
+      <a href="#">Colour Plates</a>
+      <a href="#">Typography</a>
+      <a href="#">Field Notes</a>
+      <a href="#">Colophon</a>
+    </div>
+    <div class="footer-rule"></div>
+    <div class="footer-colophon">
+      Set in Libre Baskerville, Crimson Text, Cormorant Garamond &amp; Spectral.<br>
+      Design reference &middot; Vintage Botanical Aesthetic &middot; MMXXVI
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Mobile navigation toggle
+    (function() {
+      var toggle = document.getElementById('navToggle');
+      var links = document.getElementById('navLinks');
+      if (toggle && links) {
+        toggle.addEventListener('click', function() {
+          links.classList.toggle('active');
+        });
+        // Close menu when a link is clicked
+        var anchors = links.querySelectorAll('a');
+        for (var i = 0; i < anchors.length; i++) {
+          anchors[i].addEventListener('click', function() {
+            links.classList.remove('active');
+          });
+        }
+      }
+    })();
+  </script>
+</body>
+</html>

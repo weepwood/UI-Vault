@@ -1,0 +1,1755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Objectivity -- Neue Sachlichkeit Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Text Hierarchy --- */
+      --no-text-primary: #2C2C2E;
+      --no-text-secondary: #4A4A4D;
+      --no-text-tertiary: #7A7A7D;
+      --no-text-inverse: #F5F4F0;
+
+      /* --- Backgrounds --- */
+      --no-bg-primary: #EDEAE3;
+      --no-bg-secondary: #D6D3CB;
+      --no-bg-light: #F5F4F0;
+      --no-bg-dark: #1A1A1C;
+      --no-bg-ochre: #D8C4A0;
+
+      /* --- Accents --- */
+      --no-accent-red: #8C3A2B;
+      --no-accent-red-dark: #6B2D22;
+      --no-accent-blue: #4A6670;
+      --no-accent-blue-dark: #3A525A;
+      --no-accent-gold: #C4A96A;
+
+      /* --- Structural --- */
+      --no-border: #B0AFA8;
+      --no-border-strong: #2C2C2E;
+      --no-surface: #D6D3CB;
+
+      /* --- Flesh / Portrait Reference --- */
+      --no-flesh-tone: #E8D5B7;
+
+      /* --- Shadows (minimal, sharp) --- */
+      --no-shadow-sm: 2px 2px 0 rgba(44, 44, 46, 0.10);
+      --no-shadow-md: 4px 4px 0 rgba(44, 44, 46, 0.12);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--no-text-secondary);
+      background-color: var(--no-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Archivo', 'Helvetica Neue', sans-serif;
+      font-weight: 700;
+      color: var(--no-text-primary);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.25rem 2.5rem;
+      border-bottom: 1px solid var(--no-border);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      background: var(--no-bg-primary);
+    }
+
+    .nav-logo {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--no-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--no-accent-red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: var(--no-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding-bottom: 2px;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--no-accent-red);
+      border-bottom-color: var(--no-accent-red);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 5rem 2.5rem 4rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      border-bottom: 1px solid var(--no-border);
+    }
+
+    .hero-content {
+      max-width: 480px;
+    }
+
+    .hero-label {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--no-accent-red);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(2.25rem, 5vw, 3.75rem);
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--no-text-primary);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--no-text-tertiary);
+      margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--no-text-secondary);
+      line-height: 1.75;
+      margin-bottom: 2rem;
+      max-width: 420px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-image {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: var(--no-bg-secondary);
+      border: 1px solid var(--no-border);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Geometric composition placeholder -- Weimar-era grid */
+    .hero-image::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(to right, var(--no-border) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--no-border) 1px, transparent 1px);
+      background-size: 25% 25%;
+      opacity: 0.4;
+    }
+
+    .hero-image::after {
+      content: '';
+      position: absolute;
+      top: 12.5%;
+      left: 12.5%;
+      width: 50%;
+      height: 50%;
+      background: var(--no-accent-red);
+      opacity: 0.12;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 32px;
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 0;
+      transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+      border: 2px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--no-accent-red);
+      color: var(--no-text-inverse);
+      border-color: var(--no-accent-red);
+    }
+
+    .btn-primary:hover {
+      background: var(--no-accent-red-dark);
+      border-color: var(--no-accent-red-dark);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--no-text-primary);
+      border-color: var(--no-border-strong);
+    }
+
+    .btn-secondary:hover {
+      background: var(--no-text-primary);
+      color: var(--no-text-inverse);
+      border-color: var(--no-text-primary);
+    }
+
+    .btn-blue {
+      background: var(--no-accent-blue);
+      color: var(--no-text-inverse);
+      border-color: var(--no-accent-blue);
+    }
+
+    .btn-blue:hover {
+      background: var(--no-accent-blue-dark);
+      border-color: var(--no-accent-blue-dark);
+    }
+
+    .btn-minimal {
+      background: transparent;
+      color: var(--no-accent-red);
+      border: none;
+      padding: 8px 0;
+      letter-spacing: 0.06em;
+      border-bottom: 1px solid transparent;
+    }
+
+    .btn-minimal:hover {
+      border-bottom-color: var(--no-accent-red);
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--no-border);
+      margin: 0 auto;
+      max-width: 1100px;
+    }
+
+    .divider--strong {
+      height: 2px;
+      background: var(--no-border-strong);
+    }
+
+    .divider--accent {
+      height: 3px;
+      background: var(--no-accent-red);
+      max-width: 80px;
+      margin: 2rem 0;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2.5rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--primary {
+      background: var(--no-bg-primary);
+    }
+
+    .section--light {
+      background: var(--no-bg-light);
+    }
+
+    .section--secondary {
+      background: var(--no-bg-secondary);
+    }
+
+    .section--dark {
+      background: var(--no-bg-dark);
+      color: var(--no-text-inverse);
+    }
+
+    .section-label {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--no-accent-red);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-weight: 700;
+      color: var(--no-text-primary);
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: var(--no-text-tertiary);
+      margin-bottom: 3rem;
+      max-width: 520px;
+    }
+
+    .section--dark .section-label {
+      color: var(--no-accent-gold);
+    }
+
+    .section--dark .section-title {
+      color: var(--no-text-inverse);
+    }
+
+    .section--dark .section-subtitle {
+      color: rgba(245, 244, 240, 0.6);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--no-border);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--no-accent-red);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-display {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      text-transform: uppercase;
+      color: var(--no-text-primary);
+    }
+
+    .typo-heading {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--no-text-primary);
+      letter-spacing: -0.01em;
+    }
+
+    .typo-subheading {
+      font-family: 'Archivo', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--no-text-secondary);
+      letter-spacing: 0;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--no-text-secondary);
+    }
+
+    .typo-caption {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--no-text-tertiary);
+    }
+
+    .typo-right {
+      background: var(--no-bg-light);
+      border: 1px solid var(--no-border);
+      padding: 2.5rem;
+    }
+
+    .typo-right h3 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--no-border-strong);
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--no-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--no-text-tertiary);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.04em;
+    }
+
+    .typo-pairing {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--no-border-strong);
+    }
+
+    .typo-pairing h3 {
+      margin-bottom: 1.25rem;
+    }
+
+    .typo-pairing-item {
+      margin-bottom: 1rem;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-name {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      color: var(--no-text-primary);
+    }
+
+    .typo-pairing-desc {
+      font-size: 0.82rem;
+      color: var(--no-text-tertiary);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .color-chip {
+      border: 1px solid var(--no-border);
+      background: var(--no-bg-light);
+      transition: border-color 0.2s ease;
+    }
+
+    .color-chip:hover {
+      border-color: var(--no-border-strong);
+    }
+
+    .color-swatch {
+      height: 80px;
+    }
+
+    .color-info {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid var(--no-border);
+    }
+
+    .color-name {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      color: var(--no-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--no-text-tertiary);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--no-bg-light);
+      border: 1px solid var(--no-border);
+      padding: 2rem;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--no-accent-red);
+    }
+
+    .card:hover {
+      border-color: var(--no-border-strong);
+    }
+
+    .card-number {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--no-accent-red);
+      margin-bottom: 1rem;
+      letter-spacing: 0.06em;
+    }
+
+    .card h3 {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: var(--no-text-primary);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--no-text-secondary);
+      line-height: 1.7;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 10px;
+      border: 1px solid var(--no-border);
+      color: var(--no-text-tertiary);
+      margin-top: 1rem;
+      margin-right: 6px;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .card-tag:hover {
+      border-color: var(--no-border-strong);
+      color: var(--no-text-primary);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .effect-demo {
+      border: 1px solid var(--no-border);
+      background: var(--no-bg-light);
+      overflow: hidden;
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-label {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Effect 1: Rigid Grid */
+    .effect-grid {
+      background: var(--no-bg-secondary);
+    }
+
+    .effect-grid::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(to right, var(--no-border-strong) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--no-border-strong) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.15;
+    }
+
+    .effect-grid::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 120px;
+      height: 80px;
+      background: var(--no-accent-red);
+      opacity: 0.2;
+    }
+
+    .effect-grid .effect-label {
+      color: var(--no-text-primary);
+    }
+
+    /* Effect 2: Concrete Surface */
+    .effect-concrete {
+      background: #B0AFA8;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(44, 44, 46, 0.03) 2px,
+          rgba(44, 44, 46, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(44, 44, 46, 0.02) 3px,
+          rgba(44, 44, 46, 0.02) 6px
+        );
+    }
+
+    .effect-concrete .effect-label {
+      color: var(--no-text-primary);
+    }
+
+    /* Effect 3: Steel Blue Tonal */
+    .effect-tonal {
+      background: linear-gradient(
+        180deg,
+        var(--no-accent-blue) 0%,
+        var(--no-accent-blue-dark) 100%
+      );
+    }
+
+    .effect-tonal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(to bottom, transparent 49%, rgba(245, 244, 240, 0.08) 50%, transparent 51%);
+      background-size: 100% 8px;
+    }
+
+    .effect-tonal .effect-label {
+      color: var(--no-text-inverse);
+    }
+
+    /* Effect 4: Document Reduction */
+    .effect-document {
+      background: var(--no-bg-light);
+      border-left: 4px solid var(--no-accent-red);
+    }
+
+    .effect-document::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 23px,
+          var(--no-border) 23px,
+          var(--no-border) 24px
+        );
+    }
+
+    .effect-document::after {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 60px;
+      width: 1px;
+      bottom: 24px;
+      background: var(--no-accent-red);
+      opacity: 0.3;
+    }
+
+    .effect-document .effect-label {
+      color: var(--no-text-primary);
+    }
+
+    /* Effect 5: Dark Analytical */
+    .effect-dark {
+      background: var(--no-bg-dark);
+    }
+
+    .effect-dark::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(to right, rgba(245, 244, 240, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(245, 244, 240, 0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    .effect-dark::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--no-accent-red);
+    }
+
+    .effect-dark .effect-label {
+      color: var(--no-text-inverse);
+    }
+
+    /* Effect 6: Ochre Wash */
+    .effect-ochre {
+      background: linear-gradient(
+        135deg,
+        var(--no-bg-ochre) 0%,
+        var(--no-flesh-tone) 50%,
+        var(--no-bg-ochre) 100%
+      );
+    }
+
+    .effect-ochre::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 10px,
+          rgba(44, 44, 46, 0.03) 10px,
+          rgba(44, 44, 46, 0.03) 11px
+        );
+    }
+
+    .effect-ochre .effect-label {
+      color: var(--no-text-primary);
+    }
+
+    .effect-caption {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--no-border);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--no-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--no-text-tertiary);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      background: var(--no-bg-dark);
+      color: var(--no-text-inverse);
+      padding: 4rem 2.5rem;
+    }
+
+    .quote-block-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 400;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      font-style: italic;
+      position: relative;
+      padding-left: 1.5rem;
+      border-left: 3px solid var(--no-accent-red);
+    }
+
+    .quote-block cite {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      font-style: normal;
+      display: block;
+      padding-left: 1.5rem;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: left;
+      padding: 3rem;
+      border: 2px solid var(--no-border-strong);
+      background: var(--no-bg-light);
+      position: relative;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: var(--no-accent-red);
+    }
+
+    .cta h2 {
+      font-size: 1.75rem;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+
+    .cta p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--no-text-secondary);
+      margin-bottom: 2rem;
+      max-width: 540px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--no-bg-dark);
+      padding: 4rem 2.5rem 2rem;
+      color: var(--no-text-inverse);
+    }
+
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(245, 244, 240, 0.12);
+    }
+
+    .footer h3 {
+      font-family: 'Archivo', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--no-text-inverse);
+      margin-bottom: 1rem;
+    }
+
+    .footer p {
+      font-size: 0.9rem;
+      color: rgba(245, 244, 240, 0.6);
+      line-height: 1.75;
+      max-width: 400px;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .footer-links a {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: rgba(245, 244, 240, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--no-accent-red);
+    }
+
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-copy {
+      font-family: 'Archivo', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(245, 244, 240, 0.3);
+    }
+
+    .footer-rule {
+      font-size: 0.7rem;
+      color: rgba(245, 244, 240, 0.3);
+      letter-spacing: 0.3em;
+    }
+
+    /* ============================================
+       STRUCTURAL BAND
+       ============================================ */
+    .structural-band {
+      display: flex;
+      height: 4px;
+      width: 100%;
+    }
+
+    .structural-band span { flex: 1; }
+    .structural-band span:nth-child(1) { background: var(--no-accent-red); }
+    .structural-band span:nth-child(2) { background: var(--no-border-strong); }
+    .structural-band span:nth-child(3) { background: var(--no-accent-blue); }
+    .structural-band span:nth-child(4) { background: var(--no-accent-gold); }
+    .structural-band span:nth-child(5) { background: var(--no-border); }
+
+    /* ============================================
+       FEATURE LIST
+       ============================================ */
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .feature-item {
+      padding: 2rem 0;
+      border-top: 2px solid var(--no-border-strong);
+    }
+
+    .feature-item-number {
+      font-family: 'Archivo', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--no-accent-red);
+      margin-bottom: 1rem;
+      letter-spacing: 0.06em;
+    }
+
+    .feature-item h3 {
+      font-size: 1.05rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .feature-item p {
+      font-size: 0.9rem;
+      color: var(--no-text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1rem 1.5rem;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 3rem 1.5rem 2.5rem;
+        gap: 2rem;
+      }
+
+      .hero-content {
+        max-width: 100%;
+      }
+
+      .container {
+        padding: 0 1.5rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 1rem;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 3rem 1.5rem;
+      }
+
+      .cta {
+        padding: 2rem;
+        margin: 0 1.5rem;
+      }
+
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .footer {
+        padding: 3rem 1.5rem 1.5rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      .button-showcase {
+        gap: 0.75rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .color-swatch {
+        height: 48px;
+      }
+
+      .color-info {
+        padding: 0.5rem 0.75rem;
+      }
+
+      .color-name {
+        font-size: 0.7rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .card,
+      .color-chip,
+      .btn,
+      .nav-links a,
+      .nav-logo,
+      .card-tag,
+      .effect-demo,
+      .footer-links a {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Neue Sachlichkeit</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1 class="hero-title">New Objectivity</h1>
+      <p class="hero-subtitle">Neue Sachlichkeit, 1919&ndash;1933</p>
+      <p class="hero-desc">
+        An austere design language rooted in Weimar-era Germany &mdash; clinical precision, muted palettes, rigid grids, and a refusal to decorate. Design that observes and presents rather than persuades or seduces.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+    <div class="hero-image" role="img" aria-label="Geometric grid composition evoking Weimar-era functionalist design"></div>
+  </header>
+
+  <!-- ===== STRUCTURAL BAND ===== -->
+  <div class="structural-band">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--primary" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Functional, Authoritative, Restrained</h2>
+      <p class="section-subtitle">Geometric and grotesque sans-serifs communicate clarity and rational order. Every letterform serves the content.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Archivo 700</p>
+            <p class="typo-display">Sachlich</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Archivo 700</p>
+            <p class="typo-heading">Objectivity Over Emotion</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Archivo 600</p>
+            <p class="typo-subheading">Reduction to essentials, rational structure</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body">The design should present information factually, without manipulative sentimentality or artificial excitement. Strip away everything that does not directly serve understanding.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Archivo 600</p>
+            <p class="typo-caption">Labels, Metadata &amp; Structural Markers</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4.5rem</span>
+              <span style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 2rem; color: var(--no-text-primary); text-transform: uppercase; letter-spacing: -0.02em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Archivo', sans-serif; font-weight: 700; font-size: 1.5rem; color: var(--no-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 1.1rem; color: var(--no-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 400; font-size: 1rem; color: var(--no-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Archivo', sans-serif; font-weight: 600; font-size: 0.75rem; color: var(--no-text-tertiary); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing">
+            <h3>Font Pairings</h3>
+            <div class="typo-pairing-item">
+              <span class="typo-pairing-name">Archivo (700)</span> + <span style="font-family: 'Inter', sans-serif;">Inter (400)</span>
+              <span class="typo-pairing-desc">Authoritative and precise</span>
+            </div>
+            <div class="typo-pairing-item">
+              <span class="typo-pairing-name">Jost (700)</span> + <span style="font-family: 'Inter', sans-serif;">DM Sans (400)</span>
+              <span class="typo-pairing-desc">Functionalist with Weimar echo</span>
+            </div>
+            <div class="typo-pairing-item">
+              <span class="typo-pairing-name">Space Grotesk (600)</span> + <span style="font-family: 'Inter', sans-serif;">IBM Plex Sans (400)</span>
+              <span class="typo-pairing-desc">Technical, contemporary Sachlichkeit</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--primary" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Muted, Sober, Analytical</h2>
+      <p class="section-subtitle">Cool grays, desaturated ochres, subdued blues, and restrained accent tones drawn from Weimar-era portraiture and functionalist architecture.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C2C2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal</div>
+            <div class="color-hex">#2C2C2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A4A4D;"></div>
+          <div class="color-info">
+            <div class="color-name">Graphite</div>
+            <div class="color-hex">#4A4A4D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A7A7D;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate</div>
+            <div class="color-hex">#7A7A7D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B0AFA8;"></div>
+          <div class="color-info">
+            <div class="color-name">Ash</div>
+            <div class="color-hex">#B0AFA8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D6D3CB;"></div>
+          <div class="color-info">
+            <div class="color-name">Plaster</div>
+            <div class="color-hex">#D6D3CB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDEAE3;"></div>
+          <div class="color-info">
+            <div class="color-name">Paper</div>
+            <div class="color-hex">#EDEAE3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F4F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Off-White</div>
+            <div class="color-hex">#F5F4F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8C3A2B;"></div>
+          <div class="color-info">
+            <div class="color-name">Oxide Red</div>
+            <div class="color-hex">#8C3A2B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B2D22;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Red</div>
+            <div class="color-hex">#6B2D22</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A6670;"></div>
+          <div class="color-info">
+            <div class="color-name">Steel Blue</div>
+            <div class="color-hex">#4A6670</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3A525A;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Steel</div>
+            <div class="color-hex">#3A525A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A96A;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Gold</div>
+            <div class="color-hex">#C4A96A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D8C4A0;"></div>
+          <div class="color-info">
+            <div class="color-name">Ochre</div>
+            <div class="color-hex">#D8C4A0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A1C;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink Black</div>
+            <div class="color-hex">#1A1A1C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8D5B7;"></div>
+          <div class="color-info">
+            <div class="color-name">Flesh Tone</div>
+            <div class="color-hex">#E8D5B7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRUCTURAL BAND ===== -->
+  <div class="structural-band">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--light" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Design Principles in Practice</h2>
+      <p class="section-subtitle">Each component reflects the core tenets of Neue Sachlichkeit: precision, restraint, and rational structure.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-number">01</div>
+          <h3>Clinical Precision</h3>
+          <p>Every element rendered with exacting clarity. Crisp edges, sharp alignments, no blur or softness. The digital surface reveals its structure honestly.</p>
+          <span class="card-tag">Core Trait</span>
+          <span class="card-tag">Visual</span>
+        </div>
+        <div class="card">
+          <div class="card-number">02</div>
+          <h3>Rigid Grid Structure</h3>
+          <p>A mathematical grid governs all placement. The underlying order is visible and intentional, reflecting functionalist principles of rational composition.</p>
+          <span class="card-tag">Layout</span>
+          <span class="card-tag">Structure</span>
+        </div>
+        <div class="card">
+          <div class="card-number">03</div>
+          <h3>Muted Color Restraint</h3>
+          <p>Grays, ochres, muted blues, and cool earth tones dominate. Chromatic accents are restrained to critical emphasis points -- a deep red, a steel blue.</p>
+          <span class="card-tag">Palette</span>
+          <span class="card-tag">Tone</span>
+        </div>
+        <div class="card">
+          <div class="card-number">04</div>
+          <h3>Function Dictates Form</h3>
+          <p>Every design decision serves a practical communication purpose. Nothing exists merely for decoration. The object's function defines its appearance.</p>
+          <span class="card-tag">Principle</span>
+          <span class="card-tag">Bauhaus</span>
+        </div>
+        <div class="card">
+          <div class="card-number">05</div>
+          <h3>Documentary Directness</h3>
+          <p>Imagery and content are presented with journalistic clarity rather than artistic embellishment. The design observes and reports without flattery.</p>
+          <span class="card-tag">Content</span>
+          <span class="card-tag">Verist</span>
+        </div>
+        <div class="card">
+          <div class="card-number">06</div>
+          <h3>Industrial Material Reference</h3>
+          <p>Visual textures evoke concrete, steel, glass, and white plaster. The honest surfaces of Weimar-era architecture translated into digital form.</p>
+          <span class="card-tag">Material</span>
+          <span class="card-tag">Texture</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--primary">
+    <div class="container">
+      <p class="section-label">Methodology</p>
+      <h2 class="section-title">The Sachlich Approach</h2>
+      <p class="section-subtitle">Objectivity, reduction, and social awareness form the philosophical backbone of every layout decision.</p>
+
+      <div class="feature-grid">
+        <div class="feature-item">
+          <div class="feature-item-number">I</div>
+          <h3>Objectivity Over Emotion</h3>
+          <p>Present information factually, without manipulative sentimentality or artificial excitement. The design should maintain analytical distance at all times.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item-number">II</div>
+          <h3>Honesty of Materials</h3>
+          <p>Digital surfaces should not simulate materials they are not. Transparency about the medium is essential. No skeuomorphic deception.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item-number">III</div>
+          <h3>Reduction to Essentials</h3>
+          <p>Strip away everything that does not directly serve the user's understanding. Every remaining element must justify its presence through function.</p>
+        </div>
+        <div class="feature-item">
+          <div class="feature-item-number">IV</div>
+          <h3>Social Awareness</h3>
+          <p>Design can and should serve the public good. Accessibility and clarity are moral obligations, not optional enhancements.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider divider--strong">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--primary" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Surfaces &amp; Structures</h2>
+      <p class="section-subtitle">Austere textures and structural patterns achieved with pure CSS -- no image assets, no decorative excess.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-grid">
+            <span class="effect-label">Rigid Grid</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Structural Grid</h4>
+            <p>Repeating linear gradients form a visible mathematical grid. The underlying order is intentional.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-concrete">
+            <span class="effect-label">Concrete</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Concrete Surface</h4>
+            <p>Fine cross-hatched gradients simulate the raw, honest surface of exposed concrete and plaster.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-tonal">
+            <span class="effect-label">Steel Blue</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Tonal Gradient</h4>
+            <p>Subdued vertical gradient with horizontal scan lines. Cool, analytical, and industrially precise.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-document">
+            <span class="effect-label">Document</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Document Reduction</h4>
+            <p>Ruled lines and a margin reference evoke archival documents and clinical record-keeping.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-dark">
+            <span class="effect-label">Analytical</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Dark Analytical</h4>
+            <p>Dark background with subtle grid lines and a red accent bar. High-contrast informational density.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-ochre">
+            <span class="effect-label">Ochre Wash</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Ochre Wash</h4>
+            <p>Warm desaturated gradients with diagonal hatching reference the flesh tones and ochres of Weimar portraiture.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRUCTURAL BAND ===== -->
+  <div class="structural-band">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--secondary">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Buttons</h2>
+      <p class="section-subtitle">Square-cornered, typographically driven, and functionally clear. No rounded softness, no decorative gradients.</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Action</a>
+        <a href="#" class="btn btn-secondary">Secondary</a>
+        <a href="#" class="btn btn-blue">Steel Blue</a>
+        <a href="#" class="btn btn-minimal">Minimal Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <div class="quote-block">
+    <div class="quote-block-inner">
+      <blockquote>
+        The objectivity of the representation is the main thing. The subject must be rendered in such a way that it tells its own story, without the artist's intervention being visible.
+      </blockquote>
+      <cite>&mdash; Gustav Friedrich Hartlaub, on the principles of Neue Sachlichkeit</cite>
+    </div>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--primary">
+    <div class="container">
+      <div class="cta">
+        <p class="section-label">Summary</p>
+        <h2>Design Without Pretension</h2>
+        <p>
+          New Objectivity demands a refusal to flatter. Ground every layout in muted tones, rigid grids, and functional typography. Let the content speak with clinical precision. Strip away ornament. Present the truth, however uncomfortable, with sober clarity and intellectual restraint.
+        </p>
+        <a href="#hero" class="btn btn-primary">Return to Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRUCTURAL BAND ===== -->
+  <div class="structural-band">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h3>Neue Sachlichkeit</h3>
+        <p>
+          A design aesthetic reference embodying the sober, analytical visual language of Weimar-era New Objectivity. Muted palettes, rigid grids, functional typography &mdash; all without a single image asset.
+        </p>
+      </div>
+      <div>
+        <h3>Navigation</h3>
+        <div class="footer-links">
+          <a href="#hero">Overview</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Color Palette</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">Design Aesthetic Reference &middot; New Objectivity &middot; Neue Sachlichkeit</span>
+      <span class="footer-rule">&mdash;&mdash;&mdash;</span>
+    </div>
+  </footer>
+
+</body>
+</html>

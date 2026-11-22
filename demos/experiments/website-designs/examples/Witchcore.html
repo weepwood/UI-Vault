@@ -1,0 +1,1878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Witchcore -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@300;400;500;600;700&family=MedievalSharp&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      --wc-void: #0D0D12;
+      --wc-cauldron: #1A1A24;
+      --wc-nightshade: #2D1B3D;
+      --wc-belladonna: #6B3A6B;
+      --wc-wisteria: #9B7BB8;
+      --wc-sage: #7A8B6F;
+      --wc-moss: #4A5E3A;
+      --wc-gold: #C9A84C;
+      --wc-copper: #A0714F;
+      --wc-parchment: #E8DCC8;
+      --wc-bone: #D4C8B0;
+      --wc-flame: #D4883A;
+      --wc-blood: #6E2C2C;
+      --wc-moonstone: #B8BCC8;
+      --wc-absinthe: #8FB87B;
+
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: var(--wc-parchment);
+      background-color: var(--wc-void);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cinzel', 'Times New Roman', serif;
+      color: var(--wc-gold);
+      line-height: 1.2;
+      letter-spacing: 0.06em;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-weight: 700;
+    }
+
+    /* Parchment grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: repeating-conic-gradient(
+        rgba(232, 220, 200, 0.015) 0% 25%,
+        transparent 0% 50%
+      );
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: rgba(13, 13, 18, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.1);
+      padding: 16px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.15rem;
+      color: var(--wc-gold);
+      letter-spacing: 0.08em;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      text-shadow: 0 0 20px rgba(201, 168, 76, 0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--wc-moonstone);
+      letter-spacing: 0.12em;
+      padding: 8px 16px;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 1px;
+      background: var(--wc-gold);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--wc-gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 60%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      background: radial-gradient(ellipse at center bottom, var(--wc-nightshade) 0%, var(--wc-void) 70%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Golden aura behind hero content */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.06) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Starfield behind hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(1px 1px at 10% 15%, rgba(232, 220, 200, 0.4) 50%, transparent 50%),
+        radial-gradient(1px 1px at 25% 80%, rgba(232, 220, 200, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 40% 35%, rgba(155, 123, 184, 0.5) 50%, transparent 50%),
+        radial-gradient(1px 1px at 55% 65%, rgba(232, 220, 200, 0.25) 50%, transparent 50%),
+        radial-gradient(1px 1px at 70% 20%, rgba(201, 168, 76, 0.4) 50%, transparent 50%),
+        radial-gradient(1px 1px at 85% 75%, rgba(232, 220, 200, 0.35) 50%, transparent 50%),
+        radial-gradient(1px 1px at 15% 55%, rgba(155, 123, 184, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 90% 45%, rgba(232, 220, 200, 0.2) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 33% 10%, rgba(201, 168, 76, 0.35) 50%, transparent 50%),
+        radial-gradient(1px 1px at 60% 90%, rgba(232, 220, 200, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 78% 50%, rgba(155, 123, 184, 0.25) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 5% 40%, rgba(232, 220, 200, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 48% 5%, rgba(201, 168, 76, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 95% 15%, rgba(232, 220, 200, 0.35) 50%, transparent 50%);
+      pointer-events: none;
+      animation: twinkle 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .hero-moon {
+      font-size: 2rem;
+      letter-spacing: 0.6em;
+      color: var(--wc-wisteria);
+      margin-bottom: 32px;
+      opacity: 0.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 700;
+      color: var(--wc-gold);
+      margin-bottom: 20px;
+      text-shadow: 0 0 40px rgba(201, 168, 76, 0.2);
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(1.05rem, 1.8vw, 1.3rem);
+      color: var(--wc-bone);
+      max-width: 560px;
+      line-height: 1.9;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-cta {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--wc-belladonna) 0%, #4A2A4A 100%);
+      color: var(--wc-parchment);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+      border-radius: 2px;
+      padding: 14px 40px;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .hero-cta::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .hero-cta:hover {
+      border-color: rgba(201, 168, 76, 0.5);
+      box-shadow: 0 0 24px rgba(107, 58, 107, 0.25);
+    }
+
+    .hero-cta:hover::before {
+      left: 100%;
+    }
+
+    /* ============================================
+       CELESTIAL DIVIDER
+       ============================================ */
+    .divider {
+      text-align: center;
+      margin: 56px 0;
+      position: relative;
+    }
+
+    .divider span {
+      font-size: 1.1rem;
+      letter-spacing: 0.5em;
+      color: var(--wc-wisteria);
+      opacity: 0.45;
+      position: relative;
+      z-index: 1;
+      background: var(--wc-void);
+      padding: 0 20px;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(155, 123, 184, 0.2), transparent);
+    }
+
+    .divider--nightshade span {
+      background: var(--wc-nightshade);
+    }
+
+    .divider--cauldron span {
+      background: var(--wc-cauldron);
+    }
+
+    /* ============================================
+       CONTAINER & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--nightshade {
+      background-color: var(--wc-nightshade);
+    }
+
+    .section--cauldron {
+      background-color: var(--wc-cauldron);
+    }
+
+    .section-label {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      color: var(--wc-wisteria);
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--wc-gold);
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--wc-bone);
+      text-align: center;
+      margin-bottom: 48px;
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 28px;
+      padding-bottom: 28px;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      color: var(--wc-moonstone);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      opacity: 0.6;
+    }
+
+    .typo-display {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--wc-gold);
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 30px rgba(201, 168, 76, 0.15);
+    }
+
+    .typo-heading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 600;
+      color: var(--wc-gold);
+      letter-spacing: 0.06em;
+    }
+
+    .typo-medieval {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.5rem;
+      color: var(--wc-copper);
+    }
+
+    .typo-body {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--wc-parchment);
+      line-height: 1.8;
+    }
+
+    .typo-alt-body {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      color: var(--wc-bone);
+      line-height: 1.8;
+    }
+
+    .typo-label {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--wc-moonstone);
+    }
+
+    .typo-right {
+      background: var(--wc-cauldron);
+      border: 1px solid rgba(201, 168, 76, 0.1);
+      border-radius: 4px;
+      padding: 28px 24px;
+    }
+
+    .typo-right h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--wc-gold);
+      letter-spacing: 0.08em;
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(155, 123, 184, 0.08);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.78rem;
+      color: var(--wc-moonstone);
+      letter-spacing: 0.05em;
+      opacity: 0.6;
+    }
+
+    .typo-pairing {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(201, 168, 76, 0.1);
+    }
+
+    .typo-pairing-item {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-desc {
+      color: var(--wc-moonstone);
+      font-size: 0.82rem;
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      background: var(--wc-cauldron);
+      border: 1px solid rgba(201, 168, 76, 0.08);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .color-chip:hover {
+      border-color: rgba(201, 168, 76, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .color-swatch {
+      height: 72px;
+      width: 100%;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--wc-parchment);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'EB Garamond', serif;
+      font-size: 0.82rem;
+      color: var(--wc-moonstone);
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--wc-cauldron);
+      border: 1px solid rgba(201, 168, 76, 0.12);
+      border-radius: 4px;
+      padding: 32px 28px;
+      position: relative;
+      box-shadow:
+        0 4px 24px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(201, 168, 76, 0.06);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(201, 168, 76, 0.28);
+      box-shadow:
+        0 8px 36px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(201, 168, 76, 0.1);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--wc-gold), transparent);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--wc-belladonna), transparent);
+    }
+
+    .card-icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--wc-gold);
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: var(--wc-bone);
+      line-height: 1.75;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--wc-wisteria);
+      border: 1px solid rgba(155, 123, 184, 0.2);
+      padding: 3px 10px;
+      margin-top: 16px;
+      margin-right: 6px;
+      border-radius: 2px;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      background: linear-gradient(180deg, rgba(45, 27, 61, 0.4) 0%, rgba(13, 13, 18, 0) 100%);
+      border-top: 1px solid rgba(155, 123, 184, 0.1);
+      border-bottom: 1px solid rgba(155, 123, 184, 0.1);
+      padding: 56px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--wc-wisteria), var(--wc-gold), var(--wc-wisteria), transparent);
+    }
+
+    .motif-banner::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--wc-gold), var(--wc-wisteria), var(--wc-gold), transparent);
+    }
+
+    .motif-row {
+      font-size: 1.6rem;
+      letter-spacing: 0.5em;
+      color: var(--wc-wisteria);
+      opacity: 0.5;
+      margin-bottom: 24px;
+    }
+
+    .motif-banner h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 600;
+      color: var(--wc-gold);
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .motif-banner p {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      color: var(--wc-bone);
+      font-size: 1.05rem;
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+      padding: 32px 0;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.08);
+    }
+
+    .principle-item:last-child {
+      border-bottom: none;
+    }
+
+    .principle-icon {
+      width: 48px;
+      height: 48px;
+      min-width: 48px;
+      background: linear-gradient(135deg, rgba(107, 58, 107, 0.3) 0%, rgba(45, 27, 61, 0.5) 100%);
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      position: relative;
+    }
+
+    .principle-icon::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(155, 123, 184, 0.1);
+    }
+
+    .principle-text h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--wc-gold);
+      margin-bottom: 8px;
+      letter-spacing: 0.04em;
+    }
+
+    .principle-text p {
+      font-size: 1rem;
+      color: var(--wc-bone);
+      line-height: 1.75;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      background: var(--wc-cauldron);
+      border: 1px solid rgba(201, 168, 76, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: rgba(201, 168, 76, 0.25);
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+    }
+
+    .effect-caption {
+      padding: 20px;
+      border-top: 1px solid rgba(201, 168, 76, 0.06);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--wc-gold);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .effect-caption p {
+      font-size: 0.88rem;
+      color: var(--wc-moonstone);
+      line-height: 1.6;
+      opacity: 0.7;
+    }
+
+    /* Effect 1: Candle Glow */
+    .effect-candle {
+      background: var(--wc-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-candle::before {
+      content: '';
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(
+        circle,
+        rgba(212, 136, 58, 0.25) 0%,
+        rgba(212, 136, 58, 0.08) 40%,
+        transparent 70%
+      );
+      border-radius: 50%;
+      animation: flicker 3s ease-in-out infinite alternate;
+    }
+
+    .effect-candle::after {
+      content: '';
+      position: absolute;
+      bottom: 40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 4px;
+      height: 24px;
+      background: linear-gradient(180deg, var(--wc-flame), var(--wc-copper));
+      border-radius: 2px;
+    }
+
+    @keyframes flicker {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      33% { opacity: 0.82; transform: scale(0.96); }
+      66% { opacity: 0.93; transform: scale(1.03); }
+    }
+
+    /* Effect 2: Parchment Grain */
+    .effect-parchment {
+      background-color: var(--wc-cauldron);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='256' height='256' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-parchment::after {
+      content: 'Aged Parchment';
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      color: var(--wc-bone);
+      opacity: 0.5;
+    }
+
+    /* Effect 3: Nightshade Gradient */
+    .effect-nightshade {
+      background: radial-gradient(
+        ellipse at 30% 50%,
+        var(--wc-nightshade) 0%,
+        var(--wc-void) 70%
+      );
+      position: relative;
+    }
+
+    .effect-nightshade::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 70% 60%,
+        rgba(107, 58, 107, 0.2) 0%,
+        transparent 60%
+      );
+    }
+
+    /* Effect 4: Smoke Wisps */
+    .effect-smoke {
+      background: var(--wc-void);
+      overflow: hidden;
+    }
+
+    .effect-smoke::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -20%;
+      width: 140%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(155, 123, 184, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 70%, rgba(107, 58, 107, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 90%, rgba(184, 188, 200, 0.04) 0%, transparent 45%);
+      animation: smoke-drift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes smoke-drift {
+      0% { transform: translateX(-5%) translateY(0); }
+      100% { transform: translateX(5%) translateY(-10%); }
+    }
+
+    /* Effect 5: Sacred Geometry */
+    .effect-geometry {
+      background: var(--wc-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-geometry::before {
+      content: '';
+      width: 100px;
+      height: 100px;
+      border: 1px solid rgba(201, 168, 76, 0.15);
+      border-radius: 50%;
+      position: relative;
+      box-shadow:
+        inset 0 0 0 20px transparent,
+        inset 0 0 0 21px rgba(155, 123, 184, 0.1);
+    }
+
+    .effect-geometry::after {
+      content: '';
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border: 1px solid rgba(155, 123, 184, 0.12);
+      transform: rotate(45deg);
+    }
+
+    /* Effect 6: Moonlight Shimmer */
+    .effect-moonlight {
+      background: linear-gradient(
+        135deg,
+        var(--wc-void) 0%,
+        rgba(45, 27, 61, 0.4) 30%,
+        var(--wc-void) 50%,
+        rgba(45, 27, 61, 0.3) 70%,
+        var(--wc-void) 100%
+      );
+      background-size: 200% 200%;
+      animation: moonshift 6s ease-in-out infinite;
+    }
+
+    @keyframes moonshift {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      border: none;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(232, 220, 200, 0.08), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    /* Primary - Belladonna */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--wc-belladonna) 0%, #4A2A4A 100%);
+      color: var(--wc-parchment);
+      border: 1px solid rgba(201, 168, 76, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #7D4A7D 0%, #5A3A5A 100%);
+      border-color: rgba(201, 168, 76, 0.5);
+      box-shadow: 0 0 20px rgba(107, 58, 107, 0.3);
+    }
+
+    /* Gold Alchemical */
+    .btn-gold {
+      background: linear-gradient(135deg, var(--wc-gold) 0%, var(--wc-copper) 100%);
+      color: var(--wc-void);
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 0 24px rgba(201, 168, 76, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Moss Herbal */
+    .btn-moss {
+      background: linear-gradient(135deg, var(--wc-moss) 0%, #3A4E2A 100%);
+      color: var(--wc-parchment);
+      border: 1px solid rgba(122, 139, 111, 0.3);
+    }
+
+    .btn-moss:hover {
+      border-color: rgba(143, 184, 123, 0.5);
+      box-shadow: 0 0 20px rgba(74, 94, 58, 0.3);
+    }
+
+    /* Outline - Spectral */
+    .btn-outline {
+      background: transparent;
+      color: var(--wc-moonstone);
+      border: 1px solid rgba(184, 188, 200, 0.3);
+    }
+
+    .btn-outline:hover {
+      color: var(--wc-gold);
+      border-color: rgba(201, 168, 76, 0.4);
+      box-shadow: 0 0 16px rgba(201, 168, 76, 0.1);
+    }
+
+    /* ============================================
+       BLOCKQUOTE / INCANTATION
+       ============================================ */
+    .incantation {
+      text-align: center;
+      padding: 48px 32px;
+      position: relative;
+    }
+
+    .incantation blockquote {
+      font-family: 'EB Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.15rem, 2vw, 1.35rem);
+      color: var(--wc-wisteria);
+      line-height: 1.9;
+      max-width: 520px;
+      margin: 0 auto 20px;
+    }
+
+    .incantation blockquote::before {
+      content: '\201C';
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 3rem;
+      color: var(--wc-gold);
+      opacity: 0.3;
+      display: block;
+      margin-bottom: -10px;
+    }
+
+    .incantation cite {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.82rem;
+      letter-spacing: 0.15em;
+      color: var(--wc-moonstone);
+      font-style: normal;
+      opacity: 0.6;
+    }
+
+    .incantation::before,
+    .incantation::after {
+      content: '';
+      position: absolute;
+      left: 25%;
+      right: 25%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201, 168, 76, 0.15), transparent);
+    }
+
+    .incantation::before { top: 0; }
+    .incantation::after { bottom: 0; }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: linear-gradient(180deg, var(--wc-void) 0%, var(--wc-nightshade) 50%, var(--wc-void) 100%);
+      padding: 80px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 360px;
+      height: 360px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.05) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .cta-container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--wc-gold);
+      margin-bottom: 12px;
+      text-shadow: 0 0 30px rgba(201, 168, 76, 0.15);
+    }
+
+    .cta-container .cta-flourish {
+      font-family: 'MedievalSharp', cursive;
+      font-size: 1.1rem;
+      color: var(--wc-copper);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .cta-container p {
+      color: var(--wc-bone);
+      font-size: 1.05rem;
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--wc-cauldron);
+      border-top: 1px solid rgba(201, 168, 76, 0.08);
+      padding: 56px 40px 36px;
+      text-align: center;
+    }
+
+    .footer-sigil {
+      font-size: 1.6rem;
+      color: var(--wc-wisteria);
+      opacity: 0.4;
+      margin-bottom: 24px;
+      letter-spacing: 0.4em;
+    }
+
+    .footer h3 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--wc-gold);
+      margin-bottom: 12px;
+      letter-spacing: 0.06em;
+    }
+
+    .footer-desc {
+      font-size: 0.95rem;
+      color: var(--wc-bone);
+      max-width: 480px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+      opacity: 0.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'Cormorant SC', serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: var(--wc-moonstone);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--wc-gold);
+    }
+
+    .footer-botanical {
+      font-size: 1.2rem;
+      letter-spacing: 0.4em;
+      color: var(--wc-sage);
+      opacity: 0.35;
+      margin-bottom: 20px;
+    }
+
+    .footer-copy {
+      font-size: 0.82rem;
+      color: rgba(184, 188, 200, 0.3);
+      font-family: 'Cormorant SC', serif;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================
+       CANDLE GLOW UTILITY
+       ============================================ */
+    .candle-glow {
+      position: relative;
+    }
+
+    .candle-glow::after {
+      content: '';
+      position: absolute;
+      top: -30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(212, 136, 58, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: flicker 3s ease-in-out infinite alternate;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE - TABLET
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 20px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: 60px 20px;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .motif-banner {
+        padding: 40px 20px;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .incantation {
+        padding: 36px 16px;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE - MOBILE
+       ============================================ */
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: clamp(1.8rem, 8vw, 2.4rem);
+      }
+
+      .hero-moon {
+        font-size: 1.4rem;
+        letter-spacing: 0.3em;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-name {
+        font-size: 0.65rem;
+      }
+
+      .color-hex {
+        font-size: 0.72rem;
+      }
+
+      .divider span {
+        font-size: 0.9rem;
+        letter-spacing: 0.3em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Witchcore</a>
+    <ul class="nav-links">
+      <li><a href="#typography">Grimoire</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-moon">&#x25CF; &#x263E; &#x25CB; &#x263D; &#x25CF;</div>
+    <h1>Witchcore</h1>
+    <p class="hero-subtitle">A mystical design system rooted in herbalism, moonlight, and the quiet power of nature. Where aged parchment meets celestial gold, and every element holds a secret.</p>
+    <a href="#typography" class="hero-cta">Open the Grimoire</a>
+  </section>
+
+  <!-- ===== CELESTIAL DIVIDER ===== -->
+  <div class="divider">
+    <span>&#x2726; &#x263E; &#x2726;</span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Inscribed &amp; Arcane</h2>
+      <p class="section-subtitle">medieval inscriptions, warm serifs, apothecary labels</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cinzel Decorative</p>
+            <p class="typo-display">Ancient Wisdom</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cinzel</p>
+            <p class="typo-heading">Materia Medica</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Decorative / MedievalSharp</p>
+            <p class="typo-medieval">Herbalist's Journal Entries</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / EB Garamond</p>
+            <p class="typo-body">An elegant old-style serif with excellent readability for long passages of herbal lore and grimoire entries.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Alt Body / Libre Baskerville</p>
+            <p class="typo-alt-body">A warm, sturdy serif with classic proportions for scholarly notation and remedy descriptions.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Labels / Cormorant SC</p>
+            <p class="typo-label">Apothecary Labels &amp; Navigation</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4rem</span>
+              <span style="font-family: 'Cinzel Decorative', serif; font-size: 1.6rem; color: var(--wc-gold);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 1.3rem; font-weight: 600; color: var(--wc-gold);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'MedievalSharp', cursive; font-size: 1.1rem; color: var(--wc-copper);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--wc-parchment);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Libre Baskerville', serif; font-size: 0.95rem; color: var(--wc-bone);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Cormorant SC', serif; font-weight: 500; font-size: 0.82rem; color: var(--wc-moonstone); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing">
+            <h3 style="margin-bottom: 16px;">Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Cinzel Decorative', serif; color: var(--wc-gold);">Cinzel Decorative</strong> + <strong style="color: var(--wc-parchment);">EB Garamond</strong><br>
+              <span class="typo-pairing-desc">Ancient grimoire, inscribed and scholarly</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Cinzel', serif; color: var(--wc-gold);">Cinzel</strong> + <strong style="font-family: 'Libre Baskerville', serif; color: var(--wc-parchment);">Libre Baskerville</strong><br>
+              <span class="typo-pairing-desc">Carved stone meets classic bookwork</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'MedievalSharp', cursive; color: var(--wc-copper);">MedievalSharp</strong> + <strong style="color: var(--wc-parchment);">EB Garamond</strong><br>
+              <span class="typo-pairing-desc">Medieval manuscript, herbalist's journal</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CELESTIAL DIVIDER ===== -->
+  <div class="divider">
+    <span>&#x263E; &#x25CB; &#x263D;</span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--nightshade" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Forest Apothecary &amp; Alchemy</h2>
+      <p class="section-subtitle">darkness, dried herbs, metallic gold, and moonstone silver</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0D0D12;"></div>
+          <div class="color-info">
+            <div class="color-name">Midnight Void</div>
+            <div class="color-hex">#0D0D12</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A24;"></div>
+          <div class="color-info">
+            <div class="color-name">Cauldron Black</div>
+            <div class="color-hex">#1A1A24</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D1B3D;"></div>
+          <div class="color-info">
+            <div class="color-name">Nightshade Purple</div>
+            <div class="color-hex">#2D1B3D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B3A6B;"></div>
+          <div class="color-info">
+            <div class="color-name">Belladonna</div>
+            <div class="color-hex">#6B3A6B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9B7BB8;"></div>
+          <div class="color-info">
+            <div class="color-name">Wisteria Haze</div>
+            <div class="color-hex">#9B7BB8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A8B6F;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Sage</div>
+            <div class="color-hex">#7A8B6F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A5E3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Moss</div>
+            <div class="color-hex">#4A5E3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #C9A84C, #D4B85C, #C9A84C); position: relative;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at 30% 35%, rgba(255,255,255,0.2) 0%, transparent 50%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Apothecary Gold</div>
+            <div class="color-hex">#C9A84C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A0714F;"></div>
+          <div class="color-info">
+            <div class="color-name">Tarnished Copper</div>
+            <div class="color-hex">#A0714F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8DCC8;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment Glow</div>
+            <div class="color-hex">#E8DCC8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4C8B0;"></div>
+          <div class="color-info">
+            <div class="color-name">Bone White</div>
+            <div class="color-hex">#D4C8B0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4883A;"></div>
+          <div class="color-info">
+            <div class="color-name">Candle Flame</div>
+            <div class="color-hex">#D4883A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6E2C2C;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Blood</div>
+            <div class="color-hex">#6E2C2C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8BCC8;"></div>
+          <div class="color-info">
+            <div class="color-name">Moonstone Silver</div>
+            <div class="color-hex">#B8BCC8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8FB87B;"></div>
+          <div class="color-info">
+            <div class="color-name">Absinthe Green</div>
+            <div class="color-hex">#8FB87B</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CELESTIAL DIVIDER ===== -->
+  <div class="divider divider--nightshade" style="background: var(--wc-nightshade);">
+    <span>&#x2726; &#x2726; &#x2726;</span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Apothecary Specimens</h2>
+      <p class="section-subtitle">grimoire cards, altar compositions, and aged-parchment containers</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-icon">&#x263E;</span>
+          <h3>Moon Phase Tracking</h3>
+          <p>Celestial cycles dictate the rhythm of the interface. Waxing moons for growth phases, waning moons for release. Each phase shifts the palette toward warmer or cooler tones.</p>
+          <span class="tag">Celestial</span>
+          <span class="tag">Cycle</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#x2618;</span>
+          <h3>Botanical Line Art</h3>
+          <p>Hand-drawn herbs, mushrooms, ferns, and wildflowers serve as primary decorative elements. Thin strokes at low opacity create an etched, delicate quality.</p>
+          <span class="tag">Botanical</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#x2697;</span>
+          <h3>Apothecary Labels</h3>
+          <p>Vintage label frames, ornate borders, and specimen-catalog typography give content areas an old-world medicinal feel. Each card is a labeled specimen jar.</p>
+          <span class="tag">Frame</span>
+          <span class="tag">Label</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#x2B23;</span>
+          <h3>Crystal Formations</h3>
+          <p>Geometric crystal shapes and faceted forms serve as accents. Prismatic light refractions add subtle depth to cards, headers, and decorative fills throughout.</p>
+          <span class="tag">Geometry</span>
+          <span class="tag">Accent</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#x2604;</span>
+          <h3>Smoke &amp; Mist Layers</h3>
+          <p>Translucent layered gradients drift across sections, creating atmosphere. Multiple radial gradients overlap at low opacity to simulate incense or morning fog.</p>
+          <span class="tag">Gradient</span>
+          <span class="tag">Layer</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#x2741;</span>
+          <h3>Candle-Glow Lighting</h3>
+          <p>Warm radial gradients and soft amber glows simulate candlelight, creating focal points against dark backgrounds. The flicker animation breathes life into stillness.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">Warmth</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-row">
+      <span>&#x2726;</span>
+      <span>&#x2618;</span>
+      <span>&#x263E;</span>
+      <span>&#x2741;</span>
+      <span>&#x25CB;</span>
+      <span>&#x2618;</span>
+      <span>&#x263D;</span>
+      <span>&#x2741;</span>
+      <span>&#x2726;</span>
+    </div>
+    <h2>Root, Leaf &amp; Celestial Rhythm</h2>
+    <p>From dried lavender bundles to moonlit crystal grids, every element holds intention</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES (4) ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Witchcore Philosophy</h2>
+      <p class="section-subtitle">contemplative enchantment, intentional mystery, sacred nature</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-icon">&#x263E;</div>
+          <div class="principle-text">
+            <h3>Mystery Over Shock</h3>
+            <p>Create intrigue and curiosity, not horror. The mood is contemplative enchantment, not fear. Every shadowed corner should invite exploration, every glow should promise discovery. The interface whispers; it never screams.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">&#x2726;</div>
+          <div class="principle-text">
+            <h3>Darkness as Canvas</h3>
+            <p>Use deep dark backgrounds as active design space, not mere absence. Let elements emerge from shadow the way candlelight reveals objects in a dim room. The void is not empty -- it breathes, it holds, it frames.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">&#x2618;</div>
+          <div class="principle-text">
+            <h3>Nature as Sacred Language</h3>
+            <p>Every decorative element should reference the natural world -- plants, minerals, celestial bodies, the elements. The moon speaks of cycles, herbs of healing, crystals of clarity. Design with reverence for these connections.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">&#x2697;</div>
+          <div class="principle-text">
+            <h3>Warm Light in Cold Dark</h3>
+            <p>Contrast the cool dark palette with warm golden glows and amber highlights for emotional warmth. Like a single candle in a stone chamber, warmth becomes precious when surrounded by darkness.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CELESTIAL DIVIDER ===== -->
+  <div class="divider">
+    <span>&#x25CF; &#x263E; &#x25CB; &#x263D; &#x25CF;</span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE (6 CSS-ONLY EFFECTS) ===== -->
+  <section class="section section--cauldron" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Enchantments</h2>
+      <p class="section-subtitle">atmosphere and texture, conjured without a single image asset</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-candle"></div>
+          <div class="effect-caption">
+            <h4>Candle Glow</h4>
+            <p>Radial gradient with a flicker animation creates the warm pulse of candlelight.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-parchment"></div>
+          <div class="effect-caption">
+            <h4>Parchment Grain</h4>
+            <p>SVG noise filter applied as background-image adds tactile, aged surface texture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-nightshade"></div>
+          <div class="effect-caption">
+            <h4>Nightshade Depths</h4>
+            <p>Overlapping radial gradients in deep purple create shadowed, dimensional voids.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-smoke"></div>
+          <div class="effect-caption">
+            <h4>Smoke Wisps</h4>
+            <p>Drifting translucent gradients at low opacity simulate incense or morning mist.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-geometry"></div>
+          <div class="effect-caption">
+            <h4>Sacred Geometry</h4>
+            <p>Layered CSS borders and shapes form occult geometric patterns and sigils.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-moonlight"></div>
+          <div class="effect-caption">
+            <h4>Moonlight Shimmer</h4>
+            <p>Animated gradient background-position shift creates a soft, silvered pulse.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CELESTIAL DIVIDER ===== -->
+  <div class="divider divider--cauldron" style="background: var(--wc-cauldron);">
+    <span>&#x2726; &#x263E; &#x2726;</span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE (4 VARIANTS) ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Enchanted Buttons</h2>
+      <p class="section-subtitle">belladonna, alchemical gold, herbal moss, spectral outline</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Belladonna</a>
+        <a href="#" class="btn btn-gold">Alchemical Gold</a>
+        <a href="#" class="btn btn-moss">Herbal Moss</a>
+        <a href="#" class="btn btn-outline">Spectral Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE / INCANTATION ===== -->
+  <section class="incantation">
+    <blockquote>
+      By root and stem, by leaf and flower,<br>
+      by moon that marks the witching hour,<br>
+      what sleeps in soil shall rise to light &mdash;<br>
+      the garden keeps its own at night.
+    </blockquote>
+    <cite>&mdash; Traditional Herbalist's Verse</cite>
+  </section>
+
+  <!-- ===== CELESTIAL DIVIDER ===== -->
+  <div class="divider">
+    <span>&#x263E; &#x25CB; &#x263D;</span>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-container candle-glow">
+      <h2>The Veil Grows Thin</h2>
+      <span class="cta-flourish">design with intention, mystery &amp; reverence</span>
+      <p>
+        Witchcore embraces the dark, moody palette of midnight forests and candlelit altars. Ground every layout in nightshade purples and cauldron blacks, accent with apothecary gold, and let the botanical line art whisper through the negative space.
+      </p>
+      <a href="#hero" class="btn btn-primary">Return to the Beginning</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-sigil">&#x25CF; &#x263E; &#x25CB; &#x263D; &#x25CF;</div>
+    <h3>Witchcore</h3>
+    <p class="footer-desc">
+      A design aesthetic reference celebrating mystical, nature-rooted visual language. Aged parchment, celestial gold, and botanical shadow &mdash; all without a single image asset.
+    </p>
+    <div class="footer-links">
+      <a href="#typography">Grimoire</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <div class="footer-botanical">&#x2618; &#x2741; &#x2618; &#x2741; &#x2618;</div>
+    <p class="footer-copy">Design Aesthetic Reference &bull; Witchcore &bull; Crafted under the waning moon</p>
+  </footer>
+
+</body>
+</html>

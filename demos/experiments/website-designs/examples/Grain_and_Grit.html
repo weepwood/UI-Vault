@@ -1,0 +1,1884 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grain and Grit -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:wght@300;400;600;700&family=Inter:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=Bitter:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Dark Tones --- */
+      --grit-charcoal: #1a1916;
+      --grit-concrete: #2c2b28;
+      --grit-quarry: #3d3a35;
+      --grit-slate: #5a5650;
+
+      /* --- Mid Tones --- */
+      --grit-cement: #7d7870;
+      --grit-pumice: #9e978d;
+      --grit-sandstone: #b5a998;
+
+      /* --- Light Tones --- */
+      --grit-linen: #d6ccbc;
+      --grit-paper: #eae3d6;
+
+      /* --- Warm Accents --- */
+      --grit-ochre: #a6743b;
+      --grit-rust: #8b4f2a;
+      --grit-clay: #6e3e28;
+
+      /* --- Cool Accents --- */
+      --grit-blue: #5b6a78;
+      --grit-storm: #47545f;
+      --grit-lichen: #6b7a5e;
+
+      /* --- Functional Tokens --- */
+      --grit-bg-primary: var(--grit-charcoal);
+      --grit-bg-secondary: var(--grit-concrete);
+      --grit-bg-surface: var(--grit-quarry);
+      --grit-text-primary: var(--grit-paper);
+      --grit-text-secondary: var(--grit-linen);
+      --grit-text-muted: var(--grit-cement);
+      --grit-accent-primary: var(--grit-ochre);
+      --grit-accent-strong: var(--grit-rust);
+      --grit-accent-cool: var(--grit-blue);
+      --grit-border: var(--grit-slate);
+      --grit-border-subtle: rgba(90, 86, 80, 0.4);
+
+      /* --- Shadows --- */
+      --grit-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.25), 0 6px 20px rgba(0, 0, 0, 0.15);
+      --grit-shadow-md: 0 2px 6px rgba(0, 0, 0, 0.3), 0 10px 30px rgba(0, 0, 0, 0.2);
+      --grit-shadow-lg: 0 4px 12px rgba(0, 0, 0, 0.35), 0 16px 40px rgba(0, 0, 0, 0.25);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Source Serif 4', 'Bitter', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--grit-text-secondary);
+      background: var(--grit-bg-primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1, h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      color: var(--grit-paper);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 600;
+      color: var(--grit-sandstone);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 1.1rem;
+    }
+
+    /* ============================================
+       GLOBAL FILM GRAIN OVERLAY
+       ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      z-index: 9999;
+      animation: grit-grain-drift 0.8s steps(4) infinite;
+    }
+
+    @keyframes grit-grain-drift {
+      0%   { transform: translate(0, 0); }
+      25%  { transform: translate(-2px, 1px); }
+      50%  { transform: translate(1px, -1px); }
+      75%  { transform: translate(-1px, 2px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--grit-charcoal);
+      border-bottom: 1px solid var(--grit-border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='ng'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ng)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .nav-brand {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.3rem;
+      color: var(--grit-paper);
+      letter-spacing: 0.02em;
+      position: relative;
+      z-index: 1;
+      transition: color 0.15s ease;
+    }
+
+    .nav-brand:hover {
+      color: var(--grit-ochre);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--grit-cement);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding-bottom: 0.25rem;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--grit-ochre);
+      border-bottom-color: var(--grit-ochre);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 2rem;
+      background:
+        radial-gradient(ellipse at center, transparent 35%, rgba(26, 25, 22, 0.75) 100%),
+        radial-gradient(circle at 20% 80%, rgba(166, 116, 59, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 85% 15%, rgba(71, 84, 95, 0.08) 0%, transparent 45%),
+        var(--grit-charcoal);
+      overflow: hidden;
+    }
+
+    /* Heavy grain on hero */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.1;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hg)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+
+    /* Subtle scan lines */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 0, 0, 0.015) 3px,
+        rgba(0, 0, 0, 0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 780px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--grit-cement);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .hero-label::after {
+      content: '';
+      flex: 1;
+      max-width: 120px;
+      height: 1px;
+      background: var(--grit-slate);
+    }
+
+    .hero h1 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      line-height: 1.05;
+      color: var(--grit-paper);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero h1 em {
+      color: var(--grit-ochre);
+      font-style: normal;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.85rem, 1.5vw, 1.05rem);
+      font-weight: 500;
+      color: var(--grit-cement);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .hero-body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      color: var(--grit-sandstone);
+      line-height: 1.8;
+      max-width: 600px;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative dust particle spots in hero */
+    .hero-dust {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 12% 25%, rgba(234, 227, 214, 0.04) 0%, transparent 3px),
+        radial-gradient(circle at 88% 18%, rgba(234, 227, 214, 0.03) 0%, transparent 2px),
+        radial-gradient(circle at 45% 82%, rgba(234, 227, 214, 0.035) 0%, transparent 2.5px),
+        radial-gradient(circle at 72% 55%, rgba(234, 227, 214, 0.025) 0%, transparent 1.5px),
+        radial-gradient(circle at 28% 68%, rgba(166, 116, 59, 0.04) 0%, transparent 2px),
+        radial-gradient(circle at 92% 78%, rgba(234, 227, 214, 0.03) 0%, transparent 2px),
+        radial-gradient(circle at 55% 35%, rgba(166, 116, 59, 0.03) 0%, transparent 1.5px),
+        radial-gradient(circle at 8% 88%, rgba(234, 227, 214, 0.02) 0%, transparent 2px);
+    }
+
+    /* ============================================
+       STIPPLE DIVIDER
+       ============================================ */
+    .stipple-divider {
+      border: none;
+      height: 2px;
+      background: var(--grit-slate);
+      position: relative;
+      margin: 0;
+      opacity: 0.4;
+    }
+
+    .stipple-divider::before {
+      content: '';
+      position: absolute;
+      inset: -8px 0;
+      background-image: radial-gradient(circle, var(--grit-cement) 0.7px, transparent 0.7px);
+      background-size: 6px 6px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .stipple-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--grit-ochre);
+      box-shadow:
+        -12px 0 0 2px var(--grit-ochre),
+        12px 0 0 2px var(--grit-ochre);
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--charcoal {
+      background: var(--grit-charcoal);
+    }
+
+    .section--concrete {
+      background: var(--grit-concrete);
+    }
+
+    .section--quarry {
+      background: var(--grit-quarry);
+    }
+
+    .section--storm {
+      background: var(--grit-storm);
+      color: var(--grit-linen);
+    }
+
+    /* Section grain overlay */
+    .section--grained {
+      overflow: hidden;
+    }
+
+    .section--grained::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='sg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23sg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--grit-ochre);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      text-align: center;
+      color: var(--grit-paper);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      font-style: italic;
+      text-align: center;
+      color: var(--grit-cement);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.7rem 1.8rem;
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.15s ease;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+    }
+
+    /* Grain on button */
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='bg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23bg)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    /* Primary -- ochre */
+    .btn-primary {
+      background: var(--grit-ochre);
+      color: var(--grit-charcoal);
+      box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-primary:hover {
+      background: var(--grit-rust);
+      color: var(--grit-paper);
+      box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    /* Ghost / outline */
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--grit-slate);
+      color: var(--grit-sandstone);
+    }
+
+    .btn-ghost::before {
+      display: none;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--grit-ochre);
+      color: var(--grit-ochre);
+      background: rgba(166, 116, 59, 0.06);
+    }
+
+    /* Rust accent */
+    .btn-rust {
+      background: var(--grit-rust);
+      color: var(--grit-paper);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-rust:hover {
+      background: var(--grit-clay);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Cool accent */
+    .btn-cool {
+      background: var(--grit-blue);
+      color: var(--grit-paper);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-cool:hover {
+      background: var(--grit-storm);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    /* Large variant */
+    .btn-lg {
+      padding: 1rem 2.5rem;
+      font-size: 0.95rem;
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--grit-ochre);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--grit-slate);
+      opacity: 0.4;
+    }
+
+    .typo-display {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--grit-paper);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      text-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .typo-heading {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--grit-linen);
+      line-height: 1.2;
+    }
+
+    .typo-editorial {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-style: italic;
+      color: var(--grit-ochre);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .typo-body {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--grit-sandstone);
+    }
+
+    .typo-mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--grit-cement);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-ui {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--grit-pumice);
+    }
+
+    .typo-right {
+      background: var(--grit-concrete);
+      border: 1px solid var(--grit-border-subtle);
+      border-radius: 2px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='trg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23trg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .typo-right h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.4rem;
+      color: var(--grit-paper);
+      margin-bottom: 16px;
+      text-transform: none;
+      letter-spacing: -0.01em;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--grit-sandstone);
+      margin-bottom: 14px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--grit-border-subtle);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--grit-cement);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      border-radius: 2px;
+      overflow: hidden;
+      background: var(--grit-concrete);
+      border: 1px solid var(--grit-border-subtle);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--grit-shadow-md);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grain overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='csg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23csg)'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--grit-linen);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--grit-cement);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--grit-concrete);
+      border: 1px solid var(--grit-border-subtle);
+      border-radius: 2px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+      box-shadow: var(--grit-shadow-sm);
+    }
+
+    /* Card grain */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='cg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23cg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    /* Ochre bottom accent */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--grit-ochre) 0%, var(--grit-rust) 50%, var(--grit-ochre) 100%);
+      opacity: 0.5;
+    }
+
+    .card:hover {
+      box-shadow: var(--grit-shadow-md);
+      transform: translateY(-1px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+      position: relative;
+    }
+
+    .card-icon--ochre {
+      background: var(--grit-ochre);
+      box-shadow: 0 2px 8px rgba(166, 116, 59, 0.25);
+    }
+
+    .card-icon--rust {
+      background: var(--grit-rust);
+      box-shadow: 0 2px 8px rgba(139, 79, 42, 0.25);
+    }
+
+    .card-icon--clay {
+      background: var(--grit-clay);
+      box-shadow: 0 2px 8px rgba(110, 62, 40, 0.25);
+    }
+
+    .card-icon--blue {
+      background: var(--grit-blue);
+      box-shadow: 0 2px 8px rgba(91, 106, 120, 0.25);
+    }
+
+    .card-icon--storm {
+      background: var(--grit-storm);
+      box-shadow: 0 2px 8px rgba(71, 84, 95, 0.25);
+    }
+
+    .card-icon--lichen {
+      background: var(--grit-lichen);
+      box-shadow: 0 2px 8px rgba(107, 122, 94, 0.25);
+    }
+
+    .card h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      color: var(--grit-paper);
+      margin-bottom: 0.75rem;
+      font-size: 1.25rem;
+      text-transform: none;
+      letter-spacing: normal;
+    }
+
+    .card p {
+      font-family: 'Source Serif 4', Georgia, serif;
+      color: var(--grit-sandstone);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    .card-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--grit-cement);
+      margin-top: 1rem;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--grit-border-subtle);
+      background: var(--grit-concrete);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--grit-linen);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 0.85rem;
+      color: var(--grit-cement);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Film Grain Overlay */
+    .effect-film-grain {
+      background: var(--grit-quarry);
+    }
+
+    .effect-film-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.18;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='efg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23efg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+      animation: grit-grain-drift 0.8s steps(4) infinite;
+    }
+
+    .effect-film-grain::after {
+      content: 'GRAIN';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--grit-paper);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 2: Grainy Gradient */
+    .effect-grainy-gradient {
+      background: linear-gradient(135deg, var(--grit-charcoal) 0%, var(--grit-quarry) 40%, var(--grit-concrete) 100%);
+    }
+
+    .effect-grainy-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='egg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23egg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      mix-blend-mode: overlay;
+      filter: contrast(1.5) brightness(1.2);
+      pointer-events: none;
+    }
+
+    .effect-grainy-gradient::after {
+      content: 'DITHER';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--grit-linen);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 3: Warm Ochre Gradient */
+    .effect-warm-gradient {
+      background: linear-gradient(160deg, var(--grit-charcoal) 0%, var(--grit-clay) 45%, var(--grit-rust) 100%);
+    }
+
+    .effect-warm-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='ewg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ewg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .effect-warm-gradient::after {
+      content: 'WARMTH';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--grit-paper);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 4: Stipple Texture */
+    .effect-stipple {
+      background: var(--grit-quarry);
+      background-image:
+        radial-gradient(circle, var(--grit-cement) 0.8px, transparent 0.8px),
+        radial-gradient(circle, var(--grit-cement) 0.5px, transparent 0.5px);
+      background-size: 8px 8px, 5px 5px;
+      background-position: 0 0, 3px 3px;
+    }
+
+    .effect-stipple::after {
+      content: 'STIPPLE';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--grit-paper);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 5: Vignette */
+    .effect-vignette {
+      background: var(--grit-concrete);
+    }
+
+    .effect-vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(26, 25, 22, 0.7) 100%
+      );
+      pointer-events: none;
+    }
+
+    .effect-vignette::after {
+      content: 'VIGNETTE';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--grit-ochre);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 6: Cool Storm */
+    .effect-storm {
+      background: linear-gradient(145deg, var(--grit-charcoal) 0%, var(--grit-storm) 50%, var(--grit-blue) 100%);
+    }
+
+    .effect-storm::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.12;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='esg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23esg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    .effect-storm::after {
+      content: 'STORM';
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 2.2rem;
+      color: var(--grit-paper);
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px;
+      background: var(--grit-concrete);
+      border: 1px solid var(--grit-border-subtle);
+      border-left: 3px solid var(--grit-ochre);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='qg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23qg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: var(--grit-linen);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 4rem;
+      color: var(--grit-ochre);
+      opacity: 0.4;
+      position: absolute;
+      top: -0.5rem;
+      left: -0.25rem;
+      line-height: 1;
+    }
+
+    .quote-block cite {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--grit-cement);
+      display: block;
+      position: relative;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--grit-concrete);
+      border: 1px solid var(--grit-border-subtle);
+      border-radius: 2px;
+      padding: 56px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.05;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='ctag'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23ctag)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    /* Top ochre rule */
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--grit-ochre), var(--grit-rust), var(--grit-ochre));
+      opacity: 0.6;
+    }
+
+    .cta-container h2 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      color: var(--grit-paper);
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .cta-container .cta-tagline {
+      font-family: 'Libre Baskerville', Georgia, serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--grit-ochre);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .cta-container p {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1rem;
+      color: var(--grit-sandstone);
+      line-height: 1.8;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--grit-charcoal);
+      padding: 56px 24px 28px;
+      text-align: center;
+      position: relative;
+      border-top: 1px solid var(--grit-border-subtle);
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'DM Serif Display', Georgia, serif;
+      font-size: 1.6rem;
+      color: var(--grit-paper);
+      margin-bottom: 10px;
+      text-transform: none;
+      letter-spacing: -0.01em;
+    }
+
+    .footer p {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 0.92rem;
+      color: var(--grit-cement);
+      max-width: 500px;
+      margin: 0 auto 24px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--grit-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--grit-ochre);
+    }
+
+    .footer-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .footer-dots span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--grit-slate);
+      opacity: 0.5;
+    }
+
+    .footer-dots span:nth-child(2) {
+      background: var(--grit-ochre);
+      opacity: 0.6;
+    }
+
+    .footer-dots span:nth-child(4) {
+      background: var(--grit-ochre);
+      opacity: 0.6;
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--grit-slate);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .hero {
+        padding: 4rem 1.5rem;
+        min-height: 80vh;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 36px 24px;
+      }
+
+      .cta-container {
+        padding: 40px 24px;
+        margin: 0 8px;
+      }
+
+      .footer {
+        padding: 40px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 10px;
+      }
+
+      .btn {
+        padding: 0.6rem 1.4rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 48px;
+      }
+
+      .color-info {
+        padding: 8px 8px;
+      }
+
+      .color-name {
+        font-size: 0.7rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      body::before {
+        animation: none;
+      }
+
+      .effect-film-grain::before {
+        animation: none;
+      }
+
+      .card,
+      .color-chip,
+      .btn,
+      .effect-demo,
+      .nav-links a,
+      .nav-brand,
+      .footer-links a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Grain &amp; Grit</a>
+    <div class="nav-links">
+      <a href="#hero">Surface</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-dust"></div>
+
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1>Grain <em>&amp;</em> Grit</h1>
+      <p class="hero-subtitle">Texture-Forward Analog Authenticity</p>
+      <p class="hero-body">
+        A design language that celebrates the raw, tactile qualities of analog media &mdash; film grain, noise overlays, rough surfaces, and the beautiful imperfections of physical production. Every surface carries evidence of time, touch, and physical reality.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary btn-lg">Explore Components</a>
+        <a href="#palette" class="btn btn-ghost btn-lg">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--charcoal section--grained" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Ink Traps &amp; Rough Serifs</h2>
+      <p class="section-subtitle">imperfect letterforms, industrial mono, warm editorial weight</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / DM Serif Display</p>
+            <p class="typo-display">Raw Surface</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Libre Baskerville</p>
+            <p class="typo-heading">Warm Editorial Serifs</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Editorial / Playfair Display</p>
+            <p class="typo-editorial">Analog Warmth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Source Serif 4</p>
+            <p class="typo-body">Readable serif text for long-form content against textured backgrounds. The grain enhances rather than overwhelms the reading experience.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Mono / Space Mono</p>
+            <p class="typo-mono">EXPOSURE: ISO 3200 // GRAIN: COARSE // FILM: EXPIRED TRI-X</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI / Inter</p>
+            <p class="typo-ui">Navigation &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'DM Serif Display', Georgia, serif; font-size: 2rem; color: var(--grit-paper);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Libre Baskerville', Georgia, serif; font-size: 1.4rem; font-weight: 700; color: var(--grit-linen);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.6rem</span>
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.3rem; font-style: italic; color: var(--grit-ochre);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Source Serif 4', Georgia, serif; font-size: 1rem; color: var(--grit-sandstone);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--grit-cement);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--grit-pumice); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--grit-border-subtle);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'DM Serif Display', Georgia, serif; color: var(--grit-ochre);">DM Serif Display</strong> + <strong style="color: var(--grit-linen);">Source Serif 4</strong><br>
+              <span style="color: var(--grit-cement); font-size: 0.82rem;">Darkroom print: elegant display with sturdy body text</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Inter', sans-serif; font-weight: 700; color: var(--grit-ochre);">Inter 700</strong> + <strong style="font-family: 'Space Mono', monospace; color: var(--grit-linen);">Space Mono</strong><br>
+              <span style="color: var(--grit-cement); font-size: 0.82rem;">Industrial manual: technical, precise, factory documentation</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Libre Baskerville', Georgia, serif; color: var(--grit-ochre);">Libre Baskerville</strong> + <strong style="font-family: 'IBM Plex Mono', monospace; color: var(--grit-linen);">IBM Plex Mono</strong><br>
+              <span style="color: var(--grit-cement); font-size: 0.82rem;">Analog terminal: warm headings with mechanical body text</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--concrete section--grained" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Material Earth Tones</h2>
+      <p class="section-subtitle">wet concrete, oxidized metal, photographic sepia, slate stone</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a1916;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Charcoal</div>
+            <div class="color-hex">#1A1916</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2c2b28;"></div>
+          <div class="color-info">
+            <div class="color-name">Wet Concrete</div>
+            <div class="color-hex">#2C2B28</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3d3a35;"></div>
+          <div class="color-info">
+            <div class="color-name">Quarry Stone</div>
+            <div class="color-hex">#3D3A35</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5a5650;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Gray</div>
+            <div class="color-hex">#5A5650</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7d7870;"></div>
+          <div class="color-info">
+            <div class="color-name">Cement Dust</div>
+            <div class="color-hex">#7D7870</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9e978d;"></div>
+          <div class="color-info">
+            <div class="color-name">Pumice</div>
+            <div class="color-hex">#9E978D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b5a998;"></div>
+          <div class="color-info">
+            <div class="color-name">Sandstone</div>
+            <div class="color-hex">#B5A998</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d6ccbc;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Linen</div>
+            <div class="color-hex">#D6CCBC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #eae3d6;"></div>
+          <div class="color-info">
+            <div class="color-name">Unbleached Paper</div>
+            <div class="color-hex">#EAE3D6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a6743b;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Ochre</div>
+            <div class="color-hex">#A6743B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b4f2a;"></div>
+          <div class="color-info">
+            <div class="color-name">Rust Oxide</div>
+            <div class="color-hex">#8B4F2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6e3e28;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Clay</div>
+            <div class="color-hex">#6E3E28</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5b6a78;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Blue</div>
+            <div class="color-hex">#5B6A78</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #47545f;"></div>
+          <div class="color-info">
+            <div class="color-name">Storm Gray</div>
+            <div class="color-hex">#47545F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6b7a5e;"></div>
+          <div class="color-info">
+            <div class="color-name">Lichen Green</div>
+            <div class="color-hex">#6B7A5E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--charcoal section--grained" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Textured Cards &amp; Rough Surfaces</h2>
+      <p class="section-subtitle">every surface carries evidence of physical material</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--ochre">&#9683;</div>
+          <h3>Film Grain Noise</h3>
+          <p>Persistent, fine-grained noise covering backgrounds and images, simulating the silver halide crystals of analog film at ISO 800-3200.</p>
+          <div class="card-meta">Texture // Overlay</div>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rust">&#9638;</div>
+          <h3>Rough Surface Texture</h3>
+          <p>Concrete, stone, uncoated paper, raw canvas, and weathered wood serve as visual references for background treatments and container surfaces.</p>
+          <div class="card-meta">Material // Surface</div>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--clay">&#10022;</div>
+          <h3>Stipple &amp; Speckle</h3>
+          <p>Dense fields of tiny dots and irregular marks that create visual density and tactile suggestion without specific imagery.</p>
+          <div class="card-meta">Pattern // Detail</div>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#9681;</div>
+          <h3>Soft Vignetting</h3>
+          <p>Gradual darkening at edges draws focus inward and references lens optics and analog printing falloff from the darkroom process.</p>
+          <div class="card-meta">Effect // Focus</div>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--storm">&#9670;</div>
+          <h3>Layered Z-Depth</h3>
+          <p>Cards and surfaces use grain intensity and shadow to communicate elevation. Rougher, noisier surfaces feel closer to the viewer.</p>
+          <div class="card-meta">Layout // Depth</div>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--lichen">&#9752;</div>
+          <h3>Analog Photography</h3>
+          <p>Light leaks, halation, depth-of-field blur, and expired film artifacts recall darkroom printing and chemical development.</p>
+          <div class="card-meta">Reference // Analog</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--concrete section--grained" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Grain</h2>
+      <p class="section-subtitle">all SVG noise, blend modes, and analog techniques &mdash; no image assets</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-film-grain"></div>
+          <div class="effect-caption">
+            <h4>Film Grain Overlay</h4>
+            <p>SVG feTurbulence fractalNoise at high frequency with animated drift for organic movement.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-grainy-gradient"></div>
+          <div class="effect-caption">
+            <h4>Grainy Gradient</h4>
+            <p>Smooth color transition with visible dithering noise for analog color blending.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-warm-gradient"></div>
+          <div class="effect-caption">
+            <h4>Warm Ochre Wash</h4>
+            <p>Clay-to-rust gradient with layered noise simulating aged photographic toning.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stipple"></div>
+          <div class="effect-caption">
+            <h4>Stipple Dots</h4>
+            <p>Dual-layer radial gradient dots at offset positions for ink-stipple illustration texture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-vignette"></div>
+          <div class="effect-caption">
+            <h4>Lens Vignette</h4>
+            <p>Radial gradient darkening from center to edges simulating analog lens optical falloff.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-storm"></div>
+          <div class="effect-caption">
+            <h4>Cool Storm Wash</h4>
+            <p>Storm gray to slate blue gradient with gritty noise for cold, atmospheric surfaces.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--quarry section--grained">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Tactile Buttons</h2>
+      <p class="section-subtitle">solid, grounded, with grain texture on every surface</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Ochre</a>
+        <a href="#" class="btn btn-rust">Rust Accent</a>
+        <a href="#" class="btn btn-cool">Cool Slate</a>
+        <a href="#" class="btn btn-ghost">Ghost Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--charcoal section--grained">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          &nbsp;&nbsp;&nbsp;Grain is not decorative afterthought but structural foundation &mdash; it is the first thing applied and the last thing seen. Every surface carries the beautiful imperfections of physical production.
+        </blockquote>
+        <cite>&mdash; The Grain and Grit Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--concrete section--grained">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Texture as Foundation</h2>
+        <p class="cta-tagline">warmth, authenticity, resistance to digital homogeneity</p>
+        <p>
+          The Grain and Grit aesthetic applies film grain first, then composes. Muted ochres, slates, and warm grays reinforce material honesty. Every rough edge is a deliberate design choice &mdash; chaos controlled, never accidental.
+        </p>
+        <a href="#hero" class="btn btn-primary btn-lg">Back to the Surface</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STIPPLE DIVIDER ===== -->
+  <hr class="stipple-divider">
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Grain &amp; Grit</h3>
+      <p>
+        A design aesthetic reference celebrating texture-forward analog authenticity. Film grain, noise overlays, rough surfaces, and the beautiful imperfections of physical production &mdash; all rendered in pure CSS.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Surface</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Grain and Grit &bull; Texture as Foundation</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,2285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Collage -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600;700&family=Patrick+Hand&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito:wght@300;400;600;700&family=Permanent+Marker&family=Special+Elite&family=Shadows+Into+Light&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Base Tones --- */
+      --collage-kraft: #C4A882;
+      --collage-cream: #F5EDE0;
+      --collage-white: #FAFAF5;
+      --collage-cardboard: #8B7355;
+      --collage-sepia: #A08060;
+
+      /* --- Neutrals --- */
+      --collage-ink: #2B2B2B;
+      --collage-pencil: #7A7A7A;
+
+      /* --- Playful Accents --- */
+      --collage-pink: #E8668A;
+      --collage-coral: #E87461;
+      --collage-mint: #7EC8A8;
+      --collage-blue: #5B8DB8;
+      --collage-purple: #8B6DAF;
+      --collage-yellow: #F2D166;
+      --collage-teal: #4A9E9E;
+      --collage-peach: #F0C4A8;
+
+      /* --- Functional Tokens --- */
+      --collage-bg-primary: var(--collage-cream);
+      --collage-bg-surface: var(--collage-white);
+      --collage-text-primary: var(--collage-ink);
+      --collage-text-secondary: var(--collage-pencil);
+      --collage-accent: var(--collage-pink);
+      --collage-link: var(--collage-blue);
+      --collage-border: var(--collage-cardboard);
+
+      /* --- Shadows --- */
+      --collage-shadow-sm: 1px 2px 4px rgba(43, 43, 43, 0.06);
+      --collage-shadow-md: 2px 4px 12px rgba(43, 43, 43, 0.1);
+      --collage-shadow-lg: 4px 8px 24px rgba(43, 43, 43, 0.14);
+      --collage-shadow-lifted: 0 8px 32px rgba(43, 43, 43, 0.16);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--collage-ink);
+      background-color: var(--collage-cream);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1, h2 {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      line-height: 1.15;
+      color: var(--collage-ink);
+    }
+
+    h3, h4 {
+      font-family: 'Patrick Hand', cursive;
+      font-weight: 400;
+      line-height: 1.3;
+      color: var(--collage-cardboard);
+    }
+
+    /* Paper grain overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      mix-blend-mode: multiply;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      padding: 1rem 2rem;
+      background:
+        linear-gradient(to bottom, var(--collage-cream) 0%, rgba(196, 168, 130, 0.15) 100%);
+      border-bottom: 3px solid var(--collage-cardboard);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--collage-ink);
+      margin-right: auto;
+      transform: rotate(-1deg);
+      display: inline-block;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--collage-pink);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      color: var(--collage-ink);
+      padding: 0.35rem 0.9rem;
+      background: var(--collage-white);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      box-shadow: 1px 2px 0 rgba(0, 0, 0, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-links a:nth-child(1) { transform: rotate(-1.5deg); }
+    .nav-links a:nth-child(2) { transform: rotate(1deg); }
+    .nav-links a:nth-child(3) { transform: rotate(-0.5deg); }
+    .nav-links a:nth-child(4) { transform: rotate(2deg); }
+    .nav-links a:nth-child(5) { transform: rotate(-1deg); }
+
+    .nav-links a:hover {
+      transform: rotate(0deg) translateY(-3px);
+      box-shadow: 2px 4px 0 rgba(0, 0, 0, 0.1);
+      background: var(--collage-yellow);
+    }
+
+    /* Decorative tape strip on nav */
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      right: 12%;
+      width: 55px;
+      height: 18px;
+      background: var(--collage-mint);
+      opacity: 0.45;
+      transform: rotate(-4deg);
+      pointer-events: none;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 25% 35%, rgba(196, 168, 130, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 65%, rgba(240, 196, 168, 0.1) 0%, transparent 40%),
+        var(--collage-cream);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 700px;
+    }
+
+    .hero-tagline {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--collage-pencil);
+      margin-bottom: 12px;
+      transform: rotate(1deg);
+      display: inline-block;
+    }
+
+    .hero h1 {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 700;
+      color: var(--collage-ink);
+      line-height: 1.0;
+      position: relative;
+    }
+
+    /* Doodle circle behind heading */
+    .hero h1::before {
+      content: '';
+      position: absolute;
+      top: -18px;
+      left: -30px;
+      right: -30px;
+      bottom: -12px;
+      border: 3px dashed var(--collage-coral);
+      border-radius: 50%;
+      transform: rotate(-2deg);
+      opacity: 0.3;
+      z-index: -1;
+    }
+
+    .hero-subtitle {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--collage-cardboard);
+      margin-top: 12px;
+    }
+
+    .hero-desc {
+      font-family: 'Lora', serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--collage-pencil);
+      max-width: 540px;
+      margin: 20px auto 32px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Scattered decorative stickers in hero */
+    .hero .sticker {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border: 3px solid var(--collage-white);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.65rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .sticker--1 {
+      top: 12%;
+      left: 8%;
+      background: var(--collage-yellow);
+      color: var(--collage-ink);
+      transform: rotate(-12deg);
+    }
+
+    .sticker--2 {
+      top: 18%;
+      right: 6%;
+      background: var(--collage-pink);
+      color: var(--collage-white);
+      transform: rotate(8deg);
+      width: 60px !important;
+      height: 60px !important;
+    }
+
+    .sticker--3 {
+      bottom: 15%;
+      left: 12%;
+      background: var(--collage-mint);
+      color: var(--collage-ink);
+      transform: rotate(15deg);
+      width: 55px !important;
+      height: 55px !important;
+    }
+
+    .sticker--4 {
+      bottom: 20%;
+      right: 10%;
+      background: var(--collage-purple);
+      color: var(--collage-white);
+      transform: rotate(-6deg);
+    }
+
+    /* Scattered paper fragments in hero */
+    .hero .fragment {
+      position: absolute;
+      background: var(--collage-white);
+      padding: 0.4rem 0.8rem;
+      font-family: 'Special Elite', monospace;
+      font-size: 0.65rem;
+      color: var(--collage-pencil);
+      box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.08);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .fragment--1 {
+      top: 30%;
+      left: 3%;
+      transform: rotate(-5deg);
+    }
+
+    .fragment--2 {
+      bottom: 10%;
+      right: 4%;
+      transform: rotate(3deg);
+    }
+
+    /* Decorative washi tape on hero edge */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      right: 60px;
+      width: 90px;
+      height: 24px;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 3px,
+          rgba(255, 255, 255, 0.3) 3px,
+          rgba(255, 255, 255, 0.3) 6px
+        ),
+        var(--collage-peach);
+      opacity: 0.5;
+      transform: rotate(5deg);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.6rem;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1rem;
+      color: var(--collage-ink);
+      background: var(--collage-yellow);
+      border: 2px solid var(--collage-cardboard);
+      border-radius: 2px;
+      cursor: pointer;
+      position: relative;
+      transform: rotate(-1deg);
+      box-shadow: 2px 3px 0 rgba(0, 0, 0, 0.12);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: rotate(1deg) translateY(-2px);
+      box-shadow: 3px 5px 0 rgba(0, 0, 0, 0.15);
+      background: var(--collage-coral);
+      color: var(--collage-white);
+    }
+
+    .btn:active {
+      transform: rotate(0deg) translateY(0);
+      box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.1);
+    }
+
+    .btn--sticker {
+      background: var(--collage-pink);
+      color: var(--collage-white);
+      border: 3px solid var(--collage-white);
+      border-radius: 20px;
+      box-shadow:
+        0 2px 4px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      transform: rotate(2deg);
+    }
+
+    .btn--sticker:hover {
+      transform: rotate(-1deg) scale(1.05);
+      background: var(--collage-purple);
+      color: var(--collage-white);
+    }
+
+    .btn--tape {
+      background: var(--collage-mint);
+      color: var(--collage-ink);
+      border: none;
+      border-radius: 0;
+      opacity: 0.85;
+      box-shadow: none;
+      border-left: 1px dashed rgba(0, 0, 0, 0.08);
+      border-right: 1px dashed rgba(0, 0, 0, 0.08);
+      transform: rotate(-2deg);
+    }
+
+    .btn--tape:hover {
+      opacity: 1;
+      transform: rotate(0deg) translateY(-2px);
+      background: var(--collage-teal);
+      color: var(--collage-white);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--collage-ink);
+      border: 2px dashed var(--collage-cardboard);
+      border-radius: 0;
+      box-shadow: none;
+      transform: rotate(1deg);
+    }
+
+    .btn--outline:hover {
+      background: var(--collage-cream);
+      border-style: solid;
+      border-color: var(--collage-pink);
+      color: var(--collage-pink);
+      transform: rotate(-1deg) translateY(-2px);
+    }
+
+    /* ============================================
+       TORN PAPER DIVIDER
+       ============================================ */
+    .torn-divider {
+      border: none;
+      height: 16px;
+      position: relative;
+      margin: 0;
+      overflow: visible;
+      background: transparent;
+    }
+
+    .torn-divider::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: var(--collage-kraft);
+      clip-path: polygon(
+        0% 0%, 2% 70%, 5% 20%, 8% 80%, 11% 30%, 14% 65%,
+        17% 10%, 20% 50%, 23% 85%, 26% 35%, 29% 75%, 32% 15%,
+        35% 60%, 38% 25%, 41% 70%, 44% 40%, 47% 90%, 50% 20%,
+        53% 55%, 56% 5%, 59% 45%, 62% 80%, 65% 30%, 68% 65%,
+        71% 10%, 74% 50%, 77% 85%, 80% 35%, 83% 70%, 86% 20%,
+        89% 60%, 92% 40%, 95% 80%, 98% 25%, 100% 55%,
+        100% 0%
+      );
+    }
+
+    .torn-divider::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: var(--collage-kraft);
+      clip-path: polygon(
+        0% 100%, 3% 30%, 6% 70%, 9% 15%, 12% 55%, 15% 80%,
+        18% 25%, 21% 65%, 24% 10%, 27% 50%, 30% 75%, 33% 35%,
+        36% 85%, 39% 20%, 42% 60%, 45% 5%, 48% 45%, 51% 90%,
+        54% 30%, 57% 70%, 60% 15%, 63% 55%, 66% 80%, 69% 25%,
+        72% 65%, 75% 10%, 78% 50%, 81% 75%, 84% 35%, 87% 85%,
+        90% 20%, 93% 60%, 96% 40%, 100% 70%,
+        100% 100%
+      );
+    }
+
+    /* Colored tape strip variants */
+    .tape-strip {
+      display: flex;
+      height: 24px;
+      width: 100%;
+      position: relative;
+    }
+
+    .tape-strip span {
+      flex: 1;
+      opacity: 0.5;
+    }
+
+    .tape-strip span:nth-child(1) { background: var(--collage-peach); }
+    .tape-strip span:nth-child(2) { background: var(--collage-mint); }
+    .tape-strip span:nth-child(3) { background: var(--collage-yellow); }
+    .tape-strip span:nth-child(4) { background: var(--collage-pink); opacity: 0.35; }
+    .tape-strip span:nth-child(5) { background: var(--collage-blue); opacity: 0.4; }
+    .tape-strip span:nth-child(6) { background: var(--collage-purple); opacity: 0.35; }
+    .tape-strip span:nth-child(7) { background: var(--collage-coral); opacity: 0.45; }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--cream {
+      background: var(--collage-cream);
+    }
+
+    .section--kraft {
+      background: var(--collage-kraft);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(139, 115, 85, 0.04) 3px,
+          rgba(139, 115, 85, 0.04) 4px
+        );
+    }
+
+    .section--white {
+      background: var(--collage-white);
+    }
+
+    .section--cardboard {
+      background: var(--collage-cardboard);
+      color: var(--collage-cream);
+    }
+
+    .section--cardboard .section-label { color: var(--collage-yellow); }
+    .section--cardboard .section-title { color: var(--collage-cream); }
+    .section--cardboard .section-note { color: var(--collage-peach); }
+
+    .section-label {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--collage-pencil);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--collage-ink);
+      margin-bottom: 8px;
+    }
+
+    .section-note {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      text-align: center;
+      color: var(--collage-cardboard);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       DOODLE DIVIDER
+       ============================================ */
+    .doodle-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .doodle-divider::before,
+    .doodle-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, var(--collage-kraft), transparent);
+    }
+
+    .doodle-divider span {
+      padding: 0 18px;
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.2rem;
+      color: var(--collage-cardboard);
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 28px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--collage-pencil);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--collage-kraft);
+    }
+
+    .typo-display {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--collage-ink);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--collage-ink);
+      line-height: 1.2;
+      margin-bottom: 8px;
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+
+    .typo-casual {
+      font-family: 'Patrick Hand', cursive;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--collage-cardboard);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--collage-ink);
+      margin-bottom: 8px;
+    }
+
+    .typo-handwritten {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      color: var(--collage-blue);
+      line-height: 1.5;
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .typo-typewriter {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.88rem;
+      letter-spacing: 0.03em;
+      color: var(--collage-pencil);
+    }
+
+    .typo-clean {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: 0.95rem;
+      color: var(--collage-ink);
+    }
+
+    .typo-right {
+      background: var(--collage-white);
+      padding: 36px;
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      box-shadow: var(--collage-shadow-md);
+      position: relative;
+      transform: rotate(0.5deg);
+    }
+
+    /* Washi tape on type panel */
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 30%;
+      width: 80px;
+      height: 22px;
+      background: var(--collage-mint);
+      opacity: 0.5;
+      transform: rotate(-3deg);
+      pointer-events: none;
+    }
+
+    .typo-right h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.5rem;
+      color: var(--collage-cardboard);
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px dashed rgba(196, 168, 130, 0.5);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.7rem;
+      color: var(--collage-pencil);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--collage-white);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: var(--collage-shadow-sm);
+      position: relative;
+    }
+
+    .color-chip:nth-child(odd) {
+      transform: rotate(-1deg);
+    }
+
+    .color-chip:nth-child(even) {
+      transform: rotate(1deg);
+    }
+
+    .color-chip:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow: var(--collage-shadow-lg);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 0.9rem;
+      color: var(--collage-ink);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.7rem;
+      color: var(--collage-pencil);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--collage-white);
+      padding: 2rem 1.5rem 1.5rem;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.08),
+        0 4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .card:nth-child(1) { transform: rotate(-1.5deg); --tape-color: var(--collage-peach); }
+    .card:nth-child(2) { transform: rotate(1deg); --tape-color: var(--collage-mint); }
+    .card:nth-child(3) { transform: rotate(-0.5deg); --tape-color: var(--collage-yellow); }
+    .card:nth-child(4) { transform: rotate(2deg); --tape-color: var(--collage-pink); }
+    .card:nth-child(5) { transform: rotate(-1deg); --tape-color: var(--collage-blue); }
+    .card:nth-child(6) { transform: rotate(1.5deg); --tape-color: var(--collage-purple); }
+
+    /* Torn top edge on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: var(--collage-white);
+      clip-path: polygon(
+        0% 100%, 3% 40%, 6% 80%, 9% 20%, 12% 70%, 15% 30%,
+        18% 85%, 21% 15%, 24% 60%, 27% 35%, 30% 90%, 33% 25%,
+        36% 70%, 39% 45%, 42% 80%, 45% 10%, 48% 55%, 51% 30%,
+        54% 75%, 57% 20%, 60% 65%, 63% 40%, 66% 85%, 69% 15%,
+        72% 60%, 75% 35%, 78% 80%, 81% 25%, 84% 70%, 87% 45%,
+        90% 90%, 93% 20%, 96% 55%, 100% 40%, 100% 100%
+      );
+    }
+
+    /* Washi tape strip on cards */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%) rotate(2deg);
+      width: 80px;
+      height: 22px;
+      background: var(--tape-color, var(--collage-peach));
+      opacity: 0.55;
+      border-left: 1px dashed rgba(0, 0, 0, 0.06);
+      border-right: 1px dashed rgba(0, 0, 0, 0.06);
+      pointer-events: none;
+    }
+
+    .card:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow:
+        0 2px 6px rgba(0, 0, 0, 0.1),
+        0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+      border: 3px solid var(--collage-white);
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-icon--pink { background: var(--collage-pink); }
+    .card-icon--coral { background: var(--collage-coral); }
+    .card-icon--mint { background: var(--collage-mint); }
+    .card-icon--blue { background: var(--collage-blue); }
+    .card-icon--purple { background: var(--collage-purple); }
+    .card-icon--yellow { background: var(--collage-yellow); }
+
+    .card h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.4rem;
+      color: var(--collage-ink);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-family: 'Lora', serif;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--collage-pencil);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Patrick Hand', cursive;
+      font-size: 0.78rem;
+      padding: 3px 12px;
+      border-radius: 20px;
+      border: 2px solid var(--collage-white);
+      color: var(--collage-white);
+      margin-top: 12px;
+      margin-right: 6px;
+      transition: transform 0.2s ease;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .tag--pink { background: var(--collage-pink); }
+    .tag--mint { background: var(--collage-mint); color: var(--collage-ink); }
+    .tag--blue { background: var(--collage-blue); }
+    .tag--yellow { background: var(--collage-yellow); color: var(--collage-ink); }
+    .tag--purple { background: var(--collage-purple); }
+    .tag--coral { background: var(--collage-coral); }
+
+    .tag:hover {
+      transform: rotate(-3deg) scale(1.05);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      background: var(--collage-white);
+      box-shadow: var(--collage-shadow-md);
+      position: relative;
+    }
+
+    .effect-demo:nth-child(odd) { transform: rotate(-1deg); }
+    .effect-demo:nth-child(even) { transform: rotate(1deg); }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. Torn Paper Edge effect */
+    .effect-torn {
+      background:
+        linear-gradient(135deg, var(--collage-cream) 0%, var(--collage-kraft) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-torn::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 30px;
+      background: var(--collage-white);
+      clip-path: polygon(
+        0% 100%, 0% 45%, 3% 70%, 6% 25%, 9% 55%, 12% 15%,
+        15% 60%, 18% 30%, 21% 75%, 24% 20%, 27% 50%, 30% 85%,
+        33% 35%, 36% 65%, 39% 10%, 42% 50%, 45% 80%, 48% 25%,
+        51% 55%, 54% 15%, 57% 45%, 60% 70%, 63% 30%, 66% 60%,
+        69% 20%, 72% 50%, 75% 80%, 78% 35%, 81% 65%, 84% 10%,
+        87% 45%, 90% 75%, 93% 30%, 96% 55%, 100% 40%, 100% 100%
+      );
+    }
+
+    .effect-torn::after {
+      content: 'TORN PAPER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -60%) rotate(-3deg);
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.6rem;
+      color: var(--collage-ink);
+      z-index: 1;
+    }
+
+    /* 2. Washi Tape effect */
+    .effect-washi {
+      background: var(--collage-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-washi::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 10%;
+      right: 10%;
+      height: 28px;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 3px,
+          rgba(255, 255, 255, 0.35) 3px,
+          rgba(255, 255, 255, 0.35) 6px
+        ),
+        var(--collage-peach);
+      opacity: 0.7;
+      transform: rotate(-2deg);
+      border-left: 1px dashed rgba(0, 0, 0, 0.06);
+      border-right: 1px dashed rgba(0, 0, 0, 0.06);
+    }
+
+    .effect-washi::after {
+      content: 'WASHI TAPE';
+      position: absolute;
+      top: 55%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.5rem;
+      color: var(--collage-cardboard);
+      z-index: 1;
+    }
+
+    /* Extra tape strips on washi demo */
+    .effect-washi .tape-extra {
+      position: absolute;
+      height: 22px;
+      opacity: 0.5;
+    }
+
+    .effect-washi .tape-extra:nth-child(1) {
+      top: 55%;
+      left: 5%;
+      width: 40%;
+      background:
+        radial-gradient(circle, rgba(255,255,255,0.4) 2px, transparent 2px) 0 0 / 8px 8px,
+        var(--collage-mint);
+      transform: rotate(3deg);
+    }
+
+    .effect-washi .tape-extra:nth-child(2) {
+      top: 72%;
+      left: 30%;
+      width: 55%;
+      background: var(--collage-yellow);
+      opacity: 0.4;
+      transform: rotate(-1deg);
+    }
+
+    /* 3. Sticker Cluster effect */
+    .effect-stickers {
+      background: var(--collage-kraft);
+      position: relative;
+    }
+
+    .effect-stickers .sticker-el {
+      position: absolute;
+      border-radius: 50%;
+      border: 3px solid var(--collage-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 0.6rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+      color: var(--collage-white);
+    }
+
+    .sticker-el:nth-child(1) {
+      width: 65px; height: 65px;
+      background: var(--collage-pink);
+      top: 20%; left: 15%;
+      transform: rotate(-8deg);
+    }
+
+    .sticker-el:nth-child(2) {
+      width: 55px; height: 55px;
+      background: var(--collage-yellow);
+      color: var(--collage-ink);
+      top: 15%; right: 20%;
+      transform: rotate(12deg);
+    }
+
+    .sticker-el:nth-child(3) {
+      width: 50px; height: 50px;
+      background: var(--collage-mint);
+      color: var(--collage-ink);
+      bottom: 25%; left: 35%;
+      transform: rotate(-3deg);
+    }
+
+    .sticker-el:nth-child(4) {
+      width: 60px; height: 60px;
+      background: var(--collage-purple);
+      bottom: 15%; right: 15%;
+      transform: rotate(6deg);
+    }
+
+    .sticker-el:nth-child(5) {
+      width: 45px; height: 45px;
+      background: var(--collage-coral);
+      top: 50%; left: 10%;
+      transform: rotate(15deg);
+    }
+
+    /* 4. Push Pin & Paper Clip effect */
+    .effect-pinned {
+      background: var(--collage-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-pinned .pinned-note {
+      background: var(--collage-white);
+      padding: 1rem 1.2rem;
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 0.85rem;
+      color: var(--collage-ink);
+      box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.1);
+      max-width: 160px;
+      text-align: center;
+      position: relative;
+    }
+
+    .effect-pinned .pinned-note:nth-child(1) {
+      transform: rotate(-4deg);
+      z-index: 2;
+    }
+
+    .effect-pinned .pinned-note:nth-child(2) {
+      transform: rotate(2deg) translateX(-10px);
+      z-index: 1;
+      background: var(--collage-yellow);
+      opacity: 0.9;
+    }
+
+    /* Push pin dot */
+    .effect-pinned .pinned-note::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--collage-coral);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .effect-pinned .pinned-note:nth-child(2)::before {
+      background: var(--collage-blue);
+    }
+
+    /* 5. Doodle & Sketch effect */
+    .effect-doodle {
+      background: var(--collage-white);
+      /* Simulate notebook lines */
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 23px,
+          rgba(91, 141, 184, 0.12) 23px,
+          rgba(91, 141, 184, 0.12) 24px
+        );
+      background-position: 0 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .effect-doodle::after {
+      content: 'doodles & sketches';
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--collage-blue);
+      transform: rotate(-2deg);
+    }
+
+    .effect-doodle .doodle-star {
+      position: absolute;
+      top: 20%;
+      right: 15%;
+      width: 40px;
+      height: 40px;
+      background: var(--collage-yellow);
+      clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%,
+        79% 91%, 50% 70%, 21% 91%, 32% 57%,
+        2% 35%, 39% 35%
+      );
+      opacity: 0.7;
+    }
+
+    .effect-doodle .doodle-circle {
+      position: absolute;
+      bottom: 25%;
+      left: 12%;
+      width: 45px;
+      height: 45px;
+      border: 3px dashed var(--collage-coral);
+      border-radius: 50%;
+      opacity: 0.5;
+      transform: rotate(15deg);
+    }
+
+    .effect-doodle .doodle-arrow {
+      position: absolute;
+      top: 35%;
+      left: 20%;
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.5rem;
+      color: var(--collage-pencil);
+      transform: rotate(-20deg);
+      opacity: 0.4;
+    }
+
+    /* 6. Kraft Paper Texture effect */
+    .effect-kraft {
+      background-color: var(--collage-kraft);
+      background-image:
+        radial-gradient(ellipse at 30% 40%, rgba(160, 128, 96, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(139, 115, 85, 0.2) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.08'/%3E%3C/svg%3E");
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-kraft::after {
+      content: 'KRAFT PAPER';
+      font-family: 'Special Elite', monospace;
+      font-size: 1.4rem;
+      color: var(--collage-ink);
+      letter-spacing: 0.1em;
+      opacity: 0.7;
+    }
+
+    .effect-caption {
+      padding: 14px 18px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.1rem;
+      color: var(--collage-ink);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Lora', serif;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--collage-pencil);
+    }
+
+    /* ============================================
+       SCRAPBOOK MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--collage-cardboard);
+      padding: 56px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      font-size: 1.8rem;
+      opacity: 0.4;
+    }
+
+    .motif-row span {
+      animation: motifFloat 4s ease-in-out infinite;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.6s; }
+    .motif-row span:nth-child(3) { animation-delay: -1.2s; }
+    .motif-row span:nth-child(4) { animation-delay: -1.8s; }
+    .motif-row span:nth-child(5) { animation-delay: -2.4s; }
+    .motif-row span:nth-child(6) { animation-delay: -3s; }
+    .motif-row span:nth-child(7) { animation-delay: -3.6s; }
+
+    @keyframes motifFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      color: var(--collage-cream);
+      margin-bottom: 10px;
+    }
+
+    .motif-banner p {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--collage-peach);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 48px 36px;
+      margin: 0 auto;
+      max-width: 720px;
+      background: var(--collage-white);
+      position: relative;
+      box-shadow: var(--collage-shadow-md);
+      transform: rotate(-0.5deg);
+    }
+
+    /* Torn top edge on quote */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: var(--collage-white);
+      clip-path: polygon(
+        0% 100%, 4% 30%, 8% 75%, 12% 20%, 16% 60%, 20% 40%,
+        24% 85%, 28% 15%, 32% 55%, 36% 35%, 40% 80%, 44% 25%,
+        48% 65%, 52% 10%, 56% 50%, 60% 75%, 64% 30%, 68% 60%,
+        72% 20%, 76% 70%, 80% 45%, 84% 85%, 88% 25%, 92% 55%,
+        96% 15%, 100% 45%, 100% 100%
+      );
+    }
+
+    /* Washi tape on quote */
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      top: -12px;
+      right: 20%;
+      width: 70px;
+      height: 22px;
+      background: var(--collage-yellow);
+      opacity: 0.5;
+      transform: rotate(3deg);
+      pointer-events: none;
+    }
+
+    .quote-mark {
+      font-family: 'Caveat', cursive;
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--collage-coral);
+      opacity: 0.2;
+      line-height: 0.5;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--collage-ink);
+      max-width: 520px;
+      margin: 0 auto 16px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.1rem;
+      color: var(--collage-cardboard);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION (SCRAPBOOK PAGE)
+       ============================================ */
+    .cta-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--collage-white);
+      padding: 60px 48px 48px;
+      text-align: center;
+      position: relative;
+      box-shadow: var(--collage-shadow-lg);
+      transform: rotate(-0.5deg);
+    }
+
+    /* Washi tape decorations on CTA */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 15%;
+      width: 90px;
+      height: 24px;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 3px,
+          rgba(255, 255, 255, 0.3) 3px,
+          rgba(255, 255, 255, 0.3) 6px
+        ),
+        var(--collage-mint);
+      opacity: 0.55;
+      transform: rotate(-3deg);
+      pointer-events: none;
+    }
+
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      top: -8px;
+      right: 10%;
+      width: 75px;
+      height: 22px;
+      background: var(--collage-peach);
+      opacity: 0.5;
+      transform: rotate(5deg);
+      pointer-events: none;
+    }
+
+    .cta-container h2 {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--collage-ink);
+      margin-bottom: 8px;
+    }
+
+    .cta-container .cta-note {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.15rem;
+      color: var(--collage-cardboard);
+      margin-bottom: 20px;
+      display: block;
+      transform: rotate(-1deg);
+    }
+
+    .cta-container p {
+      font-family: 'Lora', serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--collage-pencil);
+      margin-bottom: 24px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--collage-cardboard);
+      padding: 56px 24px 28px;
+      text-align: center;
+      color: var(--collage-cream);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Caveat', cursive;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--collage-yellow);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      color: rgba(245, 237, 224, 0.6);
+      max-width: 480px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 0.95rem;
+      color: rgba(245, 237, 224, 0.45);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--collage-yellow);
+    }
+
+    .footer-deco {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      opacity: 0.3;
+    }
+
+    .footer-copy {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.72rem;
+      color: rgba(245, 237, 224, 0.25);
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-logo {
+        margin-right: 0;
+      }
+
+      .nav-links {
+        gap: 4px;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 5px 12px;
+        font-size: 0.9rem;
+      }
+
+      .hero {
+        min-height: 75vh;
+        padding: 3rem 1.5rem;
+      }
+
+      .hero .sticker,
+      .hero .fragment {
+        display: none;
+      }
+
+      .hero::before {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .typo-right {
+        transform: rotate(0deg);
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        transform: rotate(0deg) !important;
+      }
+
+      .card:hover {
+        transform: translateY(-4px) !important;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 68px;
+      }
+
+      .color-chip:nth-child(odd),
+      .color-chip:nth-child(even) {
+        transform: rotate(0deg);
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effect-demo:nth-child(odd),
+      .effect-demo:nth-child(even) {
+        transform: rotate(0deg);
+      }
+
+      .quote-block {
+        padding: 36px 20px;
+        transform: rotate(0deg);
+      }
+
+      .cta-container {
+        padding: 50px 24px 36px;
+        margin: 0 12px;
+        transform: rotate(0deg);
+      }
+
+      .footer {
+        padding: 44px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 52px;
+      }
+
+      .color-info {
+        padding: 7px 8px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .motif-row span {
+        animation: none;
+      }
+
+      .card,
+      .color-chip,
+      .effect-demo,
+      .btn,
+      .tag,
+      .nav-links a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Digital Collage</a>
+    <div class="nav-links">
+      <a href="#hero">Scrapbook</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+
+    <!-- Scattered stickers -->
+    <div class="sticker sticker--1">CUT</div>
+    <div class="sticker sticker--2">PASTE</div>
+    <div class="sticker sticker--3">MAKE</div>
+    <div class="sticker sticker--4">PLAY</div>
+
+    <!-- Paper fragments -->
+    <div class="fragment fragment--1">mixed media &bull; layered</div>
+    <div class="fragment fragment--2">scissors &amp; glue</div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Digital Collage</h1>
+      <p class="hero-subtitle">Cut, Paste &amp; Create</p>
+      <p class="hero-desc">
+        A mixed-media, scrapbook-inspired design aesthetic that translates the tactile charm of physical cut-and-paste composition into the digital realm &mdash; layered, textured, and deeply personal.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--sticker">Explore Components</a>
+        <a href="#palette" class="btn btn--outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TAPE STRIP ===== -->
+  <div class="tape-strip">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Mixed Voices &amp; Handmade Type</h2>
+      <p class="section-note">handwritten, marker, typewriter &amp; editorial serif</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Caveat 700</p>
+            <p class="typo-display">Scrapbook Stories</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Marker / Permanent Marker</p>
+            <p class="typo-heading">Bold Callouts!</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Casual / Patrick Hand</p>
+            <p class="typo-casual">Labels, Captions &amp; Doodle Text</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora</p>
+            <p class="typo-body">Elegant serif body text for editorial content. Digital Collage mixes formal and informal type to create warmth and variety on the page.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Whimsical / Shadows Into Light</p>
+            <p class="typo-handwritten">notes in the margins, personal &amp; free</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Typewriter / Special Elite</p>
+            <p class="typo-typewriter">Vintage labels and caption blocks</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Text / Nunito</p>
+            <p class="typo-clean">Clean sans-serif for UI elements and body alternatives</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Caveat', cursive; font-weight: 700; font-size: 2rem; color: var(--collage-ink);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Permanent Marker', cursive; font-size: 1.4rem; color: var(--collage-ink);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Patrick Hand', cursive; font-size: 1.2rem; color: var(--collage-cardboard);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.3rem</span>
+              <span style="font-family: 'Shadows Into Light', cursive; font-size: 1.1rem; color: var(--collage-blue);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: var(--collage-ink);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Special Elite', monospace; font-size: 0.85rem; color: var(--collage-pencil); letter-spacing: 0.03em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.95rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 0.95rem; color: var(--collage-ink);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 2px dashed var(--collage-kraft);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Caveat', cursive; font-weight: 700; color: var(--collage-coral);">Caveat 700</strong> + <strong style="font-family: 'Lora', serif;">Lora</strong><br>
+              <span style="color: var(--collage-pencil); font-size: 0.82rem;">Personal journal, editorial scrapbook</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Permanent Marker', cursive; color: var(--collage-coral);">Permanent Marker</strong> + <strong style="font-family: 'Nunito', sans-serif;">Nunito</strong><br>
+              <span style="color: var(--collage-pencil); font-size: 0.82rem;">Bold and playful, creative portfolio</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Special Elite', monospace; color: var(--collage-coral);">Special Elite</strong> + <strong style="font-family: 'Lora', serif;">Lora</strong><br>
+              <span style="color: var(--collage-pencil); font-size: 0.82rem;">Vintage editorial, retro scrapbook</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOODLE DIVIDER ===== -->
+  <div class="section--cream" style="padding: 0;">
+    <div class="doodle-divider">
+      <span>&#9986; &#9997; &#9986;</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--kraft" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Craft Tones &amp; Sticker Pops</h2>
+      <p class="section-note">kraft paper, warm cream &amp; playful accents</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A882;"></div>
+          <div class="color-info">
+            <div class="color-name">Kraft Paper</div>
+            <div class="color-hex">#C4A882</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5EDE0;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Cream</div>
+            <div class="color-hex">#F5EDE0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAFAF5;"></div>
+          <div class="color-info">
+            <div class="color-name">Notebook White</div>
+            <div class="color-hex">#FAFAF5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B7355;"></div>
+          <div class="color-info">
+            <div class="color-name">Cardboard Brown</div>
+            <div class="color-hex">#8B7355</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A08060;"></div>
+          <div class="color-info">
+            <div class="color-name">Aged Sepia</div>
+            <div class="color-hex">#A08060</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2B2B2B;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink Black</div>
+            <div class="color-hex">#2B2B2B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A7A7A;"></div>
+          <div class="color-info">
+            <div class="color-name">Pencil Gray</div>
+            <div class="color-hex">#7A7A7A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8668A;"></div>
+          <div class="color-info">
+            <div class="color-name">Sticker Pink</div>
+            <div class="color-hex">#E8668A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E87461;"></div>
+          <div class="color-info">
+            <div class="color-name">Marker Coral</div>
+            <div class="color-hex">#E87461</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7EC8A8;"></div>
+          <div class="color-info">
+            <div class="color-name">Washi Mint</div>
+            <div class="color-hex">#7EC8A8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5B8DB8;"></div>
+          <div class="color-info">
+            <div class="color-name">Doodle Blue</div>
+            <div class="color-hex">#5B8DB8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B6DAF;"></div>
+          <div class="color-info">
+            <div class="color-name">Stamp Purple</div>
+            <div class="color-hex">#8B6DAF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2D166;"></div>
+          <div class="color-info">
+            <div class="color-name">Highlighter Yellow</div>
+            <div class="color-hex">#F2D166</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A9E9E;"></div>
+          <div class="color-info">
+            <div class="color-name">Postcard Teal</div>
+            <div class="color-hex">#4A9E9E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0C4A8;"></div>
+          <div class="color-info">
+            <div class="color-name">Tape Peach</div>
+            <div class="color-hex">#F0C4A8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TORN DIVIDER ===== -->
+  <div class="torn-divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Torn Paper Cards &amp; Tape</h2>
+      <p class="section-note">like a handmade scrapbook page</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--pink">&#9986;</div>
+          <h3>Torn Paper Edges</h3>
+          <p>Ragged, irregular edges on images and text blocks simulate physically ripped paper for that authentic handmade quality.</p>
+          <span class="tag tag--pink">Texture</span>
+          <span class="tag tag--coral">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--mint">&#127912;</div>
+          <h3>Washi Tape Strips</h3>
+          <p>Semi-transparent patterned tape elements serve as connectors, borders, and decorative accents holding the composition together.</p>
+          <span class="tag tag--mint">Decorative</span>
+          <span class="tag tag--blue">Layering</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--yellow">&#128204;</div>
+          <h3>Sticker Badges</h3>
+          <p>Playful circular elements with white borders and subtle shadows create a peeled-and-stuck appearance across the layout.</p>
+          <span class="tag tag--yellow">Playful</span>
+          <span class="tag tag--purple">Accent</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#9997;</div>
+          <h3>Hand-Drawn Doodles</h3>
+          <p>Sketchy lines, arrows, stars, and margin scrawls add a personal journal-like quality to every composition.</p>
+          <span class="tag tag--blue">Personal</span>
+          <span class="tag tag--pink">Annotation</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--purple">&#128247;</div>
+          <h3>Cutout Photography</h3>
+          <p>Subjects isolated with imperfect, hand-cut edges and polaroid-style frames that feel crafted rather than digital.</p>
+          <span class="tag tag--purple">Photo</span>
+          <span class="tag tag--coral">Analog</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--coral">&#128230;</div>
+          <h3>Layered Depth</h3>
+          <p>Multiple visual elements stacked with visible overlap, creating depth through shadows, rotation, and partial occlusion.</p>
+          <span class="tag tag--coral">Layout</span>
+          <span class="tag tag--mint">Shadow</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SCRAPBOOK MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&#9986;</span>
+        <span>&#9829;</span>
+        <span>&#9733;</span>
+        <span>&#9997;</span>
+        <span>&#9829;</span>
+        <span>&#9986;</span>
+        <span>&#9733;</span>
+      </div>
+      <h2>Scissors, Glue &amp; Heart</h2>
+      <p>Every surface is a canvas for layering, pasting, and personal expression</p>
+    </div>
+  </div>
+
+  <!-- ===== TAPE STRIP ===== -->
+  <div class="tape-strip">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--cream" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Collage Tricks</h2>
+      <p class="section-note">all the handmade techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-torn"></div>
+          <div class="effect-caption">
+            <h4>Torn Paper Edge</h4>
+            <p>Clip-path polygons create irregular, ripped-paper edges on any element.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-washi">
+            <div class="tape-extra"></div>
+            <div class="tape-extra"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Washi Tape Layers</h4>
+            <p>Semi-transparent strips with patterns and dashed edges simulate decorative tape.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stickers">
+            <div class="sticker-el">YAY</div>
+            <div class="sticker-el">NEW</div>
+            <div class="sticker-el">FUN</div>
+            <div class="sticker-el">WOW</div>
+            <div class="sticker-el">GO</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Sticker Cluster</h4>
+            <p>Circular badges with white borders and varied rotations create a sticker sheet feel.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-pinned">
+            <div class="pinned-note">remember this moment</div>
+            <div class="pinned-note">important note!</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Push Pin Notes</h4>
+            <p>Overlapping paper notes pinned at varied angles simulate a corkboard display.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-doodle">
+            <div class="doodle-star"></div>
+            <div class="doodle-circle"></div>
+            <div class="doodle-arrow">&#8594;</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Doodle Sketches</h4>
+            <p>Notebook-lined backgrounds with scattered stars, circles, and arrows add journal warmth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-kraft"></div>
+          <div class="effect-caption">
+            <h4>Kraft Paper Texture</h4>
+            <p>SVG noise filters and layered gradients simulate the organic warmth of craft paper.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TORN DIVIDER ===== -->
+  <div class="torn-divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--kraft">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Handmade Buttons</h2>
+      <p class="section-note">tilted, tactile &amp; playful</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Primary Action</a>
+        <a href="#" class="btn btn--sticker">Sticker Style</a>
+        <a href="#" class="btn btn--tape">Washi Tape</a>
+        <a href="#" class="btn btn--outline">Dashed Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">&#8220;</span>
+        <blockquote>
+          Digital Collage isn't about perfection &mdash; it's about layering fragments of meaning until something personal, warm, and beautifully imperfect emerges from the overlap.
+        </blockquote>
+        <cite>&mdash; The Spirit of Collage</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Start Your Scrapbook</h2>
+        <span class="cta-note">cut, paste, layer &amp; create</span>
+        <p>
+          The Digital Collage aesthetic embraces torn paper, washi tape, hand-drawn doodles, and layered depth. Ground every layout in kraft paper warmth, accent with sticker pops of color, and let the handmade spirit shine through.
+        </p>
+        <a href="#hero" class="btn btn--sticker">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TAPE STRIP ===== -->
+  <div class="tape-strip">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Digital Collage</h3>
+      <p>
+        A design aesthetic reference celebrating the warm, layered, handmade visual language of mixed-media collage. Kraft paper, torn edges, and sticker accents &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Scrapbook</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-deco">
+        <span>&#9986;</span>
+        <span>&#9829;</span>
+        <span>&#9733;</span>
+        <span>&#9829;</span>
+        <span>&#9986;</span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Digital Collage &bull; Cut, paste &amp; create</p>
+    </div>
+  </footer>
+
+</body>
+</html>

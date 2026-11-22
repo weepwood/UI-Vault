@@ -1,0 +1,2121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sunset Gradient -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700&family=Nunito:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Warm foundation */
+      --sunset-golden-hour: #ffce61;
+      --sunset-amber-sun: #f5a623;
+      --sunset-tangerine: #f76218;
+      --sunset-burnt: #e8512f;
+      --sunset-coral: #ee6c45;
+
+      /* Rose & pink transition */
+      --sunset-rose: #e8567f;
+      --sunset-pink: #bf3475;
+
+      /* Cool twilight */
+      --sunset-mauve: #9b4dca;
+      --sunset-purple: #6b3fa0;
+      --sunset-deep-violet: #50366f;
+      --sunset-twilight: #1f214d;
+
+      /* Neutrals & surfaces */
+      --sunset-cream: #fff8f0;
+      --sunset-peach-whisper: #ffecd2;
+      --sunset-charcoal: #3d2c2c;
+      --sunset-starlight: #fffdf9;
+
+      /* Semantic aliases */
+      --sunset-bg-primary: var(--sunset-cream);
+      --sunset-bg-dark: var(--sunset-twilight);
+      --sunset-text-primary: var(--sunset-charcoal);
+      --sunset-text-on-dark: var(--sunset-starlight);
+      --sunset-accent: var(--sunset-tangerine);
+      --sunset-accent-hover: var(--sunset-burnt);
+
+      /* Gradient presets */
+      --sunset-gradient-full: linear-gradient(
+        135deg,
+        var(--sunset-golden-hour) 0%,
+        var(--sunset-tangerine) 25%,
+        var(--sunset-rose) 50%,
+        var(--sunset-purple) 75%,
+        var(--sunset-twilight) 100%
+      );
+      --sunset-gradient-warm: linear-gradient(
+        135deg,
+        var(--sunset-golden-hour) 0%,
+        var(--sunset-tangerine) 50%,
+        var(--sunset-rose) 100%
+      );
+      --sunset-gradient-cool: linear-gradient(
+        135deg,
+        var(--sunset-rose) 0%,
+        var(--sunset-purple) 50%,
+        var(--sunset-twilight) 100%
+      );
+      --sunset-gradient-radial: radial-gradient(
+        circle at 30% 70%,
+        var(--sunset-golden-hour) 0%,
+        var(--sunset-tangerine) 20%,
+        var(--sunset-rose) 40%,
+        var(--sunset-mauve) 60%,
+        var(--sunset-twilight) 100%
+      );
+
+      /* Shadows */
+      --sunset-shadow-sm: 0 2px 8px rgba(232, 81, 47, 0.06), 0 1px 3px rgba(191, 52, 117, 0.04);
+      --sunset-shadow-md: 0 4px 16px rgba(232, 81, 47, 0.08), 0 1px 4px rgba(191, 52, 117, 0.06);
+      --sunset-shadow-lg: 0 12px 32px rgba(232, 81, 47, 0.14), 0 4px 12px rgba(191, 52, 117, 0.1);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--sunset-charcoal);
+      background: var(--sunset-cream);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      font-size: 1.0625rem;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Raleway', sans-serif;
+      line-height: 1.2;
+      letter-spacing: -0.01em;
+      overflow-wrap: break-word;
+      color: var(--sunset-charcoal);
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--sunset-tangerine);
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--sunset-burnt);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sunset-tangerine);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3vw + 0.5rem, 2.8rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      font-size: 1.05rem;
+      color: #6b5555;
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    .section--cream {
+      background: var(--sunset-cream);
+    }
+
+    .section--peach {
+      background: var(--sunset-peach-whisper);
+    }
+
+    .section {
+      padding: var(--section-pad) 2rem;
+    }
+
+    .section--centered {
+      text-align: center;
+    }
+
+    .section--centered .section-subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2.5rem;
+      background: rgba(31, 33, 77, 0.55);
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      border-bottom: 1px solid rgba(255, 206, 97, 0.1);
+      transition: background 0.3s ease;
+    }
+
+    .nav--scrolled {
+      background: rgba(31, 33, 77, 0.85);
+      border-bottom-color: rgba(255, 206, 97, 0.2);
+    }
+
+    .nav-brand {
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-decoration: none;
+      background: linear-gradient(135deg, var(--sunset-golden-hour), var(--sunset-tangerine));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-link {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255, 253, 249, 0.75);
+      text-decoration: none;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--sunset-gradient-warm);
+      border-radius: 1px;
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--sunset-starlight);
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--sunset-starlight);
+      margin: 5px 0;
+      border-radius: 1px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background:
+        radial-gradient(
+          ellipse at 30% 80%,
+          rgba(255, 206, 97, 0.55) 0%,
+          rgba(247, 98, 24, 0.35) 25%,
+          transparent 50%
+        ),
+        linear-gradient(
+          160deg,
+          #1f214d 0%,
+          #50366f 18%,
+          #9b4dca 32%,
+          #bf3475 46%,
+          #e8567f 56%,
+          #ee6c45 68%,
+          #f76218 80%,
+          #ffce61 100%
+        );
+      background-size: 100% 100%, 200% 200%;
+      animation: hero-gradient-drift 25s ease-in-out infinite;
+    }
+
+    @keyframes hero-gradient-drift {
+      0%   { background-position: center, 0% 50%; }
+      50%  { background-position: center, 100% 50%; }
+      100% { background-position: center, 0% 50%; }
+    }
+
+    /* Noise overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Decorative sun orb */
+    .hero-sun {
+      position: absolute;
+      bottom: 12%;
+      left: 22%;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 206, 97, 0.4) 0%,
+        rgba(247, 98, 24, 0.2) 40%,
+        rgba(232, 86, 127, 0.08) 70%,
+        transparent 100%
+      );
+      filter: blur(50px);
+      pointer-events: none;
+      z-index: 0;
+      animation: sun-pulse 8s ease-in-out infinite;
+    }
+
+    @keyframes sun-pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50%      { transform: scale(1.12); opacity: 1; }
+    }
+
+    /* Horizon line */
+    .hero-horizon {
+      position: absolute;
+      bottom: 18%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 206, 97, 0.3) 20%,
+        rgba(255, 206, 97, 0.5) 50%,
+        rgba(255, 206, 97, 0.3) 80%,
+        transparent 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 740px;
+      padding: 2rem;
+    }
+
+    .hero-overline {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--sunset-golden-hour);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero-title {
+      font-size: clamp(2.6rem, 6vw + 1rem, 5rem);
+      font-weight: 300;
+      color: var(--sunset-starlight);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 16px rgba(31, 33, 77, 0.3);
+    }
+
+    .hero-title strong {
+      font-weight: 700;
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      font-style: italic;
+      color: rgba(255, 253, 249, 0.85);
+      margin-bottom: 1rem;
+    }
+
+    .hero-desc {
+      font-size: clamp(1.0rem, 1.5vw, 1.15rem);
+      color: rgba(255, 253, 249, 0.78);
+      line-height: 1.7;
+      max-width: 580px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.875rem 2rem;
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      border: none;
+      border-radius: 100px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.35s ease;
+    }
+
+    .btn--primary {
+      color: var(--sunset-starlight);
+      background: linear-gradient(
+        135deg,
+        var(--sunset-tangerine) 0%,
+        var(--sunset-rose) 50%,
+        var(--sunset-mauve) 100%
+      );
+      background-size: 200% 200%;
+      background-position: 0% 50%;
+      box-shadow:
+        0 4px 16px rgba(247, 98, 24, 0.3),
+        0 1px 4px rgba(191, 52, 117, 0.2);
+    }
+
+    .btn--primary:hover {
+      background-position: 100% 50%;
+      transform: translateY(-2px);
+      color: var(--sunset-starlight);
+      box-shadow:
+        0 8px 28px rgba(247, 98, 24, 0.4),
+        0 2px 8px rgba(191, 52, 117, 0.25);
+    }
+
+    .btn--ghost {
+      color: var(--sunset-starlight);
+      background: rgba(255, 253, 249, 0.12);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 253, 249, 0.3);
+      box-shadow: none;
+    }
+
+    .btn--ghost:hover {
+      background: rgba(255, 253, 249, 0.22);
+      border-color: rgba(255, 253, 249, 0.5);
+      transform: translateY(-2px);
+      color: var(--sunset-starlight);
+    }
+
+    .btn--outline {
+      color: var(--sunset-tangerine);
+      background: transparent;
+      border: 2px solid var(--sunset-tangerine);
+    }
+
+    .btn--outline:hover {
+      color: var(--sunset-starlight);
+      background: var(--sunset-tangerine);
+      box-shadow: 0 4px 16px rgba(247, 98, 24, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn--warm {
+      color: var(--sunset-charcoal);
+      background: linear-gradient(
+        135deg,
+        var(--sunset-golden-hour) 0%,
+        var(--sunset-amber-sun) 100%
+      );
+      box-shadow: 0 4px 16px rgba(245, 166, 35, 0.3);
+    }
+
+    .btn--warm:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245, 166, 35, 0.4);
+      color: var(--sunset-charcoal);
+    }
+
+    /* ============================================
+       GRADIENT DIVIDER
+       ============================================ */
+    .gradient-divider {
+      width: 100%;
+      height: 4px;
+      border: none;
+      background: var(--sunset-gradient-full);
+    }
+
+    .gradient-divider--thin {
+      height: 2px;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(238, 108, 69, 0.12);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sunset-coral);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 4vw, 3.8rem);
+      font-weight: 700;
+      line-height: 1.1;
+      background: linear-gradient(
+        135deg,
+        var(--sunset-golden-hour) 0%,
+        var(--sunset-tangerine) 30%,
+        var(--sunset-rose) 60%,
+        var(--sunset-mauve) 100%
+      );
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .typo-heading {
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 700;
+      color: var(--sunset-charcoal);
+      letter-spacing: -0.02em;
+    }
+
+    .typo-subheading {
+      font-family: 'Raleway', sans-serif;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      font-weight: 300;
+      color: var(--sunset-charcoal);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-body-text {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--sunset-charcoal);
+    }
+
+    .typo-serif {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      line-height: 1.8;
+      color: #5c4a4a;
+    }
+
+    .typo-overline {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sunset-tangerine);
+    }
+
+    .typo-right h3 {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1rem;
+    }
+
+    .typo-scale-size {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--sunset-coral);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .typo-pairing {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(238, 108, 69, 0.15);
+    }
+
+    .typo-pairing h3 {
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-context {
+      color: #6b5555;
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-section {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(
+          ellipse at 70% 30%,
+          rgba(155, 77, 202, 0.2) 0%,
+          transparent 50%
+        ),
+        linear-gradient(
+          180deg,
+          var(--sunset-twilight) 0%,
+          var(--sunset-deep-violet) 50%,
+          #2a1a3e 100%
+        );
+      color: var(--sunset-starlight);
+    }
+
+    /* Decorative glow for palette section */
+    .palette-section::after {
+      content: '';
+      position: absolute;
+      top: -80px;
+      right: 10%;
+      width: 300px;
+      height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 206, 97, 0.12) 0%,
+        rgba(247, 98, 24, 0.06) 40%,
+        transparent 70%
+      );
+      filter: blur(50px);
+      pointer-events: none;
+    }
+
+    .palette-section .section-label {
+      color: var(--sunset-golden-hour);
+    }
+
+    .palette-section .section-title {
+      color: var(--sunset-starlight);
+    }
+
+    .palette-section .section-subtitle {
+      color: rgba(255, 253, 249, 0.7);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .color-chip {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 206, 97, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .color-swatch {
+      height: 72px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 0.75rem;
+    }
+
+    .color-name {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--sunset-starlight);
+      margin-bottom: 0.2rem;
+    }
+
+    .color-hex {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255, 253, 249, 0.5);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 206, 97, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: var(--sunset-shadow-md);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--sunset-shadow-lg);
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      color: var(--sunset-starlight);
+    }
+
+    .card-icon--warm {
+      background: var(--sunset-gradient-warm);
+    }
+
+    .card-icon--cool {
+      background: var(--sunset-gradient-cool);
+    }
+
+    .card-icon--gold {
+      background: linear-gradient(135deg, var(--sunset-golden-hour), var(--sunset-amber-sun));
+    }
+
+    .card-icon--rose {
+      background: linear-gradient(135deg, var(--sunset-rose), var(--sunset-pink));
+    }
+
+    .card-icon--mauve {
+      background: linear-gradient(135deg, var(--sunset-mauve), var(--sunset-purple));
+    }
+
+    .card-icon--coral {
+      background: linear-gradient(135deg, var(--sunset-coral), var(--sunset-burnt));
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #6b5555;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--sunset-starlight);
+      background: var(--sunset-gradient-warm);
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+      margin-right: 0.4rem;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      position: relative;
+      overflow: hidden;
+      padding: 4rem 2rem;
+      text-align: center;
+      background:
+        radial-gradient(
+          ellipse at 50% 80%,
+          rgba(255, 206, 97, 0.35) 0%,
+          rgba(247, 98, 24, 0.2) 25%,
+          transparent 50%
+        ),
+        linear-gradient(
+          135deg,
+          var(--sunset-tangerine) 0%,
+          var(--sunset-rose) 35%,
+          var(--sunset-pink) 55%,
+          var(--sunset-mauve) 75%,
+          var(--sunset-purple) 100%
+        );
+      color: var(--sunset-starlight);
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-orbs {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .motif-orb {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: orb-float 4s ease-in-out infinite;
+    }
+
+    .motif-orb:nth-child(1) {
+      background: radial-gradient(circle, var(--sunset-golden-hour), transparent);
+      animation-delay: 0s;
+    }
+
+    .motif-orb:nth-child(2) {
+      background: radial-gradient(circle, var(--sunset-coral), transparent);
+      animation-delay: 0.5s;
+    }
+
+    .motif-orb:nth-child(3) {
+      background: radial-gradient(circle, var(--sunset-rose), transparent);
+      animation-delay: 1s;
+    }
+
+    .motif-orb:nth-child(4) {
+      background: radial-gradient(circle, var(--sunset-mauve), transparent);
+      animation-delay: 1.5s;
+    }
+
+    .motif-orb:nth-child(5) {
+      background: radial-gradient(circle, var(--sunset-golden-hour), transparent);
+      animation-delay: 2s;
+    }
+
+    @keyframes orb-float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--sunset-starlight);
+      margin-bottom: 0.75rem;
+      text-shadow: 0 2px 12px rgba(31, 33, 77, 0.3);
+    }
+
+    .motif-banner p {
+      font-size: 1.05rem;
+      color: rgba(255, 253, 249, 0.85);
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 3rem;
+      max-width: 800px;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .principle-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .principle-icon::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 2px;
+      background: var(--sunset-gradient-warm);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .principle-icon-inner {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--sunset-gradient-warm);
+    }
+
+    .principle-text h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .principle-text p {
+      font-size: 0.95rem;
+      color: #6b5555;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+
+    .effect-demo {
+      border-radius: 16px;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(255, 206, 97, 0.15);
+      box-shadow: var(--sunset-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--sunset-shadow-md);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem;
+    }
+
+    .effect-caption h4 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      color: #6b5555;
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Full Sunset Gradient */
+    .effect-sunset-sweep {
+      background:
+        radial-gradient(
+          ellipse at 25% 75%,
+          rgba(255, 206, 97, 0.5) 0%,
+          transparent 50%
+        ),
+        linear-gradient(
+          160deg,
+          #1f214d 0%,
+          #50366f 15%,
+          #9b4dca 30%,
+          #bf3475 45%,
+          #e8567f 55%,
+          #ee6c45 68%,
+          #f76218 82%,
+          #ffce61 100%
+        );
+    }
+
+    /* Effect 2: Radial Sun Glow */
+    .effect-sun-glow {
+      background:
+        radial-gradient(
+          circle at 50% 70%,
+          var(--sunset-golden-hour) 0%,
+          var(--sunset-tangerine) 20%,
+          var(--sunset-rose) 40%,
+          var(--sunset-mauve) 60%,
+          var(--sunset-twilight) 100%
+        );
+    }
+
+    /* Effect 3: Animated Gradient Shift */
+    .effect-animated-gradient {
+      background: linear-gradient(
+        -45deg,
+        #ffce61,
+        #f76218,
+        #e8567f,
+        #bf3475,
+        #9b4dca,
+        #50366f,
+        #1f214d
+      );
+      background-size: 400% 400%;
+      animation: sunset-shift 12s ease infinite;
+    }
+
+    @keyframes sunset-shift {
+      0%   { background-position: 0% 50%; }
+      25%  { background-position: 50% 100%; }
+      50%  { background-position: 100% 50%; }
+      75%  { background-position: 50% 0%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Effect 4: Noise Texture on Gradient */
+    .effect-noise-grain {
+      background:
+        linear-gradient(
+          135deg,
+          var(--sunset-tangerine) 0%,
+          var(--sunset-rose) 50%,
+          var(--sunset-purple) 100%
+        );
+    }
+
+    .effect-noise-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      pointer-events: none;
+    }
+
+    /* Effect 5: Warm Glow Orbs */
+    .effect-warm-orbs {
+      background: var(--sunset-twilight);
+    }
+
+    .effect-warm-orbs::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      top: -20px;
+      left: -20px;
+      background: radial-gradient(
+        circle,
+        rgba(255, 206, 97, 0.4) 0%,
+        rgba(247, 98, 24, 0.15) 50%,
+        transparent 70%
+      );
+      filter: blur(20px);
+    }
+
+    .effect-warm-orbs::after {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      bottom: -20px;
+      right: 20px;
+      background: radial-gradient(
+        circle,
+        rgba(232, 86, 127, 0.35) 0%,
+        rgba(155, 77, 202, 0.15) 50%,
+        transparent 70%
+      );
+      filter: blur(20px);
+    }
+
+    /* Effect 6: Horizon Layers */
+    .effect-horizon {
+      background:
+        linear-gradient(
+          180deg,
+          #1f214d 0%,
+          #1f214d 30%,
+          #50366f 35%,
+          #9b4dca 42%,
+          #bf3475 50%,
+          #e8567f 56%,
+          #ee6c45 64%,
+          #f76218 74%,
+          #f5a623 84%,
+          #ffce61 92%,
+          #fff8f0 100%
+        );
+    }
+
+    .effect-horizon::after {
+      content: '';
+      position: absolute;
+      bottom: 30%;
+      left: 30%;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 206, 97, 0.8) 0%,
+        rgba(247, 98, 24, 0.4) 40%,
+        transparent 70%
+      );
+      filter: blur(8px);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase-section {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(
+          ellipse at 80% 80%,
+          rgba(255, 206, 97, 0.15) 0%,
+          transparent 50%
+        ),
+        linear-gradient(
+          135deg,
+          var(--sunset-peach-whisper) 0%,
+          var(--sunset-cream) 100%
+        );
+    }
+
+    .button-showcase {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 3rem;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      padding: 5rem 2rem;
+      background: var(--sunset-peach-whisper);
+      text-align: center;
+    }
+
+    .quote-inner {
+      max-width: 680px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .quote-inner::before {
+      content: '\201C';
+      position: absolute;
+      top: -40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 6rem;
+      line-height: 1;
+      background: var(--sunset-gradient-warm);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--sunset-charcoal);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .quote-attribution {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--sunset-tangerine);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      position: relative;
+      padding: 6rem 2rem;
+      text-align: center;
+      overflow: hidden;
+      background:
+        radial-gradient(
+          ellipse at 50% 100%,
+          rgba(255, 206, 97, 0.4) 0%,
+          rgba(247, 98, 24, 0.2) 30%,
+          transparent 60%
+        ),
+        linear-gradient(
+          0deg,
+          var(--sunset-golden-hour) 0%,
+          var(--sunset-tangerine) 20%,
+          var(--sunset-rose) 45%,
+          var(--sunset-mauve) 70%,
+          var(--sunset-twilight) 100%
+        );
+      color: var(--sunset-starlight);
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-size: clamp(1.8rem, 3vw + 0.5rem, 2.6rem);
+      font-weight: 700;
+      color: var(--sunset-starlight);
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 12px rgba(31, 33, 77, 0.25);
+    }
+
+    .cta-text {
+      font-size: 1.1rem;
+      color: rgba(255, 253, 249, 0.85);
+      line-height: 1.6;
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .cta-input {
+      flex: 1;
+      padding: 0.875rem 1.25rem;
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      color: var(--sunset-charcoal);
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 100px;
+      outline: none;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .cta-input::placeholder {
+      color: rgba(61, 44, 44, 0.4);
+    }
+
+    .cta-input:focus {
+      border-color: var(--sunset-golden-hour);
+      box-shadow: 0 0 0 4px rgba(255, 206, 97, 0.2);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--sunset-twilight);
+      color: var(--sunset-starlight);
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer h3 {
+      font-family: 'Raleway', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--sunset-golden-hour), var(--sunset-tangerine));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .footer p {
+      font-size: 0.9rem;
+      color: rgba(255, 253, 249, 0.6);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: rgba(255, 253, 249, 0.6);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--sunset-golden-hour);
+    }
+
+    .footer-gradient-bar {
+      width: 120px;
+      height: 3px;
+      margin: 1.5rem auto;
+      border-radius: 2px;
+      background: var(--sunset-gradient-warm);
+      opacity: 0.5;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem;
+      color: rgba(255, 253, 249, 0.35);
+      margin-bottom: 0;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        padding: 1rem 2rem 1.5rem;
+        gap: 0.75rem;
+        background: rgba(31, 33, 77, 0.92);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255, 206, 97, 0.1);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .hero-sun {
+        width: 200px;
+        height: 200px;
+        bottom: 8%;
+        left: 15%;
+      }
+
+      .cta-form {
+        flex-direction: column;
+      }
+
+      .cta-input,
+      .cta-form .btn {
+        width: 100%;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .motif-orbs {
+        gap: 1rem;
+      }
+
+      .motif-orb {
+        width: 36px;
+        height: 36px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        padding: 0.875rem 1.25rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 56px) 1rem;
+      }
+
+      .hero-content {
+        padding: 1.25rem;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 0.5rem;
+      }
+
+      .color-name {
+        font-size: 0.65rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-brand">Sunset Gradient</a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero" class="nav-link">Overview</a>
+      <a href="#typography" class="nav-link">Type</a>
+      <a href="#palette" class="nav-link">Colors</a>
+      <a href="#components" class="nav-link">Components</a>
+      <a href="#effects" class="nav-link">Effects</a>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-sun"></div>
+    <div class="hero-horizon"></div>
+    <div class="hero-content">
+      <p class="hero-overline">Design Aesthetic Reference</p>
+      <h1 class="hero-title">Sunset <strong>Gradient</strong></h1>
+      <p class="hero-subtitle">Golden Hour Palettes &amp; Warm Transitions</p>
+      <p class="hero-desc">
+        A warm, luminous design language drawn from the fleeting spectacle of a setting sun &mdash; molten gold through fiery orange and rose pink into dusky violet and twilight blue.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--primary">Explore Components</a>
+        <a href="#palette" class="btn btn--ghost">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== GRADIENT DIVIDER ===== -->
+  <div class="gradient-divider"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Clean, Warm &amp; Luminous</h2>
+      <p class="section-subtitle">Soft humanist sans-serifs paired with refined serif display faces</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display</p>
+            <p class="typo-display">Golden Hour</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Raleway</p>
+            <p class="typo-heading">Warm Horizon Lines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Raleway Light</p>
+            <p class="typo-subheading">Soft transitions and atmospheric depth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Nunito</p>
+            <p class="typo-body-text">Rounded humanist warmth for comfortable reading. Generous line height and soft letterforms complement the organic gradient backdrop without competing for attention.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Editorial / Lora Italic</p>
+            <p class="typo-serif">Elegant serif for long-form content, lending a refined warmth to editorial passages and pull quotes that mirrors the sophistication of twilight.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Overline / Raleway Caps</p>
+            <p class="typo-overline">Section Labels &amp; Tags</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.0rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; background: var(--sunset-gradient-warm); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.8rem</span>
+              <span style="font-family: 'Raleway', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--sunset-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Raleway', sans-serif; font-size: 1.3rem; font-weight: 300; color: var(--sunset-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.06rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 1.06rem; color: var(--sunset-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1.05rem; font-style: italic; color: #5c4a4a;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Raleway', sans-serif; font-weight: 600; font-size: 0.75rem; color: var(--sunset-tangerine); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--sunset-burnt);">Playfair Display</strong> + <strong>Nunito</strong><br>
+              <span class="typo-pairing-context">Elegant warmth, editorial luxury for hero and body</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Raleway', sans-serif; color: var(--sunset-burnt);">Raleway</strong> + <strong style="font-family: 'Lora', serif;">Lora</strong><br>
+              <span class="typo-pairing-context">Sophisticated storytelling for lifestyle and travel</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Raleway', sans-serif; color: var(--sunset-burnt);">Raleway</strong> + <strong>Nunito</strong><br>
+              <span class="typo-pairing-context">Clean contemporary, versatile general-purpose</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WARM DIVIDER ===== -->
+  <div class="gradient-divider gradient-divider--thin"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section palette-section" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">From Golden Hour to Twilight</h2>
+      <p class="section-subtitle">The full spectral arc of a setting sun, captured in code</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFCE61;"></div>
+          <div class="color-info">
+            <div class="color-name">Golden Hour</div>
+            <div class="color-hex">#FFCE61</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5A623;"></div>
+          <div class="color-info">
+            <div class="color-name">Amber Sun</div>
+            <div class="color-hex">#F5A623</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F76218;"></div>
+          <div class="color-info">
+            <div class="color-name">Tangerine Blaze</div>
+            <div class="color-hex">#F76218</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8512F;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Sunset</div>
+            <div class="color-hex">#E8512F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EE6C45;"></div>
+          <div class="color-info">
+            <div class="color-name">Coral Dusk</div>
+            <div class="color-hex">#EE6C45</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8567F;"></div>
+          <div class="color-info">
+            <div class="color-name">Rose Horizon</div>
+            <div class="color-hex">#E8567F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #BF3475;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunset Pink</div>
+            <div class="color-hex">#BF3475</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9B4DCA;"></div>
+          <div class="color-info">
+            <div class="color-name">Twilight Mauve</div>
+            <div class="color-hex">#9B4DCA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B3FA0;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusk Purple</div>
+            <div class="color-hex">#6B3FA0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #50366F;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Violet</div>
+            <div class="color-hex">#50366F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1F214D;"></div>
+          <div class="color-info">
+            <div class="color-name">Twilight Blue</div>
+            <div class="color-hex">#1F214D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFF8F0; border-bottom: 1px solid rgba(255,206,97,0.2);"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Cream</div>
+            <div class="color-hex">#FFF8F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFECD2; border-bottom: 1px solid rgba(255,206,97,0.2);"></div>
+          <div class="color-info">
+            <div class="color-name">Peach Whisper</div>
+            <div class="color-hex">#FFECD2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3D2C2C;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Charcoal</div>
+            <div class="color-hex">#3D2C2C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #FFCE61, #F76218, #E8567F, #9B4DCA, #1F214D); position: relative;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at 30% 60%, rgba(255,255,255,0.25) 0%, transparent 50%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Full Gradient</div>
+            <div class="color-hex">Spectrum</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRADIENT DIVIDER ===== -->
+  <div class="gradient-divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Warm Cards &amp; Glowing Details</h2>
+      <p class="section-subtitle">Translucent surfaces layered over warm gradient canvases</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--warm">&#9728;</div>
+          <h3>Multi-Stop Gradients</h3>
+          <p>Three to six color stops replicate the layered depth of a real sunset sky, moving from golden yellows through rose pinks into twilight violet.</p>
+          <span class="tag">Gradient</span>
+          <span class="tag">Core</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#10022;</div>
+          <h3>Radial Sun Glow</h3>
+          <p>Radial gradients emanating from a corner simulate the sun as a light source, giving layouts a natural directional warmth and focal depth.</p>
+          <span class="tag">Radial</span>
+          <span class="tag">Focus</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rose">&#9671;</div>
+          <h3>Glassmorphic Layers</h3>
+          <p>Semi-transparent frosted cards float over the gradient background, with warm-tinted blur filters that maintain the ambient color temperature.</p>
+          <span class="tag">Glass</span>
+          <span class="tag">Depth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--mauve">&#9681;</div>
+          <h3>Warm Shadows</h3>
+          <p>Replace default gray box-shadows with warm hues -- soft orange, rose, and mauve tones that maintain the golden-hour glow across all elevated surfaces.</p>
+          <span class="tag">Shadow</span>
+          <span class="tag">Warmth</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--coral">&#9733;</div>
+          <h3>Noise Texture</h3>
+          <p>A subtle 3-5% opacity noise overlay prevents visible CSS gradient banding and adds the organic, filmic quality of an actual sunset photograph.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Analog</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--cool">&#9788;</div>
+          <h3>Animated Shifts</h3>
+          <p>Slow, meditative gradient animations mimic the passage of golden hour -- background-position shifts over 15-30 seconds create a living, breathing canvas.</p>
+          <span class="tag">Motion</span>
+          <span class="tag">Ambient</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-orbs">
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+        <div class="motif-orb"></div>
+      </div>
+      <h2>Warmth, Atmosphere &amp; Light</h2>
+      <p>The fleeting beauty of a setting sun, translated into digital interfaces that feel alive with natural color</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Sunset Design Philosophy</h2>
+      <p class="section-subtitle">Let the gradient breathe, animate slowly, maintain warmth throughout</p>
+
+      <div class="principles-list">
+        <div class="principle-item">
+          <div class="principle-icon">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Let the Gradient Be the Hero</h3>
+            <p>The gradient is the centerpiece, not decoration. All other elements should support and not compete with it. Treat whitespace as atmosphere -- empty areas of gradient create the same expansive feeling as negative space in a landscape photograph.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Follow the Natural Color Order</h3>
+            <p>Gold at the light source, transitioning through orange and pink to purple at the edges. Every gradient should feel like it has a sun behind it, anchoring the composition in a specific direction of warmth.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Animate Sparingly and Slowly</h3>
+            <p>Gradient shifts should feel like watching the sky change, not a strobe light. Keep animation durations above 15 seconds for background shifts, and ensure all motion can be disabled via prefers-reduced-motion.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <div class="principle-icon-inner"></div>
+          </div>
+          <div class="principle-text">
+            <h3>Maintain Warmth Throughout</h3>
+            <p>Even neutral elements should lean warm rather than cool gray. Balance visual warmth with functional clarity -- the aesthetic should enhance usability, not obscure it. No pure cool grays; tint everything toward peach, mauve, or warm brown.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRADIENT DIVIDER ===== -->
+  <div class="gradient-divider gradient-divider--thin"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--peach" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Gradients &amp; Atmosphere</h2>
+      <p class="section-subtitle">All the sunset techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-sunset-sweep"></div>
+          <div class="effect-caption">
+            <h4>Full Sunset Sweep</h4>
+            <p>An eight-stop linear gradient with radial sun overlay replicates the full arc from twilight to golden hour.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-sun-glow"></div>
+          <div class="effect-caption">
+            <h4>Radial Sun Glow</h4>
+            <p>A circular radial gradient simulates a sun focal point, creating naturalistic directional warmth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-animated-gradient"></div>
+          <div class="effect-caption">
+            <h4>Animated Gradient Shift</h4>
+            <p>Slowly cycling background-position across an oversized gradient creates a living, breathing sunset canvas.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-noise-grain"></div>
+          <div class="effect-caption">
+            <h4>Noise Grain Texture</h4>
+            <p>SVG fractal noise at low opacity prevents banding and adds the organic film quality of sunset photography.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-warm-orbs"></div>
+          <div class="effect-caption">
+            <h4>Warm Glow Orbs</h4>
+            <p>Blurred radial gradients on a dark base create floating light sources reminiscent of distant city lights at dusk.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-horizon"></div>
+          <div class="effect-caption">
+            <h4>Horizon Layers</h4>
+            <p>Stacked horizontal gradient bands with a radial sun circle recreate a classic sunset landscape silhouette.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRADIENT DIVIDER ===== -->
+  <div class="gradient-divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section button-showcase-section">
+    <div class="container" style="text-align: center;">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Warm Buttons</h2>
+      <p class="section-subtitle" style="margin-left: auto; margin-right: auto;">Rounded, gradient-filled, and glowing with sunset warmth</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--primary">Primary Gradient</a>
+        <a href="#" class="btn btn--warm">Golden Warm</a>
+        <a href="#" class="btn btn--outline">Outlined</a>
+        <a href="#" class="btn btn--ghost" style="background: rgba(31, 33, 77, 0.7);">Ghost on Dark</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="quote-section">
+    <div class="quote-inner">
+      <blockquote>
+        <p class="quote-text">
+          The sunset is the sun's fiery kiss to the night. In design, capturing that warmth means embracing smooth transitions, generous atmosphere, and the confidence to let color do the talking.
+        </p>
+      </blockquote>
+      <cite class="quote-attribution">&mdash; The Philosophy of Warm Gradients</cite>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta">
+    <div class="cta-inner">
+      <h2 class="cta-title">Chase the Golden Hour</h2>
+      <p class="cta-text">
+        The Sunset Gradient aesthetic transforms interfaces into warm, inviting landscapes of color. Let your next project glow with the natural beauty of multi-stop gradients and atmospheric warmth.
+      </p>
+      <div class="cta-form">
+        <input type="email" class="cta-input" placeholder="Your email address" aria-label="Email address">
+        <button class="btn btn--primary">Subscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GRADIENT DIVIDER ===== -->
+  <div class="gradient-divider"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Sunset Gradient</h3>
+      <p>
+        A design aesthetic reference celebrating warm sunset-inspired gradients, golden hour palettes, and the natural beauty of orange-to-purple color transitions -- all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-gradient-bar"></div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Sunset Gradient &bull; Chase the golden hour</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Navigation scroll effect
+    (function() {
+      var nav = document.getElementById('nav');
+      var scrollThreshold = 60;
+
+      function handleScroll() {
+        if (window.scrollY > scrollThreshold) {
+          nav.classList.add('nav--scrolled');
+        } else {
+          nav.classList.remove('nav--scrolled');
+        }
+      }
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+
+      // Mobile nav toggle
+      var toggle = document.getElementById('navToggle');
+      var links = document.getElementById('navLinks');
+
+      if (toggle && links) {
+        toggle.addEventListener('click', function() {
+          links.classList.toggle('open');
+        });
+
+        // Close nav on link click
+        var navLinks = links.querySelectorAll('.nav-link');
+        navLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+            links.classList.remove('open');
+          });
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>
