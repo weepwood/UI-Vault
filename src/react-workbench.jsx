@@ -222,6 +222,32 @@ function WorkbenchPortals({nodes}){
     nodes.stage.dataset.size=selected?.source==='local'?state.previewSize:'fluid';
   },[nodes,selected?.id,selected?.source,state.previewSize]);
 
+  // 主工作区和目录栏不在同一个 grid 行内：以 Topbar 实际占用高度为准，
+  // 而非猜测固定 px。浏览器缩放、字体偏好和窄屏换行后也能对齐分隔线。
+  useLayoutEffect(()=>{
+    const header=nodes.topbar;
+    const controls=nodes.listControls;
+    const sync=(entry)=>{
+      const box=entry?.borderBoxSize;
+      const height=(Array.isArray(box)?box[0]?.blockSize:box?.blockSize)||header.offsetHeight;
+      if(height>0)controls.style.setProperty('--list-controls-height',height+'px');
+    };
+    sync();
+    if(typeof ResizeObserver==='undefined'){
+      window.addEventListener('resize',sync);
+      return ()=>{
+        window.removeEventListener('resize',sync);
+        controls.style.removeProperty('--list-controls-height');
+      };
+    }
+    const observer=new ResizeObserver(entries=>sync(entries[0]));
+    observer.observe(header);
+    return ()=>{
+      observer.disconnect();
+      controls.style.removeProperty('--list-controls-height');
+    };
+  },[nodes]);
+
   return <>
     {createPortal(<SearchField value={state.query} onChange={changeSearch} searchRef={searchRef}/>,nodes.search)}
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
