@@ -30,7 +30,7 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 
 ### 数据
 
-1. **资产元数据唯一来源**是 `catalog/assets/<id>.json`。修改后运行 `npm run catalog:sync`。**不要**直接编辑生成的 `content/assets.json`。新增字段同步更新 `catalog/asset.schema.json`、`scripts/lib/catalog.mjs` 和对应测试。
+1. **Project / Asset 双层数据源**：来源项目维护在 `catalog/projects/<id>.json`，独立资产维护在 `catalog/assets/<id>.json`，新资产需要已注册的 `projectId`。修改后运行 `npm run catalog:sync`。**不要**直接编辑生成的 `content/assets.json` 和 `content/projects.json`。新增字段同步更新 `catalog/asset.schema.json`、`scripts/lib/catalog.mjs` 和对应测试。
 2. **向后兼容**：已有的资产 ID、预览路径（`demos/.../index.html`）、URL 参数、收藏和设置的存储键不能随意改名。
 3. 新增 `originRepo` 资产时，必须能通过跨仓筛选找到，并且有真实可访问的主要源码链接和具体的复用说明。
 

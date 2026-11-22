@@ -3,6 +3,7 @@
 将喜欢的 UI 风格、组件、动效、布局和可运行 Demo 持续收藏到同一个工作台。
 
 - [GitHub 仓库](https://github.com/weepwood/UI-Vault)
+- [Project 注册表](docs/PROJECT-REGISTRY.md)
 - [预期 GitHub Pages 站点](https://weepwood.github.io/UI-Vault/)（以部署结果为准）
 - [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [多框架与独立交付规范](docs/MULTI-FRAMEWORK.md) · [架构](docs/ARCHITECTURE.md)
 - [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
@@ -122,6 +123,10 @@ npm run check           # 完整 CI 等价检查
 
 
 **独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站内嵌其 [GitHub Pages 页面](https://weepwood.github.io/Emboss-Lab/)，并保留源代码链接。详见 [图标规范](docs/ICONOGRAPHY.md)。
+
+## Project / Asset 双层管理
+
+来源 Project 与具体 Asset 分开管理，现有 33 个来源项目与 126 条资产通过 `projectId` 关联。排序菜单新增「按项目分组」，页面信息展示来源仓库和关联数量；原有链接、收藏及 iframe 不变。详见 [Project 注册表](docs/PROJECT-REGISTRY.md)。
 
 ## 多框架独立交付
 

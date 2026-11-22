@@ -49,7 +49,7 @@ const lines=[
 '    });',
 '  </script>','</body>','</html>',''
 ];
-const entry={id,title,subtitle:'Original UI Demo',description:'新建 Demo，待补充设计说明与使用场景。',type:kinds[kind][0],source:'local',tags:['待分类'],technologies:['HTML','CSS','JavaScript'],preview:rel,code:rel,copyable:true,license:'原创示例',cover:kinds[kind][1],featured:false,created:new Date().toISOString().slice(0,10)};
+const entry={id,title,subtitle:'Original UI Demo',description:'新建 Demo，待补充设计说明与使用场景。',type:kinds[kind][0],source:'local',tags:['待分类'],technologies:['HTML','CSS','JavaScript'],preview:rel,code:rel,copyable:true,license:'原创示例',cover:kinds[kind][1],featured:false,projectId:'ui-vault',created:new Date().toISOString().slice(0,10)};
 await mkdir(dirname(htmlPath),{recursive:true});
 try{
   await writeFile(htmlPath,lines.join('\n'),{flag:'wx'});

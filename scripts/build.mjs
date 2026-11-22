@@ -44,7 +44,7 @@ async function copyTree(relativeDir,extensions) {
     else throw new Error('公开资源目录包含不允许发布的文件：'+rel);
   }
 }
-for(const rel of ['index.html','settings.html','favicon.svg','content/assets.json','content/categories.json'])await copy(rel);
+for(const rel of ['index.html','settings.html','favicon.svg','content/assets.json','content/projects.json','content/categories.json'])await copy(rel);
 await copyTree('assets',webAssets);
 await copyTree('content/tokens',tokenAssets);
 const included=new Set();

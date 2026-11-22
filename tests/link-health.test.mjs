@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {collectSiteUrls,classifyHttpStatus,isPublicHttpsUrl} from '../scripts/lib/link-health.mjs';
+import {collectSiteUrls,collectProjectUrls,classifyHttpStatus,isPublicHttpsUrl} from '../scripts/lib/link-health.mjs';
 
 test('相同站点 URL 去重，但保留关联的多个资产 ID',()=>{
  const list=collectSiteUrls([{id:'a',siteUrl:'https://example.com/'},
@@ -18,4 +18,14 @@ test('巡检拒绝明文 HTTP、内网地址、带凭据的 URL',()=>{
    'https://user:pwd@example.com','https://service.internal','https://192.168.0.1'])
    assert.equal(isPublicHttpsUrl(url),false,url);
  assert.equal(isPublicHttpsUrl('https://weepwood.github.io/UI-Vault/'),true);
+});
+
+test('来源仓库以 Project 为单位检查一次，资产预览单独检查',()=>{
+ const projects=[{id:'a',repository:'https://github.com/weepwood/style-atlas'},
+   {id:'b',repository:'https://github.com/weepwood/style-atlas'},
+   {id:'c',repository:'https://github.com/weepwood/page-mirror'}];
+ assert.deepEqual(collectProjectUrls(projects),[
+   {url:'https://github.com/weepwood/style-atlas',ids:['a','b']},
+   {url:'https://github.com/weepwood/page-mirror',ids:['c']}
+ ]);
 });

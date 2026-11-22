@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "UI Vault Project Registry",
+  "description": "Source projects have independent repositories; asset.projectId links to project.id without changing asset IDs or external preview URLs.",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "kind",
+    "repository"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100
+    },
+    "kind": {
+      "enum": [
+        "workspace",
+        "managed",
+        "reference"
+      ]
+    },
+    "repository": {
+      "type": "string",
+      "pattern": "^https://github\\.com/[A-Za-z0-9-]+/[A-Za-z0-9._-]+$"
+    },
+    "defaultBranch": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 100,
+      "description": "Only add when verified from repository, not guessed."
+    },
+    "homepage": {
+      "type": "string",
+      "pattern": "^https://",
+      "description": "Only add when verified to be a project-level homepage, not an individual asset demo."
+    }
+  },
+  "additionalProperties": false
+}

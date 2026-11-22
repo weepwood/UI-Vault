@@ -13,7 +13,7 @@ npm run check
 
 脚手架创建 `demos/<类别>/<slug>/index.html` 和 `catalog/assets/<slug>.json`。Demo 应尽量独立运行，资源使用相对路径，并兼容 GitHub Pages 的 `/UI-Vault/` 子路径。
 
-**唯一数据源**是 `catalog/assets/*.json`；`content/assets.json` 每次由 `npm run catalog:sync` 生成，严禁手动编辑。类别定义位于 `content/categories.json`；修改类别不需要更新主站导航组件。
+**双层数据源**：`catalog/projects/*.json` 保存来源项目，`catalog/assets/*.json` 保存独立资产。每条资产需要 `projectId`。`npm run catalog:sync` 同时生成两个 content 清单。详见 [Project 注册表](PROJECT-REGISTRY.md)。类别定义位于 `content/categories.json`；修改类别不需要更新主站导航组件。
 
 ## 新增外部设计参考
 
@@ -21,7 +21,7 @@ npm run check
 npm run new:reference -- example-ui https://github.com/example/repo 参考项目
 ```
 
-外部资源至少登记 `url`，可选 `siteUrl`（真实可访问的公开演示）、`originRepo`、`sourceUrl` 和 `reuseNotes`。源仓维护独立 React/Vue 站点时，通过 `siteUrl` 内嵌即可，不复制全部源码进入 UI-Vault。
+外部资源需登记 `projectId` 与 `url`（脚手架可为 GitHub 来源自动创建 Project），可选 `siteUrl`（真实可访问的公开演示）、`originRepo`、`sourceUrl` 和 `reuseNotes`。源仓维护独立 React/Vue 站点时，通过 `siteUrl` 内嵌即可，不复制全部源码进入 UI-Vault。
 
 外站可能拒绝 iframe 嵌入，或需要 File System Access、IndexedDB 等沙箱无法允许的能力。用户必须能通过原站链接获得完整体验。不要为了解除限制直接添加 `allow-same-origin`，尤其同为 `weepwood.github.io` 域名不同路径的站点。
 

@@ -32,16 +32,16 @@ index.html  （三栏外壳、初始回退 DOM）
 ## 资产协议
 
 ```text
-catalog/assets/*.json + content/categories.json
+catalog/projects/*.json + catalog/assets/*.json + content/categories.json
                │
                ▼
-scripts/lib/catalog.mjs  （校验 / 文件存在性 / 来源限制）
+scripts/lib/projects.mjs + scripts/lib/catalog.mjs  （来源与交叉引用校验）
                │
                ▼
 scripts/catalog.mjs sync
                │
                ▼
-content/assets.json      （自动生成，按 id 排序）
+content/projects.json + content/assets.json （自动生成，按 id 排序）
                │
                ▼
 assets/core/catalog.js → React 工作台
@@ -53,7 +53,7 @@ scripts/build.mjs        （白名单静态发布）
 dist/ → GitHub Pages
 ```
 
-`catalog/asset.schema.json` 定义可接受字段；`scripts/lib/catalog.mjs` 执行运行时及跨字段验证。两个文件需要一起更新，严禁直接编辑生成的 `content/assets.json`。
+`catalog/project.schema.json` 与 `catalog/asset.schema.json` 分别定义 Project 和 Asset 的可接受字段；`scripts/lib/catalog.mjs` 执行运行时及跨字段验证。两个文件需要一起更新，严禁直接编辑生成的 `content/assets.json`。
 
 `source=local` 的资源由 `preview` 指向本地 Demo HTML；`source=external` 可登记真实存在的 `siteUrl`，在 iframe 加载失败或被 CSP 拦截时保留原站链接。
 

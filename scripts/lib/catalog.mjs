@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, extname, join, relative, resolve, sep } from 'node:path';
 import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
 import {PREVIEW_CAPABILITIES} from '../../assets/core/preview-policy.js';
+import {inspectProjects,canonicalGitHubRepository} from './projects.mjs';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const ASSET_FIELDS=new Set(Object.keys(JSON.parse(readFileSync(new URL('../../catalog/asset.schema.json',import.meta.url),'utf8')).properties));
@@ -46,6 +47,7 @@ export function checkEntry(entry, categories, fileName='') {
     Number.isNaN(Date.parse(entry.created)) || new Date(entry.created).toISOString().slice(0,10)!==entry.created) errors.push(where+': 无效创建日期');
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
+  if(entry.projectId!==undefined&&(!isText(entry.projectId)||!SLUG.test(entry.projectId)))errors.push(where+': projectId 必须为注册项目的 ID');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
   if(entry.copyable===true&&(
     entry.source!=='local'||entry.preview!==entry.code||!entry.code?.endsWith('.html')||
@@ -158,9 +160,21 @@ export async function inspectCatalog({checkGenerated=true}={}) {
   let source;
   try { source=await loadSource(); } catch(e) { return {errors:['读取分类/资产失败：'+e.message],items:[],categories:[]}; }
   errors.push(...checkCategories(source.categories));
+  const projectsResult=await inspectProjects({checkGenerated});
+  errors.push(...projectsResult.errors);
+  const projectsById=new Map(projectsResult.projects.map(p=>[p.id,p]));
   const ids=new Set(),items=[];
   for(const {fileName,entry} of source.entries) {
     errors.push(...checkEntry(entry,source.categories,fileName));
+    if(!entry.projectId||!projectsById.has(entry.projectId))errors.push(entry.id+': projectId 必须指向已注册 Project');
+    else{
+      const project=projectsById.get(entry.projectId);
+      const original=entry.originRepo||(entry.source==='external'?entry.url:null);
+      const candidate=canonicalGitHubRepository(original);
+      // 本地 Demo 可以来自上游研究项目，但不能把来源仓库绑定到错误的 Project。
+      if(candidate&&candidate.toLowerCase()!==project.repository.toLowerCase())
+        errors.push(entry.id+': projectId 与来源仓库不一致：'+entry.projectId);
+    }
     if(ids.has(entry.id)) errors.push('重复的资产 ID: '+entry.id);
     ids.add(entry.id);
     items.push(entry);
@@ -185,7 +199,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
       if(actual!==manifest) errors.push('content/assets.json 与独立资产元数据不同步：请运行 node scripts/catalog.mjs sync');
     } catch { errors.push('缺少 content/assets.json：请运行 node scripts/catalog.mjs sync'); }
   }
-  return {errors,items,categories:source.categories,manifest};
+  return {errors,items,categories:source.categories,projects:projectsResult.projects,projectManifest:projectsResult.manifest,manifest};
 }
 export async function saveManifest() {
   const result=await inspectCatalog({checkGenerated:false});
