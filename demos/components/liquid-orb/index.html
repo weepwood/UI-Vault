@@ -828,8 +828,7 @@
                     } else if (quality === "eco" && !saveData) {
                       applyActiveQuality("balanced");
                     } else if (quality === "balanced" && !highPipelineUnavailable &&
-                      !saveData && cpu >= 6 && (!memory || memory >= 6) &&
-                      canvas.clientWidth * canvas.clientHeight <= 230000) {
+                      !saveData && canvas.clientWidth * canvas.clientHeight <= 230000) {
                       applyActiveQuality("high");
                     }
                     lastQualityChangeAt = sampledAt;
