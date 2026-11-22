@@ -23,7 +23,10 @@ function PreviewContent({asset,mode,error,loading}){
   const frame=useRef(null);
   const backdropStudio=asset?.id==='aurora-field';
   const externalSandbox=asset?.id==='emboss-poster-lab'
-    ?'allow-scripts allow-forms allow-downloads':'allow-scripts allow-forms';
+    ?'allow-scripts allow-forms allow-downloads'
+    :asset?.id==='fluxnav-start-page'
+      ?'allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox'
+      :'allow-scripts allow-forms';
   const sandbox=backdropStudio?'allow-scripts allow-downloads':'allow-scripts';
   const permissions=asset?.id==='liquid-orb'||asset?.id==='liquid-orb-thinking-dialog'
     ? 'webgpu' : backdropStudio?'fullscreen':undefined;
