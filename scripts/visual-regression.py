@@ -723,7 +723,9 @@ def verify_background_lab(browser, origin):
     """背景实验室：桌面/手机、静态与动态场景、对照内容及精确 CSS 导出。"""
     for name, width, height, reduced in (
         ("desktop", 1280, 850, "no-preference"),
+        ("tablet", 768, 600, "no-preference"),
         ("mobile", 390, 844, "reduce"),
+        ("compact-mobile", 360, 640, "reduce"),
     ):
         context = browser.new_context(
             viewport={"width": width, "height": height},
@@ -741,6 +743,13 @@ def verify_background_lab(browser, origin):
             assert page.locator("#stage").is_visible(), "背景预览没有显示"
             stage_height = page.locator("#stage").evaluate("(el)=>el.getBoundingClientRect().height")
             assert stage_height >= 90, f"{name}: 画布高度异常 {stage_height}"
+            assert page.evaluate("""() => {
+                const ids=['allBackgrounds','stage','viewCode','reset'];
+                return ids.every(id=>{
+                    const el=document.getElementById(id),r=el.getBoundingClientRect();
+                    return r.width>0&&r.height>0&&r.top>=-2&&r.bottom<=innerHeight+2&&r.left>=-2&&r.right<=innerWidth+2;
+                });
+            }"""), f"{name}: 主要控件未完整显示在首屏"
             page.locator("#allBackgrounds").click()
             assert page.locator("#backgroundDialog").evaluate("(el)=>el.open"), "背景弹窗未打开"
             page.locator(".tile").first.wait_for(state="visible")
