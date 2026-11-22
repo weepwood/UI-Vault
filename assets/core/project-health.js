@@ -8,7 +8,8 @@ export function emptyProjectHealth(projects=[]){
     checkedAt:null,
     projects:Object.fromEntries(projects.map(p=>[p.id,{
       repositoryStatus:'unverified',defaultBranch:null,pushedAt:null,
-      archived:null,licenseSpdx:null,actionsStatus:'unknown',actionsUrl:null
+      archived:null,licenseSpdx:null,actionsStatus:'unknown',actionsUrl:null,
+      deployment:{state:'unknown',provider:null,environment:null,url:null,evidenceUrl:null,updatedAt:null}
     }]))
   };
 }
