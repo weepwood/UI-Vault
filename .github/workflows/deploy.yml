@@ -28,7 +28,7 @@ jobs:
         run: npm ci --no-audit --no-fund
       - name: 安装字体构建依赖
         run: python -m pip install -r scripts/requirements-fonts.txt
-      - uses: actions/cache@v4
+      - uses: actions/cache@v6
         with:
           path: .cache/fonts/975yuan
           key: lxgw-975yuan-37b753f408b25d3ab3d25cbddb5dd9dacca0289a
