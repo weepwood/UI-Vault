@@ -487,7 +487,7 @@ def verify_glass_materials(browser, origin):
             assert page.locator("#preview-open").get_attribute("href") == "https://weepwood.github.io/glass-lab/"
             embedded = page.frame_locator('iframe[data-preview-frame="external"]')
             embedded.get_by_role("button", name="静态网格").wait_for(state="visible", timeout=30000)
-            assert embedded.get_by_text("Liquid Glass", exact=True).is_visible(), "Glass Lab 材质内容未显示"
+            embedded.locator("h3").filter(has_text="Liquid Glass").wait_for(state="visible")
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), name + ": 主站横向溢出"
             OUTPUT.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(OUTPUT / ("glass-lab-embed-" + name + ".png")), full_page=True, animations="disabled")
