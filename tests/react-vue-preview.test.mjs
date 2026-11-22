@@ -37,6 +37,7 @@ test('三个框架项目右侧真实 iframe 预览并保持安全沙箱与原站
     assert.ok(markup.includes('src="'+site+'"'),id+' 未指向真实演示网址');
     assert.match(markup,/data-preview-frame="external"/);
     assert.match(markup,/sandbox="allow-scripts allow-forms"/);
+    assert.doesNotMatch(markup,/allow-downloads/);
     assert.doesNotMatch(markup,/allow-same-origin/);
     assert.match(markup,/referrerpolicy="no-referrer"/);
     assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
@@ -56,7 +57,7 @@ test('Emboss Lab 内嵌 GitHub Pages 页面并保留 GitHub 源仓链接',async(
   const markup=projectPreviewMarkup(item);
   assert.ok(markup.includes('src="'+item.siteUrl+'"'));
   assert.match(markup,/data-preview-frame="external"/);
-  assert.match(markup,/sandbox="allow-scripts allow-forms"/);
+  assert.match(markup,/sandbox="allow-scripts allow-forms allow-downloads"/);
   assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
 });
 test('旧的 React/Vue 预览入口保持不变，未上线项目不伪造演示链接',async()=>{

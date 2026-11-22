@@ -22,6 +22,8 @@ const LOAD_TIMEOUT_MS=12000;
 function PreviewContent({asset,mode,error,loading}){
   const frame=useRef(null);
   const backdropStudio=asset?.id==='aurora-field';
+  const externalSandbox=asset?.id==='emboss-poster-lab'
+    ?'allow-scripts allow-forms allow-downloads':'allow-scripts allow-forms';
   const sandbox=backdropStudio?'allow-scripts allow-downloads':'allow-scripts';
   const permissions=asset?.id==='liquid-orb'||asset?.id==='liquid-orb-thinking-dialog'
     ? 'webgpu' : backdropStudio?'fullscreen':undefined;
@@ -90,7 +92,7 @@ function PreviewContent({asset,mode,error,loading}){
   if(asset.siteUrl){
     return <><iframe className="live-frame" data-preview-frame="external"
       title={asset.title+' 的外部网站'} src={asset.siteUrl} onLoad={markLoaded}
-      sandbox="allow-scripts allow-forms" referrerPolicy="no-referrer"/>{progress}</>;
+      sandbox={externalSandbox} referrerPolicy="no-referrer"/>{progress}</>;
   }
   const href=asset.url||asset.originRepo;
   return <div className="preview-placeholder">

@@ -239,8 +239,11 @@ def verify_react_interactions(browser, origin):
         embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
         embed.wait_for(state="attached")
         assert embed.get_attribute("src") == "https://weepwood.github.io/Emboss-Lab/", "Emboss Lab 未嵌入 GitHub Pages 页面"
-        assert embed.get_attribute("sandbox") == "allow-scripts allow-forms", "Emboss Lab 外站预览沙箱配置错误"
+        assert embed.get_attribute("sandbox") == "allow-scripts allow-forms allow-downloads", "Emboss Lab 外站预览沙箱配置错误"
         page.frame_locator('#preview-stage iframe[data-preview-frame="external"]').locator("h1").filter(has_text="海报工作台").wait_for(state="visible", timeout=20000)
+        with page.expect_download(timeout=15000) as download_info:
+            page.frame_locator('#preview-stage iframe[data-preview-frame="external"]').locator("#exportButton").click()
+        assert download_info.value.suggested_filename.startswith("emboss-lab-"), "Emboss Lab PNG 导出文件名异常"
         assert page.locator("#preview-open").get_attribute("href") == "https://weepwood.github.io/Emboss-Lab/", "Emboss Lab 原站入口链接错误"
         page.locator("#preview-info").click()
         page.locator("#project-dialog").wait_for(state="visible")

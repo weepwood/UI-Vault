@@ -16,7 +16,8 @@ test('外站提示和原站入口位于 React Topbar，预览区不再叠加提�
   assert.doesNotMatch(frame,/external-preview-hint/);
   assert.doesNotMatch(legacy,/external-preview-hint/);
   assert.doesNotMatch(css,/\.external-preview-hint/);
-  assert.match(frame,/sandbox="allow-scripts allow-forms"/);
+  assert.match(frame,/const externalSandbox=asset\?\.id==='emboss-poster-lab'[\s\S]*allow-downloads/);
+  assert.match(frame,/sandbox=\{externalSandbox\}/);
 });
 
 test('目录工具栏与 Topbar 使用同一高度变量，排序和标签保持单行',()=>{

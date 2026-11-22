@@ -4,7 +4,7 @@
 
 **目标：** 将 UI Vault 的 Emboss Lab 条目改为内嵌 `https://weepwood.github.io/Emboss-Lab/`，并保留 `weepwood/Emboss-Lab` 源仓入口。
 
-**架构：** 保留 `emboss-poster-lab` 资产 ID 和分类，使用现有 PreviewFrame 受限外部 iframe 加载 Pages 页面，`url` 与 `originRepo` 继续指向 GitHub 源仓。移除本地副本和其发布清单，保持 catalog 生成索引与文档同步。
+**架构：** 保留 `emboss-poster-lab` 资产 ID 和分类，使用现有 PreviewFrame 受限外部 iframe 加载 Pages 页面，并仅为该项目打开 PNG 下载权限；`url` 与 `originRepo` 继续指向 GitHub 源仓。移除本地副本和其发布清单，保持 catalog 生成索引与文档同步。
 
 **技术栈：** JSON catalog、Node.js 测试、静态白名单构建、Playwright Chromium。
 
@@ -61,7 +61,7 @@
 
 - [x] **步骤 1：为浏览器回归增加外部深链接场景**
 
-在 `verify_react_interactions` 中导航到 `?asset=emboss-poster-lab`，等待 `#preview-title` 文本为“Emboss Lab · 浮雕海报交互”，断言 `iframe[data-preview-frame="external"]` 加载 GitHub Pages URL 且保留安全沙箱，并检查原站/源码链接的 href。
+在 `verify_react_interactions` 中导航到 `?asset=emboss-poster-lab`，等待 `#preview-title` 文本为“Emboss Lab · 浮雕海报交互”，断言外部 iframe 加载 GitHub Pages URL、保留受限沙箱并能下载 PNG；检查原站/源码链接的 href，且其他外站 iframe 不获得下载权限。
 
 - [x] **步骤 2：运行完整验证**
 
@@ -77,4 +77,4 @@
 
 - 每条设计要求都有对应步骤：保留 ID 和深链接（任务 1、3）、外部 GitHub 入口与源码链接（任务 1、2、3）、不再发布旧副本（任务 1、2）、更新来源说明（任务 2）、测试与构建验证（任务 3）。
 - 测试文件中验证的是生成前的 catalog 唯一来源及其实际文件是否不存在；公开索引通过官方 `catalog:sync` 生成。
-- 浏览器断言覆盖外部项目 iframe 的 Pages URL、沙箱属性和独立源码链接。
+- 浏览器断言覆盖外部项目 iframe 的 Pages URL、特定下载授权、真实 PNG 导出和独立源码链接。
