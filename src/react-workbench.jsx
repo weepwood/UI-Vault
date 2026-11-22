@@ -257,7 +257,7 @@ function WorkbenchPortals({nodes}){
         aria-label="项目状态管理" title="项目状态管理" aria-current={operationsActive?'page':'false'}
         onClick={event=>{event.preventDefault();openView('operations');setDialogOpen(false);
           requestAnimationFrame(()=>document.getElementById('operations-title')?.focus({preventScroll:true}));}}>
-        <UIIcon name="activity"/><span>项目状态</span>
+        <UIIcon name="chart-no-axes-column"/><span>项目状态</span>
       </a>
       <a id="settings-open" className="sidebar-settings" href="./?view=settings"
       aria-label="打开工作台设置" title="设置"

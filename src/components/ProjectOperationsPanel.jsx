@@ -104,9 +104,9 @@ export function ProjectOperationsPanel({projects=[],assets=[],health=null,previe
          <Icon name="search"/><input id="operations-query" type="search" value={query}
            onChange={e=>setQuery(e.target.value)} placeholder="搜索项目、仓库或资产"/></label>
        <WorkbenchSelect id="operations-code" label="代码检查筛选" value={code} onChange={setCode}
-         options={codeChoices} icon="git-pull-request" className="ops-select"/>
+         options={codeChoices} icon="git-branch" className="ops-select"/>
        <WorkbenchSelect id="operations-deploy" label="部署状态筛选" value={deployment}
-         onChange={setDeployment} options={deployChoices} icon="cloud" className="ops-select"/>
+         onChange={setDeployment} options={deployChoices} icon="send" className="ops-select"/>
        <WorkbenchSelect id="operations-preview" label="预览状态筛选" value={previewState}
          onChange={setPreviewState} options={previewChoices} icon="monitor" className="ops-select"/>
        <button type="button" onClick={reset} className="ops-reset">重置</button>
