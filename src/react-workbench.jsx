@@ -233,7 +233,7 @@ function WorkbenchPortals({nodes}){
       loading={state.loading}/>,nodes.gallery)}
     {createPortal(<PreviewToolbar asset={selected} labels={state.labels}
       previewMode={state.previewSize} onChangePreview={changePreview}
-      liked={liked} onFavorite={()=>favorite(selected?.id)} onCopyLink={copyLink}
+      liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>selected&&setDialogOpen(true)}
       onMenu={onMenuToggle} menuOpen={menuOpen}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={selected} mode={state.previewSize}
