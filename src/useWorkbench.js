@@ -37,7 +37,9 @@ export function workbenchReducer(current,action){
     case 'error':return {...next,loading:false,error:action.message};
     case 'filter':changeCatalogFilter(next,action.kind,action.value);return chooseVisible(next);
     case 'reset':resetCatalogFilters(next);return chooseVisible(next);
-    case 'query':setCatalogQuery(next,action.value);return chooseVisible(next);
+    // 只更新搜索列表，不因每次键入/删字反复卸载正在运行的 iframe。
+    // 用户点击结果时再切换预览，保持 WebGPU 等重型 Demo 的连续运行。
+    case 'query':setCatalogQuery(next,action.value);return next;
     case 'sort':setCatalogSort(next,action.value);return chooseVisible(next);
     case 'tag':setCatalogTag(next,action.value);return chooseVisible(next);
     case 'select':{
@@ -147,7 +149,10 @@ export function useWorkbench(){
   },[state.preferences]);
 
   const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),[state]);
-  const tags=useMemo(()=>popularTags(state.assets,14,state.tag),[state.assets,state.tag]);
+  // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
+  const tags=useMemo(()=>popularTags(
+    filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag
+  ),[state]);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
     router.setView(view,historyMode);
