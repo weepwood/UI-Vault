@@ -8,7 +8,7 @@
 - 用户给「网址 / GitHub 项目」要求收藏：优先运行 `npm run new:reference -- <slug> <HTTPS URL> <中文标题>`，补充设计解读、作者与许可证信息。
 - 用户让「增加 UI 类别」：修改 `content/categories.json`，无需手改页面导航。
 - 用户要求「统一设计规范」：在 `content/tokens/` 添加主题令牌，关联到资产 JSON；不要把 Token 硬写入全站 CSS。
-- 用户要求「修改展厅功能」：按职责调整 `assets/core/`、`assets/app.js` 与测试；避免向入口文件继续堆积无关逻辑。
+- 用户要求「修改展厅功能」：优先调整 `src/components/`、`src/useWorkbench.js`、`src/react-workbench.jsx` 与测试；`assets/app.js` 仅负责版本保护和 React 初始化，不得再堆积业务逻辑。
 
 ## 必须遵循
 
@@ -25,6 +25,7 @@
 ## 常用命令
 
 ```bash
+npm install
 npm run dev
 npm run new:demo -- components gradient-button 渐变按钮
 npm run new:reference -- ui-project https://github.com/example/repo 参考项目
@@ -71,9 +72,18 @@ UI Vault **主站**图标使用固定 Lucide SVG 子集：`assets/icons/lucide.s
 
 ## v0.6 默认 UI：常驻左右两栏
 
-用户明确要求左侧列出各项目的基本菜单，右侧大面积直接显示真实网页。UI Vault **不得重新采用弹出侧边框 / modal / 抽屉来显示项目详情**。主站使用 `assets/core/workbench.js` 渲染目录和预览， `#preview-stage` 独占右侧主体；只在手机上临时覆盖目录以节省宽度。新增资产时仍只改 metadata/独立 Demo，不要往卡片画廊回退。
+用户明确要求左侧列出各项目的基本菜单，右侧大面积直接显示真实网页。UI Vault **不得重新采用弹出侧边框 / modal / 抽屉来显示项目详情**。主站由 React `ProjectList` / `PreviewFrame` 维护目录和真实 iframe，`#preview-stage` 独占右侧主体；只在手机上临时覆盖目录以节省宽度。新增资产时仍只改 metadata/独立 Demo，不要往卡片画廊回退。
 
 
 ## v0.8 三栏主站规范（优先于旧版双栏规定）
 
 新版项目要求把原侧边栏拆为：`aside#sidebar` 导航、`section#project-panel` 项目目录和 `main#main` 真实预览。前两栏封装在 `div#library-rail` 中，供移动端作为单一面板一起展开。未来不能把导航和项目列表重新合并到同一栏，更不能恢复网页预览抽屉。详情见 `docs/TWO-PANE-WORKBENCH.md` 的 v0.8 小节。
+
+## v1.0 React 全工作台架构（优先于旧版原生 JS 说明）
+
+- 主站唯一状态协调点是 `src/useWorkbench.js`（React Hooks + useReducer），组件入口是 `src/react-workbench.jsx`，动态 UI 按职责拆分到 `src/components/`。
+- `assets/app.js` 仅做静态页面版本错配校验与 `mountWorkbench()`，禁止恢复项目筛选、路由、设置或 iframe 的双份原生 DOM 控制器。
+- React 单根通过 Portals 挂载到原 `index.html` 三栏容器；保留旧 DOM 锚点和 CSS class、URL 参数、收藏/设置存储键。未来改壳层结构须同时修订快照/兼容测试，不允许盲目替换页面。
+- `PreviewFrame` 必须保持 memo/稳定 iframe 节点：收藏、筛选、调整字体、切换设置和窗口大小不应无谓触发资源重新加载。
+- `demos/`、`subprojects/` 和页面镜像不要求使用 React，也不应强制加入主站构建。继续按白名单发布各自静态资产。
+- 提交前运行 `npm install && npm run check`，并审核 Chromium 视觉与真实交互回归。架构细节见 `docs/REACT-MIGRATION.md`。

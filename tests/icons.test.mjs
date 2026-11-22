@@ -34,7 +34,8 @@ test('主站只使用实际存在的 Lucide 图标，不混用字符形状',asyn
   for(const glyph of ['☰','☆','♡','♥','▣','＋'])assert.ok(!index.includes(glyph),'静态主站保留旧字符图标 '+glyph);
   assert.ok(!app.includes("button.textContent=liked?'♥':'♡'"));
   assert.ok(!render.includes("liked?'♥':'♡'"));
-  assert.match(app,/categoryIconById/);
+  const react=await read('src/react-workbench.jsx');
+  assert.match(react,/categoryIcons/);
 });
 test('Lucide 图标渲染遵循受控名称和纯装饰无障碍约定',()=>{
   const markup=iconMarkup('heart');
@@ -60,10 +61,10 @@ test('收藏按钮保留可读标签、按下状态和同一个心形图标',()=
   assert.match(detail,/lucide\.svg#copy/);
 });
 test('Lucide favicon、样式和部署路径固定且独立于 CDN',async()=>{
-  const [favicon,css,build]=await Promise.all(['favicon.svg','assets/styles.css','scripts/build.mjs'].map(read));
+  const [favicon,css,build,rowCss]=await Promise.all(['favicon.svg','assets/styles.css','scripts/build.mjs','assets/ui/project-row.css'].map(read));
   assert.match(favicon,/Lucide layout-grid/);
   assert.match(css,/\.ui-icon/);
-  assert.match(css,/\.project-row-emoji/);
+  assert.match(rowCss,/\.project-row-emoji/);
   assert.doesNotMatch(css,/\.project-star/);
   assert.match(build,/copyTree\('assets',webAssets\)/);
   assert.ok(!css.includes('cdn.jsdelivr.net'));

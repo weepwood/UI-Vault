@@ -1,4 +1,10 @@
-<!doctype html><html lang="zh-CN"><head>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>玻璃材质实验室 · UI Vault</title>
 <!--
 These inline SVG paths are from Lucide Icons (https://lucide.dev/).
 They are bundled in each standalone HTML demo so sandboxed iframe previews and
@@ -48,20 +54,669 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 -->
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>柔光玻璃卡片 · UI Vault</title><style>
-*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:#9eb8bb;color:#253b46;font-family:Inter,system-ui,-apple-system,sans-serif}
-body::before{content:"";position:fixed;inset:-35%;background:radial-gradient(ellipse at 35% 40%,#e5e5fb 0,transparent 32%),radial-gradient(ellipse at 74% 27%,#f6cbb9 0,transparent 26%),radial-gradient(ellipse at 66% 77%,#84c9b5 0,transparent 28%),linear-gradient(120deg,#bbc8df,#bbccc0);filter:blur(30px);animation:float 14s ease-in-out infinite alternate}
-@keyframes float{to{transform:translate3d(5%,-3%,0) scale(1.06)}}.glass{position:relative;margin:22px;width:min(440px,calc(100% - 44px));padding:30px;border:1px solid rgba(255,255,255,.55);border-radius:26px;background:rgba(255,255,255,.29);box-shadow:0 24px 90px #405a6430,inset 0 1px 0 #ffffffaa;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px)}
-.badge{font-size:11px;display:inline-block;border-radius:100px;padding:7px 10px;background:#ffffff80;border:1px solid #fff9;letter-spacing:.05em}.icon{width:64px;height:64px;border-radius:21px;display:grid;place-items:center;margin:26px 0 18px;background:linear-gradient(140deg,#ffffffb9,#d5e4f19e);box-shadow:0 15px 32px #64839c46;font-size:30px}
-h1{font-size:clamp(22px,4vw,32px);margin:0 0 10px;letter-spacing:-.06em;font-weight:720}p{font-size:13px;line-height:1.7;color:#58707b;margin:0 0 25px}.actions{display:flex;gap:10px}.actions button{border:0;border-radius:12px;padding:12px 19px;font:inherit;font-size:12px;font-weight:650;cursor:pointer;transition:transform .2s}.actions button:hover{transform:translateY(-2px)}.primary{background:#263f4b;color:#fff}.secondary{background:#ffffff8a;color:#345460}.state{margin-top:20px;color:#526973;font-size:11px;min-height:17px}.actions button:focus-visible{outline:2px solid #345c6d;outline-offset:3px}
-@media(prefers-reduced-motion:reduce){body::before{animation:none}.actions button{transition:none}}
+<style>
+/* TUNING: 1024/680px 自适应阈值；--blur, --tint, SVG scale 是公开调参项。全部效果为网页近似，并非系统原生材质。 */
+:root{--blur:25px;--tint:.39;--pointer-x:50%;--pointer-y:22%;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,"PingFang SC","Microsoft YaHei",sans-serif;font-synthesis:none}
+*{box-sizing:border-box}
+body{margin:0;background:#f5f6f5;color:#1f282d;min-height:100vh}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,a:focus-visible{outline:3px solid #3372ad;outline-offset:3px}
+a{color:inherit;text-decoration-thickness:1px;text-underline-offset:3px}
+.app{max-width:1420px;margin:0 auto;padding:30px clamp(18px,3vw,48px) 48px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:22px;margin-bottom:24px}
+.eyebrow{font-size:12px;color:#576b79;display:flex;align-items:center;gap:8px;font-weight:650}
+.lucide-demo-icon{width:18px;height:18px;flex:none;vertical-align:middle}
+.eyebrow .lucide-demo-icon{width:17px;height:17px}
+h1{font-weight:730;letter-spacing:-.047em;font-size:clamp(26px,3vw,38px);margin:11px 0 9px}
+.intro{margin:0;max-width:680px;font-size:13px;line-height:1.8;color:#5a686f}
+.toolbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.switcher{display:flex;align-items:center;padding:3px;border:1px solid #d8dfe0;border-radius:11px;background:#fff;gap:3px}
+.switcher button,.theme-toggle,.reset,.copy{background:transparent;color:#374b57;border:0;border-radius:8px;padding:9px 12px;font-size:12px;font-weight:600;white-space:nowrap}
+.switcher button[aria-pressed="true"]{background:#e8eef1;color:#193d54;box-shadow:0 1px 2px #101c241a}
+.theme-toggle,.reset{border:1px solid #d8dfe0;background:#fff}
+.theme-toggle[aria-pressed="true"]{background:#26343d;color:#fff;border-color:#26343d}
+.adjustments{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-bottom:18px;padding:13px 16px;border:1px solid #e1e5e5;border-radius:14px;background:#fff}
+.control{display:flex;align-items:center;gap:11px;min-width:158px;flex:1 1 175px}
+.control label{font-size:12px;font-weight:600;white-space:nowrap}
+.control output{font-size:11px;color:#5a6a72;min-width:33px;text-align:right;font-variant-numeric:tabular-nums}
+.control input[type="range"]{width:100%;min-width:42px;accent-color:#44718a}
+.reset{display:flex;align-items:center;gap:7px;padding:8px 11px}
+.reset .lucide-demo-icon{width:15px;height:15px}
+.section-title{margin:25px 0 12px;display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.section-title h2{font-size:16px;font-weight:690;letter-spacing:-.02em;margin:0}
+.section-title p{font-size:11px;color:#64757d;margin:0}
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.sample{min-width:0;overflow:hidden;border:1px solid #dce3e4;border-radius:17px;background:#fff;transition:border-color .15s,box-shadow .15s}
+.sample.is-selected{border-color:#477b9f;box-shadow:0 0 0 2px #a7cadb7b}
+.scene{position:relative;isolation:isolate;height:238px;overflow:hidden;background-color:#a5aebf;background-image:var(--scene-art);background-position:center;background-size:100% 100%;--scene-art:radial-gradient(ellipse 35% 54% at 23% 29%,#fff2d6 0%,#ffb58d 45%,transparent 99%),radial-gradient(ellipse 50% 45% at 82% 40%,#a1baff 0%,#8f8be1 40%,transparent 99%),radial-gradient(ellipse 70% 70% at 45% 105%,#64c5b7 0%,transparent 90%),linear-gradient(125deg,#e2d3ee,#9ac3c8)}
+.scene::before{content:"";position:absolute;inset:0;background-image:linear-gradient(115deg,#fff5 0%,transparent 40%,#13262f0d 100%);pointer-events:none}
+body[data-wallpaper="grid"] .scene{--scene-art:linear-gradient(90deg,#8294a220 1px,transparent 1px),linear-gradient(#8294a220 1px,transparent 1px),radial-gradient(ellipse 55% 75% at 75% 30%,#b0cbd5 0%,transparent 98%),linear-gradient(155deg,#ede6dc,#9eacbb);background-size:28px 28px,28px 28px,100% 100%,100% 100%}
+.pick{display:grid;place-items:center;position:absolute;inset:0;width:100%;height:100%;background:transparent;border:0;padding:20px;text-align:left;color:inherit}
+.pick:focus-visible{outline:3px solid #1c648b;outline-offset:-5px;border-radius:0}
+.material{position:relative;isolation:isolate;overflow:hidden;width:min(100%,272px);min-height:160px;padding:20px;border-radius:22px;display:flex;flex-direction:column;justify-content:space-between;color:#273b49;background:rgba(255,255,255,var(--tint));border:1px solid #ffffffb7;box-shadow:0 15px 38px #223f5236,inset 0 1px 0 #ffffffbb;backdrop-filter:blur(var(--blur)) saturate(155%);-webkit-backdrop-filter:blur(var(--blur)) saturate(155%);transition:transform .2s ease,box-shadow .2s ease}
+.pick:hover .material{transform:translateY(-3px);box-shadow:0 20px 42px #172e423b,inset 0 1px 0 #ffffffbb}
+.material>*{position:relative;z-index:1}
+.material__top{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.material__icon{display:grid;place-items:center;width:31px;height:31px;border-radius:10px;background:#fff8;box-shadow:inset 0 1px 0 #fff8}
+.material__icon .lucide-demo-icon{width:17px;height:17px}
+.material__dots{display:flex;gap:4px}
+.material__dots i{width:5px;height:5px;border-radius:50%;background:currentColor;opacity:.35}
+.material__label{display:block;font-size:11px;font-weight:550;letter-spacing:.01em;opacity:.83}
+.material__name{display:block;font-size:20px;font-weight:700;letter-spacing:-.045em;margin-top:5px}
+.material__rule{height:1px;background:currentColor;opacity:.16;margin-top:10px}
+.sample__footer{padding:14px 15px 15px}
+.sample__line{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sample h3{font-size:14px;margin:0;font-weight:700;letter-spacing:-.02em}
+.sample__tag{font-size:10px;color:#697983;white-space:nowrap}
+.sample__footer p{color:#5b6971;font-size:11px;line-height:1.7;margin:6px 0 0;min-height:36px}
+.mat-soft .material{background:rgba(255,255,255,calc(var(--tint) * 1.04));box-shadow:0 20px 50px #18394a2e,inset 0 1px 0 #fff}
+.mat-mica .material{backdrop-filter:none;-webkit-backdrop-filter:none;border-color:#f6f8f9a5;border-radius:12px;background:linear-gradient(135deg,#e0e8eeed,#e8e2e6f4 72%,#d8e5e7f5);box-shadow:0 18px 45px #25354d31,inset 0 1px 0 #fff9}
+.mat-mica .material__icon{border-radius:7px;background:#ffffff9c}
+.mat-acrylic .material{border-radius:12px;background:rgba(239,244,249,calc(var(--tint) + .13));border-color:#ffffff99;backdrop-filter:blur(calc(var(--blur) * 1.2)) saturate(150%);-webkit-backdrop-filter:blur(calc(var(--blur) * 1.2)) saturate(150%)}
+.mat-acrylic .material::after{content:"";z-index:0;pointer-events:none;position:absolute;inset:0;opacity:.1;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 96 96' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='.48'/%3E%3C/svg%3E")}
+.mat-vibrancy .material{border-radius:19px;background:rgba(246,248,252,calc(var(--tint) + .09));border-color:#fff9;backdrop-filter:blur(calc(var(--blur) * 1.45)) saturate(185%) brightness(1.04);-webkit-backdrop-filter:blur(calc(var(--blur) * 1.45)) saturate(185%) brightness(1.04);box-shadow:0 17px 48px #27364539,0 1px 0 #ffffffa6 inset}
+.mat-liquid .material,.mat-gel .material{background:rgba(246,251,255,calc(var(--tint) * .43));border:1px solid #ffffffe0;backdrop-filter:blur(calc(var(--blur) * .48)) saturate(175%);-webkit-backdrop-filter:blur(calc(var(--blur) * .48)) saturate(175%);box-shadow:inset 0 2px 2px #fff, inset 2px 0 7px #ffffffbd,inset -3px -4px 9px #50768a3b,0 18px 35px #243d5933}
+.mat-liquid .material{border-radius:27px}
+.mat-gel .material{border-radius:29px 45px 34px 44px/34px 29px 45px 37px;transform:rotate(-1.5deg)}
+.mat-gel .pick:hover .material{transform:translateY(-3px) rotate(0deg)}
+.refraction{display:none;position:absolute;z-index:0;inset:-1px;pointer-events:none;background-image:var(--scene-art);background-repeat:no-repeat;background-size:var(--scene-w,370px) var(--scene-h,238px);background-position:var(--offset-x,0px) var(--offset-y,0px);opacity:.72}
+.mat-liquid .refraction,.mat-gel .refraction{display:block;filter:url(#glass-refract)}
+.mat-gel .refraction{filter:url(#glass-gel);opacity:.78}
+.mat-liquid .material::after,.mat-gel .material::after{content:"";pointer-events:none;z-index:0;position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse 65% 45% at var(--pointer-x) var(--pointer-y),#ffffff9c,transparent 75%),linear-gradient(138deg,#ffffffa3 0,transparent 27%,transparent 73%,#4562b136);box-shadow:inset 0 0 0 1px #fff5,inset 0 10px 18px #fff5}
+.mat-gel .material::after{background:radial-gradient(ellipse at var(--pointer-x) var(--pointer-y),#fffd,transparent 55%),linear-gradient(145deg,#fff9,#6da6d125 65%,#fff6)}
+.mat-liquid .material__top,.mat-liquid .material__bottom,.mat-gel .material__top,.mat-gel .material__bottom{z-index:2}
+.inspector{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:20px;border:1px solid #dfe5e5;border-radius:16px;background:#fff;padding:20px;margin-top:18px}
+.inspector h2{font-size:17px;letter-spacing:-.02em;margin:0 0 9px}
+.inspector p{font-size:12px;line-height:1.8;color:#586c76;margin:0 0 12px}
+.inspector small{display:block;font-size:11px;line-height:1.8;color:#68777e}
+.inspector__label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px}
+.inspector__label span{font-size:12px;font-weight:650}
+.copy{border:1px solid #d7e0e2;background:#f6f8f9;padding:7px 11px}
+pre{margin:0;max-height:250px;overflow:auto;white-space:pre-wrap;overflow-wrap:anywhere;background:#19252c;color:#ecf4f7;padding:15px 16px;border-radius:11px;line-height:1.65;font-size:11px;tab-size:2}
+.sources{padding:20px 2px 0}
+.sources h2{font-size:14px;margin:0 0 9px}
+.sources p{margin:0;color:#5e6e75;font-size:11px;line-height:1.9}
+.sources__links{display:flex;flex-wrap:wrap;gap:8px 16px;margin:10px 0}
+.sources__links a{font-size:11px;color:#356381}
+.notice{font-size:11px;color:#586975;margin-top:10px}
+.status{min-height:18px;font-size:11px;color:#2c667f}
+.svg-filters{position:absolute;width:0;height:0;overflow:hidden}
+body[data-theme="dark"]{background:#161d22;color:#e9f0f3}
+body[data-theme="dark"] .intro,body[data-theme="dark"] .section-title p,body[data-theme="dark"] .sample__footer p,body[data-theme="dark"] .sample__tag,body[data-theme="dark"] .inspector p,body[data-theme="dark"] .inspector small,body[data-theme="dark"] .sources p,body[data-theme="dark"] .notice{color:#acb9bf}
+body[data-theme="dark"] .eyebrow{color:#a0bbc9}
+body[data-theme="dark"] .adjustments,body[data-theme="dark"] .switcher,body[data-theme="dark"] .theme-toggle,body[data-theme="dark"] .reset,body[data-theme="dark"] .sample,body[data-theme="dark"] .inspector{background:#222e35;border-color:#3b4d56;color:#edf4f6}
+body[data-theme="dark"] .switcher button,body[data-theme="dark"] .theme-toggle,body[data-theme="dark"] .reset{color:#d8e3e7}
+body[data-theme="dark"] .switcher button[aria-pressed="true"],body[data-theme="dark"] .theme-toggle[aria-pressed="true"]{background:#49677b;color:#fff}
+body[data-theme="dark"] .control output,body[data-theme="dark"] .status{color:#c5dce8}
+body[data-theme="dark"] .sample.is-selected{border-color:#8cc7e3}
+body[data-theme="dark"] .mat-soft .material{background:rgba(35,50,64,calc(var(--tint) + .17));color:#f2f6fa}
+body[data-theme="dark"] .mat-mica .material{background:linear-gradient(125deg,#303943f5,#45434df5 70%,#304a4df5);border-color:#73889366;color:#f3f6fb}
+body[data-theme="dark"] .mat-acrylic .material{background:rgba(33,42,55,calc(var(--tint) + .24));color:#f4f7fa;border-color:#d7e9ef61}
+body[data-theme="dark"] .mat-vibrancy .material{background:rgba(37,43,60,calc(var(--tint) + .17));color:#f3f7fa;border-color:#ffffff5c}
+body[data-theme="dark"] .mat-liquid .material,body[data-theme="dark"] .mat-gel .material{background:rgba(28,42,62,calc(var(--tint) * .6));color:#f3fbff}
+body[data-theme="dark"] .material__icon{background:#ffffff27}
+body[data-theme="dark"] .sources__links a{color:#a1d6ed}
+@media(max-width:1024px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr))}.top{flex-direction:column}.toolbar{justify-content:flex-start}.scene{height:240px}}
+@media(max-width:680px){.app{padding:22px 14px 36px}.gallery{grid-template-columns:1fr;gap:12px}.scene{height:238px}.top{gap:16px}.inspector{grid-template-columns:1fr;padding:15px}.adjustments{gap:13px}.section-title{align-items:flex-start;flex-direction:column;gap:4px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}.mat-gel .material{transform:none}.pick:hover .material,.mat-gel .pick:hover .material{transform:none}}
+@supports not ((backdrop-filter:blur(3px)) or (-webkit-backdrop-filter:blur(3px))){.material{background:#e6edf1e8!important}.mat-liquid .material,.mat-gel .material{background:#d7e7efe8!important}.material,.mat-gel .material{color:#273b49!important}}
 
-/* Lucide icons are embedded in this standalone sandboxed Demo. */
-.lucide-demo-icon{width:17px;height:17px;flex:none;vertical-align:-.18em}
-.icon .lucide-demo-icon{width:34px;height:34px;color:#41647a}
-.actions button{display:inline-flex;align-items:center;justify-content:center;gap:8px}
-@media(max-width:410px){.actions{flex-wrap:wrap}.actions button{flex:1 1 145px}}
-</style></head><body><article class="glass"><span class="badge">显示偏好</span><div class="icon" aria-hidden="true"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+/* TUNING v2: 材质参数分离、统一纹理坐标系、基于轮廓的折射；所有材质均为 Web 外观模拟。 */
+.view-switcher{margin-right:2px}
+.view-switcher button{min-width:70px}
+.scene{background-size:100% 100%;background-position:0 0}
+body[data-wallpaper="grid"] .scene{--scene-art:repeating-linear-gradient(90deg,#47647955 0px,#47647955 1px,transparent 1px,transparent 26px),repeating-linear-gradient(0deg,#47647945 0px,#47647945 1px,transparent 1px,transparent 26px),linear-gradient(130deg,#eee8df,#91b0c2);background-size:100% 100%}
+body[data-wallpaper="lines"] .scene{--scene-art:repeating-linear-gradient(117deg,transparent 0px,transparent 21px,#17334c92 22px,#17334ca8 24px,transparent 25px,transparent 62px),repeating-linear-gradient(0deg,#f6ede855 0px,#f6ede855 16px,#648fba88 17px,#648fbaa8 21px,transparent 22px,transparent 52px),linear-gradient(120deg,#f8e7d7,#a3c7d9 57%,#7c97b7);background-size:100% 100%}
+body[data-wallpaper="texture"] .scene{--scene-art:radial-gradient(circle at 8px 10px,#f8ffff 0px,#f8ffff 3px,transparent 3.5px),repeating-linear-gradient(36deg,#1c4c715c 0px,#1c4c715c 3px,transparent 3px,transparent 17px),linear-gradient(140deg,#b5c2d8,#e1e6db 52%,#92adad);background-size:34px 34px,100% 100%,100% 100%}
+body[data-wallpaper="color"] .scene{--scene-art:radial-gradient(ellipse 35% 54% at 23% 29%,#fff2d6 0%,#ffb58d 45%,transparent 99%),radial-gradient(ellipse 50% 45% at 82% 40%,#a1baff 0%,#8f8be1 40%,transparent 99%),radial-gradient(ellipse 70% 70% at 45% 105%,#64c5b7 0%,transparent 90%),linear-gradient(125deg,#e2d3ee,#9ac3c8);background-size:100% 100%}
+.material{background:rgba(255,255,255,var(--mat-tint,.34));backdrop-filter:blur(var(--mat-blur,16px)) saturate(128%);-webkit-backdrop-filter:blur(var(--mat-blur,16px)) saturate(128%)}
+.mat-soft .material{background:rgba(249,253,255,var(--mat-tint,.34));border:1px solid #ffffffa5;box-shadow:0 15px 40px #27425c33,inset 0 1px 0 #fffd;backdrop-filter:blur(var(--mat-blur,16px)) saturate(128%);-webkit-backdrop-filter:blur(var(--mat-blur,16px)) saturate(128%)}
+.mat-mica .material{background:linear-gradient(145deg,#e8edf0f4,#dce4e9f7 64%,#d6e0e5fa);border-color:#ffffffa6;backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:0 12px 25px #2f3c4a24,inset 0 1px 0 #ffffffa5}
+.mat-acrylic .material{background:rgba(234,244,252,var(--mat-tint,.62));border-color:#ffffffb5;backdrop-filter:blur(var(--mat-blur,27px)) saturate(135%);-webkit-backdrop-filter:blur(var(--mat-blur,27px)) saturate(135%);box-shadow:0 20px 42px #223d5a33,inset 0 1px 0 #ffffffd6}
+.mat-acrylic .material::after{opacity:.24;mix-blend-mode:soft-light;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 96 96' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23n)' opacity='.7'/%3E%3C/svg%3E")}
+.mat-vibrancy .material{background:rgba(235,240,251,var(--mat-tint,.47));border-color:#ffffff9c;backdrop-filter:blur(var(--mat-blur,18px)) saturate(195%) brightness(1.04);-webkit-backdrop-filter:blur(var(--mat-blur,18px)) saturate(195%) brightness(1.04);box-shadow:0 14px 38px #27395339,inset 0 1px 0 #ffffffe1}
+.mat-liquid .material,.mat-gel .material{background:rgba(230,244,255,var(--mat-tint,.16));border-color:#fff8;backdrop-filter:blur(var(--mat-blur,7px)) saturate(112%);-webkit-backdrop-filter:blur(var(--mat-blur,7px)) saturate(112%);box-shadow:0 16px 34px #1c4c6933,inset 1px 1px 1px #fffd,inset -3px -4px 8px #23487944}
+.mat-liquid .material{border-radius:27px}
+.mat-gel .material{border-radius:35px 51px 32px 46px / 33px 32px 46px 40px;transform:none;transition:border-radius .3s cubic-bezier(.22,.9,.28,1),box-shadow .18s}
+.mat-gel .pick:hover .material,.mat-gel .pick:focus-visible .material{transform:none;border-radius:47px 30px 47px 32px / 43px 46px 29px 35px}
+.mat-gel.is-pressing .material{border-radius:28px 52px 32px 56px / 45px 29px 50px 30px;box-shadow:0 10px 24px #21496838,inset 0 2px 4px #fff9}
+.mat-liquid .pick:hover .material,.mat-gel .pick:hover .material{transform:none}
+.refraction{inset:0;opacity:.84;background-image:var(--scene-art);background-size:var(--scene-w,370px) var(--scene-h,238px);background-repeat:no-repeat;background-position:var(--offset-x,0px) var(--offset-y,0px);filter:none!important}
+body[data-optics="ready"] .mat-liquid .refraction{filter:url(#glass-refract)!important}
+body[data-optics="ready"] .mat-gel .refraction{filter:url(#glass-gel)!important}
+.mat-liquid .material::after,.mat-gel .material::after{opacity:1;mix-blend-mode:normal;z-index:1;border-radius:inherit;background:radial-gradient(ellipse 35% 42% at var(--pointer-x,24%) var(--pointer-y,18%),#ffffff72,transparent 82%),linear-gradient(133deg,#ffffffe6 0%,#fff6 9%,transparent 22%,transparent 76%,#d9ecf54d 93%,#ffffffb5 100%);box-shadow:inset 0 1px 1px #fff,inset 3px 3px 5px #ffffffa6,inset -3px -4px 7px #1c476535;pointer-events:none}
+.mat-gel .material::after{background:radial-gradient(ellipse 32% 38% at var(--pointer-x,25%) var(--pointer-y,23%),#ffffffa0,transparent 85%),linear-gradient(145deg,#fff9 0%,transparent 20%,transparent 74%,#ffffff8a 100%)}
+body[data-theme="dark"] .mat-soft .material{background:rgba(35,50,64,var(--mat-tint,.34));color:#f2f6fa}
+body[data-theme="dark"] .mat-mica .material{background:linear-gradient(125deg,#323c48f7,#404650f9 70%,#354752fa);color:#f3f6fb}
+body[data-theme="dark"] .mat-acrylic .material{background:rgba(25,38,53,var(--mat-tint,.62));color:#f4f7fa}
+body[data-theme="dark"] .mat-vibrancy .material{background:rgba(29,38,56,var(--mat-tint,.47));color:#f3f7fa}
+body[data-theme="dark"] .mat-liquid .material,body[data-theme="dark"] .mat-gel .material{background:rgba(28,42,62,var(--mat-tint,.16));color:#f3fbff}
+.native-context{display:none;position:absolute;inset:13px 20px;pointer-events:none;z-index:0}
+.native-window{width:100%;height:100%;border:1px solid #ffffffb0;border-radius:10px;background:#ebf0f4a1;box-shadow:0 7px 24px #243c5730;overflow:hidden}
+.native-titlebar{height:26px;border-bottom:1px solid #d3dee8aa;background:#f4f7fa99;display:flex;align-items:center;gap:6px;padding:0 10px}
+.native-titlebar i{display:block;width:6px;height:6px;border-radius:50%;background:#7b95a6aa}
+.native-rows{padding:15px 12px;display:grid;gap:9px}
+.native-rows i{display:block;height:6px;width:75%;border-radius:3px;background:#6e8ca477}
+.native-rows i:nth-child(2){width:52%}.native-rows i:nth-child(3){width:85%}.native-rows i:nth-child(4){width:62%}
+body[data-mode="native"] .native-context{display:block}
+body[data-mode="native"] .mat-mica .native-window{background:#e4e9eef2}
+body[data-mode="native"] .mat-acrylic .native-window{background:#2b547485}
+body[data-mode="native"] .mat-vibrancy .native-window{background:#d7e5f2aa}
+body[data-mode="native"] .mat-vibrancy .native-titlebar i{background:#df9589}
+body[data-mode="native"] .mat-vibrancy .native-rows{padding-left:48%}
+body[data-mode="native"] .mat-vibrancy .native-window::before{content:"";position:absolute;top:27px;bottom:0;left:1px;width:42%;border-right:1px solid #fff5;background:#e8f2f38a}
+body[data-mode="native"] .mat-liquid .native-window,body[data-mode="native"] .mat-gel .native-window{background:#8fb2c688}
+body[data-mode="native"] .mat-mica .material{min-height:192px;width:calc(100% - 26px);max-width:350px;align-self:center}
+body[data-mode="native"] .mat-acrylic .material{min-height:146px;width:220px;margin-left:auto}
+body[data-mode="native"] .mat-vibrancy .material{min-height:183px;width:184px;margin-right:auto}
+body[data-mode="native"] .mat-liquid .material,body[data-mode="native"] .mat-gel .material{min-height:116px;width:242px}
+body[data-mode="native"] .mat-liquid .material__name,body[data-mode="native"] .mat-gel .material__name{font-size:17px}
+body[data-mode="native"] .mat-liquid .material__top,body[data-mode="native"] .mat-gel .material__top{display:none}
+body[data-mode="native"] .mat-liquid .material__rule,body[data-mode="native"] .mat-gel .material__rule{margin-top:4px}
+.control input:disabled{opacity:.4;cursor:not-allowed}
+.control.is-disabled label{color:#90a0aa}
+.control label{min-width:38px}
+.tuning-hint{font-size:11px;color:#637881;line-height:1.6;padding:0 2px;margin:-7px 0 17px}
+.inspector__actions{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+.copy-full{border:1px solid #cbd9de;background:#eaf3f5;color:#264e67;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:600}
+body[data-theme="dark"] .copy-full{background:#314c5a;color:#f0f9fc;border-color:#4c7689}
+@media(max-width:680px){.view-switcher{margin-right:0}.scene{height:238px}body[data-mode="native"] .mat-mica .material{width:calc(100% - 30px)}}
+@media(prefers-reduced-motion:reduce){.mat-gel .material,.mat-liquid .material{transition:none!important}.mat-gel .pick:hover .material,.mat-gel.is-pressing .material{border-radius:35px 51px 32px 46px / 33px 32px 46px 40px}}
+
+
+/* 必须使用与场景一致的每层尺寸和坐标原点，纹理点阵才能在透镜内外连续。 */
+body[data-wallpaper="texture"] .refraction {
+  background-size:34px 34px,var(--scene-w,370px) var(--scene-h,238px),var(--scene-w,370px) var(--scene-h,238px);
+  background-position:var(--offset-x,0px) var(--offset-y,0px);
+}
+.mat-mica .material::after {
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:inherit;
+  background:rgba(97,126,151,calc((1 - var(--mat-tint,.96)) * .40));
+}
+@media(prefers-reduced-motion:reduce){.mat-gel .pick:hover .material{transform:none}}
+
+/* Liquid Lens/Gel: 仅在内容下缘做局部可读性衰减，避免高对比条纹直接穿过字形。 */
+.mat-liquid .material::before,.mat-gel .material::before{
+  content:"";position:absolute;inset:38% 0 0;z-index:1;pointer-events:none;
+  background:linear-gradient(to bottom,transparent,rgba(236,247,254,.38) 38%,rgba(236,247,254,.76));
+  border-radius:inherit;
+}
+.mat-liquid .material__bottom,.mat-gel .material__bottom{text-shadow:0 1px 2px #ffffff9c}
+body[data-theme="dark"] .mat-liquid .material::before,body[data-theme="dark"] .mat-gel .material::before{
+  background:linear-gradient(to bottom,transparent,rgba(19,35,50,.42) 38%,rgba(19,35,50,.78));
+}
+body[data-theme="dark"] .mat-liquid .material__bottom,body[data-theme="dark"] .mat-gel .material__bottom{text-shadow:0 1px 2px #0a1927a8}
+
+/* TUNING v3 · 液态玻璃双层合成。以原始像素采样代替不稳定的 CSS/SVG 背景副本。 */
+.mat-liquid .material,.mat-gel .material{
+  background:rgba(242,248,253,.075)!important;
+  backdrop-filter:none!important;-webkit-backdrop-filter:none!important;
+  border:1px solid rgba(255,255,255,.83);
+  box-shadow:0 20px 38px rgba(23,52,73,.25), inset 0 1px 0 rgba(255,255,255,.9),
+    inset 2px 3px 4px rgba(255,255,255,.40),inset -2px -3px 5px rgba(20,69,95,.23);
+}
+.mat-liquid .material{border-radius:27px}
+.mat-gel .material{border-radius:35px 51px 32px 46px/33px 32px 46px 40px}
+.mat-liquid .material>.refraction,.mat-gel .material>.refraction{
+  position:absolute;inset:0;z-index:0;display:block;width:100%;height:100%;
+  opacity:1!important;filter:none!important;background:none!important;
+  pointer-events:none;border-radius:inherit;
+}
+body[data-optics="ready"] .mat-liquid .refraction,body[data-optics="ready"] .mat-gel .refraction{filter:none!important}
+.mat-liquid .material::after,.mat-gel .material::after{
+  border-radius:inherit;z-index:1;opacity:1;
+  background:radial-gradient(ellipse 27% 35% at var(--pointer-x,24%) var(--pointer-y,17%),rgba(255,255,255,.27),transparent 95%),
+    linear-gradient(136deg,rgba(255,255,255,.44),transparent 20%,transparent 78%,rgba(175,221,248,.16));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.88),inset 0 7px 8px -8px white,
+    inset 2px 0 5px -4px rgba(255,255,255,.98),inset -3px -4px 6px -5px rgba(30,79,109,.6);
+}
+.mat-gel .material::after{
+  background:radial-gradient(ellipse 30% 40% at var(--pointer-x,27%) var(--pointer-y,15%),rgba(255,255,255,.34),transparent 88%),
+    linear-gradient(136deg,rgba(255,255,255,.48),transparent 19%,transparent 76%,rgba(191,216,253,.21));
+}
+body[data-theme="dark"] .mat-liquid .material,body[data-theme="dark"] .mat-gel .material{
+  background:rgba(28,42,62,.085)!important;
+  border-color:rgba(240,249,255,.78);color:#f3fbff;
+}
+.mat-liquid .material__bottom,.mat-gel .material__bottom{
+  text-shadow:0 1px 1px rgba(245,251,255,.48);
+}
+.mat-liquid .scene,.mat-gel .scene{--glass-photo:1}
+.mat-liquid .pick,.mat-gel .pick{touch-action:none}
+.mat-liquid .pick:focus-visible,.mat-gel .pick:focus-visible{outline-offset:-4px}
+.mat-liquid.is-dragging .material,.mat-gel.is-dragging .material{transition:none!important;cursor:grabbing}
+.mat-liquid .pick:hover .material,.mat-gel .pick:hover .material{transform:none}
+.mat-gel .pick:hover .material,.mat-gel .pick:focus-visible .material{border-radius:46px 33px 46px 34px/43px 45px 31px 35px}
+.mat-gel.is-pressing .material{border-radius:28px 52px 32px 56px/45px 29px 50px 30px}
+@media(prefers-reduced-motion:reduce){.mat-liquid .material,.mat-gel .material{transition:none!important}.mat-gel .pick:hover .material{border-radius:35px 51px 32px 46px/33px 32px 46px 40px}}
+
+</style>
+</head>
+<body data-theme="light" data-wallpaper="lines" data-mode="compare" data-optics="loading">
+
+<main class="app">
+<header class="top"><div>
+<div class="eyebrow"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
   <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
-  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></div><h1>界面显示设置</h1><p>调整内容显示模式。此卡片用于检验透明材质下的文字对比度与按钮反馈。</p><div class="actions"><button id="primary" class="primary"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg><span>启用半透明</span></button><button id="secondary" class="secondary"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-  <path d="M3 3v5h5" /></svg><span>恢复默认</span></button></div><div class="state" id="status" aria-live="polite">当前状态：标准显示</div></article><script>document.querySelector('#primary').onclick=()=>document.querySelector('#status').textContent='当前状态：已启用半透明';document.querySelector('#secondary').onclick=()=>document.querySelector('#status').textContent='当前状态：标准显示';</script></body></html>
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg><span>UI Vault / 材质实验室</span></div>
+<h1>玻璃材质对照</h1>
+<p class="intro">在同一组背景和内容上，对比 Windows 与 macOS 的经典毛玻璃，以及带有折射、边缘高光的液态玻璃。点击任意样式查看实现与适用场景。</p>
+</div>
+<div class="toolbar"><div class="switcher view-switcher" role="group" aria-label="展示方式"><button type="button" data-view="compare" aria-pressed="true">统一对比</button><button type="button" data-view="native" aria-pressed="false">使用场景</button></div><div class="switcher" role="group" aria-label="预览背景">
+<button type="button" data-wallpaper-option="color" aria-pressed="false">彩色背景</button>
+<button type="button" data-wallpaper-option="grid" aria-pressed="false">网格</button><button type="button" data-wallpaper-option="lines" aria-pressed="true">高对比线条</button><button type="button" data-wallpaper-option="texture" aria-pressed="false">纹理</button></div>
+<button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false">深色模式</button></div></header>
+<p class="tuning-hint" id="selected-hint">正在调整「柔光玻璃」的独立参数。选择另一种材质后，滑块会切换到它自己的设置。</p><div class="adjustments" aria-label="所选材质独立参数">
+<div class="control"><label for="blur">模糊</label><input id="blur" type="range" min="0" max="50" value="16" step="1"><output id="blur-value" for="blur">16 px</output></div>
+<div class="control"><label for="tint">材质浓度</label><input id="tint" type="range" min="5" max="100" value="34" step="1"><output id="tint-value" for="tint">34%</output></div>
+<div class="control"><label for="distortion">折射</label><input id="distortion" type="range" min="0" max="55" value="19" step="1"><output id="distortion-value" for="distortion">19</output></div>
+<button type="button" class="reset" id="reset"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+  <path d="M3 3v5h5" /></svg> 恢复</button>
+</div>
+<div class="section-title"><h2>六种材质，同一背景</h2><p>点击卡片 · 选择后在下方查看说明与代码</p></div>
+<section class="gallery" aria-label="材质对照">
+<article class="sample mat-soft is-selected" data-kind="soft"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="soft" aria-pressed="true" aria-label="查看柔光玻璃材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">外观设置</span><span class="material__name">通透而柔和</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>柔光玻璃</h3><span class="sample__tag">Soft glass</span></div><p>轻透色层、低对比边缘与柔和景深。</p></div></article>
+<article class="sample mat-mica" data-kind="mica"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="mica" aria-pressed="false" aria-label="查看 Windows Mica 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">系统窗口</span><span class="material__name">背景融入桌面</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Windows · Mica</h3><span class="sample__tag">壁纸取色</span></div><p>接近不透明的壁纸染色，不是实时模糊。</p></div></article>
+<article class="sample mat-acrylic" data-kind="acrylic"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="acrylic" aria-pressed="false" aria-label="查看 Windows Acrylic 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">快捷设置</span><span class="material__name">半透明浮层</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Windows · Acrylic</h3><span class="sample__tag">噪点 + 模糊</span></div><p>更明显的透光、浅色调与细微颗粒。</p></div></article>
+<article class="sample mat-vibrancy" data-kind="vibrancy"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="vibrancy" aria-pressed="false" aria-label="查看 macOS Vibrancy 材质"><span class="material"><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">侧边栏</span><span class="material__name">模糊与鲜活感</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>macOS · Vibrancy</h3><span class="sample__tag">系统材质近似</span></div><p>较高饱和度的磨砂玻璃，适合背景层。</p></div></article>
+<article class="sample mat-liquid" data-kind="liquid"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="liquid" aria-pressed="false" aria-label="查看并拖动液态透镜材质"><span class="material"><canvas class="refraction" aria-hidden="true"></canvas><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">悬浮工具</span><span class="material__name">玻璃透镜</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Lens</h3><span class="sample__tag">拖动观察折射</span></div><p>Canvas 像素重采样产生可观察的边缘折射。</p></div></article>
+<article class="sample mat-gel" data-kind="gel"><div class="scene"><div class="native-context" aria-hidden="true"><div class="native-window"><div class="native-titlebar"><i></i><i></i><i></i></div><div class="native-rows"><i></i><i></i><i></i><i></i></div></div></div><button class="pick" type="button" data-material="gel" aria-pressed="false" aria-label="查看并拖动液态凝胶材质"><span class="material"><canvas class="refraction" aria-hidden="true"></canvas><span class="material__top"><span class="material__icon"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83z" />
+  <path d="M2 12a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 12" />
+  <path d="M2 17a1 1 0 0 0 .58.91l8.6 3.91a2 2 0 0 0 1.65 0l8.58-3.9A1 1 0 0 0 22 17" /></svg></span><span class="material__dots" aria-hidden="true"><i></i><i></i><i></i></span></span><span class="material__bottom"><span class="material__label">流动表面</span><span class="material__name">柔韧的光泽</span><span class="material__rule"></span></span></span></button></div><div class="sample__footer"><div class="sample__line"><h3>Liquid · Gel</h3><span class="sample__tag">拖动与按压</span></div><p>自由形态边缘、较强折射与指针高光。</p></div></article>
+</section>
+<section class="inspector" aria-label="选中材质说明">
+<div><h2 id="detail-title"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5" /></svg> 柔光玻璃</h2><p id="detail-description">适用于内容卡片与轻量浮层。使用半透明底色和模糊形成柔和层次，优先保证文本可读。</p><small id="detail-note">网页实现为独立 CSS 示例，可使用复制按钮提取当前参数；不是操作系统 API。</small><div class="notice">浏览器 Demo 不调用 Windows Composition 或 macOS AppKit。Mica、Acrylic、Vibrancy 为外观近似；液态折射只针对本演示中可复用的背景图层。</div></div>
+<div><div class="inspector__label"><span>当前参数与实现</span><span class="inspector__actions"><button type="button" class="copy" id="copy">复制 CSS 参数</button><button type="button" class="copy-full" id="copy-full">复制完整 HTML</button></span></div><pre><code id="css-source"></code></pre><div class="status" id="status" role="status" aria-live="polite"></div></div>
+</section>
+<footer class="sources">
+<h2>设计依据与开源参考</h2>
+<p>对照系统规范自行编写的网页实验；未复制第三方组件库代码、系统资源或商标。点击来源可查看更完整的原生实现与浏览器实现。</p>
+<nav class="sources__links" aria-label="设计与开源出处">
+<a href="https://learn.microsoft.com/en-us/windows/apps/design/style/mica" target="_blank" rel="noopener noreferrer">Microsoft · Mica</a>
+<a href="https://learn.microsoft.com/en-us/windows/apps/design/style/acrylic" target="_blank" rel="noopener noreferrer">Microsoft · Acrylic</a>
+<a href="https://developer.apple.com/documentation/appkit/nsvisualeffectview" target="_blank" rel="noopener noreferrer">Apple · NSVisualEffectView</a>
+<a href="https://developer.apple.com/documentation/technologyoverviews/liquid-glass" target="_blank" rel="noopener noreferrer">Apple · Liquid Glass</a>
+<a href="https://github.com/cameronrye/frostpane" target="_blank" rel="noopener noreferrer">frostpane · MIT</a>
+<a href="https://github.com/dpawlikowski/liquid-glass" target="_blank" rel="noopener noreferrer">liquid-glass · MIT</a>
+<a href="https://github.com/IshiakiZ/liquid-glass-web" target="_blank" rel="noopener noreferrer">liquid-glass-web · MIT</a>
+<a href="https://github.com/gentpan/liquidglass" target="_blank" rel="noopener noreferrer">gentpan · 跨浏览器折射思路</a>
+</nav>
+<p>为避免跨站依赖，本页字体、SVG 与脚本均内置，支持直接在 UI-Vault 预览。液态材质的参数 CSS 需配合 Canvas 轮廓折射；“复制完整 HTML”才包含完整运行时。</p>
+</footer>
+</main>
+<script>
+(function(){
+  'use strict';
+  const root=document.documentElement;
+  const body=document.body;
+  const samples=[...document.querySelectorAll('.sample')];
+  const controls={
+    blur:document.getElementById('blur'),
+    tint:document.getElementById('tint'),
+    distortion:document.getElementById('distortion')
+  };
+  const defaults={
+    soft:{blur:16,tint:34,distortion:0},
+    mica:{blur:0,tint:96,distortion:0},
+    acrylic:{blur:27,tint:62,distortion:0},
+    vibrancy:{blur:18,tint:47,distortion:0},
+    liquid:{blur:0,tint:12,distortion:35},
+    gel:{blur:0,tint:16,distortion:43}
+  };
+  const values=Object.fromEntries(Object.entries(defaults).map(([key,v])=>[key,{...v}]));
+  const details={
+    soft:{title:'柔光玻璃',description:'适合内容面板。透明色层、较低饱和度与柔和背景模糊构成安静的内容表面。',note:'建议测试线条背景下的文字可读性，而不仅是渐变氛围图。'},
+    mica:{title:'Windows · Mica',description:'Mica 是面向长寿命窗口的不透明桌面壁纸染色材质；这里模拟窗口底色，而非实时模糊背后内容。',note:'Mica 的染色由系统主题与壁纸决定。网页无法直接读取系统壁纸，也不会调用 Windows App SDK。'},
+    acrylic:{title:'Windows · Acrylic',description:'Acrylic 用于菜单或临时浮层，以较强模糊、染色与微弱噪点区别于不透明窗口底层。',note:'噪点仅作为材质提示，不应让细微文字变得粗糙。'},
+    vibrancy:{title:'macOS · Vibrancy',description:'传统 macOS 材质强调与侧边栏或浮层下方内容的融合。这一方案使用独立的饱和度、染色与模糊参数。',note:'实际系统中的 NSVisualEffectView 会根据 Material、Blending Mode 和系统设置调整显示。'},
+    liquid:{title:'Liquid · Lens',description:'轮廓驱动的透镜：由圆角矩形的有符号距离场生成位移图，使折射集中在边缘，中心保留相对清晰的背景。',note:'Canvas 2D 在本地生成同源背景并逐像素重采样，不依赖 SVG 滤镜；不是真实光线追踪，也不折射任意 DOM。'},
+    gel:{title:'Liquid · Gel',description:'凝胶材质采用不同的边缘弯曲、柔性轮廓与指针高光。按下卡片可观察边缘轮廓的变形。',note:'Canvas 只在镜片移动、尺寸或参数改变时重绘；支持在场景内拖动镜片，方便观察背景弯曲。'}
+  };
+  const code=document.getElementById('css-source');
+  const status=document.getElementById('status');
+  const hint=document.getElementById('selected-hint');
+  let selected='soft',frame=0;
+  
+  const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
+  const toAlpha=value=>(value/100).toFixed(2);
+  function recipe(){
+    const p=values[selected],name=selected;
+    const blur='blur('+p.blur+'px)';
+    if(name==='mica')return '.mica-window {\n  /* 不透明窗口背景：Mica 外观近似 */\n  background: linear-gradient(145deg,#e8edf0f4,#dce4e9f7 64%,#d6e0e5fa);\n  backdrop-filter: none;\n  border: 1px solid #ffffffa6;\n  border-radius: 12px;\n}';
+    if(name==='acrylic')return '.acrylic-menu {\n  background: rgba(234,244,252,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(135%);\n  border: 1px solid #ffffffb5;\n  /* 叠加低对比 SVG 噪点纹理 */\n}';
+    if(name==='vibrancy')return '.vibrancy-sidebar {\n  background: rgba(235,240,251,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(195%) brightness(1.04);\n  border: 1px solid #ffffff9c;\n  /* AppKit 的 NSVisualEffectView 不能由 CSS 直接调用 */\n}';
+    if(name==='liquid'||name==='gel')return '/* Canvas 2D 背景采样方案（完整算法包含在“复制完整 HTML”中） */\n.liquid-'+name+' {\n  background: rgba(242,248,253,'+toAlpha(p.tint)+');\n  backdrop-filter: none;\n  border: 1px solid rgba(255,255,255,.83);\n  border-radius: '+(name==='gel'?'35px 51px 32px 46px':'27px')+';\n}\n/* 法线位移幅度：'+p.distortion+'px；镜片背景来自同源 Canvas 场景贴图。 */';
+    return '.soft-glass {\n  background: rgba(249,253,255,'+toAlpha(p.tint)+');\n  backdrop-filter: '+blur+' saturate(128%);\n  border: 1px solid #ffffffa5;\n  box-shadow: 0 15px 40px #27425c33, inset 0 1px 0 #fffd;\n}';
+  }
+  function setControlState(){
+    const v=values[selected],name=selected;
+    Object.entries(controls).forEach(([key,el])=>{
+      el.value=v[key];
+      const disabled=name==='mica'&&key==='blur'||!['liquid','gel'].includes(name)&&key==='distortion';
+      el.disabled=disabled;
+      el.closest('.control').classList.toggle('is-disabled',disabled);
+    });
+    hint.textContent='正在调整「'+details[selected].title+'」的独立参数。'+(selected==='mica'?'Mica 不使用实时模糊或折射。':!['liquid','gel'].includes(selected)?'仅液态材质支持边缘折射。':'拖动镜片观察背景线条弯曲；Canvas 将根据折射强度重新采样真实像素。');
+    updateOutputs();
+  }
+  function updateOutputs(){
+    document.getElementById('blur-value').textContent=controls.blur.value+' px';
+    document.getElementById('tint-value').textContent=controls.tint.value+'%';
+    document.getElementById('distortion-value').textContent=controls.distortion.value;
+  }
+  function applyMaterial(name){
+    const sample=document.querySelector('.sample[data-kind="'+name+'"]'),p=values[name];
+    sample.style.setProperty('--mat-blur',p.blur+'px');
+    sample.style.setProperty('--mat-tint',toAlpha(p.tint));
+    if(name==='liquid'||name==='gel')scheduleAlign();
+  }
+  function selectMaterial(name){
+    if(!details[name])return;
+    selected=name;
+    samples.forEach(sample=>{
+      const active=sample.dataset.kind===name;
+      sample.classList.toggle('is-selected',active);
+      sample.querySelector('.pick').setAttribute('aria-pressed',String(active));
+    });
+    document.getElementById('detail-title').textContent=details[name].title;
+    document.getElementById('detail-description').textContent=details[name].description;
+    document.getElementById('detail-note').textContent=details[name].note;
+    setControlState();
+    code.textContent=recipe();
+    status.textContent='';
+  }
+  // Each sample uses the exact same painted scene (not a separately approximated CSS snapshot).
+  // Sampling in pixel space produces deterministic refraction in Chromium, Safari and Firefox.
+  const sceneCache=new Map();
+  const liquidKinds=['liquid','gel'];
+  let opticsDraws=0;
+  const clamp=(n,a,b)=>Math.max(a,Math.min(b,n));
+  function drawSceneTexture(width,height,wallpaper){
+    const key=wallpaper+':'+width+'x'+height;
+    if(sceneCache.has(key))return sceneCache.get(key);
+    const canvas=document.createElement('canvas');
+    canvas.width=width;canvas.height=height;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    if(!ctx)return null;
+    const w=width,h=height;
+    const gradient=ctx.createLinearGradient(0,0,w,h);
+    gradient.addColorStop(0,wallpaper==='texture'?'#d3dbdf':'#f5e4dc');
+    gradient.addColorStop(.50,wallpaper==='color'?'#aaa5dc':'#c8d9da');
+    gradient.addColorStop(1,wallpaper==='color'?'#6cbeb3':'#89b1bc');
+    ctx.fillStyle=gradient;ctx.fillRect(0,0,w,h);
+    const peach=ctx.createRadialGradient(w*.22,h*.27,4,w*.22,h*.27,w*.47);
+    peach.addColorStop(0,'rgba(255,177,135,.82)');peach.addColorStop(1,'rgba(255,177,135,0)');
+    ctx.fillStyle=peach;ctx.fillRect(0,0,w,h);
+    const blue=ctx.createRadialGradient(w*.86,h*.31,2,w*.86,h*.31,w*.59);
+    blue.addColorStop(0,'rgba(106,132,214,.72)');blue.addColorStop(1,'rgba(106,132,214,0)');
+    ctx.fillStyle=blue;ctx.fillRect(0,0,w,h);
+    if(wallpaper==='grid'||wallpaper==='lines'){
+      const step=wallpaper==='grid'?24:32;
+      ctx.beginPath();
+      for(let x=0;x<=w;x+=step){ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,h);}
+      for(let y=0;y<=h;y+=step){ctx.moveTo(0,y+.5);ctx.lineTo(w,y+.5);}
+      ctx.strokeStyle=wallpaper==='lines'?'rgba(32,67,88,.35)':'rgba(43,80,92,.23)';
+      ctx.lineWidth=1;ctx.stroke();
+      if(wallpaper==='lines'){
+        ctx.beginPath();
+        for(let n=-h;n<w+h;n+=86){ctx.moveTo(n,0);ctx.lineTo(n+h*.5,h);}
+        ctx.strokeStyle='rgba(28,67,100,.65)';ctx.lineWidth=3;ctx.stroke();
+        // 保留直线校验折射，避免大圆环被误认成镜片自带的装饰。
+      }
+    } else if(wallpaper==='texture'){
+      for(let y=10;y<h;y+=26)for(let x=10;x<w;x+=26){
+        ctx.fillStyle='rgba(248,253,255,.78)';ctx.beginPath();ctx.arc(x,y,3.4,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='rgba(33,85,118,.55)';ctx.fillRect(x+7,y+8,9,2);
+      }
+      ctx.beginPath();ctx.moveTo(0,h*.64);ctx.lineTo(w,h*.22);
+      ctx.lineWidth=6;ctx.strokeStyle='rgba(52,101,135,.65)';ctx.stroke();
+    }else{
+      ctx.beginPath();ctx.arc(w*.63,h*.38,h*.25,0,Math.PI*2);
+      ctx.lineWidth=8;ctx.strokeStyle='rgba(246,250,255,.46)';ctx.stroke();
+      ctx.beginPath();ctx.moveTo(0,h*.79);ctx.lineTo(w,h*.31);
+      ctx.lineWidth=3;ctx.strokeStyle='rgba(37,85,107,.26)';ctx.stroke();
+    }
+    const texture={canvas,pixels:ctx.getImageData(0,0,w,h).data,width:w,height:h,dataUrl:canvas.toDataURL('image/png')};
+    if(sceneCache.size>20)sceneCache.clear();
+    sceneCache.set(key,texture);
+    return texture;
+  }
+  function signedDistance(x,y,w,h,r){
+    const qx=Math.abs(x-w/2)-(w/2-r),qy=Math.abs(y-h/2)-(h/2-r);
+    return Math.hypot(Math.max(qx,0),Math.max(qy,0))+Math.min(Math.max(qx,qy),0)-r;
+  }
+  function bilinear(src,x,y,channel){
+    const px=clamp(x,0,src.width-1),py=clamp(y,0,src.height-1);
+    const x0=Math.floor(px),y0=Math.floor(py),x1=Math.min(src.width-1,x0+1),y1=Math.min(src.height-1,y0+1);
+    const fx=px-x0,fy=py-y0,w=src.width,data=src.pixels;
+    const a=data[(y0*w+x0)*4+channel],b=data[(y0*w+x1)*4+channel];
+    const c=data[(y1*w+x0)*4+channel],d=data[(y1*w+x1)*4+channel];
+    return (a+(b-a)*fx)*(1-fy)+(c+(d-c)*fx)*fy;
+  }
+  function paintLiquid(kind,texture){
+    const sample=document.querySelector('.sample[data-kind="'+kind+'"]');
+    if(!sample||!texture)return false;
+    const panel=sample.querySelector('.material'),scene=sample.querySelector('.scene');
+    const canvas=panel.querySelector('canvas.refraction');
+    const bounds=panel.getBoundingClientRect(),surface=scene.getBoundingClientRect();
+    if(bounds.width<40||bounds.height<40||surface.width<40)return false;
+    const dpr=Math.min(window.devicePixelRatio||1,1.45);
+    const w=Math.round(bounds.width*dpr),h=Math.round(bounds.height*dpr);
+    if(w*h>380000)return false;
+    canvas.width=w;canvas.height=h;
+    const ctx=canvas.getContext('2d',{willReadFrequently:true});
+    if(!ctx)return false;
+    const image=ctx.createImageData(w,h),dst=image.data;
+    const scaleX=texture.width/surface.width,scaleY=texture.height/surface.height;
+    const radius=(kind==='gel'?35:27)*dpr;
+    const rim=(kind==='gel'?41:32)*dpr;
+    const power=values[kind].distortion;
+    const bx=(bounds.left-surface.left),by=(bounds.top-surface.top);
+    const refraction=power*dpr;
+    let changed=0;
+    for(let y=0;y<h;y++){
+      for(let x=0;x<w;x++){
+        const o=(y*w+x)*4;
+        const dx=x+.5,dy=y+.5;
+        const d=signedDistance(dx,dy,w,h,radius);
+        if(d>1){dst[o+3]=0;continue;}
+        const gX=signedDistance(dx+1,dy,w,h,radius)-signedDistance(dx-1,dy,w,h,radius);
+        const gY=signedDistance(dx,dy+1,w,h,radius)-signedDistance(dx,dy-1,w,h,radius);
+        const norm=Math.hypot(gX,gY)||1,nx=gX/norm,ny=gY/norm;
+        const t=clamp(-d/rim,0,1);
+        const curve=1-t*t*(3-2*t);
+        const edge=curve*curve;
+        const magnify=kind==='gel'?.055:.035;
+        const shift=refraction*edge;
+        const sx=(bx+(dx-(dx-w*.5)*magnify*(1-edge)+nx*shift)/dpr)*scaleX;
+        const sy=(by+(dy-(dy-h*.5)*magnify*(1-edge)+ny*shift)/dpr)*scaleY;
+        const chroma=edge*1.6*dpr;
+        const r=bilinear(texture,sx-nx*chroma,sy-ny*chroma,0);
+        const g=bilinear(texture,sx,sy,1);
+        const b=bilinear(texture,sx+nx*chroma,sy+ny*chroma,2);
+        const light=edge*(.16+.35*Math.max(0,-nx*.5-ny*.86));
+        const shade=edge*.22*Math.max(0,nx*.43+ny*.9);
+        const intensity=1-shade;
+        dst[o]=clamp(r*intensity+(255-r)*light,0,255);
+        dst[o+1]=clamp(g*intensity+(255-g)*light,0,255);
+        dst[o+2]=clamp(b*intensity+(255-b)*light,0,255);
+        dst[o+3]=255;
+        if(edge>.25)changed++;
+      }
+    }
+    ctx.putImageData(image,0,0);
+    canvas.dataset.rendered='true';
+    canvas.dataset.edgePixels=String(changed);
+    canvas.dataset.revision=String(++opticsDraws);
+    return true;
+  }
+  function alignAndBake(){
+    const wallpaper=body.dataset.wallpaper;
+    const base=new Map();
+    for(const sample of samples){
+      const scene=sample.querySelector('.scene'),bounds=scene.getBoundingClientRect();
+      const w=Math.max(1,Math.round(bounds.width)),h=Math.max(1,Math.round(bounds.height));
+      const key=w+'x'+h;
+      let tex=base.get(key);
+      if(!tex){tex=drawSceneTexture(w,h,wallpaper);base.set(key,tex);}
+      if(!tex)continue;
+      scene.style.backgroundImage='url("'+tex.dataUrl+'")';
+      scene.style.backgroundSize='100% 100%';
+      if(liquidKinds.includes(sample.dataset.kind)){
+        paintLiquid(sample.dataset.kind,tex);
+      }
+    }
+    if(liquidKinds.every(kind=>document.querySelector('.mat-'+kind+' canvas.refraction').dataset.rendered==='true')){
+      body.dataset.optics='ready';
+    }
+  }
+  function scheduleAlign(){
+    if(frame)return;
+    frame=requestAnimationFrame(()=>{frame=0;alignAndBake();});
+  }
+  Object.entries(values).forEach(([name])=>applyMaterial(name));
+  samples.forEach(sample=>{
+    const pick=sample.querySelector('.pick'),panel=sample.querySelector('.material');
+    pick.addEventListener('click',()=>selectMaterial(sample.dataset.kind));
+    pick.addEventListener('pointermove',event=>{
+      if(reduceMotion.matches)return;
+      const r=panel.getBoundingClientRect();
+      if(!r.width)return;
+      panel.style.setProperty('--pointer-x',Math.max(0,Math.min(100,(event.clientX-r.left)/r.width*100)).toFixed(1)+'%');
+      panel.style.setProperty('--pointer-y',Math.max(0,Math.min(100,(event.clientY-r.top)/r.height*100)).toFixed(1)+'%');
+    },{passive:true});
+    pick.addEventListener('pointerleave',()=>{
+      panel.style.removeProperty('--pointer-x');panel.style.removeProperty('--pointer-y');
+      sample.classList.remove('is-pressing');
+    });
+    if(liquidKinds.includes(sample.dataset.kind)){
+      let dragging=null;
+      pick.addEventListener('pointerdown',event=>{
+        if(event.pointerType==='mouse'&&event.button!==0)return;
+        const rect=panel.getBoundingClientRect();
+        if(event.clientX<rect.left||event.clientX>rect.right||event.clientY<rect.top||event.clientY>rect.bottom)return;
+        dragging={id:event.pointerId,lastX:event.clientX,lastY:event.clientY,moved:false};
+        pick.setPointerCapture(event.pointerId);
+      });
+      pick.addEventListener('pointermove',event=>{
+        if(!dragging||dragging.id!==event.pointerId)return;
+        const sceneRect=sample.querySelector('.scene').getBoundingClientRect();
+        const rect=panel.getBoundingClientRect();
+        const changeX=clamp(event.clientX-dragging.lastX,sceneRect.left+6-rect.left,sceneRect.right-6-rect.right);
+        const changeY=clamp(event.clientY-dragging.lastY,sceneRect.top+6-rect.top,sceneRect.bottom-6-rect.bottom);
+        if(Math.abs(changeX)+Math.abs(changeY)>0){
+          const x=(parseFloat(panel.dataset.dragX)||0)+changeX;
+          const y=(parseFloat(panel.dataset.dragY)||0)+changeY;
+          panel.dataset.dragX=String(x);panel.dataset.dragY=String(y);
+          panel.style.translate=x+'px '+y+'px';
+          dragging.moved=true;
+          sample.classList.add('is-dragging');
+          scheduleAlign();
+        }
+        dragging.lastX=event.clientX;dragging.lastY=event.clientY;
+      });
+      const endDrag=()=>{
+        if(!dragging)return;
+        sample.classList.remove('is-dragging');dragging=null;
+        scheduleAlign();
+      };
+      pick.addEventListener('pointerup',endDrag);
+      pick.addEventListener('pointercancel',endDrag);
+      pick.addEventListener('lostpointercapture',endDrag);
+    }
+    if(sample.dataset.kind==='gel'){
+      pick.addEventListener('pointerdown',()=>{if(!reduceMotion.matches)sample.classList.add('is-pressing');});
+      ['pointerup','pointercancel','blur'].forEach(event=>pick.addEventListener(event,()=>sample.classList.remove('is-pressing')));
+    }
+  });
+  Object.entries(controls).forEach(([key,el])=>{
+    el.addEventListener('input',()=>{
+      values[selected][key]=Number(el.value);
+      applyMaterial(selected);
+      updateOutputs();
+      code.textContent=recipe();
+    });
+  });
+  document.querySelectorAll('[data-wallpaper-option]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      body.dataset.wallpaper=btn.dataset.wallpaperOption;
+      document.querySelectorAll('[data-wallpaper-option]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+      scheduleAlign();
+    });
+  });
+  document.querySelectorAll('[data-view]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      body.dataset.mode=btn.dataset.view;
+      document.querySelectorAll('[data-view]').forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+      // 保持响应式坐标对齐，避免切换“使用场景”时位移图漂移。
+      scheduleAlign();
+    });
+  });
+  const theme=document.getElementById('theme-toggle');
+  theme.addEventListener('click',()=>{
+    const dark=body.dataset.theme!=='dark';
+    body.dataset.theme=dark?'dark':'light';
+    theme.setAttribute('aria-pressed',String(dark));
+    theme.textContent=dark?'浅色模式':'深色模式';
+  });
+  document.getElementById('reset').addEventListener('click',()=>{
+    for(const [name,value] of Object.entries(defaults)){
+      values[name]={...value};
+      applyMaterial(name);
+    }
+    selectMaterial('soft');
+    status.textContent='六种材质的独立参数均已恢复';
+  });
+  async function copyText(text){
+    try{
+      if(!navigator.clipboard?.writeText)throw new Error('剪贴板 API 不可用');
+      await navigator.clipboard.writeText(text);
+      return true;
+    }catch{
+      const input=document.createElement('textarea');
+      input.value=text;input.setAttribute('aria-label','复制代码');
+      input.style.cssText='position:fixed;left:-9999px;top:0';
+      body.appendChild(input);input.select();
+      const ok=document.execCommand('copy');
+      input.remove();
+      return ok;
+    }
+  }
+  document.getElementById('copy').addEventListener('click',async()=>{
+    const ok=await copyText(code.textContent);
+    status.textContent=ok?'当前 CSS 参数已复制':'无法自动复制，请手动选择代码';
+  });
+  document.getElementById('copy-full').addEventListener('click',async()=>{
+    let html='<!doctype html>\n'+document.documentElement.outerHTML;
+    try{
+      if(location.protocol!=='file:'){
+        const response=await fetch(location.href,{cache:'no-store'});
+        if(response.ok)html=await response.text();
+      }
+    }catch{/* 脱机页面改为复制当前 HTML。 */}
+    const ok=await copyText(html);
+    status.textContent=ok?'完整可运行 HTML 已复制（包括 Canvas 折射与背景绘制逻辑）':'复制失败，请通过项目源代码获取完整 HTML';
+  });
+  if(typeof ResizeObserver==='function'){
+    const observer=new ResizeObserver(scheduleAlign);
+    samples.forEach(sample=>observer.observe(sample.querySelector('.scene')));
+    samples.filter(sample=>['liquid','gel'].includes(sample.dataset.kind)).forEach(sample=>observer.observe(sample.querySelector('.material')));
+  }
+  window.addEventListener('resize',scheduleAlign,{passive:true});
+  selectMaterial('soft');
+  scheduleAlign();
+})();
+</script>
+</body>
+</html>

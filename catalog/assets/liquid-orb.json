@@ -1,0 +1,36 @@
+{
+  "id": "liquid-orb",
+  "title": "液态玻璃组件演示",
+  "subtitle": "Liquid Orb · Thinking Dialog",
+  "description": "在同一个页面中切换 WebGPU 液态玻璃球和 Thinking 胶囊对话框，支持实时渲染、对话框尺寸调节、文字编辑与弹出预览。",
+  "type": "component",
+  "source": "local",
+  "tags": [
+    "Glass",
+    "WebGPU",
+    "WGSL",
+    "Dialog",
+    "动效"
+  ],
+  "technologies": [
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "WebGPU",
+    "WGSL"
+  ],
+  "preview": "demos/components/liquid-orb/index.html",
+  "code": "demos/components/liquid-orb/index.html",
+  "license": "MIT（原版 Liquid Orb Editor：Copyright © 2026 LerSent001；UI-Vault 为改编演示）",
+  "cover": "glass",
+  "featured": true,
+  "created": "2026-11-21",
+  "copyable": true,
+  "reuseNotes": [
+    "原版项目：LerSent001/orb（MIT）。本页面保留原版 WebGPU/WGSL 玻璃球渲染效果，并改编为 UI-Vault 组件演示，不包含原版完整编辑器。",
+    "统一单文件演示集成玻璃球与思考胶囊；两种模式共用一个 WebGPU Canvas，避免重复 GPU 设备。",
+    "思考对话框支持紧凑、标准、大尺寸和文字修改，手机上自动缩放。",
+    "可通过 ?embed=1 独立复用玻璃球渲染器，加载阶段不显示静态假球体。"
+  ],
+  "originRepo": "https://github.com/LerSent001/orb"
+}

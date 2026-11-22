@@ -34,8 +34,11 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(html,/id="library-rail"/);
   assert.match(html,/id="project-panel"/);
   assert.match(css,/\.preview-stage\s*\{[^}]*flex:\s*1 1 0/);
-  assert.match(app,/projectPreviewMarkup\(asset\)/);
-  assert.match(app,/projectRowMarkup\(asset,favorites,state.labels/);
+  const react=await read('src/react-workbench.jsx');
+  assert.match(app,/mountWorkbench\(\)/);
+  assert.match(react,/<ProjectList items={filtered}/);
+  assert.match(react,/<CategoryNavigation categories={state.categories}/);
+  assert.match(react,/<PreviewFrame asset={selected}/);
   assert.doesNotMatch(app,/drawer\.classList|overlay\.classList|openDetail\(/);
 });
 test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',()=>{
@@ -59,13 +62,12 @@ test('本地项目直接显示真实 iframe，使用沙箱和 GitHub Pages 子�
   assert.match(result,/data-preview-frame="local"/);
   assert.doesNotMatch(result,/card-preview|reference-cover|drawer|loading="lazy"/);
 }));
-test('有在线站点的外部资源可以尝试嵌入，保留第三方限制提示',()=>{
+test('有在线站点的外部资源可尝试嵌入，第三方限制提示交由 Topbar',()=>{
   const external={...base,source:'external',siteUrl:'https://example.org/showcase',url:'https://github.com/example/demo'};
   const result=projectPreviewMarkup(external);
   assert.match(result,/src="https:\/\/example\.org\/showcase"/);
   assert.match(result,/sandbox="allow-scripts allow-forms"/);
-  assert.match(result,/外部站点可能禁止嵌入/);
-  assert.match(result,/在原站查看/);
+  assert.doesNotMatch(result,/外部站点可能禁止嵌入|在原站查看/);
 });
 test('没有可嵌入站点时显示真实来源，不伪造截图',()=>{
   const external={...base,source:'external',url:'https://github.com/example/demo',siteUrl:undefined};
@@ -86,26 +88,26 @@ test('项目说明安全转义并带有源码、技术栈与手工精调说明',
   assert.match(content,/data-copy="sample-asset"/);
   assert.match(content,/data-copy-link="true"/);
 });
-test('右侧设备模式与筛选逻辑保留预览 DOM 和路由状态',async()=>{
-  const app=await read('assets/app.js');
-  assert.match(app,/function selectPreviewSize\(mode\)/);
-  assert.match(app,/applyPreviewLayout\(stage,iframe,state.previewSize\)/);
-  const router=await read('assets/core/workbench-router.js');
-  assert.ok(app.includes('router.setAsset(asset.id,historyMode)'));
-  assert.ok(app.includes('router.subscribe('));
-  assert.ok(router.includes("host.history[historyMode+'State']"));
-  assert.ok(router.includes("host.addEventListener('popstate'"));
-  assert.match(app,/previewResizeObserver\.observe\(stage\)/);
-  const favoriteCode=app.slice(app.indexOf('function toggleFavorite('),app.indexOf('async function copyText('));
-  assert.doesNotMatch(favoriteCode,/stage\.innerHTML|stage\.replaceChildren/);
-  assert.match(favoriteCode,/if\(state\.favoritesOnly\)renderList\(\)/);
-  const css=await read('assets/styles.css');
-  assert.match(css,/@media\(max-width:760px\)/);
-  assert.match(css,/\.sidebar\.is-open/);
-  assert.match(css,/prefers-reduced-motion/);
+test('设备模式、历史路由与收藏在 React Hook 中同步，iframe 不随筛选重载',async()=>{
+ const [hooks,preview,router]=await Promise.all([
+  'src/useWorkbench.js','src/components/PreviewFrame.jsx','assets/core/workbench-router.js'
+ ].map(read));
+ assert.match(hooks,/case 'previewMode'/);
+ assert.match(hooks,/changePreviewMode\(next,action.value\)/);
+ assert.match(preview,/applyPreviewLayout\(stage,frame.current,mode\)/);
+ assert.match(hooks,/router.setAsset\(id,options.historyMode\|\|'push'\)/);
+ assert.match(hooks,/router.subscribe\(/);
+ assert.ok(router.includes("host.history[historyMode+'State']"));
+ assert.ok(router.includes("host.addEventListener('popstate'"));
+ assert.match(preview,/ResizeObserver/);
+ assert.match(preview,/memo\(PreviewContent/);
+ const css=await read('assets/styles.css');
+ assert.match(css,/@media\(max-width:760px\)/);
+ assert.match(css,/[.]sidebar[.]is-open/);
+ assert.match(css,/prefers-reduced-motion/);
 });
 
-test('已部署的 NOEMA 通过受限 iframe 预览，保留仓库和原站入口',async()=>{
+test('已部署的 NOEMA 通过受限 iframe 预览，仍保留仓库和独立原站 URL',async()=>{
   const [source,index]=await Promise.all([read('catalog/assets/noema.json'),read('content/assets.json')]);
   const asset=JSON.parse(source);
   const generated=JSON.parse(index).find(x=>x.id==='noema');
@@ -120,7 +122,7 @@ test('已部署的 NOEMA 通过受限 iframe 预览，保留仓库和原站入�
   assert.match(html,/src="https:\/\/weepwood\.github\.io\/NOEMA\/"/);
   assert.match(html,/sandbox="allow-scripts allow-forms"/);
   assert.doesNotMatch(html,/allow-same-origin/);
-  assert.match(html,/在原站查看/);
+  assert.doesNotMatch(html,/在原站查看/);
   const row=projectRowMarkup(generated,new Set(),labels);
   assert.match(row,/在线预览/);
   const info=projectInfoMarkup(generated,labels);

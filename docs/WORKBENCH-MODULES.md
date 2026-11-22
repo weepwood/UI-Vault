@@ -1,4 +1,6 @@
-# Workbench 模块化架构（原生 JS 阶段）
+# Workbench 模块化架构（原生 JS 阶段历史记录）
+
+> **历史文档**：本文记录 React 迁移前的原生模块边界。当前主站已由 React 19 单根、`src/useWorkbench.js` 与 `src/components/` 接管全部动态工作台交互；`assets/app.js` 仅负责初始化。新的功能修改请以 [REACT-MIGRATION.md](REACT-MIGRATION.md) 为准，下面的原生控制器仅供独立 Demo 和兼容适配参考。
 
 > 本文记录已经完成的模块抽取，属于迁移 React 之前的第一步。UI-Vault 继续使用原生 ES Modules；不改变任何子项目的框架或独立 Demo 路径。
 
@@ -18,6 +20,9 @@
 | `assets/core/dropdown.js` | 原生 select 的可访问性增强（已有） | 决定业务上哪些标签可选 |
 | `assets/ui/controls.css` | 搜索、按钮、筛选按钮与 Toast 的基础样式 | 三栏尺寸、页面特定布局 |
 | `assets/ui/dropdown.css` | 增强下拉的基础样式、状态和动效 | 设置页与项目工具栏的定制尺寸 |
+| `assets/ui/project-row.css` | ProjectRow 列表行、选中态、稳定 Emoji | 三栏布局和滚动容器大小 |
+| `assets/ui/dialog.css` | 项目资料 Dialog、标签页和源代码视图样式 | 具体项目内容和源码请求 |
+| `assets/ui/preview-toolbar.css` | 预览顶栏、设备菜单和悬浮展开动效 | 页面容器排列、媒体查询对其他控件的调整 |
 | `assets/styles.css` | Design Tokens、工作台布局、组件的页面级覆盖与响应式 | 重复一遍基础控件样式 |
 
 **真实组件的单一来源**：组件演示页仍加载 `assets/styles.css` 并调用真实业务模块；其 `demo.css` 只布局展示样本。不要在展厅中另写同名下拉或预览逻辑。
@@ -49,11 +54,14 @@ favorites.js -> localStorage (收藏)
 @import url("./fonts/975-yuan.css");
 @import url("./ui/controls.css");
 @import url("./ui/dropdown.css");
+@import url("./ui/project-row.css");
+@import url("./ui/dialog.css");
+@import url("./ui/preview-toolbar.css");
 ```
 
 随后保留主站语义 Token、工作台布局及 CSS 覆盖。**组件基础样式在导入文件中定义一次**，原来的移动端/深色/设置视图特定覆写仍在主样式表。保留相同 DOM class 和 data 属性，避免主站、UI Foundation Kit 演示页或外部 Demo 出现断裂。
 
-目前通过浏览器 `@import` 加载两份较小的组件 CSS，会增加少量请求；将来若指标显示请求开销明显，可在构建阶段合并，但不能手动复制两份源码造成差异。
+目前通过浏览器 `@import` 加载五份组件 CSS，会增加少量请求；将来若指标显示请求开销明显，可在构建阶段合并，但不能手动复制两份源码造成差异。
 
 ## 验收
 
@@ -64,13 +72,13 @@ npm run design:audit
 npm run check
 ```
 
-新增 `tests/workbench-router.test.mjs`、`tests/mobile-navigation.test.mjs` 和 `tests/project-dialog-controller.test.mjs` 覆盖 URL 状态、导航 inert/焦点、源码请求取消/过期响应。此前新增的 `tests/workbench-state.test.mjs` 验证过滤器互斥、重置和重复选择，`tests/workbench-modules.test.mjs` 验证共享 CSS 和设备组件真实事件；`tests/viewport-controls.test.mjs` 改为组件边界测试。构建后的 `scripts/check-dist.mjs` 还会校验组件文件存在、ES module 的 URL 版本和 CSS 导入。
+新增 Chromium 截图测试覆盖明暗主题、移动端 Dialog、导航和设备工具栏；普通 CI 只读取固定基线。新增 `tests/workbench-router.test.mjs`、`tests/mobile-navigation.test.mjs` 和 `tests/project-dialog-controller.test.mjs` 覆盖 URL 状态、导航 inert/焦点、源码请求取消/过期响应。此前新增的 `tests/workbench-state.test.mjs` 验证过滤器互斥、重置和重复选择，`tests/workbench-modules.test.mjs` 验证共享 CSS 和设备组件真实事件；`tests/viewport-controls.test.mjs` 改为组件边界测试。构建后的 `scripts/check-dist.mjs` 还会校验组件文件存在、ES module 的 URL 版本和 CSS 导入。
 
 ## 后续工作
 
 1. **已完成**：项目详情 Dialog、源码加载取消与焦点回收已经抽出独立控制器。
 2. **已完成**：移动导航与浏览器 URL 路由已经独立；主工作台仅协调当前视图及 iframe 生命周期。
-3. 下一步将 `assets/styles.css` 中的 Dialog、ProjectRow、PreviewToolbar 分批提取为独立 CSS recipes；每次迁移都保留主站消费方及展厅示例。
+3. **已完成**：ProjectRow、Dialog、PreviewToolbar 的组件样式已独立。保留主站响应式布局规则，九组 Chromium 截图回归已固化为仓库内基线；完整规则见 [CSS-MODULES-VISUAL.md](CSS-MODULES-VISUAL.md)。
 4. 等状态边界稳定且有实际需求时，再评估将**主工作台**迁移 React，所有 Demo 和 JSON 资源保持独立。
 
 当前改动不意味着已经有跨框架组件库；跨项目通用设计基础依然由 `subprojects/ui-foundation-kit/` 维护。

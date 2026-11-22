@@ -1,0 +1,38 @@
+{
+  "id": "liquid",
+  "name": "液态光学玻璃",
+  "en": "Optical Liquid Glass",
+  "category": [
+    "科技",
+    "氛围"
+  ],
+  "tags": [
+    "折射",
+    "交互样本"
+  ],
+  "summary": "半透明叠层、边缘高光与浮动工具栏构建深度。",
+  "lead": "在既有玻璃拟态基础上进一步研究光学高光、前后景分离与材质折射；采用简化 CSS 视觉模拟，非系统级真实折射渲染。",
+  "bestFor": [
+    "影像与创意应用",
+    "音乐和媒体界面",
+    "轻量控制台"
+  ],
+  "risks": [
+    "大量 backdrop-filter 会消耗 GPU",
+    "需要无透明降级和背景对比验证"
+  ],
+  "palette": [
+    "#CFEFFF",
+    "#F1F7FF",
+    "#4F7DC8",
+    "#142B53",
+    "#F4BED8"
+  ],
+  "tokens": {
+    "surface": "rgba(255,255,255,.54)",
+    "blur": "20px",
+    "outline": "1px solid rgba(255,255,255,.8)",
+    "radius": "30px",
+    "glow": "#86BBFF"
+  }
+}

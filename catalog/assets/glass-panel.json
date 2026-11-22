@@ -1,18 +1,25 @@
 {
   "id": "glass-panel",
   "title": "柔光玻璃卡片",
-  "subtitle": "Soft Glass Surface",
-  "description": "透光面板、柔和光晕与精细边框，演示清晰可读的玻璃拟态层次。",
+  "subtitle": "Glass Material Lab",
+  "description": "六种玻璃材质对照：Mica/Acrylic/Vibrancy、柔光及 Canvas 逐像素折射的 Lens/Gel。可拖动镜片，切换背景与场景，复制完整 HTML。",
   "type": "component",
   "source": "local",
   "tags": [
     "Glass",
     "玻璃拟态",
+    "Mica",
+    "Acrylic",
+    "Vibrancy",
+    "Liquid Glass",
     "Card"
   ],
   "technologies": [
     "HTML",
-    "CSS"
+    "CSS",
+    "JavaScript",
+    "SVG",
+    "Canvas 2D"
   ],
   "preview": "demos/components/glass-panel/index.html",
   "code": "demos/components/glass-panel/index.html",
@@ -20,5 +27,12 @@
   "cover": "glass",
   "featured": true,
   "created": "2026-11-21",
-  "copyable": true
+  "copyable": true,
+  "reuseNotes": [
+    "六种独立材质配置：Soft Glass、Windows Mica / Acrylic、macOS Vibrancy、Liquid Lens / Gel。",
+    "统一对比与原生场景模式；高对比线条、纹理、网格和彩色背景支持折射检验。",
+    "液态玻璃使用 Canvas 2D 绘制同源背景，经轮廓 SDF 法线和双线性采样产生可见折射，不依赖 SVG 位移滤镜。",
+    "CSS 参数复制与完整 HTML 复制分开，兼容原有单文件可复制资产入口。",
+    "保持减少动效和 Mica 不透明策略；Windows/macOS 系统材质均为 Web 外观近似。"
+  ]
 }

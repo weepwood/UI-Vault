@@ -8,3 +8,9 @@ node_modules/
 # 构建时生成的 WOFF2 子集 / 上游字体下载缓存
 assets/fonts/
 .cache/fonts/
+
+# Chromium 视觉回归生成的完整截图（通过 CI Artifact 审阅）
+visual-output/
+
+# 由 esbuild 生成的主站 React 运行时
+assets/react-workbench.js

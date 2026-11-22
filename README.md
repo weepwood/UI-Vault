@@ -7,11 +7,16 @@
 - [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [架构](docs/ARCHITECTURE.md)
 - [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
 
-## 工作台组件与状态模块化
+## React 工作台（统一 Hooks）
 
-主站保持原生 ES Modules，不引入 React。筛选/当前项目/设备模式的状态转换位于 `assets/core/workbench-state.js`；设备菜单交互位于 `assets/ui/viewport-switcher.js`；搜索、按钮、通知和下拉基础 CSS 位于 `assets/ui/controls.css`、`assets/ui/dropdown.css`。现有 `assets/app.js` 仍负责页面装载、URL 和 iframe 生命周期，Demo 路径与收藏数据协议保持不变。
+当前主工作台由 React 19 管理全部动态界面：项目目录、分类、搜索、排序、收藏、预览工具栏、设备切换、项目详情 Dialog、两栏设置中心与真实 iframe。状态和副作用通过 `src/useWorkbench.js` 统一管理；`assets/app.js` 仅做启动与缓存版本保护。
 
-详见 [工作台模块化设计与验收](docs/WORKBENCH-MODULES.md)。
+- 真实组件和统一 React Root：`src/react-workbench.jsx`、`src/components/`
+- 资源过滤、状态纯函数、收藏和设置存储协议继续复用 `assets/core/`
+- 主站 CSS、Lucide、静态构建白名单及 9 组 Chromium 视觉基线保持兼容
+- **各独立 Demo 不迁移**：HTML/Vue/React/网页镜像继续按原路径运行并经 iframe 展示
+
+具体约束和后续优化见 [React 工作台架构说明](docs/REACT-MIGRATION.md)。[共享组件 CSS 与视觉回归](docs/CSS-MODULES-VISUAL.md)。
 
 ## Workbench UI 组件展厅
 
@@ -27,11 +32,19 @@
 - [独立 HTML](demos/experiments/ui-foundation-kit/index.html)：自包含 Demo，可离线打开。
 - 从仓库根目录运行 `node --test tests/ui-foundation-kit.test.mjs` 检查 Token 构建；项目根目录 `npm run check` 也包含此项测试。
 
+## 设计资源栏目
+
+- [设计网站与规范索引](https://weepwood.github.io/UI-Vault/?asset=design-resource-library)：分类、搜索和跳转至原站，收录 30 条资料。
+- [AI UI Skills 使用手册](https://weepwood.github.io/UI-Vault/?asset=design-skill-handbook)：Skills 使用场景、官方安装命令和 Prompt 模板。
+- [栏目维护说明](docs/DESIGN-RESOURCES.md) · [Skills Markdown 手册](docs/UI-SKILLS-HANDBOOK.md)。
+- 资源统一维护于 `assets/design-resources/catalog.js`，不复制第三方站点素材。
+
 ## 快速开始
 
-需要 Node 22+；不依赖第三方 npm 包。
+需要 Node 22+；主站使用 React 19 和 esbuild，先运行 `npm install`。
 
 ```bash
+npm install
 npm run dev                  # http://localhost:4173
 npm run new:demo -- components magnetic-button 磁吸按钮
 npm run new:reference -- ui-demo https://github.com/example/repo 参考设计

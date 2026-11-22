@@ -28,31 +28,35 @@ test('GitHub 仓库地址仅位于内嵌设置视图的关于分区',()=>{
   assert.match(legacy,/url=[.]\/[?]view=settings/);
 });
 
-test('设置仍使用与排序和标签共用的下拉组件',()=>{
-  const settingsJS=read('assets/core/settings.js');
-  const app=read('assets/app.js');
-  const css=read('assets/styles.css');
-  assert.match(settingsJS,/enhanceSelect\(select,/);
-  assert.match(settingsJS,/dropdowns\[index\][.]sync\(\)/);
-  assert.match(app,/enhanceSelect\(sort,/);
-  assert.match(css,/[.]settings-select [.]select-popover/);
+test('设置与资源目录共用 React 受控下拉组件',()=>{
+ const settings=read('src/components/SettingsPanel.jsx');
+ const filters=read('src/react-workbench.jsx');
+ const controls=read('src/components/WorkbenchSelect.jsx');
+ const css=read('assets/styles.css');
+ assert.match(settings,/<WorkbenchSelect/);
+ assert.match(filters,/<WorkbenchSelect id="sort"/);
+ assert.match(filters,/<WorkbenchSelect id="tag-filter"/);
+ assert.match(controls,/aria-haspopup="listbox"/);
+ assert.match(css,/[.]settings-select [.]select-popover/);
 });
 
-test('导航在项目和设置视图间原位切换，支持浏览器历史记录',()=>{
-  const app=read('assets/app.js');
-  const css=read('assets/styles.css');
-  assert.match(app,/function setWorkbenchView\(mode/);
-  assert.match(app,/historyMode:'push'/);
-  const router=read('assets/core/workbench-router.js');
-  assert.match(app,/router[.]subscribe/);
-  assert.ok(router.includes("host.addEventListener('popstate'"));
-  assert.ok(router.includes("url.searchParams.set('view','settings')"));
-  assert.match(css,/[.]app-shell[.]is-settings[\s\S]*?grid-template-columns:var\(--navigation-width\) minmax\(0,1fr\)/);
-  assert.match(css,/[.]app-shell[.]is-settings [.]library-rail [.]project-panel \{ display:none; \}/);
+test('设置在同一工作台切换并与路由历史同步',()=>{
+ const react=read('src/react-workbench.jsx');
+ const hooks=read('src/useWorkbench.js');
+ const css=read('assets/styles.css');
+ const router=read('assets/core/workbench-router.js');
+ assert.match(react,/nodes[.]settings[.]hidden=!settingsActive/);
+ assert.match(react,/openView\('settings'\)/);
+ assert.match(hooks,/router[.]setView\(view,historyMode\)/);
+ assert.match(hooks,/router[.]subscribe/);
+ assert.ok(router.includes("host.addEventListener('popstate'"));
+ assert.ok(router.includes("url.searchParams.set('view','settings')"));
+ assert.match(css,/[.]app-shell[.]is-settings[\s\S]*?grid-template-columns:var\(--navigation-width\) minmax\(0,1fr\)/);
+ assert.match(css,/[.]app-shell[.]is-settings [.]library-rail [.]project-panel \{ display:none; \}/);
 });
 
 test('项目 emoji 继续无边框无底色',()=>{
-  const css=read('assets/styles.css');
+  const css=read('assets/ui/project-row.css');
   const def=css.slice(css.lastIndexOf('.project-panel .project-row-icon.project-row-emoji'));
   assert.match(def,/border:0/);
   assert.match(def,/background:transparent/);

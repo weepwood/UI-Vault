@@ -1,0 +1,113 @@
+import React,{useEffect,useRef,useState} from 'react';
+import {Icon} from './WorkbenchSelect.jsx';
+const sizes=[
+  {mode:'fluid',icon:'scan',name:'自适应',hint:'自适应 · 适配可用宽度'},
+  {mode:'mobile',icon:'smartphone',name:'手机',hint:'手机 · 390px'},
+  {mode:'tablet',icon:'tablet',name:'平板',hint:'平板 · 768px'},
+  {mode:'desktop',icon:'monitor',name:'桌面',hint:'桌面 · 1280px'}
+];
+function ViewportSwitcher({mode,onChange,visible}){
+  const [expanded,setExpanded]=useState(false);
+  const trigger=useRef(null),buttons=useRef([]);
+  const current=sizes.find(item=>item.mode===mode)||sizes[0];
+  useEffect(()=>setExpanded(false),[mode,visible]);
+  useEffect(()=>{
+    if(!expanded)return;
+    const outside=event=>{if(!event.target.closest?.('#viewport-controls'))setExpanded(false);};
+    document.addEventListener('pointerdown',outside);
+    return ()=>document.removeEventListener('pointerdown',outside);
+  },[expanded]);
+  function close({focus=false}={}){
+    setExpanded(false);
+    if(focus)trigger.current?.focus({preventScroll:true});
+  }
+  function choose(next){onChange(next);close({focus:true});}
+  function keyboard(event){
+    if(event.key==='Escape'&&expanded){
+      event.preventDefault();event.stopPropagation();close({focus:true});return;
+    }
+    if(!['ArrowDown','ArrowUp','Home','End'].includes(event.key))return;
+    event.preventDefault();
+    if(!expanded){
+      setExpanded(true);
+      requestAnimationFrame(()=>buttons.current[sizes.findIndex(item=>item.mode===mode)]?.focus({preventScroll:true}));
+      return;
+    }
+    const index=buttons.current.indexOf(document.activeElement);
+    const next=event.key==='Home'?0:event.key==='End'?sizes.length-1:
+      (index+(event.key==='ArrowDown'?1:-1)+sizes.length)%sizes.length;
+    buttons.current[next]?.focus({preventScroll:true});
+  }
+  return <div id="viewport-controls" className={'viewport-controls'+(expanded?' is-expanded':'')}
+    role="group" aria-label="模拟预览设备" hidden={!visible}
+    onPointerEnter={event=>{if(event.pointerType==='mouse')setExpanded(true);}}
+    onPointerLeave={event=>{if(event.pointerType==='mouse')close();}}
+    onKeyDown={keyboard}
+    onBlur={event=>{if(!event.currentTarget.contains(event.relatedTarget)&&!event.currentTarget.matches(':hover'))close();}}>
+    <button type="button" id="viewport-current" className="viewport-current"
+      aria-label={'当前预览：'+current.name+'，选择设备'} aria-controls="viewport-options"
+      aria-expanded={String(expanded)} title="选择预览设备" ref={trigger}
+      onClick={()=>setExpanded(value=>!value)}>
+      <span id="viewport-current-icon" className="viewport-current-icon" aria-hidden="true"><Icon name={current.icon}/></span>
+      <span id="viewport-current-label" className="viewport-current-label">{current.name}</span>
+      <Icon name="chevron-down" className="ui-icon viewport-current-chevron"/>
+    </button>
+    <div id="viewport-options" className="viewport-options" role="group"
+      aria-label="选择设备预览宽度" hidden={!expanded}>
+      {sizes.map((item,index)=><button key={item.mode} type="button"
+        ref={el=>{buttons.current[index]=el;}} data-preview-size={item.mode}
+        aria-label={item.name+'预览'} aria-pressed={String(mode===item.mode)}
+        title={item.hint} onClick={()=>choose(item.mode)}>
+        <Icon name={item.icon}/><span>{item.name}</span>
+      </button>)}
+    </div>
+  </div>;
+}
+export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,onFavorite,
+  onCopyLink,onInfo,onMenu,menuOpen}){
+  const kind=asset?(labels[asset.type]||asset.type)+' · '+
+    (asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源'):'项目目录';
+  const openUrl=asset&&(asset.source==='local'?
+    new URL(asset.preview,document.baseURI).href:asset.siteUrl||asset.url||asset.originRepo);
+  return <>
+    <div className="topbar-project">
+      <button id="menu-toggle" className="menu-toggle" type="button"
+        aria-label={menuOpen?'关闭项目目录':'打开项目目录'} aria-expanded={String(menuOpen)}
+        aria-controls="library-rail" onClick={onMenu}><Icon name="menu"/></button>
+      <div className="project-identity">
+        <span className="topbar-kind" id="preview-kind">{asset?kind:'选择项目'}</span>
+        <h1 id="preview-title" tabIndex={-1}>{asset?.title||'没有匹配的项目'}</h1>
+        {asset?.siteUrl&&<span className="topbar-embed-notice"
+          title="外部站点可能禁止嵌入或受沙箱限制。">
+          <Icon name="info"/><span>外部站点可能禁止嵌入或受沙箱限制。</span>
+        </span>}
+        <span className="topbar-subtitle" id="preview-subtitle">
+          {asset?(asset.subtitle||asset.description):'清除筛选条件以继续浏览。'}
+        </span>
+      </div>
+    </div>
+    <div className="topbar-tools">
+      <ViewportSwitcher mode={previewMode} onChange={onChangePreview} visible={asset?.source==='local'}/>
+      <span className="topbar-separator" aria-hidden="true"/>
+      <div className="topbar-actions">
+        <button type="button" id="preview-info" className="info-action" aria-haspopup="dialog"
+          aria-controls="project-dialog" disabled={!asset} onClick={onInfo}>
+          <Icon name="book-open"/><span>项目说明 / 源码</span>
+        </button>
+        <button type="button" id="preview-favorite" className="square-action"
+          aria-label={(liked?'取消收藏 ':'收藏 ')+(asset?.title||'当前项目')}
+          aria-pressed={String(liked)} disabled={!asset} onClick={onFavorite}>
+          <Icon name="heart"/>
+        </button>
+        <button type="button" id="preview-copy-link" className="square-action"
+          aria-label="复制当前项目链接" disabled={!asset} onClick={onCopyLink}><Icon name="copy"/></button>
+        <a id="preview-open" className="open-action" href={openUrl||'https://github.com/weepwood/UI-Vault'}
+          target="_blank" rel="noopener noreferrer" hidden={!openUrl}
+          aria-label={asset?.source==='local'?'单独打开 '+asset.title:'在原网站打开 '+(asset?.title||'项目')}
+          title={asset?.siteUrl?'在原站查看':'单独打开'}>
+          <Icon name="external-link"/><span>{asset?.siteUrl?'在原站查看':'单独打开'}</span>
+        </a>
+      </div>
+    </div>
+  </>;
+}

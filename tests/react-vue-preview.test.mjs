@@ -39,7 +39,7 @@ test('三个框架项目右侧真实 iframe 预览并保持安全沙箱与原站
     assert.match(markup,/sandbox="allow-scripts allow-forms"/);
     assert.doesNotMatch(markup,/allow-same-origin/);
     assert.match(markup,/referrerpolicy="no-referrer"/);
-    assert.match(markup,/在原站查看/);
+    assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
     const row=projectRowMarkup(asset,new Set(),{});
     assert.match(row,/在线预览/);
   }

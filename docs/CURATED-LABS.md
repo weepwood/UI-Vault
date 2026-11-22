@@ -36,6 +36,15 @@ UI-Vault 的**手工精选**与外部项目索引是两种不同资产：
 - 优先精调：FLIP 起终点精度、复杂布局下的动画可中断、拖拽回复阈值、动画期间的可访问性反馈。
 - 修改入口：`--duration`、`--ease`、`--radius` 以及滑动阈值 48px。全部使用本地模拟会话，无网络请求。
 
+## 4. [Rare UI 启发交互精选](../demos/curated/rare-interactions/index.html)
+
+- 来源：[Rare UI](https://github.com/swamimalode07/rare-ui) 的 Gooey Nav、Model Picker、Animated Counter、Notification Bell、Task List、Prompt Box、Delete Button 与 Toast 交互方向。
+- 文件：`demos/curated/rare-interactions/index.html`，完整的 HTML、CSS 与 JavaScript 均在单文件内，使用本地 SVG 图标，无外部运行依赖。
+- 已实现：八组可操作 Demo、模式选择与键盘导航、筛选、主题切换、数字变化、模拟通知、进度任务、输入与停止、危险确认和 Toast。
+- 优先精调：导航指示器动态布局、下拉菜单空间、在 390px 以下的卡片排列、减少动效和多次快速交互。
+- 授权边界：参考的是交互设计方向，**没有复制、移植或重新分发 Rare UI 组件源码**；页面内保留原项目显著署名。Rare UI 限制组件本身的再分发，参见其 [LICENSE](https://github.com/swamimalode07/rare-ui/blob/main/LICENSE)。
+- 目前仅完成静态语法及资产检查，不将这些结果称为浏览器视觉验收。
+
 ## 精调顺序
 
 1. 选一个资产，在 UI-Vault 详情直接打开预览。
