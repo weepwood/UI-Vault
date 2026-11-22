@@ -294,7 +294,9 @@
       const label = (qualityMode.current === "auto" ? "自动 · " : "") + qualityLabels[quality] +
         " · " + targetFps + " FPS / " + renderDpr().toFixed(2) + "×";
       if (qualityStatus.textContent !== label) qualityStatus.textContent = label;
-      qualityStatus.title = "当前档位、目标帧率和画布像素倍率（非实际 FPS）";
+      qualityStatus.title = highPipelineUnavailable && quality === "high"
+        ? "高质量折射不支持，已使用兼容的普通折射"
+        : "当前档位、目标帧率和画布像素倍率（非实际 FPS）";
     }
     function applyActiveQuality(next) {
       if (quality === next) return;
@@ -791,22 +793,43 @@
               gpuLatencyTotal += performance.now() - submittedAt;
               gpuLatencySamples += 1;
               const sampledAt = performance.now();
-              if (gpuLatencySamples >= 12 && sampledAt - qualityAdjustedAt >= 3000) {
-                // Completion latency includes queue/scheduling, not only GPU time.
-                // Use it conservatively as an overload signal, not as a GPU timer.
+              if (gpuLatencySamples >= 18 && sampledAt - qualityAdjustedAt >= 4000) {
+                // Completion latency includes queue/scheduling, not exact GPU time.
+                // Hysteresis prevents oscillation when the browser briefly stalls.
                 const meanLatency = gpuLatencyTotal / gpuLatencySamples;
-                if (meanLatency > (1000 / targetFps) * 1.2) {
-                  if (adaptiveDpr > profile.minDpr + 0.01) {
-                    adaptiveDpr = Math.max(profile.minDpr, Math.round((adaptiveDpr - 0.15) * 100) / 100);
-                  } else if (targetFps > 20) {
-                    targetFps = 20;
-                  } else if (targetFps > 15) {
-                    targetFps = 15;
-                  }
-                }
+                lastLatencyMs = Math.round(meanLatency * 10) / 10;
                 gpuLatencyTotal = 0;
                 gpuLatencySamples = 0;
                 qualityAdjustedAt = sampledAt;
+                if (qualityMode.current === "auto" && !reducedMotion.matches) {
+                  const budgetMs = 1000 / targetFps;
+                  overBudgetWindows = meanLatency > budgetMs * 0.9 ? overBudgetWindows + 1 : 0;
+                  underBudgetWindows = meanLatency < budgetMs * 0.42 ? underBudgetWindows + 1 : 0;
+                  if (overBudgetWindows >= 2 && sampledAt - lastQualityChangeAt >= 4000) {
+                    overBudgetWindows = underBudgetWindows = 0;
+                    if (quality === "high") applyActiveQuality("balanced");
+                    else if (adaptiveDpr > profile.minDpr + 0.02) {
+                      adaptiveDpr = Math.max(profile.minDpr, Math.round((adaptiveDpr - 0.15) * 100) / 100);
+                    } else if (targetFps > 20) targetFps = 20;
+                    else if (quality === "balanced") applyActiveQuality("eco");
+                    else targetFps = 15;
+                    lastQualityChangeAt = sampledAt;
+                  } else if (underBudgetWindows >= 3 && sampledAt - lastQualityChangeAt >= 12000) {
+                    underBudgetWindows = overBudgetWindows = 0;
+                    if (targetFps < profile.fps) targetFps = profile.fps;
+                    else if (adaptiveDpr + 0.02 < profile.maxDpr) {
+                      adaptiveDpr = Math.min(profile.maxDpr, Math.round((adaptiveDpr + 0.1) * 100) / 100);
+                    } else if (quality === "eco" && !saveData) {
+                      applyActiveQuality("balanced");
+                    } else if (quality === "balanced" && !highPipelineUnavailable &&
+                      !saveData && cpu >= 6 && (!memory || memory >= 6) &&
+                      canvas.clientWidth * canvas.clientHeight <= 230000) {
+                      applyActiveQuality("high");
+                    }
+                    lastQualityChangeAt = sampledAt;
+                  }
+                }
+                updateQualityStatus();
               }
             }
             if (!firstFrameReady) {
@@ -854,13 +877,16 @@
       device?.destroy();
     }, { once: true });
     window.addEventListener("message", event => {
-      if (!embedded || event.source !== window.parent) return;
+      if (event.source !== window.parent || window.parent === window) return;
       const data = event.data;
       if (!data || data.channel !== "ui-vault/liquid-orb" || data.event !== "command") return;
+      if (data.action === "setDisplayScale") { setDisplayScale(data.value); return; }
+      if (!embedded) return;
       if (data.action === "setState" && Object.hasOwn(stateSeeds, data.value)) setState(data.value);
       else if (data.action === "setPlaying" && typeof data.value === "boolean") setPlaying(data.value);
       else if (data.action === "setGlass" && typeof data.value === "boolean") setGlass(data.value);
       else if (data.action === "setSpeed" && Number.isFinite(data.value)) setSpeed(data.value);
+      else if (data.action === "setQuality" && typeof data.value === "string") chooseQualityMode(data.value);
     });
     document.querySelector("#orb-retry").addEventListener("click", () => location.reload());
     document.querySelectorAll("[data-state]").forEach(button =>
@@ -874,7 +900,11 @@
       if (document.hidden) {
         cancelAnimationFrame(animationFrame);
         animationFrame = 0;
-      } else requestDraw();
+      } else {
+        gpuLatencySamples = gpuLatencyTotal = 0;
+        qualityAdjustedAt = performance.now();
+        requestDraw();
+      }
     });
     window.addEventListener("resize", () => requestDraw());
     reducedMotion.addEventListener?.("change", event => { if (event.matches) setPlaying(false); });
