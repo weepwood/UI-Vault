@@ -4,6 +4,10 @@ from __future__ import annotations
 import json
 import sys
 import zipfile
+import re
+import posixpath
+from html.parser import HTMLParser
+from urllib.parse import urlsplit, unquote
 from pathlib import Path, PurePosixPath
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -53,13 +57,58 @@ def readme(asset):
     return (
         f"{asset['title']}\n"
         "UI-Vault 独立静态演示文件包\n\n"
-        "入口文件：index.html（请使用浏览器打开，涉及浏览器 API 时通过本地 HTTP 服务运行）\n"
+        f"入口文件：{PurePosixPath(asset['preview']).name}（请使用浏览器打开，涉及浏览器 API 时通过本地 HTTP 服务运行）\n"
         "本包只包含明确列入资产清单的已公开文件，不含 UI-Vault 主工作台依赖。\n"
         "如需框架源代码、工具链或原始版本历史，请访问对应 GitHub 仓库。\n\n"
         f"资产 ID：{asset['id']}\n"
         f"资源许可说明：{asset['license']}\n"
         "第三方商标、字体及图片仍受各自权利人条款约束；本包不授予额外许可。\n"
     ).encode("utf-8")
+
+
+class RuntimeRefs(HTMLParser):
+    """只校验明显的静态依赖，不把跳转到第三方文档的链接当作运行依赖。"""
+    def __init__(self):
+        super().__init__()
+        self.refs = []
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "script" and attrs.get("src"):
+            self.refs.append(attrs["src"])
+        elif tag == "link" and "stylesheet" in (attrs.get("rel") or "").lower().split() and attrs.get("href"):
+            self.refs.append(attrs["href"])
+        elif tag in ("img", "source", "video", "audio") and attrs.get("src"):
+            self.refs.append(attrs["src"])
+        elif tag == "a" and attrs.get("href", "").lower().split("?")[0].endswith(".html"):
+            self.refs.append(attrs["href"])
+
+
+def verify_static_deps(asset, files):
+    """防止 ZIP 中页面引用未交付的相对 CSS / JS / 图片等，且不接受外部运行时 URL。"""
+    names = {name for name, _ in files}
+    for name, payload in files:
+        refs = []
+        if name.endswith(".html"):
+            doc = RuntimeRefs()
+            doc.feed(payload.decode("utf-8"))
+            refs = doc.refs
+        elif name.endswith(".css"):
+            source = payload.decode("utf-8")
+            refs = re.findall(r"url\(\s*['\"]?([^'\"\)]+)", source)
+            refs += re.findall(r"@import\s+['\"]([^'\"]+)['\"]", source)
+        for ref in refs:
+            ref = ref.strip()
+            url = urlsplit(ref)
+            if not url.path and not url.scheme and not url.netloc:
+                continue
+            if url.scheme in ("data", "blob"):
+                continue
+            if url.scheme or url.netloc or url.path.startswith("/"):
+                raise ValueError(f"{asset['id']}: {name} 引用了非独立运行资源：{ref}")
+            target = posixpath.normpath(posixpath.join(posixpath.dirname(name), unquote(url.path)))
+            if target not in names:
+                raise ValueError(f"{asset['id']}: {name} 缺少打包资源：{ref} → {target}")
 
 
 def contents(asset, entries):
@@ -71,6 +120,7 @@ def contents(asset, entries):
         if total > MAX_TOTAL_SIZE:
             raise ValueError(f"{asset['id']}: 打包总大小超过限制")
         result.append((name, data))
+    verify_static_deps(asset, result)
     result.append(("README.txt", readme(asset)))
     return result
 
