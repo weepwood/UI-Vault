@@ -51,7 +51,9 @@ test('材质档案馆默认纯背景，弱化模板装饰并支持六组配色',
   const html=await read('demos/effects/aurora-field/index.html');
   assert.match(html, /const state=\{selected:'aurora',palette:2,intensity:90,speed:10,overlay:false/);
   assert.match(html, /background-effects/);
-  assert.match(html, /视觉材料档案/);
+  assert.doesNotMatch(html, /<header class="head">/);
+  assert.doesNotMatch(html, /UI Vault \/ 视觉材料档案/);
+  assert.match(html, /<main class="app">\s*<div class="preview-heading">/);
   assert.match(html, /const palettes=\[/);
   for(const name of ['暮蓝','落日陶土','北境苔绿','亚麻','雾蓝','石墨金']){
     assert.ok(html.includes(name),name);
