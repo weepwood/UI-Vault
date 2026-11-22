@@ -2724,16 +2724,18 @@
     ],
     "preview": "demos/components/liquid-orb/index.html",
     "code": "demos/components/liquid-orb/index.html",
-    "license": "用户提供代码（原始许可证未注明）",
+    "license": "MIT（原版 Liquid Orb Editor：Copyright © 2026 LerSent001；UI-Vault 为改编演示）",
     "cover": "glass",
     "featured": true,
     "created": "2026-11-21",
     "copyable": true,
     "reuseNotes": [
+      "原版项目：LerSent001/orb（MIT）。本页面保留原版 WebGPU/WGSL 玻璃球渲染效果，并改编为 UI-Vault 组件演示，不包含原版完整编辑器。",
       "统一单文件演示集成玻璃球与思考胶囊；两种模式共用一个 WebGPU Canvas，避免重复 GPU 设备。",
       "思考对话框支持紧凑、标准、大尺寸和文字修改，手机上自动缩放。",
       "可通过 ?embed=1 独立复用玻璃球渲染器，加载阶段不显示静态假球体。"
-    ]
+    ],
+    "originRepo": "https://github.com/LerSent001/orb"
   },
   {
     "id": "liquid-orb-thinking-dialog",
@@ -2761,16 +2763,18 @@
       "demos/components/liquid-orb-thinking-dialog/dialog.js",
       "demos/components/liquid-orb-thinking-dialog/dialog.css"
     ],
-    "license": "UI 框架为本仓新增；玻璃球着色器来源于用户提供代码（原始许可证未注明）",
+    "license": "玻璃球原版：MIT（Copyright © 2026 LerSent001）；胶囊对话框为 UI-Vault 的集成改编",
     "cover": "glass",
     "featured": false,
     "created": "2026-11-21",
     "copyable": false,
     "reuseNotes": [
+      "玻璃球渲染效果基于 LerSent001/orb（MIT）；本页在其基础上集成 Thinking 胶囊对话框，不是原版完整编辑器。",
       "旧对话框预览链接自动跳转到统一展示页的思考对话框模式，保留原有收藏和分享入口。",
       "独立复用时可使用 dialog.js 与 dialog.css；示例页使用单个 WebGPU Canvas，减少多重渲染开销。",
       "组件最大宽度已收敛至约 790px，并加入小屏适配。"
-    ]
+    ],
+    "originRepo": "https://github.com/LerSent001/orb"
   },
   {
     "id": "message-motion-lab",
