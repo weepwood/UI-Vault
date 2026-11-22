@@ -2,9 +2,10 @@
 
 ## 运行
 
-需要 Node 22+，无外部 npm 依赖。
+需要 Node 22+，先安装根目录依赖。
 
 ```bash
+npm ci
 npm run new:demo -- components magnetic-button 磁吸按钮
 npm run new:demo -- effects gradient-hover 渐变悬停
 npm run new:demo -- layouts compact-dashboard 仪表盘布局
