@@ -21,6 +21,10 @@ const LOAD_TIMEOUT_MS=12000;
 
 function PreviewContent({asset,mode,error,loading}){
   const frame=useRef(null);
+  const backdropStudio=asset?.id==='aurora-field';
+  const sandbox=backdropStudio?'allow-scripts allow-downloads':'allow-scripts';
+  const permissions=asset?.id==='liquid-orb'||asset?.id==='liquid-orb-thinking-dialog'
+    ? 'webgpu' : backdropStudio?'fullscreen':undefined;
   const src=!asset?null:asset.source==='local'?previewUrl(asset):asset.siteUrl||null;
   // 记录“已加载完成的页面”，与当前页面比较即可得出是否在加载，切换项目时无需额外重置。
   // 只比较 # 之前的部分：仅改动 hash 时 iframe 不会重新加载，也不会触发 load 事件。
@@ -78,8 +82,9 @@ function PreviewContent({asset,mode,error,loading}){
     return <><iframe ref={frame} className="live-frame" data-preview-frame="local"
       title={asset.title+' 的可交互预览'} src={src}
       onLoad={updateFrameLayout}
-      sandbox="allow-scripts"
-      allow={asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog'?'webgpu':undefined}
+      sandbox={sandbox}
+      allow={permissions}
+      allowFullScreen={backdropStudio}
       referrerPolicy="no-referrer"/>{progress}</>;
   }
   if(asset.siteUrl){

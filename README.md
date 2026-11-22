@@ -20,9 +20,9 @@
 
 ## 背景效果实验室
 
-- [在 UI Vault 中打开](https://weepwood.github.io/UI-Vault/?asset=aurora-field)：将旧版极光背景升级为 12 种背景的统一展示，提供现场预览、分类、配色、强度、速度和代码复制。
+- [在 UI Vault 中打开](https://weepwood.github.io/UI-Vault/?asset=aurora-field)：升级为 Backdrop Studio，提供 42 种背景、实时渲染、分类搜索、配色调参、场景模板与独立代码导出。
 - [设计参考与维护说明](docs/BACKGROUND-LAB.md) · [可独立打开的单文件 Demo](demos/effects/aurora-field/index.html)。
-- 缩略图不播放动画，只有当前主预览运行；尊重系统减少动画设置和页面可见性。
+- 缩略图默认静止，悬停或开启缩略图动效时才播放；尊重系统减少动画设置和页面可见性。
 
 ## Workbench UI 组件展厅
 

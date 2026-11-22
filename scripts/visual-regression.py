@@ -678,7 +678,7 @@ def verify_search_experience(browser, origin):
 
 
 def verify_background_lab(browser, origin):
-    """背景实验室：桌面/手机、静态与动态场景、对照内容及精确 CSS 导出。"""
+    """背景实验室：工作台布局、分类筛选、模板、参数与导出。"""
     for name, width, height, reduced in (
         ("desktop", 1280, 850, "no-preference"),
         ("tablet", 768, 600, "no-preference"),
@@ -694,81 +694,102 @@ def verify_background_lab(browser, origin):
         page.on("pageerror", lambda error: errors.append(str(error)))
         try:
             page.goto(origin + "demos/effects/aurora-field/index.html", wait_until="domcontentloaded")
-            page.locator("#allBackgrounds").wait_for(state="visible")
-            assert page.locator("#backgroundDialog").is_hidden(), "选择弹窗初始应关闭"
-            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "页面高度不应滚动"
-            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面宽度不应滚动"
+            page.locator("#stage").wait_for(state="visible")
             assert page.locator("#stage").is_visible(), "背景预览没有显示"
             stage_height = page.locator("#stage").evaluate("(el)=>el.getBoundingClientRect().height")
-            assert stage_height >= 90, f"{name}: 画布高度异常 {stage_height}"
+            assert stage_height >= 120, f"{name}: 画布高度异常 {stage_height}"
             assert page.evaluate("""() => {
-                const ids=['allBackgrounds','stage','viewCode','reset'];
-                return ids.every(id=>{
+                const ids=['stage','q','list','swatches','int','spd','blr','exportBtn'];
+                const present=ids.every(id=>{
                     const el=document.getElementById(id),r=el.getBoundingClientRect();
-                    return r.width>0&&r.height>0&&r.top>=-2&&r.bottom<=innerHeight+2&&r.left>=-2&&r.right<=innerWidth+2;
+                    return r.width>0&&r.height>0&&r.left>=-2&&r.right<=innerWidth+2;
                 });
+                const stage=document.querySelector('#stage').getBoundingClientRect();
+                const exportButton=document.querySelector('#exportBtn').getBoundingClientRect();
+                return present&&stage.top>=-2&&stage.bottom<=innerHeight+2&&exportButton.top>=-2&&exportButton.bottom<=innerHeight+2;
             }"""), f"{name}: 主要控件未完整显示在首屏"
-            page.locator("#allBackgrounds").click()
-            assert page.locator("#backgroundDialog").evaluate("(el)=>el.open"), "背景弹窗未打开"
-            page.locator(".tile").first.wait_for(state="visible")
-            assert page.locator(".tile").count() == 12, "背景条目数量错误"
-            assert page.locator("#stage").get_attribute("data-style") == "aurora"
-            assert page.locator("#mockContent").is_hidden(), "默认应优先展示纯背景"
-            assert page.locator(".palette").count() == 6, "调色板数量错误"
-            assert page.locator(".tile .scene").first.evaluate(
-                "(el) => getComputedStyle(el, '::before').animationName === 'none'"
-            ), "缩略图不能播放动画"
+            assert page.locator(".item").count() == 42, "背景条目数量错误"
+            assert page.locator(".item[aria-pressed='true']").get_attribute("data-id") == "aurora"
+            assert page.locator(".sw").count() == 10, "配色数量错误"
             if reduced == "reduce":
-                assert page.locator("#speed").is_disabled(), "减少动画模式下速度控制未禁用"
+                assert page.locator("[data-motion='static']").is_visible(), "静态模式不可用"
+            page.locator("#q").fill("silk")
+            assert 0 < page.locator(".item").count() < 42, "搜索没有过滤背景"
+            assert page.locator(".item[data-id='silk']").is_visible(), "搜索没有命中英文名称"
+            page.locator("#q").fill("")
+            page.locator("[data-cat='light']").click()
+            assert 0 < page.locator(".item").count() < 42, "分类筛选没有生效"
+            page.locator("[data-cat='all']").click()
+            page.locator(".item[data-id='horizon']").click()
+            page.wait_for_function("document.querySelector('#stage').dataset.fx === 'horizon'")
+            assert page.locator("#stage").get_attribute("data-fx") == "horizon"
+            page.locator(".tb[data-tpl='card']").click()
+            page.locator("#stage .mock.login").wait_for(state="visible")
+            assert page.locator("#stage .mock.login").is_visible(), "登录模板未显示"
+            if width > 900:
+                page.locator("#device").click()
+                assert page.locator("#device").get_attribute("aria-pressed") == "true", "手机画布切换无效"
             else:
-                assert page.locator("#speed").is_enabled(), "动态背景的速度控制不可用"
-            page.locator('.tile[data-id="paper"]').click()
-            assert page.locator("#backgroundDialog").is_hidden(), "选择背景后未关闭弹窗"
-            assert page.locator("#stage").get_attribute("data-style") == "paper"
-            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "切换场景后页面出现滚动"
-            assert page.locator("#speed").is_disabled(), "静态背景不应允许调节速度"
-            page.locator("#overlayToggle").click()
-            assert page.locator("#mockContent").is_visible(), "文字对照开关无效"
-            page.locator("#intensity").evaluate(
+                assert not page.locator("#device").is_visible(), "窄屏应隐藏冗余的设备框切换"
+            page.locator("[data-motion='static']").click()
+            assert page.locator("#spd").is_disabled(), "静态模式下速度控制未禁用"
+            page.locator("[data-motion='dynamic']").click()
+            assert page.locator("#spd").is_enabled(), "动态模式下速度控制不可用"
+            page.locator("#int").evaluate(
                 "(el) => { el.value='65'; el.dispatchEvent(new Event('input', {bubbles: true})); }"
             )
-            assert page.locator("#intensityValue").inner_text() == "65%"
-            page.locator("#viewCode").click()
-            assert page.locator("#codeDialog").evaluate("(el)=>el.open"), "CSS 弹窗未打开"
-            code = page.locator("#codeText").input_value()
-            assert 'data-style="paper"' in code
-            assert 'data-style="aurora"' not in code, "导出混入了其他背景"
-            assert "--pattern-opacity:" in code, "缺少纹理强度变量"
-            page.locator("#closeCode").click()
-            assert not page.locator("#codeDialog").evaluate("(el)=>el.open")
-            page.locator("#allBackgrounds").click()
-            page.locator('[data-filter="gradient"]').click()
-            assert page.locator(".tile").count() == 4, "渐变分类筛选数量异常"
-            assert page.locator("#stage").get_attribute("data-style") == "paper", "筛选不应强制改变选中背景"
-            page.locator('[data-filter="all"]').click()
-            page.locator('.tile[data-id="aurora"]').click()
-            assert page.locator("#backgroundDialog").is_hidden(), "切换极光后仍显示背景选择弹窗"
-            page.locator("#allBackgrounds").click()
-            page.keyboard.press("Escape")
-            assert page.locator("#backgroundDialog").is_hidden(), "Escape 无法关闭选择弹窗"
-            page.locator("#allBackgrounds").click()
-            page.locator("#closeBackgrounds").click()
-            assert page.locator("#backgroundDialog").is_hidden(), "关闭按钮无效"
-            page.locator("#viewCode").click()
-            code = page.locator("#codeText").input_value()
-            assert "@keyframes auroraFlow" in code
-            assert "@keyframes starDrift" not in code, "CSS 导出包含无关动画"
-            page.locator("#closeCode").click()
+            assert page.locator("#intV").inner_text() == "65"
+            page.locator("#exportBtn").click()
+            assert page.locator("#dlg").evaluate("(el)=>el.open"), "导出弹窗未打开"
+            code = page.locator("#code").inner_text()
+            assert "暮光地平线" in code, "导出内容没有对应当前效果"
+            assert "/* CSS */" in code and ".bg" in code, "导出缺少可复用 CSS"
+            page.locator("#dlgClose").click()
+            assert not page.locator("#dlg").evaluate("(el)=>el.open")
+            page.locator("#skinBtn").click()
+            page.locator(".sk[data-k='editorial']").click()
+            page.wait_for_function("document.documentElement.dataset.skin === 'editorial'")
+            page.wait_for_function("document.querySelector('#skinPop').hidden")
+            assert page.locator("html").get_attribute("data-skin") == "editorial"
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面横向溢出"
-            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "页面纵向溢出"
-            assert page.locator("#viewCode").is_visible(), "代码按钮没有显示在首屏"
             assert not errors, name + ": 脚本错误：" + "; ".join(errors)
+            page.evaluate("localStorage.removeItem('backdrop-studio')")
+            page.reload(wait_until="domcontentloaded")
+            page.locator("#stage").wait_for(state="visible")
             OUTPUT.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(OUTPUT / ("background-lab-" + name + ".png")),
                             full_page=True, animations="disabled")
         finally:
             context.close()
-    print("背景实验室回归通过：12 场景、缩略图静态、参数状态、CSS 导出、移动端与截图。")
+    embedded_context = browser.new_context(viewport={"width": 1280, "height": 850}, locale="zh-CN")
+    embedded_page = embedded_context.new_page()
+    try:
+        embedded_page.goto(origin + "?asset=aurora-field", wait_until="domcontentloaded")
+        embedded_frame = embedded_page.locator('iframe[data-preview-frame="local"]')
+        embedded_frame.wait_for(state="visible")
+        assert embedded_frame.get_attribute("sandbox") == "allow-scripts allow-downloads", "Backdrop Studio 只应额外获得下载权限"
+        assert "fullscreen" in (embedded_frame.get_attribute("allow") or ""), "Backdrop Studio iframe 未获得全屏权限"
+        assert embedded_frame.get_attribute("allowfullscreen") is not None, "缺少兼容的全屏属性"
+        frame = embedded_page.frame_locator('iframe[data-preview-frame="local"]')
+        with embedded_page.expect_download(timeout=12000) as download_info:
+            frame.locator("#exportBtn").click()
+            frame.locator("#dl").click()
+        assert download_info.value.suggested_filename.startswith("bg-"), "HTML 导出文件名异常"
+        frame.locator("#dlgClose").click()
+        frame.locator("#full").click()
+        assert frame.locator(".stage-wrap").evaluate(
+            "(el) => el.ownerDocument.fullscreenElement === el"
+        ), "嵌入式全屏请求未生效"
+        frame.locator("#full").click()
+        assert not frame.locator("body").evaluate("(el) => !!el.ownerDocument.fullscreenElement"), "全屏未能退出"
+        embedded_page.goto(origin + "?asset=liquid-orb", wait_until="domcontentloaded")
+        other_frame = embedded_page.locator('iframe[data-preview-frame="local"]')
+        other_frame.wait_for(state="visible")
+        assert other_frame.get_attribute("sandbox") == "allow-scripts", "其他本地 Demo 的沙箱不应放宽"
+        assert other_frame.get_attribute("allowfullscreen") is None, "其他本地 Demo 不应额外获得全屏权限"
+    finally:
+        embedded_context.close()
+    print("背景实验室回归通过：42 场景、搜索/筛选、模板、移动预览、参数与代码导出。")
 
 
 def main():

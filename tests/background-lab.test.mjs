@@ -1,42 +1,59 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
-import {join} from 'node:path';
 import {Script} from 'node:vm';
 
 const ROOT=new URL('../',import.meta.url);
 const read=path=>readFile(new URL(path,ROOT),'utf8');
 
-test('背景实验室是独立的单文件页面，且脚本可以通过语法解析',async()=>{
+test('背景实验室是独立单文件，脚本可以解析且不加载外部依赖',async()=>{
   const html=await read('demos/effects/aurora-field/index.html');
   assert.match(html,/<!doctype html>/i);
   assert.match(html,/背景效果实验室/);
   assert.doesNotMatch(html,/<script[^>]+src=/i);
   assert.doesNotMatch(html,/<link[^>]+href=/i);
+  assert.doesNotMatch(html,/<style id="qw-theme"/i);
   const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
   assert.equal(scripts.length,1);
   assert.doesNotThrow(()=>new Script(scripts[0][1]));
 });
-test('12 种背景有唯一 ID，且各自有 CSS 预览规则',async()=>{
+
+test('42 种背景都有唯一 ID，并覆盖实时、渐变、光效、几何与纹理分类',async()=>{
   const html=await read('demos/effects/aurora-field/index.html');
-  const ids=[...html.matchAll(/\{id:'([a-z]+)',(?:palette:\d+,)?name:/g)].map(x=>x[1]);
-  const defined=[...html.matchAll(/\.scene\[data-style="([a-z]+)"\]/g)].map(x=>x[1]);
-  assert.equal(ids.length,12);
-  assert.equal(new Set(ids).size,12);
-  assert.deepEqual([...new Set(defined)].sort(),[...ids].sort());
+  const ids=[...html.matchAll(/\{id:'([^']+)',cn:/g)].map(x=>x[1]);
+  assert.equal(ids.length,42);
+  assert.equal(new Set(ids).size,42);
+  for(const category of ['engine','gradient','light','pattern','texture']){
+    assert.match(html,new RegExp(`${category}:'[^']+'`));
+  }
+  assert.match(html,/replaceAll\('&'/);
 });
-test('动态性能、无障碍与 CSS 导出均有实现',async()=>{
+
+test('工作台提供实时预览、筛选、参数、模板、动态控制和代码导出',async()=>{
   const html=await read('demos/effects/aurora-field/index.html');
-  assert.match(html,/prefers-reduced-motion/);
+  for(const selector of ['id="stage"','id="list"','id="q"','id="chips"','id="swatches"','id="int"','id="spd"','id="blr"','id="device"','id="exportBtn"','id="dlg"']){
+    assert.ok(html.includes(selector),selector);
+  }
+  for(const label of ['data-motion="dynamic"','data-motion="static"','data-tpl="hero"','data-tpl="card"','data-tpl="dash"','id="shuffle"','id="reset"','id="copy"','id="dl"']){
+    assert.ok(html.includes(label),label);
+  }
+  assert.match(html,/WebGL/);
+  assert.match(html,/Canvas 2D/);
+  assert.match(html,/function buildExport\(/);
+  assert.match(html,/navigator\.clipboard\.writeText/);
+  assert.match(html,/createObjectURL/);
+});
+
+test('动效渲染尊重减少动画、页面可见性并延迟绘制缩略图',async()=>{
+  const html=await read('demos/effects/aurora-field/index.html');
+  assert.match(html,/prefers-reduced-motion: reduce/);
   assert.match(html,/visibilitychange/);
-  assert.match(html,/\.tile \.scene::before,\.tile \.scene::after\{animation:none!important\}/);
-  assert.match(html,/selectedCode\(\)/);
-  assert.match(html,/id="codeDialog"/);
-  assert.match(html,/aria-pressed/);
-  assert.match(html,/navigator\.clipboard/);
-  assert.match(html,/execCommand\('copy'\)/);
+  assert.match(html,/IntersectionObserver/);
+  assert.match(html,/const RM=matchMedia\('\(prefers-reduced-motion: reduce\)'\)/);
+  assert.match(html,/requestAnimationFrame\(tick\)/);
 });
-test('保留原资源 ID、预览路径，并同步聚合索引',async()=>{
+
+test('保留背景实验室原资源 ID、预览路径与单文件复制状态',async()=>{
   const asset=JSON.parse(await read('catalog/assets/aurora-field.json'));
   const manifest=JSON.parse(await read('content/assets.json'));
   assert.equal(asset.id,'aurora-field');
@@ -44,36 +61,4 @@ test('保留原资源 ID、预览路径，并同步聚合索引',async()=>{
   assert.equal(asset.code,asset.preview);
   assert.equal(asset.copyable,true);
   assert.deepEqual(manifest.find(item=>item.id===asset.id),asset);
-});
-
-
-test('材质档案馆默认纯背景，弱化模板装饰并支持六组配色',async()=>{
-  const html=await read('demos/effects/aurora-field/index.html');
-  assert.match(html, /const state=\{selected:'aurora',palette:2,intensity:90,speed:10,overlay:false/);
-  assert.match(html, /background-effects/);
-  assert.doesNotMatch(html, /<header class="head">/);
-  assert.doesNotMatch(html, /UI Vault \/ 视觉材料档案/);
-  assert.match(html, /<main class="app">\s*<div class="preview-heading">/);
-  assert.match(html, /const palettes=\[/);
-  for(const name of ['暮蓝','落日陶土','北境苔绿','亚麻','雾蓝','石墨金']){
-    assert.ok(html.includes(name),name);
-  }
-  for(const generic of ['Space to think.','Explore the collection','font-family:Inter']){
-    assert.ok(!html.includes(generic),'不应保留模板文案或默认字体：'+generic);
-  }
-  assert.match(html, /const animationFor=/);
-  assert.match(html, /rule.name===animationFor\[id\]/);
-});
-
-
-test('背景列表位于选择弹窗，主页面在单视口内呈现',async()=>{
-  const html=await read('demos/effects/aurora-field/index.html');
-  assert.match(html, /id="allBackgrounds"[^>]+aria-haspopup="dialog"/);
-  assert.match(html, /<dialog id="backgroundDialog"/);
-  assert.match(html, /class="library" aria-labelledby="galleryTitle"/);
-  assert.match(html, /closeBackgroundPicker\(\)/);
-  assert.match(html, /height:100dvh/);
-  assert.match(html, /overflow:hidden;overscroll-behavior:none/);
-  assert.match(html, /grid-template-rows:minmax\(0,49fr\) minmax\(0,51fr\)/);
-  assert.doesNotMatch(html, /<footer class="sources">/);
 });

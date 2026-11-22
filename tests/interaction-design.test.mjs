@@ -67,7 +67,7 @@ test('React 收藏、筛选与设置不重建真实预览 iframe',async()=>{
  assert.match(preview,/export const PreviewFrame=memo\(/);
  assert.match(preview,/before.asset\?\.id===after.asset\?\.id/);
  assert.match(preview,/referrerPolicy="no-referrer"/);
- assert.match(preview,/sandbox="allow-scripts"/);
+ assert.match(preview,/sandbox=\{sandbox\}/);
  assert.match(hooks,/case 'favorite'/);
  assert.doesNotMatch(hooks,/innerHTML|replaceChildren|iframe\.src/);
 });
