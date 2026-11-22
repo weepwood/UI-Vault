@@ -5,7 +5,7 @@ import {join} from 'node:path';
 import {ROOT} from '../scripts/lib/catalog.mjs';
 
 const read=rel=>readFile(join(ROOT,rel),'utf8');
-test('玻璃卡片原入口升级为六材质的独立可交互对照页',async()=>{
+test('玻璃卡片原入口预览独立维护的 Glass Lab 项目',async()=>{
   const [page,entry]=await Promise.all([
     read('demos/components/glass-panel/index.html'),
     read('catalog/assets/glass-panel.json')
@@ -29,10 +29,15 @@ test('玻璃卡片原入口升级为六材质的独立可交互对照页',async(
   assert.doesNotMatch(page,/<(?:script|link)[^>]+(?:src|href)="https?:\/\//);
   const meta=JSON.parse(entry);
   assert.equal(meta.id,'glass-panel');
-  assert.equal(meta.copyable,true);
-  assert.equal(meta.preview,'demos/components/glass-panel/index.html');
-  assert.equal(meta.code,meta.preview);
-  assert.ok(meta.technologies.includes('SVG'));
+  assert.equal(meta.title,'Glass Lab · 玻璃材质实验室');
+  assert.equal(meta.source,'external');
+  assert.equal(meta.url,'https://github.com/weepwood/glass-lab');
+  assert.equal(meta.originRepo,'https://github.com/weepwood/glass-lab');
+  assert.equal(meta.siteUrl,'https://weepwood.github.io/glass-lab/');
+  assert.equal(meta.copyable,false);
+  assert.equal(meta.license,'未声明（源仓库未提供 LICENSE）');
+  assert.equal('preview' in meta,false);
+  assert.equal('code' in meta,false);
 });
 test('材质展示说明准确地区分 Mica 和 Acrylic，且保留来源与非原生说明',async()=>{
   const page=await read('demos/components/glass-panel/index.html');

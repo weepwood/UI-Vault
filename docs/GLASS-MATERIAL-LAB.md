@@ -1,6 +1,12 @@
-# 玻璃材质实验室 · Glass Material Lab
+# 玻璃材质实验室
 
-入口：UI-Vault 中选择「柔光玻璃卡片」，或打开 https://weepwood.github.io/UI-Vault/?asset=glass-panel 。
+## 当前目录入口
+
+UI-Vault 的 `glass-panel` 资产现嵌入独立维护的 [Glass Lab 在线站点](https://weepwood.github.io/glass-lab/)，源码与发布流程位于 [weepwood/glass-lab](https://github.com/weepwood/glass-lab)。原资产 ID `glass-panel` 保留，因此旧的 UI-Vault 分享链接仍可打开：<https://weepwood.github.io/UI-Vault/?asset=glass-panel>。
+
+Glass Lab 仓库没有声明开源许可证。UI-Vault 只链接和嵌入公开站点，不复制其源码。原本地单文件演示保留在 `demos/components/glass-panel/index.html`，供历史链接和回归检查使用，不再是目录中的当前预览。
+
+## 旧版本地演示（不作为当前预览）
 
 ## 演示范围
 
