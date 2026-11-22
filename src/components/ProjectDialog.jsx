@@ -62,6 +62,8 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
       return ()=>controller.abort();
     }
     const path=selectedFile.path;
+    // 仅在文件发生变化或尚未成功加载时请求。来回切换说明与源码时复用已显示内容，避免先闪出加载态。
+    if(source.id===asset.id&&source.path===path&&source.ready)return ()=>controller.abort();
     setSource({id:asset.id,path,text:'正在加载本地源码…',status:'正在读取 '+selectedFile.name,ready:false});
     fetch(resolveAsset(path),{cache:'no-cache',signal:controller.signal})
       .then(async response=>{
