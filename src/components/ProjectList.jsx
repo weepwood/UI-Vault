@@ -25,6 +25,22 @@ export function ProjectRow({asset,labels,selected,onSelect,query=''}){
   </article>;
 }
 
+// 原生 details 的 open 属性需要真实受控状态，defaultOpen 不是该元素的标准属性。
+function AssetProjectGroup({group,labels,selectedId,onSelect,query}){
+  const [expanded,setExpanded]=React.useState(true);
+  const name=group.project?.name||'未归组';
+  return <details className="asset-project-group" open={expanded}
+    onToggle={event=>setExpanded(event.currentTarget.open)}>
+    <summary className="asset-project-summary" aria-label={name+'，'+group.items.length+' 条资源'}>
+      <span className="asset-project-name">{name}</span>
+      <span className="asset-project-count">{group.items.length}</span>
+    </summary>
+    <div className="asset-project-items" role="list" aria-label={name+' 的资源'}>
+      {group.items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
+        selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}
+    </div>
+  </details>;
+}
 const SKELETON_ROWS=[0,1,2,3,4,5,6];
 
 export function ProjectList({items,labels,selectedId,onSelect,query='',loading=false,projects=[],groupByProject=false}){
@@ -34,16 +50,8 @@ export function ProjectList({items,labels,selectedId,onSelect,query='',loading=f
     <span className="project-skeleton-lines"><span/><span/></span>
   </div>)}</>;
   if(groupByProject)return <>{groupAssetsByProject(items,projects).map(group=>
-    <details key={group.id+':'+query} className="asset-project-group" defaultOpen>
-      <summary className="asset-project-summary" aria-label={(group.project?.name||'未归组')+'，'+group.items.length+' 条资源'}>
-        <span className="asset-project-name">{group.project?.name||'未归组'}</span>
-        <span className="asset-project-count">{group.items.length}</span>
-      </summary>
-      <div className="asset-project-items" role="list" aria-label={(group.project?.name||'未归组')+' 的资源'}>
-        {group.items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
-          selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}
-      </div>
-    </details>)}</>;
+    <AssetProjectGroup key={group.id+':'+query} group={group} labels={labels}
+      selectedId={selectedId} onSelect={onSelect} query={query}/>)}</>;
   return <>{items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
     selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}</>;
 }

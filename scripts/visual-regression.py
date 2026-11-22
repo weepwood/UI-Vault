@@ -848,6 +848,7 @@ def verify_project_health_and_grouping(browser, origin):
         assert group.count() == 1, "Style Atlas 分组未找到"
         assert group.locator(".project-row").count() == 57, "Style Atlas 的 57 条资产没有正确归组"
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__groupIframe"), "项目归组意外重建 iframe"
+        assert group.get_attribute("open") is not None, "分组初始状态应展开"
         group.locator("summary").click()
         assert group.get_attribute("open") is None, "项目分组无法折叠"
         group.locator("summary").click()
