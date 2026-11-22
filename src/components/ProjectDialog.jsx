@@ -4,6 +4,7 @@ import {projectInfoMarkup} from '../../assets/core/workbench.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {getSourceFiles,downloadSourceText} from '../../assets/core/source-files.js';
+import {getRepositoryArchiveUrl,getStandaloneBundlePath} from '../../assets/core/project-delivery.js';
 
 function sourceLink(asset,file){
   if(!asset)return 'https://github.com/weepwood/UI-Vault';
@@ -158,6 +159,9 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
   const isCurrent=source.id===asset?.id&&source.path===selectedFile?.path;
+  // 独立交付文件通过静态白名单生成；外部仓库由 GitHub 提供整仓快照。
+  const standaloneBundle=getStandaloneBundlePath(asset);
+  const repositoryArchive=getRepositoryArchiveUrl(asset);
   function downloadCurrent(){
     if(!isCurrent||!source.ready||!selectedFile)return;
     try{const name=downloadSourceText(source.text,selectedFile.name);notify('已下载 '+name);}
@@ -214,11 +218,29 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
             onClick={downloadCurrent}>
             <Icon name="download"/><span>下载文件</span>
           </button>
+          {standaloneBundle&&<a id="source-bundle" href={resolveAsset(standaloneBundle)}
+            download={asset.id+'.zip'} title="仅包含该 Demo 已审核的独立文件">
+            <Icon name="download"/><span>下载独立演示 ZIP</span>
+          </a>}
+          {repositoryArchive&&<a id="source-repo-archive" href={repositoryArchive}
+            target="_blank" rel="noopener noreferrer"
+            title="GitHub 仓库快照；若当前资源属于仓库子目录，压缩包将包含完整仓库">
+            <Icon name="download"/><span>下载完整仓库 ZIP</span>
+          </a>}
           <a id="source-repo" href={sourceLink(asset,selectedFile)} target="_blank" rel="noopener noreferrer">
             <Icon name="external-link"/><span>GitHub 源码</span>
           </a>
         </div>
       </div>
+      <p className="source-delivery-note" role="note">
+        {asset?.source==='external'
+          ?'外部项目仍在原仓库独立维护。仓库 ZIP 是完整源码快照，不保证仅包含当前演示，也不代表已获得商业复用许可。'
+          :standaloneBundle
+            ?'独立演示 ZIP 只包含该页面需要的已登记静态文件，可脱离 UI-Vault 工作台使用。'
+            :asset?.copyable===true
+              ?'该 Demo 是可独立保存的单文件页面；如需复用，请保留源码中的来源与许可证说明。'
+              :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
+      </p>
       <pre className="source-view"><code id="source-code">{isCurrent?source.text:'选择“源代码”查看项目实现。'}</code></pre>
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"

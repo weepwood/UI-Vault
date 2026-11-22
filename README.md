@@ -4,7 +4,7 @@
 
 - [GitHub 仓库](https://github.com/weepwood/UI-Vault)
 - [预期 GitHub Pages 站点](https://weepwood.github.io/UI-Vault/)（以部署结果为准）
-- [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [架构](docs/ARCHITECTURE.md)
+- [新增 Demo](docs/ADDING-DEMO.md) · [框架扩展指南](docs/EXTENDING.md) · [多框架与独立交付规范](docs/MULTI-FRAMEWORK.md) · [架构](docs/ARCHITECTURE.md)
 - [设计规范](DESIGN.md) · [改善 AI 生成 UI 的研究与开源项目](docs/AI-DESIGN-RESEARCH.md)
 
 ## React 工作台（统一 Hooks）
@@ -122,6 +122,16 @@ npm run check           # 完整 CI 等价检查
 
 
 **独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站内嵌其 [GitHub Pages 页面](https://weepwood.github.io/Emboss-Lab/)，并保留源代码链接。详见 [图标规范](docs/ICONOGRAPHY.md)。
+
+## 多框架独立交付
+
+- 外部 React、Vue 等项目继续使用独立 GitHub 仓库与各自 CI，UI-Vault 仅通过受限 iframe 预览。
+- 源码弹窗对 GitHub 外部项目提供**完整仓库 ZIP**入口（快照，不包括版本历史；如为子目录资源仍下载整仓）。
+- 对人工确认文件完整、许可明确的本地多文件 Demo，使用 `bundleFiles` 生成**可脱离 UI-Vault 的静态 ZIP**；首个示例为 Notion Design Demo。
+- `sourceFiles` 是代码浏览清单，`bundleFiles` 是独立交付清单，两者不应混淆；未确认的第三方素材不自动打包。
+- 共享仅从 UI Foundation Kit 的语义 Token 开始；成熟可复用组件再按框架分别发布，独立项目不直接依赖 UI-Vault 的 React 业务组件。
+
+完整原则与示例见 [多框架项目管理规范](docs/MULTI-FRAMEWORK.md)。
 
 ## 当前工作台结构（2026-11）
 

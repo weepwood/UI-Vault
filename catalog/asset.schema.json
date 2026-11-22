@@ -208,6 +208,16 @@
     "externalLinkBridge": {
       "type": "boolean",
       "description": "仅对启用站点内受限外链桥接的外部预览使用"
+    },
+    "bundleFiles": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 50,
+      "uniqueItems": true,
+      "description": "经人工审核可独立下载的本地 Demo 静态文件白名单；路径必须和 preview 位于相同目录（或该目录子目录），并已列入 publish。",
+      "items": {
+        "$ref": "#/$defs/demoPath"
+      }
     }
   },
   "allOf": [

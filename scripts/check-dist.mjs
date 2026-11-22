@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import {execFileSync} from 'node:child_process';
 import {readFile,stat} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {ROOT,inspectCatalog} from './lib/catalog.mjs';
@@ -76,4 +77,6 @@ assert.match(await readFile(join(fontDir,'OFL.txt'),'utf8'),/SIL OPEN FONT LICEN
 const entryCSS=await readFile(join(out,'assets/styles.css'),'utf8');
 assert.ok(entryCSS.includes('fonts/975-yuan.css'),'主样式未引用 WOFF2 子集 CSS');
 assert.ok(!entryCSS.includes('raw.githubusercontent.com/lxgw/975Yuan'),'不应继续引用外链 TTF');
+// ZIP 只允许包含资产清单声明的文件，内容与独立入口必须一致。
+execFileSync('python3',['scripts/build-bundles.py','--verify'],{cwd:ROOT,stdio:'inherit'});
 console.log('静态产物完整性检查成功；网页字体总计 '+(totalFontBytes/1024/1024).toFixed(2)+' MiB（按字符范围加载）。');

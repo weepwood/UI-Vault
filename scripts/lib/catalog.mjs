@@ -69,6 +69,18 @@ export function checkEntry(entry, categories, fileName='') {
     errors.push(where+': externalLinkBridge 应为布尔值');
   if(entry.externalLinkBridge===true && (entry.source!=='external'||!entry.siteUrl))
     errors.push(where+': externalLinkBridge 仅适用于有 siteUrl 的外部站点');
+  if(entry.bundleFiles!==undefined){
+    const paths=entry.bundleFiles;
+    const directory=typeof entry.preview==='string'?entry.preview.slice(0,entry.preview.lastIndexOf('/')+1):'';
+    const published=new Set(entry.publish||[]);
+    if(entry.source!=='local'||entry.copyable===true||!Array.isArray(paths)||paths.length<2||paths.length>50||
+      new Set(paths).size!==paths.length||!paths.includes(entry.preview)||
+      !paths.every(path=>safeRelativePath(path,'demos/')&&path.startsWith(directory)&&
+        path!==directory&&['.html','.css','.js','.mjs','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.woff','.woff2','.txt']
+          .includes(extname(path).toLowerCase())&&
+        (path===entry.preview||published.has(path))))
+      errors.push(where+': bundleFiles 必须是已发布、与入口同目录的自包含 Demo 文件白名单，不允许跨项目依赖');
+  }
   if(entry.sourceFiles!==undefined){
     if(entry.source!=='local'||!Array.isArray(entry.sourceFiles)||!entry.sourceFiles.length||entry.sourceFiles.length>50){
       errors.push(where+': sourceFiles 仅供本地资产使用，必须包含 1–50 个源码文件');
@@ -158,6 +170,9 @@ export async function inspectCatalog({checkGenerated=true}={}) {
       }
       for(const file of entry.sourceFiles||[]){
         if(safeSourceFilePath(file?.path)&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
+      }
+      for(const file of entry.bundleFiles||[]){
+        if(safeRelativePath(file,'demos/')&&!(await safeExistingFile(file)))errors.push(entry.id+': 独立演示包缺少文件 '+file);
       }
     }
     if(entry.coverImage && safeRelativePath(entry.coverImage,'media/') && !(await safeExistingFile(entry.coverImage))) errors.push(entry.id+': 找不到封面图片 '+entry.coverImage);
