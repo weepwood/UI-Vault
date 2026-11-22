@@ -21,4 +21,5 @@ export function applyPreviewLayout(container,iframe,mode='fluid') {
   iframe.style.height = result.height+'px';
   iframe.style.left = result.left+'px';
   iframe.style.transform = 'scale('+result.scale+')';
+  return result;
 }
