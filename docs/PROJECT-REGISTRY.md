@@ -37,6 +37,6 @@ npm run check
 
 默认排序仍是精选优先；选择「按项目分组」后，可折叠来源分组。资产详情展示来源仓库和关联数量。分组和搜索不得重新加载当前 iframe；`?asset=` 链接仍指向原来的资产。
 
-每周链接巡检将 Project 的仓库 URL 与 Asset 的站点 URL 分开检查。HTTP 正常不代表 CI 成功、站点支持 iframe 或素材已授权。`defaultBranch`、项目首页等可选字段只有核实时才填写，不能猜测。
+每周链接巡检将 Project 的仓库 URL 与 Asset 的站点 URL 分开检查。GitHub Pages 发布构建另外生成 `content/project-health.json` 状态快照：只读取公开 GitHub API 的默认分支、归档状态、SPDX 字段、最近推送和默认分支最新 Actions 结果。该文件是运行时数据，不属于 `catalog/projects/` 的长期真相源；离线构建生成“未核实”占位，获取失败不会伪造成功。每周另一次发布任务会尝试刷新快照，不修改外部项目源码。HTTP 正常不代表 CI 成功、站点支持 iframe 或素材已授权。`defaultBranch`、项目首页等可选字段只有核实时才填写，不能猜测。
 
 Project 关联只作用于目录与元数据，不建立跨仓编译依赖；独立应用继续自己锁定版本、构建、下载和部署。

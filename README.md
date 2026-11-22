@@ -126,7 +126,7 @@ npm run check           # 完整 CI 等价检查
 
 ## Project / Asset 双层管理
 
-来源 Project 与具体 Asset 分开管理，现有 33 个来源项目与 126 条资产通过 `projectId` 关联。排序菜单新增「按项目分组」，页面信息展示来源仓库和关联数量；原有链接、收藏及 iframe 不变。详见 [Project 注册表](docs/PROJECT-REGISTRY.md)。
+来源 Project 与具体 Asset 分开管理，现有 33 个来源项目与 126 条资产通过 `projectId` 关联。排序菜单新增「按项目分组」，页面信息展示来源仓库和关联数量；原有链接、收藏及 iframe 不变。详见 [Project 注册表](docs/PROJECT-REGISTRY.md)。项目「页面信息」还可查看公开 GitHub 仓库的最近核验结果，默认分支、许可证字段与 Actions 状态；无数据或超过 14 天会标为未核实/过期，不能当作网页可嵌入或已发布的证明。
 
 ## 多框架独立交付
 
