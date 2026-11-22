@@ -1,29 +1,32 @@
-# 网页风格图鉴 · website_designs
+# 网页设计风格 · website_designs
 
-## 来源与授权
+## 目录扁平化
+
+314 个独立的 HTML 风格示例直接作为 UI-Vault 工作台的一级资产显示，统一归入「设计风格」分类，不再需要经过「网页风格图鉴」中转。每个资产保留独立的 ID、预览地址、源码入口及 Markdown 指南地址，可按名称搜索、收藏或单独打开。
+
+- 源 HTML 位于 \`demos/experiments/website-designs/examples/*.html\`，未修改原作者页面。
+- 目录元数据位于 \`catalog/assets/website-style-*.json\`，\`content/assets.json\` 由 catalog 同步生成。
+- 每条目在「项目说明 / 源代码 / 页面信息 / Design.md」中展示源文件和对应的设计指南，支持复制及下载。
+- 设计指南来自上游 \`designs/<相同文件名>.md\`，在访问 Design.md 标签时通过 GitHub Raw 按需加载。指南仍由原作者在线维护；离线、被拦截或上游删除时会显示错误及原始文档链接。
+- 旧聚合页 \`demos/experiments/website-designs/index.html\` 仅保留于仓库作为导入记录，不再作为主站条目或默认发布入口。
+
+## 来源与许可
+
 - 上游仓库：https://github.com/chrislemke/website_designs
 - 作者：Chris Lemke
-- 授权：MIT；本目录保留原始 LICENSE.txt，保留原始作者署名。
-- 导入范围：314 个独立 HTML（examples/*.html），图鉴导航为 UI-Vault 集成代码。
-- 原始设计指南：上游 designs/<风格名>.md；每种风格均提供对应指南链接。
+- 授权：MIT（\`demos/experiments/website-designs/LICENSE.txt\`）
+- 上游案例：\`examples/*.html\`
+- 上游指南：\`designs/*.md\`
 
-## 目录
-- `demos/experiments/website-designs/index.html`：本地风格浏览器，目录数据来自已检查的上游 examples 文件列表。
-- `demos/experiments/website-designs/examples/*.html`：原样 HTML，彼此独立，无对主站 React 代码的运行时依赖。
-- `demos/experiments/website-designs/LICENSE.txt`：MIT 许可证。
-- `catalog/assets/website-designs-gallery.json`：唯一项目元数据源。
-- `content/assets.json`：从元数据同步生成，不直接维护。
-- `tests/website-designs.test.mjs`：覆盖数量、唯一性、发布白名单、许可证。
+原始 HTML 可能引入第三方在线字体与图片，不保证离线完整可用。独立展示不代表 UI-Vault 获得第三方素材的重新授权。
 
-## UI-Vault 接入
-图鉴作为一个本地 style 资产，而不是 314 个主工作台资产，避免目录膨胀。静态构建通过 catalog 资产的 publish 白名单发布全部独立演示。不需要改动主站工作台的筛选、路由或内嵌机制。
+## 维护流程
 
-图鉴仅在用户选择某种风格后加载该页面，避免数百个 iframe 同时消耗资源。外链通过原生链接打开，不尝试突破 iframe 限制。
+新增或更新风格时，先核查 HTML、对应指南、MIT 授权与素材引用，再登记或调整 \`catalog/assets/website-style-*.json\`。新增分类只修改 \`content/categories.json\`。
 
-## 更新与维护
-不要在本项目运行时自动抓取上游内容。若上游更新，人工核对新增/修改的 HTML、MIT 许可与第三方资源后更新目录数据、publish 清单和测试，再执行：
-```bash
+\`\`\`bash
 npm run catalog:sync
 npm run check
-```
-主题分类是图鉴的辅助检索分组，不等同于上游作者的正式分类。部分源 HTML 引用在线字体/图片，不能保证完全离线。
+\`\`\`
+
+不要在客户端启动时批量请求 314 份 Markdown；仅打开某个资源的 Design.md 标签时加载对应文件。
