@@ -45,6 +45,7 @@ test('每个风格都有独立 HTML 源码与对应 Markdown 指南',()=>{
     previews.add(a.preview);
   }
   assert.equal(previews.size,314);
+  assert.ok(assets.some(asset=>asset.publish?.includes('demos/experiments/website-designs/LICENSE.txt')),'发布白名单必须包含 MIT 许可证');
   assert.ok(file('demos/experiments/website-designs/LICENSE.txt').includes('Copyright (c) 2026 Chris Lemke'));
 });
 
