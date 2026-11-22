@@ -576,12 +576,16 @@ def verify_topbar_alignment(browser, origin):
             page = context.new_page()
             page.goto(origin, wait_until="domcontentloaded")
             page.locator(".project-row").first.wait_for(state="attached", timeout=30000)
+            print(f"CHECK toolbar alignment viewport={width}", flush=True)
             aligned = """() => {
                 const left = document.querySelector('#project-panel .list-controls');
                 const right = document.querySelector('.topbar');
                 if (!left || !right) return false;
                 const a = left.getBoundingClientRect(), b = right.getBoundingClientRect();
-                return a.height > 0 && Math.abs(a.top - b.top) <= 1 &&
+                const sameHeight = a.height > 0 && Math.abs(a.height - b.height) <= 1;
+                // 480px 以下目录抽屉上下堆叠，项目栏不与右侧主顶栏同起点。
+                if (innerWidth <= 480) return sameHeight;
+                return sameHeight && Math.abs(a.top - b.top) <= 1 &&
                     Math.abs(a.bottom - b.bottom) <= 1;
             }"""
             page.wait_for_function(aligned, timeout=5000)
