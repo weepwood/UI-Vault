@@ -124,6 +124,12 @@ npm run check           # 完整 CI 等价检查
 
 **独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站内嵌其 [GitHub Pages 页面](https://weepwood.github.io/Emboss-Lab/)，并保留源代码链接。详见 [图标规范](docs/ICONOGRAPHY.md)。
 
+## 项目状态 · 统一管理视图
+
+从左下角「项目状态」进入 `?view=operations`，可同时筛选来源仓库的最近一次代码检查、经 GitHub Deployments 确认的实际部署状态，以及资产级 HTTP/iframe 限制证据；还能按来源项目展开每个 Demo 的证据与原预览入口。
+
+注意：**Actions 成功不等于部署成功，Pages 构建完成不等于发布成功，HTTP 200 及 iframe load 也不等于页面可交互**。缺少部署提供方记录的 Netlify/Vercel 项目显示未核实，不伪造状态。独立仓库继续独立 CI/构建/部署，不复用 UI-Vault 运行时代码。详见 [运维与状态采集契约](docs/PROJECT-OPERATIONS.md)。
+
 ## Project / Asset 双层管理
 
 来源 Project 与具体 Asset 分开管理，现有 33 个来源项目与 126 条资产通过 `projectId` 关联。排序菜单新增「按项目分组」，页面信息展示来源仓库和关联数量；原有链接、收藏及 iframe 不变。详见 [Project 注册表](docs/PROJECT-REGISTRY.md)。项目「页面信息」还可查看公开 GitHub 仓库的最近核验结果，默认分支、许可证字段与 Actions 状态；无数据或超过 14 天会标为未核实/过期，不能当作网页可嵌入或已发布的证明。

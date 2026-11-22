@@ -33,6 +33,10 @@ npm run check
 
 新增本地 Demo 默认归属 UI-Vault；新增 GitHub 参考自动复用已有 Project 或为真实新来源生成 Project。不要直接编辑生成的 `content/assets.json` 和 `content/projects.json`。
 
+## 统一项目管理视图
+
+`?view=operations` 读取两类非持久化生成快照：`content/project-health.json`（默认分支 Actions、GitHub Deployments、Pages 状态）与 `content/preview-health.json`（站点 HTTP 响应及明确的 X-Frame-Options/CSP 限制）。它们都不改变 Project/Asset 的原始注册表或独立仓库源码。详见 [项目运维状态契约](PROJECT-OPERATIONS.md)。
+
 ## 浏览与测试
 
 默认排序仍是精选优先；选择「按项目分组」后，可折叠来源分组。资产详情展示来源仓库和关联数量。分组和搜索不得重新加载当前 iframe；`?asset=` 链接仍指向原来的资产。
