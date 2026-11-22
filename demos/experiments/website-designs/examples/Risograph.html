@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Risograph -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&family=Syne:wght@400;500;700;800&family=Work+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Primary Riso Inks --- */
+      --riso-bright-red: #f15060;
+      --riso-blue: #0078bf;
+      --riso-yellow: #ffe800;
+      --riso-black: #000000;
+
+      /* --- Fluorescents --- */
+      --riso-fluo-pink: #ff48b0;
+      --riso-fluo-orange: #ff7477;
+      --riso-fluo-green: #44d62c;
+
+      /* --- Secondary Inks --- */
+      --riso-teal: #00838a;
+      --riso-purple: #765ba7;
+      --riso-orange: #ff6c2f;
+      --riso-hunter-green: #407060;
+      --riso-cornflower: #62a8e5;
+
+      /* --- Neutral Inks --- */
+      --riso-midnight: #435060;
+      --riso-flat-gold: #bb8b41;
+      --riso-light-gray: #88898a;
+      --riso-bisque: #f2cdcf;
+
+      /* --- Paper & Background Tones --- */
+      --riso-paper: #f5f0e8;
+      --riso-paper-warm: #f0e6d3;
+      --riso-paper-cool: #eef1ed;
+      --riso-paper-cream: #faf6ee;
+
+      /* --- Semantic Tokens --- */
+      --riso-bg-primary: var(--riso-paper);
+      --riso-bg-dark: #2c2c2c;
+      --riso-text-primary: #2a2a2a;
+      --riso-text-secondary: #555555;
+      --riso-text-inverse: var(--riso-paper);
+
+      /* --- Overprint Simulation --- */
+      --riso-red-blue-mix: #6a3060;
+      --riso-red-yellow-mix: #e87830;
+      --riso-blue-yellow-mix: #3a8855;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      background: var(--riso-bg-primary);
+      color: var(--riso-text-primary);
+      font-family: 'Work Sans', 'Helvetica Neue', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--riso-text-primary);
+    }
+
+    /* ============================================
+       GLOBAL GRAIN TEXTURE OVERLAY
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: multiply;
+      opacity: 0.4;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       HALFTONE DOT PATTERN UTILITY
+       ============================================ */
+    .halftone-bg {
+      position: relative;
+    }
+
+    .halftone-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--riso-text-primary) 1px, transparent 1px);
+      background-size: 6px 6px;
+      mix-blend-mode: multiply;
+      opacity: 0.1;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .section--paper {
+      background: var(--riso-paper);
+    }
+
+    .section--paper-warm {
+      background: var(--riso-paper-warm);
+    }
+
+    .section--paper-cool {
+      background: var(--riso-paper-cool);
+    }
+
+    .section--dark {
+      background: var(--riso-bg-dark);
+      color: var(--riso-text-inverse);
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-weight: 400;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--riso-bright-red);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--riso-bright-red);
+    }
+
+    .section-title {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      margin-bottom: 1rem;
+      letter-spacing: -0.03em;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--riso-text-secondary);
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       REGISTRATION MARKS (decorative)
+       ============================================ */
+    .reg-mark {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .reg-mark::before,
+    .reg-mark::after {
+      content: '';
+      position: absolute;
+      background: var(--riso-text-primary);
+      opacity: 0.2;
+    }
+
+    .reg-mark::before {
+      width: 24px;
+      height: 1px;
+      top: 50%;
+      left: 0;
+    }
+
+    .reg-mark::after {
+      width: 1px;
+      height: 24px;
+      left: 50%;
+      top: 0;
+    }
+
+    .reg-mark--tl { top: 16px; left: 16px; }
+    .reg-mark--tr { top: 16px; right: 16px; }
+    .reg-mark--bl { bottom: 16px; left: 16px; }
+    .reg-mark--br { bottom: 16px; right: 16px; }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 20px 32px;
+      border-bottom: 2px solid var(--riso-text-primary);
+      background: var(--riso-paper);
+      position: relative;
+      z-index: 100;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.25rem;
+      color: var(--riso-text-primary);
+    }
+
+    .nav__logo-mark {
+      width: 26px;
+      height: 26px;
+      background: var(--riso-bright-red);
+      border-radius: 50%;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .nav__logo-mark::after {
+      content: '';
+      position: absolute;
+      width: 26px;
+      height: 26px;
+      background: var(--riso-blue);
+      border-radius: 50%;
+      top: -4px;
+      left: 5px;
+      mix-blend-mode: multiply;
+      z-index: -1;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav__links a {
+      font-family: 'Space Mono', monospace;
+      font-weight: 400;
+      font-size: 0.72rem;
+      color: var(--riso-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav__links a:hover {
+      color: var(--riso-bright-red);
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--riso-bright-red);
+      transition: width 0.2s ease;
+    }
+
+    .nav__links a:hover::after {
+      width: 100%;
+    }
+
+    .nav__menu-btn {
+      display: none;
+      background: none;
+      border: 2px solid var(--riso-text-primary);
+      padding: 6px 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      cursor: pointer;
+      color: var(--riso-text-primary);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 80px 32px 100px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+      overflow: hidden;
+      min-height: 520px;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero__tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--riso-blue);
+      margin-bottom: 16px;
+    }
+
+    .hero__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 6.5vw, 5rem);
+      font-weight: 800;
+      line-height: 0.95;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.5rem;
+      color: var(--riso-bright-red);
+      position: relative;
+    }
+
+    .hero__title::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 3px;
+      left: -3px;
+      color: var(--riso-blue);
+      z-index: -1;
+      mix-blend-mode: multiply;
+      opacity: 0.6;
+    }
+
+    .hero__title::after {
+      content: attr(data-text);
+      position: absolute;
+      top: -2px;
+      left: 2px;
+      color: var(--riso-yellow);
+      z-index: -2;
+      mix-blend-mode: multiply;
+      opacity: 0.4;
+    }
+
+    .hero__subtitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      font-weight: 500;
+      color: var(--riso-text-secondary);
+      margin-bottom: 1.25rem;
+      max-width: 420px;
+      line-height: 1.5;
+    }
+
+    .hero__desc {
+      font-size: 1rem;
+      color: var(--riso-text-secondary);
+      max-width: 400px;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero__visual {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 340px;
+    }
+
+    .hero__circle {
+      position: absolute;
+      border-radius: 50%;
+      mix-blend-mode: multiply;
+    }
+
+    .hero__circle--red {
+      width: 260px;
+      height: 260px;
+      background: var(--riso-bright-red);
+      right: 20px;
+      top: 10px;
+      animation: riso-float-1 8s ease-in-out infinite;
+    }
+
+    .hero__circle--blue {
+      width: 240px;
+      height: 240px;
+      background: var(--riso-blue);
+      right: 90px;
+      top: 60px;
+      animation: riso-float-2 9s ease-in-out infinite;
+    }
+
+    .hero__circle--yellow {
+      width: 180px;
+      height: 180px;
+      background: var(--riso-yellow);
+      right: 40px;
+      bottom: 20px;
+      animation: riso-float-3 7s ease-in-out infinite;
+      opacity: 0.8;
+    }
+
+    /* Decorative crop marks on hero */
+    .hero__crop-mark {
+      position: absolute;
+      z-index: 4;
+      opacity: 0.25;
+    }
+
+    .hero__crop-mark--tl {
+      top: 30px;
+      left: 32px;
+      width: 32px;
+      height: 32px;
+      border-top: 1.5px solid var(--riso-text-primary);
+      border-left: 1.5px solid var(--riso-text-primary);
+    }
+
+    .hero__crop-mark--br {
+      bottom: 40px;
+      right: 32px;
+      width: 32px;
+      height: 32px;
+      border-bottom: 1.5px solid var(--riso-text-primary);
+      border-right: 1.5px solid var(--riso-text-primary);
+    }
+
+    @keyframes riso-float-1 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-6px, 8px); }
+    }
+
+    @keyframes riso-float-2 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(8px, -6px); }
+    }
+
+    @keyframes riso-float-3 {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(-4px, -8px); }
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .type-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 48px;
+    }
+
+    .type-specimen {
+      position: relative;
+      padding: 32px;
+      border: 2px solid var(--riso-text-primary);
+      background: var(--riso-paper-cream);
+    }
+
+    .type-specimen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--riso-bisque);
+      transform: translate(5px, 5px);
+      z-index: -1;
+      border: 2px solid var(--riso-text-primary);
+    }
+
+    .type-specimen__label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--riso-bright-red);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(42, 42, 42, 0.15);
+    }
+
+    .type-specimen__display {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+    }
+
+    .type-specimen__heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .type-specimen__body {
+      font-family: 'Work Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--riso-text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .type-specimen__mono {
+      font-family: 'Space Mono', monospace;
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.02em;
+      color: var(--riso-midnight);
+    }
+
+    .type-specimen__caption {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 0.72rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--riso-light-gray);
+      margin-top: 12px;
+    }
+
+    .type-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 32px;
+      border: 2px solid var(--riso-text-primary);
+      background: var(--riso-paper-cream);
+      position: relative;
+    }
+
+    .type-scale::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--riso-cornflower);
+      transform: translate(5px, 5px);
+      z-index: -1;
+      border: 2px solid var(--riso-text-primary);
+      opacity: 0.5;
+    }
+
+    .type-scale__item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(42, 42, 42, 0.1);
+    }
+
+    .type-scale__item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .type-scale__size {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--riso-light-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      min-width: 60px;
+      flex-shrink: 0;
+    }
+
+    .type-scale__sample {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .palette-swatch {
+      position: relative;
+      border: 2px solid var(--riso-text-primary);
+      overflow: hidden;
+      transition: transform 0.2s ease;
+    }
+
+    .palette-swatch:hover {
+      transform: translate(-2px, -2px);
+    }
+
+    .palette-swatch::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--riso-text-primary);
+      transform: translate(4px, 4px);
+      z-index: -1;
+    }
+
+    .palette-swatch__color {
+      height: 90px;
+      position: relative;
+    }
+
+    /* Halftone texture on swatches */
+    .palette-swatch__color::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.15) 1px, transparent 1px);
+      background-size: 4px 4px;
+      mix-blend-mode: multiply;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .palette-swatch__info {
+      padding: 10px 12px;
+      background: var(--riso-paper-cream);
+      border-top: 2px solid var(--riso-text-primary);
+    }
+
+    .palette-swatch__name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      margin-bottom: 2px;
+    }
+
+    .palette-swatch__hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--riso-light-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 40px;
+      margin-top: 48px;
+    }
+
+    .card {
+      background: var(--riso-paper-cream);
+      border: 2px solid var(--riso-text-primary);
+      padding: 28px;
+      position: relative;
+      transition: transform 0.2s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--card-accent, var(--riso-bright-red));
+      transform: translate(6px, 6px);
+      z-index: -1;
+      border: 2px solid var(--riso-text-primary);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translate(-2px, -2px);
+    }
+
+    .card:hover::before {
+      transform: translate(8px, 8px);
+    }
+
+    .card__icon {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 16px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card__icon-shape {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      mix-blend-mode: multiply;
+    }
+
+    .card__label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--riso-bright-red);
+      margin-bottom: 8px;
+    }
+
+    .card__title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--riso-text-primary);
+    }
+
+    .card__body {
+      font-size: 0.92rem;
+      color: var(--riso-text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .overprint-banner {
+      position: relative;
+      padding: 80px 32px;
+      min-height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      isolation: isolate;
+    }
+
+    .overprint-banner__layer {
+      position: absolute;
+      mix-blend-mode: multiply;
+    }
+
+    .overprint-banner__layer--red {
+      background: var(--riso-bright-red);
+      width: 65%;
+      height: 85%;
+      top: 8%;
+      left: 3%;
+      opacity: 0.85;
+    }
+
+    .overprint-banner__layer--blue {
+      background: var(--riso-blue);
+      width: 60%;
+      height: 80%;
+      top: 12%;
+      right: 3%;
+      opacity: 0.85;
+    }
+
+    .overprint-banner__layer--yellow {
+      background: var(--riso-yellow);
+      width: 35%;
+      height: 50%;
+      bottom: 10%;
+      left: 32%;
+      opacity: 0.7;
+    }
+
+    .overprint-banner__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: var(--riso-paper);
+      max-width: 640px;
+    }
+
+    .overprint-banner__content h2 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--riso-paper);
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+    }
+
+    .overprint-banner__content p {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .principle {
+      padding: 32px;
+      border: 2px solid var(--riso-text-primary);
+      background: var(--riso-paper-cream);
+      position: relative;
+    }
+
+    .principle::after {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      height: 4px;
+      background: var(--principle-color, var(--riso-bright-red));
+    }
+
+    .principle__number {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 3rem;
+      line-height: 1;
+      color: var(--principle-color, var(--riso-bright-red));
+      opacity: 0.25;
+      margin-bottom: 12px;
+    }
+
+    .principle__title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .principle__desc {
+      font-size: 0.9rem;
+      color: var(--riso-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+      margin-top: 48px;
+    }
+
+    .effect-demo {
+      border: 2px solid var(--riso-text-primary);
+      overflow: hidden;
+      background: var(--riso-paper-cream);
+    }
+
+    .effect-demo__preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      isolation: isolate;
+    }
+
+    .effect-demo__info {
+      padding: 16px 20px;
+      border-top: 2px solid var(--riso-text-primary);
+    }
+
+    .effect-demo__title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+    }
+
+    .effect-demo__desc {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--riso-light-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* --- Effect 1: Misregistration --- */
+    .effect-misregister {
+      background: var(--riso-paper);
+    }
+
+    .effect-misregister__text {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 3rem;
+      color: var(--riso-bright-red);
+      position: relative;
+      letter-spacing: -0.03em;
+    }
+
+    .effect-misregister__text::before {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--riso-blue);
+      transform: translate(3px, -2px);
+      mix-blend-mode: multiply;
+      z-index: -1;
+    }
+
+    .effect-misregister__text::after {
+      content: attr(data-text);
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--riso-yellow);
+      transform: translate(-2px, 3px);
+      mix-blend-mode: multiply;
+      z-index: -2;
+    }
+
+    /* --- Effect 2: Overprint Circles --- */
+    .effect-overprint {
+      background: var(--riso-paper-warm);
+    }
+
+    .effect-overprint__circle {
+      position: absolute;
+      border-radius: 50%;
+      mix-blend-mode: multiply;
+    }
+
+    .effect-overprint__circle--a {
+      width: 120px;
+      height: 120px;
+      background: var(--riso-bright-red);
+      left: calc(50% - 80px);
+      top: calc(50% - 70px);
+    }
+
+    .effect-overprint__circle--b {
+      width: 120px;
+      height: 120px;
+      background: var(--riso-blue);
+      left: calc(50% - 20px);
+      top: calc(50% - 70px);
+    }
+
+    .effect-overprint__circle--c {
+      width: 120px;
+      height: 120px;
+      background: var(--riso-yellow);
+      left: calc(50% - 50px);
+      top: calc(50% - 20px);
+    }
+
+    /* --- Effect 3: Halftone Gradient --- */
+    .effect-halftone {
+      background: var(--riso-bright-red);
+    }
+
+    .effect-halftone::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--riso-paper) 2px, transparent 2px);
+      background-size: 8px 8px;
+      mix-blend-mode: normal;
+      opacity: 0;
+      animation: halftone-reveal 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes halftone-reveal {
+      0% { opacity: 0; }
+      100% { opacity: 0.7; }
+    }
+
+    .effect-halftone__label {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      color: var(--riso-paper);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- Effect 4: Paper Texture Grain --- */
+    .effect-grain {
+      background: var(--riso-paper-warm);
+    }
+
+    .effect-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      mix-blend-mode: multiply;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .effect-grain__label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--riso-text-primary);
+      position: relative;
+      z-index: 2;
+    }
+
+    /* --- Effect 5: Color Layer Shift (animated) --- */
+    .effect-shift {
+      background: var(--riso-paper);
+    }
+
+    .effect-shift__block {
+      width: 100px;
+      height: 100px;
+      position: relative;
+    }
+
+    .effect-shift__layer {
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: multiply;
+    }
+
+    .effect-shift__layer--red {
+      background: var(--riso-bright-red);
+      animation: shift-red 3s ease-in-out infinite;
+    }
+
+    .effect-shift__layer--blue {
+      background: var(--riso-blue);
+      animation: shift-blue 3s ease-in-out infinite;
+    }
+
+    .effect-shift__layer--yellow {
+      background: var(--riso-yellow);
+      animation: shift-yellow 3s ease-in-out infinite;
+    }
+
+    @keyframes shift-red {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(-6px, 4px); }
+      66% { transform: translate(4px, -3px); }
+    }
+
+    @keyframes shift-blue {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(5px, -5px); }
+      66% { transform: translate(-3px, 6px); }
+    }
+
+    @keyframes shift-yellow {
+      0%, 100% { transform: translate(0, 0); }
+      33% { transform: translate(-4px, -4px); }
+      66% { transform: translate(6px, 3px); }
+    }
+
+    /* --- Effect 6: Ink Spread --- */
+    .effect-ink-spread {
+      background: var(--riso-midnight);
+    }
+
+    .effect-ink-spread__blob {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      position: relative;
+      animation: ink-pulse 4s ease-in-out infinite;
+    }
+
+    .effect-ink-spread__blob::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: var(--riso-fluo-pink);
+      mix-blend-mode: screen;
+      opacity: 0.6;
+      filter: blur(8px);
+      animation: ink-glow 4s ease-in-out infinite;
+    }
+
+    .effect-ink-spread__blob::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: var(--riso-bright-red);
+      background-image: radial-gradient(circle, var(--riso-bright-red) 0%, var(--riso-fluo-pink) 100%);
+    }
+
+    @keyframes ink-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.15); }
+    }
+
+    @keyframes ink-glow {
+      0%, 100% { opacity: 0.4; filter: blur(8px); }
+      50% { opacity: 0.7; filter: blur(14px); }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      margin-top: 48px;
+    }
+
+    .riso-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      border: 2px solid var(--riso-text-primary);
+      padding: 12px 32px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+
+    .riso-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--riso-text-primary);
+      transform: translate(4px, 4px);
+      z-index: -1;
+      transition: transform 0.15s ease;
+    }
+
+    .riso-btn:hover {
+      transform: translate(-2px, -2px);
+    }
+
+    .riso-btn:hover::before {
+      transform: translate(6px, 6px);
+    }
+
+    /* Primary */
+    .riso-btn--primary {
+      background: var(--riso-bright-red);
+      color: var(--riso-paper);
+    }
+
+    .riso-btn--primary::before {
+      background: var(--riso-blue);
+    }
+
+    /* Blue */
+    .riso-btn--blue {
+      background: var(--riso-blue);
+      color: var(--riso-paper);
+    }
+
+    .riso-btn--blue::before {
+      background: var(--riso-bright-red);
+    }
+
+    /* Outline */
+    .riso-btn--outline {
+      background: transparent;
+      color: var(--riso-text-primary);
+    }
+
+    .riso-btn--outline::before {
+      background: var(--riso-yellow);
+      opacity: 0.5;
+    }
+
+    .riso-btn--outline:hover {
+      background: var(--riso-yellow);
+    }
+
+    /* Teal */
+    .riso-btn--teal {
+      background: var(--riso-teal);
+      color: var(--riso-paper);
+    }
+
+    .riso-btn--teal::before {
+      background: var(--riso-purple);
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .riso-blockquote {
+      position: relative;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 40px 48px;
+      border: 2px solid var(--riso-text-primary);
+      background: var(--riso-paper-cream);
+    }
+
+    .riso-blockquote::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--riso-fluo-pink);
+      transform: translate(8px, 8px);
+      z-index: -1;
+      border: 2px solid var(--riso-text-primary);
+      opacity: 0.4;
+    }
+
+    .riso-blockquote__mark {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      font-size: 5rem;
+      line-height: 0.8;
+      color: var(--riso-bright-red);
+      opacity: 0.3;
+      position: absolute;
+      top: 16px;
+      left: 24px;
+    }
+
+    .riso-blockquote__text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 1.25rem;
+      line-height: 1.5;
+      color: var(--riso-text-primary);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .riso-blockquote__author {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--riso-bright-red);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      position: relative;
+      padding: 100px 32px;
+      text-align: center;
+      overflow: hidden;
+      isolation: isolate;
+      background: var(--riso-bg-dark);
+    }
+
+    .cta-section__bg-circle {
+      position: absolute;
+      border-radius: 50%;
+      mix-blend-mode: screen;
+      opacity: 0.3;
+    }
+
+    .cta-section__bg-circle--a {
+      width: 400px;
+      height: 400px;
+      background: var(--riso-bright-red);
+      top: -100px;
+      left: -80px;
+    }
+
+    .cta-section__bg-circle--b {
+      width: 350px;
+      height: 350px;
+      background: var(--riso-blue);
+      bottom: -80px;
+      right: -60px;
+    }
+
+    .cta-section__bg-circle--c {
+      width: 250px;
+      height: 250px;
+      background: var(--riso-yellow);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.15;
+    }
+
+    .cta-section__content {
+      position: relative;
+      z-index: 2;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .cta-section__label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--riso-fluo-pink);
+      margin-bottom: 16px;
+    }
+
+    .cta-section__title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--riso-paper);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .cta-section__desc {
+      font-size: 1rem;
+      color: rgba(245, 240, 232, 0.7);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .cta-section .riso-btn--primary {
+      background: var(--riso-fluo-pink);
+    }
+
+    .cta-section .riso-btn--primary::before {
+      background: var(--riso-purple);
+    }
+
+    .cta-section .riso-btn--outline {
+      color: var(--riso-paper);
+      border-color: var(--riso-paper);
+    }
+
+    .cta-section .riso-btn--outline::before {
+      border-color: rgba(245, 240, 232, 0.3);
+      background: transparent;
+    }
+
+    .cta-section .riso-btn--outline:hover {
+      background: rgba(245, 240, 232, 0.1);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      border-top: 2px solid var(--riso-text-primary);
+      padding: 40px 32px;
+      background: var(--riso-paper);
+    }
+
+    .footer__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer__brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .footer__logo-mark {
+      width: 20px;
+      height: 20px;
+      background: var(--riso-bright-red);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .footer__logo-mark::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: var(--riso-blue);
+      border-radius: 50%;
+      top: -3px;
+      left: 4px;
+      mix-blend-mode: multiply;
+      z-index: -1;
+    }
+
+    .footer__brand-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .footer__text {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--riso-light-gray);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer__links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--riso-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: color 0.2s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--riso-bright-red);
+    }
+
+    /* Decorative ink swatch strip in footer */
+    .footer__ink-strip {
+      display: flex;
+      gap: 4px;
+      margin-top: 20px;
+      width: 100%;
+    }
+
+    .footer__ink-strip span {
+      height: 4px;
+      flex: 1;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 60px 24px 80px;
+        text-align: center;
+      }
+
+      .hero__subtitle,
+      .hero__desc {
+        max-width: none;
+      }
+
+      .hero__buttons {
+        justify-content: center;
+      }
+
+      .hero__visual {
+        min-height: 220px;
+        order: -1;
+      }
+
+      .hero__circle--red { width: 180px; height: 180px; right: auto; left: calc(50% - 110px); }
+      .hero__circle--blue { width: 160px; height: 160px; right: auto; left: calc(50% - 40px); }
+      .hero__circle--yellow { width: 120px; height: 120px; right: auto; left: calc(50% - 20px); }
+
+      .type-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .riso-blockquote {
+        padding: 32px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .nav__links {
+        display: none;
+      }
+
+      .nav__menu-btn {
+        display: block;
+      }
+
+      .nav__links.nav__links--open {
+        display: flex;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--riso-paper);
+        border-bottom: 2px solid var(--riso-text-primary);
+        padding: 20px 32px;
+        gap: 16px;
+        z-index: 100;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .riso-btn {
+        text-align: center;
+        justify-content: center;
+      }
+
+      .footer__inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer__links {
+        justify-content: center;
+      }
+    }
+
+    /* ============================================
+       PREFERS-REDUCED-MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==============================
+       NAVIGATION
+       ============================== -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <a href="#" class="nav__logo" aria-label="Risograph home">
+      <span class="nav__logo-mark" aria-hidden="true"></span>
+      <span>Risograph</span>
+    </a>
+    <button class="nav__menu-btn" aria-label="Toggle menu" onclick="document.querySelector('.nav__links').classList.toggle('nav__links--open')">Menu</button>
+    <div class="nav__links">
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#principles">Principles</a>
+      <a href="#effects">Effects</a>
+      <a href="#buttons">Buttons</a>
+    </div>
+  </nav>
+
+  <!-- ==============================
+       HERO SECTION
+       ============================== -->
+  <header class="hero" id="hero">
+    <div class="hero__crop-mark hero__crop-mark--tl" aria-hidden="true"></div>
+    <div class="hero__crop-mark hero__crop-mark--br" aria-hidden="true"></div>
+
+    <div class="hero__content">
+      <p class="hero__tagline">Design Aesthetic Reference</p>
+      <h1 class="hero__title" data-text="Riso-graph">Riso-graph</h1>
+      <p class="hero__subtitle">Layered Spot Colors, Visible Grain, Analog Warmth</p>
+      <p class="hero__desc">
+        The beautiful imperfections of soy-based ink on uncoated paper. Halftone grain,
+        misregistered color layers, and overprint mixing -- handmade warmth in a digital world.
+      </p>
+      <div class="hero__buttons">
+        <a href="#components" class="riso-btn riso-btn--primary">Explore Prints</a>
+        <a href="#effects" class="riso-btn riso-btn--outline">View Effects</a>
+      </div>
+    </div>
+
+    <div class="hero__visual" aria-hidden="true">
+      <div class="hero__circle hero__circle--red"></div>
+      <div class="hero__circle hero__circle--blue"></div>
+      <div class="hero__circle hero__circle--yellow"></div>
+    </div>
+  </header>
+
+  <!-- ==============================
+       TYPOGRAPHY SHOWCASE
+       ============================== -->
+  <section class="section section--paper-warm halftone-bg" id="typography">
+    <div class="reg-mark reg-mark--tl" aria-hidden="true"></div>
+    <div class="reg-mark reg-mark--br" aria-hidden="true"></div>
+    <div class="container">
+      <p class="section-label">Typefaces</p>
+      <h2 class="section-title">Typography</h2>
+      <p class="section-desc">
+        Hand-lettered zine spirit meets bold graphic punch. Geometric sans-serifs with personality
+        for headings, humanist warmth for body text, utilitarian monospaced for labels.
+      </p>
+
+      <div class="type-showcase">
+        <div class="type-specimen">
+          <p class="type-specimen__label">Display / Syne 800</p>
+          <p class="type-specimen__display" style="color: var(--riso-bright-red);">Ink Drum<br>Rotation</p>
+          <p class="type-specimen__label" style="margin-top:20px;">Heading / Space Grotesk 700</p>
+          <p class="type-specimen__heading">Multi-Pass Color Layers</p>
+          <p class="type-specimen__body">
+            Every print passes through the drum once per color. Each pass adds
+            grain variation, registration shifts, and that unmistakable warmth
+            that only soy-based ink on absorbent paper can produce.
+          </p>
+          <p class="type-specimen__mono">Space Mono -- Labels &amp; Captions</p>
+          <p class="type-specimen__caption">IBM Plex Mono -- Meta Information</p>
+        </div>
+
+        <div class="type-scale">
+          <p class="type-specimen__label" style="margin-bottom: 8px;">Type Scale</p>
+          <div class="type-scale__item">
+            <span class="type-scale__size">5rem</span>
+            <span class="type-scale__sample" style="font-family:'Syne',sans-serif;font-weight:800;font-size:2.8rem;color:var(--riso-bright-red);">Aa</span>
+          </div>
+          <div class="type-scale__item">
+            <span class="type-scale__size">2.75rem</span>
+            <span class="type-scale__sample" style="font-size:2rem;">Section Head</span>
+          </div>
+          <div class="type-scale__item">
+            <span class="type-scale__size">1.5rem</span>
+            <span class="type-scale__sample" style="font-size:1.5rem;">Card Title</span>
+          </div>
+          <div class="type-scale__item">
+            <span class="type-scale__size">1.25rem</span>
+            <span class="type-scale__sample" style="font-size:1.25rem;">Subheading</span>
+          </div>
+          <div class="type-scale__item">
+            <span class="type-scale__size">1rem</span>
+            <span class="type-scale__sample" style="font-size:1rem;font-weight:400;font-family:'Work Sans',sans-serif;">Body text set in Work Sans</span>
+          </div>
+          <div class="type-scale__item">
+            <span class="type-scale__size">0.8rem</span>
+            <span class="type-scale__sample" style="font-size:0.8rem;font-family:'Space Mono',monospace;font-weight:400;letter-spacing:0.02em;">MONOSPACED LABELS</span>
+          </div>
+          <div class="type-scale__item">
+            <span class="type-scale__size">0.72rem</span>
+            <span class="type-scale__sample" style="font-size:0.72rem;font-family:'IBM Plex Mono',monospace;font-weight:400;letter-spacing:0.04em;color:var(--riso-light-gray);">CAPTION / META TEXT</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       COLOR PALETTE
+       ============================== -->
+  <section class="section section--paper" id="palette">
+    <div class="container">
+      <p class="section-label">Spot Colors</p>
+      <h2 class="section-title">Riso Ink Palette</h2>
+      <p class="section-desc">
+        Soy- and rice-bran-based inks loaded into individual drums. Pick 2-4 per project.
+        Overlaps create overprint hues through physical color mixing.
+      </p>
+
+      <div class="palette-grid">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #f15060;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Bright Red</p>
+            <p class="palette-swatch__hex">#f15060</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #0078bf;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Blue</p>
+            <p class="palette-swatch__hex">#0078bf</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #ffe800;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Yellow</p>
+            <p class="palette-swatch__hex">#ffe800</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #ff48b0;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Fluo Pink</p>
+            <p class="palette-swatch__hex">#ff48b0</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #ff7477;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Fluo Orange</p>
+            <p class="palette-swatch__hex">#ff7477</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #00838a;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Teal</p>
+            <p class="palette-swatch__hex">#00838a</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #765ba7;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Purple</p>
+            <p class="palette-swatch__hex">#765ba7</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #ff6c2f;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Orange</p>
+            <p class="palette-swatch__hex">#ff6c2f</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #407060;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Hunter Green</p>
+            <p class="palette-swatch__hex">#407060</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #62a8e5;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Cornflower</p>
+            <p class="palette-swatch__hex">#62a8e5</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #bb8b41;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Flat Gold</p>
+            <p class="palette-swatch__hex">#bb8b41</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #435060;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Midnight</p>
+            <p class="palette-swatch__hex">#435060</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #000000;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Black</p>
+            <p class="palette-swatch__hex">#000000</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #88898a;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Light Gray</p>
+            <p class="palette-swatch__hex">#88898a</p>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background-color: #f2cdcf;"></div>
+          <div class="palette-swatch__info">
+            <p class="palette-swatch__name">Bisque</p>
+            <p class="palette-swatch__hex">#f2cdcf</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       COMPONENT CARDS
+       ============================== -->
+  <section class="section section--paper-warm" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Print Studio Toolkit</h2>
+      <p class="section-desc">
+        Each component draws from the Riso production process -- offset layers for depth,
+        bold borders for structure, and spot-color accents throughout.
+      </p>
+
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <div class="card" style="--card-accent: var(--riso-bright-red);">
+          <div class="card__icon" aria-hidden="true">
+            <div style="width:40px;height:40px;background:var(--riso-bright-red);border-radius:50%;"></div>
+            <div style="width:40px;height:40px;background:var(--riso-blue);border-radius:50%;position:absolute;left:12px;top:8px;mix-blend-mode:multiply;"></div>
+          </div>
+          <p class="card__label">Ink No. 001</p>
+          <h3 class="card__title">Color Separation</h3>
+          <p class="card__body">
+            Each hue is an independent layer. Design for separation -- think of every color as a
+            distinct ink drum pass that will overlap with others to create unexpected secondary hues.
+          </p>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card" style="--card-accent: var(--riso-blue);">
+          <div class="card__icon" aria-hidden="true">
+            <div style="width:36px;height:36px;border:3px solid var(--riso-blue);transform:rotate(12deg);"></div>
+            <div style="width:36px;height:36px;border:3px solid var(--riso-bright-red);position:absolute;left:8px;top:6px;transform:rotate(-4deg);mix-blend-mode:multiply;"></div>
+          </div>
+          <p class="card__label">Ink No. 002</p>
+          <h3 class="card__title">Registration Drift</h3>
+          <p class="card__body">
+            Multi-pass printing means each color layer shifts slightly. Embrace this drift
+            as a feature -- 1-3px offsets add handmade depth and lively analog energy.
+          </p>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card" style="--card-accent: var(--riso-teal);">
+          <div class="card__icon" aria-hidden="true">
+            <div style="width:42px;height:42px;background:repeating-conic-gradient(var(--riso-teal) 0% 25%, transparent 0% 50%);background-size:8px 8px;"></div>
+          </div>
+          <p class="card__label">Ink No. 003</p>
+          <h3 class="card__title">Halftone Grain</h3>
+          <p class="card__body">
+            Images and tonal areas are rendered as diffusion dither or dot-screen halftone.
+            This grain gives everything a tactile, photographic texture unique to Riso prints.
+          </p>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card" style="--card-accent: var(--riso-purple);">
+          <div class="card__icon" aria-hidden="true">
+            <div style="width:38px;height:38px;background:var(--riso-purple);opacity:0.7;"></div>
+            <div style="width:38px;height:38px;background:var(--riso-yellow);position:absolute;left:10px;top:10px;mix-blend-mode:multiply;opacity:0.7;"></div>
+          </div>
+          <p class="card__label">Ink No. 004</p>
+          <h3 class="card__title">Overprint Mixing</h3>
+          <p class="card__body">
+            Semi-transparent soy inks blend where they overlap. Multiply is the defining
+            operation -- layers interact rather than occlude, producing rich secondary hues.
+          </p>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card" style="--card-accent: var(--riso-orange);">
+          <div class="card__icon" aria-hidden="true">
+            <div style="width:44px;height:44px;background:var(--riso-paper-warm);border:2px solid var(--riso-orange);position:relative;">
+              <div style="position:absolute;inset:6px;background:url('data:image/svg+xml,%3Csvg viewBox=%270 0 8 8%27 xmlns=%27http://www.w3.org/2000/svg%27%3E%3Cfilter id=%27n%27%3E%3CfeTurbulence type=%27fractalNoise%27 baseFrequency=%270.9%27 numOctaves=%273%27 stitchTiles=%27stitch%27/%3E%3C/filter%3E%3Crect width=%27100%25%27 height=%27100%25%27 filter=%27url(%23n)%27 opacity=%270.4%27/%3E%3C/svg%3E') repeat;background-size:8px 8px;"></div>
+            </div>
+          </div>
+          <p class="card__label">Ink No. 005</p>
+          <h3 class="card__title">Paper Texture</h3>
+          <p class="card__body">
+            Uncoated, recycled paper absorbs ink unevenly. The paper itself is an active design
+            element -- warm cream tones and organic texture participate in every composition.
+          </p>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card" style="--card-accent: var(--riso-fluo-pink);">
+          <div class="card__icon" aria-hidden="true">
+            <div style="width:20px;height:40px;background:var(--riso-fluo-pink);border-radius:20px 0 0 20px;"></div>
+            <div style="width:20px;height:40px;background:var(--riso-fluo-green);border-radius:0 20px 20px 0;position:absolute;left:20px;mix-blend-mode:multiply;"></div>
+          </div>
+          <p class="card__label">Ink No. 006</p>
+          <h3 class="card__title">Fluorescent Accents</h3>
+          <p class="card__body">
+            Riso's fluorescent pink, orange, and green inks deliver eye-catching vibrance
+            impossible in standard CMYK -- their glow adds urgency and artistic emphasis.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       DECORATIVE BANNER
+       ============================== -->
+  <div class="overprint-banner" aria-hidden="true">
+    <div class="overprint-banner__layer overprint-banner__layer--red"></div>
+    <div class="overprint-banner__layer overprint-banner__layer--blue"></div>
+    <div class="overprint-banner__layer overprint-banner__layer--yellow"></div>
+    <div class="overprint-banner__content">
+      <h2>Every Layer Tells a Story</h2>
+      <p>Soy ink -- rice bran -- uncoated stock -- drum rotation -- color separation -- overprint</p>
+    </div>
+  </div>
+
+  <!-- ==============================
+       DESIGN PRINCIPLES
+       ============================== -->
+  <section class="section section--paper" id="principles">
+    <div class="container">
+      <p class="section-label">Philosophy</p>
+      <h2 class="section-title">Design Principles</h2>
+      <p class="section-desc">
+        The Riso aesthetic demands intentional imperfection, constrained palettes,
+        and respect for the analog process that defines the medium.
+      </p>
+
+      <div class="principles-grid">
+        <div class="principle" style="--principle-color: var(--riso-bright-red);">
+          <p class="principle__number">01</p>
+          <h3 class="principle__title">Embrace Imperfection</h3>
+          <p class="principle__desc">
+            Misalignment and grain are not errors but signatures of the medium.
+            Every registration drift, every ink density variation, every grain pattern
+            is a mark of authenticity that no digital process can perfectly replicate.
+          </p>
+        </div>
+
+        <div class="principle" style="--principle-color: var(--riso-blue);">
+          <p class="principle__number">02</p>
+          <h3 class="principle__title">Work Within Constraints</h3>
+          <p class="principle__desc">
+            A limited 2-4 color palette produces more cohesive and inventive work
+            than unlimited choice. The constraint is essential -- it forces bold chromatic
+            decisions and graphic clarity that define the Riso look.
+          </p>
+        </div>
+
+        <div class="principle" style="--principle-color: var(--riso-teal);">
+          <p class="principle__number">03</p>
+          <h3 class="principle__title">Layer Transparently</h3>
+          <p class="principle__desc">
+            Every color interaction should feel like physical overprinting rather
+            than digital stacking. Let colors overlap and interact through multiply
+            blending -- each layer adds to the conversation, never obscures it.
+          </p>
+        </div>
+
+        <div class="principle" style="--principle-color: var(--riso-purple);">
+          <p class="principle__number">04</p>
+          <h3 class="principle__title">Let Paper Participate</h3>
+          <p class="principle__desc">
+            The background is not a neutral surface but an active design element.
+            Warm paper tones, visible texture, and generous white space let the
+            substrate breathe and contribute its own organic character.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       EFFECTS SHOWCASE
+       ============================== -->
+  <section class="section section--paper-warm halftone-bg" id="effects">
+    <div class="reg-mark reg-mark--tr" aria-hidden="true"></div>
+    <div class="reg-mark reg-mark--bl" aria-hidden="true"></div>
+    <div class="container">
+      <p class="section-label">CSS Techniques</p>
+      <h2 class="section-title">Effects Showcase</h2>
+      <p class="section-desc">
+        All effects are achieved with pure CSS -- SVG noise filters, radial-gradient halftones,
+        pseudo-element offsets, and mix-blend-mode overprints.
+      </p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Misregistration -->
+        <div class="effect-demo">
+          <div class="effect-demo__preview effect-misregister">
+            <span class="effect-misregister__text" data-text="RISO">RISO</span>
+          </div>
+          <div class="effect-demo__info">
+            <p class="effect-demo__title">Misregistration</p>
+            <p class="effect-demo__desc">Color-layer offset via pseudo-elements</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Overprint Circles -->
+        <div class="effect-demo">
+          <div class="effect-demo__preview effect-overprint">
+            <div class="effect-overprint__circle effect-overprint__circle--a"></div>
+            <div class="effect-overprint__circle effect-overprint__circle--b"></div>
+            <div class="effect-overprint__circle effect-overprint__circle--c"></div>
+          </div>
+          <div class="effect-demo__info">
+            <p class="effect-demo__title">Overprint Mixing</p>
+            <p class="effect-demo__desc">mix-blend-mode: multiply on overlapping shapes</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Halftone -->
+        <div class="effect-demo">
+          <div class="effect-demo__preview effect-halftone">
+            <span class="effect-halftone__label">Halftone</span>
+          </div>
+          <div class="effect-demo__info">
+            <p class="effect-demo__title">Halftone Dots</p>
+            <p class="effect-demo__desc">radial-gradient dot screen pattern</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Paper Grain -->
+        <div class="effect-demo">
+          <div class="effect-demo__preview effect-grain">
+            <span class="effect-grain__label">Paper Grain</span>
+          </div>
+          <div class="effect-demo__info">
+            <p class="effect-demo__title">Grain Texture</p>
+            <p class="effect-demo__desc">SVG feTurbulence noise filter overlay</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Color Layer Shift -->
+        <div class="effect-demo">
+          <div class="effect-demo__preview effect-shift">
+            <div class="effect-shift__block">
+              <div class="effect-shift__layer effect-shift__layer--red"></div>
+              <div class="effect-shift__layer effect-shift__layer--blue"></div>
+              <div class="effect-shift__layer effect-shift__layer--yellow"></div>
+            </div>
+          </div>
+          <div class="effect-demo__info">
+            <p class="effect-demo__title">Layer Shift</p>
+            <p class="effect-demo__desc">Animated registration drift with multiply blend</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Ink Spread -->
+        <div class="effect-demo">
+          <div class="effect-demo__preview effect-ink-spread">
+            <div class="effect-ink-spread__blob"></div>
+          </div>
+          <div class="effect-demo__info">
+            <p class="effect-demo__title">Ink Spread</p>
+            <p class="effect-demo__desc">Fluorescent ink glow with blur + screen blend</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       BUTTON SHOWCASE
+       ============================== -->
+  <section class="section section--paper" id="buttons">
+    <div class="container">
+      <p class="section-label">Interactive</p>
+      <h2 class="section-title">Button Variants</h2>
+      <p class="section-desc">
+        Flat spot colors with offset layers. Hover states shift the registration
+        or reveal the underlying color layer beneath.
+      </p>
+
+      <div class="button-showcase">
+        <button class="riso-btn riso-btn--primary">Primary Red</button>
+        <button class="riso-btn riso-btn--blue">Process Blue</button>
+        <button class="riso-btn riso-btn--outline">Outline</button>
+        <button class="riso-btn riso-btn--teal">Teal Accent</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       BLOCKQUOTE
+       ============================== -->
+  <section class="section section--paper-warm">
+    <div class="container">
+      <blockquote class="riso-blockquote">
+        <span class="riso-blockquote__mark" aria-hidden="true">"</span>
+        <p class="riso-blockquote__text">
+          The Risograph is the punk rock of printing. It's fast, it's cheap, it's beautifully
+          imperfect, and it puts the means of production directly into the hands of artists.
+          Every print is a one-of-one -- that's the magic.
+        </p>
+        <cite class="riso-blockquote__author">-- A Print Studio Manifesto</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ==============================
+       CTA SECTION
+       ============================== -->
+  <section class="cta-section">
+    <div class="cta-section__bg-circle cta-section__bg-circle--a" aria-hidden="true"></div>
+    <div class="cta-section__bg-circle cta-section__bg-circle--b" aria-hidden="true"></div>
+    <div class="cta-section__bg-circle cta-section__bg-circle--c" aria-hidden="true"></div>
+
+    <div class="cta-section__content">
+      <p class="cta-section__label">Start Printing</p>
+      <h2 class="cta-section__title">Ready to Run the Drum?</h2>
+      <p class="cta-section__desc">
+        Load the ink, feed the paper, and let the machine do what it does best --
+        produce prints that are warm, imperfect, and entirely alive.
+      </p>
+      <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+        <a href="#" class="riso-btn riso-btn--primary">Start a Print Run</a>
+        <a href="#hero" class="riso-btn riso-btn--outline">Back to Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==============================
+       FOOTER
+       ============================== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__brand">
+        <span class="footer__logo-mark" aria-hidden="true"></span>
+        <span class="footer__brand-name">Risograph</span>
+      </div>
+      <p class="footer__text">Design Aesthetic Reference -- Spot Color Printing</p>
+      <div class="footer__links">
+        <a href="#typography">Type</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+    </div>
+    <div class="footer__inner" style="margin-top: 20px;">
+      <div class="footer__ink-strip" aria-hidden="true">
+        <span style="background: var(--riso-bright-red);"></span>
+        <span style="background: var(--riso-blue);"></span>
+        <span style="background: var(--riso-yellow);"></span>
+        <span style="background: var(--riso-fluo-pink);"></span>
+        <span style="background: var(--riso-teal);"></span>
+        <span style="background: var(--riso-purple);"></span>
+        <span style="background: var(--riso-orange);"></span>
+        <span style="background: var(--riso-hunter-green);"></span>
+        <span style="background: var(--riso-cornflower);"></span>
+        <span style="background: var(--riso-flat-gold);"></span>
+        <span style="background: var(--riso-midnight);"></span>
+        <span style="background: var(--riso-black);"></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==============================
+       VANILLA JS (minimal)
+       ============================== -->
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile menu if open
+          var links = document.querySelector('.nav__links');
+          if (links) links.classList.remove('nav__links--open');
+        }
+      });
+    });
+  </script>
+</body>
+</html>

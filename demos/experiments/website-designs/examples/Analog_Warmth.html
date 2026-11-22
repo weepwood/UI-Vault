@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analog Warmth -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,300;8..60,400;8..60,600;8..60,700&family=Special+Elite&family=DM+Sans:wght@300;400;500&family=Courier+Prime:wght@400;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --aw-cream: #F5EDE0;
+      --aw-ivory: #EDE4D3;
+      --aw-developer: #F9F3EA;
+
+      /* --- Primary Accents --- */
+      --aw-amber: #E8A54B;
+      --aw-peach: #E4B08A;
+      --aw-ochre: #C4A265;
+
+      /* --- Text --- */
+      --aw-sepia: #5C4A3A;
+      --aw-brown: #7A6150;
+      --aw-shutter: #3A332C;
+
+      /* --- Secondary Accents --- */
+      --aw-rose: #C89B97;
+      --aw-olive: #8A8B6A;
+      --aw-orange: #D97A3E;
+      --aw-gold: #D4B876;
+      --aw-blue: #7A8B96;
+
+      /* --- Dark Tones --- */
+      --aw-negative: #2C2520;
+
+      /* --- Functional Tokens --- */
+      --aw-bg: var(--aw-cream);
+      --aw-text: var(--aw-sepia);
+      --aw-heading: var(--aw-shutter);
+      --aw-accent: var(--aw-amber);
+      --aw-surface: var(--aw-ivory);
+
+      /* --- Shadows --- */
+      --aw-shadow-sm: 0 2px 8px rgba(92, 74, 58, 0.08);
+      --aw-shadow-md: 0 4px 16px rgba(92, 74, 58, 0.1);
+      --aw-shadow-lg: 0 8px 28px rgba(92, 74, 58, 0.14);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--aw-sepia);
+      background-color: var(--aw-cream);
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+      font-family: 'Libre Baskerville', 'Times New Roman', serif;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--aw-shutter);
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--aw-orange);
+      border-bottom: 1px solid rgba(217, 122, 62, 0.3);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--aw-shutter);
+      border-bottom-color: var(--aw-shutter);
+    }
+
+    /* ============================================
+       FILM GRAIN OVERLAY (Global)
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      z-index: 9999;
+      mix-blend-mode: multiply;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--cream {
+      background-color: var(--aw-cream);
+    }
+
+    .section--ivory {
+      background-color: var(--aw-ivory);
+    }
+
+    .section--developer {
+      background-color: var(--aw-developer);
+    }
+
+    /* ============================================
+       SECTION LABELS & HEADINGS
+       ============================================ */
+    .section-label {
+      font-family: 'Courier Prime', 'Courier New', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--aw-brown);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 700;
+      color: var(--aw-shutter);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'Special Elite', 'Courier New', monospace;
+      font-size: 0.95rem;
+      color: var(--aw-brown);
+      text-align: center;
+      letter-spacing: 0.04em;
+      margin-bottom: 40px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: rgba(245, 237, 224, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(196, 162, 101, 0.25);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--aw-shutter);
+      border-bottom: none;
+      letter-spacing: -0.01em;
+    }
+
+    .nav-brand:hover {
+      color: var(--aw-shutter);
+      border-bottom: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--aw-sepia);
+      padding: 8px 14px;
+      border-radius: 6px;
+      border-bottom: none;
+      letter-spacing: 0.02em;
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      background: rgba(232, 165, 75, 0.12);
+      color: var(--aw-shutter);
+      border-bottom: none;
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--aw-shutter);
+      margin: 5px 0;
+      border-radius: 2px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: linear-gradient(175deg, var(--aw-developer) 0%, var(--aw-cream) 40%, var(--aw-ivory) 100%);
+      padding: 100px 40px 80px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Vignette */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(44, 37, 32, 0.06) 100%);
+      pointer-events: none;
+    }
+
+    /* Light leak wash */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -15%;
+      width: 50%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, rgba(232, 165, 75, 0.18) 0%, transparent 65%);
+      pointer-events: none;
+      filter: blur(50px);
+      animation: lightLeakDrift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes lightLeakDrift {
+      0% { transform: translate(0, 0) scale(1); opacity: 0.8; }
+      50% { transform: translate(-20px, 10px) scale(1.05); opacity: 1; }
+      100% { transform: translate(10px, -15px) scale(0.98); opacity: 0.85; }
+    }
+
+    /* Secondary light leak on hero bottom-left */
+    .hero-light-leak {
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 45%;
+      height: 60%;
+      background: radial-gradient(ellipse at center, rgba(200, 155, 151, 0.15) 0%, rgba(228, 176, 138, 0.08) 45%, transparent 70%);
+      pointer-events: none;
+      filter: blur(40px);
+      z-index: 1;
+    }
+
+    /* Decorative film frame lines */
+    .hero-frame-top,
+    .hero-frame-bottom {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(80%, 700px);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(196, 162, 101, 0.25), transparent);
+      z-index: 2;
+    }
+
+    .hero-frame-top { top: 32px; }
+    .hero-frame-bottom { bottom: 32px; }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero h1 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      color: var(--aw-shutter);
+      margin-bottom: 12px;
+    }
+
+    .hero-tagline {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--aw-brown);
+      margin-bottom: 6px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Special Elite', 'Courier New', monospace;
+      font-size: 1.05rem;
+      color: var(--aw-brown);
+      letter-spacing: 0.05em;
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.1rem;
+      color: var(--aw-sepia);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.85;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative camera aperture icon */
+    .hero-aperture {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 24px;
+      position: relative;
+      opacity: 0.3;
+    }
+
+    .hero-aperture::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40px;
+      height: 40px;
+      border: 2px solid var(--aw-ochre);
+      border-radius: 50%;
+    }
+
+    .hero-aperture::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--aw-ochre);
+      border-radius: 50%;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      border: none;
+      border-radius: 6px;
+      padding: 12px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      border-bottom: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      border-bottom: none;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(135deg, rgba(232, 165, 75, 0) 0%, rgba(232, 165, 75, 0.15) 100%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover::after {
+      opacity: 1;
+    }
+
+    /* Primary (dark sepia) */
+    .btn-primary {
+      background: var(--aw-sepia);
+      color: var(--aw-cream);
+      box-shadow: 0 2px 6px rgba(58, 51, 44, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--aw-shutter);
+      color: var(--aw-cream);
+      box-shadow: 0 4px 14px rgba(58, 51, 44, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Warm (amber) */
+    .btn-warm {
+      background: var(--aw-amber);
+      color: var(--aw-shutter);
+      box-shadow: 0 2px 6px rgba(232, 165, 75, 0.3);
+    }
+
+    .btn-warm:hover {
+      background: var(--aw-orange);
+      color: var(--aw-cream);
+      box-shadow: 0 4px 14px rgba(217, 122, 62, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* Outline (ghost) */
+    .btn-outline {
+      background: transparent;
+      color: var(--aw-sepia);
+      border: 1.5px solid var(--aw-ochre);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: rgba(196, 162, 101, 0.1);
+      color: var(--aw-shutter);
+      border-color: var(--aw-sepia);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline::after {
+      display: none;
+    }
+
+    /* Rose (soft) */
+    .btn-rose {
+      background: var(--aw-rose);
+      color: var(--aw-shutter);
+      box-shadow: 0 2px 6px rgba(200, 155, 151, 0.3);
+    }
+
+    .btn-rose:hover {
+      background: #b88a86;
+      color: var(--aw-cream);
+      box-shadow: 0 4px 14px rgba(200, 155, 151, 0.4);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       FILM STRIP DIVIDER
+       ============================================ */
+    .film-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 0 auto;
+      max-width: 300px;
+      padding: 32px 0;
+      opacity: 0.35;
+    }
+
+    .film-divider::before,
+    .film-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--aw-ochre), transparent);
+    }
+
+    .film-divider-dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .film-divider-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--aw-ochre);
+    }
+
+    /* ============================================
+       FILM SPROCKET BAND
+       ============================================ */
+    .sprocket-band {
+      background: var(--aw-negative);
+      padding: 8px 0;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      overflow: hidden;
+    }
+
+    .sprocket-band span {
+      display: block;
+      width: 12px;
+      height: 8px;
+      border-radius: 2px;
+      background: var(--aw-shutter);
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(196, 162, 101, 0.2);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--aw-brown);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--aw-shutter);
+      line-height: 1.2;
+    }
+
+    .typo-heading {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--aw-shutter);
+      line-height: 1.3;
+    }
+
+    .typo-typewriter {
+      font-family: 'Special Elite', 'Courier New', monospace;
+      font-size: 1.1rem;
+      color: var(--aw-brown);
+      letter-spacing: 0.03em;
+      line-height: 1.6;
+    }
+
+    .typo-body {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.05rem;
+      color: var(--aw-sepia);
+      line-height: 1.85;
+    }
+
+    .typo-mono {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--aw-brown);
+    }
+
+    .typo-ui {
+      font-family: 'DM Sans', 'Helvetica Neue', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--aw-sepia);
+    }
+
+    .typo-right h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.1rem;
+      color: var(--aw-shutter);
+      margin-bottom: 16px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .typo-scale-size {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.72rem;
+      color: var(--aw-brown);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .typo-pairings {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(196, 162, 101, 0.25);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 12px;
+    }
+
+    .typo-pair {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pair:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pair-note {
+      color: var(--aw-brown);
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      background: var(--aw-cream);
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: var(--aw-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--aw-shadow-md);
+    }
+
+    .color-swatch {
+      height: 80px;
+      width: 100%;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: var(--aw-shutter);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      color: var(--aw-brown);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--aw-ivory);
+      border: 1px solid rgba(196, 162, 101, 0.3);
+      border-radius: 10px;
+      padding: 28px;
+      box-shadow: 0 2px 8px rgba(92, 74, 58, 0.08), 0 0 0 1px rgba(196, 162, 101, 0.1);
+      position: relative;
+      overflow: hidden;
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, rgba(232, 165, 75, 0.6), rgba(228, 176, 138, 0.4), rgba(200, 155, 151, 0.3));
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 20px rgba(92, 74, 58, 0.12), 0 0 0 1px rgba(196, 162, 101, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 14px;
+    }
+
+    .card-icon--amber { background: rgba(232, 165, 75, 0.15); color: var(--aw-amber); }
+    .card-icon--peach { background: rgba(228, 176, 138, 0.2); color: var(--aw-peach); }
+    .card-icon--rose { background: rgba(200, 155, 151, 0.2); color: var(--aw-rose); }
+    .card-icon--olive { background: rgba(138, 139, 106, 0.15); color: var(--aw-olive); }
+    .card-icon--blue { background: rgba(122, 139, 150, 0.15); color: var(--aw-blue); }
+    .card-icon--orange { background: rgba(217, 122, 62, 0.15); color: var(--aw-orange); }
+
+    .card-label {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--aw-brown);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .card h3 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--aw-shutter);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--aw-sepia);
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--aw-brown);
+      background: rgba(196, 162, 101, 0.12);
+      border: 1px solid rgba(196, 162, 101, 0.2);
+      border-radius: 4px;
+      padding: 3px 8px;
+      margin-top: 12px;
+      margin-right: 6px;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      background: var(--aw-ivory);
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid rgba(196, 162, 101, 0.25);
+      box-shadow: var(--aw-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--aw-shadow-md);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--aw-shutter);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.85rem;
+      color: var(--aw-brown);
+      line-height: 1.6;
+    }
+
+    /* --- Effect 1: Film Grain --- */
+    .effect-grain {
+      background: var(--aw-cream);
+    }
+
+    .effect-grain::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      opacity: 0.2;
+      mix-blend-mode: multiply;
+    }
+
+    .effect-grain::after {
+      content: 'GRAIN';
+      position: absolute;
+      bottom: 16px;
+      right: 16px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      color: var(--aw-brown);
+      opacity: 0.5;
+    }
+
+    /* --- Effect 2: Light Leak --- */
+    .effect-light-leak {
+      background: linear-gradient(135deg, var(--aw-ivory) 0%, var(--aw-cream) 100%);
+    }
+
+    .effect-light-leak::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 70%;
+      height: 90%;
+      background: radial-gradient(ellipse at center, rgba(232, 165, 75, 0.35) 0%, rgba(217, 122, 62, 0.15) 40%, transparent 70%);
+      filter: blur(25px);
+      animation: leakPulse 6s ease-in-out infinite alternate;
+    }
+
+    .effect-light-leak::after {
+      content: '';
+      position: absolute;
+      bottom: -15%;
+      left: -5%;
+      width: 50%;
+      height: 60%;
+      background: radial-gradient(ellipse at center, rgba(200, 155, 151, 0.3) 0%, rgba(228, 176, 138, 0.12) 45%, transparent 70%);
+      filter: blur(30px);
+      animation: leakPulse 8s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes leakPulse {
+      0% { opacity: 0.7; transform: scale(1); }
+      100% { opacity: 1; transform: scale(1.08); }
+    }
+
+    /* --- Effect 3: Vignette --- */
+    .effect-vignette {
+      background: linear-gradient(175deg, var(--aw-developer) 0%, var(--aw-cream) 50%, var(--aw-ivory) 100%);
+    }
+
+    .effect-vignette::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at center, transparent 30%, rgba(44, 37, 32, 0.2) 100%);
+    }
+
+    .effect-vignette::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      border: 2px solid rgba(196, 162, 101, 0.3);
+      border-radius: 50%;
+    }
+
+    /* --- Effect 4: Halation Glow --- */
+    .effect-halation {
+      background: var(--aw-negative);
+    }
+
+    .effect-halation::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle, rgba(232, 165, 75, 0.9) 0%, rgba(217, 122, 62, 0.5) 30%, rgba(200, 155, 151, 0.2) 55%, transparent 75%);
+      border-radius: 50%;
+      animation: halationGlow 4s ease-in-out infinite alternate;
+    }
+
+    .effect-halation::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      background: radial-gradient(circle, rgba(232, 165, 75, 0.15) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: halationGlow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes halationGlow {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      100% { transform: translate(-50%, -50%) scale(1.15); }
+    }
+
+    /* --- Effect 5: Warm Sepia Tones --- */
+    .effect-sepia {
+      background: linear-gradient(180deg,
+        #F9F3EA 0%,
+        #F5EDE0 15%,
+        #EDE4D3 30%,
+        #E4B08A 50%,
+        #C4A265 65%,
+        #7A6150 80%,
+        #5C4A3A 90%,
+        #3A332C 100%
+      );
+    }
+
+    .effect-sepia::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      opacity: 0.08;
+      mix-blend-mode: multiply;
+    }
+
+    .effect-sepia::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(44, 37, 32, 0.12) 100%);
+    }
+
+    /* --- Effect 6: Paper Texture --- */
+    .effect-paper {
+      background: var(--aw-developer);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(196, 162, 101, 0.03) 2px,
+          rgba(196, 162, 101, 0.03) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(196, 162, 101, 0.02) 2px,
+          rgba(196, 162, 101, 0.02) 3px
+        );
+    }
+
+    .effect-paper::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(228, 176, 138, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 75% 60%, rgba(212, 184, 118, 0.06) 0%, transparent 35%),
+        radial-gradient(circle at 50% 80%, rgba(200, 155, 151, 0.05) 0%, transparent 30%);
+    }
+
+    .effect-paper::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      opacity: 0.04;
+      mix-blend-mode: multiply;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      background: var(--aw-developer);
+      border-left: 3px solid var(--aw-amber);
+      border-radius: 0 10px 10px 0;
+      padding: 36px 40px;
+      margin: 0 auto;
+      max-width: 680px;
+      position: relative;
+      box-shadow: var(--aw-shadow-sm);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Libre Baskerville', serif;
+      font-size: 4.5rem;
+      color: var(--aw-ochre);
+      opacity: 0.25;
+      position: absolute;
+      top: 4px;
+      left: 14px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Source Serif 4', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      color: var(--aw-sepia);
+      padding-left: 24px;
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 14px;
+      padding-left: 24px;
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.78rem;
+      font-style: normal;
+      color: var(--aw-brown);
+      letter-spacing: 0.06em;
+    }
+
+    /* Light leak accent on quote */
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 40%;
+      height: 60%;
+      background: radial-gradient(ellipse at center, rgba(232, 165, 75, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+      filter: blur(20px);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container {
+      background: var(--aw-ivory);
+      border: 1px solid rgba(196, 162, 101, 0.25);
+      border-radius: 14px;
+      padding: 56px 40px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--aw-shadow-md);
+    }
+
+    /* Subtle light leak on CTA */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      right: -10%;
+      width: 50%;
+      height: 80%;
+      background: radial-gradient(ellipse at center, rgba(232, 165, 75, 0.1) 0%, transparent 65%);
+      pointer-events: none;
+      filter: blur(40px);
+    }
+
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      left: -10%;
+      width: 40%;
+      height: 60%;
+      background: radial-gradient(ellipse at center, rgba(200, 155, 151, 0.08) 0%, transparent 65%);
+      pointer-events: none;
+      filter: blur(35px);
+    }
+
+    .cta-container h2 {
+      font-family: 'Libre Baskerville', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-container .cta-typewriter {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.95rem;
+      color: var(--aw-brown);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-container p {
+      font-family: 'Source Serif 4', serif;
+      font-size: 1.05rem;
+      color: var(--aw-sepia);
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-container .btn {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--aw-negative);
+      color: rgba(245, 237, 224, 0.7);
+      padding: 56px 32px 40px;
+      text-align: center;
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer-brand {
+      font-family: 'Libre Baskerville', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--aw-cream);
+      margin-bottom: 10px;
+    }
+
+    .footer-desc {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.92rem;
+      color: rgba(245, 237, 224, 0.6);
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.82rem;
+      color: rgba(245, 237, 224, 0.55);
+      border-bottom: 1px solid rgba(232, 165, 75, 0.2);
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--aw-amber);
+      border-bottom-color: var(--aw-amber);
+    }
+
+    .footer-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 20px;
+      opacity: 0.3;
+    }
+
+    .footer-divider span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--aw-ochre);
+    }
+
+    .footer-divider::before,
+    .footer-divider::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--aw-ochre), transparent);
+    }
+
+    .footer-copy {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.06em;
+      color: rgba(245, 237, 224, 0.35);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        background: rgba(245, 237, 224, 0.97);
+        backdrop-filter: blur(8px);
+        flex-direction: column;
+        padding: 16px;
+        border-bottom: 1px solid rgba(196, 162, 101, 0.25);
+        box-shadow: 0 4px 16px rgba(92, 74, 58, 0.1);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero {
+        padding: 72px 20px 60px;
+      }
+
+      .container {
+        padding: 0 16px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 72px) 0;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 12px;
+      }
+
+      .quote-block {
+        padding: 28px 24px;
+      }
+
+      .quote-block blockquote {
+        padding-left: 16px;
+        font-size: 1.05rem;
+      }
+
+      .quote-block cite {
+        padding-left: 16px;
+      }
+
+      .cta-container {
+        padding: 40px 24px;
+      }
+
+      body::after {
+        opacity: 0.025;
+      }
+
+      .hero-frame-top,
+      .hero-frame-bottom {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: 1.9rem;
+      }
+
+      .hero-desc {
+        font-size: 1rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        text-align: center;
+      }
+    }
+
+    /* ============================================
+       PREFERS REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Film & Light</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('.nav-links').classList.toggle('open')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="nav-links">
+      <a href="#hero" class="active">Gallery</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-light-leak"></div>
+    <div class="hero-frame-top"></div>
+    <div class="hero-frame-bottom"></div>
+
+    <div class="hero-content">
+      <div class="hero-aperture"></div>
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Analog Warmth</h1>
+      <p class="hero-subtitle">Kodak Portra 400 &mdash; 35mm &mdash; f/2.8</p>
+      <p class="hero-desc">
+        Every photograph carries the warmth of the light that made it.
+        We celebrate the gentle grain, the amber glow, and the quiet
+        imperfections that make analog images feel genuinely alive.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SPROCKET BAND ===== -->
+  <div class="sprocket-band">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Serif Warmth &amp; Typewriter Soul</h2>
+      <p class="section-subtitle">editorial elegance meets darkroom notes</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Libre Baskerville 700</p>
+            <p class="typo-display">Silver &amp; Light</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Lora 600</p>
+            <p class="typo-heading">Warm Tonal Character</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Special Elite 400</p>
+            <p class="typo-typewriter">shot on portra 400 -- developed by hand in C-41</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Source Serif 4 400</p>
+            <p class="typo-body">The organic imperfections of analog photography -- gentle grain, soft light leaks, and warmly faded tones -- give images a character that clinical digital precision cannot replicate.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Metadata / Courier Prime 400</p>
+            <p class="typo-mono">Frame 24 &bull; ISO 400 &bull; Exp. +1/3</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / DM Sans 500</p>
+            <p class="typo-ui">Interface Labels &amp; Navigation</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.6rem</span>
+              <span style="font-family: 'Libre Baskerville', serif; font-size: 1.8rem; font-weight: 700; color: var(--aw-shutter);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1.4rem; font-weight: 600; color: var(--aw-shutter);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Special Elite', monospace; font-size: 1.05rem; color: var(--aw-brown);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Source Serif 4', serif; font-size: 1rem; color: var(--aw-sepia);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Courier Prime', monospace; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--aw-brown);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.9rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.88rem; color: var(--aw-sepia);">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <p class="typo-pair">
+              <strong style="font-family: 'Libre Baskerville', serif; color: var(--aw-orange);">Libre Baskerville</strong> + <strong>Source Serif 4</strong><br>
+              <span class="typo-pair-note">Classic editorial warmth; photo book feel</span>
+            </p>
+            <p class="typo-pair">
+              <strong style="font-family: 'Lora', serif; color: var(--aw-orange);">Lora</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans</strong><br>
+              <span class="typo-pair-note">Warm serif headings with clean modern body</span>
+            </p>
+            <p class="typo-pair">
+              <strong style="font-family: 'Special Elite', monospace; color: var(--aw-orange);">Special Elite</strong> + <strong>Source Serif 4</strong><br>
+              <span class="typo-pair-note">Darkroom notes meet polished prose</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILM STRIP DIVIDER ===== -->
+  <div class="section--cream" style="padding: 0;">
+    <div class="film-divider">
+      <div class="film-divider-dots">
+        <span class="film-divider-dot"></span>
+        <span class="film-divider-dot"></span>
+        <span class="film-divider-dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--developer" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Film Stock Tones</h2>
+      <p class="section-subtitle">portra warmth, velvia greens &amp; darkroom chemistry</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5EDE0;"></div>
+          <div class="color-info">
+            <div class="color-name">Portra Cream</div>
+            <div class="color-hex">#F5EDE0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDE4D3;"></div>
+          <div class="color-info">
+            <div class="color-name">Darkroom Ivory</div>
+            <div class="color-hex">#EDE4D3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F9F3EA;"></div>
+          <div class="color-info">
+            <div class="color-name">Developer Tint</div>
+            <div class="color-hex">#F9F3EA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8A54B;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Leak Amber</div>
+            <div class="color-hex">#E8A54B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E4B08A;"></div>
+          <div class="color-info">
+            <div class="color-name">Kodak Peach</div>
+            <div class="color-hex">#E4B08A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A265;"></div>
+          <div class="color-info">
+            <div class="color-name">Faded Ochre</div>
+            <div class="color-hex">#C4A265</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C4A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Sepia Shadow</div>
+            <div class="color-hex">#5C4A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A6150;"></div>
+          <div class="color-info">
+            <div class="color-name">Exposure Brown</div>
+            <div class="color-hex">#7A6150</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C89B97;"></div>
+          <div class="color-info">
+            <div class="color-name">Film Fog Rose</div>
+            <div class="color-hex">#C89B97</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8A8B6A;"></div>
+          <div class="color-info">
+            <div class="color-name">Velvia Olive</div>
+            <div class="color-hex">#8A8B6A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D97A3E;"></div>
+          <div class="color-info">
+            <div class="color-name">Halation Orange</div>
+            <div class="color-hex">#D97A3E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4B876;"></div>
+          <div class="color-info">
+            <div class="color-name">Dust Mote Gold</div>
+            <div class="color-hex">#D4B876</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A8B96;"></div>
+          <div class="color-info">
+            <div class="color-name">Emulsion Blue</div>
+            <div class="color-hex">#7A8B96</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3A332C;"></div>
+          <div class="color-info">
+            <div class="color-name">Shutter Black</div>
+            <div class="color-hex">#3A332C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C2520;"></div>
+          <div class="color-info">
+            <div class="color-name">Negative Strip</div>
+            <div class="color-hex">#2C2520</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPROCKET BAND ===== -->
+  <div class="sprocket-band">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">From the Darkroom</h2>
+      <p class="section-subtitle">warm cards, soft edges &amp; organic details</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--amber">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
+          </div>
+          <span class="card-label">Core Element</span>
+          <h3>Film Grain Texture</h3>
+          <p>A subtle organic noise pattern overlays all surfaces, giving the design a tactile, photographic quality that flat digital renders lack. Keep opacity between 3-6%.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">SVG Filter</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--orange">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          </div>
+          <span class="card-label">Signature Effect</span>
+          <h3>Light Leak Accents</h3>
+          <p>Soft washes of warm amber and rosy pink bleed across edges, mimicking the beautiful flare caused by light entering a camera body through worn seals.</p>
+          <span class="tag">Gradient</span>
+          <span class="tag">Blur</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--peach">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/><line x1="17" y1="17" x2="22" y2="17"/></svg>
+          </div>
+          <span class="card-label">Layout</span>
+          <h3>Vignette Framing</h3>
+          <p>Edges of hero areas and sections darken subtly toward the periphery with radial gradients, replicating the natural fall-off of light on film exposures.</p>
+          <span class="tag">Radial</span>
+          <span class="tag">Focus</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--rose">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <span class="card-label">Technique</span>
+          <h3>Warm Shadow Tinting</h3>
+          <p>Shadows carry a brown or sepia undertone rather than neutral gray or pure black. This keeps the overall palette cohesive and the emotional temperature consistently warm.</p>
+          <span class="tag">Shadow</span>
+          <span class="tag">Tone</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--olive">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6.13 1L6 16a2 2 0 002 2h15"/><path d="M1 6.13L16 6a2 2 0 012 2v15"/></svg>
+          </div>
+          <span class="card-label">Principle</span>
+          <h3>Desaturated Mid-Tones</h3>
+          <p>Colors are gently muted rather than vivid. Greens lean olive, blues lean slate, and reds shift toward terracotta or dusty rose, as though processed through film chemistry.</p>
+          <span class="tag">Muted</span>
+          <span class="tag">Film</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+          </div>
+          <span class="card-label">Craft</span>
+          <h3>Analog Imperfection</h3>
+          <p>Slight misalignments, softened type rendering, and gentle inconsistencies are embraced as features rather than flaws. The human touch authenticates the design.</p>
+          <span class="tag">Organic</span>
+          <span class="tag">Authentic</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILM STRIP DIVIDER ===== -->
+  <div class="section--cream" style="padding: 0;">
+    <div class="film-divider">
+      <div class="film-divider-dots">
+        <span class="film-divider-dot"></span>
+        <span class="film-divider-dot"></span>
+        <span class="film-divider-dot"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--ivory" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Darkroom Techniques</h2>
+      <p class="section-subtitle">all analog, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-grain"></div>
+          <div class="effect-caption">
+            <h4>Film Grain</h4>
+            <p>SVG feTurbulence filter creates authentic fractal noise at low opacity, mimicking silver halide grain.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-light-leak"></div>
+          <div class="effect-caption">
+            <h4>Light Leak</h4>
+            <p>Blurred radial gradients in amber and rose simulate warm light bleeding through worn camera seals.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-vignette"></div>
+          <div class="effect-caption">
+            <h4>Vignette</h4>
+            <p>Radial gradient from transparent center to dark edges replicates natural lens light fall-off.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-halation"></div>
+          <div class="effect-caption">
+            <h4>Halation Glow</h4>
+            <p>Bright elements emit warm amber glow, mimicking light bouncing off the film backing layer.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-sepia"></div>
+          <div class="effect-caption">
+            <h4>Warm Sepia Tones</h4>
+            <p>Layered gradients through the full warm palette with grain overlay create aged photographic print quality.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-paper"></div>
+          <div class="effect-caption">
+            <h4>Aged Paper</h4>
+            <p>Fine repeating lines, subtle color spots, and micro-noise suggest the fibrous texture of photographic paper.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPROCKET BAND ===== -->
+  <div class="sprocket-band">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--developer">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Warm Buttons</h2>
+      <p class="section-subtitle">soft, tactile &amp; warmly inviting</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Sepia</a>
+        <a href="#" class="btn btn-warm">Amber Warmth</a>
+        <a href="#" class="btn btn-rose">Film Fog Rose</a>
+        <a href="#" class="btn btn-outline">Outlined Ghost</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          There is something about film that digital will never capture &mdash;
+          the way light passes through silver and chemistry to become
+          something you can hold. Every grain is evidence that the
+          photograph was real.
+        </blockquote>
+        <cite>&mdash; A Darkroom Journal, Frame 24</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--ivory cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Develop Something Beautiful</h2>
+        <span class="cta-typewriter">warmth, grain &amp; the character of light on film</span>
+        <p>
+          The Analog Warmth aesthetic embraces organic imperfection, amber
+          tones, and the tactile character of photographic media. Ground
+          every surface in warm cream, tint every shadow with sepia, and let
+          the light leak through.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPROCKET BAND ===== -->
+  <div class="sprocket-band">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">Film &amp; Light</div>
+      <p class="footer-desc">
+        A design aesthetic reference celebrating the warm, organic visual
+        language of analog photography. Portra tones, film grain, and light
+        leaks &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Gallery</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-divider">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Analog Warmth &bull; Shot on Kodak Portra 400 &bull; Developed in C-41</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Smooth scroll for nav links (fallback for browsers without CSS scroll-behavior)
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        var target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile nav if open
+          var navLinks = document.querySelector('.nav-links');
+          if (navLinks.classList.contains('open')) {
+            navLinks.classList.remove('open');
+          }
+        }
+      });
+    });
+
+    // Active nav link highlighting on scroll
+    var sections = document.querySelectorAll('section[id]');
+    var navAnchors = document.querySelectorAll('.nav-links a');
+
+    function highlightNav() {
+      var scrollPos = window.scrollY + 100;
+      sections.forEach(function(section) {
+        var top = section.offsetTop;
+        var height = section.offsetHeight;
+        var id = section.getAttribute('id');
+        if (scrollPos >= top && scrollPos < top + height) {
+          navAnchors.forEach(function(a) {
+            a.classList.remove('active');
+            if (a.getAttribute('href') === '#' + id) {
+              a.classList.add('active');
+            }
+          });
+        }
+      });
+    }
+
+    window.addEventListener('scroll', highlightNav, { passive: true });
+    highlightNav();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>网页风格图鉴 · website_designs</title>
+  <style>
+    :root{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;color-scheme:light;--bg:#f6f7f8;--surface:#fff;--text:#20282d;--secondary:#657278;--border:#dfe4e5;--hover:#f0f3f4;--focus:#315e80;--selected:#e9f0f5;--radius:9px}
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text)}
+    button,input,a{font:inherit}
+    button{cursor:pointer;color:inherit}
+    button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+    .app{height:100vh;height:100dvh;display:grid;grid-template-columns:minmax(220px,270px) minmax(0,1fr);overflow:hidden}
+    .browser{min-width:0;display:flex;flex-direction:column;border-right:1px solid var(--border);background:var(--surface)}
+    .browser-head{padding:18px 16px 13px;flex:none;border-bottom:1px solid var(--border)}
+    .eyebrow{font-size:11px;color:var(--secondary);letter-spacing:.02em}
+    h1{font-size:18px;line-height:1.25;letter-spacing:-.035em;margin:6px 0 5px;font-weight:650}
+    .intro{font-size:12px;color:var(--secondary);margin:0 0 15px;line-height:1.5}
+    .search{display:flex;align-items:center;gap:9px;border:1px solid var(--border);border-radius:8px;height:38px;padding:0 10px;background:var(--bg)}
+    .search svg{color:var(--secondary);flex:none}
+    .search input{border:0;outline:none;min-width:0;flex:1;background:transparent;color:var(--text);font-size:13px}
+    .search:focus-within{border-color:var(--focus);box-shadow:0 0 0 2px color-mix(in srgb,var(--focus) 12%,transparent)}
+    .search input::placeholder{color:var(--secondary)}
+    .filter-strip{display:flex;overflow-x:auto;gap:5px;padding:11px 12px 10px;border-bottom:1px solid var(--border);flex:none;scrollbar-width:thin}
+    .filter{white-space:nowrap;flex:none;border:1px solid transparent;border-radius:6px;padding:6px 10px;font-size:12px;background:transparent;color:var(--secondary)}
+    .filter:hover{background:var(--hover);color:var(--text)}
+    .filter[aria-pressed="true"]{background:var(--selected);border-color:var(--border);color:var(--text);font-weight:600}
+    .list-count{font-size:11px;color:var(--secondary);padding:11px 17px 8px;flex:none}
+    .style-list{overflow:auto;overscroll-behavior:contain;flex:1;min-height:0;padding:0 8px 12px;scrollbar-width:thin}
+    .style-row{width:100%;display:flex;align-items:center;gap:10px;text-align:left;border:0;border-radius:7px;background:transparent;padding:11px 10px;position:relative;min-height:51px}
+    .style-row:hover{background:var(--hover)}
+    .style-row[aria-current="true"]{background:var(--selected)}
+    .style-row[aria-current="true"]::before{content:"";position:absolute;left:0;top:11px;bottom:11px;width:3px;border-radius:3px;background:var(--focus)}
+    .number{font-size:11px;color:var(--secondary);width:25px;font-variant-numeric:tabular-nums;flex:none}
+    .style-meta{min-width:0;flex:1}
+    .style-name{display:block;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;font-size:13px;font-weight:550}
+    .style-type{display:block;color:var(--secondary);font-size:11px;margin-top:4px}
+    .empty{padding:20px 14px;font-size:13px;color:var(--secondary);line-height:1.7}
+    .browser-foot{flex:none;padding:10px 16px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;color:var(--secondary)}
+    .browser-foot a{color:inherit;text-decoration:none}
+    .browser-foot a:hover{text-decoration:underline}
+    .stage{min-width:0;min-height:0;display:flex;flex-direction:column;background:#e9ebed}
+    .stage-head{flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:66px;padding:11px 18px;background:var(--surface);border-bottom:1px solid var(--border)}
+    .stage-title{min-width:0}
+    .stage-title h2{margin:0;font-size:16px;font-weight:650;white-space:nowrap;text-overflow:ellipsis;overflow:hidden}
+    .stage-title p{margin:5px 0 0;font-size:11px;color:var(--secondary)}
+    .actions{display:flex;gap:6px;flex:none;align-items:center}
+    .action{border:1px solid var(--border);background:var(--surface);padding:8px 10px;border-radius:7px;font-size:12px;display:inline-flex;align-items:center;justify-content:center;gap:5px;text-decoration:none;white-space:nowrap;color:var(--text);min-height:34px}
+    .action:hover{background:var(--hover)}
+    .action[disabled]{opacity:.35;cursor:default}
+    .action svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+    .action.primary{background:var(--text);color:var(--surface);border-color:var(--text)}
+    .action.primary:hover{opacity:.85}
+    .viewport{min-height:0;flex:1;position:relative;display:flex}
+    iframe{display:block;width:100%;height:100%;border:0;background:#fff;flex:1}
+    .loading{pointer-events:none;position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--focus),transparent);background-size:200% 100%;animation:loading 1.2s linear infinite}
+    .loading[hidden]{display:none}
+    @keyframes loading{from{background-position:100% 0}to{background-position:-100% 0}}
+    .stage-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:34px;background:var(--surface);border-top:1px solid var(--border);padding:6px 14px;font-size:11px;color:var(--secondary)}
+    .stage-foot a{color:inherit;text-decoration:none}
+    .stage-foot a:hover{text-decoration:underline}
+    @media(max-width:1000px){.action .label{display:none}.action{padding:8px}.stage-head{padding:10px 12px}}
+    @media(max-width:640px){.app{display:flex;flex-direction:column}.browser{width:auto;max-height:38vh;border-right:0;border-bottom:1px solid var(--border)}.browser-head{padding:11px 12px 9px}.browser-head h1{font-size:15px;margin:2px 0}.intro{display:none}.search{height:35px}.filter-strip{padding:7px 10px}.style-list{min-height:70px}.style-row{padding:7px 10px;min-height:40px}.style-type{display:none}.browser-foot{display:none}.stage{flex:1;min-height:0}.stage-head{min-height:52px}.stage-title h2{font-size:14px}.stage-title p{margin-top:2px}}
+    @media(prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#171b1d;--surface:#202628;--text:#edf0ef;--secondary:#a4aeb0;--border:#364044;--hover:#293134;--focus:#85b8da;--selected:#293c48}.stage{background:#111}.action.primary{color:#1a2225}}
+    @media(prefers-reduced-motion:reduce){.loading{animation:none;background:var(--focus)}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <aside class="browser" aria-label="网页风格目录">
+    <div class="browser-head">
+      <div class="eyebrow">website_designs / Chris Lemke</div>
+      <h1>网页风格图鉴</h1>
+      <p class="intro">314 种设计语言 · 独立 HTML 原样预览</p>
+      <label class="search">
+        <svg width="16" height="16" viewBox="0 0 24 24" stroke="currentColor" fill="none" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+        <input id="search" type="search" placeholder="搜索风格名称 / 按 / 聚焦" autocomplete="off" aria-label="搜索风格">
+      </label>
+    </div>
+    <nav id="filters" class="filter-strip" aria-label="风格主题筛选"></nav>
+    <div id="list-count" class="list-count" role="status" aria-live="polite"></div>
+    <div id="style-list" class="style-list" role="listbox" aria-label="设计风格" tabindex="-1"></div>
+    <div class="browser-foot"><span>原始示例保留独立样式</span><a href="./LICENSE.txt" target="_blank" rel="noopener noreferrer">MIT 授权</a></div>
+  </aside>
+  <main class="stage">
+    <div class="stage-head">
+      <div class="stage-title"><h2 id="current-name">选择一种风格</h2><p id="current-subtitle"></p></div>
+      <div class="actions">
+        <button id="previous" type="button" class="action" title="上一个风格" aria-label="上一个风格"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button>
+        <button id="next" type="button" class="action" title="下一个风格" aria-label="下一个风格"><svg viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg></button>
+        <button id="random" type="button" class="action" title="随机探索"><svg viewBox="0 0 24 24"><path d="M18 14l4 4-4 4M18 2l4 4-4 4M2 18h2c6 0 8-12 14-12h4M2 6h2c2.2 0 3.8 1.6 5 4M14 14c1 2 2.3 4 4 4h4"/></svg><span class="label">随机</span></button>
+        <a id="guide-link" class="action" href="https://github.com/chrislemke/website_designs" target="_blank" rel="noopener noreferrer"><span class="label">设计指南</span><svg viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a>
+        <a id="source-link" class="action" href="https://github.com/chrislemke/website_designs" target="_blank" rel="noopener noreferrer"><span class="label">HTML 源码</span><svg viewBox="0 0 24 24"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-3-11-2 14"/></svg></a>
+        <a id="open-link" class="action primary" href="#" target="_blank" rel="noopener noreferrer"><span class="label">独立打开</span><svg viewBox="0 0 24 24"><path d="M14 5h5v5M10 14 19 5M19 13v6H5V5h6"/></svg></a>
+      </div>
+    </div>
+    <div class="viewport">
+      <div id="loading" class="loading" hidden></div>
+      <iframe id="preview" title="当前网页设计风格预览" sandbox="allow-scripts allow-forms allow-popups" referrerpolicy="no-referrer" loading="eager"></iframe>
+    </div>
+    <footer class="stage-foot"><span id="status" role="status" aria-live="polite">请选择一个示例</span><a href="https://github.com/chrislemke/website_designs" target="_blank" rel="noopener noreferrer">原项目 · Chris Lemke</a></footer>
+  </main>
+</div>
+<script id="design-data" type="application/json">["3D_Immersive","70s_Retro","8-Bit","90s_Grunge","AI_Generative","Acid_Design","Afro_Baroque","Afrofuturism","American_Kitsch","Analog_Warmth","Angelcore","Anti_Design","Art_Deco","Art_Nouveau","Arts_and_Crafts","Atomic_Age","Aurora_Gradient","Avant_Basic","Avantropop","Balletcore","Barbiecore","Baroque","Bauhaus","Bento_Grid","Biedermeier","Biomorphic","Biophilic_Design","Blueprint_Technical","Botanical_Maximalism","Bright_Tertiaries","Brutalist_Web_Design","Candy_Pop","Card_Based_Design","Catholic_Kitsch","Celestialcore","Chaos_Design","Chicha","Chinoiserie","Chromatic_Blur","Chromecore","Claymorphism","Clean_Girl","Clovercore","Cluttercore","Coastal_Grandmother","Coastal_Style","Color_Block","Colorful_Pop","Concrete_Brutalism","Constructivism","Coquette","Corporate_Grunge","Corporate_Hippie","Corporate_Memphis","Cottagecore","Cozy_Gamer","Craftcore","Crypto_Aesthetic","Crystal_Core","Cubism","Curly_Girly","Cute_alism","Cutecore","Cyberminimalism","Cyberpunk","Cybersigilism","Czech_Cubism","DIY_Punk","DORFic","Dadaism","Danish_Pastel","Dark_Academia","Dark_Aero","Dark_Botanical","Dark_Editorial","Dark_Fantasy","Dark_Futurism","Dark_Luxe","Dark_Mode_Neon","Dark_Romance","Data_Viz_Art","De_Stijl","Deconstructivism","Desert_Modern","Dial_Up_Delight","Dieselpunk","Digital_Collage","Digital_Garden","Dollar_Store_Vernacular","Dopamine_Design","Dreamcore","Duotone","E-girl_E-boy","Early_Cyber","Earth_Tones","Editorial_Magazine_Layout","Empire_Style","Ethereal","Ethnic_Chic","Expressionism","Factory_Pomo","Fairycore","FantasY2K","Festival_Marketplace","Film_Noir","Fitness_Splatter","Flat_Design","Fleischer_Style","Forestcore","Four_Colors","Frasurbane","French_Provincial_Style","Frosted_Touch","Frutiger_Aero","Frutiger_Eco","Future_Primitive","Futurism","Gen_Z_Maximalism","Generative_Pattern","Geo-Boho","Geocities","Geometric_Modernism","Glassmorphism","Glitch_Art","Global_Village_Coffeehouse","Goblincore","Googie","Gorpcore","Gothic","Gradient_Mesh","Graffiti_Pop","Grain_and_Grit","Grandmillennial","Grocery_Girl_Fall","Grotesk_Display","Grunge_Revival","Gustavian","Hand_Drawn","Hands_Up","Heroic_Realism","Hipness_Purgatory","Hollywood_Regency","Holographic_UI","Honeycore","Human_Scribble","Hygge","Indie_Sleaze","Industrial_Gothic","Ink_Wash","International_Typographic_Style","Iridescent","Isometric_Design","Italo_Disco","Japandi","Jiggy_Era","Kid_Science","Kidcore","Kinetic_Typography","Kinfolk","Laser_Grid","Light_Academia","Light_Skeuomorphism","Ligne_Claire","Liminal_Space","Liquid_Fluid_Design","Liquid_Glass","Liquid_Metal","Live_Laugh_Love","Low_Poly","Lush_Velvet","Luxury_Minimalism","Mallsoft","Manguebeat","Material_Design","Maximalism","Medievalcore","Mediterranean","Memphis_Design","Memphis_Lite","Metalheart","Metro_Design","Microinteraction_Design","Mid-Century_Modern","Minimalism","Mission_School","Mixed_Media","Mob_Wife","Modernisme","Monochrome_Luxe","Monoline_Illustration","Moody_Maximalism","Moss_Punk","Nature_Distilled","Nautical","Neo-Vectorheart","Neo_Deco","Neo_Minimalism","Neo_Pop","Neoclassicism","Neon_Gothic","Neon_Ooze","Neubrutalism","Neumorphism","New_Objectivity","New_Wave","Noir_Deco","Noir_Minimalism","Nordic_Noir","Old_Money","Op_Art","Organic_Modern","Ostalgie","PC-98","Paper_Cut","Parallax_Design","Parisian_Girly","Pastel_Brutalism","Pastel_Goth","Pen_and_Pixel","Pixel_Noir","Plakatstil","Pointillism","Polish_Poster_School","Polychrome","Pop_Art","Pop_Surrealism","Positivity_Kawaii","Post_Digital","Poster_Gal","Psychedelic","Puppycore","Quiet_Luxury","RGB_Gamer","Radical_Design","Raw_Industrial","Raygun_Gothic","Recession_Pop","Regencycore","Resonant_Stark","Retro_Anime","Retro_Computing","Retro_Diner","Retro_Futurism","Risograph","Rocker_Grrl_Diva","Rococo","Romanticism","Rustic_Modern","Sacred_Geometry","Scandi_Boho","Scandinavian_Dark","Scandinavian_Design","Sci_Fi_Interface","Scrapbook","Scrollytelling","Seiz_Breur","Shabby_Chic","Shoe_Diva","Silicon_Dreams","Skeuomorphism","Snug_Simple","Soft_Countriana","Soft_Gradient","Solarpunk","Space_Age","Spatial_UI","Split_Screen","Stained_Glass","Steampunk","Streamline_Moderne","Streetwear","Sunset_Gradient","Superflat_Pop","Supergraphic_Ultramodern","Suprematism","Surrealism","Synthwave","Tech_Noir","Techno_Minimalism","Teenpunk","Terminal_CLI_Aesthetic","Textured_Minimalism","Tranquil_Serenity","Trinketcore","Tropical_Maximalism","Tropideco","Tuscan_Rustic","Typographic_Brutalism","Ukiyo-e","UrBling","VSCO","Vaporwave","Variable_Typography","Vector_Musica","Vectorbloom","Vectordelia","Victorian","Vintage_Botanical","Vintage_British_Sportsman","Wabi-Sabi","Wacky_Pomo","Warm_Industrial","Web_2.0","Weirdcore","Wes_Anderson","Western_Frontier","Whimsigothic","Windows_95_98","Wireframe_Aesthetic","Witchcore","Y2K_Futurism","Y2K_Glam","Y3K_Hyperfuturism","Zen_Garden"]</script>
+<script>
+(function(){
+  'use strict';
+  const slugs=JSON.parse(document.getElementById('design-data').textContent);
+  const qs=s=>document.querySelector(s);
+  const categories=[
+    ['all','全部'],
+    ['modern','现代 / 排版'],
+    ['retro','复古 / 时代'],
+    ['future','科技 / 未来'],
+    ['material','材质 / 色彩'],
+    ['art','艺术 / 文化'],
+    ['nature','自然 / 生活'],
+    ['other','其他']
+  ];
+  const rules=[
+    ['modern',/Minimal|Swiss|Grid|Bento|Editorial|Typography|Typographic|Modernism|Brutalis|Flat_Design|De_Stijl|Bauhaus|Neumorphism|Card_Based|Monochrome|Clean_Girl|Geometric|Constructivism|International|Wireframe|Color_Block|Spatial_UI|Split_Screen|Corporate/i],
+    ['retro',/Retro|90s|70s|8-Bit|80s|Y2K|Y3K|Vintage|Victorian|Mid-Century|Mid_Century|Art_Deco|Art_Nouveau|Atomic_Age|Windows_95|Web_2|Googie|Synthwave|Fleischer|Grunge|Geocities|Memphis|Kitsch|Streamline|Nostalgia|Frutiger/i],
+    ['future',/Cyber|Future|Futurism|Sci_Fi|Techno|Tech_Noir|Digital|AI_Generative|3D_Immersive|Crypto|Holograph|Glitch|Neon|Space_Age|Terminal|Data_Viz|Generative|Chromecore|Dark_Aero/i],
+    ['material',/Glass|Gradient|Clay|Chrome|Liquid|Metal|Frosted|Blur|Duotone|Colorful|Candy|Papercut|Texture|Grain|Halftone|Emboss|Neumorph|Skeuomorph|Stained_Glass|Aurora|Concrete/i],
+    ['nature',/Nature|Biophilic|Forest|Botanical|Eco|Earth|Coastal|Cottage|Garden|Organic|Desert|Rustic|Tropical|Zen|Wabi|Solarpunk|Moss|Warmth|Goblincore/i],
+    ['art',/Baroque|Afro|Art_|Avant|Dada|Cubism|Expressionism|Surreal|Supremat|Gothic|Punk|Ukiyo|Pop|Ballet|Coquette|Chinoiserie|Wes_Anderson|Scandinavian|Craft|Boho|Glam|Romance|Fairy|Dark_Academia|Dark_Fantasy/i]
+  ];
+  const title=slug=>slug.replace(/_/g,' ').replace(/\bUI\b/gi,'UI').replace(/\bY2K\b/gi,'Y2K');
+  const group=slug=>{for(const item of rules)if(item[1].test(slug))return item[0];return 'other'};
+  const items=slugs.map((slug,index)=>({slug,index,title:title(slug),group:group(slug)}));
+  let filter='all',query='',selected='';
+  const filters=qs('#filters'),list=qs('#style-list'),count=qs('#list-count'),frame=qs('#preview'),loading=qs('#loading'),status=qs('#status');
+  const groupLabel=id=>categories.find(x=>x[0]===id)?.[1]||'其他';
+  function visible(){const term=query.trim().toLocaleLowerCase();return items.filter(x=>(filter==='all'||x.group===filter)&&(!term||x.title.toLocaleLowerCase().includes(term)||x.slug.toLocaleLowerCase().includes(term)))}
+  function setSelected(slug,pushHash){
+    const entry=items.find(x=>x.slug===slug);
+    if(!entry)return;
+    selected=slug;
+    qs('#current-name').textContent=entry.title;
+    qs('#current-subtitle').textContent=groupLabel(entry.group)+' · '+String(entry.index+1).padStart(3,'0')+' / 314';
+    qs('#guide-link').href='https://github.com/chrislemke/website_designs/blob/main/designs/'+encodeURIComponent(slug)+'.md';
+    qs('#source-link').href='https://github.com/chrislemke/website_designs/blob/main/examples/'+encodeURIComponent(slug)+'.html';
+    const local='./examples/'+encodeURIComponent(slug)+'.html';
+    qs('#open-link').href=local;
+    loading.hidden=false;
+    status.textContent='正在载入 · '+entry.title;
+    if(frame.getAttribute('src')!==local)frame.setAttribute('src',local);
+    else loading.hidden=true;
+    frame.title=entry.title+' · 网页风格预览';
+    if(pushHash && location.hash.slice(1)!==encodeURIComponent(slug))location.hash=encodeURIComponent(slug);
+    renderList();
+  }
+  function renderFilters(){
+    filters.replaceChildren();
+    for(const [key,label] of categories){
+      const button=document.createElement('button');button.type='button';button.className='filter';button.textContent=label;button.setAttribute('aria-pressed',String(filter===key));button.addEventListener('click',()=>{filter=key;renderFilters();renderList()});filters.appendChild(button);
+    }
+  }
+  function renderList(){
+    const matching=visible();count.textContent='匹配 '+matching.length+' / '+items.length+' 种风格';list.replaceChildren();
+    const fragment=document.createDocumentFragment();
+    for(const entry of matching){
+      const button=document.createElement('button');button.type='button';button.className='style-row';button.setAttribute('role','option');button.setAttribute('aria-current',String(selected===entry.slug));button.setAttribute('aria-selected',String(selected===entry.slug));button.title=entry.title;
+      const number=document.createElement('span');number.className='number';number.textContent=String(entry.index+1).padStart(3,'0');
+      const meta=document.createElement('span');meta.className='style-meta';
+      const name=document.createElement('span');name.className='style-name';name.textContent=entry.title;
+      const type=document.createElement('span');type.className='style-type';type.textContent=groupLabel(entry.group);
+      meta.append(name,type);button.append(number,meta);
+      button.addEventListener('click',()=>setSelected(entry.slug,true));
+      fragment.appendChild(button);
+    }
+    if(!matching.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='没有匹配的风格。请尝试其他关键词或分类。';fragment.append(empty)}
+    list.appendChild(fragment);
+    qs('#previous').disabled=!matching.length;
+    qs('#next').disabled=!matching.length;
+    qs('#random').disabled=!matching.length;
+  }
+  function move(direction){
+    const matching=visible();if(!matching.length)return;
+    const index=matching.findIndex(x=>x.slug===selected);
+    const next=index<0?0:(index+direction+matching.length)%matching.length;
+    setSelected(matching[next].slug,true);
+    list.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'});
+  }
+  qs('#search').addEventListener('input',event=>{query=event.target.value;renderList()});
+  qs('#previous').addEventListener('click',()=>move(-1));
+  qs('#next').addEventListener('click',()=>move(1));
+  qs('#random').addEventListener('click',()=>{const matching=visible();if(!matching.length)return;const pool=matching.length>1?matching.filter(x=>x.slug!==selected):matching;setSelected(pool[Math.floor(Math.random()*pool.length)].slug,true);list.querySelector('[aria-selected="true"]')?.scrollIntoView({block:'nearest'})});
+  frame.addEventListener('load',()=>{loading.hidden=true;status.textContent='本地 HTML 演示 · 独立预览'});
+  window.addEventListener('keydown',event=>{
+    if(event.key==='/'&&!event.ctrlKey&&!event.metaKey&&document.activeElement?.tagName!=='INPUT'){event.preventDefault();qs('#search').focus()}
+    if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='ArrowDown'){event.preventDefault();move(1)}
+    if(event.altKey&&!event.ctrlKey&&!event.metaKey&&event.key==='ArrowUp'){event.preventDefault();move(-1)}
+    if(event.key==='Escape'&&document.activeElement===qs('#search')&&query){qs('#search').value='';query='';renderList()}
+  });
+  window.addEventListener('hashchange',()=>{let slug;try{slug=decodeURIComponent(location.hash.slice(1))}catch{return}if(slug&&slug!==selected&&items.some(x=>x.slug===slug))setSelected(slug,false)});
+  renderFilters();
+  let initial;try{initial=decodeURIComponent(location.hash.slice(1))}catch{}
+  setSelected(items.some(x=>x.slug===initial)?initial:'De_Stijl',false);
+})();
+</script>
+</body>
+</html>

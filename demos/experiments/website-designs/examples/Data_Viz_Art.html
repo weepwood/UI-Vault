@@ -1,0 +1,2103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Viz Art -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Interface Tones */
+      --dvz-bg: #f7fafc;
+      --dvz-surface: #ffffff;
+      --dvz-border: #e2e8f0;
+      --dvz-gridline: #e2e8f0;
+
+      /* Text Hierarchy */
+      --dvz-text-primary: #1b2a4a;
+      --dvz-text-secondary: #4a5568;
+      --dvz-text-tertiary: #718096;
+
+      /* Categorical Data Palette */
+      --dvz-cat-1: #3182ce;
+      --dvz-cat-2: #e53e3e;
+      --dvz-cat-3: #319795;
+      --dvz-cat-4: #d69e2e;
+      --dvz-cat-5: #805ad5;
+      --dvz-cat-6: #38b2ac;
+      --dvz-cat-7: #ed64a6;
+
+      /* Semantic Colors */
+      --dvz-positive: #38a169;
+      --dvz-negative: #e53e3e;
+      --dvz-neutral: #718096;
+      --dvz-highlight: #63b3ed;
+
+      /* Dark Surfaces */
+      --dvz-dark-bg: #0f1b2d;
+      --dvz-dark-surface: #1b2a4a;
+
+      /* Layout Tokens */
+      --dvz-chart-padding: 32px;
+      --dvz-card-radius: 8px;
+      --dvz-gap: 24px;
+      --dvz-max-width: 1200px;
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      background: var(--dvz-bg);
+      color: var(--dvz-text-secondary);
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--dvz-text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      color: var(--dvz-cat-1);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    /* ============================================
+       LAYOUT
+       ============================================ */
+    .container {
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+    }
+
+    .section--canvas {
+      background: var(--dvz-bg);
+    }
+
+    .section--white {
+      background: var(--dvz-surface);
+      border-top: 1px solid var(--dvz-border);
+      border-bottom: 1px solid var(--dvz-border);
+    }
+
+    .section--dark {
+      background: var(--dvz-dark-bg);
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .section--dark .section-label { color: var(--dvz-highlight); }
+    .section--dark .section-title { color: #ffffff; }
+    .section--dark .section-subtitle { color: rgba(255, 255, 255, 0.5); }
+
+    .section-header {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto 48px;
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dvz-cat-1);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.75rem, 4vw, 2.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--dvz-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: var(--dvz-text-tertiary);
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--dvz-border);
+      position: sticky;
+      top: 0;
+      background: rgba(247, 250, 252, 0.95);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--dvz-text-primary);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-logo:hover {
+      text-decoration: none;
+    }
+
+    .nav-logo-mark {
+      width: 28px;
+      height: 28px;
+      background: var(--dvz-cat-1);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-mark svg { width: 16px; height: 16px; }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--dvz-text-tertiary);
+      font-weight: 500;
+      font-size: 0.875rem;
+      transition: color 0.2s;
+      text-decoration: none;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--dvz-text-primary);
+      text-decoration: none;
+    }
+
+    .nav-links a.active {
+      color: var(--dvz-cat-1);
+    }
+
+    .nav-links a.active::after {
+      content: '';
+      position: absolute;
+      bottom: -18px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--dvz-cat-1);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--dvz-cat-1);
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 24px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn:hover {
+      background: #2c5282;
+      transform: translateY(-1px);
+      text-decoration: none;
+      box-shadow: 0 4px 12px rgba(49, 130, 206, 0.3);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--dvz-cat-1);
+      border: 1.5px solid var(--dvz-cat-1);
+    }
+
+    .btn--outline:hover {
+      background: rgba(49, 130, 206, 0.08);
+      box-shadow: none;
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--dvz-text-secondary);
+      padding: 8px 16px;
+    }
+
+    .btn--ghost:hover {
+      background: var(--dvz-border);
+      color: var(--dvz-text-primary);
+      box-shadow: none;
+    }
+
+    .btn--coral {
+      background: var(--dvz-cat-2);
+    }
+
+    .btn--coral:hover {
+      background: #c53030;
+      box-shadow: 0 4px 12px rgba(229, 62, 62, 0.3);
+    }
+
+    .btn--teal {
+      background: var(--dvz-cat-3);
+    }
+
+    .btn--teal:hover {
+      background: #276749;
+      box-shadow: 0 4px 12px rgba(49, 151, 149, 0.3);
+    }
+
+    .btn--dark {
+      background: var(--dvz-dark-bg);
+      color: #ffffff;
+    }
+
+    .btn--dark:hover {
+      background: var(--dvz-dark-surface);
+      box-shadow: 0 4px 12px rgba(15, 27, 45, 0.3);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+      padding: 80px 24px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1.3fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .hero-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dvz-cat-1);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--dvz-text-tertiary);
+      margin-bottom: 32px;
+      max-width: 460px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-chart {
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      padding: 24px;
+      position: relative;
+    }
+
+    .hero-chart-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .hero-chart-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--dvz-text-primary);
+    }
+
+    .hero-chart-period {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+    }
+
+    /* ============================================
+       THIN DIVIDER
+       ============================================ */
+    .divider {
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .divider-line {
+      height: 1px;
+      background: var(--dvz-border);
+      position: relative;
+    }
+
+    .divider-line--accent {
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--dvz-cat-1) 15%,
+        var(--dvz-cat-3) 35%,
+        var(--dvz-cat-5) 55%,
+        var(--dvz-cat-4) 75%,
+        transparent 100%
+      );
+      height: 2px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .type-specimens {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--dvz-gap);
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+    }
+
+    .type-card {
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      padding: var(--dvz-chart-padding);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .type-card:hover {
+      box-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .type-card-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dvz-text-tertiary);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--dvz-border);
+    }
+
+    .type-specimen-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      color: var(--dvz-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .type-specimen-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--dvz-text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .type-specimen-mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--dvz-text-tertiary);
+      background: var(--dvz-bg);
+      padding: 12px 16px;
+      border-radius: 4px;
+      border: 1px solid var(--dvz-border);
+    }
+
+    .type-specimen-metric {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 3rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+      color: var(--dvz-text-primary);
+    }
+
+    .type-sizes {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .type-size-row {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+    }
+
+    .type-size-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--dvz-text-tertiary);
+      min-width: 60px;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .type-annotation {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--dvz-text-tertiary);
+      line-height: 1.5;
+      border-left: 3px solid var(--dvz-cat-1);
+      padding-left: 12px;
+      margin-top: 12px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+    }
+
+    .palette-swatch {
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .palette-swatch:hover {
+      box-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .palette-color {
+      height: 80px;
+      position: relative;
+    }
+
+    .palette-info {
+      padding: 12px;
+    }
+
+    .palette-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--dvz-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .palette-hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    .palette-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+      margin-top: 4px;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--dvz-gap);
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+    }
+
+    .comp-card {
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      padding: var(--dvz-chart-padding);
+      display: flex;
+      flex-direction: column;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .comp-card:hover {
+      box-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
+      transform: translateY(-1px);
+    }
+
+    .comp-card-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--dvz-border);
+    }
+
+    .comp-card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--dvz-text-primary);
+    }
+
+    .comp-card-meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+    }
+
+    .comp-card-body {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+    }
+
+    .comp-card-footer {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--dvz-border);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--dvz-text-tertiary);
+    }
+
+    .legend-swatch {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--dvz-gap);
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+    }
+
+    .effect-demo {
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      overflow: hidden;
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .effect-demo:hover {
+      box-shadow: 0 4px 20px rgba(27, 42, 74, 0.08);
+      transform: translateY(-2px);
+    }
+
+    .effect-preview {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+      border-top: 1px solid var(--dvz-border);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--dvz-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: var(--dvz-text-tertiary);
+      line-height: 1.5;
+    }
+
+    /* Effect 1: Grid Pulse */
+    .effect-grid-pulse {
+      background:
+        linear-gradient(var(--dvz-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--dvz-border) 1px, transparent 1px);
+      background-size: 24px 24px;
+      background-position: center center;
+    }
+
+    .effect-grid-pulse::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(49, 130, 206, 0.15) 0%, transparent 70%);
+      animation: gridPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes gridPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.5); opacity: 1; }
+    }
+
+    /* Effect 2: Data Stream */
+    .effect-data-stream {
+      background: var(--dvz-dark-bg);
+    }
+
+    .effect-data-stream::before {
+      content: '01001 10110 00101 11010 01110 10001 01011 11001 00111 10100';
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10px;
+      color: var(--dvz-cat-1);
+      opacity: 0.4;
+      word-spacing: 8px;
+      line-height: 2.2;
+      padding: 12px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+    }
+
+    .effect-data-stream::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(180deg, transparent 0%, var(--dvz-dark-bg) 100%);
+      animation: streamScan 4s linear infinite;
+    }
+
+    @keyframes streamScan {
+      0% { opacity: 0.3; }
+      50% { opacity: 0.8; }
+      100% { opacity: 0.3; }
+    }
+
+    /* Effect 3: Scatter Plot */
+    .effect-scatter {
+      background:
+        radial-gradient(circle 4px at 20% 30%, var(--dvz-cat-1) 100%, transparent 100%),
+        radial-gradient(circle 6px at 45% 60%, var(--dvz-cat-3) 100%, transparent 100%),
+        radial-gradient(circle 3px at 70% 25%, var(--dvz-cat-5) 100%, transparent 100%),
+        radial-gradient(circle 5px at 30% 70%, var(--dvz-cat-2) 100%, transparent 100%),
+        radial-gradient(circle 4px at 60% 45%, var(--dvz-cat-4) 100%, transparent 100%),
+        radial-gradient(circle 7px at 80% 65%, var(--dvz-cat-1) 100%, transparent 100%),
+        radial-gradient(circle 3px at 15% 55%, var(--dvz-cat-3) 100%, transparent 100%),
+        radial-gradient(circle 5px at 55% 80%, var(--dvz-cat-5) 100%, transparent 100%),
+        radial-gradient(circle 4px at 85% 40%, var(--dvz-cat-2) 100%, transparent 100%),
+        radial-gradient(circle 6px at 40% 20%, var(--dvz-cat-4) 100%, transparent 100%),
+        radial-gradient(circle 3px at 25% 85%, var(--dvz-cat-1) 100%, transparent 100%),
+        radial-gradient(circle 5px at 75% 80%, var(--dvz-cat-3) 100%, transparent 100%),
+        radial-gradient(circle 4px at 90% 15%, var(--dvz-cat-5) 100%, transparent 100%),
+        radial-gradient(circle 3px at 50% 35%, var(--dvz-cat-2) 100%, transparent 100%),
+        radial-gradient(circle 6px at 35% 45%, var(--dvz-cat-4) 100%, transparent 100%),
+        linear-gradient(var(--dvz-gridline) 1px, transparent 1px),
+        linear-gradient(90deg, var(--dvz-gridline) 1px, transparent 1px);
+      background-size:
+        100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+        100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+        100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%,
+        40px 40px, 40px 40px;
+      background-color: var(--dvz-bg);
+    }
+
+    /* Effect 4: Gradient Heatmap */
+    .effect-heatmap {
+      background:
+        radial-gradient(ellipse 100px 80px at 30% 40%, rgba(229, 62, 62, 0.6) 0%, transparent 100%),
+        radial-gradient(ellipse 80px 100px at 60% 60%, rgba(214, 158, 46, 0.5) 0%, transparent 100%),
+        radial-gradient(ellipse 120px 60px at 75% 30%, rgba(49, 130, 206, 0.4) 0%, transparent 100%),
+        radial-gradient(ellipse 60px 90px at 20% 70%, rgba(56, 178, 172, 0.5) 0%, transparent 100%),
+        radial-gradient(ellipse 90px 70px at 85% 75%, rgba(128, 90, 213, 0.4) 0%, transparent 100%);
+      background-color: var(--dvz-dark-bg);
+    }
+
+    /* Effect 5: Contour Lines */
+    .effect-contour {
+      background: var(--dvz-bg);
+      position: relative;
+    }
+
+    .effect-contour::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(49, 130, 206, 0.15);
+      box-shadow:
+        0 0 0 20px transparent,
+        0 0 0 21px rgba(49, 130, 206, 0.12),
+        0 0 0 42px transparent,
+        0 0 0 43px rgba(49, 151, 149, 0.10),
+        0 0 0 64px transparent,
+        0 0 0 65px rgba(128, 90, 213, 0.08),
+        0 0 0 86px transparent,
+        0 0 0 87px rgba(214, 158, 46, 0.06);
+      animation: contourShift 6s ease-in-out infinite;
+    }
+
+    @keyframes contourShift {
+      0%, 100% { border-radius: 50%; }
+      25% { border-radius: 45% 55% 60% 40% / 55% 40% 60% 45%; }
+      50% { border-radius: 55% 45% 40% 60% / 45% 60% 40% 55%; }
+      75% { border-radius: 40% 60% 55% 45% / 60% 45% 55% 40%; }
+    }
+
+    /* Effect 6: Axis Crosshair */
+    .effect-crosshair {
+      background: var(--dvz-bg);
+      cursor: crosshair;
+    }
+
+    .effect-crosshair::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, var(--dvz-cat-1) 20%, var(--dvz-cat-1) 80%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    .effect-crosshair::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: linear-gradient(180deg, transparent 0%, var(--dvz-cat-1) 20%, var(--dvz-cat-1) 80%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    .crosshair-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--dvz-cat-1);
+      position: relative;
+      z-index: 2;
+      animation: crosshairPulse 2s ease-in-out infinite;
+    }
+
+    .crosshair-dot::after {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: -6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1.5px solid var(--dvz-cat-1);
+      opacity: 0.4;
+      animation: crosshairRing 2s ease-in-out infinite;
+    }
+
+    @keyframes crosshairPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    @keyframes crosshairRing {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.6); opacity: 0; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 40px 0;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 48px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--dvz-cat-1), var(--dvz-cat-3));
+      border-radius: 2px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.25rem, 3vw, 1.75rem);
+      line-height: 1.5;
+      letter-spacing: -0.01em;
+      color: var(--dvz-text-primary);
+      margin-bottom: 20px;
+    }
+
+    .quote-block cite {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      font-style: normal;
+      color: var(--dvz-text-tertiary);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 720px;
+      margin: 0 auto;
+      text-align: center;
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      padding: 60px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        var(--dvz-cat-1),
+        var(--dvz-cat-3),
+        var(--dvz-cat-5),
+        var(--dvz-cat-4),
+        var(--dvz-cat-7)
+      );
+    }
+
+    .cta-container h2 {
+      font-size: clamp(1.5rem, 3.5vw, 2.25rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .cta-eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--dvz-cat-1);
+      margin-bottom: 16px;
+    }
+
+    .cta-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: var(--dvz-text-tertiary);
+      line-height: 1.7;
+      margin-bottom: 32px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+      padding: 40px 24px;
+      border-top: 1px solid var(--dvz-border);
+    }
+
+    .footer-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .footer-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-brand-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--dvz-text-primary);
+    }
+
+    .footer-source {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      color: var(--dvz-text-tertiary);
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--dvz-text-primary);
+      text-decoration: none;
+    }
+
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--dvz-text-tertiary);
+    }
+
+    /* ============================================
+       KPI ROW
+       ============================================ */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--dvz-gap);
+      max-width: var(--dvz-max-width);
+      margin: 0 auto;
+      padding: 0 24px 60px;
+    }
+
+    .kpi-card {
+      background: var(--dvz-surface);
+      border: 1px solid var(--dvz-border);
+      border-radius: var(--dvz-card-radius);
+      padding: 24px;
+    }
+
+    .kpi-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--dvz-text-tertiary);
+      margin-bottom: 8px;
+    }
+
+    .kpi-value {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      color: var(--dvz-text-primary);
+      font-variant-numeric: tabular-nums;
+      margin-bottom: 8px;
+    }
+
+    .kpi-trend {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 500;
+      font-size: 0.75rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .kpi-trend--up { color: var(--dvz-positive); }
+    .kpi-trend--down { color: var(--dvz-negative); }
+
+    /* ============================================
+       ANIMATED BAR CHART (HERO)
+       ============================================ */
+    .bar-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .bar-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--dvz-text-tertiary);
+      min-width: 32px;
+      text-align: right;
+    }
+
+    .bar-track {
+      flex: 1;
+      height: 20px;
+      background: var(--dvz-bg);
+      border-radius: 3px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease-out;
+    }
+
+    .bar-value {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--dvz-text-secondary);
+      min-width: 36px;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 48px 24px 40px;
+        gap: 32px;
+      }
+
+      .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .type-specimens {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .nav {
+        padding: 12px 16px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        display: none;
+      }
+
+      .nav-actions .btn--ghost {
+        display: none;
+      }
+
+      .hero {
+        padding: 32px 16px 24px;
+      }
+
+      .section {
+        padding: var(--section-pad) 16px;
+      }
+
+      .kpi-row {
+        grid-template-columns: 1fr;
+        padding: 0 16px 40px;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        justify-content: center;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .cta-container {
+        padding: 40px 24px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .bar-fill {
+        transition: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-mark">
+        <svg viewBox="0 0 16 16" fill="none">
+          <path d="M2 12L5 4L8 9L11 2L14 8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      DataLens
+    </a>
+    <ul class="nav-links">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+    <div class="nav-actions">
+      <a href="#" class="btn btn--ghost">Log In</a>
+      <a href="#" class="btn">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Data Viz Art Aesthetic</div>
+      <h1>Where data becomes visual narrative</h1>
+      <p class="hero-desc">
+        Elevating data visualization from functional charts into the primary design element -- treating analytical displays as art that reveals patterns, trends, and human stories.
+      </p>
+      <div class="hero-actions">
+        <a href="#components" class="btn">Explore Components</a>
+        <a href="#effects" class="btn btn--outline">View Effects</a>
+      </div>
+    </div>
+    <div class="hero-chart">
+      <div class="hero-chart-header">
+        <span class="hero-chart-title">Revenue Trend</span>
+        <span class="hero-chart-period">Jan -- Dec 2025</span>
+      </div>
+      <svg viewBox="0 0 500 240" fill="none" style="width:100%;height:auto;">
+        <!-- Gridlines -->
+        <line x1="40" y1="20" x2="490" y2="20" stroke="#e2e8f0" stroke-width="0.5"/>
+        <line x1="40" y1="65" x2="490" y2="65" stroke="#e2e8f0" stroke-width="0.5"/>
+        <line x1="40" y1="110" x2="490" y2="110" stroke="#e2e8f0" stroke-width="0.5"/>
+        <line x1="40" y1="155" x2="490" y2="155" stroke="#e2e8f0" stroke-width="0.5"/>
+        <line x1="40" y1="200" x2="490" y2="200" stroke="#e2e8f0" stroke-width="0.5"/>
+        <!-- Y-axis labels -->
+        <text x="32" y="24" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="end">$50k</text>
+        <text x="32" y="69" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="end">$40k</text>
+        <text x="32" y="114" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="end">$30k</text>
+        <text x="32" y="159" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="end">$20k</text>
+        <text x="32" y="204" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="end">$10k</text>
+        <!-- Area fill -->
+        <defs>
+          <linearGradient id="heroAreaGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3182ce" stop-opacity="0.4"/>
+            <stop offset="100%" stop-color="#3182ce" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <path d="M60 170 L100 155 L140 160 L180 130 L220 120 L260 95 L300 100 L340 75 L380 60 L420 45 L460 30 L460 200 L60 200 Z"
+              fill="url(#heroAreaGrad)" opacity="0.3"/>
+        <!-- Data line -->
+        <polyline points="60,170 100,155 140,160 180,130 220,120 260,95 300,100 340,75 380,60 420,45 460,30"
+                  fill="none" stroke="#3182ce" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <!-- Data points -->
+        <circle cx="60" cy="170" r="3.5" fill="#fff" stroke="#3182ce" stroke-width="2"/>
+        <circle cx="140" cy="160" r="3.5" fill="#fff" stroke="#3182ce" stroke-width="2"/>
+        <circle cx="220" cy="120" r="3.5" fill="#fff" stroke="#3182ce" stroke-width="2"/>
+        <circle cx="300" cy="100" r="3.5" fill="#fff" stroke="#3182ce" stroke-width="2"/>
+        <circle cx="380" cy="60" r="3.5" fill="#fff" stroke="#3182ce" stroke-width="2"/>
+        <circle cx="460" cy="30" r="4" fill="#3182ce" stroke="#fff" stroke-width="2"/>
+        <!-- Annotation -->
+        <line x1="460" y1="30" x2="460" y2="50" stroke="#3182ce" stroke-width="1" stroke-dasharray="3,2"/>
+        <rect x="420" y="52" width="80" height="20" rx="4" fill="#3182ce"/>
+        <text x="460" y="65" font-family="IBM Plex Mono" font-size="9" fill="#fff" text-anchor="middle">$48.2k peak</text>
+        <!-- X-axis labels -->
+        <text x="60" y="218" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="middle">Jan</text>
+        <text x="140" y="218" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="middle">Mar</text>
+        <text x="220" y="218" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="middle">May</text>
+        <text x="300" y="218" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="middle">Jul</text>
+        <text x="380" y="218" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="middle">Sep</text>
+        <text x="460" y="218" font-family="IBM Plex Mono" font-size="9" fill="#718096" text-anchor="middle">Nov</text>
+      </svg>
+      <div style="display:flex;gap:16px;margin-top:12px;">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3182ce;"></span> Revenue</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#e53e3e;"></span> Target</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== KPI ROW ===== -->
+  <section class="kpi-row">
+    <div class="kpi-card">
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value">$1.24M</div>
+      <div class="kpi-trend kpi-trend--up">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 2L10 7H2L6 2Z" fill="currentColor"/></svg>
+        +18.3% YoY
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Active Users</div>
+      <div class="kpi-value">34,891</div>
+      <div class="kpi-trend kpi-trend--up">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 2L10 7H2L6 2Z" fill="currentColor"/></svg>
+        +7.2% MoM
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Conversion Rate</div>
+      <div class="kpi-value">3.8%</div>
+      <div class="kpi-trend kpi-trend--down">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 10L2 5H10L6 10Z" fill="currentColor"/></svg>
+        -0.4% MoM
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Avg. Session</div>
+      <div class="kpi-value">4m 12s</div>
+      <div class="kpi-trend kpi-trend--up">
+        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 2L10 7H2L6 2Z" fill="currentColor"/></svg>
+        +22s vs prev
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ACCENT DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line divider-line--accent"></div>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--canvas" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Typography</p>
+        <h2 class="section-title">Precise, Readable &amp; Technical</h2>
+        <p class="section-subtitle">High-readability sans-serif families with strong tabular number support, paired with monospace for data labels</p>
+      </div>
+
+      <div class="type-specimens">
+        <!-- Specimen 1: Display + Heading -->
+        <div class="type-card">
+          <div class="type-card-label">Space Grotesk -- Display &amp; Headings</div>
+          <div class="type-sizes">
+            <div class="type-size-row">
+              <span class="type-size-label">48px</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:48px;letter-spacing:-0.03em;line-height:1.1;color:var(--dvz-text-primary);">Insights</span>
+            </div>
+            <div class="type-size-row">
+              <span class="type-size-label">32px</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:32px;letter-spacing:-0.02em;line-height:1.2;color:var(--dvz-text-primary);">Data Narrative</span>
+            </div>
+            <div class="type-size-row">
+              <span class="type-size-label">24px</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:24px;letter-spacing:-0.02em;line-height:1.2;color:var(--dvz-text-primary);">Chart Section Title</span>
+            </div>
+            <div class="type-size-row">
+              <span class="type-size-label">18px</span>
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:18px;letter-spacing:-0.01em;line-height:1.3;color:var(--dvz-text-primary);">Card Header Element</span>
+            </div>
+          </div>
+          <div class="type-annotation">Monospace-inspired proportional face for a modern data aesthetic</div>
+        </div>
+
+        <!-- Specimen 2: Body + Annotation -->
+        <div class="type-card">
+          <div class="type-card-label">Inter -- Body &amp; Descriptions</div>
+          <p class="type-specimen-body">
+            Data Viz Art elevates data visualization from a functional communication tool into a primary design element. Every axis label, every color gradient, every annotation is a deliberate design choice.
+          </p>
+          <p style="font-family:'Inter',sans-serif;font-size:0.85rem;font-style:italic;color:var(--dvz-text-tertiary);line-height:1.5;border-left:3px solid var(--dvz-cat-1);padding-left:12px;margin-top:12px;">
+            Annotation text: Exceptional at small sizes, with a tall x-height optimized for screen readability.
+          </p>
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--dvz-border);">
+            <p style="font-family:'Inter',sans-serif;font-size:0.85rem;color:var(--dvz-text-tertiary);">
+              Caption style at 0.85rem with tertiary color for source citations and methodology notes.
+            </p>
+          </div>
+        </div>
+
+        <!-- Specimen 3: Monospace + Data -->
+        <div class="type-card">
+          <div class="type-card-label">IBM Plex Mono -- Data Labels</div>
+          <div class="type-specimen-mono" style="margin-bottom:16px;">
+            <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+              <span>region</span><span>revenue</span><span>change</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+              <span>NA</span><span>$1,412,000</span><span style="color:var(--dvz-positive);">+39.5%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:2px;">
+              <span>EU</span><span style="font-variant-numeric:tabular-nums;">$  857,000</span><span style="color:var(--dvz-positive);">+18.2%</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;">
+              <span>LATAM</span><span style="font-variant-numeric:tabular-nums;">$  275,000</span><span style="color:var(--dvz-negative);">-12.0%</span>
+            </div>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);background:var(--dvz-bg);padding:4px 8px;border-radius:4px;border:1px solid var(--dvz-border);">AXIS LABEL</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);background:var(--dvz-bg);padding:4px 8px;border-radius:4px;border:1px solid var(--dvz-border);">TICK MARK</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);background:var(--dvz-bg);padding:4px 8px;border-radius:4px;border:1px solid var(--dvz-border);">DATA VALUE</span>
+          </div>
+        </div>
+
+        <!-- Specimen 4: Metric Display -->
+        <div class="type-card">
+          <div class="type-card-label">Metric &amp; KPI Display</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+            <div>
+              <div class="type-specimen-metric" style="color:var(--dvz-cat-1);">42.7%</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);margin-top:4px;">Growth Rate</div>
+            </div>
+            <div>
+              <div class="type-specimen-metric" style="color:var(--dvz-positive);">$1.2M</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);margin-top:4px;">Revenue</div>
+            </div>
+            <div>
+              <div class="type-specimen-metric" style="color:var(--dvz-cat-5);">8,491</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);margin-top:4px;">Data Points</div>
+            </div>
+            <div>
+              <div class="type-specimen-metric" style="color:var(--dvz-negative);">-3.2%</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:0.7rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--dvz-text-tertiary);margin-top:4px;">Churn Rate</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--white" id="palette">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Color Palette</p>
+        <h2 class="section-title">Categorical, Sequential &amp; Neutral</h2>
+        <p class="section-subtitle">Colors chosen for perceptual uniformity, colorblind safety, and screen readability -- beauty from systematic application</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#1b2a4a;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Deep Ink</div>
+            <div class="palette-hex">#1B2A4A</div>
+            <div class="palette-role">Primary text, headings</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#4a5568;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Slate</div>
+            <div class="palette-hex">#4A5568</div>
+            <div class="palette-role">Secondary text, descriptions</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#718096;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Graphite</div>
+            <div class="palette-hex">#718096</div>
+            <div class="palette-role">Tertiary text, captions</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#e2e8f0;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Mist</div>
+            <div class="palette-hex">#E2E8F0</div>
+            <div class="palette-role">Gridlines, dividers</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#f7fafc;border-bottom:1px solid #e2e8f0;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Canvas</div>
+            <div class="palette-hex">#F7FAFC</div>
+            <div class="palette-role">Page background</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#3182ce;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Signal Blue</div>
+            <div class="palette-hex">#3182CE</div>
+            <div class="palette-role">Primary data, links</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#e53e3e;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Coral</div>
+            <div class="palette-hex">#E53E3E</div>
+            <div class="palette-role">Negative values, alerts</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#319795;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Teal</div>
+            <div class="palette-hex">#319795</div>
+            <div class="palette-role">Secondary data series</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#d69e2e;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Amber</div>
+            <div class="palette-hex">#D69E2E</div>
+            <div class="palette-role">Tertiary data, warnings</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#805ad5;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Violet</div>
+            <div class="palette-hex">#805AD5</div>
+            <div class="palette-role">Fourth data series</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#38b2ac;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Seafoam</div>
+            <div class="palette-hex">#38B2AC</div>
+            <div class="palette-role">Positive trend accent</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#ed64a6;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Rose</div>
+            <div class="palette-hex">#ED64A6</div>
+            <div class="palette-role">Sixth data series</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:#0f1b2d;"></div>
+          <div class="palette-info">
+            <div class="palette-name">Midnight</div>
+            <div class="palette-hex">#0F1B2D</div>
+            <div class="palette-role">Dark mode background</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-color" style="background:linear-gradient(135deg, #63b3ed 0%, #3182ce 100%);"></div>
+          <div class="palette-info">
+            <div class="palette-name">Glow</div>
+            <div class="palette-hex">#63B3ED</div>
+            <div class="palette-role">Hover highlights, emphasis</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line divider-line--accent"></div>
+  </div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--canvas" id="components">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Components</p>
+        <h2 class="section-title">Chart Cards &amp; Data Widgets</h2>
+        <p class="section-subtitle">Modular visualization containers with headers, legends, and source citations</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1: Multi-line Chart -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <span class="comp-card-title">User Growth</span>
+            <span class="comp-card-meta">12 months</span>
+          </div>
+          <div class="comp-card-body">
+            <svg viewBox="0 0 280 140" fill="none" style="width:100%;height:auto;">
+              <line x1="0" y1="35" x2="280" y2="35" stroke="#e2e8f0" stroke-width="0.5"/>
+              <line x1="0" y1="70" x2="280" y2="70" stroke="#e2e8f0" stroke-width="0.5"/>
+              <line x1="0" y1="105" x2="280" y2="105" stroke="#e2e8f0" stroke-width="0.5"/>
+              <polyline points="0,110 28,105 56,95 84,90 112,80 140,70 168,65 196,55 224,45 252,35 280,20"
+                        fill="none" stroke="#3182ce" stroke-width="2" stroke-linecap="round"/>
+              <polyline points="0,115 28,112 56,108 84,105 112,100 140,95 168,90 196,85 224,80 252,78 280,72"
+                        fill="none" stroke="#319795" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="comp-card-footer">
+            <span class="legend-item"><span class="legend-swatch" style="background:#3182ce;"></span> Organic</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#319795;"></span> Paid</span>
+          </div>
+        </div>
+
+        <!-- Card 2: Donut Chart -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <span class="comp-card-title">Traffic Sources</span>
+            <span class="comp-card-meta">This month</span>
+          </div>
+          <div class="comp-card-body">
+            <svg viewBox="0 0 160 160" fill="none" style="width:140px;height:140px;">
+              <circle cx="80" cy="80" r="60" fill="none" stroke="#e2e8f0" stroke-width="20"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="#3182ce" stroke-width="20"
+                      stroke-dasharray="151 377" stroke-dashoffset="0"
+                      transform="rotate(-90 80 80)"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="#319795" stroke-width="20"
+                      stroke-dasharray="94 377" stroke-dashoffset="-151"
+                      transform="rotate(-90 80 80)"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="#805ad5" stroke-width="20"
+                      stroke-dasharray="68 377" stroke-dashoffset="-245"
+                      transform="rotate(-90 80 80)"/>
+              <circle cx="80" cy="80" r="60" fill="none" stroke="#d69e2e" stroke-width="20"
+                      stroke-dasharray="64 377" stroke-dashoffset="-313"
+                      transform="rotate(-90 80 80)"/>
+              <text x="80" y="76" font-family="Space Grotesk" font-size="18" font-weight="700" fill="#1b2a4a" text-anchor="middle">34.8k</text>
+              <text x="80" y="92" font-family="IBM Plex Mono" font-size="7" fill="#718096" text-anchor="middle" letter-spacing="0.08em">TOTAL VISITS</text>
+            </svg>
+          </div>
+          <div class="comp-card-footer" style="flex-wrap:wrap;">
+            <span class="legend-item"><span class="legend-swatch" style="background:#3182ce;"></span> Direct 40%</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#319795;"></span> Search 25%</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#805ad5;"></span> Social 18%</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#d69e2e;"></span> Other 17%</span>
+          </div>
+        </div>
+
+        <!-- Card 3: Bar Chart -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <span class="comp-card-title">Revenue by Region</span>
+            <span class="comp-card-meta">Q4 2025</span>
+          </div>
+          <div class="comp-card-body" style="flex-direction:column;align-items:stretch;justify-content:center;gap:8px;">
+            <div class="bar-row">
+              <span class="bar-label">NA</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:85%;background:var(--dvz-cat-1);"></div>
+              </div>
+              <span class="bar-value">$512k</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">EU</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:62%;background:var(--dvz-cat-3);"></div>
+              </div>
+              <span class="bar-value">$380k</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">APAC</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:48%;background:var(--dvz-cat-5);"></div>
+              </div>
+              <span class="bar-value">$290k</span>
+            </div>
+            <div class="bar-row">
+              <span class="bar-label">LATAM</span>
+              <div class="bar-track">
+                <div class="bar-fill" style="width:30%;background:var(--dvz-cat-4);"></div>
+              </div>
+              <span class="bar-value">$182k</span>
+            </div>
+          </div>
+          <div class="comp-card-footer">
+            <span>Source: Finance Dept.</span>
+          </div>
+        </div>
+
+        <!-- Card 4: Sparkline KPI -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <span class="comp-card-title">Daily Active Users</span>
+            <span class="comp-card-meta">Last 30 days</span>
+          </div>
+          <div class="comp-card-body" style="flex-direction:column;align-items:stretch;gap:12px;">
+            <div style="display:flex;align-items:baseline;gap:12px;">
+              <span style="font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:2.5rem;letter-spacing:-0.03em;color:var(--dvz-text-primary);font-variant-numeric:tabular-nums;">12,847</span>
+              <span class="kpi-trend kpi-trend--up">
+                <svg width="12" height="12" viewBox="0 0 12 12"><path d="M6 2L10 7H2L6 2Z" fill="currentColor"/></svg>
+                +12.4%
+              </span>
+            </div>
+            <svg viewBox="0 0 280 50" fill="none" style="width:100%;height:auto;">
+              <defs>
+                <linearGradient id="sparkGrad" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#3182ce" stop-opacity="0.2"/>
+                  <stop offset="100%" stop-color="#3182ce" stop-opacity="0"/>
+                </linearGradient>
+              </defs>
+              <path d="M0 40 L20 35 L40 38 L60 30 L80 28 L100 32 L120 25 L140 22 L160 20 L180 18 L200 22 L220 15 L240 12 L260 10 L280 8 L280 50 L0 50 Z" fill="url(#sparkGrad)"/>
+              <polyline points="0,40 20,35 40,38 60,30 80,28 100,32 120,25 140,22 160,20 180,18 200,22 220,15 240,12 260,10 280,8"
+                        fill="none" stroke="#3182ce" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="comp-card-footer">
+            <span>Updated 5 min ago</span>
+          </div>
+        </div>
+
+        <!-- Card 5: Scatter Plot -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <span class="comp-card-title">Engagement vs. Revenue</span>
+            <span class="comp-card-meta">Per account</span>
+          </div>
+          <div class="comp-card-body">
+            <svg viewBox="0 0 280 160" fill="none" style="width:100%;height:auto;">
+              <!-- Grid -->
+              <line x1="30" y1="10" x2="270" y2="10" stroke="#e2e8f0" stroke-width="0.5"/>
+              <line x1="30" y1="50" x2="270" y2="50" stroke="#e2e8f0" stroke-width="0.5"/>
+              <line x1="30" y1="90" x2="270" y2="90" stroke="#e2e8f0" stroke-width="0.5"/>
+              <line x1="30" y1="130" x2="270" y2="130" stroke="#e2e8f0" stroke-width="0.5"/>
+              <line x1="30" y1="130" x2="30" y2="10" stroke="#718096" stroke-width="0.5"/>
+              <line x1="30" y1="130" x2="270" y2="130" stroke="#718096" stroke-width="0.5"/>
+              <!-- Axis labels -->
+              <text x="150" y="150" font-family="IBM Plex Mono" font-size="7" fill="#718096" text-anchor="middle" letter-spacing="0.06em">SESSIONS / WEEK</text>
+              <text x="12" y="70" font-family="IBM Plex Mono" font-size="7" fill="#718096" text-anchor="middle" transform="rotate(-90 12 70)" letter-spacing="0.06em">MRR</text>
+              <!-- Data points -->
+              <circle cx="60" cy="110" r="4" fill="#3182ce" opacity="0.7"/>
+              <circle cx="85" cy="95" r="5" fill="#3182ce" opacity="0.7"/>
+              <circle cx="100" cy="100" r="3" fill="#3182ce" opacity="0.7"/>
+              <circle cx="120" cy="80" r="6" fill="#3182ce" opacity="0.7"/>
+              <circle cx="140" cy="70" r="4" fill="#3182ce" opacity="0.7"/>
+              <circle cx="155" cy="55" r="7" fill="#3182ce" opacity="0.7"/>
+              <circle cx="175" cy="60" r="5" fill="#3182ce" opacity="0.7"/>
+              <circle cx="190" cy="45" r="4" fill="#3182ce" opacity="0.7"/>
+              <circle cx="210" cy="35" r="6" fill="#3182ce" opacity="0.7"/>
+              <circle cx="230" cy="30" r="5" fill="#3182ce" opacity="0.7"/>
+              <circle cx="250" cy="20" r="8" fill="#3182ce" opacity="0.7"/>
+              <!-- Trend line -->
+              <line x1="50" y1="115" x2="260" y2="18" stroke="#e53e3e" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+              <!-- Annotation -->
+              <text x="255" y="16" font-family="Inter" font-size="7" fill="#e53e3e" font-style="italic" text-anchor="end">R2=0.87</text>
+            </svg>
+          </div>
+          <div class="comp-card-footer">
+            <span>n=248 accounts</span>
+            <span style="margin-left:auto;">Source: CRM</span>
+          </div>
+        </div>
+
+        <!-- Card 6: Stacked Area -->
+        <div class="comp-card">
+          <div class="comp-card-header">
+            <span class="comp-card-title">Support Tickets</span>
+            <span class="comp-card-meta">By category</span>
+          </div>
+          <div class="comp-card-body">
+            <svg viewBox="0 0 280 140" fill="none" style="width:100%;height:auto;">
+              <line x1="0" y1="130" x2="280" y2="130" stroke="#e2e8f0" stroke-width="0.5"/>
+              <!-- Bottom area: Billing -->
+              <path d="M0 130 L0 100 L40 95 L80 98 L120 90 L160 85 L200 80 L240 75 L280 70 L280 130 Z" fill="#3182ce" opacity="0.25"/>
+              <!-- Middle area: Technical -->
+              <path d="M0 100 L0 75 L40 68 L80 72 L120 60 L160 55 L200 50 L240 45 L280 40 L280 70 L240 75 L200 80 L160 85 L120 90 L80 98 L40 95 Z" fill="#319795" opacity="0.25"/>
+              <!-- Top area: Feature -->
+              <path d="M0 75 L0 55 L40 48 L80 52 L120 40 L160 35 L200 30 L240 25 L280 18 L280 40 L240 45 L200 50 L160 55 L120 60 L80 72 L40 68 Z" fill="#805ad5" opacity="0.25"/>
+              <!-- Lines -->
+              <polyline points="0,100 40,95 80,98 120,90 160,85 200,80 240,75 280,70" fill="none" stroke="#3182ce" stroke-width="1.5" stroke-linecap="round"/>
+              <polyline points="0,75 40,68 80,72 120,60 160,55 200,50 240,45 280,40" fill="none" stroke="#319795" stroke-width="1.5" stroke-linecap="round"/>
+              <polyline points="0,55 40,48 80,52 120,40 160,35 200,30 240,25 280,18" fill="none" stroke="#805ad5" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="comp-card-footer" style="flex-wrap:wrap;">
+            <span class="legend-item"><span class="legend-swatch" style="background:#3182ce;"></span> Billing</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#319795;"></span> Technical</span>
+            <span class="legend-item"><span class="legend-swatch" style="background:#805ad5;"></span> Feature</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--white" id="effects">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Visual Effects</p>
+        <h2 class="section-title">CSS-Only Data Textures</h2>
+        <p class="section-subtitle">Analytical patterns and visualization-inspired effects, all rendered without image assets</p>
+      </div>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-grid-pulse"></div>
+          <div class="effect-caption">
+            <h4>Grid Pulse</h4>
+            <p>Subtle background grid with a pulsing radial highlight, evoking an active data canvas.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-data-stream"></div>
+          <div class="effect-caption">
+            <h4>Data Stream</h4>
+            <p>Binary text flowing over a dark surface with a scanning gradient overlay.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-scatter"></div>
+          <div class="effect-caption">
+            <h4>Scatter Field</h4>
+            <p>Categorical data points scattered across a gridded field using radial gradients.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-heatmap"></div>
+          <div class="effect-caption">
+            <h4>Gradient Heatmap</h4>
+            <p>Overlapping elliptical gradients on dark canvas simulate density heatmap regions.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-contour"></div>
+          <div class="effect-caption">
+            <h4>Contour Lines</h4>
+            <p>Organic morphing contour rings evoke topographic maps and isoline charts.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-crosshair"><div class="crosshair-dot"></div></div>
+          <div class="effect-caption">
+            <h4>Axis Crosshair</h4>
+            <p>Intersecting axis lines with a pulsing data point, the classic chart interaction pattern.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line divider-line--accent"></div>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--canvas">
+    <div class="container">
+      <div class="section-header">
+        <p class="section-label">Interactive Elements</p>
+        <h2 class="section-title">Button System</h2>
+        <p class="section-subtitle">Clean, functional buttons that support the data-first visual hierarchy</p>
+      </div>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Primary Action</a>
+        <a href="#" class="btn btn--outline">Outline Variant</a>
+        <a href="#" class="btn btn--ghost">Ghost Button</a>
+        <a href="#" class="btn btn--dark">Dark Variant</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Data is always a placeholder for real human stories. Visualization should reconnect numbers to the lives and contexts they represent &mdash; that is where beauty and meaning converge.
+        </blockquote>
+        <cite>&mdash; Giorgia Lupi, Data Humanism</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider">
+    <div class="divider-line divider-line--accent"></div>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--canvas">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-eyebrow">Start Building</div>
+        <h2>Let your data tell its story</h2>
+        <p class="cta-desc">
+          The Data Viz Art aesthetic treats charts, graphs, and analytical displays as the visual centerpiece. Clean layouts, precise typography, and purposeful color &mdash; every element serves the narrative.
+        </p>
+        <div class="cta-actions">
+          <a href="#hero" class="btn">Back to Top</a>
+          <a href="#components" class="btn btn--outline">View Components</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">
+        <span class="nav-logo-mark" style="width:22px;height:22px;">
+          <svg viewBox="0 0 16 16" fill="none" style="width:12px;height:12px;">
+            <path d="M2 12L5 4L8 9L11 2L14 8" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="footer-brand-name">Data Viz Art</span>
+      </div>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <span class="footer-copy">Design Aesthetic Reference &bull; Data Viz Art</span>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS: Animate bars on scroll ===== -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      // Animate bar fills on scroll into view
+      var bars = document.querySelectorAll('.bar-fill');
+      bars.forEach(function (bar) {
+        var target = bar.style.width;
+        bar.style.width = '0%';
+        bar.dataset.target = target;
+      });
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var fills = entry.target.querySelectorAll('.bar-fill');
+            fills.forEach(function (fill, i) {
+              setTimeout(function () {
+                fill.style.width = fill.dataset.target;
+              }, i * 120);
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+
+      document.querySelectorAll('.comp-card').forEach(function (card) {
+        if (card.querySelector('.bar-fill')) {
+          observer.observe(card);
+        }
+      });
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+          var target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

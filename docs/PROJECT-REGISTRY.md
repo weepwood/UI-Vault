@@ -7,7 +7,7 @@ UI-Vault 是独立 React、Vue、Rust、HTML 等项目的目录和预览入口�
 - Project：来源仓库与维护单位，原始文件位于 `catalog/projects/<id>.json`，生成 `content/projects.json`。
 - Asset：设计风格、组件、演示等具体资源，原始文件位于 `catalog/assets/<id>.json`，生成 `content/assets.json`。
 - Asset 使用 `projectId` 引用 Project。旧资产 ID、`?asset=` 链接、收藏和 iframe 路径都保留。
-- 当前整理出 33 个 Project 与 126 条 Asset，其中 Style Atlas 57 条、Page Mirror 24 条，UI-Vault 工作区 11 条。
+- 当前整理出 34 个 Project 与 127 条 Asset，其中 Style Atlas 57 条、Page Mirror 24 条，UI-Vault 工作区 11 条；另收录 Chris Lemke 的 314 种网页风格图鉴（作为 1 个独立 Asset）。
 
 Project `kind` 分为 `workspace`（本站工作区）、`managed`（weepwood 的独立仓库）、`reference`（第三方来源）。将本地改编作品归到上游 Project 只代表来源关系，不代表获得上游再分发许可。许可证仍需在每条 Asset 独立核实。
 

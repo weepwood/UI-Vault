@@ -21,12 +21,12 @@ test('Project 清单完整、唯一，且与每条 Asset 一一关联',async()=>
   const result=await inspectProjects();
   assert.deepEqual(result.errors,[]);
   assert.equal(await readFile(join(PROJECT_ROOT,'content/projects.json'),'utf8'),result.manifest);
-  assert.equal(result.projects.length,33);
-  assert.equal(new Set(result.projects.map(x=>x.repository.toLowerCase())).size,33);
+  assert.equal(result.projects.length,34);
+  assert.equal(new Set(result.projects.map(x=>x.repository.toLowerCase())).size,34);
   const c=await inspectCatalog();
   assert.deepEqual(c.errors,[]);
   const ids=new Set(result.projects.map(x=>x.id));
-  assert.equal(c.items.length,126);
+  assert.equal(c.items.length,127);
   assert.ok(c.items.every(x=>ids.has(x.projectId)));
   assert.equal(c.items.filter(x=>x.projectId==='style-atlas').length,57);
   assert.equal(c.items.filter(x=>x.projectId==='page-mirror').length,24);

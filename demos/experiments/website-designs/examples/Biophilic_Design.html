@@ -1,0 +1,2079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Biophilic Design -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Nunito:wght@300;400;600;700&family=Playfair+Display:wght@400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Cabin:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Greens - forest canopy --- */
+      --bio-forest: #2D5A3D;
+      --bio-fern: #4A7C59;
+      --bio-sage: #87AE73;
+      --bio-eucalyptus: #B5C9A8;
+      --bio-moss: #6B7F5C;
+
+      /* --- Earth - soil and clay --- */
+      --bio-brown: #A0522D;
+      --bio-terracotta: #CB6D51;
+      --bio-sand: #E2CA76;
+
+      /* --- Water and sky --- */
+      --bio-sky: #87CEEB;
+      --bio-teal: #5F8A8B;
+
+      /* --- Stone and neutral --- */
+      --bio-stone: #808075;
+      --bio-parchment: #F7F3E8;
+      --bio-ivory: #FFFEF2;
+
+      /* --- Dark earth --- */
+      --bio-loam: #2C2C28;
+      --bio-charcoal-sage: #4A5446;
+
+      /* --- Functional Tokens --- */
+      --bio-bg-primary: var(--bio-parchment);
+      --bio-bg-secondary: var(--bio-ivory);
+      --bio-bg-dark: var(--bio-charcoal-sage);
+      --bio-text-primary: var(--bio-loam);
+      --bio-text-secondary: var(--bio-moss);
+      --bio-accent-primary: var(--bio-forest);
+      --bio-accent-secondary: var(--bio-terracotta);
+      --bio-border: var(--bio-eucalyptus);
+      --bio-border-dark: var(--bio-moss);
+
+      /* --- Shadows --- */
+      --bio-shadow-sm: 0 2px 8px rgba(45, 90, 61, 0.06), 0 1px 3px rgba(45, 90, 61, 0.04);
+      --bio-shadow-md: 0 4px 16px rgba(45, 90, 61, 0.08), 0 8px 24px rgba(45, 90, 61, 0.04);
+      --bio-shadow-lg: 0 8px 32px rgba(45, 90, 61, 0.1), 0 16px 48px rgba(45, 90, 61, 0.06);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Nunito', 'Segoe UI', sans-serif;
+      font-weight: 400;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      letter-spacing: 0.015em;
+      color: var(--bio-text-primary);
+      background-color: var(--bio-bg-primary);
+      /* Subtle linen texture */
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(107, 127, 92, 0.015) 2px,
+          rgba(107, 127, 92, 0.015) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(107, 127, 92, 0.015) 2px,
+          rgba(107, 127, 92, 0.015) 3px
+        );
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', 'Georgia', serif;
+      font-weight: 400;
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+      color: var(--bio-text-primary);
+    }
+
+    /* ============================================
+       UTILITY
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--parchment {
+      background-color: var(--bio-parchment);
+    }
+
+    .section--ivory {
+      background-color: var(--bio-ivory);
+    }
+
+    .section--eucalyptus {
+      background-color: rgba(181, 201, 168, 0.18);
+    }
+
+    .section--dark {
+      background-color: var(--bio-charcoal-sage);
+      color: var(--bio-parchment);
+    }
+
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--bio-fern);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 600;
+      color: var(--bio-accent-primary);
+      margin-bottom: 0.5rem;
+      line-height: 1.1;
+    }
+
+    .section-subtitle {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      color: var(--bio-text-secondary);
+      margin-bottom: 2.5rem;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(247, 243, 232, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--bio-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--bio-accent-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-brand svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--bio-text-primary);
+      position: relative;
+      padding-bottom: 4px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 2px;
+      background: var(--bio-fern);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+      transform: translateX(-50%);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: var(--bio-accent-primary);
+    }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--bio-loam);
+      margin: 5px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 92vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      overflow: hidden;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(247, 243, 232, 0.0) 0%,
+          rgba(247, 243, 232, 0.6) 50%,
+          var(--bio-bg-primary) 100%
+        ),
+        linear-gradient(
+          135deg,
+          rgba(45, 90, 61, 0.08) 0%,
+          rgba(181, 201, 168, 0.12) 40%,
+          rgba(226, 202, 118, 0.06) 70%,
+          rgba(247, 243, 232, 0.0) 100%
+        );
+    }
+
+    /* Dappled sunlight effect */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 300px 200px at 20% 30%, rgba(135, 174, 115, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 250px 300px at 75% 60%, rgba(181, 201, 168, 0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 200px 150px at 50% 15%, rgba(226, 202, 118, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 180px 220px at 85% 20%, rgba(135, 174, 115, 0.06) 0%, transparent 65%),
+        radial-gradient(ellipse 160px 180px at 10% 70%, rgba(226, 202, 118, 0.05) 0%, transparent 55%);
+      pointer-events: none;
+      animation: dappled-shift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes dappled-shift {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    /* Organic wave at bottom of hero */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 80px;
+      background: no-repeat bottom / 100% 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3E%3Cpath d='M0,50 C180,80 360,20 540,40 C720,60 900,10 1080,40 C1260,70 1350,25 1440,50 L1440,80 L0,80Z' fill='%23F7F3E8'/%3E%3C/svg%3E");
+    }
+
+    /* Floating decorative leaves in hero */
+    .hero-leaf {
+      position: absolute;
+      opacity: 0.07;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero-leaf--1 {
+      top: 8%;
+      left: 5%;
+      width: 120px;
+      height: 120px;
+      animation: leaf-sway-1 8s ease-in-out infinite;
+    }
+
+    .hero-leaf--2 {
+      top: 15%;
+      right: 8%;
+      width: 90px;
+      height: 90px;
+      animation: leaf-sway-2 10s ease-in-out infinite;
+    }
+
+    .hero-leaf--3 {
+      bottom: 18%;
+      left: 12%;
+      width: 70px;
+      height: 70px;
+      animation: leaf-sway-1 9s ease-in-out infinite reverse;
+    }
+
+    .hero-leaf--4 {
+      bottom: 25%;
+      right: 6%;
+      width: 100px;
+      height: 100px;
+      animation: leaf-sway-2 7s ease-in-out infinite reverse;
+    }
+
+    @keyframes leaf-sway-1 {
+      0%, 100% { transform: rotate(0deg) translateY(0); }
+      50% { transform: rotate(5deg) translateY(-8px); }
+    }
+
+    @keyframes leaf-sway-2 {
+      0%, 100% { transform: rotate(0deg) translateX(0); }
+      50% { transform: rotate(-4deg) translateX(6px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+    }
+
+    .hero-tag {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--bio-fern);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 600;
+      color: var(--bio-accent-primary);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--bio-text-secondary);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: var(--bio-accent-primary);
+      color: var(--bio-parchment);
+      box-shadow: 0 2px 12px rgba(45, 90, 61, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--bio-fern);
+      box-shadow: 0 4px 20px rgba(45, 90, 61, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--bio-terracotta);
+      border: 2px solid var(--bio-terracotta);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bio-terracotta);
+      color: var(--bio-ivory);
+      transform: translateY(-2px);
+    }
+
+    .btn-ghost {
+      background: rgba(45, 90, 61, 0.08);
+      color: var(--bio-forest);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(45, 90, 61, 0.16);
+      transform: translateY(-2px);
+    }
+
+    .btn-earth {
+      background: var(--bio-brown);
+      color: var(--bio-parchment);
+      box-shadow: 0 2px 12px rgba(160, 82, 45, 0.2);
+    }
+
+    .btn-earth:hover {
+      background: var(--bio-terracotta);
+      box-shadow: 0 4px 20px rgba(160, 82, 45, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       WAVE DIVIDER
+       ============================================ */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      height: 60px;
+      margin: -1px 0;
+    }
+
+    .wave-divider path {
+      transition: fill 0.3s ease;
+    }
+
+    /* Animated wave banner */
+    .wave-banner {
+      width: 100%;
+      height: 50px;
+      background: no-repeat bottom / 200% 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2880 60' preserveAspectRatio='none'%3E%3Cpath d='M0,30 C360,60 720,0 1080,30 C1440,60 1800,0 2160,30 C2520,60 2880,0 2880,30 L2880,60 L0,60Z' fill='%23B5C9A8' opacity='0.3'/%3E%3Cpath d='M0,35 C400,5 800,55 1200,35 C1600,15 2000,50 2400,35 C2800,20 2880,40 2880,35 L2880,60 L0,60Z' fill='%2387AE73' opacity='0.2'/%3E%3C/svg%3E");
+      animation: bio-wave-drift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes bio-wave-drift {
+      0% { background-position: 0% bottom; }
+      100% { background-position: -50% bottom; }
+    }
+
+    /* ============================================
+       FLOATING LEAVES (background particles)
+       ============================================ */
+    .floating-leaves {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .bio-leaf {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      opacity: 0;
+      pointer-events: none;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10,2 C6,4 2,10 4,16 C6,14 10,8 16,4 C14,3 12,2 10,2Z' fill='%2387AE73'/%3E%3Cpath d='M10,2 C10,2 8,10 4,16' fill='none' stroke='%234A7C59' stroke-width='0.5'/%3E%3C/svg%3E");
+      animation: bio-leaf-fall linear infinite;
+    }
+
+    .bio-leaf:nth-child(1) { left: 8%; animation-duration: 14s; animation-delay: 0s; width: 18px; height: 18px; }
+    .bio-leaf:nth-child(2) { left: 25%; animation-duration: 17s; animation-delay: 4s; width: 22px; height: 22px; }
+    .bio-leaf:nth-child(3) { left: 48%; animation-duration: 13s; animation-delay: 7s; width: 16px; height: 16px; }
+    .bio-leaf:nth-child(4) { left: 68%; animation-duration: 16s; animation-delay: 2s; width: 20px; height: 20px; }
+    .bio-leaf:nth-child(5) { left: 88%; animation-duration: 15s; animation-delay: 5s; width: 14px; height: 14px; }
+
+    @keyframes bio-leaf-fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg) scale(0.8);
+        opacity: 0;
+      }
+      10% { opacity: 0.5; }
+      50% {
+        transform: translateY(50vh) rotate(180deg) translateX(30px) scale(1);
+        opacity: 0.35;
+      }
+      90% { opacity: 0.15; }
+      100% {
+        transform: translateY(110vh) rotate(360deg) translateX(-20px) scale(0.6);
+        opacity: 0;
+      }
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+    }
+
+    .typo-sample-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--bio-stone);
+      margin-bottom: 0.4rem;
+    }
+
+    .typo-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      color: var(--bio-forest);
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--bio-loam);
+    }
+
+    .typo-subheading {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 600;
+      line-height: 1.3;
+      color: var(--bio-fern);
+    }
+
+    .typo-body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      letter-spacing: 0.015em;
+      color: var(--bio-loam);
+    }
+
+    .typo-caption {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--bio-moss);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-meta {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--bio-moss);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--bio-forest);
+      margin-bottom: 1rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--bio-eucalyptus);
+    }
+
+    .typo-scale-size {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--bio-stone);
+      min-width: 60px;
+    }
+
+    .typo-pairings {
+      margin-top: 1.75rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--bio-eucalyptus);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 1rem;
+    }
+
+    .typo-pair {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .typo-pair-vibe {
+      font-size: 0.82rem;
+      color: var(--bio-stone);
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .color-chip {
+      background: var(--bio-ivory);
+      border: 1px solid var(--bio-eucalyptus);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--bio-shadow-md);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 0.75rem 0.85rem;
+    }
+
+    .color-name {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      color: var(--bio-loam);
+      margin-bottom: 0.15rem;
+    }
+
+    .color-hex {
+      font-family: 'Cabin', monospace;
+      font-size: 0.75rem;
+      color: var(--bio-stone);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--bio-ivory);
+      border: 1px solid var(--bio-eucalyptus);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: var(--bio-shadow-sm);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--bio-shadow-lg);
+    }
+
+    /* Leaf pattern in corner */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      width: 100px;
+      height: 100px;
+      opacity: 0.06;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M80,10 C60,20 40,50 30,80 C50,70 70,40 80,10Z' fill='%232D5A3D'/%3E%3Cpath d='M80,10 C80,10 55,45 30,80' fill='none' stroke='%232D5A3D' stroke-width='1'/%3E%3C/svg%3E");
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .card:hover::before {
+      opacity: 0.1;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .card-icon--forest {
+      background: rgba(45, 90, 61, 0.1);
+    }
+
+    .card-icon--fern {
+      background: rgba(74, 124, 89, 0.1);
+    }
+
+    .card-icon--terracotta {
+      background: rgba(203, 109, 81, 0.1);
+    }
+
+    .card-icon--sand {
+      background: rgba(226, 202, 118, 0.15);
+    }
+
+    .card-icon--teal {
+      background: rgba(95, 138, 139, 0.12);
+    }
+
+    .card-icon--brown {
+      background: rgba(160, 82, 45, 0.1);
+    }
+
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--bio-forest);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--bio-loam);
+      line-height: 1.7;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.3rem 0.7rem;
+      border-radius: 50px;
+      background: rgba(181, 201, 168, 0.3);
+      color: var(--bio-moss);
+      margin-right: 0.4rem;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .effect-demo {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--bio-ivory);
+      border: 1px solid var(--bio-eucalyptus);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--bio-shadow-md);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--bio-forest);
+      margin-bottom: 0.35rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.88rem;
+      color: var(--bio-moss);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Dappled Sunlight */
+    .effect-dappled {
+      background-color: var(--bio-parchment);
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(181, 201, 168, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(226, 202, 118, 0.2) 0%, transparent 40%),
+        radial-gradient(ellipse at 45% 75%, rgba(135, 174, 115, 0.15) 0%, transparent 45%),
+        radial-gradient(ellipse at 80% 20%, rgba(181, 201, 168, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 30% 90%, rgba(226, 202, 118, 0.1) 0%, transparent 35%);
+      animation: dappled-move 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes dappled-move {
+      0% { background-size: 100% 100%; }
+      100% { background-size: 110% 110%; }
+    }
+
+    /* Effect 2: Topographic Contour */
+    .effect-topo {
+      background-color: var(--bio-parchment);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Cellipse cx='100' cy='100' rx='80' ry='60' fill='none' stroke='%232D5A3D' stroke-width='0.8' opacity='0.2'/%3E%3Cellipse cx='100' cy='100' rx='60' ry='45' fill='none' stroke='%234A7C59' stroke-width='0.8' opacity='0.18'/%3E%3Cellipse cx='100' cy='100' rx='40' ry='30' fill='none' stroke='%2387AE73' stroke-width='0.8' opacity='0.15'/%3E%3Cellipse cx='100' cy='100' rx='20' ry='15' fill='none' stroke='%23B5C9A8' stroke-width='0.8' opacity='0.12'/%3E%3Cellipse cx='60' cy='60' rx='35' ry='25' fill='none' stroke='%232D5A3D' stroke-width='0.6' opacity='0.12'/%3E%3Cellipse cx='150' cy='140' rx='30' ry='22' fill='none' stroke='%234A7C59' stroke-width='0.6' opacity='0.1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Effect 3: Organic Wave Layers */
+    .effect-waves {
+      background: linear-gradient(180deg, var(--bio-parchment) 0%, rgba(181, 201, 168, 0.15) 100%);
+      position: relative;
+    }
+
+    .effect-waves::before,
+    .effect-waves::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background: no-repeat bottom / 100% auto;
+    }
+
+    .effect-waves::before {
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C80,140 160,60 250,100 C340,140 420,60 500,100 L500,180 L0,180Z' fill='%232D5A3D' opacity='0.08'/%3E%3Cpath d='M0,120 C100,80 200,150 300,110 C400,70 450,130 500,120 L500,180 L0,180Z' fill='%234A7C59' opacity='0.06'/%3E%3Cpath d='M0,140 C120,160 240,120 360,145 C420,155 480,130 500,140 L500,180 L0,180Z' fill='%2387AE73' opacity='0.05'/%3E%3C/svg%3E");
+      animation: wave-gentle 6s ease-in-out infinite alternate;
+    }
+
+    .effect-waves::after {
+      top: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 500 180' preserveAspectRatio='none'%3E%3Cpath d='M0,80 C100,40 200,100 300,70 C400,40 450,90 500,80 L500,0 L0,0Z' fill='%23B5C9A8' opacity='0.08'/%3E%3C/svg%3E");
+      background-position: top;
+    }
+
+    @keyframes wave-gentle {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-10px); }
+    }
+
+    /* Effect 4: Moss / Lichen Texture */
+    .effect-moss {
+      background-color: var(--bio-charcoal-sage);
+      background-image:
+        radial-gradient(circle 3px at 15% 20%, rgba(135, 174, 115, 0.4) 0%, transparent 100%),
+        radial-gradient(circle 5px at 35% 45%, rgba(181, 201, 168, 0.3) 0%, transparent 100%),
+        radial-gradient(circle 4px at 55% 15%, rgba(135, 174, 115, 0.35) 0%, transparent 100%),
+        radial-gradient(circle 6px at 75% 70%, rgba(181, 201, 168, 0.25) 0%, transparent 100%),
+        radial-gradient(circle 3px at 90% 35%, rgba(135, 174, 115, 0.3) 0%, transparent 100%),
+        radial-gradient(circle 8px at 25% 75%, rgba(107, 127, 92, 0.3) 0%, transparent 100%),
+        radial-gradient(circle 4px at 60% 85%, rgba(135, 174, 115, 0.2) 0%, transparent 100%),
+        radial-gradient(circle 5px at 80% 50%, rgba(181, 201, 168, 0.2) 0%, transparent 100%),
+        radial-gradient(circle 7px at 45% 55%, rgba(107, 127, 92, 0.25) 0%, transparent 100%),
+        radial-gradient(circle 3px at 10% 60%, rgba(135, 174, 115, 0.35) 0%, transparent 100%),
+        radial-gradient(ellipse 60px 40px at 50% 50%, rgba(45, 90, 61, 0.15) 0%, transparent 100%),
+        radial-gradient(ellipse 40px 60px at 30% 30%, rgba(74, 124, 89, 0.1) 0%, transparent 100%);
+    }
+
+    /* Effect 5: Bark / Wood Grain */
+    .effect-bark {
+      background-color: #8B6914;
+      background-image:
+        repeating-linear-gradient(
+          2deg,
+          transparent,
+          transparent 3px,
+          rgba(160, 82, 45, 0.15) 3px,
+          rgba(160, 82, 45, 0.15) 4px
+        ),
+        repeating-linear-gradient(
+          -1deg,
+          transparent,
+          transparent 7px,
+          rgba(139, 69, 19, 0.1) 7px,
+          rgba(139, 69, 19, 0.1) 8px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 12px,
+          rgba(44, 44, 40, 0.06) 12px,
+          rgba(44, 44, 40, 0.06) 14px
+        ),
+        linear-gradient(180deg,
+          #7A5C20 0%,
+          #8B6914 20%,
+          #6B4F12 40%,
+          #8B6914 60%,
+          #7A5C20 80%,
+          #8B6914 100%
+        );
+    }
+
+    /* Effect 6: Fractal Fern Pattern */
+    .effect-fractal {
+      background-color: rgba(181, 201, 168, 0.2);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 300'%3E%3Cpath d='M150,280 C150,280 140,240 130,210 C125,195 115,185 110,175 C100,155 95,140 100,120 C105,100 115,90 120,80 C130,60 140,45 150,20' fill='none' stroke='%232D5A3D' stroke-width='2' opacity='0.12'/%3E%3Cpath d='M120,80 C110,85 95,80 85,90' fill='none' stroke='%234A7C59' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M130,120 C118,115 100,118 88,125' fill='none' stroke='%234A7C59' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M135,160 C122,155 105,158 90,168' fill='none' stroke='%234A7C59' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M140,200 C125,198 108,202 95,215' fill='none' stroke='%234A7C59' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M145,240 C130,240 115,248 105,260' fill='none' stroke='%234A7C59' stroke-width='1.5' opacity='0.08'/%3E%3Cpath d='M135,65 C142,70 158,68 168,60' fill='none' stroke='%2387AE73' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M130,105 C140,100 158,102 170,95' fill='none' stroke='%2387AE73' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M132,145 C145,140 160,142 178,135' fill='none' stroke='%2387AE73' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M138,185 C148,180 165,182 182,175' fill='none' stroke='%2387AE73' stroke-width='1.5' opacity='0.1'/%3E%3Cpath d='M142,225 C155,222 170,228 185,218' fill='none' stroke='%2387AE73' stroke-width='1.5' opacity='0.08'/%3E%3C/svg%3E");
+      background-size: 300px 300px;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 2rem 0;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 3px;
+      background: var(--bio-eucalyptus);
+      border-radius: 2px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      line-height: 1.6;
+      color: var(--bio-fern);
+      margin-bottom: 1.25rem;
+      padding: 1.5rem 0;
+    }
+
+    .quote-block cite {
+      font-family: 'Nunito', sans-serif;
+      font-style: normal;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--bio-stone);
+      letter-spacing: 0.03em;
+    }
+
+    /* Decorative leaf quote marks */
+    .quote-block blockquote::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 40px;
+      margin: 0 auto 1rem;
+      opacity: 0.15;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M20,4 C12,8 4,18 8,32 C12,28 18,16 32,8 C28,6 24,4 20,4Z' fill='%232D5A3D'/%3E%3Cpath d='M20,4 C20,4 16,18 8,32' fill='none' stroke='%232D5A3D' stroke-width='0.8'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container {
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(135, 174, 115, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(226, 202, 118, 0.06) 0%, transparent 45%),
+        linear-gradient(135deg, rgba(45, 90, 61, 0.04) 0%, rgba(181, 201, 168, 0.06) 50%, rgba(226, 202, 118, 0.03) 100%);
+      border: 1px solid var(--bio-eucalyptus);
+      border-radius: 24px;
+      padding: 3.5rem 2.5rem;
+      max-width: 700px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    /* Decorative corner leaves */
+    .cta-container::before,
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      opacity: 0.06;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M80,10 C60,20 40,50 30,80 C50,70 70,40 80,10Z' fill='%232D5A3D'/%3E%3Cpath d='M80,10 C80,10 55,45 30,80' fill='none' stroke='%232D5A3D' stroke-width='1'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .cta-container::before {
+      top: -10px;
+      right: -10px;
+    }
+
+    .cta-container::after {
+      bottom: -10px;
+      left: -10px;
+      transform: rotate(180deg);
+    }
+
+    .cta-container h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 600;
+      color: var(--bio-forest);
+      margin-bottom: 0.5rem;
+    }
+
+    .cta-tagline {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--bio-fern);
+      margin-bottom: 1.25rem;
+    }
+
+    .cta-container p {
+      color: var(--bio-text-secondary);
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--bio-charcoal-sage);
+      color: var(--bio-parchment);
+      padding: 3.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Wave at top of footer */
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: no-repeat top / 100% 100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 60' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C240,50 480,0 720,25 C960,50 1200,5 1440,10 L1440,0 L0,0Z' fill='%23F7F3E8'/%3E%3C/svg%3E");
+    }
+
+    .footer-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .footer h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--bio-eucalyptus);
+      margin-bottom: 1rem;
+    }
+
+    .footer p {
+      font-size: 0.95rem;
+      color: rgba(247, 243, 232, 0.7);
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.88rem;
+      color: var(--bio-eucalyptus);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--bio-sage);
+    }
+
+    .footer-leaf-row {
+      margin-bottom: 1.5rem;
+      display: flex;
+      gap: 1.25rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-leaf-row svg {
+      width: 18px;
+      height: 18px;
+      opacity: 0.4;
+    }
+
+    .footer-copy {
+      font-size: 0.8rem !important;
+      color: rgba(247, 243, 232, 0.4) !important;
+      letter-spacing: 0.03em;
+      border-top: 1px solid rgba(181, 201, 168, 0.15);
+      padding-top: 1.5rem;
+    }
+
+    /* ============================================
+       BOTANICAL DIVIDER
+       ============================================ */
+    .botanical-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1.5rem 0;
+    }
+
+    .botanical-divider-line {
+      width: 80px;
+      height: 1px;
+      background: var(--bio-eucalyptus);
+    }
+
+    .botanical-divider svg {
+      width: 28px;
+      height: 28px;
+      opacity: 0.25;
+    }
+
+    /* ============================================
+       NATURE BANNER
+       ============================================ */
+    .nature-banner {
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse at 25% 50%, rgba(45, 90, 61, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 50%, rgba(181, 201, 168, 0.08) 0%, transparent 55%),
+        linear-gradient(180deg, var(--bio-parchment) 0%, rgba(181, 201, 168, 0.12) 50%, var(--bio-parchment) 100%);
+    }
+
+    .nature-banner h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 600;
+      color: var(--bio-forest);
+      margin-bottom: 0.5rem;
+    }
+
+    .nature-banner p {
+      font-size: 1rem;
+      color: var(--bio-moss);
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES LIST
+       ============================================ */
+    .principle-list {
+      display: grid;
+      gap: 1.75rem;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+    }
+
+    .principle-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(45, 90, 61, 0.06);
+      border: 1px solid var(--bio-eucalyptus);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Small leaf inside principle icon */
+    .principle-icon::after {
+      content: '';
+      width: 20px;
+      height: 20px;
+      background: no-repeat center / contain;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M10,3 C7,5 3,10 5,16 C7,14 10,8 16,5 C14,4 12,3 10,3Z' fill='%232D5A3D' opacity='0.4'/%3E%3C/svg%3E");
+    }
+
+    .principle-text h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--bio-forest);
+      margin-bottom: 0.4rem;
+    }
+
+    .principle-text p {
+      font-size: 0.95rem;
+      color: var(--bio-text-secondary);
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .floating-leaves {
+        display: none;
+      }
+
+      .hero::before {
+        animation: none;
+      }
+
+      .wave-banner {
+        animation: none;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .nav {
+        padding: 0.85rem 1.25rem;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(247, 243, 232, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 1rem 1.5rem;
+        gap: 0.75rem;
+        border-bottom: 1px solid var(--bio-border);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: 5rem 1.5rem;
+      }
+
+      .hero-leaf {
+        display: none;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-links {
+        gap: 1rem;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .cta-container {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== FLOATING LEAVES (background particles) ===== -->
+  <div class="floating-leaves" aria-hidden="true">
+    <div class="bio-leaf"></div>
+    <div class="bio-leaf"></div>
+    <div class="bio-leaf"></div>
+    <div class="bio-leaf"></div>
+    <div class="bio-leaf"></div>
+  </div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">
+      <!-- Leaf logo -->
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14,3 C9,6 3,13 6,24 C9,21 14,12 24,6 C21,4.5 17,3 14,3Z" fill="#2D5A3D"/>
+        <path d="M14,3 C14,3 11,13 6,24" fill="none" stroke="#4A7C59" stroke-width="1" opacity="0.6"/>
+        <path d="M10,10 C8,11 6.5,10 5,11.5" fill="none" stroke="#4A7C59" stroke-width="0.6" opacity="0.4"/>
+        <path d="M11,15 C9,14.5 7,15 5.5,17" fill="none" stroke="#4A7C59" stroke-width="0.6" opacity="0.4"/>
+      </svg>
+      Biophilic
+    </a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero">Home</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <button class="nav-toggle" onclick="document.getElementById('navLinks').classList.toggle('open')" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative leaves -->
+    <svg class="hero-leaf hero-leaf--1" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M60,10 C40,20 15,50 25,100 C40,85 60,50 105,25 C90,18 75,10 60,10Z" fill="#2D5A3D"/>
+      <path d="M60,10 C60,10 48,50 25,100" fill="none" stroke="#4A7C59" stroke-width="1.2"/>
+      <path d="M48,35 C38,38 28,35 20,42" fill="none" stroke="#4A7C59" stroke-width="0.8" opacity="0.6"/>
+      <path d="M50,55 C38,52 25,55 18,65" fill="none" stroke="#4A7C59" stroke-width="0.8" opacity="0.6"/>
+      <path d="M45,75 C35,73 22,78 16,88" fill="none" stroke="#4A7C59" stroke-width="0.8" opacity="0.5"/>
+    </svg>
+
+    <svg class="hero-leaf hero-leaf--2" viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M45,8 C30,16 10,40 18,78 C30,66 45,40 80,20 C68,14 55,8 45,8Z" fill="#87AE73"/>
+      <path d="M45,8 C45,8 36,40 18,78" fill="none" stroke="#4A7C59" stroke-width="1"/>
+    </svg>
+
+    <svg class="hero-leaf hero-leaf--3" viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M35,6 C24,12 8,30 14,60 C24,50 35,30 62,16 C52,11 42,6 35,6Z" fill="#B5C9A8"/>
+      <path d="M35,6 C35,6 28,30 14,60" fill="none" stroke="#6B7F5C" stroke-width="0.8"/>
+    </svg>
+
+    <svg class="hero-leaf hero-leaf--4" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M50,8 C35,15 12,42 20,85 C32,72 50,42 88,22 C75,15 62,8 50,8Z" fill="#4A7C59"/>
+      <path d="M50,8 C50,8 40,42 20,85" fill="none" stroke="#2D5A3D" stroke-width="1"/>
+    </svg>
+
+    <div class="hero-content">
+      <p class="hero-tag">Design Aesthetic Reference</p>
+      <h1>Biophilic Design</h1>
+      <p>
+        A design philosophy rooted in the innate human connection to nature &mdash; organic shapes, earthy palettes, living textures, and restorative calm woven into every digital experience.
+      </p>
+      <div class="hero-actions">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <div class="wave-banner" aria-hidden="true"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--parchment" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Organic, Warm &amp; Grounded</h2>
+      <p class="section-subtitle">humanist serifs, soft curves, nature-journal warmth</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cormorant Garamond</p>
+            <p class="typo-display">Forest Canopy</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display</p>
+            <p class="typo-heading">Botanical Journals</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Quicksand</p>
+            <p class="typo-subheading">Nature-Connected Interfaces</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Nunito</p>
+            <p class="typo-body">Warm humanist text for comfortable reading. Biophilic typography favors organic shapes with open apertures and soft curves that feel shaped by a human hand.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Cabin</p>
+            <p class="typo-caption">Navigation elements, meta text, and quiet functional labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Meta / Nunito</p>
+            <p class="typo-meta">Tags &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 2rem; font-weight: 600; color: var(--bio-forest);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 500; color: var(--bio-loam);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Quicksand', sans-serif; font-size: 1.2rem; font-weight: 600; color: var(--bio-fern);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--bio-loam);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.88rem</span>
+              <span style="font-family: 'Cabin', sans-serif; font-weight: 500; font-size: 0.88rem; color: var(--bio-moss);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.8rem; color: var(--bio-moss); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <p class="typo-pair">
+              <strong style="font-family: 'Cormorant Garamond', serif; color: var(--bio-forest);">Cormorant Garamond</strong> + <strong>Nunito</strong><br>
+              <span class="typo-pair-vibe">Elegant garden -- refined headings with warm rounded body</span>
+            </p>
+            <p class="typo-pair">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--bio-forest);">Playfair Display</strong> + <strong style="font-family: 'Nunito', sans-serif;">Lora</strong><br>
+              <span class="typo-pair-vibe">Botanical journal -- high contrast display with organic serif</span>
+            </p>
+            <p class="typo-pair">
+              <strong style="font-family: 'Quicksand', sans-serif; color: var(--bio-forest);">Quicksand</strong> + <strong style="font-family: 'Cabin', sans-serif;">Cabin</strong><br>
+              <span class="typo-pair-vibe">Eco-friendly brand -- friendly headings with clean function</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOTANICAL DIVIDER ===== -->
+  <div class="botanical-divider" aria-hidden="true">
+    <div class="botanical-divider-line"></div>
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14,3 C9,6 3,13 6,24 C9,21 14,12 24,6 C21,4.5 17,3 14,3Z" fill="#2D5A3D"/>
+      <path d="M14,3 C14,3 11,13 6,24" fill="none" stroke="#4A7C59" stroke-width="0.8"/>
+    </svg>
+    <div class="botanical-divider-line"></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--eucalyptus" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Earth, Canopy &amp; Sky</h2>
+      <p class="section-subtitle">muted greens, warm browns, soft blues, and gentle neutrals drawn from the natural world</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D5A3D;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Green</div>
+            <div class="color-hex">#2D5A3D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A7C59;"></div>
+          <div class="color-info">
+            <div class="color-name">Fern Green</div>
+            <div class="color-hex">#4A7C59</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #87AE73;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Green</div>
+            <div class="color-hex">#87AE73</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B5C9A8;"></div>
+          <div class="color-info">
+            <div class="color-name">Eucalyptus</div>
+            <div class="color-hex">#B5C9A8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7F5C;"></div>
+          <div class="color-info">
+            <div class="color-name">Moss Green</div>
+            <div class="color-hex">#6B7F5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A0522D;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Brown</div>
+            <div class="color-hex">#A0522D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #CB6D51;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta</div>
+            <div class="color-hex">#CB6D51</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E2CA76;"></div>
+          <div class="color-info">
+            <div class="color-name">Sand</div>
+            <div class="color-hex">#E2CA76</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #87CEEB;"></div>
+          <div class="color-info">
+            <div class="color-name">Sky Blue</div>
+            <div class="color-hex">#87CEEB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5F8A8B;"></div>
+          <div class="color-info">
+            <div class="color-name">Teal Stone</div>
+            <div class="color-hex">#5F8A8B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #808075;"></div>
+          <div class="color-info">
+            <div class="color-name">Stone Gray</div>
+            <div class="color-hex">#808075</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F7F3E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#F7F3E8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFEF2;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory</div>
+            <div class="color-hex">#FFFEF2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2C2C28;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Loam</div>
+            <div class="color-hex">#2C2C28</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A5446;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Sage</div>
+            <div class="color-hex">#4A5446</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,20 C180,50 360,5 540,25 C720,45 900,8 1080,30 C1260,52 1350,15 1440,20 L1440,60 L0,60Z" fill="#F7F3E8"/>
+  </svg>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--parchment" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Organic Cards &amp; Living Details</h2>
+      <p class="section-subtitle">rounded, softly shadowed, with warmth like a river stone</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--forest">
+            <!-- Leaf icon -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12,3 C8,5 3,11 5,20 C8,17 12,10 20,5 C17,4 14,3 12,3Z" fill="#2D5A3D"/><path d="M12,3 C12,3 10,11 5,20" fill="none" stroke="#4A7C59" stroke-width="0.8"/></svg>
+          </div>
+          <h3>Organic Shapes</h3>
+          <p>Flowing, rounded containers and wave-like section dividers replace rigid rectangular grids with forms found in nature.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Shape</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--fern">
+            <!-- Water drop icon -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12,2 C12,2 5,12 5,16 C5,20 8,22 12,22 C16,22 19,20 19,16 C19,12 12,2 12,2Z" fill="#4A7C59" opacity="0.6"/><ellipse cx="9" cy="15" rx="2" ry="3" fill="#87CEEB" opacity="0.3"/></svg>
+          </div>
+          <h3>Natural Textures</h3>
+          <p>Backgrounds evoke wood grain, stone, woven linen, and bark through subtle CSS patterns and layered organic materials.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--terracotta">
+            <!-- Sun icon -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="5" fill="#CB6D51" opacity="0.6"/><path d="M12,2 L12,5 M12,19 L12,22 M2,12 L5,12 M19,12 L22,12 M4.9,4.9 L7,7 M17,17 L19.1,19.1 M4.9,19.1 L7,17 M17,7 L19.1,4.9" stroke="#CB6D51" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/></svg>
+          </div>
+          <h3>Dappled Light</h3>
+          <p>Gradients and shadows mimic sunlight filtering through a forest canopy, creating soft, diffused illumination across surfaces.</p>
+          <span class="tag">Lighting</span>
+          <span class="tag">Gradient</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--teal">
+            <!-- Wave icon -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M2,12 C4,8 6,16 8,12 C10,8 12,16 14,12 C16,8 18,16 20,12 C22,8 22,12 22,12" fill="none" stroke="#5F8A8B" stroke-width="1.5" stroke-linecap="round"/><path d="M2,17 C4,13 6,21 8,17 C10,13 12,21 14,17 C16,13 18,21 20,17 C22,13 22,17 22,17" fill="none" stroke="#5F8A8B" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/></svg>
+          </div>
+          <h3>Fluid Animations</h3>
+          <p>Gentle motion inspired by water ripples, leaf drift, and cloud movement brings interfaces to life without overwhelming users.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">Motion</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sand">
+            <!-- Branch/fractal icon -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12,22 L12,8 M12,8 L6,3 M12,8 L18,3 M12,14 L7,10 M12,14 L17,10" stroke="#A0522D" stroke-width="1.5" stroke-linecap="round"/><circle cx="6" cy="3" r="1.5" fill="#87AE73" opacity="0.6"/><circle cx="18" cy="3" r="1.5" fill="#87AE73" opacity="0.6"/><circle cx="7" cy="10" r="1.2" fill="#87AE73" opacity="0.5"/><circle cx="17" cy="10" r="1.2" fill="#87AE73" opacity="0.5"/></svg>
+          </div>
+          <h3>Fractal Patterns</h3>
+          <p>Repeating patterns inspired by leaf veins, fern fronds, and river branching that the human brain finds inherently calming.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Fractal</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--brown">
+            <!-- Layered depth icon -->
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="8" width="14" height="12" rx="3" fill="#A0522D" opacity="0.2"/><rect x="5" y="5" width="14" height="12" rx="3" fill="#A0522D" opacity="0.3"/><rect x="8" y="2" width="14" height="12" rx="3" fill="#A0522D" opacity="0.4"/></svg>
+          </div>
+          <h3>Layered Depth</h3>
+          <p>Overlapping translucent panels suggest the depth of a forest scene, with foreground, midground, and background creating immersion.</p>
+          <span class="tag">Depth</span>
+          <span class="tag">Layer</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NATURE BANNER ===== -->
+  <div class="nature-banner">
+    <div class="botanical-divider" aria-hidden="true" style="margin-bottom: 1.25rem;">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14,3 C9,6 3,13 6,24 C9,21 14,12 24,6 C21,4.5 17,3 14,3Z" fill="#87AE73"/>
+        <path d="M14,3 C14,3 11,13 6,24" fill="none" stroke="#4A7C59" stroke-width="0.8"/>
+      </svg>
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: scaleX(-1);">
+        <path d="M14,3 C9,6 3,13 6,24 C9,21 14,12 24,6 C21,4.5 17,3 14,3Z" fill="#B5C9A8"/>
+        <path d="M14,3 C14,3 11,13 6,24" fill="none" stroke="#6B7F5C" stroke-width="0.8"/>
+      </svg>
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14,3 C9,6 3,13 6,24 C9,21 14,12 24,6 C21,4.5 17,3 14,3Z" fill="#87AE73"/>
+        <path d="M14,3 C14,3 11,13 6,24" fill="none" stroke="#4A7C59" stroke-width="0.8"/>
+      </svg>
+    </div>
+    <h2>Nature, Wellness &amp; Restorative Calm</h2>
+    <p>Every design decision aims to reduce cognitive load and create a sense of grounding, focus, and renewal</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--ivory">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Biophilic Philosophy</h2>
+      <p class="section-subtitle">organic flow, breathing space, sensory variability, restorative experience</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Nature in the Space</h3>
+            <p>Integrate direct references to natural elements through imagery, color, and living forms. Every surface should echo the textures, tones, and rhythms found in forests, rivers, and gardens.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Natural Analogues</h3>
+            <p>Employ indirect references to nature through organic shapes, fractal patterns, biomorphic forms, and natural material textures that evoke the living world without literal depiction.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Restorative Experience</h3>
+            <p>Every design decision reduces cognitive load and creates calm. Generous whitespace, gentle animation, and soft color harmonies work together to restore focus and well-being.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Sustainability as Aesthetic</h3>
+            <p>Lightweight SVG graphics, efficient code, compressed assets, and dark mode options embody the environmental values the design communicates. Beauty and responsibility as one.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1440 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <path d="M0,30 C240,0 480,55 720,30 C960,5 1200,50 1440,30 L1440,60 L0,60Z" fill="#F7F3E8"/>
+  </svg>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--parchment" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Nature Textures</h2>
+      <p class="section-subtitle">all organic techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-dappled"></div>
+          <div class="effect-caption">
+            <h4>Dappled Sunlight</h4>
+            <p>Overlapping radial gradients mimic light filtering through a forest canopy.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-topo"></div>
+          <div class="effect-caption">
+            <h4>Topographic Contours</h4>
+            <p>SVG-based concentric ellipses create a subtle contour map terrain pattern.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-waves"></div>
+          <div class="effect-caption">
+            <h4>Organic Wave Layers</h4>
+            <p>Layered SVG wave paths in greens create a flowing hillside or water effect.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-moss"></div>
+          <div class="effect-caption">
+            <h4>Moss &amp; Lichen</h4>
+            <p>Scattered radial gradients on dark earth simulate organic moss growth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-bark"></div>
+          <div class="effect-caption">
+            <h4>Bark &amp; Wood Grain</h4>
+            <p>Fine angled linear gradients layered over warm brown recreate tree bark.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-fractal"></div>
+          <div class="effect-caption">
+            <h4>Fractal Fern</h4>
+            <p>An SVG fern-frond pattern repeats to create calming natural geometry.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BOTANICAL DIVIDER ===== -->
+  <div class="botanical-divider" aria-hidden="true">
+    <div class="botanical-divider-line"></div>
+    <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M14,3 C9,6 3,13 6,24 C9,21 14,12 24,6 C21,4.5 17,3 14,3Z" fill="#2D5A3D"/>
+      <path d="M14,3 C14,3 11,13 6,24" fill="none" stroke="#4A7C59" stroke-width="0.8"/>
+    </svg>
+    <div class="botanical-divider-line"></div>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--eucalyptus">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Natural Buttons</h2>
+      <p class="section-subtitle">smooth stones, rounded seed pods, warm earthy interaction</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Forest Primary</a>
+        <a href="#" class="btn btn-secondary">Terracotta Outline</a>
+        <a href="#" class="btn btn-earth">Earth Accent</a>
+        <a href="#" class="btn btn-ghost">Leaf Ghost</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--parchment">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          In every walk with nature, one receives far more than one seeks. Biophilic design brings that gift indoors &mdash; weaving living connection, organic calm, and restorative beauty into every pixel.
+        </blockquote>
+        <cite>&mdash; The Spirit of Biophilic Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--ivory cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Return to Nature</h2>
+        <p class="cta-tagline">design with roots, breathe with intention</p>
+        <p>
+          Biophilic Design embraces organic shapes, earthy palettes, natural textures, and restorative calm. Ground every layout in forest green, warm brown, and parchment &mdash; then let the living details unfold.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Canopy</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE BEFORE FOOTER ===== -->
+  <div class="wave-banner" aria-hidden="true"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Biophilic Design</h3>
+      <p>
+        A design aesthetic reference celebrating the organic, grounded, and restorative visual language of nature-connected design. Forest greens, warm earth tones, and living textures &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-leaf-row" aria-hidden="true">
+        <svg viewBox="0 0 18 18" fill="none"><path d="M9,2 C6,4 2,8 4,15 C6,13 9,8 16,4 C13,3 11,2 9,2Z" fill="#87AE73"/></svg>
+        <svg viewBox="0 0 18 18" fill="none"><path d="M9,2 C6,4 2,8 4,15 C6,13 9,8 16,4 C13,3 11,2 9,2Z" fill="#B5C9A8"/></svg>
+        <svg viewBox="0 0 18 18" fill="none"><path d="M9,2 C6,4 2,8 4,15 C6,13 9,8 16,4 C13,3 11,2 9,2Z" fill="#87AE73"/></svg>
+        <svg viewBox="0 0 18 18" fill="none"><path d="M9,2 C6,4 2,8 4,15 C6,13 9,8 16,4 C13,3 11,2 9,2Z" fill="#B5C9A8"/></svg>
+        <svg viewBox="0 0 18 18" fill="none"><path d="M9,2 C6,4 2,8 4,15 C6,13 9,8 16,4 C13,3 11,2 9,2Z" fill="#87AE73"/></svg>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Biophilic Design &bull; Rooted in nature</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile nav if open
+          var navLinks = document.getElementById('navLinks');
+          if (navLinks) navLinks.classList.remove('open');
+        }
+      });
+    });
+
+    // Subtle scroll-triggered fade-in for sections
+    (function() {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      // Check for reduced motion preference
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReducedMotion) {
+        document.querySelectorAll('.card, .effect-demo, .principle-item, .color-chip').forEach(function(el) {
+          el.style.opacity = '0';
+          el.style.transform = 'translateY(16px)';
+          el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+          observer.observe(el);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

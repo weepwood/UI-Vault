@@ -1,0 +1,1698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concrete Brutalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Archivo+Black&family=Oswald:wght@400;500;700&family=Roboto+Slab:wght@400;700&family=Roboto+Condensed:wght@400;700&family=IBM+Plex+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Concrete spectrum */
+      --concrete-dust: #f0ece6;
+      --concrete-light: #d5d0ca;
+      --concrete-warm: #b8b2a8;
+      --concrete-weathered: #9c9588;
+      --concrete-aged: #7a746a;
+      --concrete-dark: #5c5650;
+      --concrete-charcoal: #3b3733;
+      --concrete-shadow: #2a2725;
+      --concrete-limestone: #e8dfd0;
+
+      /* Material accents */
+      --concrete-rust: #8b4513;
+      --concrete-corten: #a0522d;
+      --concrete-timber: #c19a6b;
+      --concrete-copper: #4a6741;
+      --concrete-verdigris: #6b8f71;
+      --concrete-iron: #1a1816;
+
+      /* Functional tokens */
+      --concrete-bg: var(--concrete-light);
+      --concrete-bg-alt: var(--concrete-warm);
+      --concrete-bg-dark: var(--concrete-shadow);
+      --concrete-text: var(--concrete-charcoal);
+      --concrete-text-muted: var(--concrete-aged);
+      --concrete-text-inverse: var(--concrete-dust);
+      --concrete-border: var(--concrete-dark);
+      --concrete-accent: var(--concrete-rust);
+      --concrete-accent-hover: var(--concrete-corten);
+      --concrete-highlight: var(--concrete-timber);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'IBM Plex Sans', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--concrete-text);
+      background-color: var(--concrete-bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4 {
+      font-family: 'Bebas Neue', 'Impact', 'Arial Black', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      line-height: 1.0;
+      color: var(--concrete-iron);
+      margin: 0 0 0.5em 0;
+    }
+
+    h3 {
+      font-family: 'Roboto Slab', Georgia, serif;
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 700;
+    }
+
+    a {
+      color: var(--concrete-accent);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 2px;
+      transition: none;
+    }
+
+    a:hover {
+      color: var(--concrete-accent-hover);
+      background-color: var(--concrete-highlight);
+      text-decoration-thickness: 3px;
+    }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ============================================
+       CONCRETE TEXTURE UTILITY
+       ============================================ */
+    .concrete-texture {
+      position: relative;
+    }
+
+    .concrete-texture::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .concrete-texture > * {
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background-color: var(--concrete-shadow);
+      border-bottom: 4px solid var(--concrete-iron);
+      padding: 0;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .nav-brand {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.3rem;
+      letter-spacing: 0.2em;
+      color: var(--concrete-dust);
+      text-decoration: none;
+      padding: 1rem 1.5rem;
+      border-right: 1px solid var(--concrete-dark);
+    }
+
+    .nav-brand:hover {
+      background-color: var(--concrete-dark);
+      color: var(--concrete-dust);
+    }
+
+    .nav ul {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .nav li {
+      border-left: 1px solid var(--concrete-dark);
+    }
+
+    .nav a {
+      display: block;
+      padding: 1rem 1.5rem;
+      color: var(--concrete-weathered);
+      text-decoration: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .nav a:hover {
+      background-color: var(--concrete-rust);
+      color: var(--concrete-dust);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 5rem 3rem;
+      background-color: var(--concrete-shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Board-marked formwork texture */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 20px,
+          rgba(255,255,255,0.03) 20px,
+          rgba(255,255,255,0.03) 22px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 100px,
+          rgba(255,255,255,0.02) 100px,
+          rgba(255,255,255,0.02) 102px
+        );
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Noise grain overlay */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .hero > * {
+      position: relative;
+      z-index: 3;
+    }
+
+    .hero-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--concrete-weathered);
+      margin-bottom: 1.5rem;
+      padding-left: 3px;
+    }
+
+    .hero h1 {
+      font-size: clamp(4rem, 13vw, 13rem);
+      line-height: 0.88;
+      color: var(--concrete-dust);
+      margin: 0;
+    }
+
+    .hero h1 span {
+      display: block;
+      color: var(--concrete-rust);
+    }
+
+    .hero-subtitle {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      max-width: 52ch;
+      margin-top: 2rem;
+      color: var(--concrete-weathered);
+      line-height: 1.8;
+    }
+
+    .hero .btn-row {
+      margin-top: 2.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.9rem 2.2rem;
+      border: 3px solid var(--concrete-dust);
+      background-color: transparent;
+      color: var(--concrete-dust);
+      cursor: pointer;
+      text-decoration: none;
+      transition: none;
+    }
+
+    .btn:hover {
+      background-color: var(--concrete-rust);
+      border-color: var(--concrete-rust);
+      color: var(--concrete-dust);
+    }
+
+    .btn:active {
+      background-color: var(--concrete-iron);
+      border-color: var(--concrete-iron);
+    }
+
+    .btn--solid {
+      background-color: var(--concrete-rust);
+      border-color: var(--concrete-rust);
+      color: var(--concrete-dust);
+    }
+
+    .btn--solid:hover {
+      background-color: var(--concrete-corten);
+      border-color: var(--concrete-corten);
+    }
+
+    .btn--dark {
+      background-color: var(--concrete-charcoal);
+      border-color: var(--concrete-charcoal);
+      color: var(--concrete-dust);
+    }
+
+    .btn--dark:hover {
+      background-color: var(--concrete-rust);
+      border-color: var(--concrete-rust);
+    }
+
+    .btn--outline-dark {
+      background-color: transparent;
+      border-color: var(--concrete-charcoal);
+      color: var(--concrete-charcoal);
+    }
+
+    .btn--outline-dark:hover {
+      background-color: var(--concrete-charcoal);
+      color: var(--concrete-dust);
+    }
+
+    .btn--copper {
+      background-color: var(--concrete-copper);
+      border-color: var(--concrete-copper);
+      color: var(--concrete-dust);
+    }
+
+    .btn--copper:hover {
+      background-color: var(--concrete-verdigris);
+      border-color: var(--concrete-verdigris);
+    }
+
+    /* ============================================
+       STRUCTURAL DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 6px;
+      background: var(--concrete-iron);
+      margin: 0;
+    }
+
+    .divider--rust {
+      height: 4px;
+      background: linear-gradient(
+        to right,
+        var(--concrete-rust),
+        var(--concrete-corten),
+        var(--concrete-rust)
+      );
+    }
+
+    .divider--expansion {
+      height: 6px;
+      background: linear-gradient(
+        to bottom,
+        var(--concrete-dark) 0%,
+        var(--concrete-dark) 40%,
+        var(--concrete-charcoal) 40%,
+        var(--concrete-charcoal) 60%,
+        var(--concrete-dark) 60%,
+        var(--concrete-dark) 100%
+      );
+      margin: 0;
+    }
+
+    /* ============================================
+       SECTION CONTAINER
+       ============================================ */
+    .section {
+      padding: 5rem 3rem;
+      border-bottom: 3px solid var(--concrete-dark);
+      position: relative;
+    }
+
+    .section--light {
+      background-color: var(--concrete-dust);
+    }
+
+    .section--warm {
+      background-color: var(--concrete-warm);
+    }
+
+    .section--dark {
+      background-color: var(--concrete-shadow);
+    }
+
+    .section--limestone {
+      background-color: var(--concrete-limestone);
+    }
+
+    .section h2 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--concrete-rust);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-intro {
+      max-width: 65ch;
+      margin-bottom: 2.5rem;
+      color: var(--concrete-aged);
+      font-size: 1.05rem;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .typo-sample {
+      padding: 1.5rem 0;
+      border-bottom: 2px solid var(--concrete-dark);
+    }
+
+    .typo-sample-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--concrete-rust);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-display {
+      font-family: 'Bebas Neue', 'Impact', sans-serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.0;
+      color: var(--concrete-iron);
+    }
+
+    .typo-heading {
+      font-family: 'Archivo Black', 'Impact', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.05;
+      color: var(--concrete-charcoal);
+    }
+
+    .typo-subheading {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      color: var(--concrete-dark);
+    }
+
+    .typo-body {
+      font-family: 'Roboto Slab', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--concrete-charcoal);
+    }
+
+    .typo-compact {
+      font-family: 'Roboto Condensed', Arial, sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--concrete-aged);
+    }
+
+    .typo-ui {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 500;
+      font-size: 0.95rem;
+      color: var(--concrete-dark);
+    }
+
+    .typo-right h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--concrete-dark);
+    }
+
+    .typo-scale-size {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 0.8rem;
+      color: var(--concrete-aged);
+      letter-spacing: 0.05em;
+      min-width: 5rem;
+    }
+
+    .typo-pairings {
+      margin-top: 2rem;
+      padding-top: 1.5rem;
+      border-top: 3px solid var(--concrete-dark);
+    }
+
+    .typo-pairing {
+      margin-bottom: 1rem;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .typo-pairing-vibe {
+      color: var(--concrete-aged);
+      font-size: 0.82rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0;
+      border-top: 3px solid var(--concrete-dark);
+      border-left: 3px solid var(--concrete-dark);
+      margin-top: 2rem;
+    }
+
+    .color-chip {
+      border-right: 3px solid var(--concrete-dark);
+      border-bottom: 3px solid var(--concrete-dark);
+    }
+
+    .color-swatch {
+      height: 80px;
+      border-bottom: 2px solid var(--concrete-dark);
+    }
+
+    .color-info {
+      padding: 0.6rem 0.75rem;
+      background-color: var(--concrete-dust);
+    }
+
+    .color-name {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--concrete-charcoal);
+      margin-bottom: 0.15rem;
+    }
+
+    .color-hex {
+      font-family: 'IBM Plex Sans', monospace;
+      font-size: 0.72rem;
+      color: var(--concrete-aged);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0;
+      border-top: 3px solid var(--concrete-dark);
+      border-left: 3px solid var(--concrete-dark);
+    }
+
+    .card {
+      border-right: 3px solid var(--concrete-dark);
+      border-bottom: 3px solid var(--concrete-dark);
+      padding: 2rem;
+      background-color: var(--concrete-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card:hover {
+      background-color: var(--concrete-warm);
+    }
+
+    .card-number {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--concrete-weathered);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 2px solid var(--concrete-aged);
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 1rem;
+      color: var(--concrete-dark);
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 2px solid var(--concrete-aged);
+      padding: 0.15rem 0.5rem;
+      margin-right: 0.3rem;
+      color: var(--concrete-aged);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 0;
+      border-top: 3px solid var(--concrete-dark);
+      border-left: 3px solid var(--concrete-dark);
+      margin-top: 2rem;
+    }
+
+    .effect-demo {
+      border-right: 3px solid var(--concrete-dark);
+      border-bottom: 3px solid var(--concrete-dark);
+    }
+
+    .effect-preview {
+      height: 180px;
+      border-bottom: 3px solid var(--concrete-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem;
+      background-color: var(--concrete-dust);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--concrete-charcoal);
+      margin-bottom: 0.4rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--concrete-aged);
+      margin: 0;
+    }
+
+    /* --- Effect 1: Board-Marked Concrete --- */
+    .effect-boardmark {
+      background-color: var(--concrete-warm);
+    }
+
+    .effect-boardmark::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          transparent,
+          transparent 18px,
+          rgba(0,0,0,0.06) 18px,
+          rgba(0,0,0,0.06) 20px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 90px,
+          rgba(0,0,0,0.04) 90px,
+          rgba(0,0,0,0.04) 92px
+        ),
+        repeating-linear-gradient(
+          178deg,
+          transparent,
+          transparent 3px,
+          rgba(0,0,0,0.012) 3px,
+          rgba(0,0,0,0.012) 5px
+        );
+      pointer-events: none;
+    }
+
+    /* --- Effect 2: Exposed Aggregate --- */
+    .effect-aggregate {
+      background-color: var(--concrete-warm);
+    }
+
+    .effect-aggregate::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, var(--concrete-aged) 1.2px, transparent 1.2px),
+        radial-gradient(circle, var(--concrete-weathered) 0.8px, transparent 0.8px),
+        radial-gradient(circle, var(--concrete-dark) 0.5px, transparent 0.5px);
+      background-size: 14px 14px, 9px 9px, 6px 6px;
+      background-position: 0 0, 5px 5px, 2px 8px;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* --- Effect 3: Fractal Noise Grain --- */
+    .effect-noise {
+      background-color: var(--concrete-charcoal);
+    }
+
+    .effect-noise::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+    }
+
+    /* --- Effect 4: Rust Patina --- */
+    .effect-rust {
+      background-color: var(--concrete-rust);
+    }
+
+    .effect-rust::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(160,82,45,0.6) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(193,154,107,0.4) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(139,69,19,0.5) 0%, transparent 45%);
+      pointer-events: none;
+    }
+
+    .effect-rust::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.15'/%3E%3C/svg%3E");
+      background-size: 128px 128px;
+      pointer-events: none;
+    }
+
+    /* --- Effect 5: Verdigris Copper --- */
+    .effect-verdigris {
+      background-color: var(--concrete-copper);
+    }
+
+    .effect-verdigris::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(107,143,113,0.7) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(107,143,113,0.5) 0%, transparent 40%),
+        radial-gradient(ellipse at 10% 90%, rgba(74,103,65,0.4) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .effect-verdigris::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.1'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+    }
+
+    /* --- Effect 6: Expansion Joint Grid --- */
+    .effect-grid {
+      background-color: var(--concrete-light);
+    }
+
+    .effect-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 58px,
+          var(--concrete-dark) 58px,
+          var(--concrete-dark) 62px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 58px,
+          var(--concrete-dark) 58px,
+          var(--concrete-dark) 62px
+        );
+      pointer-events: none;
+    }
+
+    .effect-grid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-top: 2rem;
+      border: 3px solid var(--concrete-dark);
+    }
+
+    .button-showcase-item {
+      flex: 1;
+      min-width: 200px;
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      border-right: 3px solid var(--concrete-dark);
+      background-color: var(--concrete-dust);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .button-showcase-item:last-child {
+      border-right: none;
+    }
+
+    .button-showcase-item--dark {
+      background-color: var(--concrete-shadow);
+    }
+
+    .button-showcase-label {
+      font-family: 'Roboto Condensed', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--concrete-aged);
+    }
+
+    .button-showcase-item--dark .button-showcase-label {
+      color: var(--concrete-weathered);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-section {
+      padding: 4rem 3rem;
+      background-color: var(--concrete-shadow);
+      border-left: 8px solid var(--concrete-rust);
+      border-bottom: 3px solid var(--concrete-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+      pointer-events: none;
+    }
+
+    .quote-section > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-section blockquote {
+      font-family: 'Roboto Slab', Georgia, serif;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      line-height: 1.7;
+      color: var(--concrete-limestone);
+      border: none;
+      padding: 0;
+      margin: 0 0 1.5rem 0;
+      background: none;
+      max-width: 60ch;
+    }
+
+    .quote-section cite {
+      display: block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--concrete-weathered);
+      font-style: normal;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: 5rem 3rem;
+      background-color: var(--concrete-charcoal);
+      border-bottom: 3px solid var(--concrete-dark);
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 24px,
+          rgba(255,255,255,0.02) 24px,
+          rgba(255,255,255,0.02) 26px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 120px,
+          rgba(255,255,255,0.015) 120px,
+          rgba(255,255,255,0.015) 122px
+        );
+      pointer-events: none;
+    }
+
+    .cta-section > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      color: var(--concrete-dust);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section p {
+      color: var(--concrete-weathered);
+      max-width: 50ch;
+      margin: 0 auto 2rem auto;
+      font-size: 1.05rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 3rem;
+      background-color: var(--concrete-iron);
+      border-top: 6px solid var(--concrete-charcoal);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer h4 {
+      font-size: 1rem;
+      letter-spacing: 0.15em;
+      color: var(--concrete-weathered);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--concrete-dark);
+    }
+
+    .footer ul {
+      list-style: none;
+    }
+
+    .footer li {
+      padding: 0.3rem 0;
+    }
+
+    .footer a {
+      color: var(--concrete-aged);
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .footer a:hover {
+      color: var(--concrete-dust);
+      background: none;
+      text-decoration: underline;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid var(--concrete-dark);
+      padding-top: 1.5rem;
+    }
+
+    .footer-bottom p {
+      font-size: 0.8rem;
+      color: var(--concrete-dark);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .hero {
+        min-height: 80vh;
+        padding: 3rem 1.5rem;
+      }
+
+      .section {
+        padding: 3rem 1.5rem;
+      }
+
+      .nav-brand {
+        padding: 0.75rem 1rem;
+      }
+
+      .nav a {
+        padding: 0.75rem 1rem;
+        font-size: 0.85rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+
+      .button-showcase {
+        flex-direction: column;
+      }
+
+      .button-showcase-item {
+        border-right: none;
+        border-bottom: 3px solid var(--concrete-dark);
+      }
+
+      .button-showcase-item:last-child {
+        border-bottom: none;
+      }
+
+      .quote-section {
+        padding: 3rem 1.5rem;
+      }
+
+      .cta-section {
+        padding: 3rem 1.5rem;
+      }
+
+      .footer {
+        padding: 2rem 1.5rem;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero h1 {
+        font-size: clamp(2.8rem, 15vw, 5rem);
+      }
+
+      .nav-inner {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .nav-brand {
+        border-right: none;
+        border-bottom: 1px solid var(--concrete-dark);
+      }
+
+      .nav li {
+        border-left: none;
+        border-top: 1px solid var(--concrete-dark);
+      }
+
+      .nav ul {
+        flex-direction: column;
+      }
+
+      .hero .btn-row {
+        flex-direction: column;
+      }
+
+      .hero .btn-row .btn {
+        text-align: center;
+      }
+    }
+
+    /* ============================================
+       PREFERS REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="#" class="nav-brand">Beton Brut</a>
+      <ul>
+        <li><a href="#typography">Typography</a></li>
+        <li><a href="#palette">Palette</a></li>
+        <li><a href="#components">Components</a></li>
+        <li><a href="#effects">Effects</a></li>
+        <li><a href="#buttons">Buttons</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <p class="hero-label">Design Aesthetic Reference</p>
+    <h1>Concrete<br><span>Brutalism</span></h1>
+    <p class="hero-subtitle">
+      Raw concrete. Honest materials. Massive forms. A design language rooted
+      in the architectural movement of the 1950s -- celebrating the grain of
+      formwork, the weight of aggregate, and the unfinished beauty of
+      beton brut.
+    </p>
+    <div class="btn-row">
+      <a href="#components" class="btn btn--solid">Explore Components</a>
+      <a href="#palette" class="btn">View Palette</a>
+    </div>
+  </header>
+
+  <!-- ===== STRUCTURAL DIVIDER ===== -->
+  <hr class="divider--rust">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--light concrete-texture" id="typography">
+    <p class="section-label">Typography</p>
+    <h2>Monumental Type</h2>
+    <p class="section-intro">Heavy, structural, and unapologetic. Letterforms that could be chiseled into a concrete facade or cast from a steel mold.</p>
+
+    <div class="typo-showcase">
+      <div class="typo-left">
+        <div class="typo-sample">
+          <p class="typo-sample-label">Display / Bebas Neue</p>
+          <p class="typo-display">Raw Concrete</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Impact / Archivo Black</p>
+          <p class="typo-heading">Massive Geometry</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Structural / Oswald 700</p>
+          <p class="typo-subheading">Exposed Structure &amp; Formwork</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Body / Roboto Slab</p>
+          <p class="typo-body">Architectural slab-serif text for grounded, readable editorial content. The warmth of stone-carved letterforms meets the clarity of modern typesetting.</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">Compact / Roboto Condensed 700</p>
+          <p class="typo-compact">Captions, Labels &amp; Structural Annotations</p>
+        </div>
+        <div class="typo-sample">
+          <p class="typo-sample-label">UI / IBM Plex Sans</p>
+          <p class="typo-ui">Clean industrial interface text for functional elements</p>
+        </div>
+      </div>
+      <div class="typo-right">
+        <h3>Type Scale</h3>
+        <div class="typo-scale">
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">9rem</span>
+            <span style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--concrete-iron);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">4.5rem</span>
+            <span style="font-family: 'Archivo Black', sans-serif; font-size: 1.5rem; color: var(--concrete-charcoal);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">2rem</span>
+            <span style="font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--concrete-dark);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1.2rem</span>
+            <span style="font-family: 'Roboto Slab', serif; font-weight: 700; font-size: 1rem; color: var(--concrete-charcoal);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">1.05rem</span>
+            <span style="font-family: 'Roboto Slab', serif; font-size: 0.95rem; color: var(--concrete-dark);">Aa</span>
+          </div>
+          <div class="typo-scale-item">
+            <span class="typo-scale-size">0.95rem</span>
+            <span style="font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 0.88rem; color: var(--concrete-aged);">Aa</span>
+          </div>
+        </div>
+
+        <div class="typo-pairings">
+          <h3 style="margin-bottom: 1rem;">Font Pairings</h3>
+          <p class="typo-pairing">
+            <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--concrete-rust);">Bebas Neue</strong> + <strong style="font-family: 'IBM Plex Sans', sans-serif;">IBM Plex Sans</strong><br>
+            <span class="typo-pairing-vibe">Towering monolith meets clean industrial precision</span>
+          </p>
+          <p class="typo-pairing">
+            <strong style="font-family: 'Archivo Black', sans-serif; color: var(--concrete-rust);">Archivo Black</strong> + <strong style="font-family: 'Roboto Slab', serif;">Roboto Slab</strong><br>
+            <span class="typo-pairing-vibe">Heavyweight impact paired with slab-serif solidity</span>
+          </p>
+          <p class="typo-pairing">
+            <strong style="font-family: 'Oswald', sans-serif; font-weight: 700; color: var(--concrete-rust);">Oswald</strong> + <strong style="font-family: 'Roboto Condensed', sans-serif;">Roboto Condensed</strong><br>
+            <span class="typo-pairing-vibe">Structural authority with efficient compact readability</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPANSION JOINT DIVIDER ===== -->
+  <hr class="divider--expansion">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--limestone concrete-texture" id="palette">
+    <p class="section-label">Color Palette</p>
+    <h2>Material Palette</h2>
+    <p class="section-intro">Every color references a real physical material -- concrete at different moisture levels, rust, timber, and oxidized copper. No arbitrary decorative hues.</p>
+
+    <div class="palette-grid">
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #f0ece6;"></div>
+        <div class="color-info">
+          <div class="color-name">Cement Dust</div>
+          <div class="color-hex">#F0ECE6</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #e8dfd0;"></div>
+        <div class="color-info">
+          <div class="color-name">Limestone Wash</div>
+          <div class="color-hex">#E8DFD0</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #d5d0ca;"></div>
+        <div class="color-info">
+          <div class="color-name">Light Concrete</div>
+          <div class="color-hex">#D5D0CA</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #b8b2a8;"></div>
+        <div class="color-info">
+          <div class="color-name">Warm Concrete</div>
+          <div class="color-hex">#B8B2A8</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #9c9588;"></div>
+        <div class="color-info">
+          <div class="color-name">Weathered</div>
+          <div class="color-hex">#9C9588</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #7a746a;"></div>
+        <div class="color-info">
+          <div class="color-name">Aged Concrete</div>
+          <div class="color-hex">#7A746A</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #5c5650;"></div>
+        <div class="color-info">
+          <div class="color-name">Dark Concrete</div>
+          <div class="color-hex">#5C5650</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #3b3733;"></div>
+        <div class="color-info">
+          <div class="color-name">Charcoal Stone</div>
+          <div class="color-hex">#3B3733</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #2a2725;"></div>
+        <div class="color-info">
+          <div class="color-name">Deep Shadow</div>
+          <div class="color-hex">#2A2725</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #1a1816;"></div>
+        <div class="color-info">
+          <div class="color-name">Raw Iron</div>
+          <div class="color-hex">#1A1816</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #8b4513;"></div>
+        <div class="color-info">
+          <div class="color-name">Rust / Rebar</div>
+          <div class="color-hex">#8B4513</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #a0522d;"></div>
+        <div class="color-info">
+          <div class="color-name">Corten Steel</div>
+          <div class="color-hex">#A0522D</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #c19a6b;"></div>
+        <div class="color-info">
+          <div class="color-name">Formwork Timber</div>
+          <div class="color-hex">#C19A6B</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #4a6741;"></div>
+        <div class="color-info">
+          <div class="color-name">Oxidized Copper</div>
+          <div class="color-hex">#4A6741</div>
+        </div>
+      </div>
+      <div class="color-chip">
+        <div class="color-swatch" style="background: #6b8f71;"></div>
+        <div class="color-info">
+          <div class="color-name">Verdigris</div>
+          <div class="color-hex">#6B8F71</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRUCTURAL DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section" id="components">
+    <p class="section-label">Components</p>
+    <h2>Precast Panels</h2>
+    <p class="section-intro">Each card is a concrete panel in a larger structure. The grid reveals the modular system. The borders are expansion joints. Hover to see the material beneath.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-number">01</div>
+        <h3>Material Honesty</h3>
+        <p>We never conceal what a building is made of. Concrete is left exposed. Steel is left unclad. The structure is the finish. Every surface tells the story of its making.</p>
+        <span class="card-tag">Principle</span>
+        <span class="card-tag">Foundation</span>
+      </div>
+      <div class="card">
+        <div class="card-number">02</div>
+        <h3>Monumental Form</h3>
+        <p>Buildings assert their presence through scale and geometry. Massive cantilevers, deep reveals, and bold silhouettes define the relationship between structure and sky.</p>
+        <span class="card-tag">Scale</span>
+        <span class="card-tag">Geometry</span>
+      </div>
+      <div class="card">
+        <div class="card-number">03</div>
+        <h3>Board-Marked Texture</h3>
+        <p>The grain of timber formwork is preserved in the cured concrete surface. Horizontal lines record every plank that shaped the wall. The process becomes the decoration.</p>
+        <span class="card-tag">Texture</span>
+        <span class="card-tag">Formwork</span>
+      </div>
+      <div class="card">
+        <div class="card-number">04</div>
+        <h3>Exposed Structure</h3>
+        <p>Grid lines, borders, and layout scaffolding remain visible as honest expressions of the underlying architecture. Beams, columns, and joints are features, not flaws.</p>
+        <span class="card-tag">Grid</span>
+        <span class="card-tag">Skeleton</span>
+      </div>
+      <div class="card">
+        <div class="card-number">05</div>
+        <h3>Controlled Brutality</h3>
+        <p>Raw does not mean careless. Every crack, grain line, and surface texture is deliberately placed to achieve the specific emotional weight of honest material expression.</p>
+        <span class="card-tag">Intent</span>
+        <span class="card-tag">Precision</span>
+      </div>
+      <div class="card">
+        <div class="card-number">06</div>
+        <h3>Light as Material</h3>
+        <p>The interplay of light and shadow across textured surfaces is as important as the surfaces themselves. Directional shadows and contrast create the illusion of physical depth.</p>
+        <span class="card-tag">Shadow</span>
+        <span class="card-tag">Depth</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RUST DIVIDER ===== -->
+  <hr class="divider--rust">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--light concrete-texture" id="effects">
+    <p class="section-label">Visual Effects</p>
+    <h2>CSS Textures</h2>
+    <p class="section-intro">All the material surfaces of Brutalist architecture, recreated with pure CSS -- no image assets required. Noise, grain, aggregate, and patina.</p>
+
+    <div class="effects-grid">
+      <div class="effect-demo">
+        <div class="effect-preview effect-boardmark"></div>
+        <div class="effect-caption">
+          <h4>Board-Marked Formwork</h4>
+          <p>Repeating linear gradients recreate the horizontal grain of timber boards used to cast concrete walls.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-aggregate"></div>
+        <div class="effect-caption">
+          <h4>Exposed Aggregate</h4>
+          <p>Layered radial gradient dots simulate the speckled, rough texture of bush-hammered concrete surfaces.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-noise"></div>
+        <div class="effect-caption">
+          <h4>Fractal Noise Grain</h4>
+          <p>SVG feTurbulence filter generates organic noise that mimics the mottled surface of cured concrete.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-rust"></div>
+        <div class="effect-caption">
+          <h4>Rust Patina</h4>
+          <p>Overlapping radial gradients with noise create the weathered surface of Corten steel and exposed rebar.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-verdigris"></div>
+        <div class="effect-caption">
+          <h4>Verdigris Copper</h4>
+          <p>Green-tinted radial gradients with noise simulate the oxidized patina on weathered copper cladding.</p>
+        </div>
+      </div>
+      <div class="effect-demo">
+        <div class="effect-preview effect-grid"></div>
+        <div class="effect-caption">
+          <h4>Expansion Joint Grid</h4>
+          <p>Intersecting repeating gradients form the modular panel grid visible on precast concrete facades.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPANSION JOINT DIVIDER ===== -->
+  <hr class="divider--expansion">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--warm" id="buttons">
+    <p class="section-label">Interactive Elements</p>
+    <h2>Cast Buttons</h2>
+    <p class="section-intro">Heavy, rectangular, and blunt. No rounded corners. No smooth transitions. State changes are instantaneous -- like light falling on stone.</p>
+
+    <div class="button-showcase">
+      <div class="button-showcase-item">
+        <span class="button-showcase-label">Primary / Solid</span>
+        <a href="#" class="btn btn--solid">View Projects</a>
+      </div>
+      <div class="button-showcase-item button-showcase-item--dark">
+        <span class="button-showcase-label">Outline / Light</span>
+        <a href="#" class="btn">Learn More</a>
+      </div>
+      <div class="button-showcase-item">
+        <span class="button-showcase-label">Dark Fill</span>
+        <a href="#" class="btn btn--dark">Send Inquiry</a>
+      </div>
+      <div class="button-showcase-item">
+        <span class="button-showcase-label">Copper Accent</span>
+        <a href="#" class="btn btn--copper">Material Lab</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STRUCTURAL DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="quote-section">
+    <blockquote>
+      "The raw concrete surface, with all the imprints of the formwork,
+      adds a certain richness to the architecture. It humanises it.
+      The faults of texture add a further human quality."
+    </blockquote>
+    <cite>Le Corbusier, on the Unite d'Habitation, Marseille, 1952</cite>
+  </section>
+
+  <!-- ===== RUST DIVIDER ===== -->
+  <hr class="divider--rust">
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <h2>Build With Honesty</h2>
+    <p>
+      Concrete Brutalism embraces raw materials, monumental form, and the deliberate beauty of surfaces that refuse to hide what they are made of. No rounded corners. No smooth gradients. No apologies.
+    </p>
+    <a href="#hero" class="btn btn--solid">Back to the Top</a>
+  </section>
+
+  <!-- ===== STRUCTURAL DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div>
+        <h4>Studio</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Process</a></li>
+          <li><a href="#">Careers</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Work</h4>
+        <ul>
+          <li><a href="#">Residential</a></li>
+          <li><a href="#">Cultural</a></li>
+          <li><a href="#">Public</a></li>
+          <li><a href="#">Infrastructure</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Material Library</a></li>
+          <li><a href="#">Concrete Finishes</a></li>
+          <li><a href="#">Formwork Guide</a></li>
+          <li><a href="#">Brutalism Archive</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>References</h4>
+        <ul>
+          <li><a href="#">Le Corbusier</a></li>
+          <li><a href="#">Reyner Banham</a></li>
+          <li><a href="#">Barbican Estate</a></li>
+          <li><a href="#">Trellick Tower</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>
+        Built with raw HTML and CSS. No frameworks. No build steps.
+        No border-radius. View source to verify. &copy; 2025 Beton Brut Studio.
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===== MINIMAL VANILLA JS ===== -->
+  <script>
+    // Active nav link highlighting on scroll
+    (function() {
+      var sections = document.querySelectorAll('section[id], header[id]');
+      var navLinks = document.querySelectorAll('.nav a[href^="#"]');
+
+      function onScroll() {
+        var scrollPos = window.scrollY + 120;
+        sections.forEach(function(section) {
+          var top = section.offsetTop;
+          var height = section.offsetHeight;
+          var id = section.getAttribute('id');
+          if (scrollPos >= top && scrollPos < top + height) {
+            navLinks.forEach(function(link) {
+              if (link.getAttribute('href') === '#' + id) {
+                link.style.backgroundColor = 'var(--concrete-dark)';
+                link.style.borderBottom = '3px solid var(--concrete-rust)';
+                link.style.color = 'var(--concrete-dust)';
+              } else {
+                link.style.backgroundColor = '';
+                link.style.borderBottom = '';
+                link.style.color = '';
+              }
+            });
+          }
+        });
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Regencycore -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700;900&family=Great+Vibes&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      --regency-ivory: #FAF6F0;
+      --regency-parchment: #F0E6D4;
+      --regency-blush: #F2C6C2;
+      --regency-blue: #B8D4E3;
+      --regency-green: #C5D5A3;
+      --regency-lavender: #C4B1D4;
+      --regency-gold: #C5A55A;
+      --regency-gilt: #D4A843;
+      --regency-emerald: #2E6E4E;
+      --regency-sapphire: #2B4570;
+      --regency-burgundy: #6E2142;
+      --regency-mahogany: #3E2223;
+      --regency-slate: #4A4A4A;
+      --regency-damask-rose: #D4838F;
+      --regency-toile-blue: #7BA0B8;
+
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.125rem;
+      line-height: 1.85;
+      color: var(--regency-mahogany);
+      background-color: var(--regency-ivory);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+      color: var(--regency-mahogany);
+      line-height: 1.25;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--regency-ivory);
+      padding: 0 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      border-bottom: 1px solid rgba(197, 165, 90, 0.25);
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--regency-gold), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: var(--regency-mahogany);
+      text-transform: uppercase;
+      padding: 24px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--regency-gold);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      color: var(--regency-slate);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 24px 0;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--regency-gold);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--regency-gold);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: linear-gradient(180deg, var(--regency-parchment) 0%, var(--regency-ivory) 100%);
+      text-align: center;
+      padding: 120px 40px 100px;
+      position: relative;
+      overflow: hidden;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Subtle damask texture overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(197, 165, 90, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(242, 198, 194, 0.06) 0%, transparent 50%),
+        repeating-conic-gradient(rgba(197, 165, 90, 0.025) 0% 25%, transparent 0% 50%) 0 0 / 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Decorative gold border frame */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 28px;
+      right: 28px;
+      bottom: 28px;
+      border: 1px solid rgba(197, 165, 90, 0.2);
+      pointer-events: none;
+    }
+
+    /* Animated floating sparkle dots - chandelier crystal effect */
+    .hero-crystals {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-crystal {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(197, 165, 90, 0.7) 0%, transparent 70%);
+      animation: crystalFloat 6s ease-in-out infinite;
+    }
+
+    .hero-crystal:nth-child(1) { top: 15%; left: 12%; animation-delay: 0s; }
+    .hero-crystal:nth-child(2) { top: 22%; left: 85%; animation-delay: -1s; width: 3px; height: 3px; }
+    .hero-crystal:nth-child(3) { top: 8%; left: 45%; animation-delay: -2s; width: 5px; height: 5px; }
+    .hero-crystal:nth-child(4) { top: 35%; left: 78%; animation-delay: -3s; }
+    .hero-crystal:nth-child(5) { top: 12%; left: 68%; animation-delay: -4s; width: 3px; height: 3px; }
+    .hero-crystal:nth-child(6) { top: 28%; left: 25%; animation-delay: -5s; }
+
+    @keyframes crystalFloat {
+      0%, 100% { opacity: 0.3; transform: translateY(0) scale(1); }
+      50% { opacity: 0.9; transform: translateY(-8px) scale(1.3); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      color: var(--regency-gold);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel Decorative', 'Cinzel', serif;
+      font-size: clamp(2.6rem, 7vw, 4rem);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--regency-mahogany);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      color: var(--regency-damask-rose);
+      margin-bottom: 12px;
+    }
+
+    .hero-desc {
+      max-width: 600px;
+      margin: 0 auto 36px;
+      font-size: clamp(1rem, 1.5vw, 1.2rem);
+      font-weight: 300;
+      color: var(--regency-slate);
+      line-height: 1.85;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      background: var(--regency-burgundy);
+      color: var(--regency-ivory);
+      border: 1px solid var(--regency-burgundy);
+      border-radius: 2px;
+      padding: 14px 40px;
+      font-family: 'Cinzel', serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .btn:hover {
+      background: var(--regency-mahogany);
+      border-color: var(--regency-mahogany);
+      box-shadow: 0 4px 16px rgba(110, 33, 66, 0.25);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--regency-gold);
+      border: 1px solid var(--regency-gold);
+    }
+
+    .btn-outline:hover {
+      background: var(--regency-gold);
+      color: var(--regency-ivory);
+      box-shadow: 0 4px 16px rgba(197, 165, 90, 0.25);
+    }
+
+    .btn-sapphire {
+      background: var(--regency-sapphire);
+      border-color: var(--regency-sapphire);
+    }
+
+    .btn-sapphire:hover {
+      background: #1d3050;
+      border-color: #1d3050;
+      box-shadow: 0 4px 16px rgba(43, 69, 112, 0.3);
+    }
+
+    .btn-emerald {
+      background: var(--regency-emerald);
+      border-color: var(--regency-emerald);
+    }
+
+    .btn-emerald:hover {
+      background: #1f5038;
+      border-color: #1f5038;
+      box-shadow: 0 4px 16px rgba(46, 110, 78, 0.3);
+    }
+
+    /* ============================================
+       FILIGREE DIVIDER
+       ============================================ */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin: 64px auto;
+      max-width: 400px;
+      padding: 0 24px;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--regency-gold), transparent);
+    }
+
+    .divider span {
+      width: 10px;
+      height: 10px;
+      border: 1px solid var(--regency-gold);
+      transform: rotate(45deg);
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .divider span::before {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      right: 2px;
+      bottom: 2px;
+      background: var(--regency-gold);
+    }
+
+    /* ============================================
+       SECTION STYLES
+       ============================================ */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--ivory {
+      background: var(--regency-ivory);
+    }
+
+    .section--parchment {
+      background: var(--regency-parchment);
+    }
+
+    .section--damask {
+      background-color: var(--regency-ivory);
+      background-image:
+        radial-gradient(ellipse at 25% 25%, rgba(197, 165, 90, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 75%, rgba(197, 165, 90, 0.04) 0%, transparent 50%);
+      background-size: 80px 80px;
+    }
+
+    .section-label {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.4rem;
+      color: var(--regency-gold);
+      text-align: center;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--regency-mahogany);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: var(--regency-slate);
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      padding: 20px 0;
+      border-bottom: 1px solid rgba(197, 165, 90, 0.15);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--regency-toile-blue);
+      margin-bottom: 4px;
+    }
+
+    .typo-display {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--regency-mahogany);
+      letter-spacing: 0.06em;
+      line-height: 1.2;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--regency-mahogany);
+      line-height: 1.25;
+    }
+
+    .typo-subheading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      font-weight: 600;
+      color: var(--regency-sapphire);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .typo-body {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--regency-slate);
+      line-height: 1.85;
+    }
+
+    .typo-script {
+      font-family: 'Great Vibes', cursive;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--regency-gold);
+    }
+
+    .typo-garamond {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--regency-slate);
+      line-height: 1.8;
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--regency-mahogany);
+      margin-bottom: 16px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(197, 165, 90, 0.12);
+    }
+
+    .typo-scale-size {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--regency-toile-blue);
+      text-transform: uppercase;
+      min-width: 60px;
+    }
+
+    .typo-pairings {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(197, 165, 90, 0.2);
+    }
+
+    .typo-pairings p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pairings p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+
+    .color-chip {
+      background: var(--regency-ivory);
+      border: 1px solid rgba(197, 165, 90, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 20px rgba(62, 34, 35, 0.1);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--regency-mahogany);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      color: var(--regency-slate);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--regency-parchment);
+      border: 1px solid rgba(197, 165, 90, 0.3);
+      border-radius: 4px;
+      padding: 36px;
+      position: relative;
+      box-shadow: 0 2px 12px rgba(62, 34, 35, 0.05);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: 0 6px 24px rgba(62, 34, 35, 0.1);
+      transform: translateY(-3px);
+    }
+
+    /* Gold filigree corner accents */
+    .card::before,
+    .card::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--regency-gold);
+      border-style: solid;
+    }
+
+    .card::before {
+      top: 8px;
+      left: 8px;
+      border-width: 1.5px 0 0 1.5px;
+    }
+
+    .card::after {
+      bottom: 8px;
+      right: 8px;
+      border-width: 0 1.5px 1.5px 0;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      font-size: 1.2rem;
+      border: 1.5px solid var(--regency-gold);
+      color: var(--regency-gold);
+    }
+
+    .card-icon--blush { background: rgba(242, 198, 194, 0.25); }
+    .card-icon--blue { background: rgba(184, 212, 227, 0.25); }
+    .card-icon--green { background: rgba(197, 213, 163, 0.25); }
+    .card-icon--lavender { background: rgba(196, 177, 212, 0.25); }
+    .card-icon--gold { background: rgba(197, 165, 90, 0.15); }
+    .card-icon--rose { background: rgba(212, 131, 143, 0.2); }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--regency-mahogany);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--regency-slate);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 14px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Cinzel', serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--regency-toile-blue);
+      background: rgba(184, 212, 227, 0.15);
+      border: 1px solid rgba(184, 212, 227, 0.3);
+      border-radius: 2px;
+      padding: 4px 10px;
+      margin-right: 6px;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER (Regency Stripe)
+       ============================================ */
+    .stripe-banner {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--regency-ivory) 0px,
+        var(--regency-ivory) 14px,
+        var(--regency-blue) 14px,
+        var(--regency-blue) 16px
+      );
+      padding: 56px 40px;
+      text-align: center;
+      border-top: 1px solid var(--regency-gold);
+      border-bottom: 1px solid var(--regency-gold);
+      position: relative;
+    }
+
+    .stripe-banner::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid rgba(197, 165, 90, 0.15);
+      pointer-events: none;
+    }
+
+    .stripe-banner h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.2rem, 3vw, 1.6rem);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      color: var(--regency-mahogany);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .stripe-banner .script-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.5rem;
+      color: var(--regency-gold);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .stripe-banner p {
+      font-size: 1.1rem;
+      color: var(--regency-slate);
+      max-width: 520px;
+      margin: 0 auto 24px;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 28px;
+      align-items: flex-start;
+    }
+
+    .principle-icon {
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      border-radius: 50%;
+      border: 1.5px solid var(--regency-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Outer ring */
+    .principle-icon::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border-radius: 50%;
+      border: 1px solid rgba(197, 165, 90, 0.25);
+    }
+
+    .principle-icon span {
+      font-size: 1.4rem;
+      color: var(--regency-gold);
+    }
+
+    .principle-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--regency-mahogany);
+      margin-bottom: 6px;
+    }
+
+    .principle-text p {
+      font-size: 1rem;
+      color: var(--regency-slate);
+      line-height: 1.85;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border: 1px solid rgba(197, 165, 90, 0.2);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--regency-ivory);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      box-shadow: 0 6px 20px rgba(62, 34, 35, 0.08);
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+      border-top: 1px solid rgba(197, 165, 90, 0.15);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--regency-mahogany);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.88rem;
+      color: var(--regency-slate);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Damask Pattern */
+    .effect-damask {
+      background-color: var(--regency-parchment);
+      background-image:
+        radial-gradient(ellipse at 25% 25%, rgba(197, 165, 90, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 25%, rgba(197, 165, 90, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 75%, rgba(197, 165, 90, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 25% 75%, rgba(212, 131, 143, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 75%, rgba(212, 131, 143, 0.06) 0%, transparent 50%);
+      background-size: 60px 60px;
+    }
+
+    .effect-damask::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: repeating-conic-gradient(
+        rgba(197, 165, 90, 0.04) 0% 25%,
+        transparent 0% 50%
+      ) 0 0 / 30px 30px;
+    }
+
+    /* Effect 2: Gold Filigree Border */
+    .effect-filigree {
+      background: var(--regency-ivory);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-filigree::before {
+      content: '';
+      position: absolute;
+      top: 16px; left: 16px; right: 16px; bottom: 16px;
+      border: 1.5px solid var(--regency-gold);
+    }
+
+    .effect-filigree::after {
+      content: '';
+      position: absolute;
+      top: 22px; left: 22px; right: 22px; bottom: 22px;
+      border: 0.5px solid rgba(197, 165, 90, 0.4);
+    }
+
+    /* Effect 3: Regency Stripe */
+    .effect-stripe {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--regency-ivory) 0px,
+        var(--regency-ivory) 12px,
+        var(--regency-blush) 12px,
+        var(--regency-blush) 14px,
+        var(--regency-ivory) 14px,
+        var(--regency-ivory) 26px,
+        var(--regency-blue) 26px,
+        var(--regency-blue) 28px
+      );
+    }
+
+    /* Effect 4: Crystal Chandelier Sparkle */
+    .effect-crystal {
+      background: linear-gradient(135deg, var(--regency-parchment) 0%, #E8DCC8 100%);
+    }
+
+    .effect-crystal::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(197, 165, 90, 0.5) 0%, transparent 3px),
+        radial-gradient(circle at 50% 15%, rgba(212, 168, 67, 0.4) 0%, transparent 2px),
+        radial-gradient(circle at 80% 40%, rgba(197, 165, 90, 0.45) 0%, transparent 3px),
+        radial-gradient(circle at 35% 70%, rgba(212, 168, 67, 0.35) 0%, transparent 2px),
+        radial-gradient(circle at 65% 55%, rgba(197, 165, 90, 0.5) 0%, transparent 2.5px),
+        radial-gradient(circle at 15% 85%, rgba(212, 168, 67, 0.3) 0%, transparent 2px),
+        radial-gradient(circle at 90% 75%, rgba(197, 165, 90, 0.4) 0%, transparent 3px),
+        radial-gradient(circle at 45% 45%, rgba(255, 255, 255, 0.5) 0%, transparent 2px),
+        radial-gradient(circle at 72% 20%, rgba(255, 255, 255, 0.4) 0%, transparent 1.5px),
+        radial-gradient(circle at 28% 50%, rgba(255, 255, 255, 0.35) 0%, transparent 2px);
+      animation: sparkle 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes sparkle {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    /* Effect 5: Parchment Texture */
+    .effect-parchment {
+      background:
+        linear-gradient(180deg, #F0E6D4 0%, #E8DCC8 50%, #F0E6D4 100%);
+    }
+
+    .effect-parchment::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(62, 34, 35, 0.015) 2px,
+          rgba(62, 34, 35, 0.015) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(62, 34, 35, 0.01) 3px,
+          rgba(62, 34, 35, 0.01) 6px
+        );
+    }
+
+    .effect-parchment::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(197, 165, 90, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse at 80% 30%, rgba(62, 34, 35, 0.03) 0%, transparent 60%);
+    }
+
+    /* Effect 6: Candlelight Glow */
+    .effect-candlelight {
+      background: linear-gradient(180deg, #3E2223 0%, #52302F 50%, #3E2223 100%);
+    }
+
+    .effect-candlelight::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(212, 168, 67, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 50%, rgba(212, 168, 67, 0.2) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 30%, rgba(242, 198, 194, 0.08) 0%, transparent 40%);
+      animation: candleFlicker 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes candleFlicker {
+      0% { opacity: 0.8; transform: scale(1); }
+      33% { opacity: 1; transform: scale(1.02); }
+      66% { opacity: 0.85; transform: scale(0.99); }
+      100% { opacity: 0.95; transform: scale(1.01); }
+    }
+
+    .effect-candlelight::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background:
+        radial-gradient(circle at 30% 35%, rgba(255, 220, 120, 0.6) 0%, transparent 8px),
+        radial-gradient(circle at 70% 45%, rgba(255, 220, 120, 0.5) 0%, transparent 6px);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      background: var(--regency-parchment);
+      padding: 80px 40px;
+      text-align: center;
+      position: relative;
+      border-top: 1px solid rgba(197, 165, 90, 0.2);
+      border-bottom: 1px solid rgba(197, 165, 90, 0.2);
+    }
+
+    .quote-section::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 8rem;
+      color: var(--regency-gold);
+      opacity: 0.2;
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .quote-section::after {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      right: 12px;
+      bottom: 12px;
+      border: 1px solid rgba(197, 165, 90, 0.12);
+      pointer-events: none;
+    }
+
+    .quote-section blockquote {
+      max-width: 640px;
+      margin: 0 auto;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-style: italic;
+      color: var(--regency-mahogany);
+      line-height: 1.65;
+      position: relative;
+    }
+
+    .quote-section cite {
+      display: block;
+      margin-top: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: normal;
+      color: var(--regency-slate);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 80px 40px;
+      position: relative;
+      background: linear-gradient(180deg, var(--regency-ivory) 0%, var(--regency-parchment) 100%);
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      border: 1px solid rgba(197, 165, 90, 0.2);
+      pointer-events: none;
+    }
+
+    .cta-medallion {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px solid var(--regency-gold);
+      box-shadow:
+        0 0 0 5px var(--regency-ivory),
+        0 0 0 7px rgba(197, 165, 90, 0.3);
+      margin: 0 auto 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--regency-parchment);
+    }
+
+    .cta-medallion span {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--regency-gold);
+    }
+
+    .cta-section h2 {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--regency-mahogany);
+      margin-bottom: 8px;
+    }
+
+    .cta-section .script-text {
+      font-family: 'Great Vibes', cursive;
+      font-size: 1.6rem;
+      color: var(--regency-gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      max-width: 520px;
+      margin: 0 auto 32px;
+      color: var(--regency-slate);
+      line-height: 1.85;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--regency-mahogany);
+      color: var(--regency-parchment);
+      text-align: center;
+      padding: 56px 40px;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--regency-gold), transparent);
+    }
+
+    .footer-logo {
+      font-family: 'Cinzel', serif;
+      font-weight: 700;
+      font-size: 1rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--regency-gold);
+      margin-bottom: 12px;
+    }
+
+    .footer p {
+      font-size: 0.95rem;
+      color: rgba(240, 230, 212, 0.6);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      margin-top: 20px;
+    }
+
+    .footer-links a {
+      color: rgba(240, 230, 212, 0.5);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--regency-gold);
+    }
+
+    .footer-ornament {
+      margin-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .footer-ornament::before,
+    .footer-ornament::after {
+      content: '';
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--regency-gold), transparent);
+    }
+
+    .footer-ornament span {
+      width: 6px;
+      height: 6px;
+      border: 1px solid var(--regency-gold);
+      transform: rotate(45deg);
+      display: block;
+    }
+
+    .footer-copy {
+      margin-top: 20px;
+      font-family: 'Cinzel', serif;
+      font-size: 0.65rem !important;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(240, 230, 212, 0.35) !important;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE - TABLET
+       ============================================ */
+    @media (max-width: 900px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE - MOBILE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        padding: 16px 24px;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 8px 0;
+      }
+
+      .hero {
+        padding: 80px 24px 60px;
+        min-height: auto;
+      }
+
+      .hero h1 {
+        letter-spacing: 0.06em;
+      }
+
+      .hero::after {
+        top: 16px;
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 16px;
+      }
+
+      .stripe-banner {
+        padding: 40px 24px;
+      }
+
+      .quote-section {
+        padding: 60px 24px;
+      }
+
+      .cta-section {
+        padding: 60px 24px;
+      }
+
+      .cta-section::before {
+        top: 12px; left: 12px; right: 12px; bottom: 12px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer {
+        padding: 40px 24px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Thornfield</a>
+    <div class="nav-links">
+      <a href="#hero">Society</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Crystal chandelier sparkle dots -->
+    <div class="hero-crystals">
+      <div class="hero-crystal"></div>
+      <div class="hero-crystal"></div>
+      <div class="hero-crystal"></div>
+      <div class="hero-crystal"></div>
+      <div class="hero-crystal"></div>
+      <div class="hero-crystal"></div>
+    </div>
+
+    <div class="hero-content">
+      <span class="hero-script">The Season Awaits</span>
+      <h1>Regencycore</h1>
+      <p class="hero-subtitle">Empire Elegance &amp; Gilded Grace</p>
+      <p class="hero-desc">
+        Bridgerton-era refinement translated into digital design &mdash; soft pastels, gold filigree, Didone typography, and the classical symmetry of a Regency drawing room.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Enter the Ballroom</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== FILIGREE DIVIDER ===== -->
+  <div class="divider"><span></span></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--ivory" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">High-Contrast Serifs &amp; Calligraphic Script</h2>
+      <p class="section-subtitle">Didone drama, classical proportion, handwritten elegance</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cinzel Decorative</p>
+            <p class="typo-display">Grand Ballroom</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display</p>
+            <p class="typo-heading">An Evening at the Assembly</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Cinzel</p>
+            <p class="typo-subheading">Season of Elegance</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Cormorant Garamond</p>
+            <p class="typo-body">Refined serif text with classical proportions, designed for comfortable long-form reading with period-appropriate character and grace.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Script Accent / Great Vibes</p>
+            <p class="typo-script">with warmest regards</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body Alternate / EB Garamond</p>
+            <p class="typo-garamond">A classical Garamond for extended passages, pairing Roman grandeur with Renaissance readability.</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Cinzel Decorative', serif; font-size: 1.6rem; font-weight: 700; color: var(--regency-mahogany);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--regency-mahogany);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 1.1rem; font-weight: 600; color: var(--regency-sapphire); letter-spacing: 0.06em; text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Great Vibes', cursive; font-size: 1.4rem; color: var(--regency-gold);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.125rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--regency-mahogany);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--regency-slate);">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p>
+              <strong style="font-family: 'Playfair Display', serif; color: var(--regency-burgundy);">Playfair Display</strong> + <strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond</strong><br>
+              <span style="color: var(--regency-toile-blue); font-size: 0.85rem;">Bridgerton editorial: dramatic contrast meets classical refinement</span>
+            </p>
+            <p>
+              <strong style="font-family: 'Cinzel', serif; color: var(--regency-burgundy);">Cinzel</strong> + <strong style="font-family: 'EB Garamond', serif;">EB Garamond</strong><br>
+              <span style="color: var(--regency-toile-blue); font-size: 0.85rem;">Formal aristocratic: Roman grandeur with Renaissance readability</span>
+            </p>
+            <p>
+              <strong style="font-family: 'Cinzel Decorative', serif; color: var(--regency-burgundy);">Cinzel Decorative</strong> + <strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond 300</strong><br>
+              <span style="color: var(--regency-toile-blue); font-size: 0.85rem;">Grand ballroom: ornamental display with light, airy body text</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILIGREE DIVIDER ===== -->
+  <div class="divider"><span></span></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--damask" id="palette">
+    <div class="container">
+      <p class="section-label">Colour Palette</p>
+      <h2 class="section-title">Soft Pastels &amp; Evening Jewels</h2>
+      <p class="section-subtitle">muslin whites, celestial blues, maiden blush pinks, and gilded accents</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory Muslin</div>
+            <div class="color-hex">#FAF6F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0E6D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment Cream</div>
+            <div class="color-hex">#F0E6D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2C6C2;"></div>
+          <div class="color-info">
+            <div class="color-name">Maiden Blush</div>
+            <div class="color-hex">#F2C6C2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8D4E3;"></div>
+          <div class="color-info">
+            <div class="color-name">Celestial Blue</div>
+            <div class="color-hex">#B8D4E3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C5D5A3;"></div>
+          <div class="color-info">
+            <div class="color-name">Apple Green</div>
+            <div class="color-hex">#C5D5A3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4B1D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Wisteria Lavender</div>
+            <div class="color-hex">#C4B1D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #C5A55A 0%, #D4A843 50%, #C5A55A 100%);"></div>
+          <div class="color-info">
+            <div class="color-name">Regency Gold</div>
+            <div class="color-hex">#C5A55A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A843;"></div>
+          <div class="color-info">
+            <div class="color-name">Gilt Bronze</div>
+            <div class="color-hex">#D4A843</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2E6E4E;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald Jewel</div>
+            <div class="color-hex">#2E6E4E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2B4570;"></div>
+          <div class="color-info">
+            <div class="color-name">Sapphire Depth</div>
+            <div class="color-hex">#2B4570</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6E2142;"></div>
+          <div class="color-info">
+            <div class="color-name">Burgundy Velvet</div>
+            <div class="color-hex">#6E2142</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3E2223;"></div>
+          <div class="color-info">
+            <div class="color-name">Mahogany Dark</div>
+            <div class="color-hex">#3E2223</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A4A4A;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Charcoal</div>
+            <div class="color-hex">#4A4A4A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4838F;"></div>
+          <div class="color-info">
+            <div class="color-name">Damask Rose</div>
+            <div class="color-hex">#D4838F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7BA0B8;"></div>
+          <div class="color-info">
+            <div class="color-name">Toile Blue</div>
+            <div class="color-hex">#7BA0B8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILIGREE DIVIDER ===== -->
+  <div class="divider"><span></span></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--ivory" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Framed Cards &amp; Gilt Details</h2>
+      <p class="section-subtitle">bordered panels with filigree corners, referencing Regency architectural moldings</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#9826;</div>
+          <h3>Classical Symmetry</h3>
+          <p>Every composition governed by balanced Neoclassical proportions, the golden ratio, and mirrored harmony.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Proportion</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blush">&#10047;</div>
+          <h3>Damask &amp; Toile</h3>
+          <p>Period-authentic two-toned patterns grace backgrounds at subtle opacity, adding depth without overwhelming.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Texture</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#10025;</div>
+          <h3>Gold Filigree</h3>
+          <p>Gilt borders, ornamental corner brackets, and metallic accents referencing ormolu and gilded plasterwork.</p>
+          <span class="tag">Ornament</span>
+          <span class="tag">Accent</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#9733;</div>
+          <h3>Crystal Candlelight</h3>
+          <p>Subtle sparkle effects and warm ambient glows referencing crystal chandeliers and candlelit ballrooms.</p>
+          <span class="tag">Effect</span>
+          <span class="tag">Ambient</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--lavender">&#9827;</div>
+          <h3>Medallion Frames</h3>
+          <p>Oval and circular framing devices for portraits and featured content, referencing Wedgwood cameos.</p>
+          <span class="tag">Frame</span>
+          <span class="tag">Motif</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rose">&#10087;</div>
+          <h3>Botanical Garlands</h3>
+          <p>Hydrangeas, wisteria, roses, and laurel wreaths used as decorative borders and section embellishments.</p>
+          <span class="tag">Floral</span>
+          <span class="tag">Border</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER (Regency Stripe) ===== -->
+  <section class="stripe-banner">
+    <span class="script-text">An Invitation to the Promenade</span>
+    <h2>The Season Collection</h2>
+    <p>Seasonal pieces crafted with the refined proportions and soft palette of the English Regency.</p>
+    <a href="#" class="btn">View Collection</a>
+  </section>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section section--ivory">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Regency Philosophy</h2>
+      <p class="section-subtitle">classical order, refined restraint, cultivated warmth</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-icon">
+            <span>&#9678;</span>
+          </div>
+          <div class="principle-text">
+            <h3>Classical Symmetry &amp; Golden Proportion</h3>
+            <p>Every layout decision is governed by balanced proportions drawn from Neoclassical architecture. The golden ratio and rule of thirds guide placement, creating the harmonious order that defined Regency-era drawing rooms and the architecture of John Nash.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <span>&#10022;</span>
+          </div>
+          <div class="principle-text">
+            <h3>Deliberate Ornamentation</h3>
+            <p>Every flourish, border, and gilded detail serves a compositional purpose. The Regency aesthetic is refined restraint, not Rococo abundance &mdash; ornamentation enhances structure rather than competing with it, like ormolu mounts on a writing desk.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <span>&#9672;</span>
+          </div>
+          <div class="principle-text">
+            <h3>Warmth Through Muted Colour</h3>
+            <p>Create atmosphere through soft, muted pastels and ambient candlelight effects rather than bright saturation. The palette mirrors the documented preferences of the period: celestial blues, maiden blush pinks, apple greens, and cream whites against deeper jewel tones.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <span>&#9674;</span>
+          </div>
+          <div class="principle-text">
+            <h3>Whitespace as Luxury</h3>
+            <p>Treat empty space as an active design element, evoking the spacious proportions of Regency-era rooms. Generous vertical spacing of 80&ndash;120px between sections creates the airy, unhurried elegance that distinguishes aristocratic restraint from common clutter.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILIGREE DIVIDER ===== -->
+  <div class="divider"><span></span></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--damask" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Ornament</h2>
+      <p class="section-subtitle">period-appropriate techniques, no image assets required</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-damask"></div>
+          <div class="effect-caption">
+            <h4>Damask Pattern</h4>
+            <p>Layered radial gradients and conic repeats create a subtle two-toned damask texture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-filigree"></div>
+          <div class="effect-caption">
+            <h4>Gold Filigree Frame</h4>
+            <p>Nested borders at varying weights and offsets reference gilt plasterwork and architectural moldings.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stripe"></div>
+          <div class="effect-caption">
+            <h4>Regency Stripe</h4>
+            <p>Repeating linear gradients in alternating pastels create the characteristic Regency stripe pattern.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-crystal"></div>
+          <div class="effect-caption">
+            <h4>Crystal Sparkle</h4>
+            <p>Scattered radial gradient dots with gentle animation evoke chandelier crystal reflections.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-parchment"></div>
+          <div class="effect-caption">
+            <h4>Parchment Grain</h4>
+            <p>Fine cross-hatched lines over warm cream simulate the texture of aged paper and vellum.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-candlelight"></div>
+          <div class="effect-caption">
+            <h4>Candlelight Glow</h4>
+            <p>Warm radial gradients with flicker animation create an intimate candlelit atmosphere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FILIGREE DIVIDER ===== -->
+  <div class="divider"><span></span></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--parchment">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Regency Buttons</h2>
+      <p class="section-subtitle">sharp corners, Cinzel lettering, jewel-tone richness</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Burgundy Velvet</a>
+        <a href="#" class="btn btn-outline">Gold Outline</a>
+        <a href="#" class="btn btn-sapphire">Sapphire Depth</a>
+        <a href="#" class="btn btn-emerald">Emerald Jewel</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="quote-section">
+    <blockquote>
+      Elegance is not about being noticed, it is about being remembered &mdash; the quiet certainty of proportion, the whispered luxury of restraint, and the enduring grace of classical order.
+    </blockquote>
+    <cite>&mdash; The Regency Sensibility</cite>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-medallion">
+      <span>R</span>
+    </div>
+    <h2>The Season Continues</h2>
+    <span class="script-text">with warmest regards</span>
+    <p>
+      Regencycore embraces empire proportions, Didone typography, soft pastel palettes, and gold filigree &mdash; translating the cultivated elegance of the English Regency into timeless digital design.
+    </p>
+    <a href="#hero" class="btn">Return to the Drawing Room</a>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-logo">Thornfield</div>
+    <p>Bridgerton-era elegance for the digital age &mdash; classical symmetry, gilded ornament, and refined restraint.</p>
+    <div class="footer-links">
+      <a href="#hero">Society</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <div class="footer-ornament"><span></span></div>
+    <p class="footer-copy">Design Aesthetic Reference &bull; Regencycore &bull; The Season Awaits</p>
+  </footer>
+
+  <!-- ===== VANILLA JS: Scroll-triggered nav shadow ===== -->
+  <script>
+    (function() {
+      var nav = document.querySelector('.nav');
+
+      window.addEventListener('scroll', function() {
+        var currentScroll = window.pageYOffset;
+        if (currentScroll > 40) {
+          nav.style.boxShadow = '0 2px 16px rgba(62, 34, 35, 0.08)';
+          nav.style.background = 'rgba(250, 246, 240, 0.97)';
+          nav.style.backdropFilter = 'blur(8px)';
+          nav.style.webkitBackdropFilter = 'blur(8px)';
+        } else {
+          nav.style.boxShadow = 'none';
+          nav.style.background = 'var(--regency-ivory)';
+          nav.style.backdropFilter = 'none';
+          nav.style.webkitBackdropFilter = 'none';
+        }
+      }, { passive: true });
+
+      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+        anchor.addEventListener('click', function(e) {
+          var target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            e.preventDefault();
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

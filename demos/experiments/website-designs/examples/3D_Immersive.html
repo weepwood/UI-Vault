@@ -1,0 +1,2181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>3D Immersive -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Deep Atmospheric Backgrounds --- */
+      --imm-void: #0B0B0F;
+      --imm-deep-space: #101018;
+      --imm-indigo: #161630;
+      --imm-slate: #1E1E2E;
+
+      /* --- Electric Accents --- */
+      --imm-cyan: #00E5FF;
+      --imm-violet: #7C3AED;
+      --imm-magenta: #E040FB;
+      --imm-amber: #F59E0B;
+      --imm-green: #10B981;
+
+      /* --- Neutral / Text --- */
+      --imm-fog: #94A3B8;
+      --imm-white: #F1F5F9;
+      --imm-ice: #E0F2FE;
+      --imm-chrome: #CBD5E1;
+
+      /* --- Supporting --- */
+      --imm-depth-blue: #1E3A5F;
+      --imm-red: #EF4444;
+
+      /* --- Functional Tokens --- */
+      --imm-bg: var(--imm-void);
+      --imm-text: var(--imm-white);
+      --imm-heading: var(--imm-white);
+      --imm-accent: var(--imm-cyan);
+      --imm-link: var(--imm-cyan);
+      --imm-surface: var(--imm-indigo);
+      --imm-border: rgba(0, 229, 255, 0.15);
+
+      /* --- Shadows --- */
+      --imm-shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.3);
+      --imm-shadow-md: 0 8px 32px rgba(0, 0, 0, 0.5);
+      --imm-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.6);
+      --imm-glow-cyan: 0 0 30px rgba(0, 229, 255, 0.15);
+      --imm-glow-violet: 0 0 30px rgba(124, 58, 237, 0.15);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 112px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--imm-white);
+      background: var(--imm-void);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Exo 2', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--imm-white);
+      line-height: 1.15;
+    }
+
+    /* ============================================
+       ATMOSPHERIC BACKGROUND (fixed)
+       ============================================ */
+    .atmosphere {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: var(--imm-void);
+      background-image:
+        radial-gradient(ellipse at 20% 30%, rgba(124, 58, 237, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(0, 229, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(245, 158, 11, 0.03) 0%, transparent 40%);
+    }
+
+    /* Star field */
+    .atmosphere::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(1px 1px at 8% 15%, rgba(241, 245, 249, 0.5) 50%, transparent 50%),
+        radial-gradient(1px 1px at 22% 65%, rgba(241, 245, 249, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 38% 28%, rgba(241, 245, 249, 0.4) 50%, transparent 50%),
+        radial-gradient(1px 1px at 52% 82%, rgba(241, 245, 249, 0.25) 50%, transparent 50%),
+        radial-gradient(1px 1px at 68% 10%, rgba(241, 245, 249, 0.45) 50%, transparent 50%),
+        radial-gradient(1px 1px at 75% 50%, rgba(241, 245, 249, 0.2) 50%, transparent 50%),
+        radial-gradient(1px 1px at 90% 35%, rgba(241, 245, 249, 0.35) 50%, transparent 50%),
+        radial-gradient(1px 1px at 15% 92%, rgba(241, 245, 249, 0.3) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 45% 45%, rgba(0, 229, 255, 0.4) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 85% 20%, rgba(124, 58, 237, 0.35) 50%, transparent 50%);
+      animation: starTwinkle 8s ease-in-out infinite alternate;
+    }
+
+    /* Nebula glow layer */
+    .atmosphere::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 80%, rgba(124, 58, 237, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 20%, rgba(0, 229, 255, 0.03) 0%, transparent 55%);
+      animation: nebulaShift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes starTwinkle {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    @keyframes nebulaShift {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.05) translate(10px, -10px); }
+    }
+
+    /* ============================================
+       CONTENT WRAPPER
+       ============================================ */
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 30;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(11, 11, 15, 0.6);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.08);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(11, 11, 15, 0.92);
+      border-bottom-color: rgba(0, 229, 255, 0.2);
+    }
+
+    .nav-logo {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--imm-white);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo span {
+      color: var(--imm-cyan);
+    }
+
+    .nav-logo:hover {
+      color: var(--imm-cyan);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--imm-fog);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 8px 16px;
+      border-radius: 6px;
+      transition: color 0.25s ease, background 0.25s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--imm-cyan);
+      background: rgba(0, 229, 255, 0.06);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Animated gradient orbs in hero background */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: orbFloat 12s ease-in-out infinite alternate;
+    }
+
+    .hero-orb--1 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(0, 229, 255, 0.15) 0%, transparent 70%);
+      top: 10%;
+      left: 15%;
+      animation-duration: 14s;
+    }
+
+    .hero-orb--2 {
+      width: 350px;
+      height: 350px;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.12) 0%, transparent 70%);
+      top: 40%;
+      right: 10%;
+      animation-delay: -4s;
+      animation-duration: 16s;
+    }
+
+    .hero-orb--3 {
+      width: 250px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(224, 64, 251, 0.08) 0%, transparent 70%);
+      bottom: 15%;
+      left: 40%;
+      animation-delay: -8s;
+      animation-duration: 18s;
+    }
+
+    @keyframes orbFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -20px) scale(1.1); }
+      66% { transform: translate(-20px, 15px) scale(0.95); }
+      100% { transform: translate(10px, -10px) scale(1.05); }
+    }
+
+    /* Grid lines overlay */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      opacity: 0.5;
+      mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse at center, black 20%, transparent 70%);
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 5;
+      max-width: 760px;
+      padding: 0 24px;
+    }
+
+    .hero-tag {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--imm-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      margin-bottom: 20px;
+      display: inline-block;
+      padding: 6px 18px;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 20px;
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    .hero h1 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1.1;
+      color: var(--imm-white);
+      margin-bottom: 24px;
+      text-shadow: 0 0 60px rgba(0, 229, 255, 0.15);
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--imm-cyan), var(--imm-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.1rem;
+      color: var(--imm-chrome);
+      line-height: 1.8;
+      max-width: 560px;
+      margin: 0 auto 36px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: var(--imm-fog);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      animation: scrollBounce 2.5s ease-in-out infinite;
+    }
+
+    .scroll-indicator .scroll-line {
+      width: 1px;
+      height: 32px;
+      background: linear-gradient(to bottom, var(--imm-cyan), transparent);
+      border-radius: 1px;
+    }
+
+    @keyframes scrollBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      50% { transform: translateX(-50%) translateY(10px); opacity: 0.5; }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Exo 2', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 14px 32px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(124, 58, 237, 0.15));
+      color: var(--imm-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.25), rgba(124, 58, 237, 0.25));
+      box-shadow:
+        0 0 24px rgba(0, 229, 255, 0.2),
+        0 0 48px rgba(124, 58, 237, 0.1);
+      border-color: rgba(0, 229, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-violet {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(224, 64, 251, 0.15));
+      color: var(--imm-magenta);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+    }
+
+    .btn-violet:hover {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.35), rgba(224, 64, 251, 0.25));
+      box-shadow:
+        0 0 24px rgba(124, 58, 237, 0.2),
+        0 0 48px rgba(224, 64, 251, 0.1);
+      border-color: rgba(124, 58, 237, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-amber {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.1));
+      color: var(--imm-amber);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-amber:hover {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.35), rgba(245, 158, 11, 0.2));
+      box-shadow:
+        0 0 24px rgba(245, 158, 11, 0.2),
+        0 0 48px rgba(245, 158, 11, 0.1);
+      border-color: rgba(245, 158, 11, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--imm-chrome);
+      border: 1px solid rgba(203, 213, 225, 0.3);
+    }
+
+    .btn-outline:hover {
+      background: rgba(241, 245, 249, 0.05);
+      border-color: rgba(241, 245, 249, 0.5);
+      color: var(--imm-white);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       GLOW DIVIDER BAND
+       ============================================ */
+    .glow-band {
+      height: 1px;
+      width: 100%;
+      background: linear-gradient(90deg, transparent, var(--imm-cyan), var(--imm-violet), var(--imm-magenta), var(--imm-cyan), transparent);
+      opacity: 0.4;
+      position: relative;
+    }
+
+    .glow-band::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: 0;
+      right: 0;
+      height: 9px;
+      background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.15), rgba(124, 58, 237, 0.1), rgba(224, 64, 251, 0.15), rgba(0, 229, 255, 0.1), transparent);
+      filter: blur(4px);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--void {
+      background: transparent;
+    }
+
+    .section--deep-space {
+      background: rgba(16, 16, 24, 0.6);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+    }
+
+    .section--indigo {
+      background: rgba(22, 22, 48, 0.5);
+    }
+
+    .section--slate {
+      background: rgba(30, 30, 46, 0.4);
+    }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--imm-cyan);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      text-align: center;
+      color: var(--imm-white);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      text-align: center;
+      color: var(--imm-fog);
+      margin-bottom: 52px;
+    }
+
+    /* ============================================
+       SPATIAL DIVIDER
+       ============================================ */
+    .spatial-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .spatial-divider::before,
+    .spatial-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.2), transparent);
+    }
+
+    .spatial-divider span {
+      padding: 0 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--imm-violet);
+      letter-spacing: 0.1em;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--imm-cyan);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(0, 229, 255, 0.15);
+    }
+
+    .typo-display {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--imm-white);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      text-shadow: 0 0 40px rgba(0, 229, 255, 0.15);
+    }
+
+    .typo-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--imm-white);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 500;
+      color: var(--imm-ice);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--imm-chrome);
+      margin-bottom: 8px;
+    }
+
+    .typo-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      letter-spacing: 0.02em;
+      color: var(--imm-cyan);
+      line-height: 1.5;
+    }
+
+    .typo-gradient {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      background: linear-gradient(135deg, #00E5FF, #7C3AED, #E040FB);
+      background-size: 200% 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      animation: gradientShift 4s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .typo-right {
+      background: rgba(22, 22, 48, 0.65);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 12px;
+      padding: 36px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .typo-right h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--imm-cyan);
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--imm-chrome);
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.08);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--imm-fog);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(22, 22, 48, 0.65);
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.35s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), var(--imm-glow-cyan);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle scanline overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.06) 2px,
+        rgba(0, 0, 0, 0.06) 4px
+      );
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--imm-white);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--imm-fog);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: rgba(22, 22, 48, 0.65);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 12px;
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow:
+        0 0 30px rgba(0, 229, 255, 0.06),
+        0 8px 32px rgba(0, 0, 0, 0.5);
+      transform: translateZ(0);
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  box-shadow 0.4s ease,
+                  border-color 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) translateZ(0);
+      box-shadow:
+        0 0 40px rgba(0, 229, 255, 0.12),
+        0 16px 48px rgba(0, 0, 0, 0.6);
+      border-color: rgba(0, 229, 255, 0.3);
+    }
+
+    /* Subtle grid pattern on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.015) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      border-radius: 12px;
+    }
+
+    /* Bottom glow stripe on cards */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--imm-cyan), var(--imm-violet), var(--imm-magenta), transparent);
+      border-radius: 0 0 12px 12px;
+      opacity: 0.5;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .card-icon--cyan {
+      background: linear-gradient(135deg, rgba(0, 229, 255, 0.15), rgba(0, 229, 255, 0.05));
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.1);
+    }
+
+    .card-icon--violet {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.2), rgba(124, 58, 237, 0.05));
+      border: 1px solid rgba(124, 58, 237, 0.25);
+      box-shadow: 0 0 20px rgba(124, 58, 237, 0.1);
+    }
+
+    .card-icon--magenta {
+      background: linear-gradient(135deg, rgba(224, 64, 251, 0.2), rgba(224, 64, 251, 0.05));
+      border: 1px solid rgba(224, 64, 251, 0.25);
+      box-shadow: 0 0 20px rgba(224, 64, 251, 0.1);
+    }
+
+    .card-icon--amber {
+      background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(245, 158, 11, 0.05));
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      box-shadow: 0 0 20px rgba(245, 158, 11, 0.1);
+    }
+
+    .card-icon--green {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(16, 185, 129, 0.05));
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.1);
+    }
+
+    .card-icon--ice {
+      background: linear-gradient(135deg, rgba(224, 242, 254, 0.1), rgba(224, 242, 254, 0.03));
+      border: 1px solid rgba(224, 242, 254, 0.15);
+      box-shadow: 0 0 20px rgba(224, 242, 254, 0.06);
+    }
+
+    .card h3 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--imm-cyan);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--imm-chrome);
+      line-height: 1.7;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 4px;
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      color: var(--imm-fog);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: rgba(0, 229, 255, 0.1);
+      color: var(--imm-cyan);
+      border-color: rgba(0, 229, 255, 0.3);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      background: rgba(22, 22, 48, 0.5);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Volumetric Light Rays */
+    .effect-volumetric {
+      background: linear-gradient(180deg, #0B0B0F, #161630);
+    }
+
+    .effect-volumetric::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 120%;
+      background: linear-gradient(to bottom, rgba(0, 229, 255, 0.6), transparent);
+      box-shadow:
+        -60px 0 40px 20px rgba(0, 229, 255, 0.04),
+        60px 0 40px 20px rgba(0, 229, 255, 0.04),
+        -30px 0 20px 10px rgba(0, 229, 255, 0.06),
+        30px 0 20px 10px rgba(0, 229, 255, 0.06),
+        0 0 60px 10px rgba(0, 229, 255, 0.08);
+      animation: volumetricPulse 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes volumetricPulse {
+      0% { opacity: 0.6; filter: blur(0px); }
+      100% { opacity: 1; filter: blur(1px); }
+    }
+
+    .effect-volumetric::after {
+      content: 'GOD RAYS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--imm-white);
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      z-index: 1;
+    }
+
+    /* Effect 2: Neon Glow Grid */
+    .effect-grid {
+      background: #0B0B0F;
+    }
+
+    .effect-grid::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.08) 1px, transparent 1px);
+      background-size: 30px 30px;
+      perspective: 400px;
+      transform: perspective(400px) rotateX(45deg);
+      transform-origin: center bottom;
+    }
+
+    .effect-grid::after {
+      content: 'DEPTH GRID';
+      position: absolute;
+      top: 30%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--imm-cyan);
+      text-shadow: 0 0 30px rgba(0, 229, 255, 0.5);
+      z-index: 1;
+    }
+
+    /* Effect 3: Particle Nebula */
+    .effect-nebula {
+      background: radial-gradient(ellipse at 40% 50%, #161630 0%, #0B0B0F 100%);
+    }
+
+    .effect-nebula::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(2px 2px at 15% 25%, rgba(0, 229, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 35% 65%, rgba(124, 58, 237, 0.6) 50%, transparent 50%),
+        radial-gradient(2px 2px at 55% 20%, rgba(224, 64, 251, 0.4) 50%, transparent 50%),
+        radial-gradient(1px 1px at 70% 45%, rgba(0, 229, 255, 0.5) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 85% 75%, rgba(245, 158, 11, 0.4) 50%, transparent 50%),
+        radial-gradient(2px 2px at 25% 80%, rgba(124, 58, 237, 0.3) 50%, transparent 50%),
+        radial-gradient(1px 1px at 60% 60%, rgba(0, 229, 255, 0.35) 50%, transparent 50%),
+        radial-gradient(1.5px 1.5px at 80% 15%, rgba(224, 64, 251, 0.45) 50%, transparent 50%),
+        radial-gradient(1px 1px at 45% 40%, rgba(16, 185, 129, 0.3) 50%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(124, 58, 237, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse at 30% 30%, rgba(0, 229, 255, 0.04) 0%, transparent 60%);
+      animation: nebulaFloat 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes nebulaFloat {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(5px, -3px) scale(1.02); }
+    }
+
+    .effect-nebula::after {
+      content: 'NEBULA';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--imm-white);
+      text-shadow:
+        0 0 20px rgba(124, 58, 237, 0.5),
+        0 0 40px rgba(0, 229, 255, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 4: Glassmorphism Panel */
+    .effect-glass {
+      background: linear-gradient(135deg, #161630, #1E3A5F, #161630);
+      position: relative;
+    }
+
+    .effect-glass::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 70%;
+      height: 60%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .effect-glass::after {
+      content: 'GLASS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(241, 245, 249, 0.9);
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      z-index: 2;
+    }
+
+    /* Effect 5: Chromatic Aberration */
+    .effect-chromatic {
+      background: #0B0B0F;
+    }
+
+    .effect-chromatic::before {
+      content: 'SHIFT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(-50% - 3px), -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(0, 229, 255, 0.5);
+      z-index: 1;
+    }
+
+    .effect-chromatic::after {
+      content: 'SHIFT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(calc(-50% + 3px), -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(224, 64, 251, 0.5);
+      z-index: 1;
+    }
+
+    .effect-chromatic-overlay {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--imm-white);
+      z-index: 2;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    /* Effect 6: Holographic Gradient */
+    .effect-holo {
+      background: linear-gradient(135deg, #0B0B0F, #161630);
+      position: relative;
+    }
+
+    .effect-holo::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(0, 229, 255, 0.15) 0%,
+        rgba(124, 58, 237, 0.15) 25%,
+        rgba(224, 64, 251, 0.15) 50%,
+        rgba(245, 158, 11, 0.1) 75%,
+        rgba(0, 229, 255, 0.15) 100%
+      );
+      background-size: 300% 300%;
+      animation: holoShift 6s ease infinite;
+    }
+
+    @keyframes holoShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .effect-holo::after {
+      content: 'HOLOGRAPHIC';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--imm-white);
+      text-shadow: 0 0 20px rgba(224, 64, 251, 0.4);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--imm-white);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--imm-fog);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 760px;
+      background: rgba(22, 22, 48, 0.65);
+      border: 1px solid rgba(0, 229, 255, 0.12);
+      border-radius: 12px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: relative;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Exo 2', sans-serif;
+      font-size: 7rem;
+      color: var(--imm-cyan);
+      opacity: 0.1;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-style: italic;
+      color: var(--imm-ice);
+      max-width: 560px;
+      margin: 0 auto 20px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--imm-cyan);
+      font-style: normal;
+      display: block;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+      background: rgba(22, 22, 48, 0.6);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: 16px;
+      padding: 64px 48px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    /* Ambient glow behind CTA */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(0, 229, 255, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(124, 58, 237, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-container h2 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--imm-white);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--imm-cyan);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--imm-chrome);
+      margin-bottom: 32px;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container .btn {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: rgba(11, 11, 15, 0.95);
+      border-top: 1px solid rgba(0, 229, 255, 0.08);
+      padding: 64px 24px 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.2), rgba(124, 58, 237, 0.15), rgba(0, 229, 255, 0.2), transparent);
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--imm-white);
+      margin-bottom: 10px;
+    }
+
+    .footer h3 span {
+      color: var(--imm-cyan);
+    }
+
+    .footer p {
+      font-size: 0.92rem;
+      color: rgba(148, 163, 184, 0.65);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: rgba(148, 163, 184, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--imm-cyan);
+    }
+
+    .footer-graphic {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .footer-graphic span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--imm-cyan);
+      opacity: 0.3;
+    }
+
+    .footer-graphic span:nth-child(2) { background: var(--imm-violet); }
+    .footer-graphic span:nth-child(3) { background: var(--imm-magenta); }
+    .footer-graphic span:nth-child(4) { background: var(--imm-amber); }
+    .footer-graphic span:nth-child(5) { background: var(--imm-green); }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: rgba(148, 163, 184, 0.25);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       SCROLL REVEAL (JS-driven)
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px) translateZ(0);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0) translateZ(0);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.75rem;
+      }
+
+      .hero {
+        min-height: 85vh;
+      }
+
+      .hero-orb {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 28px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.8rem;
+      }
+
+      .scroll-indicator {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .atmosphere::before,
+      .atmosphere::after,
+      .hero-orb,
+      .effect-volumetric::before,
+      .effect-nebula::before,
+      .effect-holo::before {
+        animation: none;
+      }
+
+      .typo-gradient {
+        animation: none;
+      }
+
+      .scroll-indicator {
+        animation: none;
+      }
+
+      .card, .btn, .color-chip, .tag {
+        transition: none;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== ATMOSPHERIC BACKGROUND ===== -->
+  <div class="atmosphere"></div>
+
+  <!-- ===== CONTENT WRAPPER ===== -->
+  <div class="content-wrapper">
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+      <a href="#" class="nav-logo">3D <span>Immersive</span></a>
+      <div class="nav-links">
+        <a href="#hero">Scene</a>
+        <a href="#typography">Type</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <header class="hero" id="hero">
+      <div class="hero-orb hero-orb--1"></div>
+      <div class="hero-orb hero-orb--2"></div>
+      <div class="hero-orb hero-orb--3"></div>
+      <div class="hero-grid"></div>
+
+      <div class="hero-inner">
+        <span class="hero-tag">Design Aesthetic Reference</span>
+        <h1>3D <span class="accent">Immersive</span></h1>
+        <p class="hero-subtitle">
+          A spatial, depth-driven aesthetic that transforms flat browser windows into navigable three-dimensional environments with parallax depth, volumetric lighting, and cinematic scroll-driven animation.
+        </p>
+        <div class="hero-cta">
+          <a href="#components" class="btn btn-primary">Explore Depth</a>
+          <a href="#palette" class="btn btn-outline">View Palette</a>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <span>Scroll to Explore</span>
+        <div class="scroll-line"></div>
+      </div>
+    </header>
+
+    <!-- ===== GLOW BAND ===== -->
+    <div class="glow-band"></div>
+
+    <!-- ===== TYPOGRAPHY SECTION ===== -->
+    <section class="section section--void" id="typography">
+      <div class="container">
+        <p class="section-label reveal">Typography</p>
+        <h2 class="section-title reveal">Geometric, Clean &amp; Spatial</h2>
+        <p class="section-subtitle reveal">wide tracking, uppercase HUD style, legible against depth</p>
+
+        <div class="typo-showcase">
+          <div class="typo-left">
+            <div class="typo-sample reveal">
+              <p class="typo-sample-label">Display / Exo 2 800</p>
+              <p class="typo-display">Enter the Void</p>
+            </div>
+            <div class="typo-sample reveal">
+              <p class="typo-sample-label">Heading / Space Grotesk 600</p>
+              <p class="typo-heading">Spatial Interface Design</p>
+            </div>
+            <div class="typo-sample reveal">
+              <p class="typo-sample-label">Subheading / Outfit 500</p>
+              <p class="typo-subheading">Depth-Driven Visual Storytelling</p>
+            </div>
+            <div class="typo-sample reveal">
+              <p class="typo-sample-label">Body / Inter 400</p>
+              <p class="typo-body">Clean, geometric body text optimized for readability against complex 3D backdrops. Generous line height and consistent stroke widths ensure legibility at any depth layer.</p>
+            </div>
+            <div class="typo-sample reveal">
+              <p class="typo-sample-label">Monospace / JetBrains Mono</p>
+              <p class="typo-mono">const scene = new THREE.Scene();</p>
+            </div>
+            <div class="typo-sample reveal">
+              <p class="typo-sample-label">Gradient / Animated</p>
+              <p class="typo-gradient">Chromatic Motion</p>
+            </div>
+          </div>
+          <div class="typo-right reveal">
+            <h3>Type Scale</h3>
+            <div class="typo-scale">
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">4.5rem</span>
+                <span style="font-family: 'Exo 2', sans-serif; font-weight: 800; font-size: 1.8rem; color: var(--imm-white); text-transform: uppercase; letter-spacing: 0.05em;">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">2.2rem</span>
+                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 1.4rem; color: var(--imm-white);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1.8rem</span>
+                <span style="font-family: 'Outfit', sans-serif; font-weight: 500; font-size: 1.2rem; color: var(--imm-ice);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1rem</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--imm-chrome);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">0.9rem</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; color: var(--imm-cyan);">Aa</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(0, 229, 255, 0.1);">
+              <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+              <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+                <strong style="font-family: 'Exo 2', sans-serif; color: var(--imm-cyan);">Exo 2 700</strong> + <strong>Inter 400</strong><br>
+                <span style="color: var(--imm-fog); font-size: 0.82rem;">Cinematic spatial interface</span>
+              </p>
+              <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+                <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--imm-cyan);">Space Grotesk 600</strong> + <strong>Inter 400</strong><br>
+                <span style="color: var(--imm-fog); font-size: 0.82rem;">Technical 3D dashboard</span>
+              </p>
+              <p style="font-size: 0.9rem; line-height: 1.7;">
+                <strong style="font-family: 'Outfit', sans-serif; color: var(--imm-cyan);">Outfit 700</strong> + <strong style="font-family: 'Space Grotesk', sans-serif;">Space Grotesk 400</strong><br>
+                <span style="color: var(--imm-fog); font-size: 0.82rem;">Clean immersive product showcase</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SPATIAL DIVIDER ===== -->
+    <div class="section--void" style="padding: 0;">
+      <div class="spatial-divider">
+        <span>// 001</span>
+      </div>
+    </div>
+
+    <!-- ===== COLOR PALETTE SECTION ===== -->
+    <section class="section section--deep-space" id="palette">
+      <div class="container">
+        <p class="section-label reveal">Color Palette</p>
+        <h2 class="section-title reveal">Dark Atmosphere &amp; Electric Accents</h2>
+        <p class="section-subtitle reveal">deep space blacks, rich indigos, neon focal points</p>
+
+        <div class="palette-grid">
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #0B0B0F;"></div>
+            <div class="color-info">
+              <div class="color-name">Void Black</div>
+              <div class="color-hex">#0B0B0F</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #101018;"></div>
+            <div class="color-info">
+              <div class="color-name">Deep Space</div>
+              <div class="color-hex">#101018</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #161630;"></div>
+            <div class="color-info">
+              <div class="color-name">Midnight Indigo</div>
+              <div class="color-hex">#161630</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #1E1E2E;"></div>
+            <div class="color-info">
+              <div class="color-name">Slate Abyss</div>
+              <div class="color-hex">#1E1E2E</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #00E5FF;"></div>
+            <div class="color-info">
+              <div class="color-name">Neon Cyan</div>
+              <div class="color-hex">#00E5FF</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #7C3AED;"></div>
+            <div class="color-info">
+              <div class="color-name">Electric Violet</div>
+              <div class="color-hex">#7C3AED</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #E040FB;"></div>
+            <div class="color-info">
+              <div class="color-name">Plasma Magenta</div>
+              <div class="color-hex">#E040FB</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #F59E0B;"></div>
+            <div class="color-info">
+              <div class="color-name">Amber Glow</div>
+              <div class="color-hex">#F59E0B</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #10B981;"></div>
+            <div class="color-info">
+              <div class="color-name">Holo Green</div>
+              <div class="color-hex">#10B981</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #94A3B8;"></div>
+            <div class="color-info">
+              <div class="color-name">Fog Grey</div>
+              <div class="color-hex">#94A3B8</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #F1F5F9;"></div>
+            <div class="color-info">
+              <div class="color-name">Cloud White</div>
+              <div class="color-hex">#F1F5F9</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #E0F2FE;"></div>
+            <div class="color-info">
+              <div class="color-name">Ice Blue</div>
+              <div class="color-hex">#E0F2FE</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #1E3A5F;"></div>
+            <div class="color-info">
+              <div class="color-name">Depth Blue</div>
+              <div class="color-hex">#1E3A5F</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #EF4444;"></div>
+            <div class="color-info">
+              <div class="color-name">Laser Red</div>
+              <div class="color-hex">#EF4444</div>
+            </div>
+          </div>
+          <div class="color-chip reveal">
+            <div class="color-swatch" style="background: #CBD5E1;"></div>
+            <div class="color-info">
+              <div class="color-name">Chrome Silver</div>
+              <div class="color-hex">#CBD5E1</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GLOW BAND ===== -->
+    <div class="glow-band"></div>
+
+    <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+    <section class="section section--void" id="components">
+      <div class="container">
+        <p class="section-label reveal">Components</p>
+        <h2 class="section-title reveal">Glass Panels &amp; Spatial Cards</h2>
+        <p class="section-subtitle reveal">frosted overlays floating above dimensional scenes</p>
+
+        <div class="card-grid">
+          <div class="card reveal">
+            <div class="card-icon card-icon--cyan">&#9670;</div>
+            <h3>Parallax Depth Layers</h3>
+            <p>Multiple content planes move at different scroll speeds, creating z-depth illusion. Background scrolls slower than foreground, producing a three-dimensional feel on a flat screen.</p>
+            <span class="tag">Scroll</span>
+            <span class="tag">CSS</span>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon card-icon--violet">&#9733;</div>
+            <h3>Volumetric Lighting</h3>
+            <p>Soft fog, bloom, god rays, and ambient occlusion create atmosphere and spatial depth. Light sources become narrative devices that guide the eye through the scene.</p>
+            <span class="tag">WebGL</span>
+            <span class="tag">Shader</span>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon card-icon--magenta">&#9678;</div>
+            <h3>Particle Systems</h3>
+            <p>Floating particles, dust motes, star fields, and data-driven point clouds add ambient motion and spatial density to otherwise empty dimensional space.</p>
+            <span class="tag">GPU</span>
+            <span class="tag">Motion</span>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon card-icon--amber">&#9632;</div>
+            <h3>Glassmorphism Panels</h3>
+            <p>Semi-transparent UI panels with backdrop-filter blur float above 3D scenes, anchoring readable content over dynamic backgrounds while maintaining atmosphere.</p>
+            <span class="tag">Blur</span>
+            <span class="tag">Layout</span>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon card-icon--green">&#9654;</div>
+            <h3>Scroll-Triggered Animation</h3>
+            <p>GSAP ScrollTrigger binds scroll position to camera movement, object rotation, and material transitions, turning page navigation into a cinematic sequence.</p>
+            <span class="tag">GSAP</span>
+            <span class="tag">Camera</span>
+          </div>
+          <div class="card reveal">
+            <div class="card-icon card-icon--ice">&#10070;</div>
+            <h3>Shader-Driven Effects</h3>
+            <p>Custom GLSL shaders produce distortion, ripple, noise, and post-processing effects like chromatic aberration, film grain, and depth of field blur.</p>
+            <span class="tag">GLSL</span>
+            <span class="tag">Post-FX</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== SPATIAL DIVIDER ===== -->
+    <div class="section--void" style="padding: 0;">
+      <div class="spatial-divider">
+        <span>// 002</span>
+      </div>
+    </div>
+
+    <!-- ===== EFFECTS SHOWCASE ===== -->
+    <section class="section section--deep-space" id="effects">
+      <div class="container">
+        <p class="section-label reveal">Visual Effects</p>
+        <h2 class="section-title reveal">CSS-Only Spatial Effects</h2>
+        <p class="section-subtitle reveal">volumetric glow, depth grids, nebulae &mdash; no image assets</p>
+
+        <div class="effects-grid">
+          <div class="effect-demo reveal">
+            <div class="effect-preview effect-volumetric"></div>
+            <div class="effect-caption">
+              <h4>Volumetric Light Rays</h4>
+              <p>Box-shadow cascades and gradient lines simulate god rays piercing through atmospheric depth.</p>
+            </div>
+          </div>
+          <div class="effect-demo reveal">
+            <div class="effect-preview effect-grid"></div>
+            <div class="effect-caption">
+              <h4>Perspective Depth Grid</h4>
+              <p>CSS grid lines with perspective transform create the illusion of a ground plane receding into the distance.</p>
+            </div>
+          </div>
+          <div class="effect-demo reveal">
+            <div class="effect-preview effect-nebula"></div>
+            <div class="effect-caption">
+              <h4>Particle Nebula</h4>
+              <p>Radial gradient dot fields layered with ambient color produce a floating cosmic particle cloud.</p>
+            </div>
+          </div>
+          <div class="effect-demo reveal">
+            <div class="effect-preview effect-glass">
+              <div style="position: absolute; top: 15%; left: 10%; width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle, rgba(0, 229, 255, 0.3) 0%, transparent 70%);"></div>
+              <div style="position: absolute; bottom: 20%; right: 15%; width: 20px; height: 20px; border-radius: 50%; background: radial-gradient(circle, rgba(124, 58, 237, 0.3) 0%, transparent 70%);"></div>
+            </div>
+            <div class="effect-caption">
+              <h4>Glassmorphism Panel</h4>
+              <p>Backdrop-filter blur with subtle borders creates frosted glass surfaces for readable content overlays.</p>
+            </div>
+          </div>
+          <div class="effect-demo reveal">
+            <div class="effect-preview effect-chromatic">
+              <span class="effect-chromatic-overlay">SHIFT</span>
+            </div>
+            <div class="effect-caption">
+              <h4>Chromatic Aberration</h4>
+              <p>Offset color channels simulate lens distortion, a signature post-processing effect in 3D scenes.</p>
+            </div>
+          </div>
+          <div class="effect-demo reveal">
+            <div class="effect-preview effect-holo"></div>
+            <div class="effect-caption">
+              <h4>Holographic Gradient</h4>
+              <p>Animated multi-color gradient with shifting background-position creates iridescent surface treatment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GLOW BAND ===== -->
+    <div class="glow-band"></div>
+
+    <!-- ===== BUTTON SHOWCASE ===== -->
+    <section class="section section--void">
+      <div class="container">
+        <p class="section-label reveal">Interactive Elements</p>
+        <h2 class="section-title reveal">Depth Buttons</h2>
+        <p class="section-subtitle reveal">glowing borders, sweep animations, spatial hover states</p>
+
+        <div class="button-showcase reveal">
+          <a href="#" class="btn btn-primary">Primary Cyan</a>
+          <a href="#" class="btn btn-violet">Electric Violet</a>
+          <a href="#" class="btn btn-amber">Amber Glow</a>
+          <a href="#" class="btn btn-outline">Outlined Ghost</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== QUOTE SECTION ===== -->
+    <section class="section section--void">
+      <div class="container">
+        <div class="quote-block reveal">
+          <blockquote>
+            The difference between a flat webpage and an immersive experience is depth &mdash; not just visual depth, but emotional depth. When users feel like they are moving through a space rather than scrolling a page, content becomes a journey.
+          </blockquote>
+          <cite>&mdash; The Philosophy of Spatial Design</cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="section section--deep-space">
+      <div class="container">
+        <div class="cta-container reveal">
+          <h2>Enter the Scene</h2>
+          <span class="cta-mono">depth as hierarchy // motion with purpose</span>
+          <p>
+            3D Immersive design transforms passive browsing into active spatial exploration. Dark atmospheric environments, luminous accents, glassmorphic panels, and scroll-triggered cinematics create experiences that unfold like directed visual narratives.
+          </p>
+          <a href="#hero" class="btn btn-primary">Back to Origin</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GLOW BAND ===== -->
+    <div class="glow-band"></div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="footer-content">
+        <h3>3D <span>Immersive</span></h3>
+        <p>
+          A design aesthetic reference celebrating spatial, depth-driven web experiences. Dark voids, neon accents, and glassmorphic surfaces &mdash; all rendered without a single image asset.
+        </p>
+        <div class="footer-links">
+          <a href="#hero">Scene</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Colors</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+        <div class="footer-graphic">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p class="footer-copy">Design Aesthetic Reference &bull; 3D Immersive &bull; Depth as hierarchy</p>
+      </div>
+    </footer>
+
+  </div><!-- /content-wrapper -->
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Scroll-based nav background
+    (function() {
+      const nav = document.querySelector('.nav');
+      if (!nav) return;
+
+      let ticking = false;
+      window.addEventListener('scroll', function() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            if (window.scrollY > 60) {
+              nav.classList.add('scrolled');
+            } else {
+              nav.classList.remove('scrolled');
+            }
+            ticking = false;
+          });
+          ticking = true;
+        }
+      });
+    })();
+
+    // Scroll reveal with IntersectionObserver
+    (function() {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reveals = document.querySelectorAll('.reveal');
+
+      if (prefersReduced) {
+        reveals.forEach(function(el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      reveals.forEach(function(el) {
+        observer.observe(el);
+      });
+    })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sci-Fi Interface -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Electrolize&family=Share+Tech+Mono&family=Exo+2:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --hud-bg-void: #050a12;
+      --hud-bg-deep: #0b1120;
+      --hud-bg-panel: #121b2e;
+      --hud-bg-grid: #1a2740;
+      --hud-bg-canopy: #0a1628;
+
+      /* --- Primary Accent --- */
+      --hud-cyan: #00e5ff;
+      --hud-cyan-rgb: 0, 229, 255;
+      --hud-teal: #00b8d4;
+
+      /* --- Status Colors --- */
+      --hud-amber: #ffab00;
+      --hud-amber-rgb: 255, 171, 0;
+      --hud-red: #ff1744;
+      --hud-red-rgb: 255, 23, 68;
+      --hud-green: #00e676;
+      --hud-green-rgb: 0, 230, 118;
+      --hud-blue: #2979ff;
+      --hud-violet: #7c4dff;
+
+      /* --- Text --- */
+      --hud-text-primary: #e0f0ff;
+      --hud-text-secondary: #4a6080;
+      --hud-text-ghost: #263850;
+
+      /* --- Glows --- */
+      --hud-glow-cyan: 0 0 8px rgba(0, 229, 255, 0.5), 0 0 30px rgba(0, 229, 255, 0.15);
+      --hud-glow-amber: 0 0 8px rgba(255, 171, 0, 0.5), 0 0 30px rgba(255, 171, 0, 0.15);
+      --hud-glow-red: 0 0 8px rgba(255, 23, 68, 0.5), 0 0 30px rgba(255, 23, 68, 0.15);
+      --hud-glow-green: 0 0 8px rgba(0, 230, 118, 0.5), 0 0 30px rgba(0, 230, 118, 0.15);
+      --hud-glow-violet: 0 0 8px rgba(124, 77, 255, 0.5), 0 0 30px rgba(124, 77, 255, 0.15);
+
+      /* --- Borders --- */
+      --hud-border: 1px solid rgba(0, 229, 255, 0.15);
+      --hud-border-bright: 1px solid rgba(0, 229, 255, 0.5);
+
+      /* --- Sizing --- */
+      --hud-radius: 2px;
+      --hud-panel-padding: 24px;
+      --section-pad: clamp(60px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Share Tech Mono', 'Courier New', monospace;
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--hud-text-primary);
+      background-color: var(--hud-bg-void);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+      color: var(--hud-text-primary);
+    }
+
+    a {
+      color: var(--hud-cyan);
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--hud-text-primary);
+      text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+    }
+
+    /* ============================================
+       SCANLINE OVERLAY (full-page)
+       ============================================ */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 1px,
+        rgba(0, 0, 0, 0.06) 1px,
+        rgba(0, 0, 0, 0.06) 2px
+      );
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--hud-cyan);
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.4);
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--hud-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      color: var(--hud-text-secondary);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       KEYFRAME ANIMATIONS
+       ============================================ */
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; box-shadow: 0 0 6px currentColor; }
+      50% { opacity: 0.5; box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @keyframes scanSweep {
+      0% { top: -2px; opacity: 1; }
+      100% { top: 100%; opacity: 0.3; }
+    }
+
+    @keyframes panelEnter {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 4px rgba(0, 229, 255, 0.2), 0 0 12px rgba(0, 229, 255, 0.05); }
+      50% { box-shadow: 0 0 8px rgba(0, 229, 255, 0.4), 0 0 24px rgba(0, 229, 255, 0.12); }
+    }
+
+    @keyframes dataScroll {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    @keyframes radarSweep {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes typewriter {
+      from { width: 0; }
+      to { width: 100%; }
+    }
+
+    @keyframes cursorBlink {
+      0%, 100% { border-color: var(--hud-cyan); }
+      50% { border-color: transparent; }
+    }
+
+    @keyframes hexPulse {
+      0%, 100% { transform: scale(1); opacity: 0.6; }
+      50% { transform: scale(1.05); opacity: 1; }
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+      background: rgba(5, 10, 18, 0.92);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .nav__brand {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--hud-cyan);
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav__link {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+      position: relative;
+      padding: 4px 0;
+      transition: color 0.3s ease;
+    }
+
+    .nav__link:hover,
+    .nav__link--active {
+      color: var(--hud-cyan);
+      text-shadow: 0 0 6px rgba(0, 229, 255, 0.3);
+    }
+
+    .nav__link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--hud-cyan);
+      box-shadow: 0 0 6px rgba(0, 229, 255, 0.5);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .nav__link:hover::after,
+    .nav__link--active::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .nav__status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--hud-text-secondary);
+    }
+
+    .nav__status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--hud-green);
+      box-shadow: 0 0 6px rgba(0, 230, 118, 0.6);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 120px 32px 80px;
+      overflow: hidden;
+    }
+
+    /* Coordinate grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.035) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black 20%, transparent 70%);
+      -webkit-mask-image: radial-gradient(ellipse 55% 55% at 50% 50%, black 20%, transparent 70%);
+    }
+
+    /* Targeting reticle outer ring */
+    .hero__reticle {
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border: 1px solid rgba(0, 229, 255, 0.08);
+      border-radius: 50%;
+      border-top-color: rgba(0, 229, 255, 0.2);
+      animation: rotate 30s linear infinite;
+    }
+
+    .hero__reticle-inner {
+      position: absolute;
+      inset: 30px;
+      border: 1px dashed rgba(0, 229, 255, 0.06);
+      border-radius: 50%;
+      animation: rotate 20s linear infinite reverse;
+    }
+
+    .hero__reticle-core {
+      position: absolute;
+      inset: 70px;
+      border: 1px solid rgba(0, 229, 255, 0.05);
+      border-radius: 50%;
+      border-bottom-color: rgba(0, 229, 255, 0.15);
+      animation: rotate 12s linear infinite;
+    }
+
+    /* Crosshairs */
+    .hero__crosshair-h,
+    .hero__crosshair-v {
+      position: absolute;
+      background: rgba(0, 229, 255, 0.06);
+    }
+
+    .hero__crosshair-h {
+      width: 60%;
+      height: 1px;
+      top: 50%;
+      left: 20%;
+    }
+
+    .hero__crosshair-v {
+      width: 1px;
+      height: 40%;
+      left: 50%;
+      top: 30%;
+    }
+
+    /* Corner brackets */
+    .hero__corner {
+      position: absolute;
+      width: 36px;
+      height: 36px;
+      border-color: rgba(0, 229, 255, 0.25);
+      border-style: solid;
+    }
+
+    .hero__corner--tl { top: 28px; left: 28px; border-width: 2px 0 0 2px; }
+    .hero__corner--tr { top: 28px; right: 28px; border-width: 2px 2px 0 0; }
+    .hero__corner--bl { bottom: 28px; left: 28px; border-width: 0 0 2px 2px; }
+    .hero__corner--br { bottom: 28px; right: 28px; border-width: 0 2px 2px 0; }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+    }
+
+    .hero__label {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .hero__title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud-cyan);
+      text-shadow:
+        0 0 20px rgba(0, 229, 255, 0.4),
+        0 0 60px rgba(0, 229, 255, 0.1);
+      margin-bottom: 20px;
+    }
+
+    .hero__subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.85rem;
+      letter-spacing: 0.15em;
+      color: var(--hud-text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .hero__desc {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--hud-text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .hero__coords {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--hud-text-ghost);
+      letter-spacing: 0.1em;
+      margin-top: 60px;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 28px;
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-cyan);
+      background: transparent;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      border-radius: var(--hud-radius);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 229, 255, 0.15) 50%, transparent 100%);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::after {
+      left: 100%;
+    }
+
+    .btn:hover {
+      color: var(--hud-bg-void);
+      background: var(--hud-cyan);
+      border-color: var(--hud-cyan);
+      box-shadow: var(--hud-glow-cyan);
+      text-shadow: none;
+    }
+
+    .btn--filled {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.4);
+    }
+
+    .btn--warning {
+      color: var(--hud-amber);
+      border-color: rgba(255, 171, 0, 0.3);
+    }
+
+    .btn--warning:hover {
+      color: var(--hud-bg-void);
+      background: var(--hud-amber);
+      border-color: var(--hud-amber);
+      box-shadow: var(--hud-glow-amber);
+    }
+
+    .btn--warning::after {
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 171, 0, 0.15) 50%, transparent 100%);
+    }
+
+    .btn--critical {
+      color: var(--hud-red);
+      border-color: rgba(255, 23, 68, 0.3);
+    }
+
+    .btn--critical:hover {
+      color: var(--hud-bg-void);
+      background: var(--hud-red);
+      border-color: var(--hud-red);
+      box-shadow: var(--hud-glow-red);
+    }
+
+    .btn--critical::after {
+      background: linear-gradient(90deg, transparent 0%, rgba(255, 23, 68, 0.15) 50%, transparent 100%);
+    }
+
+    .btn--clipped {
+      clip-path: polygon(12px 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
+      padding: 12px 36px;
+      color: var(--hud-green);
+      border-color: rgba(0, 230, 118, 0.3);
+    }
+
+    .btn--clipped:hover {
+      color: var(--hud-bg-void);
+      background: var(--hud-green);
+      border-color: var(--hud-green);
+      box-shadow: var(--hud-glow-green);
+    }
+
+    .btn--clipped::after {
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 230, 118, 0.15) 50%, transparent 100%);
+    }
+
+    /* ============================================
+       HUD DATA BAR (divider)
+       ============================================ */
+    .data-bar {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 12px 32px;
+      background: var(--hud-bg-deep);
+      border-top: 1px solid rgba(0, 229, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+      overflow: hidden;
+    }
+
+    .data-bar__segment {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      color: var(--hud-text-ghost);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .data-bar__divider {
+      width: 1px;
+      height: 16px;
+      background: rgba(0, 229, 255, 0.12);
+      flex-shrink: 0;
+    }
+
+    .data-bar__line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, rgba(0, 229, 255, 0.15), rgba(0, 229, 255, 0.02));
+    }
+
+    /* ============================================
+       TYPOGRAPHY SECTION
+       ============================================ */
+    .section--void {
+      background: var(--hud-bg-void);
+    }
+
+    .section--deep {
+      background: var(--hud-bg-deep);
+    }
+
+    .section--panel {
+      background: var(--hud-bg-panel);
+    }
+
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      padding: 24px 0;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.06);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-cyan);
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.4), 0 0 60px rgba(0, 229, 255, 0.1);
+    }
+
+    .typo-heading {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--hud-text-primary);
+    }
+
+    .typo-nav {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-teal);
+    }
+
+    .typo-body {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.92rem;
+      line-height: 1.8;
+      color: var(--hud-text-primary);
+    }
+
+    .typo-data {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.6rem;
+      color: var(--hud-cyan);
+      letter-spacing: 0.05em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .typo-label {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+    }
+
+    .typo-right h3 {
+      font-size: 0.85rem;
+      color: var(--hud-text-primary);
+      margin-bottom: 16px;
+      letter-spacing: 0.15em;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 12px;
+      background: rgba(0, 229, 255, 0.02);
+      border-left: 2px solid rgba(0, 229, 255, 0.15);
+    }
+
+    .typo-scale-size {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--hud-text-secondary);
+    }
+
+    .typo-pairings {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(0, 229, 255, 0.1);
+    }
+
+    .typo-pairing {
+      font-size: 0.85rem;
+      line-height: 1.7;
+      margin-bottom: 14px;
+    }
+
+    .typo-pairing strong {
+      color: var(--hud-cyan);
+    }
+
+    .typo-pairing span {
+      color: var(--hud-text-secondary);
+      font-size: 0.78rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      background: rgba(11, 17, 32, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      border-radius: var(--hud-radius);
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      border-color: rgba(0, 229, 255, 0.35);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.08);
+    }
+
+    .color-swatch {
+      height: 72px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--hud-text-secondary);
+      letter-spacing: 0.05em;
+    }
+
+    .color-role {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.62rem;
+      color: var(--hud-text-ghost);
+      margin-top: 4px;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(11, 17, 32, 0.85);
+      border: 1px solid rgba(0, 229, 255, 0.15);
+      border-radius: var(--hud-radius);
+      padding: var(--hud-panel-padding);
+      position: relative;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(0, 229, 255, 0.4);
+      box-shadow: var(--hud-glow-cyan);
+    }
+
+    /* Corner brackets */
+    .card::before,
+    .card::after {
+      content: '';
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-color: var(--hud-cyan);
+      border-style: solid;
+      opacity: 0.5;
+      transition: opacity 0.3s ease;
+    }
+
+    .card::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .card::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .card:hover::before,
+    .card:hover::after {
+      opacity: 1;
+    }
+
+    .card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.08);
+    }
+
+    .card__status {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--hud-green);
+    }
+
+    .card__icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: var(--hud-radius);
+      font-size: 1rem;
+      margin-bottom: 16px;
+      color: var(--hud-cyan);
+    }
+
+    .card__icon--amber { color: var(--hud-amber); border-color: rgba(255, 171, 0, 0.2); }
+    .card__icon--red { color: var(--hud-red); border-color: rgba(255, 23, 68, 0.2); }
+    .card__icon--green { color: var(--hud-green); border-color: rgba(0, 230, 118, 0.2); }
+    .card__icon--violet { color: var(--hud-violet); border-color: rgba(124, 77, 255, 0.2); }
+    .card__icon--blue { color: var(--hud-blue); border-color: rgba(41, 121, 255, 0.2); }
+
+    .card h3 {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--hud-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .card p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--hud-text-secondary);
+      margin-bottom: 16px;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud-cyan);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      padding: 3px 10px;
+      border-radius: var(--hud-radius);
+      margin-right: 6px;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      position: relative;
+      padding: 60px 32px;
+      background: var(--hud-bg-canopy);
+      border-top: 1px solid rgba(0, 229, 255, 0.1);
+      border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    /* Scan sweep line */
+    .motif-banner::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 229, 255, 0.3) 20%, rgba(0, 229, 255, 0.6) 50%, rgba(0, 229, 255, 0.3) 80%, transparent 100%);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      animation: scanSweep 4s linear infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 3;
+    }
+
+    .motif-icons {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+
+    .motif-icon {
+      width: 12px;
+      height: 12px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      transform: rotate(45deg);
+    }
+
+    .motif-icon--filled {
+      background: rgba(0, 229, 255, 0.15);
+    }
+
+    .motif-banner h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: 0.15em;
+      color: var(--hud-cyan);
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.82rem;
+      color: var(--hud-text-secondary);
+      letter-spacing: 0.08em;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.06);
+    }
+
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+
+    .feature-marker {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: var(--hud-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-top: 4px;
+    }
+
+    .feature-marker::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--hud-cyan);
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+      box-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+    }
+
+    .feature-text h3 {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .feature-text p {
+      font-size: 0.85rem;
+      line-height: 1.8;
+      color: var(--hud-text-secondary);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .effect-demo {
+      background: rgba(11, 17, 32, 0.6);
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      border-radius: var(--hud-radius);
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: rgba(0, 229, 255, 0.3);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 16px 18px;
+      border-top: 1px solid rgba(0, 229, 255, 0.08);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--hud-text-primary);
+      margin-bottom: 6px;
+    }
+
+    .effect-caption p {
+      font-size: 0.75rem;
+      line-height: 1.6;
+      color: var(--hud-text-secondary);
+    }
+
+    /* Effect 1: Coordinate Grid */
+    .effect-grid {
+      background:
+        linear-gradient(rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+      background-size: 60px 60px, 60px 60px, 12px 12px, 12px 12px;
+      background-color: var(--hud-bg-void);
+    }
+
+    .effect-grid::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, transparent 30%, var(--hud-bg-void) 80%);
+    }
+
+    /* Effect 2: Radar Sweep */
+    .effect-radar {
+      background: var(--hud-bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-radar::before {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border: 1px solid rgba(0, 229, 255, 0.1);
+      border-radius: 50%;
+    }
+
+    .effect-radar::after {
+      content: '';
+      position: absolute;
+      width: 140px;
+      height: 70px;
+      transform-origin: 50% 100%;
+      background: conic-gradient(from 0deg at 50% 100%, transparent 0deg, rgba(0, 229, 255, 0.12) 45deg, transparent 90deg);
+      border-radius: 70px 70px 0 0;
+      animation: radarSweep 3s linear infinite;
+    }
+
+    /* Effect 3: Scanlines */
+    .effect-scanlines {
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 229, 255, 0.03) 2px,
+        rgba(0, 229, 255, 0.03) 4px
+      );
+      background-color: var(--hud-bg-deep);
+    }
+
+    .effect-scanlines::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(0, 229, 255, 0.4) 20%, rgba(0, 229, 255, 0.8) 50%, rgba(0, 229, 255, 0.4) 80%, transparent 100%);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      animation: scanSweep 3s linear infinite;
+    }
+
+    /* Effect 4: Hexagonal Pattern */
+    .effect-hex {
+      background-color: var(--hud-bg-void);
+      background-image:
+        linear-gradient(30deg, rgba(0, 229, 255, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(0, 229, 255, 0.04) 87.5%, rgba(0, 229, 255, 0.04)),
+        linear-gradient(150deg, rgba(0, 229, 255, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(0, 229, 255, 0.04) 87.5%, rgba(0, 229, 255, 0.04)),
+        linear-gradient(30deg, rgba(0, 229, 255, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(0, 229, 255, 0.04) 87.5%, rgba(0, 229, 255, 0.04)),
+        linear-gradient(150deg, rgba(0, 229, 255, 0.04) 12%, transparent 12.5%, transparent 87%, rgba(0, 229, 255, 0.04) 87.5%, rgba(0, 229, 255, 0.04)),
+        linear-gradient(60deg, rgba(0, 229, 255, 0.03) 25%, transparent 25.5%, transparent 75%, rgba(0, 229, 255, 0.03) 75%, rgba(0, 229, 255, 0.03)),
+        linear-gradient(60deg, rgba(0, 229, 255, 0.03) 25%, transparent 25.5%, transparent 75%, rgba(0, 229, 255, 0.03) 75%, rgba(0, 229, 255, 0.03));
+      background-size: 40px 70px;
+      background-position: 0 0, 0 0, 20px 35px, 20px 35px, 0 0, 20px 35px;
+    }
+
+    /* Effect 5: Glow Pulse Rings */
+    .effect-rings {
+      background: var(--hud-bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-rings::before {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border: 2px solid rgba(0, 229, 255, 0.15);
+      border-radius: 50%;
+      animation: glowPulse 2s ease-in-out infinite;
+    }
+
+    .effect-rings::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 1px dashed rgba(0, 229, 255, 0.2);
+      border-radius: 50%;
+      animation: rotate 8s linear infinite, glowPulse 2s ease-in-out infinite 0.5s;
+    }
+
+    /* Effect 6: Data Stream */
+    .effect-stream {
+      background: var(--hud-bg-void);
+      overflow: hidden;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.55rem;
+      line-height: 1.6;
+      color: rgba(0, 229, 255, 0.2);
+      padding: 8px;
+      letter-spacing: 0.05em;
+      word-break: break-all;
+    }
+
+    .effect-stream-inner {
+      animation: dataScroll 8s linear infinite;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 48px 0;
+    }
+
+    .quote-block::before,
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.3), transparent);
+    }
+
+    .quote-block::before { top: 0; }
+    .quote-block::after { bottom: 0; }
+
+    .quote-block blockquote {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      line-height: 1.7;
+      color: var(--hud-text-primary);
+      font-style: italic;
+      letter-spacing: 0.02em;
+      margin-bottom: 20px;
+    }
+
+    .quote-block cite {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+      font-style: normal;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-panel {
+      position: relative;
+      background: rgba(11, 17, 32, 0.9);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: var(--hud-radius);
+      padding: 56px 48px;
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto;
+      overflow: hidden;
+    }
+
+    .cta-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 229, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.015) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Corner brackets */
+    .cta-panel .cta-corner {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--hud-cyan);
+      border-style: solid;
+      opacity: 0.5;
+    }
+
+    .cta-corner--tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; }
+    .cta-corner--tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+    .cta-corner--bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; }
+    .cta-corner--br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+
+    .cta-panel h2 {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      letter-spacing: 0.12em;
+      color: var(--hud-cyan);
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .cta-panel .cta-subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.15em;
+      color: var(--hud-text-secondary);
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .cta-panel p {
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: var(--hud-text-secondary);
+      margin-bottom: 32px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      position: relative;
+    }
+
+    .cta-panel .btn {
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--hud-bg-deep);
+      border-top: 1px solid rgba(0, 229, 255, 0.12);
+      padding: 48px 32px 32px;
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .footer-content h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.2em;
+      color: var(--hud-cyan);
+      text-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+      margin-bottom: 16px;
+    }
+
+    .footer-content > p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--hud-text-secondary);
+      max-width: 520px;
+      margin: 0 auto 24px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'Electrolize', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--hud-text-secondary);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--hud-cyan);
+    }
+
+    .footer-indicators {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .footer-indicator {
+      width: 6px;
+      height: 6px;
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      transform: rotate(45deg);
+    }
+
+    .footer-indicator--active {
+      background: rgba(0, 229, 255, 0.3);
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      color: var(--hud-text-ghost);
+    }
+
+    /* ============================================
+       FIXED HUD VISOR ELEMENTS
+       ============================================ */
+    .visor-coord {
+      position: fixed;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.6rem;
+      color: var(--hud-text-ghost);
+      letter-spacing: 0.08em;
+      z-index: 998;
+      pointer-events: none;
+      writing-mode: vertical-rl;
+    }
+
+    .visor-coord--left {
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .visor-coord--right {
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%) rotate(180deg);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 16px;
+        height: 50px;
+      }
+
+      .nav__links {
+        display: none;
+      }
+
+      .nav__status {
+        font-size: 0.6rem;
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+      }
+
+      .hero__reticle {
+        width: 250px;
+        height: 250px;
+      }
+
+      .hero__corner { display: none; }
+
+      .container {
+        padding: 0 20px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .visor-coord { display: none; }
+
+      .data-bar {
+        padding: 10px 16px;
+        gap: 8px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        justify-content: center;
+      }
+
+      .cta-panel {
+        padding: 40px 24px;
+      }
+
+      .motif-banner {
+        padding: 40px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero__title {
+        letter-spacing: 0.06em;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .hero__reticle,
+      .hero__reticle-inner,
+      .hero__reticle-core {
+        animation: none;
+      }
+
+      .motif-banner::after {
+        animation: none;
+        display: none;
+      }
+
+      .nav__status-dot {
+        animation: none;
+      }
+
+      .effect-scanlines::before {
+        animation: none;
+      }
+
+      .effect-stream-inner {
+        animation: none;
+      }
+
+      .effect-radar::after {
+        animation: none;
+      }
+
+      .btn::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== FIXED VISOR COORDINATES ===== -->
+  <div class="visor-coord visor-coord--left">AZ 127.4 // EL 34.8</div>
+  <div class="visor-coord visor-coord--right">GRID 09-ALPHA // SEC 7</div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__brand">FUI_SYS</a>
+    <div class="nav__links">
+      <a href="#hero" class="nav__link nav__link--active">Viewport</a>
+      <a href="#typography" class="nav__link">Type</a>
+      <a href="#palette" class="nav__link">Spectrum</a>
+      <a href="#components" class="nav__link">Modules</a>
+      <a href="#effects" class="nav__link">Effects</a>
+    </div>
+    <div class="nav__status">
+      <span class="nav__status-dot"></span>
+      SYS NOMINAL
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero__reticle">
+      <div class="hero__reticle-inner"></div>
+      <div class="hero__reticle-core"></div>
+    </div>
+
+    <div class="hero__crosshair-h"></div>
+    <div class="hero__crosshair-v"></div>
+
+    <div class="hero__corner hero__corner--tl"></div>
+    <div class="hero__corner hero__corner--tr"></div>
+    <div class="hero__corner hero__corner--bl"></div>
+    <div class="hero__corner hero__corner--br"></div>
+
+    <div class="hero__content">
+      <p class="hero__label">Design Aesthetic Reference</p>
+      <h1 class="hero__title">Sci-Fi Interface</h1>
+      <p class="hero__subtitle">HUD Telemetry &amp; Tactical Display Systems</p>
+      <p class="hero__desc">
+        A design language modeled after heads-up displays, tactical dashboards, and telemetry readouts from science fiction cinema &mdash; precision-engineered, data-rich, and perpetually alive.
+      </p>
+      <div class="hero__buttons">
+        <a href="#components" class="btn btn--filled">Access Modules</a>
+        <a href="#palette" class="btn">View Spectrum</a>
+      </div>
+      <p class="hero__coords">LAT 41.4025 // LON -2.1743 // ALT 342.8m // HDG 127</p>
+    </div>
+  </header>
+
+  <!-- ===== DATA BAR DIVIDER ===== -->
+  <div class="data-bar">
+    <span class="data-bar__segment">SYS.CLOCK 2186.07.14</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">FREQ 4.72GHz</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">UPLINK STABLE</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__line"></span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">SECTOR 09-A</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">MEM 87.2%</span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--void" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Geometric, Uppercase &amp; Machine-Stamped</h2>
+      <p class="section-subtitle">precision-engineered letterforms for tactical readability</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Orbitron 900</p>
+            <p class="typo-display">Lock On</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Exo 2 700</p>
+            <p class="typo-heading">Tactical Dashboard</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Navigation / Electrolize 400</p>
+            <p class="typo-nav">System Navigation Labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Share Tech Mono 400</p>
+            <p class="typo-body">Monospaced telemetry for readable data streams. Every digit aligns in columns for rapid operator scanning.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Data Readout / Share Tech Mono</p>
+            <p class="typo-data">08:42:17.093</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Rajdhani 600</p>
+            <p class="typo-label">Compact Interface Controls</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5rem</span>
+              <span style="font-family: 'Orbitron', sans-serif; font-size: 1.6rem; font-weight: 900; color: var(--hud-cyan); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.8rem</span>
+              <span style="font-family: 'Exo 2', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--hud-text-primary); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Electrolize', sans-serif; font-size: 1rem; color: var(--hud-teal); text-transform: uppercase; letter-spacing: 0.15em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.9rem</span>
+              <span style="font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; color: var(--hud-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; color: var(--hud-cyan); font-variant-numeric: tabular-nums;">00</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Rajdhani', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--hud-text-secondary); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3 style="margin-bottom: 14px;">Font Pairings</h3>
+            <p class="typo-pairing">
+              <strong style="font-family: 'Orbitron', sans-serif;">Orbitron</strong> + <strong>Share Tech Mono</strong><br>
+              <span>Classic HUD display &mdash; the canonical sci-fi pairing</span>
+            </p>
+            <p class="typo-pairing">
+              <strong style="font-family: 'Electrolize', sans-serif;">Electrolize</strong> + <strong>Share Tech Mono</strong><br>
+              <span>Clean tactical dashboard for data-rich layouts</span>
+            </p>
+            <p class="typo-pairing">
+              <strong style="font-family: 'Exo 2', sans-serif;">Exo 2</strong> + <strong>Share Tech Mono</strong><br>
+              <span>Modern command center, readable at all sizes</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DATA BAR DIVIDER ===== -->
+  <div class="data-bar">
+    <span class="data-bar__segment">CHROMA.MAP LOADED</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__line"></span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">15 ENTRIES</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">SPECTRUM ANALYSIS</span>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--deep" id="palette">
+    <div class="container">
+      <p class="section-label">Color Spectrum</p>
+      <h2 class="section-title">Luminance Over Hue</h2>
+      <p class="section-subtitle">cyan nominal // amber caution // red critical // green confirmed</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #050a12;"></div>
+          <div class="color-info">
+            <div class="color-name">Void Black</div>
+            <div class="color-hex">#050A12</div>
+            <div class="color-role">Primary background</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0b1120;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Space</div>
+            <div class="color-hex">#0B1120</div>
+            <div class="color-role">Panel surfaces</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #121b2e;"></div>
+          <div class="color-info">
+            <div class="color-name">Instrument Gray</div>
+            <div class="color-hex">#121B2E</div>
+            <div class="color-role">Elevated panels</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a2740;"></div>
+          <div class="color-info">
+            <div class="color-name">Grid Line</div>
+            <div class="color-hex">#1A2740</div>
+            <div class="color-role">Dividers &amp; structure</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00e5ff; box-shadow: inset 0 0 20px rgba(0,229,255,0.3);"></div>
+          <div class="color-info">
+            <div class="color-name">HUD Cyan</div>
+            <div class="color-hex">#00E5FF</div>
+            <div class="color-role">Primary accent</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00b8d4;"></div>
+          <div class="color-info">
+            <div class="color-name">Teal Focus</div>
+            <div class="color-hex">#00B8D4</div>
+            <div class="color-role">Interactive states</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e0f0ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Reticle White</div>
+            <div class="color-hex">#E0F0FF</div>
+            <div class="color-role">Primary text</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffab00;"></div>
+          <div class="color-info">
+            <div class="color-name">Signal Amber</div>
+            <div class="color-hex">#FFAB00</div>
+            <div class="color-role">Warning indicators</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff1744;"></div>
+          <div class="color-info">
+            <div class="color-name">Alert Red</div>
+            <div class="color-hex">#FF1744</div>
+            <div class="color-role">Critical alerts</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00e676;"></div>
+          <div class="color-info">
+            <div class="color-name">Confirm Green</div>
+            <div class="color-hex">#00E676</div>
+            <div class="color-role">Success states</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2979ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Scan Blue</div>
+            <div class="color-hex">#2979FF</div>
+            <div class="color-role">Tertiary accent</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a6080;"></div>
+          <div class="color-info">
+            <div class="color-name">Dim Readout</div>
+            <div class="color-hex">#4A6080</div>
+            <div class="color-role">Secondary text</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #263850;"></div>
+          <div class="color-info">
+            <div class="color-name">Ghost Trace</div>
+            <div class="color-hex">#263850</div>
+            <div class="color-role">Inactive borders</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7c4dff;"></div>
+          <div class="color-info">
+            <div class="color-name">Hologram Violet</div>
+            <div class="color-hex">#7C4DFF</div>
+            <div class="color-role">Decorative accent</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0a1628;"></div>
+          <div class="color-info">
+            <div class="color-name">Canopy Tint</div>
+            <div class="color-hex">#0A1628</div>
+            <div class="color-role">Overlay depth layer</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DATA BAR DIVIDER ===== -->
+  <div class="data-bar">
+    <span class="data-bar__segment">MODULE.ARRAY</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">6 ACTIVE</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__line"></span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">STATUS: ONLINE</span>
+  </div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--void" id="components">
+    <div class="container">
+      <p class="section-label">Modules</p>
+      <h2 class="section-title">HUD Panel Components</h2>
+      <p class="section-subtitle">translucent cards, corner brackets &amp; luminous borders</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card__header">
+            <span class="section-label" style="margin-bottom: 0; font-size: 0.6rem;">MOD-01</span>
+            <span class="card__status">ACTIVE</span>
+          </div>
+          <div class="card__icon">&#9678;</div>
+          <h3>Targeting Reticle</h3>
+          <p>Concentric animated ring elements serve as loading indicators, focal points, and decorative accents that imply active scanning.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card">
+          <div class="card__header">
+            <span class="section-label" style="margin-bottom: 0; font-size: 0.6rem;">MOD-02</span>
+            <span class="card__status">ACTIVE</span>
+          </div>
+          <div class="card__icon card__icon--amber">&#9670;</div>
+          <h3>Clipped Panels</h3>
+          <p>Clip-path polygons create beveled, chamfered, or hexagonal containers replacing standard rectangles with angular precision.</p>
+          <span class="tag">Clip-Path</span>
+          <span class="tag">Layout</span>
+        </div>
+        <div class="card">
+          <div class="card__header">
+            <span class="section-label" style="margin-bottom: 0; font-size: 0.6rem;">MOD-03</span>
+            <span class="card__status">ACTIVE</span>
+          </div>
+          <div class="card__icon card__icon--green">&#9632;</div>
+          <h3>Grid Overlays</h3>
+          <p>Faint coordinate grids, axis lines, and crosshair markers layered behind content suggest spatial awareness and depth.</p>
+          <span class="tag">Background</span>
+          <span class="tag">CSS Grid</span>
+        </div>
+        <div class="card">
+          <div class="card__header">
+            <span class="section-label" style="margin-bottom: 0; font-size: 0.6rem;">MOD-04</span>
+            <span class="card__status">ACTIVE</span>
+          </div>
+          <div class="card__icon card__icon--violet">&#9733;</div>
+          <h3>Scanline Texture</h3>
+          <p>Horizontal line patterns overlaid via repeating-linear-gradient evoke CRT monitors and analog signal processing aesthetics.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Overlay</span>
+        </div>
+        <div class="card">
+          <div class="card__header">
+            <span class="section-label" style="margin-bottom: 0; font-size: 0.6rem;">MOD-05</span>
+            <span class="card__status">ACTIVE</span>
+          </div>
+          <div class="card__icon card__icon--blue">&#9651;</div>
+          <h3>Telemetry Readouts</h3>
+          <p>Scrolling numbers, counting-up statistics, and fluctuating data feeds rendered in monospaced type simulate live system feeds.</p>
+          <span class="tag">Data</span>
+          <span class="tag">Monospace</span>
+        </div>
+        <div class="card">
+          <div class="card__header">
+            <span class="section-label" style="margin-bottom: 0; font-size: 0.6rem;">MOD-06</span>
+            <span class="card__status">ACTIVE</span>
+          </div>
+          <div class="card__icon card__icon--red">&#9888;</div>
+          <h3>Status Color System</h3>
+          <p>Color is purely functional: cyan for nominal, amber for caution, red for critical, and green for confirmed lock-on states.</p>
+          <span class="tag">Color</span>
+          <span class="tag">System</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-icons">
+        <div class="motif-icon"></div>
+        <div class="motif-icon motif-icon--filled"></div>
+        <div class="motif-icon"></div>
+        <div class="motif-icon motif-icon--filled"></div>
+        <div class="motif-icon"></div>
+      </div>
+      <h2>Precision, Authority &amp; Omniscience</h2>
+      <p>Every pixel exists to keep the operator informed &mdash; decoration disguised as data</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--deep">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The HUD Design Philosophy</h2>
+      <p class="section-subtitle">functional luminance, wireframe structure, perpetual awareness</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-marker"></div>
+          <div class="feature-text">
+            <h3>Decoration Disguised As Data</h3>
+            <p>Every visual element must serve an informational or navigational purpose. What appears ornamental is actually communicating system status, spatial coordinates, or temporal data. The interface maintains its credibility by never wasting a pixel on pure decoration.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-marker"></div>
+          <div class="feature-text">
+            <h3>Hierarchy Through Luminance</h3>
+            <p>The brightest elements demand attention while dim readouts recede into the background void. Glow intensity and color saturation communicate priority more effectively than size or weight alone. A single glowing value outranks an entire panel of muted text.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-marker"></div>
+          <div class="feature-text">
+            <h3>Borders Over Fills</h3>
+            <p>The aesthetic favors wireframe outlines over solid shapes. Thin luminous borders define panels and create the skeletal structure of the HUD. The space between elements is not empty &mdash; it represents the transparent canopy through which the display is projected.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-marker"></div>
+          <div class="feature-text">
+            <h3>The Interface Must Feel Alive</h3>
+            <p>Constant subtle animation implies real-time data processing and system awareness. Rotating rings, pulsing indicators, and scrolling readouts suggest a computer that is actively scanning, computing, and tracking &mdash; calm under nominal conditions, escalating under threat.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DATA BAR DIVIDER ===== -->
+  <div class="data-bar">
+    <span class="data-bar__segment">FX.ENGINE v3.2</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">6 SHADERS</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__line"></span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">GPU NOMINAL</span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--void" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS-Only HUD Techniques</h2>
+      <p class="section-subtitle">all effects rendered without image assets or javascript</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-grid"></div>
+          <div class="effect-caption">
+            <h4>Coordinate Grid</h4>
+            <p>Layered linear gradients at two scales with radial mask create the HUD spatial grid.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-radar"></div>
+          <div class="effect-caption">
+            <h4>Radar Sweep</h4>
+            <p>Conic gradient with border-radius and rotation keyframes simulate active radar scanning.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-scanlines"></div>
+          <div class="effect-caption">
+            <h4>Scanline Sweep</h4>
+            <p>Repeating gradient lines with an animated bright scanline moving downward across the display.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-hex"></div>
+          <div class="effect-caption">
+            <h4>Hexagonal Pattern</h4>
+            <p>Layered angled linear gradients create a hexagonal tile pattern common in sci-fi interfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-rings"></div>
+          <div class="effect-caption">
+            <h4>Glow Pulse Rings</h4>
+            <p>Concentric circle borders with pulsing box-shadow animations and counter-rotation.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stream">
+            <div class="effect-stream-inner">0x4F2A 0x8B1C 0xD3E7 0x19FA 0x6C40 0xA5B8 0x3D92 0x7E0F 0xC164 0x52D9 0x0B73 0xF8AE 0x21C5 0x964B 0xE70D 0x4A86 0xBF39 0x68E2 0x1D5C 0xA0F7 0x7341 0xC68A 0x3FB5 0x82DE 0xD509 0x4832 0x9B6F 0xECA4 0x17D8 0x6A03 0xBD4E 0x5097 0xF3C1 0x26EA 0x8915 0xDC5E 0x4F87 0x02B0 0x75D9 0xC842 0x3B7C 0x8EA5 0xE1CE 0x14F7 0x6720 0xBA59 0x0D82 0x60AB 0xB3D4 0x46FD 0x9926 0xEC4F 0x3F78 0x92A1 0xE5CA 0x18F3 0x6B1C 0xBE45 0x116E 0x6497 0x4F2A 0x8B1C 0xD3E7 0x19FA 0x6C40 0xA5B8 0x3D92 0x7E0F 0xC164 0x52D9 0x0B73 0xF8AE 0x21C5 0x964B 0xE70D 0x4A86 0xBF39 0x68E2 0x1D5C 0xA0F7</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Data Stream</h4>
+            <p>Overflowing monospaced hex values scrolling vertically simulate a live telemetry data feed.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DATA BAR DIVIDER ===== -->
+  <div class="data-bar">
+    <span class="data-bar__segment">INPUT.CTRL</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">4 VARIANTS</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__line"></span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">READY</span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--deep">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">HUD Button Variants</h2>
+      <p class="section-subtitle">luminous borders, scan-sweep hover, status-coded</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--filled">Primary // Cyan</a>
+        <a href="#" class="btn btn--warning">Caution // Amber</a>
+        <a href="#" class="btn btn--critical">Alert // Red</a>
+        <a href="#" class="btn btn--clipped">Confirm // Clipped</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--void">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The interface should feel as though it was designed by an advanced intelligence to keep its operator alive &mdash; every glow, every border, every scrolling readout exists because removing it would reduce situational awareness.
+        </blockquote>
+        <cite>&mdash; The HUD Design Imperative</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--deep">
+    <div class="container">
+      <div class="cta-panel">
+        <div class="cta-corner cta-corner--tl"></div>
+        <div class="cta-corner cta-corner--tr"></div>
+        <div class="cta-corner cta-corner--bl"></div>
+        <div class="cta-corner cta-corner--br"></div>
+
+        <h2>Initialize System</h2>
+        <p class="cta-subtitle">// ALL SUBSYSTEMS NOMINAL //</p>
+        <p>
+          The Sci-Fi Interface aesthetic translates dark void backgrounds, thin luminous borders, animated telemetry, and monospaced readouts into a living web experience. Cyan for data. Amber for caution. Red for critical. The operator sees all.
+        </p>
+        <a href="#hero" class="btn btn--filled">Return to Viewport</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DATA BAR DIVIDER ===== -->
+  <div class="data-bar">
+    <span class="data-bar__segment">END TRANSMISSION</span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__line"></span>
+    <span class="data-bar__divider"></span>
+    <span class="data-bar__segment">SIGNAL INTEGRITY 99.7%</span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>FUI_SYS</h3>
+      <p>
+        A design aesthetic reference for Sci-Fi Interface &mdash; heads-up displays, tactical dashboards, and telemetry readouts. All visuals rendered via CSS, no external image assets.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Viewport</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Spectrum</a>
+        <a href="#components">Modules</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-indicators">
+        <div class="footer-indicator footer-indicator--active"></div>
+        <div class="footer-indicator"></div>
+        <div class="footer-indicator footer-indicator--active"></div>
+        <div class="footer-indicator"></div>
+        <div class="footer-indicator footer-indicator--active"></div>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference // Sci-Fi Interface // System Nominal</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS: Telemetry counter animation ===== -->
+  <script>
+    // Animate telemetry data readout on scroll
+    document.addEventListener('DOMContentLoaded', function() {
+      // Update nav status with current time
+      function updateNavTime() {
+        var status = document.querySelector('.nav__status');
+        if (status) {
+          var now = new Date();
+          var h = String(now.getHours()).padStart(2, '0');
+          var m = String(now.getMinutes()).padStart(2, '0');
+          var s = String(now.getSeconds()).padStart(2, '0');
+          status.innerHTML = '<span class="nav__status-dot"></span> SYS ' + h + ':' + m + ':' + s;
+        }
+      }
+
+      setInterval(updateNavTime, 1000);
+
+      // Animate hero coordinates with slight variation
+      var coordsEl = document.querySelector('.hero__coords');
+      if (coordsEl) {
+        function updateCoords() {
+          var lat = (41.4025 + (Math.random() - 0.5) * 0.001).toFixed(4);
+          var lon = (-2.1743 + (Math.random() - 0.5) * 0.001).toFixed(4);
+          var alt = (342.8 + (Math.random() - 0.5) * 0.4).toFixed(1);
+          var hdg = Math.floor(127 + (Math.random() - 0.5) * 2);
+          coordsEl.textContent = 'LAT ' + lat + ' // LON ' + lon + ' // ALT ' + alt + 'm // HDG ' + hdg;
+        }
+        setInterval(updateCoords, 2000);
+      }
+
+      // Intersection Observer for fade-in animations
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.animation = 'panelEnter 0.6s ease-out forwards';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1 });
+
+      document.querySelectorAll('.card, .effect-demo, .feature-item').forEach(function(el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        observer.observe(el);
+      });
+
+      // Respect reduced motion
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.querySelectorAll('.card, .effect-demo, .feature-item').forEach(function(el) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moss Punk -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bitter:wght@400;700;900&family=Cabin:wght@400;500;600&family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Special+Elite&family=Chakra+Petch:wght@400;600;700&family=Amatic+SC:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds -- decaying infrastructure --- */
+      --moss-bg-loam: #1a1c17;
+      --moss-bg-slate: #2a2d26;
+      --moss-bg-iron: #3b3832;
+      --moss-bg-stone: #4a4f42;
+
+      /* --- Greens -- organic overgrowth --- */
+      --moss-green: #4a7c3f;
+      --moss-green-bright: #6dbf5c;
+      --moss-green-light: #a8d98a;
+      --moss-green-pale: #c8d5b9;
+
+      /* --- Accent -- oxidation and bioluminescence --- */
+      --moss-verdigris: #5b9e8f;
+      --moss-bioluminescent: #3edbc6;
+      --moss-copper: #8b6b4a;
+      --moss-rust: #b87333;
+      --moss-gold: #d4a843;
+
+      /* --- Text --- */
+      --moss-text-primary: #c8d5b9;
+      --moss-text-bright: #e8ede2;
+      --moss-text-secondary: #8a9182;
+
+      /* --- Glows -- bioluminescent lighting --- */
+      --moss-glow-green: 0 0 8px rgba(74, 124, 63, 0.5), 0 0 30px rgba(74, 124, 63, 0.15);
+      --moss-glow-teal: 0 0 8px rgba(62, 219, 198, 0.4), 0 0 30px rgba(62, 219, 198, 0.12);
+      --moss-glow-amber: 0 0 8px rgba(184, 115, 51, 0.5), 0 0 30px rgba(184, 115, 51, 0.15);
+
+      /* --- Borders -- corroded edges --- */
+      --moss-border: 1px solid rgba(74, 124, 63, 0.2);
+      --moss-border-rust: 1px solid rgba(184, 115, 51, 0.25);
+      --moss-border-bright: 1px solid rgba(109, 191, 92, 0.4);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Cabin', 'Helvetica Neue', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--moss-text-primary);
+      background-color: var(--moss-bg-loam);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Bitter', Georgia, serif;
+      font-weight: 700;
+      color: var(--moss-text-bright);
+      letter-spacing: 0.02em;
+      line-height: 1.25;
+    }
+
+    /* Noise texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(26, 28, 23, 0.94);
+      border-bottom: 1px solid rgba(74, 124, 63, 0.12);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      max-width: 100%;
+    }
+
+    /* Subtle rust streak across bottom */
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 10%;
+      width: 30%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(184, 115, 51, 0.3), transparent);
+    }
+
+    .nav-logo {
+      font-family: 'Bitter', serif;
+      font-weight: 900;
+      font-size: 1.2rem;
+      color: var(--moss-green-bright);
+      letter-spacing: 0.04em;
+      text-shadow: 0 0 8px rgba(109, 191, 92, 0.3);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--moss-green-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--moss-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--moss-green-bright);
+      text-shadow: 0 0 6px rgba(109, 191, 92, 0.3);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 95vh;
+      padding: 100px 40px 90px;
+      background: var(--moss-bg-loam);
+      overflow: hidden;
+    }
+
+    /* Noise texture overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Moss overgrowth from edges */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(74, 124, 63, 0.18) 0%, transparent 45%),
+        radial-gradient(ellipse at 100% 0%, rgba(91, 158, 143, 0.12) 0%, transparent 35%),
+        radial-gradient(ellipse at 60% 100%, rgba(74, 124, 63, 0.08) 0%, transparent 30%),
+        radial-gradient(ellipse at 100% 100%, rgba(184, 115, 51, 0.06) 0%, transparent 25%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Decorative PCB trace lines in hero */
+    .hero-traces {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.04;
+    }
+
+    .hero-traces::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 5%;
+      width: 200px;
+      height: 1px;
+      background: var(--moss-green);
+      box-shadow:
+        0 40px 0 var(--moss-green),
+        0 80px 0 var(--moss-green),
+        200px 0 0 var(--moss-green),
+        200px 40px 0 var(--moss-green);
+    }
+
+    .hero-traces::after {
+      content: '';
+      position: absolute;
+      bottom: 15%;
+      right: 8%;
+      width: 150px;
+      height: 1px;
+      background: var(--moss-rust);
+      box-shadow:
+        0 30px 0 var(--moss-rust),
+        0 60px 0 var(--moss-rust),
+        -150px 30px 0 var(--moss-rust);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--moss-verdigris);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.2rem, 5.5vw, 4.5rem);
+      font-weight: 800;
+      color: var(--moss-green-bright);
+      text-shadow: 0 0 16px rgba(109, 191, 92, 0.35), 0 0 50px rgba(109, 191, 92, 0.1);
+      margin-bottom: 1.5rem;
+      line-height: 1.12;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-subtitle {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--moss-rust);
+      margin-bottom: 12px;
+      letter-spacing: 0.04em;
+    }
+
+    .hero-desc {
+      font-size: 1.05rem;
+      color: var(--moss-text-secondary);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Bioluminescent glow nodes in hero */
+    .glow-node {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--moss-bioluminescent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px rgba(62, 219, 198, 0.4);
+      animation: mossPulse 4s ease-in-out infinite;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .glow-node:nth-child(2) { animation-delay: -1s; }
+    .glow-node:nth-child(3) { animation-delay: -2s; }
+    .glow-node:nth-child(4) { animation-delay: -3s; }
+
+    @keyframes mossPulse {
+      0%, 100% { opacity: 0.3; transform: scale(1); }
+      50% { opacity: 0.8; transform: scale(1.4); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(74, 124, 63, 0.12);
+      color: var(--moss-green-bright);
+      border: 1px solid rgba(74, 124, 63, 0.35);
+      padding: 14px 36px;
+      font-family: 'Bitter', serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.35s ease;
+      position: relative;
+    }
+
+    .btn:hover {
+      background: var(--moss-green);
+      color: var(--moss-bg-loam);
+      box-shadow: var(--moss-glow-green);
+      border-color: var(--moss-green);
+    }
+
+    .btn-rust {
+      color: var(--moss-rust);
+      border-color: rgba(184, 115, 51, 0.35);
+      background: rgba(184, 115, 51, 0.1);
+    }
+
+    .btn-rust:hover {
+      background: var(--moss-rust);
+      color: var(--moss-bg-loam);
+      box-shadow: var(--moss-glow-amber);
+      border-color: var(--moss-rust);
+    }
+
+    .btn-glow {
+      color: var(--moss-bioluminescent);
+      border-color: rgba(62, 219, 198, 0.3);
+      background: rgba(62, 219, 198, 0.08);
+    }
+
+    .btn-glow:hover {
+      background: rgba(62, 219, 198, 0.2);
+      box-shadow: var(--moss-glow-teal);
+      border-color: var(--moss-bioluminescent);
+    }
+
+    .btn-verdigris {
+      color: var(--moss-verdigris);
+      border-color: rgba(91, 158, 143, 0.35);
+      background: rgba(91, 158, 143, 0.1);
+    }
+
+    .btn-verdigris:hover {
+      background: var(--moss-verdigris);
+      color: var(--moss-bg-loam);
+      box-shadow: 0 0 8px rgba(91, 158, 143, 0.5), 0 0 30px rgba(91, 158, 143, 0.15);
+      border-color: var(--moss-verdigris);
+    }
+
+    /* ============================================
+       SECTION DIVIDER
+       ============================================ */
+    .divider {
+      position: relative;
+      height: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg,
+        transparent 0%,
+        rgba(74, 124, 63, 0.25) 20%,
+        rgba(184, 115, 51, 0.15) 50%,
+        rgba(74, 124, 63, 0.25) 80%,
+        transparent 100%
+      );
+    }
+
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(circle, var(--moss-green) 40%, transparent 70%);
+      border-radius: 50%;
+      box-shadow: var(--moss-glow-green);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--loam {
+      background: var(--moss-bg-loam);
+    }
+
+    .section--slate {
+      background: var(--moss-bg-slate);
+    }
+
+    .section--iron {
+      background: var(--moss-bg-iron);
+    }
+
+    /* Mycelium network background variant */
+    .section--mycelium {
+      background: var(--moss-bg-loam);
+      position: relative;
+    }
+
+    .section--mycelium::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(74, 124, 63, 0.06) 0%, transparent 25%),
+        radial-gradient(circle at 70% 60%, rgba(91, 158, 143, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 40% 80%, rgba(74, 124, 63, 0.04) 0%, transparent 30%),
+        radial-gradient(circle at 85% 20%, rgba(184, 115, 51, 0.04) 0%, transparent 15%),
+        radial-gradient(circle at 55% 45%, rgba(62, 219, 198, 0.03) 0%, transparent 20%);
+      pointer-events: none;
+    }
+
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--moss-rust);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Bitter', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      text-align: center;
+      color: var(--moss-text-bright);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      text-align: center;
+      color: var(--moss-verdigris);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--moss-rust);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(74, 124, 63, 0.15);
+    }
+
+    .typo-display {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 800;
+      color: var(--moss-green-bright);
+      text-shadow: 0 0 12px rgba(109, 191, 92, 0.3);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: -0.01em;
+    }
+
+    .typo-heading {
+      font-family: 'Bitter', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--moss-text-bright);
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 600;
+      color: var(--moss-verdigris);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .typo-body {
+      font-family: 'Cabin', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--moss-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-mono {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--moss-green);
+      line-height: 1.6;
+      margin-bottom: 8px;
+    }
+
+    .typo-annotation {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.95rem;
+      letter-spacing: 0.04em;
+      color: var(--moss-text-secondary);
+    }
+
+    .typo-right {
+      background:
+        linear-gradient(135deg, rgba(74, 124, 63, 0.06) 0%, transparent 50%),
+        var(--moss-bg-slate);
+      border: 1px solid rgba(74, 124, 63, 0.15);
+      border-radius: 3px;
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -8px;
+      width: 70px;
+      height: 70px;
+      background: radial-gradient(ellipse at center, rgba(74, 124, 63, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .typo-right h3 {
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(74, 124, 63, 0.08);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--moss-text-secondary);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    .typo-pairings {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(74, 124, 63, 0.12);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--moss-text-secondary);
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      border-radius: 3px;
+      overflow: hidden;
+      background: var(--moss-bg-slate);
+      border: 1px solid rgba(74, 124, 63, 0.12);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--moss-glow-green);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle corroded overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 64 64' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='c'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23c)' opacity='0.06'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--moss-text-bright);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--moss-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background:
+        linear-gradient(135deg, rgba(74, 124, 63, 0.06) 0%, transparent 50%),
+        var(--moss-bg-slate);
+      border: 1px solid rgba(74, 124, 63, 0.15);
+      border-radius: 3px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease, transform 0.4s ease;
+    }
+
+    /* Moss overgrowth -- top-left corner */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(74, 124, 63, 0.25) 0%,
+        rgba(74, 124, 63, 0.08) 40%,
+        transparent 70%
+      );
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Rust accent -- bottom-right corner */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--moss-rust));
+      opacity: 0.5;
+    }
+
+    .card:hover {
+      border-color: rgba(74, 124, 63, 0.35);
+      box-shadow: var(--moss-glow-green);
+      transform: translateY(-4px);
+    }
+
+    .card-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--moss-rust);
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .card-icon--green {
+      background: rgba(74, 124, 63, 0.15);
+      border: 1px solid rgba(74, 124, 63, 0.25);
+    }
+
+    .card-icon--teal {
+      background: rgba(62, 219, 198, 0.1);
+      border: 1px solid rgba(62, 219, 198, 0.2);
+    }
+
+    .card-icon--rust {
+      background: rgba(184, 115, 51, 0.12);
+      border: 1px solid rgba(184, 115, 51, 0.25);
+    }
+
+    .card-icon--copper {
+      background: rgba(139, 107, 74, 0.15);
+      border: 1px solid rgba(139, 107, 74, 0.25);
+    }
+
+    .card-icon--gold {
+      background: rgba(212, 168, 67, 0.12);
+      border: 1px solid rgba(212, 168, 67, 0.2);
+    }
+
+    .card-icon--verdigris {
+      background: rgba(91, 158, 143, 0.12);
+      border: 1px solid rgba(91, 158, 143, 0.2);
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--moss-text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .badge--teal {
+      background: rgba(62, 219, 198, 0.1);
+      color: var(--moss-bioluminescent);
+      border: 1px solid rgba(62, 219, 198, 0.2);
+    }
+
+    .badge--spore {
+      background: rgba(212, 168, 67, 0.1);
+      color: var(--moss-gold);
+      border: 1px solid rgba(212, 168, 67, 0.2);
+    }
+
+    .badge--green {
+      background: rgba(74, 124, 63, 0.12);
+      color: var(--moss-green-bright);
+      border: 1px solid rgba(74, 124, 63, 0.25);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 3px;
+      overflow: hidden;
+      border: 1px solid rgba(74, 124, 63, 0.12);
+      background: var(--moss-bg-slate);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Corroded Metal */
+    .effect-corroded {
+      background: var(--moss-bg-iron);
+      background-image:
+        radial-gradient(ellipse at 30% 40%, rgba(184, 115, 51, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(139, 107, 74, 0.12) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 20%, rgba(74, 124, 63, 0.08) 0%, transparent 35%);
+    }
+
+    .effect-corroded::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 128 128' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='r'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23r)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    .effect-corroded::after {
+      content: 'CORRODED';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bitter', serif;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: var(--moss-rust);
+      text-shadow: 0 0 12px rgba(184, 115, 51, 0.3);
+      letter-spacing: 0.12em;
+      z-index: 1;
+    }
+
+    /* Effect 2: Bioluminescent Glow */
+    .effect-bioluminescent {
+      background: var(--moss-bg-loam);
+    }
+
+    .effect-bioluminescent::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 50%, rgba(62, 219, 198, 0.2) 0%, transparent 30%),
+        radial-gradient(circle at 70% 40%, rgba(74, 124, 63, 0.18) 0%, transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(62, 219, 198, 0.12) 0%, transparent 20%),
+        radial-gradient(circle at 20% 20%, rgba(109, 191, 92, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 80% 75%, rgba(62, 219, 198, 0.1) 0%, transparent 15%);
+      animation: bioGlow 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes bioGlow {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .effect-bioluminescent::after {
+      content: 'BIOLUMINESCENT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--moss-bioluminescent);
+      text-shadow: 0 0 16px rgba(62, 219, 198, 0.5), 0 0 40px rgba(62, 219, 198, 0.2);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* Effect 3: Moss Overgrowth */
+    .effect-moss {
+      background: var(--moss-bg-slate);
+    }
+
+    .effect-moss::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 0% 100%, rgba(74, 124, 63, 0.35) 0%, transparent 40%),
+        radial-gradient(ellipse at 100% 0%, rgba(74, 124, 63, 0.25) 0%, transparent 35%),
+        radial-gradient(ellipse at 50% 100%, rgba(109, 191, 92, 0.15) 0%, transparent 30%),
+        radial-gradient(ellipse at 80% 80%, rgba(74, 124, 63, 0.2) 0%, transparent 25%),
+        radial-gradient(ellipse at 20% 30%, rgba(74, 124, 63, 0.12) 0%, transparent 30%);
+    }
+
+    .effect-moss::after {
+      content: 'OVERGROWN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bitter', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--moss-green-light);
+      text-shadow: 0 0 12px rgba(74, 124, 63, 0.4);
+      z-index: 1;
+    }
+
+    /* Effect 4: Verdigris Patina */
+    .effect-verdigris {
+      background: linear-gradient(145deg, var(--moss-bg-iron), #2d3028);
+    }
+
+    .effect-verdigris::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 80%, rgba(91, 158, 143, 0.3) 0%, transparent 40%),
+        radial-gradient(ellipse at 60% 20%, rgba(91, 158, 143, 0.2) 0%, transparent 35%),
+        radial-gradient(ellipse at 90% 60%, rgba(139, 107, 74, 0.15) 0%, transparent 30%);
+    }
+
+    .effect-verdigris::after {
+      content: 'VERDIGRIS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Chakra Petch', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--moss-verdigris);
+      text-shadow: 0 0 10px rgba(91, 158, 143, 0.4);
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Circuit Board Traces */
+    .effect-circuit {
+      background: #1e2119;
+    }
+
+    .effect-circuit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg, transparent 49%, rgba(74, 124, 63, 0.08) 49%, rgba(74, 124, 63, 0.08) 51%, transparent 51%),
+        linear-gradient(90deg, transparent 49%, rgba(74, 124, 63, 0.08) 49%, rgba(74, 124, 63, 0.08) 51%, transparent 51%),
+        radial-gradient(circle at 25% 25%, rgba(74, 124, 63, 0.15) 2px, transparent 2px),
+        radial-gradient(circle at 75% 25%, rgba(74, 124, 63, 0.12) 2px, transparent 2px),
+        radial-gradient(circle at 25% 75%, rgba(74, 124, 63, 0.1) 2px, transparent 2px),
+        radial-gradient(circle at 75% 75%, rgba(74, 124, 63, 0.15) 2px, transparent 2px),
+        radial-gradient(circle at 50% 50%, rgba(74, 124, 63, 0.2) 3px, transparent 3px);
+      background-size: 50px 50px, 50px 50px, 50px 50px, 50px 50px, 50px 50px, 50px 50px, 50px 50px;
+    }
+
+    .effect-circuit::after {
+      content: 'PCB TRACES';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--moss-green);
+      text-shadow: 0 0 10px rgba(74, 124, 63, 0.5);
+      letter-spacing: 0.12em;
+      z-index: 1;
+    }
+
+    /* Effect 6: Spore Network */
+    .effect-spore {
+      background: var(--moss-bg-loam);
+    }
+
+    .effect-spore::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(212, 168, 67, 0.2) 0%, transparent 10%),
+        radial-gradient(circle at 40% 60%, rgba(212, 168, 67, 0.15) 0%, transparent 8%),
+        radial-gradient(circle at 65% 25%, rgba(212, 168, 67, 0.18) 0%, transparent 12%),
+        radial-gradient(circle at 80% 70%, rgba(212, 168, 67, 0.12) 0%, transparent 10%),
+        radial-gradient(circle at 30% 85%, rgba(212, 168, 67, 0.16) 0%, transparent 8%),
+        radial-gradient(circle at 55% 45%, rgba(184, 115, 51, 0.1) 0%, transparent 15%),
+        radial-gradient(circle at 90% 40%, rgba(212, 168, 67, 0.1) 0%, transparent 7%);
+      animation: sporeDrift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes sporeDrift {
+      0% { opacity: 0.5; transform: scale(1); }
+      100% { opacity: 0.9; transform: scale(1.05); }
+    }
+
+    .effect-spore::after {
+      content: 'SPORE CLOUD';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Special Elite', monospace;
+      font-size: 1.2rem;
+      color: var(--moss-gold);
+      text-shadow: 0 0 10px rgba(212, 168, 67, 0.4);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Bitter', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--moss-text-bright);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--moss-text-secondary);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE SECTION
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 48px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background:
+        linear-gradient(135deg, rgba(74, 124, 63, 0.06) 0%, transparent 50%),
+        var(--moss-bg-slate);
+      border: 1px solid rgba(74, 124, 63, 0.15);
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Moss corner */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 100px;
+      height: 100px;
+      background: radial-gradient(ellipse at center, rgba(74, 124, 63, 0.2) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    /* Quotation mark */
+    .quote-mark {
+      font-family: 'Syne', sans-serif;
+      font-size: 5rem;
+      font-weight: 800;
+      color: var(--moss-green);
+      opacity: 0.15;
+      line-height: 1;
+      margin-bottom: -24px;
+      display: block;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cabin', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-style: italic;
+      color: var(--moss-text-primary);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--moss-verdigris);
+      font-style: normal;
+      display: block;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      text-align: center;
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(62, 219, 198, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 70%, rgba(74, 124, 63, 0.04) 0%, transparent 35%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--moss-bioluminescent);
+      text-shadow: 0 0 12px rgba(62, 219, 198, 0.3);
+      margin-bottom: 1rem;
+    }
+
+    .cta p {
+      color: var(--moss-text-secondary);
+      margin-bottom: 2rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.8;
+    }
+
+    .cta-annotation {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.82rem;
+      color: var(--moss-text-secondary);
+      margin-top: 2rem;
+      opacity: 0.6;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      border-top: 1px solid rgba(74, 124, 63, 0.08);
+      background: rgba(16, 18, 13, 0.8);
+      text-align: center;
+      padding: 48px 40px 28px;
+      position: relative;
+    }
+
+    /* Moss overgrowth band at top */
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg,
+        rgba(74, 124, 63, 0.35),
+        rgba(91, 158, 143, 0.25) 25%,
+        rgba(74, 124, 63, 0.15) 50%,
+        rgba(184, 115, 51, 0.12) 75%,
+        rgba(74, 124, 63, 0.3)
+      );
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Bitter', serif;
+      font-weight: 900;
+      font-size: 1.3rem;
+      color: var(--moss-green-bright);
+      text-shadow: 0 0 8px rgba(109, 191, 92, 0.2);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.88rem;
+      color: var(--moss-text-secondary);
+      max-width: 480px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--moss-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--moss-green-bright);
+      text-shadow: 0 0 4px rgba(109, 191, 92, 0.3);
+    }
+
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--moss-text-secondary);
+      opacity: 0.5;
+      letter-spacing: 0.04em;
+    }
+
+    .footer-copy a {
+      color: var(--moss-green);
+      transition: color 0.3s ease;
+    }
+
+    .footer-copy a:hover {
+      color: var(--moss-green-bright);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 14px 20px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.75rem;
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: 80px 20px 60px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 36px 24px;
+      }
+
+      .footer {
+        padding: 36px 16px 20px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.8rem;
+      }
+
+      .cta {
+        padding: 60px 20px;
+      }
+
+      .hero-traces {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 50px;
+      }
+
+      .color-info {
+        padding: 8px 8px;
+      }
+
+      .color-name {
+        font-size: 0.72rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .glow-node,
+      .effect-bioluminescent::before,
+      .effect-spore::before {
+        animation: none;
+      }
+
+      .card, .color-chip, .btn, .badge, .nav-links a, .footer-links a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Overgrowth</a>
+    <div class="nav-links">
+      <a href="#hero">Ruins</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Patina</a>
+      <a href="#components">Specimens</a>
+      <a href="#effects">Textures</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-traces"></div>
+
+    <!-- Bioluminescent glow nodes -->
+    <div class="glow-node" style="top: 18%; left: 12%;"></div>
+    <div class="glow-node" style="top: 65%; left: 8%;"></div>
+    <div class="glow-node" style="top: 30%; right: 15%;"></div>
+    <div class="glow-node" style="bottom: 20%; right: 10%;"></div>
+
+    <div class="hero-content">
+      <span class="hero-label">// field report no. 0047</span>
+      <h1>Nature Does Not Ask Permission</h1>
+      <p class="hero-subtitle">Entropy. Overgrowth. Reclamation.</p>
+      <p class="hero-desc">
+        Deep in the ruins of the old server farms, moss colonies have established dominion over forgotten circuitry. The machines are still humming. The forest is listening.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Enter the Overgrowth</a>
+        <a href="#palette" class="btn btn-rust">Survey the Ruins</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--loam" id="typography">
+    <div class="container">
+      <p class="section-label">// typography.sys</p>
+      <h2 class="section-title">Weathered, Industrial &amp; Organic</h2>
+      <p class="section-subtitle">stamped onto metal, etched into bark, eroded by time</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Syne 800</p>
+            <p class="typo-display">Reclamation</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Bitter 700</p>
+            <p class="typo-heading">Corroded Infrastructure</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Chakra Petch 600</p>
+            <p class="typo-subheading">System Override: Biological</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Cabin 400</p>
+            <p class="typo-body">Warm humanist text for field journals and specimen documentation. Readable in the dim light of a damp, overgrown ruin.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Monospaced / Space Mono</p>
+            <p class="typo-mono">// data_readout: 0x4A7C3F<br>// status: colonized</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Annotation / Special Elite</p>
+            <p class="typo-annotation">specimen no. 47 -- fruiting body observed on south panel</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4.5rem</span>
+              <span style="font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--moss-green-bright); text-shadow: 0 0 8px rgba(109, 191, 92, 0.2);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.8rem</span>
+              <span style="font-family: 'Bitter', serif; font-size: 1.4rem; font-weight: 700; color: var(--moss-text-bright);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Chakra Petch', sans-serif; font-size: 1.1rem; font-weight: 600; color: var(--moss-verdigris);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Cabin', sans-serif; font-size: 1rem; color: var(--moss-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.9rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 0.9rem; color: var(--moss-green);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Special Elite', monospace; font-size: 0.85rem; color: var(--moss-text-secondary); letter-spacing: 0.04em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <div class="typo-pairing-item">
+              <strong style="font-family: 'Bitter', serif; color: var(--moss-green-bright);">Bitter</strong> + <strong style="color: var(--moss-text-primary);">Cabin</strong><br>
+              <span class="typo-pairing-label">Industrial warmth, highly readable</span>
+            </div>
+            <div class="typo-pairing-item">
+              <strong style="font-family: 'Syne', sans-serif; color: var(--moss-green-bright);">Syne</strong> + <strong style="font-family: 'Space Mono', monospace; color: var(--moss-text-primary);">Space Mono</strong><br>
+              <span class="typo-pairing-label">Geometric-organic contrast, technical feel</span>
+            </div>
+            <div class="typo-pairing-item">
+              <strong style="font-family: 'Chakra Petch', sans-serif; color: var(--moss-green-bright);">Chakra Petch</strong> + <strong style="font-family: 'Cabin', sans-serif; color: var(--moss-text-primary);">Cabin</strong><br>
+              <span class="typo-pairing-label">Tech-forward navigation, clean body text</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--slate" id="palette">
+    <div class="container">
+      <p class="section-label">// chromatography.log</p>
+      <h2 class="section-title">Damp Ruins &amp; Oxidized Patina</h2>
+      <p class="section-subtitle">deep greens, corroded coppers, bioluminescent accents</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a1c17;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Loam</div>
+            <div class="color-hex">#1A1C17</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2a2d26;"></div>
+          <div class="color-info">
+            <div class="color-name">Wet Slate</div>
+            <div class="color-hex">#2A2D26</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3b3832;"></div>
+          <div class="color-info">
+            <div class="color-name">Corroded Iron</div>
+            <div class="color-hex">#3B3832</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a4f42;"></div>
+          <div class="color-info">
+            <div class="color-name">Lichen Stone</div>
+            <div class="color-hex">#4A4F42</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a7c3f;"></div>
+          <div class="color-info">
+            <div class="color-name">Living Moss</div>
+            <div class="color-hex">#4A7C3F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6dbf5c;"></div>
+          <div class="color-info">
+            <div class="color-name">Bright Fern</div>
+            <div class="color-hex">#6DBF5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a8d98a;"></div>
+          <div class="color-info">
+            <div class="color-name">Spring Sprout</div>
+            <div class="color-hex">#A8D98A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5b9e8f;"></div>
+          <div class="color-info">
+            <div class="color-name">Verdigris</div>
+            <div class="color-hex">#5B9E8F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3edbc6;"></div>
+          <div class="color-info">
+            <div class="color-name">Bioluminescent Teal</div>
+            <div class="color-hex">#3EDBC6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b6b4a;"></div>
+          <div class="color-info">
+            <div class="color-name">Oxidized Copper</div>
+            <div class="color-hex">#8B6B4A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b87333;"></div>
+          <div class="color-info">
+            <div class="color-name">Rust Amber</div>
+            <div class="color-hex">#B87333</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d4a843;"></div>
+          <div class="color-info">
+            <div class="color-name">Spore Gold</div>
+            <div class="color-hex">#D4A843</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c8d5b9;"></div>
+          <div class="color-info">
+            <div class="color-name">Pale Lichen</div>
+            <div class="color-hex">#C8D5B9</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8a9182;"></div>
+          <div class="color-info">
+            <div class="color-name">Fog Grey</div>
+            <div class="color-hex">#8A9182</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e8ede2;"></div>
+          <div class="color-info">
+            <div class="color-name">Mycelium White</div>
+            <div class="color-hex">#E8EDE2</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--mycelium" id="components">
+    <div class="container">
+      <p class="section-label">// specimen.catalog</p>
+      <h2 class="section-title">Reclamation Protocols</h2>
+      <p class="section-subtitle">systems yielding to biological override</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--green">&#127807;</div>
+          <div class="card-tag">// sector.alpha</div>
+          <h3>Mycelium Network</h3>
+          <p>Underground fungal highways have replaced fiber optic cables. Data travels through spore relays at the speed of decomposition. The network is alive and expanding.</p>
+          <span class="badge badge--green">Fungal</span>
+          <span class="badge badge--teal">Network</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--teal">&#9889;</div>
+          <div class="card-tag">// sector.beta</div>
+          <h3>Photosynthetic Arrays</h3>
+          <p>Solar panels colonized by moss now generate power through a hybrid of silicon and chlorophyll. Efficiency unmeasurable by old metrics. Nature improved the design.</p>
+          <span class="badge badge--teal">Energy</span>
+          <span class="badge badge--green">Hybrid</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rust">&#9881;</div>
+          <div class="card-tag">// sector.gamma</div>
+          <h3>Corrosion Engine</h3>
+          <p>Oxidation as computation. Rusting server racks process data through electrochemical decay. Every calculation brings the machine closer to soil.</p>
+          <span class="badge badge--spore">Decay</span>
+          <span class="badge badge--green">Process</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--copper">&#127810;</div>
+          <div class="card-tag">// sector.delta</div>
+          <h3>Root Architecture</h3>
+          <p>Tree roots have infiltrated the foundation layers, forming structural reinforcements stronger than the original steel. The building grows from within.</p>
+          <span class="badge badge--green">Organic</span>
+          <span class="badge badge--spore">Structure</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#127812;</div>
+          <div class="card-tag">// sector.epsilon</div>
+          <h3>Spore Relay Station</h3>
+          <p>Bracket fungi fruiting from abandoned routers have formed a biological communication network. Signals propagate through mycelium at frequencies we are still learning to decode.</p>
+          <span class="badge badge--spore">Spore</span>
+          <span class="badge badge--teal">Signal</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--verdigris">&#128167;</div>
+          <div class="card-tag">// sector.zeta</div>
+          <h3>Condensation Matrix</h3>
+          <p>Moisture harvesting systems built from corroded copper pipes and lichen-covered condensers. Water runs through channels carved by root systems over decades.</p>
+          <span class="badge badge--teal">Water</span>
+          <span class="badge badge--green">Reclaim</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--loam" id="effects">
+    <div class="container">
+      <p class="section-label">// render.pipeline</p>
+      <h2 class="section-title">CSS Textures &amp; Atmospherics</h2>
+      <p class="section-subtitle">corroded surfaces, organic glow, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-corroded"></div>
+          <div class="effect-caption">
+            <h4>Corroded Metal</h4>
+            <p>Layered noise textures and warm radial gradients simulate oxidized, weathered metal surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-bioluminescent"></div>
+          <div class="effect-caption">
+            <h4>Bioluminescent Glow</h4>
+            <p>Scattered radial gradients in teal and green with subtle pulse animation mimic fungal bioluminescence.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-moss"></div>
+          <div class="effect-caption">
+            <h4>Moss Overgrowth</h4>
+            <p>Overlapping radial gradients from edges and corners simulate organic moss spreading across surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-verdigris"></div>
+          <div class="effect-caption">
+            <h4>Verdigris Patina</h4>
+            <p>Teal-copper gradient patches on dark iron backgrounds evoke the green oxidation patina on aged copper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-circuit"></div>
+          <div class="effect-caption">
+            <h4>PCB Trace Grid</h4>
+            <p>Repeating linear and radial gradients create a circuit board pattern being reclaimed by darkness.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-spore"></div>
+          <div class="effect-caption">
+            <h4>Spore Cloud</h4>
+            <p>Scattered gold radial gradients with drift animation simulate airborne fungal spores in dim light.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--slate">
+    <div class="container">
+      <p class="section-label">// interface.controls</p>
+      <h2 class="section-title">Weathered Metal Toggles</h2>
+      <p class="section-subtitle">functional, heavy, reclaimed</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Primary Moss</a>
+        <a href="#" class="btn btn-rust">Oxidized Rust</a>
+        <a href="#" class="btn btn-glow">Bioluminescent</a>
+        <a href="#" class="btn btn-verdigris">Verdigris</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--loam">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">&ldquo;</span>
+        <blockquote>
+          The machines did not die. They were simply absorbed &mdash; slowly, quietly, irresistibly &mdash; back into the living world that had always surrounded them. The moss does not conquer; it persists.
+        </blockquote>
+        <cite>&mdash; Field Station Overgrowth, Report 047</cite>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--mycelium cta">
+    <div class="cta-content">
+      <h2>Join the Reclamation</h2>
+      <p>
+        The old infrastructure is yielding. New growth is emerging from every crack and seam. The mycelium network is expanding. Will you document what comes next?
+      </p>
+      <a href="#hero" class="btn btn-glow">Submit Field Report</a>
+      <p class="cta-annotation">// transmission ends -- returning to overgrowth --</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Overgrowth Field Station</h3>
+      <p>
+        A design aesthetic reference for Moss Punk &mdash; where nature reclaims technology, entropy meets regeneration, and every surface tells the story of the slow, relentless force of the living world.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Ruins</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Patina</a>
+        <a href="#components">Specimens</a>
+        <a href="#effects">Textures</a>
+      </div>
+      <p class="footer-copy">[ OVERGROWTH FIELD STATION ] // Established on reclaimed ground // <a href="#">Spore Network</a></p>
+    </div>
+  </footer>
+
+</body>
+</html>

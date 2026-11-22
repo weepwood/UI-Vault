@@ -1,0 +1,1803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Botanical -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Dark Grounds --- */
+      --db-midnight: #0D1117;
+      --db-ivy: #141E17;
+      --db-umber: #1A1612;
+      --db-canvas: #2A2520;
+
+      /* --- Floral Accents --- */
+      --db-rose: #9E6B73;
+      --db-burgundy: #7A2E3B;
+      --db-plum: #4A2040;
+      --db-forest: #2D5A3D;
+      --db-sage: #7A9A7E;
+
+      /* --- Metallic Accents --- */
+      --db-gold: #C4A35A;
+      --db-copper: #8B6E4E;
+
+      /* --- Text Tones --- */
+      --db-ivory: #EDE6D6;
+      --db-parchment: #D4C9B5;
+      --db-faded: #8A7E6C;
+      --db-dewdrop: #A8C5C8;
+
+      /* --- Functional Tokens --- */
+      --db-bg: var(--db-midnight);
+      --db-text: var(--db-parchment);
+      --db-heading: var(--db-ivory);
+      --db-accent: var(--db-rose);
+      --db-link: var(--db-dewdrop);
+      --db-surface: var(--db-canvas);
+      --db-border: rgba(196, 163, 90, 0.15);
+      --db-border-strong: rgba(196, 163, 90, 0.25);
+
+      /* --- Shadows --- */
+      --db-shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.3);
+      --db-shadow-md: 0 4px 24px rgba(0, 0, 0, 0.4);
+      --db-shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.5);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.1rem;
+      line-height: 1.85;
+      color: var(--db-parchment);
+      background: var(--db-midnight);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', 'Times New Roman', serif;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      color: var(--db-ivory);
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1.12;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      line-height: 1.25;
+    }
+
+    h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--db-rose);
+    }
+
+    p {
+      margin-bottom: 1em;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .botanical-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--db-sage);
+    }
+
+    .display-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--db-gold);
+    }
+
+    /* ============================================
+       LAYOUT HELPERS
+       ============================================ */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--ivy {
+      background: var(--db-ivy);
+    }
+
+    .section--umber {
+      background: var(--db-umber);
+    }
+
+    .section--canvas {
+      background: var(--db-canvas);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .section-header .label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--db-gold);
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      font-size: 1.05rem;
+      color: var(--db-faded);
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       FLORAL DIVIDER
+       ============================================ */
+    .divider {
+      text-align: center;
+      margin: 0 auto;
+      padding: 40px 0;
+      max-width: 600px;
+      position: relative;
+      height: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(196, 163, 90, 0.3) 20%,
+        rgba(196, 163, 90, 0.3) 80%,
+        transparent
+      );
+    }
+
+    .divider span {
+      position: relative;
+      background: var(--db-midnight);
+      padding: 0 20px;
+      color: var(--db-rose);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    .divider--ivy span {
+      background: var(--db-ivy);
+    }
+
+    .divider--umber span {
+      background: var(--db-umber);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .db-nav {
+      background: rgba(13, 17, 23, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--db-border);
+      padding: 18px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .db-nav .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--db-ivory);
+      letter-spacing: 0.02em;
+    }
+
+    .db-nav .logo-accent {
+      color: var(--db-rose);
+      font-style: italic;
+    }
+
+    .db-nav .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .db-nav .nav-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--db-parchment);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 8px 16px;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .db-nav .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 16px;
+      right: 16px;
+      height: 1px;
+      background: var(--db-rose);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .db-nav .nav-links a:hover {
+      color: var(--db-ivory);
+    }
+
+    .db-nav .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: 1px solid var(--db-border);
+      color: var(--db-ivory);
+      padding: 6px 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 40px 80px;
+      position: relative;
+      overflow: hidden;
+      background: var(--db-midnight);
+    }
+
+    /* Atmospheric botanical gradients */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 25% 75%, rgba(45, 90, 61, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 25%, rgba(158, 107, 115, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 100%, rgba(74, 32, 64, 0.08) 0%, transparent 40%),
+        radial-gradient(ellipse at 10% 20%, rgba(196, 163, 90, 0.04) 0%, transparent 35%);
+      pointer-events: none;
+    }
+
+    /* CSS-only botanical motif using box-shadows for scattered petals/leaves */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 120px 80px at 15% 30%, rgba(45, 90, 61, 0.06) 0%, transparent 70%),
+        radial-gradient(ellipse 80px 120px at 85% 70%, rgba(158, 107, 115, 0.05) 0%, transparent 70%),
+        radial-gradient(ellipse 60px 90px at 90% 15%, rgba(45, 90, 61, 0.04) 0%, transparent 70%),
+        radial-gradient(ellipse 90px 60px at 10% 85%, rgba(122, 46, 59, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+      animation: heroGlow 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow {
+      0% { opacity: 0.6; }
+      100% { opacity: 1; }
+    }
+
+    .hero .eyebrow {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--db-gold);
+      margin-bottom: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      position: relative;
+      z-index: 2;
+      max-width: 720px;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--db-rose);
+    }
+
+    .hero .subtitle {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
+      color: var(--db-parchment);
+      max-width: 560px;
+      line-height: 1.9;
+      margin-bottom: 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero .cta-btn {
+      display: inline-block;
+      background: transparent;
+      color: var(--db-gold);
+      border: 1px solid var(--db-gold);
+      border-radius: 2px;
+      padding: 14px 40px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .hero .cta-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, var(--db-gold), var(--db-rose));
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease;
+      z-index: 0;
+    }
+
+    .hero .cta-btn:hover {
+      color: var(--db-midnight);
+      border-color: var(--db-rose);
+      box-shadow: 0 0 40px rgba(196, 163, 90, 0.15);
+    }
+
+    .hero .cta-btn:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    .hero .cta-btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Decorative gold line under hero */
+    .hero-rule {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--db-gold), transparent);
+      margin: 32px auto 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid var(--db-border);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--db-gold);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 4.5vw, 3.5rem);
+      font-weight: 900;
+      color: var(--db-ivory);
+      line-height: 1.1;
+      font-style: italic;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--db-ivory);
+      line-height: 1.2;
+    }
+
+    .typo-subheading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      font-weight: 600;
+      color: var(--db-rose);
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .typo-body {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      color: var(--db-parchment);
+      line-height: 1.85;
+    }
+
+    .typo-botanical {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--db-sage);
+      line-height: 1.6;
+    }
+
+    .typo-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--db-gold);
+    }
+
+    .typo-scale {
+      margin-top: 16px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--db-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem;
+      color: var(--db-faded);
+      min-width: 56px;
+      text-align: right;
+      letter-spacing: 0.05em;
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      font-style: normal;
+      color: var(--db-ivory);
+      margin-bottom: 4px;
+    }
+
+    .font-pairing {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--db-border);
+    }
+
+    .font-pairing-item {
+      margin-bottom: 14px;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .font-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .font-pairing-vibe {
+      color: var(--db-faded);
+      font-size: 0.85rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      background: var(--db-canvas);
+      border: 1px solid var(--db-border);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .color-chip:hover {
+      border-color: var(--db-border-strong);
+      transform: translateY(-2px);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--db-border);
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--db-ivory);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Lora', serif;
+      font-size: 0.72rem;
+      color: var(--db-faded);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--db-canvas);
+      border: 1px solid var(--db-border);
+      border-radius: 3px;
+      padding: 36px;
+      position: relative;
+      box-shadow: var(--db-shadow-md);
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      border-color: rgba(158, 107, 115, 0.3);
+      box-shadow: var(--db-shadow-lg);
+    }
+
+    /* Inner frame line */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      bottom: 8px;
+      border: 1px solid rgba(196, 163, 90, 0.07);
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
+    /* Subtle warm glow */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: radial-gradient(
+        ellipse at 30% 20%,
+        rgba(158, 107, 115, 0.04) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      font-style: normal;
+      color: var(--db-ivory);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card p {
+      color: var(--db-parchment);
+      font-size: 0.98rem;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card .botanical-note {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid rgba(196, 163, 90, 0.1);
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--db-sage);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      background: var(--db-canvas);
+      border: 1px solid var(--db-border);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: var(--db-border-strong);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 20px 24px;
+      border-top: 1px solid var(--db-border);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--db-ivory);
+      margin-bottom: 6px;
+    }
+
+    .effect-caption p {
+      font-size: 0.88rem;
+      color: var(--db-faded);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Chiaroscuro Light */
+    .effect-chiaroscuro {
+      background:
+        radial-gradient(ellipse at 30% 30%, rgba(196, 163, 90, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, rgba(158, 107, 115, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(13, 17, 23, 0.6) 0%, transparent 80%),
+        var(--db-umber);
+    }
+
+    /* Effect 2: Gilded Border Frame */
+    .effect-gilded {
+      background: var(--db-midnight);
+    }
+
+    .effect-gilded::before {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      bottom: 16px;
+      border: 1px solid rgba(196, 163, 90, 0.35);
+      border-radius: 1px;
+    }
+
+    .effect-gilded::after {
+      content: '';
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      border: 1px solid rgba(196, 163, 90, 0.15);
+      border-radius: 1px;
+    }
+
+    /* Effect 3: Canvas Texture */
+    .effect-canvas {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(196, 163, 90, 0.02) 2px,
+          rgba(196, 163, 90, 0.02) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(196, 163, 90, 0.02) 2px,
+          rgba(196, 163, 90, 0.02) 4px
+        ),
+        linear-gradient(160deg, var(--db-umber), var(--db-canvas));
+    }
+
+    /* Effect 4: Botanical Mist */
+    .effect-mist {
+      background:
+        radial-gradient(ellipse 200px 150px at 20% 80%, rgba(45, 90, 61, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 150px 200px at 80% 20%, rgba(158, 107, 115, 0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 180px 120px at 50% 50%, rgba(74, 32, 64, 0.08) 0%, transparent 70%),
+        var(--db-midnight);
+      animation: mistDrift 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes mistDrift {
+      0% {
+        background-position: 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+      }
+      100% {
+        background-position: 5% 3%, -3% -2%, 2% -1%, 0% 0%;
+      }
+    }
+
+    /* Effect 5: Copper Patina */
+    .effect-patina {
+      background:
+        radial-gradient(circle at 30% 40%, rgba(139, 110, 78, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(45, 90, 61, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 80%, rgba(122, 154, 126, 0.1) 0%, transparent 35%),
+        linear-gradient(135deg, var(--db-canvas) 0%, var(--db-umber) 100%);
+    }
+
+    /* Effect 6: Vanitas Vignette */
+    .effect-vignette {
+      background:
+        radial-gradient(ellipse at 50% 50%, transparent 30%, rgba(0, 0, 0, 0.6) 100%),
+        radial-gradient(ellipse at 50% 45%, rgba(158, 107, 115, 0.06) 0%, transparent 50%),
+        var(--db-umber);
+    }
+
+    .effect-vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 50% 50%, rgba(196, 163, 90, 0.04) 0%, transparent 40%);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-block;
+      border-radius: 2px;
+      padding: 14px 36px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Primary: Gold outline with bloom fill */
+    .btn-gold {
+      background: transparent;
+      color: var(--db-gold);
+      border: 1px solid var(--db-gold);
+    }
+
+    .btn-gold::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, var(--db-gold), var(--db-rose));
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.5s ease, height 0.5s ease;
+      z-index: 0;
+    }
+
+    .btn-gold:hover {
+      color: var(--db-midnight);
+      border-color: var(--db-rose);
+      box-shadow: 0 0 30px rgba(158, 107, 115, 0.2);
+    }
+
+    .btn-gold:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    /* Secondary: Rose filled */
+    .btn-rose {
+      background: var(--db-rose);
+      color: var(--db-ivory);
+      border: 1px solid var(--db-rose);
+    }
+
+    .btn-rose:hover {
+      background: var(--db-burgundy);
+      border-color: var(--db-burgundy);
+      box-shadow: 0 0 24px rgba(122, 46, 59, 0.3);
+    }
+
+    /* Tertiary: Forest filled */
+    .btn-forest {
+      background: var(--db-forest);
+      color: var(--db-ivory);
+      border: 1px solid var(--db-forest);
+    }
+
+    .btn-forest:hover {
+      background: #367A4E;
+      box-shadow: 0 0 24px rgba(45, 90, 61, 0.3);
+    }
+
+    /* Ghost: Copper outline */
+    .btn-ghost {
+      background: transparent;
+      color: var(--db-copper);
+      border: 1px solid var(--db-copper);
+    }
+
+    .btn-ghost:hover {
+      color: var(--db-ivory);
+      border-color: var(--db-gold);
+      background: rgba(139, 110, 78, 0.12);
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      text-align: center;
+      padding: 80px 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .quote-section blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-style: italic;
+      font-weight: 300;
+      color: var(--db-ivory);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      position: relative;
+      padding: 0 20px;
+    }
+
+    .quote-section blockquote::before {
+      content: '\201C';
+      position: absolute;
+      top: -24px;
+      left: -8px;
+      font-size: 4.5rem;
+      color: var(--db-rose);
+      opacity: 0.35;
+      font-family: 'Playfair Display', serif;
+      line-height: 1;
+    }
+
+    .quote-section .attribution {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--db-faded);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 80px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(158, 107, 115, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 80%, rgba(45, 90, 61, 0.04) 0%, transparent 40%),
+        radial-gradient(ellipse at 80% 20%, rgba(196, 163, 90, 0.04) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .cta-frame {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      border: 1px solid var(--db-border);
+      position: relative;
+    }
+
+    .cta-frame::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 6px;
+      right: 6px;
+      bottom: 6px;
+      border: 1px solid rgba(196, 163, 90, 0.08);
+      pointer-events: none;
+    }
+
+    .cta-frame h2 {
+      margin-bottom: 12px;
+    }
+
+    .cta-frame h2 em {
+      color: var(--db-rose);
+      font-style: italic;
+    }
+
+    .cta-frame .cta-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--db-sage);
+      margin-bottom: 20px;
+    }
+
+    .cta-frame p {
+      color: var(--db-parchment);
+      max-width: 480px;
+      margin: 0 auto 28px;
+      font-size: 1rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .db-footer {
+      border-top: 1px solid var(--db-border);
+      padding: 40px 48px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-brand {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      color: var(--db-ivory);
+    }
+
+    .footer-brand .footer-accent {
+      color: var(--db-rose);
+      font-style: italic;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.85rem;
+      color: var(--db-faded);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--db-rose);
+    }
+
+    .footer-note {
+      text-align: center;
+      padding-top: 24px;
+      margin-top: 24px;
+      border-top: 1px solid rgba(196, 163, 90, 0.06);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.78rem;
+      color: var(--db-faded);
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .cards-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+
+      .effects-grid {
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .db-nav {
+        padding: 14px 20px;
+      }
+
+      .db-nav .nav-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(13, 17, 23, 0.97);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border-bottom: 1px solid var(--db-border);
+        padding: 12px 0;
+      }
+
+      .db-nav .nav-links.active {
+        display: flex;
+      }
+
+      .db-nav .nav-links a {
+        padding: 12px 24px;
+      }
+
+      .db-nav .nav-links a::after {
+        display: none;
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero {
+        min-height: 75vh;
+        padding: 80px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 6vw, 2.6rem);
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 12px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        text-align: center;
+      }
+
+      .quote-section blockquote {
+        font-size: 1.2rem;
+      }
+
+      .cta-frame {
+        padding: 36px 24px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .db-footer {
+        padding: 32px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero {
+        min-height: 65vh;
+        padding: 60px 16px 48px;
+      }
+
+      .hero .subtitle {
+        font-size: 1rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 56px) 0;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.75rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="db-nav">
+    <a href="#hero" class="logo">Nocturne <span class="logo-accent">Botanica</span></a>
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('.nav-links').classList.toggle('active')">Menu</button>
+    <ul class="nav-links">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#specimens">Specimens</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#elements">Elements</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <p class="eyebrow">Est. Anno MDCLXVIII</p>
+    <h1>Where Darkness Meets <em>Bloom</em></h1>
+    <p class="subtitle">
+      A cabinet of botanical curiosities drawn from the shadow gardens
+      of memory, where every petal holds the weight of a still-life
+      painting and every leaf whispers of seasons past.
+    </p>
+    <a href="#specimens" class="cta-btn"><span>Explore the Collection</span></a>
+    <div class="hero-rule"></div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&#10047;</span></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--ivy" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <p class="label">Typography</p>
+        <h2>Serifs of the Herbarium</h2>
+        <p>Elegant letterforms drawn from the engraved title pages of botanical atlases and the gilt labels of natural history museums</p>
+      </div>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display 900 Italic</p>
+            <p class="typo-display">Flora Nocturna</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display 700</p>
+            <p class="typo-heading">Vanitas &amp; the Still Life Tradition</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Cormorant Garamond 600 Italic</p>
+            <p class="typo-subheading">A Catalogue of Specimens from the Shadow Garden</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora 400</p>
+            <p class="typo-body">Dark Botanical embraces the moody grandeur of Dutch Golden Age flower painting, layering lush botanical imagery over near-black grounds with the careful precision of a vanitas composition.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Botanical Latin / Cormorant Garamond Italic</p>
+            <p class="typo-botanical">Paeonia lactiflora &middot; Rosa damascena &middot; Hedera helix &middot; Tulipa gesneriana</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Cormorant Garamond 600 Uppercase</p>
+            <p class="typo-label">Specimen Plate XXIV &mdash; Nocturnal Arrangements</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3 style="font-style: normal;">Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.8rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; font-style: italic; color: var(--db-ivory);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.4rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--db-ivory);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 600; font-style: italic; color: var(--db-rose);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: var(--db-parchment);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; font-style: italic; color: var(--db-sage);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 0.8rem; color: var(--db-gold); text-transform: uppercase; letter-spacing: 0.18em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="font-pairing">
+            <h3 style="font-style: normal; margin-bottom: 14px;">Font Pairings</h3>
+            <div class="font-pairing-item">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--db-rose);">Playfair Display 700</strong> + <strong>Lora 400</strong><br>
+              <span class="font-pairing-vibe">Dramatic editorial with warm, readable body text</span>
+            </div>
+            <div class="font-pairing-item">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--db-rose);">Playfair Display 600</strong> + <strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond 300</strong><br>
+              <span class="font-pairing-vibe">Maximum contrast between heavy display and delicate subheads</span>
+            </div>
+            <div class="font-pairing-item">
+              <strong style="font-family: 'Cormorant Garamond', serif; color: var(--db-rose);">Cormorant Garamond 600</strong> + <strong style="font-family: 'Lora', serif;">Lora 400</strong><br>
+              <span class="font-pairing-vibe">Refined literary elegance suitable for luxury branding</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider--ivy" style="background: var(--db-ivy);">
+    <div class="divider"><span style="background: var(--db-ivy);">&#10043;</span></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--umber" id="palette">
+    <div class="container">
+      <div class="section-header">
+        <p class="label">Color Palette</p>
+        <h2>Pigments of the Old Masters</h2>
+        <p>Lamp black, earth pigments, and the vivid hues of garden flowers captured in the last golden light before nightfall</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0D1117;"></div>
+          <div class="color-info">
+            <div class="color-name">Midnight Garden</div>
+            <div class="color-hex">#0D1117</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #141E17;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivy Shadow</div>
+            <div class="color-hex">#141E17</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1612;"></div>
+          <div class="color-info">
+            <div class="color-name">Umber Ground</div>
+            <div class="color-hex">#1A1612</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2A2520;"></div>
+          <div class="color-info">
+            <div class="color-name">Aged Canvas</div>
+            <div class="color-hex">#2A2520</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9E6B73;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Rose</div>
+            <div class="color-hex">#9E6B73</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A2E3B;"></div>
+          <div class="color-info">
+            <div class="color-name">Burgundy Bloom</div>
+            <div class="color-hex">#7A2E3B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A2040;"></div>
+          <div class="color-info">
+            <div class="color-name">Plum Shadow</div>
+            <div class="color-hex">#4A2040</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D5A3D;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Fern</div>
+            <div class="color-hex">#2D5A3D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A9A7E;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Mist</div>
+            <div class="color-hex">#7A9A7E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A35A;"></div>
+          <div class="color-info">
+            <div class="color-name">Antique Gold</div>
+            <div class="color-hex">#C4A35A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B6E4E;"></div>
+          <div class="color-info">
+            <div class="color-name">Tarnished Copper</div>
+            <div class="color-hex">#8B6E4E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDE6D6;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory Petal</div>
+            <div class="color-hex">#EDE6D6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4C9B5;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#D4C9B5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8A7E6C;"></div>
+          <div class="color-info">
+            <div class="color-name">Faded Leaf</div>
+            <div class="color-hex">#8A7E6C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A8C5C8;"></div>
+          <div class="color-info">
+            <div class="color-name">Dewdrop</div>
+            <div class="color-hex">#A8C5C8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&#10047;</span></div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section" id="specimens">
+    <div class="container">
+      <div class="section-header">
+        <p class="label">From the Herbarium</p>
+        <h2>Botanical Specimens</h2>
+        <p>Each study captured at the fleeting moment between flourishing and fading, rendered with the obsessive detail of a vanitas painter</p>
+      </div>
+
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-icon">&#127801;</span>
+          <h3>Rosa Damascena</h3>
+          <p>Rendered in the style of the Dutch masters, each velvet petal unfurling against the void, catching the last warm light of a studio candle. The bloom trembles between perfection and decay.</p>
+          <p class="botanical-note">Damask Rose &mdash; Symbol of fleeting beauty</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127807;</span>
+          <h3>Hedera Helix</h3>
+          <p>Dark trailing vines that creep across the composition, binding the arrangement together with their persistent, quietly insistent growth. Evergreen amid the transience of flowers.</p>
+          <p class="botanical-note">Common Ivy &mdash; Symbol of fidelity and endurance</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127799;</span>
+          <h3>Tulipa Gesneriana</h3>
+          <p>The tulip at the height of its fever, petals streaked with the broken color that once bankrupted a nation. A reminder that beauty and folly share the same stem.</p>
+          <p class="botanical-note">Garden Tulip &mdash; Symbol of prosperity and transience</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#129415;</span>
+          <h3>Papilio Machaon</h3>
+          <p>A swallowtail rests upon a stem, wings barely parted, a living emblem of transformation and the brevity of all delicate things. Its presence elevates the still life to allegory.</p>
+          <p class="botanical-note">Old World Swallowtail &mdash; Symbol of the soul</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127812;</span>
+          <h3>Paeonia Lactiflora</h3>
+          <p>Full-blown peonies in blush and deep rose, their heavy heads bowing under their own lush weight, surrounded by the dark geometry of curling stems and fallen petals.</p>
+          <p class="botanical-note">Chinese Peony &mdash; Symbol of romance and good fortune</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127810;</span>
+          <h3>Acer Palmatum</h3>
+          <p>Autumn's final declaration rendered in crimson and amber, each leaf a delicate hand reaching across the canvas. The Japanese maple speaks of graceful decline and renewal.</p>
+          <p class="botanical-note">Japanese Maple &mdash; Symbol of elegance and time</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&#10043;</span></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--ivy" id="effects">
+    <div class="container">
+      <div class="section-header">
+        <p class="label">Visual Techniques</p>
+        <h2>CSS Textures &amp; Atmospheres</h2>
+        <p>Painterly effects achieved with pure CSS, no image assets required</p>
+      </div>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-chiaroscuro"></div>
+          <div class="effect-caption">
+            <h4>Chiaroscuro Light</h4>
+            <p>Asymmetric radial gradients in gold and rose simulate the raking directional light of Dutch oil paintings.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gilded"></div>
+          <div class="effect-caption">
+            <h4>Gilded Frame</h4>
+            <p>Double-border technique using pseudo-elements references the gilt frames that enclosed botanical masterworks.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-canvas"></div>
+          <div class="effect-caption">
+            <h4>Canvas Texture</h4>
+            <p>Crossed repeating linear gradients at low opacity create a woven canvas grain for painterly authenticity.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-mist"></div>
+          <div class="effect-caption">
+            <h4>Botanical Mist</h4>
+            <p>Colored radial gradients with slow drift animation evoke the atmosphere of a moonlit conservatory.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-patina"></div>
+          <div class="effect-caption">
+            <h4>Copper Patina</h4>
+            <p>Overlapping copper and verdigris gradients simulate the aged surface of an antique botanical plate frame.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-vignette"></div>
+          <div class="effect-caption">
+            <h4>Vanitas Vignette</h4>
+            <p>Heavy radial vignetting with a warm center glow focuses attention as a spotlight illuminating a painting.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div style="background: var(--db-ivy);">
+    <div class="divider"><span style="background: var(--db-ivy);">&#10047;</span></div>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--umber" id="elements">
+    <div class="container">
+      <div class="section-header">
+        <p class="label">Interactive Elements</p>
+        <h2>Botanical Buttons</h2>
+        <p>Inspired by the engraved labels of specimen jars and the gilt lettering of herbarium sheets</p>
+      </div>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-gold"><span>Antique Gold</span></a>
+        <a href="#" class="btn btn-rose"><span>Dusty Rose</span></a>
+        <a href="#" class="btn btn-forest"><span>Forest Fern</span></a>
+        <a href="#" class="btn btn-ghost"><span>Copper Ghost</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider" style="background: transparent;"><span style="background: var(--db-midnight);">&#10043;</span></div>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="quote-section">
+    <blockquote>
+      In every petal there is a world entire, and in every shadow the memory of light. We paint not what we see, but what will soon be gone &mdash; for it is the vanishing that makes beauty unbearable and necessary.
+    </blockquote>
+    <p class="attribution">&mdash; After the Dutch Masters</p>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider"><span>&#10047;</span></div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section section--ivy">
+    <div class="container">
+      <div class="cta-frame">
+        <p class="display-label" style="margin-bottom: 16px;">The Atelier Awaits</p>
+        <h2>Cultivate the <em>Darkness</em></h2>
+        <p class="cta-subtitle">Where every bloom is borrowed from the night</p>
+        <p>
+          Dark Botanical translates the drama of 17th-century still-life painting into modern design &mdash; deep grounds, luminous accents, antique gold, and the quiet understanding that all beauty is transient. Embrace the richness.
+        </p>
+        <a href="#hero" class="btn btn-gold"><span>Return to the Garden</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div style="background: var(--db-ivy);">
+    <div class="divider"><span style="background: var(--db-ivy);">&#10047;</span></div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="db-footer">
+    <div class="footer-content">
+      <span class="footer-brand">Nocturne <span class="footer-accent">Botanica</span></span>
+      <ul class="footer-links">
+        <li><a href="#hero">Garden</a></li>
+        <li><a href="#typography">Typography</a></li>
+        <li><a href="#palette">Palette</a></li>
+        <li><a href="#specimens">Specimens</a></li>
+        <li><a href="#effects">Effects</a></li>
+      </ul>
+    </div>
+    <p class="footer-note">
+      A design aesthetic reference celebrating the moody, luxurious tradition of Dutch Golden Age botanical painting. All visuals rendered in pure CSS &mdash; no image assets.
+    </p>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Mobile nav toggle
+    document.querySelector('.nav-toggle').addEventListener('click', function() {
+      document.querySelector('.nav-links').classList.toggle('active');
+    });
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav-links a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.querySelector('.nav-links').classList.remove('active');
+      });
+    });
+
+    // Smooth reveal on scroll (with reduced-motion check)
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      var revealEls = document.querySelectorAll('.card, .effect-demo, .color-chip');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.opacity = '1';
+            entry.target.style.transform = 'translateY(0)';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+      revealEls.forEach(function(el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(16px)';
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        observer.observe(el);
+      });
+    }
+  </script>
+
+</body>
+</html>

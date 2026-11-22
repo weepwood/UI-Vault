@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Techno Minimalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Surfaces (darkest to lightest) */
+      --tm-bg-base: #0d1117;
+      --tm-bg-surface: #161b22;
+      --tm-bg-overlay: #21262d;
+      --tm-bg-inset: #010409;
+
+      /* Borders */
+      --tm-border-default: #30363d;
+      --tm-border-muted: #21262d;
+      --tm-border-emphasis: #484f58;
+
+      /* Text */
+      --tm-text-primary: #c9d1d9;
+      --tm-text-secondary: #8b949e;
+      --tm-text-muted: #484f58;
+      --tm-text-emphasis: #f0f6fc;
+
+      /* Accent -- semantic */
+      --tm-accent-blue: #58a6ff;
+      --tm-accent-green: #3fb950;
+      --tm-accent-red: #f85149;
+      --tm-accent-amber: #d29922;
+      --tm-accent-purple: #bc8cff;
+      --tm-accent-cyan: #79c0ff;
+      --tm-accent-coral: #ff7b72;
+
+      /* Focus ring */
+      --tm-focus-ring: 0 0 0 2px #0d1117, 0 0 0 4px #58a6ff;
+
+      /* Spacing */
+      --section-pad: clamp(48px, 8vw, 80px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--tm-text-primary);
+      background-color: var(--tm-bg-base);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--tm-text-emphasis);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85em;
+      background: var(--tm-bg-overlay);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 4px;
+      padding: 0.15em 0.4em;
+      color: var(--tm-accent-coral);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 56px;
+      background: rgba(13, 17, 23, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--tm-border-default);
+    }
+
+    .nav-brand {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--tm-text-emphasis);
+      transition: color 0.15s ease;
+    }
+
+    .nav-brand::before {
+      content: '> ';
+      color: var(--tm-accent-green);
+    }
+
+    .nav-brand:hover {
+      color: var(--tm-accent-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--tm-text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tm-text-emphasis);
+    }
+
+    .nav-kbd {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      padding: 1px 5px;
+      border: 1px solid var(--tm-border-default);
+      border-radius: 3px;
+      color: var(--tm-text-muted);
+      margin-left: 6px;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      border-bottom: 1px solid var(--tm-border-default);
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tm-text-muted);
+      margin-bottom: 8px;
+    }
+
+    .section-label::before {
+      content: '// ';
+      color: var(--tm-border-emphasis);
+    }
+
+    .section-title {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--tm-text-emphasis);
+      margin-bottom: 8px;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: var(--tm-text-secondary);
+      margin-bottom: 40px;
+      line-height: 1.6;
+      max-width: 560px;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      padding: 96px 24px 80px;
+      border-bottom: 1px solid var(--tm-border-default);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Faint grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        linear-gradient(var(--tm-border-muted) 1px, transparent 1px),
+        linear-gradient(90deg, var(--tm-border-muted) 1px, transparent 1px);
+      background-size: 64px 64px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .hero-overline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tm-accent-green);
+      margin-bottom: 16px;
+    }
+
+    .hero-overline::before {
+      content: '// ';
+      color: var(--tm-text-muted);
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      max-width: 720px;
+    }
+
+    .hero h1 .accent {
+      color: var(--tm-accent-blue);
+    }
+
+    .hero-desc {
+      font-size: 1.1rem;
+      color: var(--tm-text-secondary);
+      max-width: 560px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-install {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--tm-bg-overlay);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--tm-text-primary);
+      cursor: pointer;
+      transition: border-color 0.15s ease;
+    }
+
+    .hero-install:hover {
+      border-color: var(--tm-border-emphasis);
+    }
+
+    .hero-install .prompt { color: var(--tm-accent-green); }
+    .hero-install .cmd { color: var(--tm-text-emphasis); }
+    .hero-install .flag { color: var(--tm-accent-cyan); }
+    .hero-install .string { color: var(--tm-accent-coral); }
+    .hero-install .copy-hint {
+      color: var(--tm-text-muted);
+      font-size: 0.7rem;
+      margin-left: 8px;
+    }
+
+    /* Metrics strip beneath hero */
+    .metrics-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--tm-border-default);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 48px;
+    }
+
+    .metric {
+      background: var(--tm-bg-surface);
+      padding: 20px 24px;
+    }
+
+    .metric-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--tm-text-muted);
+      margin-bottom: 8px;
+    }
+
+    .metric-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--tm-text-emphasis);
+      letter-spacing: -0.02em;
+    }
+
+    .metric-delta {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      margin-top: 4px;
+    }
+
+    .metric-delta--up { color: var(--tm-accent-green); }
+    .metric-delta--up::before { content: '+'; }
+    .metric-delta--down { color: var(--tm-accent-red); }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.01em;
+      padding: 10px 20px;
+      border-radius: 6px;
+      border: 1px solid var(--tm-border-default);
+      background: var(--tm-bg-surface);
+      color: var(--tm-text-primary);
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+    }
+
+    .btn:hover {
+      background: var(--tm-bg-overlay);
+      border-color: var(--tm-border-emphasis);
+      color: var(--tm-text-primary);
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow: var(--tm-focus-ring);
+    }
+
+    .btn--primary {
+      background: var(--tm-accent-blue);
+      color: #ffffff;
+      border-color: var(--tm-accent-blue);
+    }
+
+    .btn--primary:hover {
+      background: #4c9aed;
+      border-color: #4c9aed;
+      color: #ffffff;
+    }
+
+    .btn--danger {
+      background: rgba(248, 81, 73, 0.1);
+      color: var(--tm-accent-red);
+      border-color: rgba(248, 81, 73, 0.3);
+    }
+
+    .btn--danger:hover {
+      background: rgba(248, 81, 73, 0.2);
+      border-color: var(--tm-accent-red);
+      color: var(--tm-accent-red);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      border-color: transparent;
+      color: var(--tm-accent-blue);
+    }
+
+    .btn--ghost:hover {
+      background: rgba(88, 166, 255, 0.1);
+      color: var(--tm-accent-blue);
+    }
+
+    /* ============================================
+       BADGE
+       ============================================ */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge--success {
+      background: rgba(63, 185, 80, 0.15);
+      color: var(--tm-accent-green);
+    }
+    .badge--success::before { background: var(--tm-accent-green); }
+
+    .badge--warning {
+      background: rgba(210, 153, 34, 0.15);
+      color: var(--tm-accent-amber);
+    }
+    .badge--warning::before { background: var(--tm-accent-amber); }
+
+    .badge--error {
+      background: rgba(248, 81, 73, 0.15);
+      color: var(--tm-accent-red);
+    }
+    .badge--error::before { background: var(--tm-accent-red); }
+
+    .badge--info {
+      background: rgba(88, 166, 255, 0.15);
+      color: var(--tm-accent-blue);
+    }
+    .badge--info::before { background: var(--tm-accent-blue); }
+
+    .badge--new {
+      background: rgba(188, 140, 255, 0.15);
+      color: var(--tm-accent-purple);
+    }
+    .badge--new::before { background: var(--tm-accent-purple); }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tm-text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--tm-border-muted);
+    }
+
+    .typo-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--tm-text-emphasis);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+    }
+
+    .typo-heading {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      font-weight: 700;
+      color: var(--tm-text-emphasis);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    .typo-mono-body {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      color: var(--tm-text-primary);
+      line-height: 1.6;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      color: var(--tm-text-primary);
+      line-height: 1.7;
+    }
+
+    .typo-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--tm-text-secondary);
+    }
+
+    .typo-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      background: var(--tm-bg-overlay);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 4px;
+      padding: 0.15em 0.4em;
+      color: var(--tm-accent-coral);
+    }
+
+    .typo-right {
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      padding: 32px;
+    }
+
+    .typo-right h3 {
+      font-size: 0.95rem;
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--tm-border-muted);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--tm-text-muted);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .typo-pairings {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--tm-border-default);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 16px;
+    }
+
+    .typo-pair {
+      margin-bottom: 12px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+    }
+
+    .typo-pair-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+      color: var(--tm-accent-cyan);
+    }
+
+    .typo-pair-desc {
+      font-size: 0.82rem;
+      color: var(--tm-text-muted);
+      display: block;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1px;
+      background: var(--tm-border-default);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .color-chip {
+      background: var(--tm-bg-surface);
+      transition: background 0.15s ease;
+    }
+
+    .color-chip:hover {
+      background: var(--tm-bg-overlay);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--tm-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--tm-text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .color-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      color: var(--tm-text-muted);
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      padding: 24px;
+      transition: border-color 0.15s ease;
+    }
+
+    .card:hover {
+      border-color: var(--tm-border-emphasis);
+    }
+
+    .card-icon {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.25rem;
+      margin-bottom: 16px;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 6px;
+      background: var(--tm-bg-overlay);
+      border: 1px solid var(--tm-border-muted);
+    }
+
+    .card-icon--blue { color: var(--tm-accent-blue); }
+    .card-icon--green { color: var(--tm-accent-green); }
+    .card-icon--purple { color: var(--tm-accent-purple); }
+    .card-icon--amber { color: var(--tm-accent-amber); }
+    .card-icon--cyan { color: var(--tm-accent-cyan); }
+    .card-icon--coral { color: var(--tm-accent-coral); }
+
+    .card h3 {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--tm-text-emphasis);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.875rem;
+      color: var(--tm-text-secondary);
+      line-height: 1.6;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      padding: 2px 8px;
+      border-radius: 12px;
+      margin-top: 14px;
+      margin-right: 6px;
+      letter-spacing: 0.02em;
+    }
+
+    .card-tag::before {
+      content: '';
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .card-tag--stable {
+      background: rgba(63, 185, 80, 0.15);
+      color: var(--tm-accent-green);
+    }
+    .card-tag--stable::before { background: var(--tm-accent-green); }
+
+    .card-tag--beta {
+      background: rgba(210, 153, 34, 0.15);
+      color: var(--tm-accent-amber);
+    }
+    .card-tag--beta::before { background: var(--tm-accent-amber); }
+
+    .card-tag--new {
+      background: rgba(188, 140, 255, 0.15);
+      color: var(--tm-accent-purple);
+    }
+    .card-tag--new::before { background: var(--tm-accent-purple); }
+
+    /* ============================================
+       DIVIDER BAND (HAIRLINE)
+       ============================================ */
+    .divider-band {
+      display: flex;
+      height: 1px;
+      width: 100%;
+      background: var(--tm-border-default);
+    }
+
+    .divider-band--accent {
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        var(--tm-accent-blue),
+        var(--tm-accent-green),
+        var(--tm-accent-amber),
+        var(--tm-accent-purple),
+        var(--tm-accent-red),
+        var(--tm-accent-cyan)
+      );
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER (TERMINAL MOTIF)
+       ============================================ */
+    .motif-banner {
+      background: var(--tm-bg-inset);
+      border-top: 1px solid var(--tm-border-default);
+      border-bottom: 1px solid var(--tm-border-default);
+      padding: 48px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        linear-gradient(var(--tm-border-muted) 1px, transparent 1px),
+        linear-gradient(90deg, var(--tm-border-muted) 1px, transparent 1px);
+      background-size: 32px 32px;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--tm-text-muted);
+      opacity: 0.5;
+    }
+
+    .motif-row span {
+      animation: motifPulse 4s ease-in-out infinite;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.5s; }
+    .motif-row span:nth-child(3) { animation-delay: -1s; }
+    .motif-row span:nth-child(4) { animation-delay: -1.5s; }
+    .motif-row span:nth-child(5) { animation-delay: -2s; }
+    .motif-row span:nth-child(6) { animation-delay: -2.5s; }
+    .motif-row span:nth-child(7) { animation-delay: -3s; }
+
+    @keyframes motifPulse {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 1; }
+    }
+
+    .motif-banner h2 {
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--tm-text-emphasis);
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--tm-text-secondary);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .principle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      padding: 24px 28px;
+      transition: border-color 0.15s ease;
+    }
+
+    .principle-item:hover {
+      border-color: var(--tm-border-emphasis);
+    }
+
+    .principle-number {
+      flex-shrink: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--tm-text-muted);
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      background: var(--tm-bg-overlay);
+    }
+
+    .principle-text h3 {
+      font-size: 0.95rem;
+      color: var(--tm-text-emphasis);
+      margin-bottom: 6px;
+    }
+
+    .principle-text p {
+      font-size: 0.9rem;
+      color: var(--tm-text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .effect-demo {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--tm-border-default);
+      background: var(--tm-bg-surface);
+      transition: border-color 0.15s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: var(--tm-border-emphasis);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* 1. Scan Line effect */
+    .effect-scanline {
+      background: var(--tm-bg-inset);
+    }
+
+    .effect-scanline::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(88, 166, 255, 0.03) 2px,
+        rgba(88, 166, 255, 0.03) 4px
+      );
+      pointer-events: none;
+    }
+
+    .effect-scanline::after {
+      content: '>_ SCAN';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--tm-accent-green);
+      text-shadow: 0 0 20px rgba(63, 185, 80, 0.4);
+      z-index: 1;
+      animation: scanlineBlink 2s step-end infinite;
+    }
+
+    @keyframes scanlineBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* 2. Grid Matrix effect */
+    .effect-grid {
+      background: var(--tm-bg-inset);
+    }
+
+    .effect-grid::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        linear-gradient(rgba(88, 166, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(88, 166, 255, 0.1) 1px, transparent 1px);
+      background-size: 20px 20px;
+      animation: gridShift 8s linear infinite;
+    }
+
+    @keyframes gridShift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(20px, 20px); }
+    }
+
+    .effect-grid::after {
+      content: '[ GRID ]';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--tm-accent-blue);
+      z-index: 1;
+    }
+
+    /* 3. Data Flow effect */
+    .effect-dataflow {
+      background: var(--tm-bg-inset);
+    }
+
+    .effect-dataflow::before {
+      content: '01001101 10110010 01101001 11001010 00110101 10011100 01110011 10100110';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      line-height: 1.8;
+      color: var(--tm-accent-green);
+      opacity: 0.12;
+      word-break: break-all;
+      animation: dataScroll 12s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes dataScroll {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-50%); }
+    }
+
+    .effect-dataflow::after {
+      content: '$ DATA';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--tm-accent-green);
+      z-index: 1;
+    }
+
+    /* 4. Glow Border effect */
+    .effect-glow {
+      background: var(--tm-bg-inset);
+    }
+
+    .effect-glow::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border: 2px solid var(--tm-accent-purple);
+      border-radius: 6px;
+      box-shadow:
+        0 0 15px rgba(188, 140, 255, 0.3),
+        0 0 30px rgba(188, 140, 255, 0.15),
+        inset 0 0 15px rgba(188, 140, 255, 0.1);
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 0 15px rgba(188, 140, 255, 0.3), 0 0 30px rgba(188, 140, 255, 0.15), inset 0 0 15px rgba(188, 140, 255, 0.1); }
+      50% { box-shadow: 0 0 25px rgba(188, 140, 255, 0.5), 0 0 50px rgba(188, 140, 255, 0.25), inset 0 0 25px rgba(188, 140, 255, 0.2); }
+    }
+
+    .effect-glow::after {
+      content: 'FOCUS';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--tm-accent-purple);
+      z-index: 1;
+    }
+
+    /* 5. Stepped Surface effect */
+    .effect-surface {
+      background: linear-gradient(
+        135deg,
+        var(--tm-bg-base) 0%,
+        var(--tm-bg-base) 25%,
+        var(--tm-bg-surface) 25%,
+        var(--tm-bg-surface) 50%,
+        var(--tm-bg-overlay) 50%,
+        var(--tm-bg-overlay) 75%,
+        var(--tm-border-muted) 75%,
+        var(--tm-border-muted) 100%
+      );
+    }
+
+    .effect-surface::after {
+      content: 'DEPTH';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--tm-text-emphasis);
+      z-index: 1;
+    }
+
+    /* 6. Status Dot pulse effect */
+    .effect-status {
+      background: var(--tm-bg-inset);
+    }
+
+    .effect-status-dots {
+      display: flex;
+      gap: 32px;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .status-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .status-dot::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: 50%;
+      animation: statusRing 2s ease-out infinite;
+    }
+
+    .status-dot--green {
+      background: var(--tm-accent-green);
+      box-shadow: 0 0 10px rgba(63, 185, 80, 0.5);
+    }
+    .status-dot--green::after { border: 2px solid var(--tm-accent-green); }
+
+    .status-dot--amber {
+      background: var(--tm-accent-amber);
+      box-shadow: 0 0 10px rgba(210, 153, 34, 0.5);
+    }
+    .status-dot--amber::after { border: 2px solid var(--tm-accent-amber); animation-delay: -0.66s; }
+
+    .status-dot--red {
+      background: var(--tm-accent-red);
+      box-shadow: 0 0 10px rgba(248, 81, 73, 0.5);
+    }
+    .status-dot--red::after { border: 2px solid var(--tm-accent-red); animation-delay: -1.33s; }
+
+    .status-dot--blue {
+      background: var(--tm-accent-blue);
+      box-shadow: 0 0 10px rgba(88, 166, 255, 0.5);
+    }
+    .status-dot--blue::after { border: 2px solid var(--tm-accent-blue); animation-delay: -0.33s; }
+
+    @keyframes statusRing {
+      0% { transform: scale(1); opacity: 0.8; }
+      100% { transform: scale(2.2); opacity: 0; }
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+      border-top: 1px solid var(--tm-border-muted);
+    }
+
+    .effect-caption h4 {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--tm-text-emphasis);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--tm-text-secondary);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 740px;
+      margin: 0 auto;
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-default);
+      border-left: 3px solid var(--tm-accent-blue);
+      border-radius: 0 6px 6px 0;
+      padding: 32px 36px;
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '/*';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      color: var(--tm-text-muted);
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      line-height: 1;
+      opacity: 0.3;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--tm-text-primary);
+      max-width: 560px;
+      margin: 0 0 16px 0;
+      padding-left: 24px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--tm-text-muted);
+      font-style: normal;
+      display: block;
+      padding-left: 24px;
+    }
+
+    .quote-block cite::before {
+      content: '-- ';
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      padding: var(--section-pad) 24px;
+      border-bottom: 1px solid var(--tm-border-default);
+    }
+
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--tm-bg-surface);
+      border: 1px solid var(--tm-border-default);
+      border-radius: 6px;
+      padding: 48px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        var(--tm-accent-blue),
+        var(--tm-accent-green),
+        var(--tm-accent-amber),
+        var(--tm-accent-purple)
+      );
+    }
+
+    .cta-container h2 {
+      font-size: clamp(1.3rem, 3vw, 1.75rem);
+      margin-bottom: 12px;
+    }
+
+    .cta-container .cta-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--tm-accent-green);
+      margin-bottom: 16px;
+    }
+
+    .cta-container .cta-mono::before {
+      content: '$ ';
+      color: var(--tm-text-muted);
+    }
+
+    .cta-container p {
+      font-size: 0.95rem;
+      color: var(--tm-text-secondary);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--tm-border-default);
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .footer-left {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--tm-text-muted);
+    }
+
+    .footer-left a {
+      color: var(--tm-text-secondary);
+      transition: color 0.15s ease;
+    }
+
+    .footer-left a:hover {
+      color: var(--tm-text-emphasis);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--tm-text-muted);
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--tm-text-secondary);
+    }
+
+    .footer-status {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--tm-text-muted);
+      margin-top: 16px;
+      padding-top: 16px;
+      border-top: 1px solid var(--tm-border-muted);
+    }
+
+    .footer-status-dot {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .footer-status-dot::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--tm-accent-green);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 1024px) {
+      .metrics-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 16px;
+      }
+
+      .nav-links {
+        gap: 16px;
+      }
+
+      .nav-kbd {
+        display: none;
+      }
+
+      .hero {
+        padding: 56px 16px 48px;
+      }
+
+      .hero h1 {
+        font-size: 1.75rem;
+      }
+
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .section {
+        padding: clamp(32px, 6vw, 56px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .metrics-strip {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 14px;
+        padding: 20px;
+      }
+
+      .quote-block {
+        padding: 28px 20px;
+      }
+
+      .cta-container {
+        padding: 36px 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .footer-status {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .button-showcase {
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.68rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+
+      .motif-row {
+        gap: 16px;
+        font-size: 0.7rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-scanline::after,
+      .effect-grid::before,
+      .effect-dataflow::before,
+      .effect-glow::before,
+      .status-dot::after,
+      .motif-row span {
+        animation: none;
+      }
+
+      .card, .principle-item, .effect-demo, .btn, .color-chip {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .cursor-blink {
+        animation: none;
+        opacity: 0.5;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">techno.min</a>
+    <div class="nav-links">
+      <a href="#hero">overview</a>
+      <a href="#typography">type</a>
+      <a href="#palette">palette</a>
+      <a href="#components">modules</a>
+      <a href="#effects">effects <span class="nav-kbd">E</span></a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-overline">v1.0.0 -- design reference</p>
+      <h1>Techno<br>Minimalism<span class="accent">.</span></h1>
+      <p class="hero-desc">
+        A design aesthetic rooted in developer tooling, terminal interfaces, and data-forward layouts. Monospaced type, dark surfaces, restrained color, and an absolute commitment to signal over noise.
+      </p>
+      <div class="hero-actions">
+        <div class="hero-install">
+          <span class="prompt">$</span>
+          <span><span class="cmd">npx</span> <span class="flag">create-tm-app</span> <span class="string">my-project</span></span>
+          <span class="copy-hint">click to copy</span>
+        </div>
+        <a href="#components" class="btn btn--primary">explore modules</a>
+        <a href="#palette" class="btn">view palette</a>
+      </div>
+
+      <div class="metrics-strip">
+        <div class="metric">
+          <p class="metric-label">Surfaces</p>
+          <p class="metric-value">4</p>
+          <p class="metric-delta metric-delta--up">dark-first</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Accent Colors</p>
+          <p class="metric-value">7</p>
+          <p class="metric-delta metric-delta--up">semantic</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Border Radius</p>
+          <p class="metric-value">6px</p>
+          <p class="metric-delta metric-delta--down">-994px vs pill</p>
+        </div>
+        <div class="metric">
+          <p class="metric-label">Grid Base</p>
+          <p class="metric-value">8px</p>
+          <p class="metric-delta metric-delta--up">strict scale</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ACCENT DIVIDER ===== -->
+  <div class="divider-band divider-band--accent"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Monospaced Identity</h2>
+      <p class="section-subtitle">JetBrains Mono for structure and command; Inter for long-form readability. Two fonts. No exceptions.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / JetBrains Mono 700</p>
+            <p class="typo-display">Ship. Observe. Iterate.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / JetBrains Mono 700</p>
+            <p class="typo-heading">Infrastructure as Interface</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Mono Body / JetBrains Mono 400</p>
+            <p class="typo-mono-body">Fixed-width characters align in predictable columns, making tabular data and code inherently scannable.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body">Proportional text for extended reading. Inter provides a clean, neutral voice for descriptions and documentation where readability outweighs technical signaling.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / JetBrains Mono 500</p>
+            <p class="typo-label">System Status -- Last 30 Days</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Inline Code</p>
+            <p style="color: var(--tm-text-primary);">Run <span class="typo-code">deploy --prod</span> to push to production edge nodes.</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--tm-text-emphasis); letter-spacing: -0.03em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.4rem; font-weight: 700; color: var(--tm-text-emphasis); letter-spacing: -0.02em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 600; color: var(--tm-text-emphasis);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--tm-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.875rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: var(--tm-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 500; color: var(--tm-text-muted); text-transform: uppercase; letter-spacing: 0.08em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <div class="typo-pair">
+              <span class="typo-pair-name">JetBrains Mono 700</span> + <span style="color: var(--tm-text-primary);">Inter 400</span><br>
+              <span class="typo-pair-desc">Developer tool, data dashboard -- mono headings, proportional body</span>
+            </div>
+            <div class="typo-pair">
+              <span class="typo-pair-name">JetBrains Mono 700</span> + <span style="color: var(--tm-text-primary);">JetBrains Mono 400</span><br>
+              <span class="typo-pair-desc">Full monospace stack -- deeply technical, editorial, opinionated</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Terminal-Derived Semantics</h2>
+      <p class="section-subtitle">Dark surfaces from GitHub-dark, accent colors from syntax-highlighting schemes. Green is success. Red is error. Always.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0d1117;"></div>
+          <div class="color-info">
+            <div class="color-name">Base</div>
+            <div class="color-hex">#0D1117</div>
+            <div class="color-role">Page background</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #161b22;"></div>
+          <div class="color-info">
+            <div class="color-name">Surface</div>
+            <div class="color-hex">#161B22</div>
+            <div class="color-role">Card / panel</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #21262d;"></div>
+          <div class="color-info">
+            <div class="color-name">Overlay</div>
+            <div class="color-hex">#21262D</div>
+            <div class="color-role">Input / code bg</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #30363d;"></div>
+          <div class="color-info">
+            <div class="color-name">Border</div>
+            <div class="color-hex">#30363D</div>
+            <div class="color-role">Dividers / rules</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #484f58;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted</div>
+            <div class="color-hex">#484F58</div>
+            <div class="color-role">Muted text</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b949e;"></div>
+          <div class="color-info">
+            <div class="color-name">Secondary</div>
+            <div class="color-hex">#8B949E</div>
+            <div class="color-role">Descriptions</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c9d1d9;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary</div>
+            <div class="color-hex">#C9D1D9</div>
+            <div class="color-role">Body text</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f0f6fc;"></div>
+          <div class="color-info">
+            <div class="color-name">Emphasis</div>
+            <div class="color-hex">#F0F6FC</div>
+            <div class="color-role">Headings</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #58a6ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Blue</div>
+            <div class="color-hex">#58A6FF</div>
+            <div class="color-role">Links / info</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3fb950;"></div>
+          <div class="color-info">
+            <div class="color-name">Green</div>
+            <div class="color-hex">#3FB950</div>
+            <div class="color-role">Success</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f85149;"></div>
+          <div class="color-info">
+            <div class="color-name">Red</div>
+            <div class="color-hex">#F85149</div>
+            <div class="color-role">Error / danger</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d29922;"></div>
+          <div class="color-info">
+            <div class="color-name">Amber</div>
+            <div class="color-hex">#D29922</div>
+            <div class="color-role">Warning</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #bc8cff;"></div>
+          <div class="color-info">
+            <div class="color-name">Purple</div>
+            <div class="color-hex">#BC8CFF</div>
+            <div class="color-role">Tags / keywords</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #79c0ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Cyan</div>
+            <div class="color-hex">#79C0FF</div>
+            <div class="color-role">Secondary accent</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff7b72;"></div>
+          <div class="color-info">
+            <div class="color-name">Coral</div>
+            <div class="color-hex">#FF7B72</div>
+            <div class="color-role">Inline code</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-band"></div>
+
+  <!-- ===== COMPONENT CARDS ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px;">
+        <div>
+          <p class="section-label">Components</p>
+          <h2 class="section-title" style="margin-bottom: 0;">Core Modules</h2>
+        </div>
+        <a href="#" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: var(--tm-text-secondary); transition: color 0.15s ease;">view all<span style="color: var(--tm-text-muted);"> -&gt;</span></a>
+      </div>
+      <p class="section-subtitle" style="margin-bottom: 32px;">Flat, bordered, content-dense. Background shade stepping replaces shadows. Every element sits on the 8px grid.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--blue">&gt;_</div>
+          <h3>CLI-First Deploy</h3>
+          <p>Push to production from your terminal. Git-native workflow with zero-config edge distribution across 94 nodes.</p>
+          <span class="card-tag card-tag--stable">stable</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">{ }</div>
+          <h3>Config as Code</h3>
+          <p>Define infrastructure in YAML or TOML. Version-controlled, diffable, reviewable. No hidden state.</p>
+          <span class="card-tag card-tag--stable">stable</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">|||</div>
+          <h3>Live Telemetry</h3>
+          <p>Real-time metrics, structured logs, and distributed traces streamed directly to your terminal.</p>
+          <span class="card-tag card-tag--beta">beta</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--purple">[~]</div>
+          <h3>Edge Functions</h3>
+          <p>Run compute at the edge with sub-10ms cold starts. V8 isolates, globally replicated, auto-scaled.</p>
+          <span class="card-tag card-tag--new">new</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--cyan">#!</div>
+          <h3>Preview Branches</h3>
+          <p>Every pull request gets a live preview URL. Ephemeral environments with full production parity.</p>
+          <span class="card-tag card-tag--stable">stable</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--coral">@&gt;</div>
+          <h3>Incident Hooks</h3>
+          <p>Webhook-driven alerting with Slack, PagerDuty, and custom endpoint support. Structured payloads.</p>
+          <span class="card-tag card-tag--stable">stable</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&gt;_</span>
+        <span>{ }</span>
+        <span>|||</span>
+        <span>[~]</span>
+        <span>#!</span>
+        <span>@&gt;</span>
+        <span>&lt;/&gt;</span>
+      </div>
+      <h2>Data Is the Ornament</h2>
+      <p>Metrics, charts, status badges, and code snippets are the visual interest. No hero illustrations needed.</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Techno Minimalist Manifesto</h2>
+      <p class="section-subtitle">Every pixel communicates data, status, or structure. If an element exists only for decoration, remove it.</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-number">01</div>
+          <div class="principle-text">
+            <h3>Function Dictates Form</h3>
+            <p>Every visual decision must serve a functional purpose. Dark backgrounds reduce eye strain for extended use. Monospaced type aligns data in predictable columns. Hairline borders define structure without visual weight. Nothing is ornamental.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">02</div>
+          <div class="principle-text">
+            <h3>Trust Through Transparency</h3>
+            <p>Expose system state, version numbers, timestamps, and build statuses. The more the interface reveals about what is happening under the hood, the more trustworthy it feels. Hide nothing. Label everything.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">03</div>
+          <div class="principle-text">
+            <h3>Consistency Is Kindness</h3>
+            <p>Identical spacing, identical type sizes, identical border radii across every component. The 8px grid is non-negotiable. Deviations create cognitive load. Predictable rhythm is the foundation of the layout.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">04</div>
+          <div class="principle-text">
+            <h3>Readable at Midnight</h3>
+            <p>Dark backgrounds and carefully tuned contrast ensure comfortable extended use. WCAG AA minimums on all text. Focus indicators on all interactive elements. Respect the developer reading at 2 AM.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Techniques</h2>
+      <p class="section-subtitle">Terminal-inspired effects built with pure CSS. No images, no canvas, no libraries. Functional motion only.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-scanline"></div>
+          <div class="effect-caption">
+            <h4>Scan Lines</h4>
+            <p>Repeating linear gradients create CRT-style horizontal lines over dark surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-grid"></div>
+          <div class="effect-caption">
+            <h4>Grid Matrix</h4>
+            <p>Dual-axis linear gradients form an engineering grid that subtly shifts position.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-dataflow"></div>
+          <div class="effect-caption">
+            <h4>Data Flow</h4>
+            <p>Binary text scrolls vertically at low opacity, evoking terminal data streams.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-glow"></div>
+          <div class="effect-caption">
+            <h4>Focus Glow</h4>
+            <p>Pulsing box-shadow creates a focus ring glow effect for interactive elements.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-surface"></div>
+          <div class="effect-caption">
+            <h4>Shade Stepping</h4>
+            <p>Background shade stepping communicates depth without gradients or shadows.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-status">
+            <div class="effect-status-dots">
+              <div class="status-dot status-dot--green"></div>
+              <div class="status-dot status-dot--amber"></div>
+              <div class="status-dot status-dot--red"></div>
+              <div class="status-dot status-dot--blue"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Status Indicators</h4>
+            <p>Semantic color dots with expanding ring animations signal system state.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="divider-band divider-band--accent"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Button Variants</h2>
+      <p class="section-subtitle">Rectangular, monospaced, and purpose-driven through color. Low border-radius. No pills. No gradients.</p>
+
+      <div class="button-showcase">
+        <button class="btn btn--primary">Primary Action</button>
+        <button class="btn">Default</button>
+        <button class="btn btn--danger">Destructive</button>
+        <button class="btn btn--ghost">Ghost Link</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The interface is infrastructure -- purposeful, observable, and maintainable. It speaks the visual language of git diff, JSON payloads, and systemd logs.
+        </blockquote>
+        <cite>The Techno Minimalist Ethos</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Start Building</h2>
+        <p class="cta-mono">npx create-tm-app my-project</p>
+        <p>
+          Techno Minimalism treats the interface as infrastructure. Dark-first, data-forward, zero abstractions in the way. Ship something an engineer would trust.
+        </p>
+        <a href="#hero" class="btn btn--primary">back to top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-left">
+          <a href="#" class="nav-brand" style="font-size: 0.8rem;">techno.min</a>
+        </div>
+        <div class="footer-links">
+          <a href="#hero">overview</a>
+          <a href="#typography">type</a>
+          <a href="#palette">palette</a>
+          <a href="#components">modules</a>
+          <a href="#effects">effects</a>
+        </div>
+      </div>
+      <div class="footer-status">
+        <span class="footer-status-dot">All systems operational</span>
+        <span>v1.0.0</span>
+        <span>Last updated: 2026-03-04T09:00:00Z</span>
+        <span>Build: <span style="color: var(--tm-accent-blue);">a3f8c01</span></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== MINIMAL JS ===== -->
+  <script>
+    // Copy-to-clipboard for install command
+    document.querySelectorAll('.hero-install').forEach(function(el) {
+      el.addEventListener('click', function() {
+        var text = 'npx create-tm-app my-project';
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(text).then(function() {
+            var hint = el.querySelector('.copy-hint');
+            if (hint) {
+              hint.textContent = 'copied!';
+              hint.style.color = '#3fb950';
+              setTimeout(function() {
+                hint.textContent = 'click to copy';
+                hint.style.color = '';
+              }, 2000);
+            }
+          });
+        }
+      });
+    });
+
+    // Smooth scroll for anchor links (fallback for older browsers)
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>

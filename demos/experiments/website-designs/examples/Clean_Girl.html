@@ -1,0 +1,2029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Clean Girl -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=DM+Sans:wght@300;400;500&family=Outfit:wght@200;300;400;500&family=Jost:wght@200;300;400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Warm Neutrals --- */
+      --clean-ivory: #FAF7F2;
+      --clean-white: #FFFDF8;
+      --clean-oat: #F0EAE0;
+      --clean-beige: #E8DFD2;
+      --clean-champagne: #D9CEBD;
+      --clean-taupe: #B5A898;
+      --clean-latte: #A08E7D;
+      --clean-cocoa: #7A6B5D;
+      --clean-espresso: #4A3F35;
+
+      /* --- Accents --- */
+      --clean-rose: #D4A5A5;
+      --clean-blush: #E8C4B8;
+      --clean-sage: #B8C4B2;
+      --clean-cloud: #E5E1DC;
+      --clean-highlight: #FFF5EC;
+
+      /* --- Functional Tokens --- */
+      --clean-bg: var(--clean-ivory);
+      --clean-text: var(--clean-cocoa);
+      --clean-heading: var(--clean-espresso);
+      --clean-surface: var(--clean-white);
+      --clean-border: var(--clean-champagne);
+
+      /* --- Radii --- */
+      --clean-radius-sm: 6px;
+      --clean-radius-md: 8px;
+      --clean-radius-lg: 12px;
+      --clean-radius-xl: 16px;
+
+      /* --- Shadows --- */
+      --clean-shadow-sm:
+        0 1px 3px rgba(74, 63, 53, 0.03),
+        0 4px 16px rgba(74, 63, 53, 0.04);
+      --clean-shadow-md:
+        0 2px 6px rgba(74, 63, 53, 0.05),
+        0 8px 28px rgba(74, 63, 53, 0.06);
+      --clean-shadow-lg:
+        0 4px 12px rgba(74, 63, 53, 0.06),
+        0 16px 48px rgba(74, 63, 53, 0.08);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--clean-text);
+      background-color: var(--clean-bg);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--clean-heading);
+      letter-spacing: 0.01em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(217, 206, 189, 0.35);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      color: var(--clean-espresso);
+      letter-spacing: 0.06em;
+      transition: color 0.25s ease;
+    }
+
+    .nav-brand:hover {
+      color: var(--clean-rose);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--clean-cocoa);
+      transition: color 0.25s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--clean-espresso);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--clean-espresso);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION -- Dewy Luminous
+       ============================================ */
+    .hero {
+      background: linear-gradient(
+        180deg,
+        var(--clean-highlight) 0%,
+        var(--clean-ivory) 60%,
+        var(--clean-oat) 100%
+      );
+      text-align: center;
+      padding: 120px 40px 100px;
+      position: relative;
+      overflow: hidden;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Soft radial glow -- dewy luminous effect */
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120%;
+      height: 80%;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        rgba(232, 196, 184, 0.15) 0%,
+        transparent 65%
+      );
+      pointer-events: none;
+    }
+
+    /* Secondary blush glow */
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -20%;
+      right: -10%;
+      width: 60%;
+      height: 60%;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        rgba(184, 196, 178, 0.1) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero .overline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--clean-taupe);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 8vw, 4rem);
+      font-weight: 300;
+      color: var(--clean-espresso);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--clean-rose);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--clean-latte);
+      margin-bottom: 12px;
+    }
+
+    .hero p.hero-desc {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      color: var(--clean-latte);
+      max-width: 480px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative floating circle elements */
+    .hero-circle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-circle--1 {
+      width: 300px;
+      height: 300px;
+      top: -60px;
+      right: -80px;
+      background: radial-gradient(
+        circle,
+        rgba(232, 196, 184, 0.12) 0%,
+        transparent 70%
+      );
+      animation: circleFloat 12s ease-in-out infinite;
+    }
+
+    .hero-circle--2 {
+      width: 200px;
+      height: 200px;
+      bottom: 40px;
+      left: -40px;
+      background: radial-gradient(
+        circle,
+        rgba(212, 165, 165, 0.1) 0%,
+        transparent 70%
+      );
+      animation: circleFloat 16s ease-in-out infinite reverse;
+    }
+
+    .hero-circle--3 {
+      width: 140px;
+      height: 140px;
+      top: 30%;
+      left: 8%;
+      background: radial-gradient(
+        circle,
+        rgba(184, 196, 178, 0.1) 0%,
+        transparent 70%
+      );
+      animation: circleFloat 10s ease-in-out infinite;
+      animation-delay: -4s;
+    }
+
+    @keyframes circleFloat {
+      0%, 100% { transform: translate(0, 0); }
+      50% { transform: translate(8px, -12px); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      border-radius: var(--clean-radius-md);
+      padding: 14px 32px;
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.82rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+      background: var(--clean-espresso);
+      color: var(--clean-ivory);
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: var(--clean-cocoa);
+      box-shadow: 0 4px 16px rgba(74, 63, 53, 0.15);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--clean-espresso);
+      border: 1px solid var(--clean-champagne);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--clean-taupe);
+      background: rgba(240, 234, 224, 0.4);
+    }
+
+    .btn-blush {
+      background: var(--clean-rose);
+      color: var(--clean-white);
+      border: none;
+    }
+
+    .btn-blush:hover {
+      background: #C89494;
+      box-shadow: 0 4px 16px rgba(212, 165, 165, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn-sage {
+      background: var(--clean-sage);
+      color: var(--clean-white);
+      border: none;
+    }
+
+    .btn-sage:hover {
+      background: #A4B39E;
+      box-shadow: 0 4px 16px rgba(184, 196, 178, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--clean-champagne) 30%,
+        var(--clean-champagne) 70%,
+        transparent 100%
+      );
+      margin: 0 auto;
+      max-width: 240px;
+    }
+
+    .divider-dot {
+      border: none;
+      text-align: center;
+      margin: 56px auto;
+      height: 5px;
+      background: none;
+    }
+
+    .divider-dot::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--clean-champagne);
+      border-radius: 50%;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .container--narrow {
+      max-width: 720px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--ivory {
+      background: var(--clean-ivory);
+    }
+
+    .section--oat {
+      background: var(--clean-oat);
+    }
+
+    .section--white {
+      background: var(--clean-white);
+    }
+
+    /* Dewy glow overlay for feature sections */
+    .section--glow {
+      position: relative;
+    }
+
+    .section--glow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 100%;
+      background: radial-gradient(
+        ellipse at 50% 0%,
+        rgba(232, 196, 184, 0.08) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-header .overline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--clean-taupe);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.2rem);
+      font-weight: 300;
+      color: var(--clean-espresso);
+      margin-bottom: 12px;
+    }
+
+    .section-header p {
+      font-size: 0.95rem;
+      color: var(--clean-latte);
+      max-width: 440px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--clean-taupe);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--clean-champagne);
+    }
+
+    .typo-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 3.2rem);
+      font-weight: 300;
+      color: var(--clean-espresso);
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+
+    .typo-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400;
+      color: var(--clean-espresso);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .typo-subheading {
+      font-family: 'Outfit', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      font-weight: 300;
+      color: var(--clean-cocoa);
+      line-height: 1.4;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+    }
+
+    .typo-body-sample {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--clean-cocoa);
+      margin-bottom: 4px;
+    }
+
+    .typo-italic {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--clean-rose);
+      line-height: 1.5;
+    }
+
+    .typo-label {
+      font-family: 'Outfit', 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--clean-taupe);
+    }
+
+    .typo-right {
+      background: var(--clean-white);
+      border-radius: var(--clean-radius-lg);
+      padding: 36px;
+      border: 1px solid rgba(217, 206, 189, 0.5);
+      box-shadow: var(--clean-shadow-sm);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(217, 206, 189, 0.35);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--clean-taupe);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: var(--clean-radius-lg);
+      overflow: hidden;
+      background: var(--clean-white);
+      border: 1px solid rgba(217, 206, 189, 0.4);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+      box-shadow: var(--clean-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--clean-shadow-md);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    /* Subtle dewy sheen on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 50%,
+        rgba(0, 0, 0, 0.03) 100%
+      );
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.92rem;
+      font-weight: 400;
+      color: var(--clean-espresso);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--clean-taupe);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--clean-white);
+      border: 1px solid rgba(217, 206, 189, 0.5);
+      border-radius: var(--clean-radius-lg);
+      padding: 36px;
+      box-shadow: var(--clean-shadow-sm);
+      transition: all 0.35s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--clean-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .card-icon--oat {
+      background: var(--clean-oat);
+    }
+
+    .card-icon--blush {
+      background: rgba(232, 196, 184, 0.25);
+    }
+
+    .card-icon--sage {
+      background: rgba(184, 196, 178, 0.25);
+    }
+
+    .card-icon--rose {
+      background: rgba(212, 165, 165, 0.2);
+    }
+
+    .card-icon--cloud {
+      background: var(--clean-cloud);
+    }
+
+    .card-icon--champagne {
+      background: rgba(217, 206, 189, 0.35);
+    }
+
+    .card-icon-inner {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    .card-icon-inner--latte { background: var(--clean-latte); }
+    .card-icon-inner--rose { background: var(--clean-rose); }
+    .card-icon-inner--sage { background: var(--clean-sage); }
+    .card-icon-inner--blush { background: var(--clean-blush); }
+    .card-icon-inner--cocoa { background: var(--clean-cocoa); }
+    .card-icon-inner--taupe { background: var(--clean-taupe); }
+
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-size: 1.3rem;
+      color: var(--clean-espresso);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      color: var(--clean-cocoa);
+      line-height: 1.7;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--clean-champagne);
+      color: var(--clean-taupe);
+      margin-top: 16px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .card .tag:hover {
+      background: var(--clean-oat);
+      border-color: var(--clean-taupe);
+      color: var(--clean-cocoa);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border-radius: var(--clean-radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(217, 206, 189, 0.4);
+      background: var(--clean-white);
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--clean-shadow-md);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-label {
+      position: absolute;
+      z-index: 2;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--clean-espresso);
+      letter-spacing: 0.02em;
+    }
+
+    /* Effect 1: Dewy Glow */
+    .effect-dewy {
+      background: linear-gradient(
+        180deg,
+        var(--clean-highlight) 0%,
+        var(--clean-ivory) 50%,
+        var(--clean-oat) 100%
+      );
+    }
+
+    .effect-dewy::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 60%;
+      background: radial-gradient(
+        ellipse at 50% 40%,
+        rgba(232, 196, 184, 0.25) 0%,
+        transparent 70%
+      );
+      animation: dewPulse 5s ease-in-out infinite;
+    }
+
+    @keyframes dewPulse {
+      0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
+      50% { opacity: 1; transform: translateX(-50%) scale(1.08); }
+    }
+
+    .effect-dewy .effect-label {
+      color: var(--clean-espresso);
+    }
+
+    /* Effect 2: Satin Gradient */
+    .effect-satin {
+      background: linear-gradient(
+        135deg,
+        var(--clean-beige) 0%,
+        var(--clean-blush) 30%,
+        var(--clean-oat) 60%,
+        var(--clean-champagne) 100%
+      );
+    }
+
+    .effect-satin::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      animation: satinSheen 6s ease-in-out infinite;
+    }
+
+    @keyframes satinSheen {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    .effect-satin .effect-label {
+      color: var(--clean-espresso);
+    }
+
+    /* Effect 3: Glass Skin */
+    .effect-glass {
+      background: rgba(255, 253, 248, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(217, 206, 189, 0.3);
+    }
+
+    .effect-glass::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(212, 165, 165, 0.12) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(184, 196, 178, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 50% 20%, rgba(232, 196, 184, 0.15) 0%, transparent 35%);
+    }
+
+    .effect-glass::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    .effect-glass .effect-label {
+      z-index: 3;
+    }
+
+    /* Effect 4: Monochromatic Layers */
+    .effect-mono {
+      background: var(--clean-oat);
+    }
+
+    .effect-mono::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 15%;
+      width: 45%;
+      height: 70%;
+      background: var(--clean-beige);
+      border-radius: var(--clean-radius-lg);
+      box-shadow: var(--clean-shadow-sm);
+    }
+
+    .effect-mono::after {
+      content: '';
+      position: absolute;
+      top: 25%;
+      left: 35%;
+      width: 45%;
+      height: 55%;
+      background: var(--clean-white);
+      border-radius: var(--clean-radius-lg);
+      box-shadow: var(--clean-shadow-sm);
+    }
+
+    .effect-mono .effect-label {
+      z-index: 3;
+    }
+
+    /* Effect 5: Blush Tonal */
+    .effect-tonal {
+      background: linear-gradient(
+        180deg,
+        var(--clean-white) 0%,
+        rgba(232, 196, 184, 0.15) 100%
+      );
+    }
+
+    .effect-tonal::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 100%;
+      background:
+        linear-gradient(0deg,
+          rgba(212, 165, 165, 0.15) 0%,
+          rgba(232, 196, 184, 0.08) 40%,
+          transparent 80%
+        );
+    }
+
+    .effect-tonal::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(212, 165, 165, 0.2) 0%,
+        rgba(232, 196, 184, 0.1) 50%,
+        transparent 70%
+      );
+      animation: tonalPulse 4s ease-in-out infinite;
+    }
+
+    @keyframes tonalPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+      50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+    }
+
+    .effect-tonal .effect-label {
+      z-index: 3;
+    }
+
+    /* Effect 6: Soft Shadow Depth */
+    .effect-shadow {
+      background: var(--clean-ivory);
+    }
+
+    .effect-shadow-card {
+      position: absolute;
+      background: var(--clean-white);
+      border-radius: var(--clean-radius-md);
+      border: 1px solid rgba(217, 206, 189, 0.3);
+    }
+
+    .effect-shadow-card--1 {
+      width: 60%;
+      height: 35%;
+      top: 18%;
+      left: 20%;
+      box-shadow:
+        0 1px 3px rgba(74, 63, 53, 0.04),
+        0 4px 16px rgba(74, 63, 53, 0.05);
+    }
+
+    .effect-shadow-card--2 {
+      width: 55%;
+      height: 30%;
+      top: 40%;
+      left: 28%;
+      box-shadow:
+        0 2px 8px rgba(74, 63, 53, 0.06),
+        0 8px 28px rgba(74, 63, 53, 0.08);
+    }
+
+    .effect-shadow-card--3 {
+      width: 50%;
+      height: 25%;
+      top: 58%;
+      left: 35%;
+      box-shadow:
+        0 4px 12px rgba(74, 63, 53, 0.08),
+        0 16px 48px rgba(74, 63, 53, 0.12);
+    }
+
+    .effect-shadow .effect-label {
+      z-index: 3;
+    }
+
+    .effect-caption {
+      padding: 16px 18px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--clean-espresso);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--clean-taupe);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 56px 40px;
+      margin: 0 auto;
+      max-width: 680px;
+      background: var(--clean-white);
+      border-radius: var(--clean-radius-xl);
+      border: 1px solid rgba(217, 206, 189, 0.35);
+      position: relative;
+      box-shadow: var(--clean-shadow-sm);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem;
+      color: var(--clean-rose);
+      opacity: 0.2;
+      position: absolute;
+      top: 8px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--clean-espresso);
+      max-width: 480px;
+      margin: 0 auto 20px;
+      line-height: 1.7;
+    }
+
+    .quote-block cite {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--clean-taupe);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: linear-gradient(
+        180deg,
+        var(--clean-oat) 0%,
+        var(--clean-beige) 100%
+      );
+      padding: 100px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      height: 80%;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        rgba(232, 196, 184, 0.12) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section .overline {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--clean-taupe);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .cta-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      font-weight: 300;
+      color: var(--clean-espresso);
+      margin-bottom: 16px;
+      line-height: 1.15;
+    }
+
+    .cta-section h2 em {
+      font-style: italic;
+      color: var(--clean-rose);
+    }
+
+    .cta-section p {
+      font-size: 1rem;
+      color: var(--clean-latte);
+      max-width: 440px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--clean-espresso);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--clean-champagne);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(217, 206, 189, 0.3) 30%,
+        rgba(217, 206, 189, 0.3) 70%,
+        transparent 100%
+      );
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--clean-champagne);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      color: rgba(217, 206, 189, 0.6);
+      max-width: 440px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(217, 206, 189, 0.5);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--clean-rose);
+    }
+
+    .footer-divider {
+      border: none;
+      height: 1px;
+      background: rgba(217, 206, 189, 0.15);
+      max-width: 200px;
+      margin: 0 auto 24px;
+    }
+
+    .footer-copy {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: rgba(217, 206, 189, 0.3);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 14px 20px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.68rem;
+      }
+
+      .hero {
+        padding: 80px 24px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-circle {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(48px, 6vw, 72px) 0;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-section {
+        padding: 72px 24px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.78rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-circle,
+      .effect-dewy::before,
+      .effect-satin::before,
+      .effect-tonal::after {
+        animation: none;
+      }
+
+      .card, .color-chip, .effect-demo, .btn, .nav-brand,
+      .nav-links a, .card .tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Clean Girl</a>
+    <div class="nav-links">
+      <a href="#hero">Aesthetic</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative floating circles -->
+    <div class="hero-circle hero-circle--1"></div>
+    <div class="hero-circle hero-circle--2"></div>
+    <div class="hero-circle hero-circle--3"></div>
+
+    <div class="hero-content">
+      <span class="overline">Design Aesthetic Reference</span>
+      <h1>Clean Girl</h1>
+      <p class="hero-subtitle">Effortless Polish &amp; Luminous Simplicity</p>
+      <p class="hero-desc">
+        A warm, refined design language rooted in disciplined effortlessness &mdash; dewy surfaces, warm neutrals, whisper-thin typography, and spa-like serenity.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div style="background: var(--clean-ivory); padding: 0;">
+    <hr class="divider" style="margin: 0 auto;">
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--ivory" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Typography</span>
+        <h2>Light, Airy &amp; Refined</h2>
+        <p>Understated elegance through thin weights, generous spacing, and quiet sophistication</p>
+      </div>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cormorant Garamond Light</p>
+            <p class="typo-display">Quiet Luxury</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cormorant Garamond Regular</p>
+            <p class="typo-heading">Editorial Elegance</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Outfit Light</p>
+            <p class="typo-subheading">Modern Geometric Clarity</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / DM Sans Regular</p>
+            <p class="typo-body-sample">Warm humanist text for comfortable reading. Clean Girl embraces readability wrapped in quiet sophistication.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Italic Accent / Cormorant Garamond</p>
+            <p class="typo-italic">effortlessly polished, always intentional</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Outfit</p>
+            <p class="typo-label">Buttons &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--clean-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.75rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 300; color: var(--clean-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.85rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 400; color: var(--clean-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-size: 1rem; font-weight: 300; color: var(--clean-cocoa);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 400; color: var(--clean-cocoa);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-weight: 400; font-size: 0.75rem; color: var(--clean-taupe); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid rgba(217, 206, 189, 0.4);">
+            <h3 style="margin-bottom: 14px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 14px;">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 300; color: var(--clean-espresso);">Cormorant Garamond 300</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans 400</strong><br>
+              <span style="color: var(--clean-taupe); font-size: 0.82rem;">Editorial luxury, skincare branding, quiet elegance</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 14px;">
+              <strong style="font-family: 'Outfit', sans-serif; font-weight: 300; color: var(--clean-espresso);">Outfit 300</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter 400</strong><br>
+              <span style="color: var(--clean-taupe); font-size: 0.82rem;">Modern minimalism, app-like clarity, polished simplicity</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Jost', sans-serif; font-weight: 200; color: var(--clean-espresso);">Jost 200</strong> + <strong style="font-family: 'DM Sans', sans-serif; font-weight: 300;">DM Sans 300</strong><br>
+              <span style="color: var(--clean-taupe); font-size: 0.82rem;">Airy sophistication, fashion-forward, ultra-light</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div style="background: var(--clean-ivory); padding: 0;">
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--oat section--glow" id="palette">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Color Palette</span>
+        <h2>Warm Neutrals &amp; Soft Accents</h2>
+        <p>Ivory, beige, oat, and taupe layered with hints of dusty rose and sage whisper</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF7F2;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory Cream</div>
+            <div class="color-hex">#FAF7F2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFDF8;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm White</div>
+            <div class="color-hex">#FFFDF8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0EAE0;"></div>
+          <div class="color-info">
+            <div class="color-name">Oat Milk</div>
+            <div class="color-hex">#F0EAE0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8DFD2;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Beige</div>
+            <div class="color-hex">#E8DFD2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D9CEBD;"></div>
+          <div class="color-info">
+            <div class="color-name">Champagne</div>
+            <div class="color-hex">#D9CEBD</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B5A898;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Taupe</div>
+            <div class="color-hex">#B5A898</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A08E7D;"></div>
+          <div class="color-info">
+            <div class="color-name">Latte</div>
+            <div class="color-hex">#A08E7D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A6B5D;"></div>
+          <div class="color-info">
+            <div class="color-name">Cocoa</div>
+            <div class="color-hex">#7A6B5D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A3F35;"></div>
+          <div class="color-info">
+            <div class="color-name">Espresso</div>
+            <div class="color-hex">#4A3F35</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A5A5;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Rose</div>
+            <div class="color-hex">#D4A5A5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8C4B8;"></div>
+          <div class="color-info">
+            <div class="color-name">Blush Nude</div>
+            <div class="color-hex">#E8C4B8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8C4B2;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Whisper</div>
+            <div class="color-hex">#B8C4B2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E5E1DC;"></div>
+          <div class="color-info">
+            <div class="color-name">Cloud Gray</div>
+            <div class="color-hex">#E5E1DC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFF5EC;"></div>
+          <div class="color-info">
+            <div class="color-name">Dewy Highlight</div>
+            <div class="color-hex">#FFF5EC</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div style="background: var(--clean-ivory); padding: 24px 0;">
+    <hr class="divider">
+  </div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--ivory section--glow" id="components">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Components</span>
+        <h2>Curated Design Elements</h2>
+        <p>Each component reflects the disciplined simplicity and warm polish of the Clean Girl aesthetic</p>
+      </div>
+
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <div class="card-icon card-icon--oat">
+            <div class="card-icon-inner card-icon-inner--latte"></div>
+          </div>
+          <h3>Luminous Surfaces</h3>
+          <p>Soft gradients and subtle gloss effects that mimic the glass-skin look. Interfaces feel fresh, hydrated, and dewy rather than flat or matte.</p>
+          <span class="tag">Glow</span>
+          <span class="tag">Gradient</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div class="card-icon card-icon--blush">
+            <div class="card-icon-inner card-icon-inner--rose"></div>
+          </div>
+          <h3>Tonal Layering</h3>
+          <p>Depth is created through subtle value shifts within the same warm hue family. Monochromatic layering replaces high-contrast color combinations.</p>
+          <span class="tag">Neutral</span>
+          <span class="tag">Depth</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div class="card-icon card-icon--sage">
+            <div class="card-icon-inner card-icon-inner--sage"></div>
+          </div>
+          <h3>Generous White Space</h3>
+          <p>Breathing room is essential. Content is carefully spaced with wide margins, giving each element room to exist quietly and confidently.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Spacing</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div class="card-icon card-icon--rose">
+            <div class="card-icon-inner card-icon-inner--blush"></div>
+          </div>
+          <h3>Satin Textures</h3>
+          <p>Subtle background textures that suggest smooth fabric, cream, or soft paper. Nothing rough or industrial -- everything feels like cashmere.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Soft</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <div class="card-icon card-icon--cloud">
+            <div class="card-icon-inner card-icon-inner--cocoa"></div>
+          </div>
+          <h3>Thin Elegant Borders</h3>
+          <p>When borders appear, they are 1px, low-opacity, and warm-toned. They define without confining, adding structure with the lightest possible touch.</p>
+          <span class="tag">Borders</span>
+          <span class="tag">Minimal</span>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <div class="card-icon card-icon--champagne">
+            <div class="card-icon-inner card-icon-inner--taupe"></div>
+          </div>
+          <h3>Seamless Transitions</h3>
+          <p>Hover states and page transitions feel smooth and effortless. Animations are gentle and restrained, matching the no-effort philosophy.</p>
+          <span class="tag">Motion</span>
+          <span class="tag">Hover</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div style="background: var(--clean-oat); padding: 0;">
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--oat" id="effects">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Effects Showcase</span>
+        <h2>Soft, Luminous &amp; Intentional</h2>
+        <p>CSS techniques that capture the dewy, polished quality of the Clean Girl aesthetic</p>
+      </div>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Dewy Glow -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-dewy">
+            <span class="effect-label">Dewy Glow</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Radial Luminescence</h4>
+            <p>Soft radial gradients create the signature glass-skin glow effect</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Satin Gradient -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-satin">
+            <span class="effect-label" style="color: var(--clean-espresso);">Satin Sheen</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Satin Gradient</h4>
+            <p>Warm tonal gradients with a subtle animated light sweep</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Glass Skin -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-glass">
+            <span class="effect-label">Glass Skin</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Frosted Backdrop</h4>
+            <p>Backdrop blur with layered color orbs for translucent depth</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Monochromatic Layers -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-mono">
+            <span class="effect-label">Layered Depth</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Monochromatic Layers</h4>
+            <p>Stacked surfaces with tonal shifts creating gentle spatial depth</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Blush Tonal -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-tonal">
+            <span class="effect-label">Blush Tonal</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Warm Tonal Pulse</h4>
+            <p>Soft rose gradient with a pulsing radial glow center</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Soft Shadow Depth -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-shadow">
+            <div class="effect-shadow-card effect-shadow-card--1"></div>
+            <div class="effect-shadow-card effect-shadow-card--2"></div>
+            <div class="effect-shadow-card effect-shadow-card--3"></div>
+            <span class="effect-label">Shadow Depth</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Graduated Shadows</h4>
+            <p>Barely-there shadows in three intensities for layered elevation</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div style="background: var(--clean-ivory); padding: 24px 0;">
+    <hr class="divider">
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--ivory">
+    <div class="container">
+      <div class="section-header">
+        <span class="overline">Buttons</span>
+        <h2>Polished Interactions</h2>
+        <p>Warm, understated button styles with gentle hover transitions</p>
+      </div>
+
+      <div class="button-showcase">
+        <button class="btn btn-primary">Primary Espresso</button>
+        <button class="btn btn-outline">Outline Ghost</button>
+        <button class="btn btn-blush">Blush Accent</button>
+        <button class="btn btn-sage">Sage Fresh</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div style="background: var(--clean-ivory); padding: 0;">
+    <div class="divider-dot"></div>
+  </div>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section section--ivory">
+    <div class="container container--narrow">
+      <div class="quote-block">
+        <blockquote>
+          Simplicity is the ultimate sophistication. In design, every element should feel intentional yet unstrained -- as if it could not have been placed anywhere else.
+        </blockquote>
+        <cite>Clean Girl Design Philosophy</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <span class="overline">Get Started</span>
+      <h2>Design with <em>Intention</em></h2>
+      <p>
+        Embrace the disciplined effortlessness of Clean Girl design. Every pixel purposeful, every interaction smooth, every surface luminous.
+      </p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn-primary">Begin Your Project</a>
+        <a href="#" class="btn btn-outline">Explore the Guide</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Clean Girl</h3>
+      <p>
+        A design aesthetic rooted in warmth, clarity, and effortless polish. Spa-like serenity meets editorial precision.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Aesthetic</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <hr class="footer-divider">
+      <p class="footer-copy">Clean Girl Design Reference &mdash; Aesthetic Showcase</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS: Smooth scroll for anchor links ===== -->
+  <script>
+    document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+      anchor.addEventListener('click', function(e) {
+        var targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        var target = document.querySelector(targetId);
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Nav hide/show on scroll for minimal presence
+    (function() {
+      var nav = document.querySelector('.nav');
+      var lastScroll = 0;
+      var threshold = 80;
+
+      window.addEventListener('scroll', function() {
+        var currentScroll = window.pageYOffset;
+        if (currentScroll <= threshold) {
+          nav.style.transform = 'translateY(0)';
+          nav.style.transition = 'transform 0.35s ease';
+          lastScroll = currentScroll;
+          return;
+        }
+        if (currentScroll > lastScroll && currentScroll > threshold) {
+          nav.style.transform = 'translateY(-100%)';
+          nav.style.transition = 'transform 0.35s ease';
+        } else {
+          nav.style.transform = 'translateY(0)';
+          nav.style.transition = 'transform 0.35s ease';
+        }
+        lastScroll = currentScroll;
+      });
+    })();
+  </script>
+
+</body>
+</html>

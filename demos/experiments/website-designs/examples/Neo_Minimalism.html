@@ -1,0 +1,1790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo Minimalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500&family=Outfit:wght@300;400;500&family=DM+Serif+Display&family=Manrope:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Work+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --neo-bg:               #FAF6F0;
+      --neo-bg-alt:           #F0EBE3;
+      --neo-surface:          #E8E0D4;
+      --neo-surface-elevated: #FDFCF9;
+
+      /* --- Borders & Dividers --- */
+      --neo-border:           #D5CABB;
+      --neo-border-light:     #E8E0D4;
+      --neo-divider:          #D5CABB;
+
+      /* --- Text --- */
+      --neo-text:             #2D2926;
+      --neo-text-secondary:   #7A6F63;
+      --neo-text-muted:       #9E8E7E;
+      --neo-text-placeholder: #C7B9A5;
+
+      /* --- Accents --- */
+      --neo-accent-primary:   #8B9A7B;
+      --neo-accent-secondary: #C4907A;
+      --neo-accent-tertiary:  #C9A092;
+      --neo-accent-warm:      #D4A66A;
+      --neo-accent-cool:      #8E949A;
+
+      /* --- Darks --- */
+      --neo-dark:             #2D2926;
+      --neo-dark-deep:        #4A3728;
+
+      /* --- Functional --- */
+      --neo-success:          #8B9A7B;
+      --neo-warning:          #D4A66A;
+      --neo-error:            #C4907A;
+
+      /* --- Radii --- */
+      --neo-radius-sm:        6px;
+      --neo-radius-md:        10px;
+      --neo-radius-lg:        14px;
+      --neo-radius-xl:        20px;
+
+      /* --- Shadows --- */
+      --neo-shadow-sm:        0 1px 3px rgba(45, 41, 38, 0.04);
+      --neo-shadow-md:        0 2px 8px rgba(45, 41, 38, 0.06);
+      --neo-shadow-lg:        0 4px 16px rgba(45, 41, 38, 0.08);
+
+      /* --- Transitions --- */
+      --neo-ease:             cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      --neo-duration:         0.35s;
+
+      /* --- Spacing --- */
+      --section-pad:          clamp(64px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+      font-weight: 400;
+      font-size: 1.05rem;
+      line-height: 1.72;
+      color: var(--neo-text);
+      background-color: var(--neo-bg);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Fraunces', 'DM Serif Display', 'Georgia', serif;
+      font-weight: 300;
+      line-height: 1.15;
+      color: var(--neo-text);
+      letter-spacing: -0.01em;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 400;
+    }
+
+    h3 {
+      font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: 0.01em;
+    }
+
+    /* Subtle linen texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='0' y='1' fill='%237A6F63' opacity='0.4'/%3E%3Crect width='1' height='1' x='3' y='4' fill='%237A6F63' opacity='0.3'/%3E%3Crect width='1' height='1' x='6' y='0' fill='%237A6F63' opacity='0.35'/%3E%3Crect width='1' height='1' x='1' y='6' fill='%237A6F63' opacity='0.25'/%3E%3Crect width='1' height='1' x='5' y='7' fill='%237A6F63' opacity='0.3'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(250, 246, 240, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(213, 202, 187, 0.4);
+      transition: all 0.3s ease;
+    }
+
+    .nav-logo {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--neo-text);
+      letter-spacing: -0.01em;
+      transition: color var(--neo-duration) var(--neo-ease);
+    }
+
+    .nav-logo:hover {
+      color: var(--neo-accent-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--neo-text-secondary);
+      letter-spacing: 0.03em;
+      transition: color 0.25s ease;
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--neo-accent-primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--neo-text);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: 4rem;
+      align-items: center;
+      min-height: 85vh;
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .hero-content {
+      max-width: 560px;
+    }
+
+    .hero-overline {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--neo-accent-primary);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.6rem, 5.5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--neo-text);
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-description {
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--neo-text-secondary);
+      margin-bottom: 2.5rem;
+      max-width: 460px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .hero-visual {
+      border-radius: var(--neo-radius-xl);
+      overflow: hidden;
+      aspect-ratio: 4 / 5;
+      background: linear-gradient(
+        175deg,
+        var(--neo-bg-alt) 0%,
+        rgba(139, 154, 123, 0.08) 35%,
+        var(--neo-surface) 70%,
+        rgba(196, 144, 122, 0.1) 100%
+      );
+      position: relative;
+      box-shadow: var(--neo-shadow-lg);
+    }
+
+    /* Abstract decorative composition inside hero visual */
+    .hero-visual::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 12%;
+      width: 55%;
+      height: 40%;
+      border: 1px solid var(--neo-border);
+      border-radius: var(--neo-radius-lg);
+      opacity: 0.6;
+    }
+
+    .hero-visual::after {
+      content: '';
+      position: absolute;
+      bottom: 18%;
+      right: 10%;
+      width: 40%;
+      height: 35%;
+      background: rgba(139, 154, 123, 0.08);
+      border-radius: 50%;
+    }
+
+    .hero-visual-circle {
+      position: absolute;
+      top: 30%;
+      right: 25%;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(196, 144, 122, 0.12);
+    }
+
+    .hero-visual-line {
+      position: absolute;
+      bottom: 35%;
+      left: 8%;
+      width: 60%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neo-border), transparent);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+      cursor: pointer;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+      border-radius: var(--neo-radius-md);
+      padding: 0.8rem 1.8rem;
+      transition: all 0.3s var(--neo-ease);
+    }
+
+    /* Primary -- warm dark */
+    .btn-primary {
+      background: var(--neo-dark);
+      color: var(--neo-bg);
+    }
+
+    .btn-primary:hover {
+      background: var(--neo-dark-deep);
+      box-shadow: var(--neo-shadow-md);
+      transform: translateY(-1px);
+    }
+
+    /* Secondary -- outlined */
+    .btn-secondary {
+      background: transparent;
+      color: var(--neo-text);
+      border: 1px solid var(--neo-border);
+      padding: 0.75rem 1.75rem;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--neo-text-secondary);
+      background: var(--neo-bg-alt);
+    }
+
+    /* Accent -- sage green */
+    .btn-accent {
+      background: var(--neo-accent-primary);
+      color: var(--neo-surface-elevated);
+    }
+
+    .btn-accent:hover {
+      background: #7A8B6B;
+      box-shadow: 0 2px 10px rgba(139, 154, 123, 0.2);
+      transform: translateY(-1px);
+    }
+
+    /* Ghost -- minimal presence */
+    .btn-ghost {
+      background: transparent;
+      color: var(--neo-text-secondary);
+      border: none;
+      padding: 0.75rem 1rem;
+      text-decoration: underline;
+      text-decoration-color: var(--neo-border);
+      text-underline-offset: 3px;
+    }
+
+    .btn-ghost:hover {
+      color: var(--neo-text);
+      text-decoration-color: var(--neo-text);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--cream {
+      background: var(--neo-bg);
+    }
+
+    .section--parchment {
+      background: var(--neo-bg-alt);
+    }
+
+    .section--oat {
+      background: linear-gradient(
+        175deg,
+        var(--neo-bg) 0%,
+        var(--neo-bg-alt) 45%,
+        var(--neo-surface) 100%
+      );
+    }
+
+    .section--sage {
+      background: linear-gradient(
+        170deg,
+        var(--neo-bg) 0%,
+        rgba(139, 154, 123, 0.06) 50%,
+        var(--neo-bg-alt) 100%
+      );
+    }
+
+    .section--clay {
+      background: linear-gradient(
+        180deg,
+        var(--neo-bg-alt) 0%,
+        rgba(196, 144, 122, 0.08) 50%,
+        var(--neo-bg) 100%
+      );
+    }
+
+    .section--dark {
+      background: linear-gradient(
+        175deg,
+        #2D2926 0%,
+        #3A3430 45%,
+        #4A3728 100%
+      );
+      color: #F0EBE3;
+    }
+
+    .section--dark .section-label { color: var(--neo-accent-primary); }
+    .section--dark .section-title { color: #F0EBE3; }
+    .section--dark .section-subtitle { color: var(--neo-accent-warm); }
+
+    .section-label {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--neo-accent-primary);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 300;
+      text-align: center;
+      color: var(--neo-text);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      text-align: center;
+      color: var(--neo-text-secondary);
+      margin-bottom: 3.5rem;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.65;
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .neo-divider {
+      height: 1px;
+      border: none;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--neo-border) 25%,
+        var(--neo-border) 75%,
+        transparent 100%
+      );
+      margin: 0 auto;
+      max-width: 50%;
+    }
+
+    .neo-divider--dot {
+      height: auto;
+      border: none;
+      background: none;
+      text-align: center;
+      padding: 3rem 0;
+    }
+
+    .neo-divider--dot::before {
+      content: '\2022  \2022  \2022';
+      color: var(--neo-border);
+      font-size: 0.6rem;
+      letter-spacing: 0.8em;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 5fr 4fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 2.5rem;
+    }
+
+    .typo-sample-label {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--neo-accent-primary);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--neo-border-light);
+    }
+
+    .typo-display {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.4rem, 5vw, 3.2rem);
+      font-weight: 300;
+      color: var(--neo-text);
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .typo-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--neo-text);
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .typo-editorial {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--neo-text-secondary);
+      line-height: 1.4;
+      margin-bottom: 4px;
+    }
+
+    .typo-body {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.72;
+      color: var(--neo-text);
+      margin-bottom: 4px;
+    }
+
+    .typo-ui {
+      font-family: 'Manrope', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--neo-text-muted);
+    }
+
+    .typo-caption {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--neo-text-muted);
+      letter-spacing: 0.01em;
+    }
+
+    .typo-right {
+      background: var(--neo-surface-elevated);
+      border-radius: var(--neo-radius-lg);
+      padding: 2.5rem;
+      border: 1px solid var(--neo-border-light);
+      box-shadow: var(--neo-shadow-sm);
+    }
+
+    .typo-right h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 1.25rem;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.72;
+      margin-bottom: 1rem;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--neo-border-light);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--neo-text-muted);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: var(--neo-radius-lg);
+      overflow: hidden;
+      background: var(--neo-surface-elevated);
+      border: 1px solid var(--neo-border-light);
+      transition: all var(--neo-duration) var(--neo-ease);
+      box-shadow: var(--neo-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--neo-shadow-md);
+      border-color: var(--neo-border);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 400;
+      color: var(--neo-text);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: var(--neo-text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--neo-surface-elevated);
+      border: 1px solid var(--neo-border-light);
+      border-radius: var(--neo-radius-lg);
+      padding: 2rem 2.25rem;
+      transition: all var(--neo-duration) var(--neo-ease);
+      box-shadow: var(--neo-shadow-sm);
+    }
+
+    .card:hover {
+      box-shadow: var(--neo-shadow-md);
+      transform: translateY(-2px);
+      border-color: var(--neo-border);
+    }
+
+    .card-overline {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--neo-accent-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .card h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.35rem;
+      font-weight: 400;
+      color: var(--neo-text);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--neo-text-secondary);
+      line-height: 1.65;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--neo-border-light);
+      color: var(--neo-text-muted);
+      margin-top: 1rem;
+      margin-right: 6px;
+      transition: all var(--neo-duration) var(--neo-ease);
+    }
+
+    .tag:hover {
+      background: var(--neo-bg-alt);
+      border-color: var(--neo-border);
+      color: var(--neo-text-secondary);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .effect-demo {
+      border-radius: var(--neo-radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--neo-border-light);
+      background: var(--neo-surface-elevated);
+      box-shadow: var(--neo-shadow-sm);
+      transition: all var(--neo-duration) var(--neo-ease);
+    }
+
+    .effect-demo:hover {
+      box-shadow: var(--neo-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Linen Texture */
+    .effect-linen {
+      background: var(--neo-bg-alt);
+    }
+
+    .effect-linen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='0' y='1' fill='%237A6F63' opacity='0.4'/%3E%3Crect width='1' height='1' x='3' y='4' fill='%237A6F63' opacity='0.3'/%3E%3Crect width='1' height='1' x='6' y='0' fill='%237A6F63' opacity='0.35'/%3E%3Crect width='1' height='1' x='1' y='6' fill='%237A6F63' opacity='0.25'/%3E%3Crect width='1' height='1' x='5' y='7' fill='%237A6F63' opacity='0.3'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+    }
+
+    .effect-linen::after {
+      content: 'LINEN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--neo-text-secondary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 2: Warm Gradient */
+    .effect-warm-gradient {
+      background: linear-gradient(
+        175deg,
+        #FAF6F0 0%,
+        #F0EBE3 30%,
+        rgba(196, 144, 122, 0.12) 60%,
+        #E8E0D4 100%
+      );
+    }
+
+    .effect-warm-gradient::after {
+      content: 'WARMTH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--neo-text-secondary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 3: Sage Breath */
+    .effect-sage {
+      background: linear-gradient(
+        170deg,
+        #FAF6F0 0%,
+        rgba(139, 154, 123, 0.1) 40%,
+        rgba(139, 154, 123, 0.05) 70%,
+        #F0EBE3 100%
+      );
+    }
+
+    .effect-sage::before {
+      content: '';
+      position: absolute;
+      top: 25%;
+      left: 20%;
+      width: 60%;
+      height: 50%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(139, 154, 123, 0.08) 0%, transparent 70%);
+    }
+
+    .effect-sage::after {
+      content: 'SAGE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--neo-accent-primary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 4: Barely-There Shadow Layers */
+    .effect-shadow-layers {
+      background: var(--neo-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-shadow-layers .shadow-card {
+      width: 55%;
+      height: 55%;
+      background: var(--neo-surface-elevated);
+      border-radius: var(--neo-radius-md);
+      border: 1px solid var(--neo-border-light);
+      box-shadow:
+        0 1px 2px rgba(45, 41, 38, 0.03),
+        0 4px 8px rgba(45, 41, 38, 0.04),
+        0 8px 20px rgba(45, 41, 38, 0.05);
+      position: relative;
+    }
+
+    .effect-shadow-layers .shadow-card::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      right: -10px;
+      bottom: -10px;
+      border-radius: calc(var(--neo-radius-md) + 4px);
+      border: 1px solid rgba(213, 202, 187, 0.2);
+    }
+
+    .effect-shadow-layers::after {
+      content: 'LAYERS';
+      position: absolute;
+      bottom: 16%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fraunces', serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: var(--neo-text-muted);
+      letter-spacing: 0.15em;
+    }
+
+    /* Effect 5: Paper Grain Noise */
+    .effect-paper-grain {
+      background: var(--neo-bg-alt);
+    }
+
+    .effect-paper-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='grain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23grain)' opacity='1'/%3E%3C/svg%3E");
+      opacity: 0.06;
+      pointer-events: none;
+    }
+
+    .effect-paper-grain::after {
+      content: 'GRAIN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: var(--neo-text-secondary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 6: Warm Charcoal Dark */
+    .effect-dark-warm {
+      background: linear-gradient(
+        175deg,
+        #2D2926 0%,
+        #3A3430 45%,
+        #4A3728 100%
+      );
+    }
+
+    .effect-dark-warm::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 30%;
+      width: 40%;
+      height: 40%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, rgba(212, 166, 106, 0.06) 0%, transparent 70%);
+    }
+
+    .effect-dark-warm::after {
+      content: 'DEPTH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fraunces', serif;
+      font-size: 1.4rem;
+      font-weight: 300;
+      color: #F0EBE3;
+      letter-spacing: 0.15em;
+      z-index: 1;
+      opacity: 0.7;
+    }
+
+    .effect-caption {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--neo-text);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.55;
+      color: var(--neo-text-secondary);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 3.5rem 3rem;
+      background: var(--neo-surface-elevated);
+      border-radius: var(--neo-radius-lg);
+      border: 1px solid var(--neo-border-light);
+      box-shadow: var(--neo-shadow-sm);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 6rem;
+      font-weight: 300;
+      color: var(--neo-border);
+      position: absolute;
+      top: 0.5rem;
+      left: 2rem;
+      line-height: 1;
+      opacity: 0.5;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2vw, 1.45rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--neo-text-secondary);
+      max-width: 540px;
+      margin: 0 auto 1.25rem;
+      line-height: 1.65;
+      text-align: center;
+    }
+
+    .quote-block cite {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: var(--neo-text-muted);
+      font-style: normal;
+      display: block;
+      text-align: center;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3.5rem 3rem;
+      background: var(--neo-surface-elevated);
+      border-radius: var(--neo-radius-xl);
+      border: 1px solid var(--neo-border-light);
+      box-shadow: var(--neo-shadow-md);
+      position: relative;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--neo-accent-primary), transparent);
+      opacity: 0.4;
+    }
+
+    .cta-container h2 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+      font-weight: 300;
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-accent-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.15rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--neo-accent-secondary);
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.72;
+      color: var(--neo-text-secondary);
+      max-width: 460px;
+      margin: 0 auto 2rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: linear-gradient(
+        175deg,
+        #2D2926 0%,
+        #3A3430 45%,
+        #4A3728 100%
+      );
+      padding: 4rem 24px 2rem;
+      text-align: center;
+      color: #F0EBE3;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.02;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Crect width='1' height='1' x='0' y='1' fill='%23F0EBE3' opacity='0.4'/%3E%3Crect width='1' height='1' x='3' y='4' fill='%23F0EBE3' opacity='0.3'/%3E%3Crect width='1' height='1' x='6' y='0' fill='%23F0EBE3' opacity='0.35'/%3E%3Crect width='1' height='1' x='1' y='6' fill='%23F0EBE3' opacity='0.25'/%3E%3Crect width='1' height='1' x='5' y='7' fill='%23F0EBE3' opacity='0.3'/%3E%3C/svg%3E");
+      background-size: 8px 8px;
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #F0EBE3;
+      margin-bottom: 0.75rem;
+    }
+
+    .footer p {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: rgba(240, 235, 227, 0.5);
+      max-width: 440px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.72;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Manrope', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: rgba(240, 235, 227, 0.4);
+      letter-spacing: 0.03em;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--neo-accent-primary);
+    }
+
+    .footer-divider {
+      width: 40px;
+      height: 1px;
+      background: rgba(213, 202, 187, 0.2);
+      margin: 0 auto 1.5rem;
+    }
+
+    .footer-copy {
+      font-family: 'Work Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: rgba(240, 235, 227, 0.25);
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0.85rem 1rem;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.78rem;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+        padding: 4rem 1.5rem;
+        gap: 2.5rem;
+      }
+
+      .hero-visual {
+        max-height: 320px;
+      }
+
+      .section {
+        padding: clamp(48px, 8vw, 80px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 65px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .cta-container {
+        padding: 2.5rem 1.5rem;
+        margin: 0 8px;
+      }
+
+      .footer {
+        padding: 3rem 16px 1.5rem;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.65rem 1.4rem;
+        font-size: 0.85rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 52px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .card, .color-chip, .effect-demo, .tag, .btn, .nav-logo, .nav-links a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Neo Minimalism</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-content">
+      <p class="hero-overline">Design Aesthetic Reference</p>
+      <h1>Neo Minimalism</h1>
+      <p class="hero-description">
+        A warmer, more textured evolution of stark minimalism. Less is more &mdash; but meaningful. Every element earns its place through function and emotional resonance.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-secondary">View Palette</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-visual-circle"></div>
+      <div class="hero-visual-line"></div>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="neo-divider"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Editorial Warmth</h2>
+      <p class="section-subtitle">Confident serifs, humanist sans-serifs, and generous breathing room</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Fraunces Light</p>
+            <p class="typo-display">Less, but meaningful</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / DM Serif Display</p>
+            <p class="typo-heading">Refined Section Headings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Editorial / Cormorant Garamond</p>
+            <p class="typo-editorial">Elegant pull quotes and decorative text</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Outfit Regular</p>
+            <p class="typo-body">Warm humanist text for comfortable reading. Neo Minimalism invests in typographic quality as its primary expressive element.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Manrope</p>
+            <p class="typo-ui">Navigation &amp; Interface Labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Work Sans</p>
+            <p class="typo-caption">Metadata, captions, and secondary information</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.6rem</span>
+              <span style="font-family: 'Fraunces', serif; font-size: 1.8rem; font-weight: 300; color: var(--neo-text);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 1.4rem; color: var(--neo-text);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-weight: 300; font-style: italic; color: var(--neo-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Outfit', sans-serif; font-size: 1rem; color: var(--neo-text);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Manrope', sans-serif; font-weight: 500; font-size: 0.82rem; color: var(--neo-text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Work Sans', sans-serif; font-size: 0.75rem; color: var(--neo-text-muted);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--neo-border-light);">
+            <h3 style="margin-bottom: 1rem;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'Fraunces', serif; font-weight: 400; color: var(--neo-accent-primary);">Fraunces</strong> + <strong style="font-weight: 500;">Outfit</strong><br>
+              <span style="color: var(--neo-text-muted); font-size: 0.82rem;">Warm editorial: expressive yet approachable</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 10px;">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--neo-accent-primary);">DM Serif Display</strong> + <strong style="font-weight: 500;">Manrope</strong><br>
+              <span style="color: var(--neo-text-muted); font-size: 0.82rem;">Modern calm: refined heading with clean body</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 400; color: var(--neo-accent-primary);">Cormorant Garamond</strong> + <strong style="font-weight: 500;">Work Sans</strong><br>
+              <span style="color: var(--neo-text-muted); font-size: 0.82rem;">Readable heritage: elegant with functional clarity</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="neo-divider--dot"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--sage" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Warm Neutrals &amp; Muted Accents</h2>
+      <p class="section-subtitle">Grounded in natural materials with restrained organic accent hues</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Cream</div>
+            <div class="color-hex">#FAF6F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0EBE3;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#F0EBE3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8E0D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Oat</div>
+            <div class="color-hex">#E8E0D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D5CABB;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Clay</div>
+            <div class="color-hex">#D5CABB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C7B9A5;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Sand</div>
+            <div class="color-hex">#C7B9A5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9E8E7E;"></div>
+          <div class="color-info">
+            <div class="color-name">Taupe</div>
+            <div class="color-hex">#9E8E7E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A6F63;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Stone</div>
+            <div class="color-hex">#7A6F63</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D2926;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Charcoal</div>
+            <div class="color-hex">#2D2926</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A3728;"></div>
+          <div class="color-info">
+            <div class="color-name">Chocolate</div>
+            <div class="color-hex">#4A3728</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B9A7B;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Green</div>
+            <div class="color-hex">#8B9A7B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4907A;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Terracotta</div>
+            <div class="color-hex">#C4907A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9A092;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Rose</div>
+            <div class="color-hex">#C9A092</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A66A;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Amber</div>
+            <div class="color-hex">#D4A66A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8E949A;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Slate</div>
+            <div class="color-hex">#8E949A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FDFCF9;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory White</div>
+            <div class="color-hex">#FDFCF9</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="neo-divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Purposeful Cards</h2>
+      <p class="section-subtitle">Self-contained, generous padding, barely-there containers</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <p class="card-overline">Foundation</p>
+          <h3>Warm Neutral Canvas</h3>
+          <p>Pure white is replaced by creams, parchment, and warm off-whites that feel like natural light filtered through linen curtains.</p>
+          <span class="tag">Background</span>
+          <span class="tag">Warmth</span>
+        </div>
+        <div class="card">
+          <p class="card-overline">Texture</p>
+          <h3>Natural Overlays</h3>
+          <p>Subtle linen weaves, paper grain, and soft noise at 2-5% opacity give surfaces tactile depth and a sense of handcrafted care.</p>
+          <span class="tag">Linen</span>
+          <span class="tag">Grain</span>
+        </div>
+        <div class="card">
+          <p class="card-overline">Typography</p>
+          <h3>Editorial Expression</h3>
+          <p>Confident serif headlines at generous sizes create focal points. Type itself becomes the primary visual element, replacing decorative imagery.</p>
+          <span class="tag">Serif</span>
+          <span class="tag">Display</span>
+        </div>
+        <div class="card">
+          <p class="card-overline">Space</p>
+          <h3>Generous Negative Space</h3>
+          <p>Whitespace is treated as an active design element. Sections breathe, elements never crowd, and the eye is guided by what is absent.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Rhythm</span>
+        </div>
+        <div class="card">
+          <p class="card-overline">Color</p>
+          <h3>Restrained Accents</h3>
+          <p>A single muted accent hue &mdash; sage, terracotta, or amber &mdash; deployed sparingly for interactive elements and focal points only.</p>
+          <span class="tag">Sage</span>
+          <span class="tag">Muted</span>
+        </div>
+        <div class="card">
+          <p class="card-overline">Motion</p>
+          <h3>Slow, Purposeful Animation</h3>
+          <p>Transitions use 300-600ms easing curves. Animations reveal content gently. Hover states are subtle shifts, never dramatic transformations.</p>
+          <span class="tag">Ease</span>
+          <span class="tag">Subtle</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="neo-divider--dot"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--parchment" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Surfaces</h2>
+      <p class="section-subtitle">Material honesty through subtle, intentional techniques</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-caption">
+            <h4>Linen Texture</h4>
+            <p>Tiny scattered dots at low opacity simulate woven fabric, giving surfaces tactile depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-warm-gradient"></div>
+          <div class="effect-caption">
+            <h4>Warm Gradient</h4>
+            <p>Angled parchment-to-clay transitions create gentle warmth without demanding attention.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-sage"></div>
+          <div class="effect-caption">
+            <h4>Sage Breath</h4>
+            <p>A barely-perceptible green undertone brings organic life to neutral backgrounds.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-shadow-layers">
+            <div class="shadow-card"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Barely-There Shadows</h4>
+            <p>Multi-layered warm shadows at ultra-low opacity suggest depth without creating harsh elevation.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-paper-grain"></div>
+          <div class="effect-caption">
+            <h4>Paper Grain</h4>
+            <p>SVG noise filter at low opacity adds analog texture that invites the eye to linger.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-dark-warm"></div>
+          <div class="effect-caption">
+            <h4>Warm Dark Mode</h4>
+            <p>Charcoal-to-chocolate gradient with amber glow. Never pure black, always warm.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="neo-divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--clay">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Quiet Buttons</h2>
+      <p class="section-subtitle">Warm, confident, and deliberately understated</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Action</a>
+        <a href="#" class="btn btn-accent">Sage Accent</a>
+        <a href="#" class="btn btn-secondary">Outlined</a>
+        <a href="#" class="btn btn-ghost">Ghost Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Neo Minimalism is minimalism that has learned to breathe, to feel, and to welcome. It finds the middle path where clarity serves emotion, where simplicity creates comfort, and where every design choice communicates care.
+        </blockquote>
+        <cite>&mdash; The Philosophy of Intentional Warmth</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="neo-divider--dot"></div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--sage">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Design with Intention</h2>
+        <span class="cta-accent-text">less, but meaningful</span>
+        <p>
+          Ground every layout in warm creams and parchment. Let typography carry the emotion. Embrace generous space, slow transitions, and restrained accents of sage, clay, and amber.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="neo-divider"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Neo Minimalism</h3>
+      <p>
+        A design aesthetic reference celebrating warm neutrals, editorial typography, and intentional restraint. Every element earns its place &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-divider"></div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Neo Minimalism &bull; Less, but meaningful</p>
+    </div>
+  </footer>
+
+</body>
+</html>

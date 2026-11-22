@@ -1,0 +1,1792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candy Pop -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Baloo+2:wght@400;600;800&family=Quicksand:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Comfortaa:wght@400;600;700&family=Fredoka:wght@400;500;600;700&family=Lilita+One&family=Sour+Gummy:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Primary Pinks --- */
+      --candy-bubblegum: #ff69b4;
+      --candy-hot-magenta: #ff1493;
+      --candy-cotton: #ffbad2;
+      --candy-blush: #ffd1dc;
+      --candy-frosting: #f8a4b8;
+      --candy-coral: #ff6f61;
+
+      /* --- Purples --- */
+      --candy-lavender: #c8a2c8;
+      --candy-grape: #9b59b6;
+      --candy-berry: #6c3483;
+      --candy-deep-plum: #2d1b33;
+
+      /* --- Accent Brights --- */
+      --candy-lemon: #fff44f;
+      --candy-mint: #98ff98;
+      --candy-sky: #87ceeb;
+
+      /* --- Neutrals --- */
+      --candy-cream: #fff8f0;
+      --candy-white: #ffffff;
+
+      /* --- Functional Mappings --- */
+      --candy-bg-primary: var(--candy-cream);
+      --candy-bg-secondary: var(--candy-blush);
+      --candy-bg-card: var(--candy-white);
+      --candy-text-primary: var(--candy-deep-plum);
+      --candy-text-secondary: var(--candy-berry);
+      --candy-text-heading: var(--candy-bubblegum);
+      --candy-accent-primary: var(--candy-hot-magenta);
+      --candy-accent-secondary: var(--candy-grape);
+      --candy-border: var(--candy-frosting);
+      --candy-link: var(--candy-bubblegum);
+      --candy-link-hover: var(--candy-hot-magenta);
+      --candy-shadow: rgba(255, 105, 180, 0.25);
+      --candy-shadow-hover: rgba(255, 20, 147, 0.35);
+
+      /* --- Radius System --- */
+      --candy-radius-sm: 12px;
+      --candy-radius-md: 20px;
+      --candy-radius-lg: 32px;
+      --candy-radius-pill: 9999px;
+      --candy-radius-circle: 50%;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      font-family: 'Quicksand', 'Nunito', sans-serif;
+      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--candy-text-primary);
+      background: var(--candy-bg-primary);
+      overflow-x: hidden;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+      font-family: 'Baloo 2', 'Bubblegum Sans', cursive;
+      font-weight: 800;
+      color: var(--candy-text-heading);
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--candy-link);
+      transition: color 0.25s ease;
+    }
+
+    a:hover {
+      color: var(--candy-link-hover);
+    }
+
+    /* ============================================
+       LAYOUT CONTAINERS
+       ============================================ */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--cream {
+      background: var(--candy-cream);
+    }
+
+    .section--blush {
+      background: var(--candy-blush);
+    }
+
+    .section--lavender {
+      background: #f0e6f6;
+    }
+
+    .section--sky {
+      background: #eef6fc;
+    }
+
+    .section-label {
+      font-family: 'Comfortaa', 'Quicksand', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--candy-grape);
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--candy-text-secondary);
+      font-weight: 600;
+      max-width: 550px;
+      margin: 0 auto 3rem;
+      font-size: 1.05rem;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 2rem;
+      background: rgba(255, 248, 240, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 2px solid var(--candy-cotton);
+      box-shadow: 0 2px 20px rgba(255, 105, 180, 0.12);
+    }
+
+    .nav__brand {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.6rem;
+      color: var(--candy-bubblegum);
+      text-decoration: none;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 0.5rem;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--candy-text-secondary);
+      padding: 0.5rem 1.2rem;
+      border-radius: var(--candy-radius-pill);
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    .nav__links a:hover,
+    .nav__links a.active {
+      background: var(--candy-cotton);
+      color: var(--candy-hot-magenta);
+    }
+
+    .nav__toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--candy-bubblegum);
+      cursor: pointer;
+      padding: 0.25rem;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 7rem 2rem 5rem;
+      background: linear-gradient(
+        135deg,
+        var(--candy-blush) 0%,
+        var(--candy-cotton) 25%,
+        #e8d0f0 50%,
+        var(--candy-blush) 75%,
+        #ffe0f0 100%
+      );
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.15) 50%,
+        transparent 70%
+      );
+      background-size: 200% 200%;
+      animation: candy-shimmer 6s ease-in-out infinite;
+    }
+
+    @keyframes candy-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    .hero__decor {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.15;
+      animation: candy-float 8s ease-in-out infinite;
+    }
+
+    .hero__decor--1 {
+      width: 140px;
+      height: 140px;
+      background: var(--candy-bubblegum);
+      top: 8%;
+      left: 4%;
+    }
+
+    .hero__decor--2 {
+      width: 90px;
+      height: 90px;
+      background: var(--candy-grape);
+      top: 18%;
+      right: 8%;
+      animation-delay: -2s;
+    }
+
+    .hero__decor--3 {
+      width: 65px;
+      height: 65px;
+      background: var(--candy-lemon);
+      bottom: 12%;
+      left: 12%;
+      animation-delay: -4s;
+    }
+
+    .hero__decor--4 {
+      width: 110px;
+      height: 110px;
+      background: var(--candy-sky);
+      bottom: 8%;
+      right: 6%;
+      animation-delay: -6s;
+    }
+
+    .hero__decor--5 {
+      width: 50px;
+      height: 50px;
+      background: var(--candy-mint);
+      top: 55%;
+      left: 35%;
+      animation-delay: -3s;
+    }
+
+    .hero__decor--6 {
+      width: 75px;
+      height: 75px;
+      background: var(--candy-coral);
+      top: 5%;
+      right: 30%;
+      animation-delay: -5s;
+    }
+
+    @keyframes candy-float {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-20px) scale(1.06); }
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero__title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(3rem, 8vw, 5.5rem);
+      color: var(--candy-hot-magenta);
+      text-shadow:
+        3px 3px 0 var(--candy-cotton),
+        6px 6px 0 rgba(155, 89, 182, 0.1);
+      margin-bottom: 1rem;
+    }
+
+    .hero__subtitle {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      font-weight: 600;
+      color: var(--candy-berry);
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 2rem;
+      font-family: 'Comfortaa', 'Quicksand', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      border: none;
+      border-radius: var(--candy-radius-pill);
+      cursor: pointer;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.3s ease,
+                  background 0.25s ease,
+                  color 0.25s ease,
+                  border-color 0.25s ease;
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .btn--primary {
+      color: #fff;
+      background: linear-gradient(135deg, var(--candy-bubblegum), var(--candy-hot-magenta));
+      box-shadow:
+        0 4px 15px rgba(255, 20, 147, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow:
+        0 8px 25px rgba(255, 20, 147, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4);
+      color: #fff;
+    }
+
+    .btn--secondary {
+      color: var(--candy-bubblegum);
+      background: transparent;
+      border: 2.5px solid var(--candy-bubblegum);
+      box-shadow: 0 4px 15px rgba(255, 105, 180, 0.15);
+    }
+
+    .btn--secondary:hover {
+      background: var(--candy-cotton);
+      color: var(--candy-hot-magenta);
+      border-color: var(--candy-hot-magenta);
+      transform: translateY(-3px);
+    }
+
+    .btn--grape {
+      color: #fff;
+      background: linear-gradient(135deg, var(--candy-grape), var(--candy-berry));
+      box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .btn--grape:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(155, 89, 182, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    .btn--coral {
+      color: #fff;
+      background: linear-gradient(135deg, var(--candy-coral), #e85550);
+      box-shadow: 0 4px 15px rgba(255, 111, 97, 0.3),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    }
+
+    .btn--coral:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 25px rgba(255, 111, 97, 0.4),
+                  inset 0 1px 0 rgba(255, 255, 255, 0.3);
+      color: #fff;
+    }
+
+    /* ============================================
+       CANDY WAVE DIVIDER
+       ============================================ */
+    .candy-wave {
+      width: 100%;
+      height: 60px;
+      background: var(--candy-bg-primary);
+      clip-path: polygon(
+        0 60%, 5% 40%, 10% 55%, 15% 35%, 20% 50%,
+        25% 30%, 30% 45%, 35% 25%, 40% 40%, 45% 20%,
+        50% 35%, 55% 20%, 60% 40%, 65% 25%, 70% 45%,
+        75% 30%, 80% 50%, 85% 35%, 90% 55%, 95% 40%,
+        100% 60%, 100% 100%, 0 100%
+      );
+    }
+
+    .candy-wave--blush {
+      background: var(--candy-blush);
+    }
+
+    .candy-wave--lavender {
+      background: #f0e6f6;
+    }
+
+    .candy-wave--sky {
+      background: #eef6fc;
+    }
+
+    /* ============================================
+       SPRINKLE BAND
+       ============================================ */
+    .sprinkle-band {
+      height: 8px;
+      background: linear-gradient(
+        90deg,
+        var(--candy-bubblegum),
+        var(--candy-grape),
+        var(--candy-sky),
+        var(--candy-lemon),
+        var(--candy-mint),
+        var(--candy-coral),
+        var(--candy-bubblegum)
+      );
+      background-size: 200% 100%;
+      animation: sprinkle-flow 4s linear infinite;
+    }
+
+    @keyframes sprinkle-flow {
+      0% { background-position: 0% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 1.75rem;
+      padding-bottom: 1.75rem;
+      border-bottom: 2px solid var(--candy-cotton);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Comfortaa', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--candy-grape);
+      margin-bottom: 0.4rem;
+    }
+
+    .typo-display {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      color: var(--candy-hot-magenta);
+      text-shadow:
+        3px 3px 0 var(--candy-cotton),
+        6px 6px 0 rgba(155, 89, 182, 0.08);
+      line-height: 1.1;
+    }
+
+    .typo-heading {
+      font-family: 'Baloo 2', cursive;
+      font-weight: 800;
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      color: var(--candy-bubblegum);
+      line-height: 1.15;
+    }
+
+    .typo-subheading {
+      font-family: 'Sour Gummy', cursive;
+      font-weight: 600;
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      color: var(--candy-grape);
+      line-height: 1.3;
+    }
+
+    .typo-body {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 500;
+      font-size: 1.05rem;
+      color: var(--candy-text-primary);
+      line-height: 1.75;
+    }
+
+    .typo-alt-body {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      color: var(--candy-text-primary);
+      line-height: 1.75;
+    }
+
+    .typo-ui {
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 700;
+      font-size: 0.88rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--candy-grape);
+    }
+
+    .typo-right h3 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.2rem;
+      color: var(--candy-bubblegum);
+      margin-bottom: 1rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px dashed var(--candy-cotton);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Comfortaa', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--candy-grape);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .color-chip {
+      border-radius: var(--candy-radius-md);
+      overflow: hidden;
+      background: var(--candy-white);
+      box-shadow: 0 4px 16px var(--candy-shadow);
+      border: 2px solid var(--candy-frosting);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px) scale(1.03);
+      box-shadow: 0 8px 28px var(--candy-shadow-hover);
+    }
+
+    .color-swatch {
+      height: 80px;
+      width: 100%;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 0.6rem 0.75rem;
+    }
+
+    .color-name {
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 700;
+      font-size: 0.75rem;
+      color: var(--candy-text-primary);
+    }
+
+    .color-hex {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      color: var(--candy-grape);
+      margin-top: 0.15rem;
+    }
+
+    /* ============================================
+       CARD GRID (6 CARDS)
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--candy-bg-card);
+      border: 2px solid var(--candy-border);
+      border-radius: var(--candy-radius-md);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease;
+      box-shadow: 0 4px 20px var(--candy-shadow);
+    }
+
+    .card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 36px var(--candy-shadow-hover);
+      border-color: var(--candy-bubblegum);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(
+        90deg,
+        var(--candy-bubblegum),
+        var(--candy-grape),
+        var(--candy-sky),
+        var(--candy-lemon),
+        var(--candy-bubblegum)
+      );
+      border-radius: var(--candy-radius-md) var(--candy-radius-md) 0 0;
+    }
+
+    .card--pink {
+      background: linear-gradient(135deg, #fff0f5, #ffe0ec);
+      border-color: var(--candy-bubblegum);
+    }
+
+    .card--purple {
+      background: linear-gradient(135deg, #f5f0ff, #ece0ff);
+      border-color: var(--candy-lavender);
+    }
+
+    .card--blue {
+      background: linear-gradient(135deg, #f0f8ff, #e0f0ff);
+      border-color: var(--candy-sky);
+    }
+
+    .card__tag {
+      display: inline-block;
+      padding: 0.25rem 0.85rem;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #fff;
+      border-radius: var(--candy-radius-pill);
+      margin-bottom: 0.75rem;
+    }
+
+    .card__tag--pink { background: var(--candy-bubblegum); }
+    .card__tag--grape { background: var(--candy-grape); }
+    .card__tag--sky { background: var(--candy-sky); color: var(--candy-deep-plum); }
+    .card__tag--coral { background: var(--candy-coral); }
+    .card__tag--mint { background: var(--candy-mint); color: var(--candy-deep-plum); }
+    .card__tag--lemon { background: var(--candy-lemon); color: var(--candy-deep-plum); }
+
+    .card__icon {
+      width: 56px;
+      height: 56px;
+      border-radius: var(--candy-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--candy-cotton), var(--candy-blush));
+      box-shadow: 0 3px 10px rgba(255, 105, 180, 0.15);
+    }
+
+    .card__title {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card__text {
+      color: var(--candy-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE (6 EFFECTS)
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .effect-demo {
+      border-radius: var(--candy-radius-md);
+      overflow: hidden;
+      background: var(--candy-white);
+      border: 2px solid var(--candy-frosting);
+      box-shadow: 0 4px 16px var(--candy-shadow);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px) scale(1.01);
+      box-shadow: 0 10px 30px var(--candy-shadow-hover);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem 1.5rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Baloo 2', cursive;
+      font-size: 1.1rem;
+      color: var(--candy-bubblegum);
+      margin-bottom: 0.3rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.88rem;
+      color: var(--candy-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Candy Gradient Swirl */
+    .effect-gradient-swirl {
+      background:
+        radial-gradient(circle at 20% 30%, var(--candy-bubblegum) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, var(--candy-grape) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, var(--candy-sky) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, var(--candy-lemon) 0%, transparent 40%),
+        linear-gradient(135deg, var(--candy-blush), var(--candy-cotton));
+    }
+
+    /* Effect 2: Sprinkle Pattern */
+    .effect-sprinkles {
+      background-color: #fff0f5;
+    }
+
+    .effect-sprinkles::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 10% 15%, var(--candy-bubblegum) 3px, transparent 3px),
+        radial-gradient(circle at 85% 25%, var(--candy-grape) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 20% 70%, var(--candy-lemon) 3px, transparent 3px),
+        radial-gradient(circle at 75% 60%, var(--candy-sky) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 45% 10%, var(--candy-mint) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 55% 85%, var(--candy-coral) 3px, transparent 3px),
+        radial-gradient(circle at 30% 45%, var(--candy-lavender) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 90% 80%, var(--candy-bubblegum) 2px, transparent 2px),
+        radial-gradient(circle at 5% 50%, var(--candy-grape) 2px, transparent 2px),
+        radial-gradient(circle at 65% 35%, var(--candy-lemon) 2px, transparent 2px),
+        radial-gradient(circle at 40% 90%, var(--candy-sky) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 15% 30%, var(--candy-coral) 2px, transparent 2px),
+        radial-gradient(circle at 70% 15%, var(--candy-mint) 3px, transparent 3px),
+        radial-gradient(circle at 50% 50%, var(--candy-bubblegum) 2px, transparent 2px),
+        radial-gradient(circle at 92% 45%, var(--candy-lavender) 3px, transparent 3px),
+        radial-gradient(circle at 35% 65%, var(--candy-grape) 2.5px, transparent 2.5px);
+    }
+
+    /* Effect 3: Glossy Candy Surface */
+    .effect-glossy {
+      background: linear-gradient(135deg, var(--candy-bubblegum), var(--candy-hot-magenta), var(--candy-grape));
+    }
+
+    .effect-glossy::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        ellipse at 30% 20%,
+        rgba(255, 255, 255, 0.35) 0%,
+        rgba(255, 255, 255, 0.08) 30%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .effect-glossy::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: linear-gradient(to top, rgba(0,0,0,0.1), transparent);
+      pointer-events: none;
+    }
+
+    /* Effect 4: Cotton Candy Wisps */
+    .effect-cotton-candy {
+      background:
+        radial-gradient(ellipse at 15% 50%, rgba(255, 186, 210, 0.8) 0%, transparent 60%),
+        radial-gradient(ellipse at 85% 30%, rgba(200, 162, 200, 0.7) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 80%, rgba(135, 206, 235, 0.6) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 20%, rgba(255, 244, 79, 0.3) 0%, transparent 45%),
+        radial-gradient(ellipse at 70% 70%, rgba(255, 105, 180, 0.5) 0%, transparent 50%),
+        linear-gradient(180deg, #fff0f5 0%, #f0e6f6 100%);
+      animation: cotton-drift 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes cotton-drift {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(15deg); }
+    }
+
+    /* Effect 5: Polka Dot Candy Wrapper */
+    .effect-polkadot {
+      background-color: var(--candy-cotton);
+      background-image:
+        radial-gradient(circle, var(--candy-bubblegum) 12px, transparent 12px),
+        radial-gradient(circle, var(--candy-grape) 8px, transparent 8px);
+      background-size: 50px 50px, 50px 50px;
+      background-position: 0 0, 25px 25px;
+    }
+
+    /* Effect 6: Rainbow Stripe Candy Cane */
+    .effect-candy-stripe {
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--candy-bubblegum),
+        var(--candy-bubblegum) 10px,
+        var(--candy-white) 10px,
+        var(--candy-white) 20px,
+        var(--candy-grape) 20px,
+        var(--candy-grape) 30px,
+        var(--candy-white) 30px,
+        var(--candy-white) 40px,
+        var(--candy-sky) 40px,
+        var(--candy-sky) 50px,
+        var(--candy-white) 50px,
+        var(--candy-white) 60px,
+        var(--candy-lemon) 60px,
+        var(--candy-lemon) 70px,
+        var(--candy-white) 70px,
+        var(--candy-white) 80px
+      );
+      background-size: 113px 113px;
+      animation: stripe-scroll 8s linear infinite;
+    }
+
+    @keyframes stripe-scroll {
+      0% { background-position: 0 0; }
+      100% { background-position: 113px 113px; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 740px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3rem 2rem;
+      background: linear-gradient(135deg, var(--candy-berry), var(--candy-deep-plum));
+      border-radius: var(--candy-radius-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        45deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.05) 50%,
+        transparent 70%
+      );
+      background-size: 200% 200%;
+      animation: candy-shimmer 6s ease-in-out infinite;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Baloo 2', cursive;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--candy-cotton);
+      line-height: 1.4;
+      margin-bottom: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 5rem;
+      color: var(--candy-bubblegum);
+      opacity: 0.4;
+      position: absolute;
+      top: -1.5rem;
+      left: -0.5rem;
+      line-height: 1;
+      z-index: -1;
+    }
+
+    .quote-block cite {
+      font-family: 'Comfortaa', sans-serif;
+      font-style: normal;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--candy-bubblegum);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      background: linear-gradient(
+        135deg,
+        #ffe0f0 0%,
+        var(--candy-cotton) 50%,
+        #e8d0f0 100%
+      );
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 8% 12%, var(--candy-bubblegum) 3px, transparent 3px),
+        radial-gradient(circle at 92% 18%, var(--candy-grape) 2px, transparent 2px),
+        radial-gradient(circle at 25% 85%, var(--candy-sky) 2.5px, transparent 2.5px),
+        radial-gradient(circle at 78% 75%, var(--candy-lemon) 2px, transparent 2px),
+        radial-gradient(circle at 50% 5%, var(--candy-mint) 2px, transparent 2px),
+        radial-gradient(circle at 15% 50%, var(--candy-coral) 2.5px, transparent 2.5px);
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .cta-section__inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section__title {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--candy-hot-magenta);
+      margin-bottom: 1rem;
+    }
+
+    .cta-section__text {
+      color: var(--candy-berry);
+      font-weight: 600;
+      max-width: 500px;
+      margin: 0 auto 2rem;
+      font-size: 1.05rem;
+    }
+
+    .cta-form {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .cta-form__input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.85rem 1.5rem;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: 2.5px solid var(--candy-frosting);
+      border-radius: var(--candy-radius-pill);
+      outline: none;
+      background: var(--candy-white);
+      color: var(--candy-deep-plum);
+      transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .cta-form__input:focus {
+      border-color: var(--candy-bubblegum);
+      box-shadow: 0 0 0 4px rgba(255, 105, 180, 0.15);
+    }
+
+    .cta-form__input::placeholder {
+      color: var(--candy-lavender);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: linear-gradient(135deg, var(--candy-berry), var(--candy-deep-plum));
+      color: var(--candy-cotton);
+      padding: 3rem 2rem;
+      text-align: center;
+      border-radius: var(--candy-radius-lg) var(--candy-radius-lg) 0 0;
+    }
+
+    .footer__brand {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: 1.8rem;
+      color: var(--candy-bubblegum);
+      margin-bottom: 1rem;
+    }
+
+    .footer__links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      list-style: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer__links a {
+      color: var(--candy-cotton);
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: color 0.25s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--candy-lemon);
+    }
+
+    .footer__copy {
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       GRADIENT TEXT
+       ============================================ */
+    .candy-gradient-text {
+      background: linear-gradient(
+        90deg,
+        var(--candy-bubblegum),
+        var(--candy-grape),
+        var(--candy-sky),
+        var(--candy-bubblegum)
+      );
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: candy-text-flow 4s linear infinite;
+    }
+
+    @keyframes candy-text-flow {
+      0% { background-position: 0% center; }
+      100% { background-position: 200% center; }
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes bounce-in {
+      0% { opacity: 0; transform: translateY(30px) scale(0.95); }
+      60% { transform: translateY(-5px) scale(1.02); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .animate-on-scroll.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .hero__decor {
+        animation: none;
+      }
+
+      .animate-on-scroll {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav__links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: rgba(255, 248, 240, 0.97);
+        padding: 1rem;
+        border-bottom: 2px solid var(--candy-cotton);
+        box-shadow: 0 8px 20px rgba(255, 105, 180, 0.12);
+      }
+
+      .nav__links.open {
+        display: flex;
+      }
+
+      .nav__toggle {
+        display: block;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 3.5rem;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 56px) 0;
+      }
+
+      .container {
+        padding: 0 1.25rem;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .cta-form {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .quote-block {
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .hero__title {
+        font-size: clamp(2.2rem, 10vw, 3rem);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .color-name {
+        font-size: 0.65rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__brand">Candy Pop</a>
+    <button class="nav__toggle" onclick="document.querySelector('.nav__links').classList.toggle('open')" aria-label="Toggle menu">&#9776;</button>
+    <ul class="nav__links">
+      <li><a href="#typography" class="active">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+      <li><a href="#cta">Join</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero__decor hero__decor--1"></div>
+    <div class="hero__decor hero__decor--2"></div>
+    <div class="hero__decor hero__decor--3"></div>
+    <div class="hero__decor hero__decor--4"></div>
+    <div class="hero__decor hero__decor--5"></div>
+    <div class="hero__decor hero__decor--6"></div>
+    <div class="hero__content">
+      <h1 class="hero__title">Sweet Designs Start Here</h1>
+      <p class="hero__subtitle">A bubblegum-bright, candy-coated design reference that turns every pixel into a sugar-dipped treat. Dive into the sweetest aesthetic on the web.</p>
+      <div class="hero__buttons">
+        <a href="#components" class="btn btn--primary">Explore Flavors</a>
+        <a href="#cta" class="btn btn--secondary">Get Started</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== SPRINKLE BAND ===== -->
+  <div class="sprinkle-band"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Bubbly, Rounded &amp; Sweet</h2>
+      <p class="section-subtitle">inflated display fonts, friendly sans-serifs, candy wrapper vibes</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Bubblegum Sans</p>
+            <p class="typo-display">Sugar Rush!</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Baloo 2</p>
+            <p class="typo-heading">Candy-Coated Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Sour Gummy</p>
+            <p class="typo-subheading">Playful Subheadings &amp; Taglines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Quicksand</p>
+            <p class="typo-body">Rounded geometric sans-serif text for clean readability. Candy Pop pairs whimsy with warmth, never sacrificing comfort for style.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Alt Body / Nunito</p>
+            <p class="typo-alt-body">A soft, rounded alternative for body text that keeps the friendly tone while offering a slightly different rhythm and texture.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI / Comfortaa</p>
+            <p class="typo-ui">Buttons &amp; Interface Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Bubblegum Sans', cursive; font-size: 2rem; color: var(--candy-hot-magenta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.8rem</span>
+              <span style="font-family: 'Baloo 2', cursive; font-weight: 800; font-size: 1.6rem; color: var(--candy-bubblegum);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Sour Gummy', cursive; font-weight: 600; font-size: 1.3rem; color: var(--candy-grape);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Quicksand', sans-serif; font-weight: 500; font-size: 1rem; color: var(--candy-deep-plum);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--candy-deep-plum);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.88rem</span>
+              <span style="font-family: 'Comfortaa', sans-serif; font-weight: 700; font-size: 0.88rem; color: var(--candy-grape); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--candy-cotton);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Bubblegum Sans', cursive; color: var(--candy-hot-magenta);">Bubblegum Sans</strong> + <strong>Quicksand</strong><br>
+              <span style="color: var(--candy-grape); font-size: 0.85rem;">Classic candy shop signage meets clean readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Baloo 2', cursive; font-weight: 800; color: var(--candy-hot-magenta);">Baloo 2</strong> + <strong style="font-family: 'Nunito', sans-serif;">Nunito</strong><br>
+              <span style="color: var(--candy-grape); font-size: 0.85rem;">Warm and rounded from top to bottom</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Lilita One', cursive; color: var(--candy-hot-magenta);">Lilita One</strong> + <strong style="font-family: 'Nunito', sans-serif;">Nunito</strong><br>
+              <span style="color: var(--candy-grape); font-size: 0.85rem;">Bold impactful headlines with soft body text</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CANDY WAVE ===== -->
+  <div class="section--blush" style="padding: 0;">
+    <div class="candy-wave candy-wave--blush"></div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--blush" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Bubblegum Brights &amp; Pastel Dreams</h2>
+      <p class="section-subtitle">pinks, purples, candy brights &amp; creamy neutrals</p>
+
+      <div class="palette-grid">
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FF69B4;"></div>
+          <div class="color-info">
+            <div class="color-name">Bubblegum Pink</div>
+            <div class="color-hex">#FF69B4</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FF1493;"></div>
+          <div class="color-info">
+            <div class="color-name">Hot Magenta</div>
+            <div class="color-hex">#FF1493</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FFBAD2;"></div>
+          <div class="color-info">
+            <div class="color-name">Cotton Candy</div>
+            <div class="color-hex">#FFBAD2</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FFD1DC;"></div>
+          <div class="color-info">
+            <div class="color-name">Blush Rose</div>
+            <div class="color-hex">#FFD1DC</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #C8A2C8;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender Dream</div>
+            <div class="color-hex">#C8A2C8</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #9B59B6;"></div>
+          <div class="color-info">
+            <div class="color-name">Grape Fizz</div>
+            <div class="color-hex">#9B59B6</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #6C3483;"></div>
+          <div class="color-info">
+            <div class="color-name">Berry Jam</div>
+            <div class="color-hex">#6C3483</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FFF44F;"></div>
+          <div class="color-info">
+            <div class="color-name">Lemon Drop</div>
+            <div class="color-hex">#FFF44F</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #98FF98;"></div>
+          <div class="color-info">
+            <div class="color-name">Mint Chew</div>
+            <div class="color-hex">#98FF98</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #87CEEB;"></div>
+          <div class="color-info">
+            <div class="color-name">Sky Taffy</div>
+            <div class="color-hex">#87CEEB</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FF6F61;"></div>
+          <div class="color-info">
+            <div class="color-name">Candy Coral</div>
+            <div class="color-hex">#FF6F61</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #F8A4B8;"></div>
+          <div class="color-info">
+            <div class="color-name">Frosting Pink</div>
+            <div class="color-hex">#F8A4B8</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #FFF8F0; border-bottom: 1px solid #f0e0d8;"></div>
+          <div class="color-info">
+            <div class="color-name">Cream Vanilla</div>
+            <div class="color-hex">#FFF8F0</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: #2D1B33;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Plum</div>
+            <div class="color-hex">#2D1B33</div>
+          </div>
+        </div>
+        <div class="color-chip animate-on-scroll">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #FF69B4, #9B59B6, #87CEEB, #FFF44F); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.35) 0%, transparent 50%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Candy Swirl</div>
+            <div class="color-hex">Gradient</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPRINKLE BAND ===== -->
+  <div class="sprinkle-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Sweet Collection</h2>
+      <p class="section-subtitle">A showcase of candy-inspired design patterns and building blocks</p>
+
+      <div class="card-grid">
+        <div class="card card--pink animate-on-scroll">
+          <span class="card__tag card__tag--pink">Branding</span>
+          <div class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#FF69B4" stroke-width="2"/><path d="M12 2C12 2 8 8 8 12C8 16 12 22 12 22C12 22 16 16 16 12C16 8 12 2 12 2Z" fill="#FFBAD2" stroke="#FF69B4" stroke-width="1.5"/></svg>
+          </div>
+          <h3 class="card__title">Lollipop Logos</h3>
+          <p class="card__text">Circular, swirled logo marks that use the candy palette to create instantly recognizable brand identities with playful, rounded forms.</p>
+        </div>
+
+        <div class="card card--purple animate-on-scroll">
+          <span class="card__tag card__tag--grape">Layout</span>
+          <div class="card__icon" style="background: linear-gradient(135deg, #ece0ff, #f5f0ff);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="8" height="8" rx="3" fill="#C8A2C8" stroke="#9B59B6" stroke-width="1.5"/><rect x="14" y="2" width="8" height="8" rx="3" fill="#C8A2C8" stroke="#9B59B6" stroke-width="1.5"/><rect x="2" y="14" width="8" height="8" rx="3" fill="#C8A2C8" stroke="#9B59B6" stroke-width="1.5"/><rect x="14" y="14" width="8" height="8" rx="3" fill="#C8A2C8" stroke="#9B59B6" stroke-width="1.5"/></svg>
+          </div>
+          <h3 class="card__title">Candy Box Grids</h3>
+          <p class="card__text">Uniform card layouts that feel like opening a box of assorted sweets. Each card is a different flavor, arranged in a neat, delightful grid.</p>
+        </div>
+
+        <div class="card card--blue animate-on-scroll">
+          <span class="card__tag card__tag--sky">Animation</span>
+          <div class="card__icon" style="background: linear-gradient(135deg, #e0f0ff, #f0f8ff);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2L14.5 9H22L16 13.5L18 21L12 17L6 21L8 13.5L2 9H9.5L12 2Z" fill="#87CEEB" stroke="#5BA8C8" stroke-width="1.5"/></svg>
+          </div>
+          <h3 class="card__title">Sparkle Effects</h3>
+          <p class="card__text">Micro-interactions with shimmer effects and spring-loaded transitions that catch the eye like candy wrappers glinting in sunlight.</p>
+        </div>
+
+        <div class="card animate-on-scroll">
+          <span class="card__tag card__tag--coral">UI Kit</span>
+          <div class="card__icon" style="background: linear-gradient(135deg, #ffe0d8, #fff0ec);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="8" rx="4" fill="#FFBAD2" stroke="#FF6F61" stroke-width="1.5"/><circle cx="8" cy="12" r="1.5" fill="#FF6F61"/><circle cx="16" cy="12" r="1.5" fill="#FF6F61"/></svg>
+          </div>
+          <h3 class="card__title">Gumdrop Buttons</h3>
+          <p class="card__text">Pill-shaped, gradient-filled buttons with glossy highlights and bouncy hover states that make every interaction feel like popping candy.</p>
+        </div>
+
+        <div class="card card--pink animate-on-scroll">
+          <span class="card__tag card__tag--mint">Pattern</span>
+          <div class="card__icon" style="background: linear-gradient(135deg, #e8ffe8, #f0fff0);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.5" fill="#FF69B4"/><circle cx="18" cy="6" r="2" fill="#9B59B6"/><circle cx="12" cy="12" r="2.5" fill="#FFF44F"/><circle cx="6" cy="18" r="2" fill="#87CEEB"/><circle cx="18" cy="18" r="2.5" fill="#98FF98"/></svg>
+          </div>
+          <h3 class="card__title">Sprinkle Textures</h3>
+          <p class="card__text">Confetti and sprinkle background patterns that add depth and whimsy to any section, evoking the joyful chaos of a candy-decorated cupcake.</p>
+        </div>
+
+        <div class="card card--purple animate-on-scroll">
+          <span class="card__tag card__tag--lemon">Typography</span>
+          <div class="card__icon" style="background: linear-gradient(135deg, #fff8d0, #fffff0);">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><text x="4" y="18" font-family="Arial" font-size="16" font-weight="bold" fill="#9B59B6">Aa</text></svg>
+          </div>
+          <h3 class="card__title">Bubble Letters</h3>
+          <p class="card__text">Inflated, rounded display fonts that look like they were formed from bubblegum dough. Perfect for headings that demand a smile.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CANDY WAVE ===== -->
+  <div class="section--lavender" style="padding: 0;">
+    <div class="candy-wave candy-wave--lavender"></div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE (6 CSS-ONLY EFFECTS) ===== -->
+  <section class="section section--lavender" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Candy Textures</h2>
+      <p class="section-subtitle">all the sweet techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo animate-on-scroll">
+          <div class="effect-preview effect-gradient-swirl"></div>
+          <div class="effect-caption">
+            <h4>Candy Gradient Swirl</h4>
+            <p>Overlapping radial gradients in bubblegum, grape, sky, and lemon blend into a lava-lamp-like cotton candy flow.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo animate-on-scroll">
+          <div class="effect-preview effect-sprinkles"></div>
+          <div class="effect-caption">
+            <h4>Sprinkle Pattern</h4>
+            <p>Colorful radial-gradient dots scattered across a soft pink field mimic the joyful chaos of rainbow sprinkles.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo animate-on-scroll">
+          <div class="effect-preview effect-glossy"></div>
+          <div class="effect-caption">
+            <h4>Glossy Candy Surface</h4>
+            <p>Radial highlight overlay on a gradient base creates the realistic sheen of hard candy or a lacquered lollipop.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo animate-on-scroll">
+          <div class="effect-preview effect-cotton-candy"></div>
+          <div class="effect-caption">
+            <h4>Cotton Candy Wisps</h4>
+            <p>Soft elliptical gradients in pink, lavender, and sky create dreamy, cloud-like wisps that gently shift hue.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo animate-on-scroll">
+          <div class="effect-preview effect-polkadot"></div>
+          <div class="effect-caption">
+            <h4>Polka Dot Wrapper</h4>
+            <p>Repeating radial gradients create a bubblegum-and-grape polka dot pattern like classic candy wrapper paper.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo animate-on-scroll">
+          <div class="effect-preview effect-candy-stripe"></div>
+          <div class="effect-caption">
+            <h4>Rainbow Candy Stripe</h4>
+            <p>Animated diagonal repeating stripes in pink, purple, sky, and lemon evoke a candy cane or sweet wrapper.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPRINKLE BAND ===== -->
+  <div class="sprinkle-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--sky" id="buttons">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Gumdrop Buttons</h2>
+      <p class="section-subtitle">pill-shaped, bouncy &amp; irresistibly clickable</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--primary">Bubblegum Primary</a>
+        <a href="#" class="btn btn--grape">Grape Fizz</a>
+        <a href="#" class="btn btn--coral">Candy Coral</a>
+        <a href="#" class="btn btn--secondary">Sweet Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block animate-on-scroll">
+        <blockquote>
+          Candy Pop turned our landing page from forgettable to irresistible. Users linger twice as long, conversion jumped 40%, and everyone asks how we made the interface feel so fun.
+        </blockquote>
+        <cite>&mdash; Sweet Tooth Studio, Design Lead</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CANDY WAVE ===== -->
+  <div style="padding: 0; background: linear-gradient(135deg, #ffe0f0 0%, var(--candy-cotton) 50%, #e8d0f0 100%);">
+    <div class="candy-wave" style="background: var(--candy-cream);"></div>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section" id="cta">
+    <div class="cta-section__inner">
+      <h2 class="cta-section__title">Join the Sweet Side</h2>
+      <p class="cta-section__text">Subscribe for fresh candy-inspired design tips, component recipes, and palette drops delivered straight to your inbox.</p>
+      <form class="cta-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='Subscribed!'; this.querySelector('input').value='';">
+        <input type="email" class="cta-form__input" placeholder="your@email.com" required>
+        <button type="submit" class="btn btn--primary">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- ===== SPRINKLE BAND ===== -->
+  <div class="sprinkle-band"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__brand">Candy Pop</div>
+    <ul class="footer__links">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#buttons">Buttons</a></li>
+    </ul>
+    <p class="footer__copy">&copy; 2026 Candy Pop Design Reference. Sugar-coated with care.</p>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Intersection Observer for scroll-triggered animations
+    (function () {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReduced) {
+        document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
+          el.classList.add('visible');
+        });
+        return;
+      }
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.animate-on-scroll').forEach(function (el) {
+        observer.observe(el);
+      });
+    })();
+
+    // Close mobile menu when clicking a nav link
+    document.querySelectorAll('.nav__links a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        document.querySelector('.nav__links').classList.remove('open');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,2449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrapbook -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&family=Patrick+Hand&family=Indie+Flower&family=Special+Elite&family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600;700&family=Shadows+Into+Light&family=Satisfy&family=Lora:ital,wght@0,400;0,700;1,400&family=Courier+Prime&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Paper and base tones */
+      --sb-kraft: #c4a882;
+      --sb-cream: #fdf8f0;
+      --sb-linen: #f0e6d6;
+      --sb-parchment: #e8ddc8;
+
+      /* Pastel accents */
+      --sb-blush: #f2c4c4;
+      --sb-rose: #d4919a;
+      --sb-sky: #a8c8e8;
+      --sb-mint: #b5cdb6;
+      --sb-buttercup: #f2d06b;
+      --sb-peach: #f5b895;
+      --sb-lavender: #c9b8d9;
+
+      /* Ink and pencil tones */
+      --sb-denim: #6b8dae;
+      --sb-rust: #a05a3c;
+      --sb-charcoal: #4a4543;
+      --sb-mauve: #b89ba8;
+      --sb-shadow: #d6cec4;
+
+      /* Functional mappings */
+      --sb-bg-primary: var(--sb-linen);
+      --sb-bg-secondary: var(--sb-cream);
+      --sb-bg-card: var(--sb-cream);
+      --sb-text-primary: var(--sb-charcoal);
+      --sb-text-secondary: var(--sb-rust);
+      --sb-text-heading: var(--sb-charcoal);
+      --sb-text-handwritten: var(--sb-rust);
+      --sb-accent-warm: var(--sb-peach);
+      --sb-accent-cool: var(--sb-sky);
+      --sb-accent-pop: var(--sb-buttercup);
+      --sb-border: var(--sb-shadow);
+      --sb-link: var(--sb-denim);
+      --sb-link-hover: var(--sb-rose);
+      --sb-tape: var(--sb-blush);
+
+      /* Shadows */
+      --sb-shadow-sm: 2px 3px 8px rgba(74, 69, 67, 0.1);
+      --sb-shadow-md: 2px 3px 10px rgba(74, 69, 67, 0.12);
+      --sb-shadow-lg: 4px 6px 16px rgba(74, 69, 67, 0.18);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Nunito', 'Quicksand', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--sb-text-primary);
+      background-color: var(--sb-bg-primary);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    h1 {
+      font-family: 'Caveat', 'Shadows Into Light', cursive;
+      font-weight: 700;
+      font-size: clamp(2.6rem, 6vw, 4.8rem);
+      color: var(--sb-text-heading);
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+
+    h2 {
+      font-family: 'Patrick Hand', 'Indie Flower', cursive;
+      font-weight: 400;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      color: var(--sb-text-heading);
+      line-height: 1.3;
+    }
+
+    h3 {
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-weight: 400;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      color: var(--sb-rust);
+      line-height: 1.4;
+      letter-spacing: 0.03em;
+    }
+
+    a {
+      color: var(--sb-link);
+      transition: color 0.2s ease;
+    }
+
+    a:hover {
+      color: var(--sb-link-hover);
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--cream {
+      background-color: var(--sb-cream);
+    }
+
+    .section--linen {
+      background-color: var(--sb-linen);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    .section--kraft {
+      background-color: var(--sb-kraft);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    }
+
+    .section-label {
+      font-family: 'Indie Flower', 'Patrick Hand', cursive;
+      font-size: 0.9rem;
+      color: var(--sb-rust);
+      text-align: center;
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .section-title {
+      font-family: 'Patrick Hand', 'Indie Flower', cursive;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      color: var(--sb-charcoal);
+      text-align: center;
+      margin-bottom: 0.4rem;
+      font-weight: 400;
+    }
+
+    .section-subtitle {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.05rem;
+      color: var(--sb-rust);
+      text-align: center;
+      margin-bottom: 2.5rem;
+      transform: rotate(-1deg);
+      display: block;
+    }
+
+    .sb-handwritten {
+      font-family: 'Caveat', 'Shadows Into Light', cursive;
+      font-size: 1.3em;
+      color: var(--sb-text-handwritten);
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .sb-typewriter {
+      font-family: 'Special Elite', 'Courier Prime', monospace;
+      font-size: 0.85rem;
+      color: var(--sb-rust);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--sb-cream);
+      box-shadow: 0 2px 8px rgba(74, 69, 67, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-blush),
+        var(--sb-blush) 5px,
+        rgba(255, 255, 255, 0.5) 5px,
+        rgba(255, 255, 255, 0.5) 10px
+      );
+      opacity: 0.55;
+    }
+
+    .nav__logo {
+      font-family: 'Caveat', cursive;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--sb-charcoal);
+      text-decoration: none;
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 0.4rem;
+      list-style: none;
+    }
+
+    .nav__links a {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.05rem;
+      color: var(--sb-charcoal);
+      padding: 0.4rem 1rem;
+      border-radius: 16px;
+      transition: background 0.2s, transform 0.2s;
+      display: inline-block;
+    }
+
+    .nav__links a:hover {
+      background: var(--sb-blush);
+      transform: rotate(-1.5deg) scale(1.03);
+      color: var(--sb-charcoal);
+    }
+
+    .nav__links a.active {
+      background: var(--sb-peach);
+      transform: rotate(-1deg);
+      color: var(--sb-charcoal);
+    }
+
+    .nav__toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--sb-charcoal);
+    }
+
+    @media (max-width: 700px) {
+      .nav__toggle { display: block; }
+      .nav__links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--sb-cream);
+        padding: 1rem;
+        box-shadow: 0 4px 12px rgba(74, 69, 67, 0.1);
+      }
+      .nav__links.open { display: flex; }
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      text-align: center;
+      padding: 6rem 2rem 5rem;
+      overflow: hidden;
+      background: var(--sb-linen);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .hero__tagline {
+      font-family: 'Indie Flower', cursive;
+      font-size: 0.95rem;
+      color: var(--sb-rust);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero h1 {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 700;
+      color: var(--sb-charcoal);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero__subtitle {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--sb-rust);
+      letter-spacing: 0.05em;
+      display: inline-block;
+      transform: rotate(-1.5deg);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero__desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1.08rem;
+      line-height: 1.8;
+      color: var(--sb-charcoal);
+      max-width: 560px;
+      margin: 0 auto 2rem;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative tape strips in hero */
+    .hero__tape-1 {
+      position: absolute;
+      top: 30px;
+      left: -20px;
+      width: 150px;
+      height: 26px;
+      background: var(--sb-mint);
+      opacity: 0.45;
+      transform: rotate(-14deg);
+      z-index: 0;
+      border-radius: 1px;
+    }
+
+    .hero__tape-2 {
+      position: absolute;
+      bottom: 50px;
+      right: -10px;
+      width: 130px;
+      height: 26px;
+      opacity: 0.45;
+      transform: rotate(10deg);
+      z-index: 0;
+      border-radius: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-lavender),
+        var(--sb-lavender) 4px,
+        rgba(255, 255, 255, 0.5) 4px,
+        rgba(255, 255, 255, 0.5) 8px
+      );
+    }
+
+    .hero__tape-3 {
+      position: absolute;
+      top: 45%;
+      left: 5%;
+      width: 100px;
+      height: 26px;
+      background: var(--sb-buttercup);
+      opacity: 0.35;
+      transform: rotate(20deg);
+      z-index: 0;
+      border-radius: 1px;
+    }
+
+    .hero__tape-4 {
+      position: absolute;
+      top: 60%;
+      right: 8%;
+      width: 110px;
+      height: 26px;
+      opacity: 0.4;
+      transform: rotate(-6deg);
+      z-index: 0;
+      border-radius: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-blush),
+        var(--sb-blush) 5px,
+        rgba(255, 255, 255, 0.5) 5px,
+        rgba(255, 255, 255, 0.5) 10px
+      );
+    }
+
+    /* Decorative stickers in hero */
+    .hero__sticker {
+      position: absolute;
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Indie Flower', cursive;
+      font-size: 0.7rem;
+      color: var(--sb-charcoal);
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.08);
+      z-index: 1;
+    }
+
+    .hero__sticker--1 {
+      top: 18%;
+      right: 10%;
+      background: var(--sb-buttercup);
+      transform: rotate(15deg);
+    }
+
+    .hero__sticker--2 {
+      bottom: 18%;
+      left: 8%;
+      background: var(--sb-blush);
+      transform: rotate(-10deg);
+    }
+
+    .hero__sticker--3 {
+      top: 70%;
+      right: 18%;
+      background: var(--sb-sky);
+      transform: rotate(5deg);
+      width: 56px;
+      height: 56px;
+      font-size: 0.6rem;
+    }
+
+    /* Star sticker via clip-path */
+    .hero__star {
+      position: absolute;
+      top: 12%;
+      left: 14%;
+      width: 52px;
+      height: 52px;
+      background: var(--sb-peach);
+      clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%,
+        79% 91%, 50% 70%, 21% 91%, 32% 57%,
+        2% 35%, 39% 35%
+      );
+      z-index: 1;
+      transform: rotate(8deg);
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      font-family: 'Patrick Hand', 'Indie Flower', cursive;
+      font-size: 1.05rem;
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+    }
+
+    .btn--primary {
+      background: var(--sb-rose);
+      color: #fff;
+      box-shadow:
+        2px 3px 6px rgba(212, 145, 154, 0.35),
+        0 0 0 2px rgba(255, 255, 255, 0.4) inset;
+    }
+
+    .btn--primary:hover {
+      color: #fff;
+      transform: translateY(-2px) rotate(-1deg);
+      box-shadow:
+        3px 5px 12px rgba(212, 145, 154, 0.45),
+        0 0 0 2px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    .btn--tape {
+      background: var(--sb-blush);
+      color: var(--sb-charcoal);
+      border-radius: 2px;
+      opacity: 0.85;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+
+    .btn--tape:hover {
+      opacity: 1;
+      transform: translateY(-1px);
+      color: var(--sb-charcoal);
+    }
+
+    .btn--badge {
+      background: var(--sb-buttercup);
+      color: var(--sb-charcoal);
+      border-radius: 50px;
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      box-shadow: 2px 3px 6px rgba(242, 208, 107, 0.35);
+    }
+
+    .btn--badge:hover {
+      transform: scale(1.05) rotate(1deg);
+      box-shadow: 3px 5px 10px rgba(242, 208, 107, 0.45);
+      color: var(--sb-charcoal);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--sb-charcoal);
+      border: 2px dashed var(--sb-charcoal);
+      border-radius: 4px;
+      font-family: 'Special Elite', monospace;
+      font-size: 0.95rem;
+    }
+
+    .btn--ghost:hover {
+      background: rgba(74, 69, 67, 0.06);
+      color: var(--sb-charcoal);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       WASHI TAPE DIVIDER BAND
+       ============================================ */
+    .tape-band {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      height: 32px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tape-band--striped {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-blush),
+        var(--sb-blush) 5px,
+        rgba(255, 255, 255, 0.5) 5px,
+        rgba(255, 255, 255, 0.5) 10px
+      );
+      opacity: 0.7;
+    }
+
+    .tape-band--dotted {
+      background-color: var(--sb-buttercup);
+      background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.6) 2px,
+        transparent 2px
+      );
+      background-size: 8px 8px;
+      opacity: 0.6;
+    }
+
+    .tape-band--checkered {
+      background-image:
+        linear-gradient(45deg, var(--sb-mint) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--sb-mint) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--sb-mint) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--sb-mint) 75%);
+      background-size: 8px 8px;
+      background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+      background-color: rgba(255, 255, 255, 0.7);
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       WAVY DIVIDER
+       ============================================ */
+    .divider-wave {
+      width: 100%;
+      height: 20px;
+      margin: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20'%3E%3Cpath d='M0 10 Q15 3 30 10 T60 10 T90 10 T120 10 T150 10 T180 10 T200 10' fill='none' stroke='%23c4a882' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: repeat-x;
+      background-size: 200px 20px;
+      background-position: center;
+    }
+
+    .divider-wave--on-cream {
+      background-color: var(--sb-cream);
+    }
+
+    .divider-wave--on-linen {
+      background-color: var(--sb-linen);
+    }
+
+    /* ============================================
+       DASHED PENCIL DIVIDER
+       ============================================ */
+    .divider-pencil {
+      width: 80%;
+      max-width: 500px;
+      height: 2px;
+      margin: 2.5rem auto;
+      border: none;
+      border-top: 2px dashed var(--sb-shadow);
+    }
+
+    /* ============================================
+       HEART DIVIDER
+       ============================================ */
+    .divider-hearts {
+      width: 100%;
+      height: 24px;
+      margin: 2rem 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--sb-rose);
+      letter-spacing: 1rem;
+      font-family: serif;
+      line-height: 24px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: var(--sb-cream);
+      border-radius: 2px;
+      box-shadow: var(--sb-shadow-sm);
+      position: relative;
+    }
+
+    .typo-sample:nth-child(odd) { transform: rotate(-0.8deg); }
+    .typo-sample:nth-child(even) { transform: rotate(0.5deg); }
+
+    .typo-sample-label {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.75rem;
+      color: var(--sb-rust);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .typo-display {
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      color: var(--sb-charcoal);
+      line-height: 1.15;
+    }
+
+    .typo-heading {
+      font-family: 'Patrick Hand', cursive;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--sb-charcoal);
+      line-height: 1.3;
+    }
+
+    .typo-playful {
+      font-family: 'Indie Flower', cursive;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--sb-charcoal);
+      line-height: 1.4;
+    }
+
+    .typo-typewriter {
+      font-family: 'Special Elite', monospace;
+      font-size: 1.1rem;
+      color: var(--sb-rust);
+      letter-spacing: 0.04em;
+      line-height: 1.6;
+    }
+
+    .typo-body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--sb-charcoal);
+    }
+
+    .typo-script {
+      font-family: 'Satisfy', cursive;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      color: var(--sb-rose);
+      line-height: 1.4;
+    }
+
+    .typo-right {
+      padding: 2rem;
+      background: var(--sb-linen);
+      border-radius: 2px;
+      box-shadow: var(--sb-shadow-sm);
+      transform: rotate(0.6deg);
+      position: relative;
+    }
+
+    .typo-right h3 {
+      font-family: 'Special Elite', monospace;
+      font-size: 1.1rem;
+      color: var(--sb-rust);
+      margin-bottom: 1.2rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.4rem 0;
+      border-bottom: 1px dashed var(--sb-shadow);
+    }
+
+    .typo-scale-size {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.8rem;
+      color: var(--sb-denim);
+      min-width: 55px;
+    }
+
+    .typo-pairings {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px dashed var(--sb-shadow);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 1rem;
+    }
+
+    .typo-pairing-item {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 0.8rem;
+    }
+
+    .typo-pairing-item .pair-desc {
+      color: var(--sb-rust);
+      font-size: 0.82rem;
+      font-family: 'Shadows Into Light', cursive;
+    }
+
+    @media (max-width: 768px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .color-chip {
+      background: var(--sb-cream);
+      border-radius: 2px;
+      box-shadow: var(--sb-shadow-sm);
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:nth-child(odd) { transform: rotate(-1deg); }
+    .color-chip:nth-child(even) { transform: rotate(0.8deg); }
+
+    .color-chip:hover {
+      transform: rotate(0deg) translateY(-3px);
+      box-shadow: var(--sb-shadow-lg);
+      z-index: 3;
+    }
+
+    .color-swatch {
+      height: 80px;
+      width: 100%;
+    }
+
+    .color-info {
+      padding: 0.7rem 0.8rem;
+    }
+
+    .color-name {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 0.95rem;
+      color: var(--sb-charcoal);
+      margin-bottom: 0.1rem;
+    }
+
+    .color-hex {
+      font-family: 'Courier Prime', monospace;
+      font-size: 0.75rem;
+      color: var(--sb-rust);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--sb-cream);
+      border-radius: 2px;
+      padding: 1.8rem 1.5rem;
+      position: relative;
+      box-shadow: var(--sb-shadow-md);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: visible;
+    }
+
+    .card:nth-child(odd) { transform: rotate(-1.2deg); }
+    .card:nth-child(even) { transform: rotate(0.8deg); }
+
+    .card:hover {
+      transform: rotate(0deg) translateY(-4px);
+      box-shadow: var(--sb-shadow-lg);
+      z-index: 5;
+    }
+
+    /* Tape strip on top of card */
+    .card__tape {
+      position: absolute;
+      top: -10px;
+      left: calc(50% - 50px);
+      width: 100px;
+      height: 24px;
+      opacity: 0.75;
+      z-index: 5;
+      border-radius: 1px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .card__tape--blush { background: var(--sb-blush); }
+    .card__tape--mint { background: var(--sb-mint); }
+    .card__tape--sky { background: var(--sb-sky); }
+    .card__tape--lavender { background: var(--sb-lavender); }
+    .card__tape--peach { background: var(--sb-peach); }
+    .card__tape--buttercup { background: var(--sb-buttercup); }
+
+    .card__tape--striped {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-blush),
+        var(--sb-blush) 4px,
+        rgba(255, 255, 255, 0.6) 4px,
+        rgba(255, 255, 255, 0.6) 8px
+      );
+    }
+
+    .card__tape--dotted {
+      background-color: var(--sb-buttercup);
+      background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.6) 2px,
+        transparent 2px
+      );
+      background-size: 8px 8px;
+    }
+
+    .card__icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.08),
+        0 0 0 2px rgba(255, 255, 255, 0.5) inset;
+    }
+
+    .card__icon--blush { background: var(--sb-blush); }
+    .card__icon--sky { background: var(--sb-sky); }
+    .card__icon--mint { background: var(--sb-mint); }
+    .card__icon--buttercup { background: var(--sb-buttercup); }
+    .card__icon--peach { background: var(--sb-peach); }
+    .card__icon--lavender { background: var(--sb-lavender); }
+
+    .card h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.2rem;
+      color: var(--sb-charcoal);
+      margin-bottom: 0.6rem;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--sb-charcoal);
+      margin-bottom: 1rem;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      font-family: 'Indie Flower', cursive;
+      font-size: 0.75rem;
+      background: var(--sb-linen);
+      color: var(--sb-charcoal);
+      border-radius: 12px;
+      margin-right: 0.3rem;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+
+    @media (max-width: 900px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       DECORATIVE BANNER (Sticker & Washi)
+       ============================================ */
+    .sticker-banner {
+      background: var(--sb-kraft);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sticker-banner__content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .sticker-banner__row {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+    }
+
+    .sticker-banner__item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4rem 0.9rem;
+      border-radius: 20px;
+      font-family: 'Indie Flower', cursive;
+      font-size: 0.85rem;
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.08),
+        0 0 0 2px rgba(255, 255, 255, 0.5) inset;
+      transition: transform 0.2s ease;
+    }
+
+    .sticker-banner__item:hover {
+      transform: scale(1.08) rotate(-2deg);
+    }
+
+    .sticker-banner h2 {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 700;
+      color: var(--sb-cream);
+      margin-bottom: 0.5rem;
+    }
+
+    .sticker-banner p {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.1rem;
+      color: var(--sb-linen);
+      transform: rotate(-1deg);
+      display: inline-block;
+    }
+
+    /* Decorative tape strips on banner edges */
+    .sticker-banner__tape-tl {
+      position: absolute;
+      top: 12px;
+      left: -10px;
+      width: 120px;
+      height: 24px;
+      background: var(--sb-mint);
+      opacity: 0.4;
+      transform: rotate(-8deg);
+    }
+
+    .sticker-banner__tape-br {
+      position: absolute;
+      bottom: 12px;
+      right: -10px;
+      width: 110px;
+      height: 24px;
+      opacity: 0.4;
+      transform: rotate(6deg);
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-lavender),
+        var(--sb-lavender) 4px,
+        rgba(255, 255, 255, 0.4) 4px,
+        rgba(255, 255, 255, 0.4) 8px
+      );
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 1.2rem;
+      padding: 1.5rem;
+      background: var(--sb-cream);
+      border-radius: 2px;
+      box-shadow: var(--sb-shadow-sm);
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+
+    .principle-item:nth-child(1) { transform: rotate(-0.6deg); }
+    .principle-item:nth-child(2) { transform: rotate(0.4deg); }
+    .principle-item:nth-child(3) { transform: rotate(0.6deg); }
+    .principle-item:nth-child(4) { transform: rotate(-0.4deg); }
+
+    .principle-item:hover {
+      transform: rotate(0deg) translateY(-2px);
+      box-shadow: var(--sb-shadow-md);
+    }
+
+    .principle-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.08);
+    }
+
+    .principle-text h3 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.15rem;
+      color: var(--sb-charcoal);
+      margin-bottom: 0.4rem;
+    }
+
+    .principle-text p {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--sb-charcoal);
+    }
+
+    @media (max-width: 700px) {
+      .principles-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .effect-demo {
+      background: var(--sb-cream);
+      border-radius: 2px;
+      overflow: hidden;
+      box-shadow: var(--sb-shadow-sm);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:nth-child(odd) { transform: rotate(-0.7deg); }
+    .effect-demo:nth-child(even) { transform: rotate(0.5deg); }
+
+    .effect-demo:hover {
+      transform: rotate(0deg) translateY(-3px);
+      box-shadow: var(--sb-shadow-lg);
+      z-index: 3;
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1.05rem;
+      color: var(--sb-charcoal);
+      margin-bottom: 0.3rem;
+    }
+
+    .effect-caption p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--sb-charcoal);
+    }
+
+    /* Effect: Torn Paper */
+    .effect-torn-paper {
+      background: var(--sb-cream);
+      position: relative;
+    }
+
+    .effect-torn-paper::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 12px;
+      background: var(--sb-cream);
+      clip-path: polygon(
+        0% 100%, 2% 55%, 5% 80%, 8% 35%, 12% 70%, 15% 25%,
+        19% 60%, 23% 40%, 27% 75%, 30% 20%, 34% 55%, 38% 30%,
+        42% 65%, 46% 15%, 50% 50%, 54% 25%, 58% 70%, 62% 35%,
+        66% 60%, 70% 20%, 74% 50%, 78% 40%, 82% 75%, 86% 30%,
+        90% 55%, 94% 20%, 97% 65%, 100% 100%
+      );
+      z-index: 3;
+    }
+
+    .effect-torn-paper::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 50%;
+      background: var(--sb-kraft);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+    }
+
+    /* Effect: Washi Tape Patterns */
+    .effect-washi {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      background: var(--sb-linen);
+      padding: 1rem;
+    }
+
+    .effect-washi__strip {
+      width: 80%;
+      height: 28px;
+      border-radius: 1px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .effect-washi__strip--1 {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-blush),
+        var(--sb-blush) 4px,
+        rgba(255, 255, 255, 0.6) 4px,
+        rgba(255, 255, 255, 0.6) 8px
+      );
+      transform: rotate(-1.5deg);
+    }
+
+    .effect-washi__strip--2 {
+      background-color: var(--sb-buttercup);
+      background-image: radial-gradient(
+        circle,
+        rgba(255, 255, 255, 0.6) 2px,
+        transparent 2px
+      );
+      background-size: 8px 8px;
+      transform: rotate(0.8deg);
+    }
+
+    .effect-washi__strip--3 {
+      background-image:
+        linear-gradient(45deg, var(--sb-mint) 25%, transparent 25%),
+        linear-gradient(-45deg, var(--sb-mint) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, var(--sb-mint) 75%),
+        linear-gradient(-45deg, transparent 75%, var(--sb-mint) 75%);
+      background-size: 8px 8px;
+      background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+      background-color: rgba(255, 255, 255, 0.7);
+      transform: rotate(-0.5deg);
+    }
+
+    .effect-washi__strip--4 {
+      background: var(--sb-lavender);
+      transform: rotate(1.2deg);
+    }
+
+    /* Effect: Notebook Lines */
+    .effect-notebook {
+      background-color: var(--sb-cream);
+      background-image:
+        repeating-linear-gradient(
+          transparent,
+          transparent 27px,
+          rgba(164, 194, 220, 0.3) 27px,
+          rgba(164, 194, 220, 0.3) 28px
+        ),
+        linear-gradient(
+          90deg,
+          transparent 59px,
+          rgba(220, 130, 130, 0.25) 59px,
+          rgba(220, 130, 130, 0.25) 61px,
+          transparent 61px
+        );
+      padding: 2rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-notebook__text {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--sb-denim);
+      line-height: 28px;
+      transform: rotate(-0.5deg);
+    }
+
+    /* Effect: Polaroid Stack */
+    .effect-polaroid {
+      background: var(--sb-linen);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .effect-polaroid__frame {
+      position: absolute;
+      background: #fff;
+      box-shadow: 2px 3px 8px rgba(74, 69, 67, 0.15),
+        0 0 0 1px rgba(74, 69, 67, 0.05);
+    }
+
+    .effect-polaroid__frame--1 {
+      width: 90px;
+      height: 105px;
+      padding: 6px 6px 28px;
+      left: calc(50% - 70px);
+      top: 20px;
+      transform: rotate(-8deg);
+    }
+
+    .effect-polaroid__frame--2 {
+      width: 85px;
+      height: 100px;
+      padding: 6px 6px 28px;
+      left: calc(50% - 15px);
+      top: 30px;
+      transform: rotate(5deg);
+    }
+
+    .effect-polaroid__frame--3 {
+      width: 80px;
+      height: 95px;
+      padding: 6px 6px 28px;
+      left: calc(50% - 40px);
+      top: 45px;
+      transform: rotate(-2deg);
+      z-index: 2;
+    }
+
+    .effect-polaroid__inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+    }
+
+    .effect-polaroid__inner--1 {
+      background: linear-gradient(135deg, var(--sb-sky) 0%, var(--sb-mint) 100%);
+    }
+
+    .effect-polaroid__inner--2 {
+      background: linear-gradient(135deg, var(--sb-peach) 0%, var(--sb-buttercup) 100%);
+    }
+
+    .effect-polaroid__inner--3 {
+      background: linear-gradient(135deg, var(--sb-blush) 0%, var(--sb-lavender) 100%);
+    }
+
+    /* Effect: Sticker Collection */
+    .effect-stickers {
+      background: var(--sb-cream);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 1rem;
+      position: relative;
+    }
+
+    .effect-stickers__item {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.3rem 0.7rem;
+      border-radius: 16px;
+      font-family: 'Indie Flower', cursive;
+      font-size: 0.7rem;
+      color: var(--sb-charcoal);
+      box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.06),
+        0 0 0 1.5px rgba(255, 255, 255, 0.4) inset;
+    }
+
+    .effect-stickers__star {
+      width: 40px;
+      height: 40px;
+      clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%,
+        79% 91%, 50% 70%, 21% 91%, 32% 57%,
+        2% 35%, 39% 35%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.55rem;
+    }
+
+    .effect-stickers__heart {
+      font-size: 1.4rem;
+      color: var(--sb-rose);
+      transform: rotate(8deg);
+    }
+
+    /* Effect: Paper Texture Layers */
+    .effect-paper-layers {
+      position: relative;
+      background: var(--sb-kraft);
+      background-image:
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      overflow: hidden;
+    }
+
+    .effect-paper-layers__sheet {
+      position: absolute;
+      background: var(--sb-cream);
+      box-shadow: 2px 3px 6px rgba(74, 69, 67, 0.12);
+    }
+
+    .effect-paper-layers__sheet--1 {
+      width: 70%;
+      height: 65%;
+      top: 15%;
+      left: 10%;
+      transform: rotate(-3deg);
+    }
+
+    .effect-paper-layers__sheet--2 {
+      width: 60%;
+      height: 55%;
+      top: 25%;
+      left: 25%;
+      transform: rotate(2deg);
+      background: var(--sb-linen);
+    }
+
+    .effect-paper-layers__sheet--3 {
+      width: 50%;
+      height: 45%;
+      top: 32%;
+      left: 35%;
+      transform: rotate(-1deg);
+      background: var(--sb-parchment);
+    }
+
+    @media (max-width: 900px) {
+      .effects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 2rem;
+      background: var(--sb-cream);
+      box-shadow: var(--sb-shadow-md);
+      transform: rotate(-0.6deg);
+    }
+
+    /* Torn top edge on quote */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 0;
+      right: 0;
+      height: 12px;
+      background: var(--sb-cream);
+      clip-path: polygon(
+        0% 100%, 2% 55%, 5% 80%, 8% 35%, 12% 70%, 15% 25%,
+        19% 60%, 23% 40%, 27% 75%, 30% 20%, 34% 55%, 38% 30%,
+        42% 65%, 46% 15%, 50% 50%, 54% 25%, 58% 70%, 62% 35%,
+        66% 60%, 70% 20%, 74% 50%, 78% 40%, 82% 75%, 86% 30%,
+        90% 55%, 94% 20%, 97% 65%, 100% 100%
+      );
+    }
+
+    /* Torn bottom edge on quote */
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      right: 0;
+      height: 12px;
+      background: var(--sb-cream);
+      clip-path: polygon(
+        0% 0%, 3% 60%, 7% 30%, 11% 70%, 14% 20%, 18% 55%,
+        22% 35%, 26% 75%, 30% 45%, 34% 80%, 38% 25%, 42% 60%,
+        46% 40%, 50% 85%, 54% 30%, 58% 55%, 62% 20%, 66% 65%,
+        70% 40%, 74% 70%, 78% 25%, 82% 50%, 86% 35%, 90% 75%,
+        94% 45%, 97% 60%, 100% 0%
+      );
+    }
+
+    /* Tape holding the quote */
+    .quote-block__tape {
+      position: absolute;
+      top: -12px;
+      left: calc(50% - 50px);
+      width: 100px;
+      height: 24px;
+      background: var(--sb-peach);
+      opacity: 0.7;
+      transform: rotate(-3deg);
+      z-index: 5;
+      border-radius: 1px;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      line-height: 1.8;
+      color: var(--sb-charcoal);
+      font-style: italic;
+      margin-bottom: 1rem;
+      position: relative;
+      padding-top: 0.5rem;
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-family: 'Satisfy', cursive;
+      font-size: 3.5rem;
+      color: var(--sb-rose);
+      position: absolute;
+      top: -0.3rem;
+      left: -0.2rem;
+      opacity: 0.4;
+      line-height: 1;
+    }
+
+    .quote-block cite {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1rem;
+      color: var(--sb-rust);
+      font-style: normal;
+      display: block;
+      transform: rotate(-1deg);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3rem 2.5rem;
+      background: var(--sb-cream);
+      border-radius: 2px;
+      box-shadow: var(--sb-shadow-lg);
+      position: relative;
+      transform: rotate(0.4deg);
+    }
+
+    /* Pushpin on CTA */
+    .cta-container__pin {
+      position: absolute;
+      top: -6px;
+      left: calc(50% - 8px);
+      width: 16px;
+      height: 16px;
+      background: radial-gradient(circle at 40% 40%, #e84040, #b52020);
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      z-index: 6;
+    }
+
+    .cta-container__pin::after {
+      content: '';
+      position: absolute;
+      top: 14px;
+      left: 6px;
+      width: 3px;
+      height: 8px;
+      background: #888;
+      border-radius: 0 0 1px 1px;
+    }
+
+    .cta-container h2 {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(2rem, 4.5vw, 3rem);
+      font-weight: 700;
+      color: var(--sb-charcoal);
+      margin-bottom: 0.4rem;
+    }
+
+    .cta-container .cta-annotation {
+      font-family: 'Shadows Into Light', cursive;
+      font-size: 1.1rem;
+      color: var(--sb-rust);
+      display: inline-block;
+      transform: rotate(-1.5deg);
+      margin-bottom: 1rem;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--sb-charcoal);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--sb-charcoal);
+      color: var(--sb-linen);
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--sb-rose),
+        var(--sb-rose) 5px,
+        var(--sb-blush) 5px,
+        var(--sb-blush) 10px
+      );
+      opacity: 0.6;
+    }
+
+    .footer h3 {
+      font-family: 'Caveat', cursive;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--sb-cream);
+      margin-bottom: 0.8rem;
+    }
+
+    .footer p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--sb-shadow);
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Patrick Hand', cursive;
+      font-size: 1rem;
+      color: var(--sb-peach);
+      transition: color 0.2s ease, transform 0.2s ease;
+      display: inline-block;
+    }
+
+    .footer-links a:hover {
+      color: var(--sb-buttercup);
+      transform: rotate(-2deg) scale(1.05);
+    }
+
+    .footer-note {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.75rem;
+      color: var(--sb-mauve);
+      letter-spacing: 0.03em;
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes gentle-float {
+      0%, 100% { transform: translateY(0) rotate(var(--float-rotate, 0deg)); }
+      50% { transform: translateY(-6px) rotate(var(--float-rotate, 0deg)); }
+    }
+
+    @keyframes gentle-wobble {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+
+    @keyframes tape-shimmer {
+      0% { opacity: 0.35; }
+      50% { opacity: 0.55; }
+      100% { opacity: 0.35; }
+    }
+
+    @keyframes sticker-bounce {
+      0%, 100% { transform: scale(1) rotate(var(--sticker-rotate, 0deg)); }
+      50% { transform: scale(1.06) rotate(var(--sticker-rotate, 0deg)); }
+    }
+
+    .hero__sticker--1 {
+      --sticker-rotate: 15deg;
+      animation: sticker-bounce 4s ease-in-out infinite;
+    }
+
+    .hero__sticker--2 {
+      --sticker-rotate: -10deg;
+      animation: sticker-bounce 4.5s ease-in-out infinite 0.5s;
+    }
+
+    .hero__sticker--3 {
+      --sticker-rotate: 5deg;
+      animation: sticker-bounce 5s ease-in-out infinite 1s;
+    }
+
+    .hero__tape-1 {
+      animation: tape-shimmer 5s ease-in-out infinite;
+    }
+
+    .hero__tape-2 {
+      animation: tape-shimmer 6s ease-in-out infinite 1s;
+    }
+
+    .hero__tape-3 {
+      animation: tape-shimmer 5.5s ease-in-out infinite 2s;
+    }
+
+    .hero__tape-4 {
+      animation: tape-shimmer 4.5s ease-in-out infinite 0.5s;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 4rem 1.5rem 3.5rem;
+      }
+
+      .hero__sticker,
+      .hero__star {
+        display: none;
+      }
+
+      .hero__tape-1,
+      .hero__tape-2,
+      .hero__tape-3,
+      .hero__tape-4 {
+        width: 80px;
+        height: 20px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 0;
+      }
+
+      .container {
+        padding: 0 1rem;
+      }
+
+      .card,
+      .color-chip,
+      .effect-demo,
+      .principle-item {
+        transform: none !important;
+      }
+
+      .card:hover,
+      .color-chip:hover,
+      .effect-demo:hover,
+      .principle-item:hover {
+        transform: translateY(-3px) !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        padding: 0.8rem 1rem;
+      }
+
+      .nav__logo {
+        font-size: 1.5rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 8vw, 3rem);
+      }
+
+      .quote-block {
+        transform: none;
+        padding: 1.5rem;
+      }
+
+      .cta-container {
+        transform: none;
+        padding: 2rem 1.5rem;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#hero" class="nav__logo">My Scrapbook</a>
+    <button class="nav__toggle" aria-label="Toggle menu" onclick="document.querySelector('.nav__links').classList.toggle('open')">&#9776;</button>
+    <div class="nav__links">
+      <a href="#hero" class="active">Pages</a>
+      <a href="#typography">Fonts</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative tape strips -->
+    <div class="hero__tape-1"></div>
+    <div class="hero__tape-2"></div>
+    <div class="hero__tape-3"></div>
+    <div class="hero__tape-4"></div>
+
+    <!-- Decorative stickers -->
+    <div class="hero__sticker hero__sticker--1">hand<br>made</div>
+    <div class="hero__sticker hero__sticker--2">with<br>love</div>
+    <div class="hero__sticker hero__sticker--3">craft</div>
+
+    <!-- Star sticker -->
+    <div class="hero__star"></div>
+
+    <div class="hero__content">
+      <p class="hero__tagline">Design Aesthetic Reference</p>
+      <h1>Scrapbook</h1>
+      <p class="hero__subtitle">Handmade Collage &amp; Paper Craft</p>
+      <p class="hero__desc">
+        A warm, tactile design language rooted in physical craft &mdash; torn paper edges, washi tape accents, polaroid memories, and handwritten annotations layered together like a lovingly assembled album page.
+      </p>
+      <div class="hero__buttons">
+        <a href="#components" class="btn btn--primary">Explore Components</a>
+        <a href="#palette" class="btn btn--ghost">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== WASHI TAPE DIVIDER ===== -->
+  <div class="tape-band tape-band--striped"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Mixed, Personal &amp; Handwritten</h2>
+      <p class="section-subtitle">handwriting, typewriters, and friendly sans-serifs</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Caveat</p>
+            <p class="typo-display">Dear Diary...</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Patrick Hand</p>
+            <p class="typo-heading">Memories Worth Keeping</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Playful / Indie Flower</p>
+            <p class="typo-playful">Stickers, Doodles &amp; Good Vibes</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Typewriter / Special Elite</p>
+            <p class="typo-typewriter">DATE: MARCH 4, 2026 -- LOCATION: MY DESK</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Nunito</p>
+            <p class="typo-body">Rounded and friendly text for comfortable reading. The scrapbook embraces warmth and personality over corporate precision.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Script / Satisfy</p>
+            <p class="typo-script">beautiful moments</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Caveat', cursive; font-weight: 700; font-size: 2rem; color: var(--sb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Patrick Hand', cursive; font-size: 1.5rem; color: var(--sb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Indie Flower', cursive; font-size: 1.3rem; color: var(--sb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Special Elite', monospace; font-size: 1.1rem; color: var(--sb-rust);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.0rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--sb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--sb-denim); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Caveat', cursive; font-weight: 700; color: var(--sb-rust);">Caveat</strong> + <strong>Nunito</strong><br>
+              <span class="pair-desc">personal headline with clean readability</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Special Elite', monospace; color: var(--sb-rust);">Special Elite</strong> + <strong style="font-family: 'Shadows Into Light', cursive;">Shadows Into Light</strong><br>
+              <span class="pair-desc">vintage journaling with handwritten notes</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Patrick Hand', cursive; color: var(--sb-rust);">Patrick Hand</strong> + <strong style="font-family: 'Courier Prime', monospace;">Courier Prime</strong><br>
+              <span class="pair-desc">casual handwriting meets typewriter charm</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVY DIVIDER ===== -->
+  <div class="divider-wave divider-wave--on-cream"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--linen" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Kraft Paper &amp; Pastel Stickers</h2>
+      <p class="section-subtitle">warm browns, soft pastels, and vintage ink tones</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4A882;"></div>
+          <div class="color-info">
+            <div class="color-name">Kraft Paper</div>
+            <div class="color-hex">#C4A882</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FDF8F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Cream White</div>
+            <div class="color-hex">#FDF8F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0E6D6;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Linen</div>
+            <div class="color-hex">#F0E6D6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2C4C4;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Blush</div>
+            <div class="color-hex">#F2C4C4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4919A;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Rose</div>
+            <div class="color-hex">#D4919A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A8C8E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Sky Blue</div>
+            <div class="color-hex">#A8C8E8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B5CDB6;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Mint</div>
+            <div class="color-hex">#B5CDB6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2D06B;"></div>
+          <div class="color-info">
+            <div class="color-name">Buttercup</div>
+            <div class="color-hex">#F2D06B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5B895;"></div>
+          <div class="color-info">
+            <div class="color-name">Peach Sorbet</div>
+            <div class="color-hex">#F5B895</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9B8D9;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender Mist</div>
+            <div class="color-hex">#C9B8D9</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B8DAE;"></div>
+          <div class="color-info">
+            <div class="color-name">Denim Blue</div>
+            <div class="color-hex">#6B8DAE</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A05A3C;"></div>
+          <div class="color-info">
+            <div class="color-name">Rust Ink</div>
+            <div class="color-hex">#A05A3C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A4543;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Pencil</div>
+            <div class="color-hex">#4A4543</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B89BA8;"></div>
+          <div class="color-info">
+            <div class="color-name">Faded Mauve</div>
+            <div class="color-hex">#B89BA8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D6CEC4;"></div>
+          <div class="color-info">
+            <div class="color-name">Polaroid Shadow</div>
+            <div class="color-hex">#D6CEC4</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WASHI TAPE DIVIDER ===== -->
+  <div class="tape-band tape-band--dotted"></div>
+
+  <!-- ===== COMPONENT CARDS SECTION ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Layered Cards &amp; Craft Details</h2>
+      <p class="section-subtitle">like pages from a lovingly assembled album</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card__tape card__tape--blush" style="transform: rotate(-3deg);"></div>
+          <div class="card__icon card__icon--blush">&#9986;</div>
+          <h3>Torn Paper Edges</h3>
+          <p>Irregular clip-path polygons break clean rectangles into organic, hand-torn shapes that feel genuinely ripped from a larger sheet.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card__tape card__tape--striped" style="transform: rotate(2deg);"></div>
+          <div class="card__icon card__icon--peach">&#127912;</div>
+          <h3>Washi Tape Strips</h3>
+          <p>Semi-transparent decorative tape in stripes, dots, and checkered patterns appear to pin and attach elements to the scrapbook page.</p>
+          <span class="tag">Decoration</span>
+          <span class="tag">Pattern</span>
+        </div>
+        <div class="card">
+          <div class="card__tape card__tape--sky" style="transform: rotate(-1deg);"></div>
+          <div class="card__icon card__icon--sky">&#128248;</div>
+          <h3>Polaroid Frames</h3>
+          <p>Images framed with thick white borders and soft drop shadows, tilted at casual angles with handwritten captions beneath each photo.</p>
+          <span class="tag">Photo</span>
+          <span class="tag">Frame</span>
+        </div>
+        <div class="card">
+          <div class="card__tape card__tape--dotted" style="transform: rotate(4deg);"></div>
+          <div class="card__icon card__icon--buttercup">&#11088;</div>
+          <h3>Sticker Badges</h3>
+          <p>Decorative shapes, icons, and labels styled to look like peel-off stickers with subtle outlines, soft shadows, and gentle hover effects.</p>
+          <span class="tag">Badge</span>
+          <span class="tag">Label</span>
+        </div>
+        <div class="card">
+          <div class="card__tape card__tape--lavender" style="transform: rotate(-2deg);"></div>
+          <div class="card__icon card__icon--lavender">&#9997;</div>
+          <h3>Handwritten Notes</h3>
+          <p>Cursive and casual handwriting overlaid as captions, arrows, dates, and personal annotations that feel genuinely penned by hand.</p>
+          <span class="tag">Typography</span>
+          <span class="tag">Personal</span>
+        </div>
+        <div class="card">
+          <div class="card__tape card__tape--mint" style="transform: rotate(1deg);"></div>
+          <div class="card__icon card__icon--mint">&#128204;</div>
+          <h3>Pins &amp; Clips</h3>
+          <p>Small pushpins, paper clips, and thumbtacks visually fasten elements in place, adding authentic dimension to the collage composition.</p>
+          <span class="tag">Attachment</span>
+          <span class="tag">3D</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="sticker-banner">
+    <div class="sticker-banner__tape-tl"></div>
+    <div class="sticker-banner__tape-br"></div>
+    <div class="sticker-banner__content">
+      <div class="sticker-banner__row">
+        <span class="sticker-banner__item" style="background: var(--sb-blush); color: var(--sb-charcoal);">&#10084; memories</span>
+        <span class="sticker-banner__item" style="background: var(--sb-sky); color: var(--sb-charcoal);">&#9733; handmade</span>
+        <span class="sticker-banner__item" style="background: var(--sb-buttercup); color: var(--sb-charcoal);">&#9986; cut &amp; paste</span>
+        <span class="sticker-banner__item" style="background: var(--sb-mint); color: var(--sb-charcoal);">&#127808; collected</span>
+        <span class="sticker-banner__item" style="background: var(--sb-lavender); color: var(--sb-charcoal);">&#128247; captured</span>
+        <span class="sticker-banner__item" style="background: var(--sb-peach); color: var(--sb-charcoal);">&#9997; annotated</span>
+      </div>
+      <h2>Paper, Tape &amp; Tender Moments</h2>
+      <p>From washi tape rolls to vintage sticker sheets, scrapbooking celebrates the handmade</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--linen">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Scrapbook Philosophy</h2>
+      <p class="section-subtitle">imperfection, warmth, layering, and personal touch</p>
+
+      <div class="principles-grid">
+        <div class="principle-item">
+          <div class="principle-icon" style="background: var(--sb-blush);">&#10022;</div>
+          <div class="principle-text">
+            <h3>Imperfection Is Intentional</h3>
+            <p>Wobbly edges, uneven spacing, and casual placement are features, not flaws. They communicate that a real person assembled this page with their own hands and their own heart.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon" style="background: var(--sb-sky);">&#9998;</div>
+          <div class="principle-text">
+            <h3>Personal Over Polished</h3>
+            <p>Every element should feel chosen and placed by a real person with their own taste and memories. Warmth and approachability matter more than pixel-perfect precision.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon" style="background: var(--sb-mint);">&#9776;</div>
+          <div class="principle-text">
+            <h3>Layering Creates Depth</h3>
+            <p>Overlapping elements at various angles and z-indexes produce the tactile depth of a physical scrapbook. Shadows beneath papers give the illusion of real stacked materials.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon" style="background: var(--sb-buttercup);">&#127912;</div>
+          <div class="principle-text">
+            <h3>Decoration Serves Connection</h3>
+            <p>Washi tape, stickers, and embellishments create visual relationships between elements. A tape strip connects a photo to its caption. A sticker marks a moment as special.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVY DIVIDER ===== -->
+  <div class="divider-wave divider-wave--on-linen"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--cream" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Craft Techniques</h2>
+      <p class="section-subtitle">all the scrapbook details, no image assets needed</p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Torn Paper -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-torn-paper"></div>
+          <div class="effect-caption">
+            <h4>Torn Paper Edge</h4>
+            <p>Irregular clip-path polygons simulate hand-torn paper borders between layered surfaces.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Washi Tape -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-washi">
+            <div class="effect-washi__strip effect-washi__strip--1"></div>
+            <div class="effect-washi__strip effect-washi__strip--2"></div>
+            <div class="effect-washi__strip effect-washi__strip--3"></div>
+            <div class="effect-washi__strip effect-washi__strip--4"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Washi Tape Patterns</h4>
+            <p>Striped, dotted, checkered, and solid tape strips built entirely with CSS gradients.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Notebook Lines -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-notebook">
+            <span class="effect-notebook__text">today was a good day...</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Notebook Paper Lines</h4>
+            <p>Repeating linear gradients create ruled notebook paper with a red margin line.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Polaroid Stack -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-polaroid">
+            <div class="effect-polaroid__frame effect-polaroid__frame--1">
+              <div class="effect-polaroid__inner effect-polaroid__inner--1"></div>
+            </div>
+            <div class="effect-polaroid__frame effect-polaroid__frame--2">
+              <div class="effect-polaroid__inner effect-polaroid__inner--2"></div>
+            </div>
+            <div class="effect-polaroid__frame effect-polaroid__frame--3">
+              <div class="effect-polaroid__inner effect-polaroid__inner--3"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Polaroid Stack</h4>
+            <p>White-bordered photo frames at tilted angles with subtle shadows create a scattered pile effect.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Sticker Collection -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-stickers">
+            <span class="effect-stickers__item" style="background: var(--sb-blush); transform: rotate(-3deg);">love this!</span>
+            <span class="effect-stickers__star" style="background: var(--sb-buttercup); transform: rotate(5deg);"></span>
+            <span class="effect-stickers__item" style="background: var(--sb-sky); transform: rotate(2deg);">so cute</span>
+            <span class="effect-stickers__heart">&#10084;</span>
+            <span class="effect-stickers__item" style="background: var(--sb-mint); transform: rotate(-1deg);">keeper</span>
+            <span class="effect-stickers__item" style="background: var(--sb-lavender); transform: rotate(4deg);">fave</span>
+            <span class="effect-stickers__star" style="background: var(--sb-peach); transform: rotate(-6deg);"></span>
+            <span class="effect-stickers__item" style="background: var(--sb-buttercup); transform: rotate(-2deg);">yay!</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Sticker Collection</h4>
+            <p>Rounded badges, star shapes, and heart doodles form a scattered sticker sheet look.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Paper Layers -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-paper-layers">
+            <div class="effect-paper-layers__sheet effect-paper-layers__sheet--1"></div>
+            <div class="effect-paper-layers__sheet effect-paper-layers__sheet--2"></div>
+            <div class="effect-paper-layers__sheet effect-paper-layers__sheet--3"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Paper Texture Layers</h4>
+            <p>Overlapping paper sheets on kraft background with subtle noise texture and drop shadows.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WASHI TAPE DIVIDER ===== -->
+  <div class="tape-band tape-band--checkered"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--linen">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Sticker-Style Buttons</h2>
+      <p class="section-subtitle">rounded, warm, and tactile like real craft supplies</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--primary">Sticker Primary</a>
+        <a href="#" class="btn btn--badge">Badge Button</a>
+        <a href="#" class="btn btn--tape">Tape Style</a>
+        <a href="#" class="btn btn--ghost">-- ghost outline --</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block">
+        <div class="quote-block__tape"></div>
+        <blockquote>
+          A scrapbook is not just paper and glue &mdash; it is a love letter to the moments that made us who we are. Every torn edge, every taped photograph, every handwritten note says: this mattered to me.
+        </blockquote>
+        <cite>&mdash; The Heart of Scrapbook Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--linen">
+    <div class="container">
+      <div class="cta-container">
+        <div class="cta-container__pin"></div>
+        <h2>Start Your Page</h2>
+        <span class="cta-annotation">every detail tells a story</span>
+        <p>
+          The Scrapbook aesthetic embraces handmade warmth, layered paper textures, washi tape embellishments, and the beautiful imperfection of things assembled by hand. Ground every layout in kraft and cream &mdash; then decorate with pastel stickers and heartfelt annotations.
+        </p>
+        <a href="#hero" class="btn btn--primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WASHI TAPE DIVIDER ===== -->
+  <div class="tape-band tape-band--striped"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>My Scrapbook</h3>
+      <p>
+        A design aesthetic reference celebrating the warm, tactile, handmade visual language of scrapbook craft. Kraft paper, torn edges, washi tape, and handwritten captions &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Pages</a>
+        <a href="#typography">Fonts</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <p class="footer-note">Assembled with care &bull; Scrapbook Design Aesthetic &bull; 2026</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Mobile nav toggle
+    document.querySelector('.nav__toggle').addEventListener('click', function() {
+      document.querySelector('.nav__links').classList.toggle('open');
+    });
+
+    // Close mobile nav on link click
+    document.querySelectorAll('.nav__links a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        document.querySelector('.nav__links').classList.remove('open');
+      });
+    });
+
+    // Active nav link on scroll
+    var sections = document.querySelectorAll('section[id]');
+    var navLinks = document.querySelectorAll('.nav__links a');
+
+    function updateActiveNav() {
+      var scrollY = window.scrollY + 120;
+      sections.forEach(function(section) {
+        var top = section.offsetTop;
+        var height = section.offsetHeight;
+        var id = section.getAttribute('id');
+        if (scrollY >= top && scrollY < top + height) {
+          navLinks.forEach(function(link) {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === '#' + id) {
+              link.classList.add('active');
+            }
+          });
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+  </script>
+</body>
+</html>

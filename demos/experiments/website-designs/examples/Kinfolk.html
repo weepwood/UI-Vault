@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kinfolk -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --kf-white: #faf8f5;
+      --kf-cream: #f3ede4;
+      --kf-linen: #ebe3d7;
+      --kf-parchment: #e2d8c8;
+
+      /* --- Neutrals --- */
+      --kf-sand: #d4c8b5;
+      --kf-mushroom: #b5ada2;
+      --kf-stone: #9a917f;
+      --kf-driftwood: #7a7062;
+
+      /* --- Foregrounds --- */
+      --kf-charcoal: #3b332d;
+      --kf-espresso: #2a2320;
+      --kf-ink: #1a1714;
+
+      /* --- Accents --- */
+      --kf-terracotta: #c4907a;
+      --kf-rose: #d4a99a;
+      --kf-sage: #a3aa8e;
+      --kf-clay: #c9b099;
+
+      /* --- Functional Mappings --- */
+      --kf-bg-primary: var(--kf-white);
+      --kf-bg-secondary: var(--kf-cream);
+      --kf-bg-tertiary: var(--kf-linen);
+      --kf-bg-surface: var(--kf-parchment);
+      --kf-text-primary: var(--kf-charcoal);
+      --kf-text-heading: var(--kf-espresso);
+      --kf-text-muted: var(--kf-mushroom);
+      --kf-text-caption: var(--kf-stone);
+      --kf-accent: var(--kf-terracotta);
+      --kf-accent-soft: var(--kf-rose);
+      --kf-border: var(--kf-sand);
+      --kf-border-light: var(--kf-linen);
+      --kf-rule: var(--kf-sand);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'DM Sans', 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      letter-spacing: 0.01em;
+      color: var(--kf-text-primary);
+      background-color: var(--kf-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'DM Serif Display', 'Cormorant Garamond', Georgia, serif;
+      font-weight: 400;
+      color: var(--kf-text-heading);
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.75rem 5%;
+      background: var(--kf-bg-primary);
+      border-bottom: 1px solid var(--kf-border-light);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.35rem;
+      color: var(--kf-text-heading);
+      letter-spacing: 0.03em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-brand:hover {
+      color: var(--kf-accent);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--kf-text-caption);
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--kf-text-heading);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      min-height: 85vh;
+      background: var(--kf-bg-primary);
+    }
+
+    .hero-image {
+      overflow: hidden;
+      position: relative;
+      background: var(--kf-parchment);
+    }
+
+    /* CSS-only editorial image placeholder */
+    .hero-image-inner {
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(145deg, var(--kf-linen) 0%, var(--kf-parchment) 40%, var(--kf-sand) 100%);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-image-inner::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 10%;
+      width: 55%;
+      height: 65%;
+      border-radius: 50%;
+      background: radial-gradient(ellipse, var(--kf-cream) 0%, var(--kf-linen) 50%, transparent 70%);
+      opacity: 0.6;
+    }
+
+    .hero-image-inner::after {
+      content: '';
+      position: absolute;
+      bottom: 10%;
+      right: 8%;
+      width: 120px;
+      height: 160px;
+      border: 1px solid var(--kf-sand);
+      background: transparent;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 8%;
+      max-width: 540px;
+    }
+
+    .hero-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--kf-text-caption);
+      margin-bottom: 1.75rem;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-body {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--kf-text-primary);
+      margin-bottom: 2.5rem;
+      max-width: 420px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2.25rem;
+      border: 1px solid var(--kf-charcoal);
+      border-radius: 0;
+      background: transparent;
+      color: var(--kf-charcoal);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    }
+
+    .btn:hover {
+      background: var(--kf-charcoal);
+      color: var(--kf-white);
+    }
+
+    .btn--secondary {
+      border-color: var(--kf-sand);
+      color: var(--kf-driftwood);
+    }
+
+    .btn--secondary:hover {
+      background: var(--kf-linen);
+      border-color: var(--kf-driftwood);
+      color: var(--kf-charcoal);
+    }
+
+    .btn--accent {
+      border-color: var(--kf-terracotta);
+      color: var(--kf-terracotta);
+    }
+
+    .btn--accent:hover {
+      background: var(--kf-terracotta);
+      color: var(--kf-white);
+    }
+
+    .btn--text {
+      border: none;
+      padding: 0.5rem 0;
+      position: relative;
+      background: transparent;
+    }
+
+    .btn--text::after {
+      content: '';
+      position: absolute;
+      bottom: 0.35rem;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--kf-charcoal);
+      transform: scaleX(0.3);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .btn--text:hover {
+      background: transparent;
+      color: var(--kf-charcoal);
+    }
+
+    .btn--text:hover::after {
+      transform: scaleX(1);
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--kf-border-light);
+      margin: 5rem auto;
+      max-width: 100px;
+    }
+
+    .divider--full {
+      max-width: 90%;
+    }
+
+    .divider--sand {
+      background: var(--kf-sand);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--cream {
+      background: var(--kf-bg-secondary);
+    }
+
+    .section--linen {
+      background: var(--kf-bg-tertiary);
+    }
+
+    .section--espresso {
+      background: var(--kf-espresso);
+      color: var(--kf-cream);
+    }
+
+    .section--espresso .section-label { color: var(--kf-terracotta); }
+    .section--espresso .section-title { color: var(--kf-white); }
+    .section--espresso .section-subtitle { color: var(--kf-mushroom); }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--kf-text-caption);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--kf-text-heading);
+      line-height: 1.2;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-subtitle {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: var(--kf-text-muted);
+      line-height: 1.7;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 2.5rem;
+    }
+
+    .typo-sample:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--kf-text-caption);
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--kf-border-light);
+    }
+
+    .typo-display {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.2rem, 4.5vw, 3.2rem);
+      color: var(--kf-text-heading);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .typo-heading {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      color: var(--kf-text-heading);
+      line-height: 1.2;
+    }
+
+    .typo-subheading {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.15rem, 2vw, 1.5rem);
+      font-weight: 400;
+      color: var(--kf-driftwood);
+      line-height: 1.4;
+    }
+
+    .typo-body-text {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      line-height: 1.85;
+      color: var(--kf-text-primary);
+    }
+
+    .typo-pullquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.5;
+      color: var(--kf-driftwood);
+    }
+
+    .typo-caption {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: var(--kf-text-muted);
+      line-height: 1.6;
+    }
+
+    .typo-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--kf-text-caption);
+    }
+
+    .typo-right {
+      background: var(--kf-bg-primary);
+      padding: 2.5rem;
+      border-top: 1px solid var(--kf-border-light);
+      border-bottom: 1px solid var(--kf-border-light);
+    }
+
+    .typo-right h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 1.25rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--kf-border-light);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--kf-text-caption);
+      min-width: 52px;
+      text-align: right;
+      letter-spacing: 0.02em;
+    }
+
+    .typo-pairings {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--kf-border-light);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 1.25rem;
+    }
+
+    .typo-pairing-item {
+      margin-bottom: 1rem;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-detail {
+      font-size: 0.82rem;
+      color: var(--kf-text-muted);
+      font-weight: 300;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      transition: opacity 0.4s ease;
+    }
+
+    .color-chip:hover {
+      opacity: 0.85;
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 0.85rem 0 0;
+    }
+
+    .color-name {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--kf-text-heading);
+      margin-bottom: 0.15rem;
+    }
+
+    .color-hex {
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: var(--kf-text-caption);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--kf-bg-primary);
+      overflow: hidden;
+      transition: opacity 0.4s ease;
+    }
+
+    .card:hover {
+      opacity: 0.9;
+    }
+
+    .card-image {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-image-inner {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: filter 0.6s ease;
+      filter: saturate(0.82) contrast(0.94) brightness(1.02);
+    }
+
+    .card:hover .card-image-inner {
+      filter: saturate(0.92) contrast(0.98) brightness(1.01);
+    }
+
+    .card-body {
+      padding: 1.75rem 0.25rem 2rem;
+    }
+
+    .card-category {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--kf-text-caption);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      font-weight: 400;
+      color: var(--kf-text-heading);
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-excerpt {
+      font-size: 0.88rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--kf-text-primary);
+    }
+
+    .card-meta {
+      margin-top: 1.25rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      color: var(--kf-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       CSS EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+    }
+
+    .effect-preview {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.5rem 0.25rem 0;
+    }
+
+    .effect-caption h4 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--kf-text-heading);
+      margin-bottom: 0.4rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--kf-text-muted);
+    }
+
+    /* Effect 1: Warm Desaturation Filter */
+    .effect-desat {
+      background:
+        linear-gradient(145deg, var(--kf-linen) 0%, var(--kf-parchment) 50%, var(--kf-sand) 100%);
+      filter: saturate(0.82) contrast(0.94) brightness(1.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-desat::after {
+      content: 'SOFT FOCUS';
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--kf-driftwood);
+      letter-spacing: 0.05em;
+    }
+
+    /* Effect 2: Subtle Warm Overlay */
+    .effect-overlay {
+      background:
+        linear-gradient(180deg, var(--kf-parchment) 0%, var(--kf-sand) 60%, var(--kf-mushroom) 100%);
+      position: relative;
+    }
+
+    .effect-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        transparent 60%,
+        rgba(250, 248, 245, 0.2) 100%
+      );
+      pointer-events: none;
+    }
+
+    .effect-overlay::after {
+      content: 'WARM WASH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.4rem;
+      color: var(--kf-white);
+      letter-spacing: 0.05em;
+    }
+
+    /* Effect 3: Whisper-thin Rule Pattern */
+    .effect-rules {
+      background: var(--kf-cream);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 31px,
+          var(--kf-linen) 31px,
+          var(--kf-linen) 32px
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-rules::after {
+      content: 'EDITORIAL LINES';
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--kf-driftwood);
+    }
+
+    /* Effect 4: Linen Texture */
+    .effect-linen {
+      background: var(--kf-linen);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.05) 1px,
+          rgba(255, 255, 255, 0.05) 2px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 1px,
+          rgba(0, 0, 0, 0.02) 1px,
+          rgba(0, 0, 0, 0.02) 2px
+        );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-linen::after {
+      content: 'LINEN';
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem;
+      color: var(--kf-driftwood);
+      letter-spacing: 0.08em;
+    }
+
+    /* Effect 5: Slow Fade In (scroll reveal concept) */
+    .effect-fade {
+      background:
+        linear-gradient(135deg, var(--kf-white) 0%, var(--kf-cream) 50%, var(--kf-linen) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-fade-content {
+      text-align: center;
+      animation: kfFadeIn 3s ease-in-out infinite alternate;
+    }
+
+    .effect-fade-content span:first-child {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--kf-stone);
+      margin-bottom: 0.5rem;
+    }
+
+    .effect-fade-content span:last-child {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.5rem;
+      color: var(--kf-espresso);
+    }
+
+    @keyframes kfFadeIn {
+      0% { opacity: 0.3; transform: translateY(6px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Effect 6: Sand Gradient Bleed */
+    .effect-gradient {
+      background:
+        radial-gradient(ellipse at 30% 40%, var(--kf-rose) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, var(--kf-sage) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, var(--kf-clay) 0%, transparent 60%),
+        var(--kf-cream);
+      opacity: 0.9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-gradient::after {
+      content: 'NATURAL TONES';
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--kf-espresso);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE / PULL QUOTE
+       ============================================ */
+    .quote-section {
+      max-width: 620px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      text-align: center;
+    }
+
+    .quote-section::before,
+    .quote-section::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--kf-sand);
+      margin: 0 auto 2.5rem;
+    }
+
+    .quote-section::after {
+      margin: 2.5rem auto 0;
+    }
+
+    .quote-section blockquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.75rem);
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.6;
+      color: var(--kf-driftwood);
+      border: none;
+      padding: 0;
+    }
+
+    .quote-section cite {
+      display: block;
+      margin-top: 1.5rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--kf-text-caption);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      text-align: center;
+      padding: var(--section-pad) 5%;
+      background: var(--kf-espresso);
+    }
+
+    .cta-inner {
+      max-width: 540px;
+      margin: 0 auto;
+    }
+
+    .cta .section-label {
+      color: var(--kf-terracotta);
+    }
+
+    .cta h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      color: var(--kf-white);
+      line-height: 1.2;
+      margin-bottom: 1.25rem;
+    }
+
+    .cta p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: var(--kf-mushroom);
+      margin-bottom: 2.5rem;
+    }
+
+    .cta .btn {
+      border-color: var(--kf-sand);
+      color: var(--kf-cream);
+    }
+
+    .cta .btn:hover {
+      background: var(--kf-cream);
+      color: var(--kf-espresso);
+      border-color: var(--kf-cream);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--kf-ink);
+      padding: 4rem 5% 2rem;
+      text-align: center;
+    }
+
+    .footer-brand {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.2rem;
+      color: var(--kf-cream);
+      letter-spacing: 0.03em;
+      display: block;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--kf-stone);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--kf-cream);
+    }
+
+    .footer-divider {
+      border: none;
+      height: 1px;
+      background: var(--kf-charcoal);
+      margin: 0 auto 1.5rem;
+      max-width: 80px;
+    }
+
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 300;
+      color: var(--kf-driftwood);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 1.25rem 1.25rem;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+
+      .nav-links {
+        gap: 1.5rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .hero-image {
+        height: 50vh;
+      }
+
+      .hero-content {
+        padding: 3rem 1.5rem 4rem;
+        max-width: 100%;
+      }
+
+      .section {
+        padding: clamp(48px, 8vw, 80px) 0;
+      }
+
+      .container {
+        padding: 0 1.25rem;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 1rem;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .button-showcase {
+        gap: 1rem;
+      }
+
+      .btn {
+        padding: 0.7rem 1.75rem;
+      }
+
+      .quote-section {
+        padding: 0 1rem;
+      }
+
+      .footer {
+        padding: 3rem 1.25rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-name {
+        font-size: 0.7rem;
+      }
+
+      .color-hex {
+        font-size: 0.58rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-fade-content {
+        animation: none;
+      }
+
+      .card,
+      .color-chip,
+      .btn,
+      .nav-brand,
+      .nav-links a,
+      .footer-links a,
+      .card-image-inner {
+        transition: none;
+      }
+
+      .btn--text::after {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Kinfolk</a>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-image">
+      <div class="hero-image-inner"></div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-label">Design Aesthetic Reference</p>
+      <h1>The Art of Quiet Living</h1>
+      <p class="hero-body">
+        A warm editorial aesthetic rooted in intentional restraint, generous whitespace,
+        and the quiet confidence that comes from removing everything unnecessary.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Explore</a>
+        <a href="#palette" class="btn btn--secondary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== THIN DIVIDER ===== -->
+  <hr class="divider divider--full divider--sand" style="margin: 0;">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Typography</span>
+        <h2 class="section-title">Refined Serif, Warm Sans</h2>
+        <p class="section-subtitle">A disciplined two-typeface pairing where authority comes from spacing and weight, not scale</p>
+      </div>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / DM Serif Display</p>
+            <p class="typo-display">Intentional Living</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / DM Serif Display</p>
+            <p class="typo-heading">A Considered Approach</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Cormorant Garamond</p>
+            <p class="typo-subheading">The beauty of restraint and quiet editorial authority</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / DM Sans</p>
+            <p class="typo-body-text">Warm, humanist sans-serif for comfortable reading. Every word earns its place through purpose, and the empty space speaks as loudly as the content.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Pull Quote / Cormorant Garamond Italic</p>
+            <p class="typo-pullquote">If you are championing a slow, quality-over-quantity approach to life, your design must embody those same values.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / DM Sans Light</p>
+            <p class="typo-caption">Understated metadata and editorial captions in muted tones</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / DM Sans Uppercase</p>
+            <p class="typo-label">Category &middot; Volume XII &middot; 2024</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.2rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--kf-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.25rem</span>
+              <span style="font-family: 'DM Serif Display', serif; font-size: 1.3rem; color: var(--kf-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--kf-driftwood);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 1rem; color: var(--kf-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-weight: 300; font-size: 0.8rem; color: var(--kf-mushroom);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.7rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.7rem; color: var(--kf-stone); text-transform: uppercase; letter-spacing: 0.18em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--kf-espresso);">DM Serif Display</strong> + <strong>DM Sans</strong><br>
+              <span class="typo-pairing-detail">Core Kinfolk: warm editorial serif with clean sans companion</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Cormorant Garamond', serif; color: var(--kf-espresso);">Cormorant Garamond</strong> + <strong style="font-family: 'Outfit', sans-serif;">Outfit</strong><br>
+              <span class="typo-pairing-detail">Elevated literary magazine with modern captions</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'DM Serif Display', serif; color: var(--kf-espresso);">DM Serif Display</strong> + <strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond</strong><br>
+              <span class="typo-pairing-detail">All-serif editorial, traditional and warm</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THIN DIVIDER ===== -->
+  <hr class="divider" style="margin: 0 auto; padding: 3rem 0;">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section" id="palette">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Color Palette</span>
+        <h2 class="section-title">Warm Neutrals &amp; Muted Earth</h2>
+        <p class="section-subtitle">Sun-bleached linen, unglazed ceramics, dried botanicals, stone, and warm shadow</p>
+      </div>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #faf8f5;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm White</div>
+            <div class="color-hex">#FAF8F5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f3ede4;"></div>
+          <div class="color-info">
+            <div class="color-name">Natural Cream</div>
+            <div class="color-hex">#F3EDE4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ebe3d7;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Linen</div>
+            <div class="color-hex">#EBE3D7</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e2d8c8;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#E2D8C8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d4c8b5;"></div>
+          <div class="color-info">
+            <div class="color-name">Sand</div>
+            <div class="color-hex">#D4C8B5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b5ada2;"></div>
+          <div class="color-info">
+            <div class="color-name">Mushroom Grey</div>
+            <div class="color-hex">#B5ADA2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9a917f;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Stone</div>
+            <div class="color-hex">#9A917F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7a7062;"></div>
+          <div class="color-info">
+            <div class="color-name">Driftwood</div>
+            <div class="color-hex">#7A7062</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3b332d;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Brown</div>
+            <div class="color-hex">#3B332D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2a2320;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Espresso</div>
+            <div class="color-hex">#2A2320</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c4907a;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Terracotta</div>
+            <div class="color-hex">#C4907A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d4a99a;"></div>
+          <div class="color-info">
+            <div class="color-name">Faded Rose</div>
+            <div class="color-hex">#D4A99A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a3aa8e;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Sage</div>
+            <div class="color-hex">#A3AA8E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c9b099;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Clay</div>
+            <div class="color-hex">#C9B099</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a1714;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink Black</div>
+            <div class="color-hex">#1A1714</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== THIN DIVIDER ===== -->
+  <hr class="divider divider--full" style="margin-top: 0; margin-bottom: 0;">
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Components</span>
+        <h2 class="section-title">Editorial Cards</h2>
+        <p class="section-subtitle">Borderless, clean compositions where photography and whitespace do the work</p>
+      </div>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-image">
+            <div class="card-image-inner" style="background: linear-gradient(160deg, var(--kf-linen) 0%, var(--kf-parchment) 50%, var(--kf-sand) 100%);"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Slow Living</span>
+            <h3 class="card-title">The Ritual of Morning Light</h3>
+            <p class="card-excerpt">How the first hour of daylight shapes the rhythm of an intentional day, from linen curtains to ceramic cups.</p>
+            <p class="card-meta">8 min read</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image">
+            <div class="card-image-inner" style="background: linear-gradient(145deg, var(--kf-cream) 0%, var(--kf-rose) 40%, var(--kf-parchment) 100%); opacity: 0.7;"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Craft</span>
+            <h3 class="card-title">Hands That Shape Clay</h3>
+            <p class="card-excerpt">A quiet portrait of the ceramic artist who finds meditation in the repetitive motion of the wheel.</p>
+            <p class="card-meta">12 min read</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image">
+            <div class="card-image-inner" style="background: linear-gradient(135deg, var(--kf-sage) 0%, var(--kf-linen) 60%, var(--kf-cream) 100%); opacity: 0.65;"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Nature</span>
+            <h3 class="card-title">Gathering What Grows Wild</h3>
+            <p class="card-excerpt">On the quiet satisfaction of foraging seasonal herbs, pressing flowers, and learning the names of local plants.</p>
+            <p class="card-meta">6 min read</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image">
+            <div class="card-image-inner" style="background: linear-gradient(170deg, var(--kf-parchment) 0%, var(--kf-clay) 50%, var(--kf-sand) 100%); opacity: 0.7;"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Home</span>
+            <h3 class="card-title">Living With Less, Slowly</h3>
+            <p class="card-excerpt">The philosophy of owning fewer, better things and the discipline of letting go of what no longer serves.</p>
+            <p class="card-meta">10 min read</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image">
+            <div class="card-image-inner" style="background: linear-gradient(155deg, var(--kf-cream) 0%, var(--kf-mushroom) 60%, var(--kf-driftwood) 100%); opacity: 0.55;"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Travel</span>
+            <h3 class="card-title">A Week Without Schedule</h3>
+            <p class="card-excerpt">What happens when you arrive somewhere new with no itinerary, no reservations, and no plans at all.</p>
+            <p class="card-meta">14 min read</p>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-image">
+            <div class="card-image-inner" style="background: linear-gradient(140deg, var(--kf-linen) 0%, var(--kf-terracotta) 50%, var(--kf-parchment) 100%); opacity: 0.55;"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Food</span>
+            <h3 class="card-title">Bread, Salt, and Time</h3>
+            <p class="card-excerpt">The ancient simplicity of sourdough and why the slowest recipes are often the most nourishing.</p>
+            <p class="card-meta">9 min read</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section">
+    <div class="quote-section">
+      <blockquote>
+        The goal is not to fill every space but to let every space breathe &mdash; to design with the restraint that allows the content to speak for itself.
+      </blockquote>
+      <cite>Kinfolk Design Philosophy</cite>
+    </div>
+  </section>
+
+  <!-- ===== CSS EFFECTS SHOWCASE ===== -->
+  <section class="section section--cream" id="effects">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Visual Effects</span>
+        <h2 class="section-title">CSS Techniques &amp; Treatments</h2>
+        <p class="section-subtitle">Subtle, warm, and understated &mdash; no image assets needed</p>
+      </div>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-desat"></div>
+          <div class="effect-caption">
+            <h4>Warm Desaturation</h4>
+            <p>Slightly desaturated filters (saturate 0.82, contrast 0.94) integrate photography with the warm page tone.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-overlay"></div>
+          <div class="effect-caption">
+            <h4>Soft Warm Overlay</h4>
+            <p>A gentle gradient overlay from transparent to warm white creates the sunlit, airy quality of Kinfolk photography.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-rules"></div>
+          <div class="effect-caption">
+            <h4>Whisper-Thin Rules</h4>
+            <p>Repeating 1px lines in linen tones create subtle editorial structure without visible grid borders.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-caption">
+            <h4>Linen Texture</h4>
+            <p>Fine cross-hatched lines at low opacity simulate the tactile quality of natural linen fabric.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-fade">
+            <div class="effect-fade-content">
+              <span>Volume XII</span>
+              <span>Slow Reveal</span>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Slow Fade Entrance</h4>
+            <p>Content fades in gently with minimal vertical movement &mdash; slow, deliberate, barely perceptible.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gradient"></div>
+          <div class="effect-caption">
+            <h4>Natural Tone Bleed</h4>
+            <p>Layered radial gradients in terracotta, sage, and clay create soft organic color fields.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Buttons</span>
+        <h2 class="section-title">Understated Interactions</h2>
+        <p class="section-subtitle">Quiet, warm, and purposeful &mdash; authority through restraint</p>
+      </div>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Primary Action</a>
+        <a href="#" class="btn btn--secondary">Secondary</a>
+        <a href="#" class="btn btn--accent">Terracotta Accent</a>
+        <a href="#" class="btn btn--text">Read More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta">
+    <div class="cta-inner">
+      <span class="section-label">Subscribe</span>
+      <h2>Join the Conversation</h2>
+      <p>
+        A weekly letter on intentional living, slow design, and the quiet
+        pleasures of paying attention to what matters.
+      </p>
+      <a href="#" class="btn">Subscribe</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <span class="footer-brand">Kinfolk</span>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">Archive</a>
+      <a href="#">Contact</a>
+      <a href="#">Subscribe</a>
+    </div>
+    <hr class="footer-divider">
+    <p class="footer-copy">Design aesthetic reference &middot; Kinfolk &middot; 2024</p>
+  </footer>
+
+</body>
+</html>

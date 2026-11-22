@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Future Primitive -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;1,400&family=Caveat:wght@400;600;700&family=Secular+One&family=Chakra+Petch:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Earth Grounds --- */
+      --fp-bg-cave: #1a1612;
+      --fp-bg-charcoal: #2e2a25;
+      --fp-bg-hearth: #3d3630;
+      --fp-bg-bone: #e8ddd0;
+      --fp-bg-calcium: #f5f0e8;
+
+      /* --- Prehistoric Pigments --- */
+      --fp-ochre: #c8923a;
+      --fp-sienna: #a0522d;
+      --fp-oxide-red: #8b3a2a;
+      --fp-goethite: #d4a843;
+      --fp-manganese: #2c1e1e;
+      --fp-ember: #e8662a;
+
+      /* --- Holographic Accents --- */
+      --fp-holo-teal: #3aedc4;
+      --fp-spectral-blue: #4a9fe5;
+      --fp-plasma-green: #7bf5a5;
+      --fp-petroglyph-violet: #8b6fae;
+
+      /* --- Text --- */
+      --fp-text-light: #e8ddd0;
+      --fp-text-dark: #2c1e1e;
+      --fp-text-muted: #8a7e72;
+
+      /* --- Glows --- */
+      --fp-glow-teal: 0 0 8px rgba(58, 237, 196, 0.4), 0 0 30px rgba(58, 237, 196, 0.1);
+      --fp-glow-ochre: 0 0 8px rgba(200, 146, 58, 0.4), 0 0 30px rgba(200, 146, 58, 0.1);
+      --fp-glow-ember: 0 0 8px rgba(232, 102, 42, 0.5), 0 0 30px rgba(232, 102, 42, 0.12);
+
+      /* --- Borders --- */
+      --fp-border-earth: 1px solid rgba(200, 146, 58, 0.2);
+      --fp-border-holo: 1px solid rgba(58, 237, 196, 0.2);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(60px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      background: var(--fp-bg-cave);
+      color: var(--fp-text-light);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Archivo Black', sans-serif;
+      font-weight: 400;
+      color: var(--fp-text-light);
+      line-height: 1.15;
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       NOISE TEXTURE OVERLAY (reusable)
+       ============================================ */
+    .noise-overlay {
+      position: relative;
+    }
+
+    .noise-overlay::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(26, 22, 18, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(200, 146, 58, 0.12);
+    }
+
+    .nav__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 18px 40px;
+    }
+
+    .nav__logo {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 1.15rem;
+      color: var(--fp-ochre);
+      letter-spacing: 0.08em;
+      text-shadow: 0 0 6px rgba(200, 146, 58, 0.25);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav__links a {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--fp-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      transition: color 0.25s ease, text-shadow 0.25s ease;
+    }
+
+    .nav__links a:hover {
+      color: var(--fp-holo-teal);
+      text-shadow: 0 0 6px rgba(58, 237, 196, 0.3);
+    }
+
+    /* ============================================
+       SECTION FRAMEWORK
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 40px;
+      position: relative;
+    }
+
+    .section__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section--cave {
+      background: var(--fp-bg-cave);
+    }
+
+    .section--charcoal {
+      background: var(--fp-bg-charcoal);
+    }
+
+    .section--hearth {
+      background: var(--fp-bg-hearth);
+    }
+
+    .section--bone {
+      background: var(--fp-bg-bone);
+      color: var(--fp-text-dark);
+    }
+
+    .section--bone h2,
+    .section--bone h3,
+    .section--bone h4 {
+      color: var(--fp-text-dark);
+    }
+
+    .section--calcium {
+      background: var(--fp-bg-calcium);
+      color: var(--fp-text-dark);
+    }
+
+    .section--calcium h2,
+    .section--calcium h3,
+    .section--calcium h4 {
+      color: var(--fp-text-dark);
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--fp-holo-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 12px;
+      text-shadow: 0 0 6px rgba(58, 237, 196, 0.15);
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--fp-ochre);
+      margin-bottom: 48px;
+      letter-spacing: 0.02em;
+    }
+
+    .section--bone .section-label,
+    .section--calcium .section-label {
+      color: var(--fp-sienna);
+      text-shadow: none;
+    }
+
+    .section--bone .section-subtitle,
+    .section--calcium .section-subtitle {
+      color: var(--fp-sienna);
+    }
+
+    /* ============================================
+       DIVIDER
+       ============================================ */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px 40px;
+      opacity: 0.35;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--fp-ochre), transparent);
+    }
+
+    .divider__mark {
+      width: 12px;
+      height: 12px;
+      border: 2px solid var(--fp-ochre);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .divider__mark::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      background: var(--fp-ochre);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      padding: 120px 40px;
+      background: var(--fp-bg-cave);
+      overflow: hidden;
+    }
+
+    /* Stone grain overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Holographic dot grid */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(
+        circle,
+        rgba(58, 237, 196, 0.06) 1px,
+        transparent 1px
+      );
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.5;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero__tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--fp-holo-teal);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+      text-shadow: 0 0 8px rgba(58, 237, 196, 0.2);
+    }
+
+    .hero__content h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      color: var(--fp-ochre);
+      text-shadow: 0 0 30px rgba(200, 146, 58, 0.3), 0 0 80px rgba(200, 146, 58, 0.08);
+      margin-bottom: 1.5rem;
+      line-height: 1.05;
+    }
+
+    .hero__content p {
+      font-size: 1.1rem;
+      color: var(--fp-text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero__buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Concentric circle decoration behind hero */
+    .hero__glyph {
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 0;
+      opacity: 0.06;
+    }
+
+    .hero__glyph circle {
+      fill: none;
+      stroke: var(--fp-ochre);
+      stroke-width: 0.8;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--fp-ochre);
+      border: 2px solid var(--fp-ochre);
+      padding: 14px 36px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.35s ease;
+    }
+
+    .btn:hover {
+      background: var(--fp-ochre);
+      color: var(--fp-bg-cave);
+      box-shadow: var(--fp-glow-ochre);
+    }
+
+    /* Holographic variant */
+    .btn--holo {
+      color: var(--fp-holo-teal);
+      border-color: var(--fp-holo-teal);
+    }
+
+    .btn--holo:hover {
+      background: var(--fp-holo-teal);
+      color: var(--fp-bg-cave);
+      box-shadow: var(--fp-glow-teal);
+    }
+
+    /* Earth filled variant */
+    .btn--earth {
+      background: var(--fp-sienna);
+      color: var(--fp-text-light);
+      border-color: var(--fp-sienna);
+    }
+
+    .btn--earth:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 0 12px rgba(160, 82, 45, 0.4);
+    }
+
+    /* Ember warning variant */
+    .btn--ember {
+      color: var(--fp-ember);
+      border-color: var(--fp-ember);
+    }
+
+    .btn--ember:hover {
+      background: var(--fp-ember);
+      color: var(--fp-bg-cave);
+      box-shadow: var(--fp-glow-ember);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .type-specimen {
+      display: grid;
+      gap: 40px;
+      margin-bottom: 32px;
+    }
+
+    .type-specimen__item {
+      padding: 32px;
+      background: rgba(61, 54, 48, 0.5);
+      border: 1px solid rgba(200, 146, 58, 0.1);
+      border-radius: 2px;
+    }
+
+    .type-specimen__label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--fp-holo-teal);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .type-specimen__display {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--fp-ochre);
+      text-shadow: 0 0 20px rgba(200, 146, 58, 0.2);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .type-specimen__heading {
+      font-family: 'Secular One', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      color: var(--fp-text-light);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .type-specimen__subheading {
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--fp-goethite);
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+    }
+
+    .type-specimen__body {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      color: var(--fp-text-light);
+      line-height: 1.75;
+      max-width: 65ch;
+    }
+
+    .type-specimen__mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--fp-holo-teal);
+      line-height: 1.6;
+      letter-spacing: 0.03em;
+    }
+
+    .type-specimen__annotation {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--fp-ochre);
+      letter-spacing: 0.02em;
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .palette-swatch {
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid rgba(200, 146, 58, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .palette-swatch:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .palette-swatch__color {
+      height: 100px;
+      position: relative;
+    }
+
+    .palette-swatch__info {
+      padding: 14px 16px;
+      background: var(--fp-bg-charcoal);
+    }
+
+    .palette-swatch__name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--fp-text-light);
+      letter-spacing: 0.02em;
+      margin-bottom: 4px;
+    }
+
+    .palette-swatch__hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--fp-text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .palette-group-label {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--fp-ochre);
+      margin-bottom: 16px;
+      margin-top: 32px;
+    }
+
+    .palette-group-label:first-child {
+      margin-top: 0;
+    }
+
+    /* ============================================
+       CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(61, 54, 48, 0.7);
+      border: 1px solid rgba(200, 146, 58, 0.15);
+      border-radius: 2px;
+      padding: 32px;
+      position: relative;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(58, 237, 196, 0.3);
+      box-shadow: var(--fp-glow-teal);
+    }
+
+    /* Petroglyph corner marks */
+    .card::before,
+    .card::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--fp-ochre);
+      border-style: solid;
+      opacity: 0.5;
+      transition: opacity 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card::before {
+      top: -1px;
+      left: -1px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .card::after {
+      bottom: -1px;
+      right: -1px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .card:hover::before,
+    .card:hover::after {
+      border-color: var(--fp-holo-teal);
+      opacity: 0.8;
+    }
+
+    .card__icon {
+      font-size: 1.8rem;
+      margin-bottom: 16px;
+      display: block;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(200, 146, 58, 0.2);
+      border-radius: 50%;
+      color: var(--fp-ochre);
+    }
+
+    .card__title {
+      font-family: 'Secular One', sans-serif;
+      font-size: 1.15rem;
+      color: var(--fp-text-light);
+      margin-bottom: 12px;
+    }
+
+    .card__text {
+      font-size: 0.92rem;
+      color: var(--fp-text-muted);
+      line-height: 1.7;
+    }
+
+    .card__tag {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--fp-holo-teal);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 16px;
+      display: inline-block;
+    }
+
+    /* ============================================
+       CSS EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-box {
+      height: 220px;
+      border-radius: 2px;
+      display: flex;
+      align-items: flex-end;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-box__label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--fp-text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: rgba(26, 22, 18, 0.7);
+      padding: 6px 14px;
+      border-radius: 2px;
+      z-index: 2;
+      position: relative;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    /* Effect 1: Stone Grain Texture */
+    .effect--stone-grain {
+      background-color: var(--fp-bg-charcoal);
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.08'/%3E%3C/svg%3E");
+    }
+
+    /* Effect 2: Holographic Dot Grid */
+    .effect--dot-grid {
+      background-color: var(--fp-bg-cave);
+      background-image: radial-gradient(
+        circle,
+        rgba(58, 237, 196, 0.12) 1px,
+        transparent 1px
+      );
+      background-size: 24px 24px;
+    }
+
+    /* Effect 3: Iridescent Shimmer */
+    .effect--shimmer {
+      background: linear-gradient(
+        135deg,
+        rgba(58, 237, 196, 0.08),
+        rgba(74, 159, 229, 0.08),
+        rgba(139, 111, 174, 0.08)
+      );
+      border: 1px solid rgba(58, 237, 196, 0.12);
+    }
+
+    .effect--shimmer::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(
+        from 0deg,
+        transparent,
+        rgba(58, 237, 196, 0.08),
+        transparent,
+        rgba(74, 159, 229, 0.08),
+        transparent,
+        rgba(139, 111, 174, 0.08),
+        transparent
+      );
+      animation: fp-shimmer 12s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes fp-shimmer {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    /* Effect 4: Ochre Fire Gradient */
+    .effect--fire-gradient {
+      background: linear-gradient(
+        160deg,
+        var(--fp-oxide-red),
+        var(--fp-sienna),
+        var(--fp-ochre),
+        var(--fp-goethite)
+      );
+    }
+
+    /* Effect 5: Concentric Petroglyphs */
+    .effect--concentric {
+      background-color: var(--fp-bg-hearth);
+      background-image:
+        radial-gradient(circle at 30% 40%, transparent 40px, rgba(200, 146, 58, 0.06) 41px, rgba(200, 146, 58, 0.06) 42px, transparent 43px),
+        radial-gradient(circle at 30% 40%, transparent 60px, rgba(200, 146, 58, 0.05) 61px, rgba(200, 146, 58, 0.05) 62px, transparent 63px),
+        radial-gradient(circle at 30% 40%, transparent 80px, rgba(200, 146, 58, 0.04) 81px, rgba(200, 146, 58, 0.04) 82px, transparent 83px),
+        radial-gradient(circle at 30% 40%, transparent 100px, rgba(200, 146, 58, 0.03) 101px, rgba(200, 146, 58, 0.03) 102px, transparent 103px),
+        radial-gradient(circle at 70% 60%, transparent 30px, rgba(58, 237, 196, 0.05) 31px, rgba(58, 237, 196, 0.05) 32px, transparent 33px),
+        radial-gradient(circle at 70% 60%, transparent 50px, rgba(58, 237, 196, 0.04) 51px, rgba(58, 237, 196, 0.04) 52px, transparent 53px),
+        radial-gradient(circle at 70% 60%, transparent 70px, rgba(58, 237, 196, 0.03) 71px, rgba(58, 237, 196, 0.03) 72px, transparent 73px);
+    }
+
+    /* Effect 6: Spectral Glass Panel */
+    .effect--spectral-glass {
+      background: linear-gradient(
+        135deg,
+        rgba(46, 42, 37, 0.8),
+        rgba(61, 54, 48, 0.5)
+      );
+      border: 1px solid rgba(58, 237, 196, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow:
+        inset 0 1px 0 rgba(232, 221, 208, 0.05),
+        0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .effect--spectral-glass::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(58, 237, 196, 0.3),
+        rgba(139, 111, 174, 0.2),
+        transparent
+      );
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      padding: var(--section-pad) 40px;
+      background: var(--fp-bg-hearth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    blockquote {
+      max-width: 800px;
+      margin: 0 auto;
+      position: relative;
+      padding: 40px 48px;
+      border-left: 3px solid var(--fp-ochre);
+      background: rgba(26, 22, 18, 0.3);
+    }
+
+    blockquote::before {
+      content: '\201C';
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 5rem;
+      color: var(--fp-ochre);
+      opacity: 0.2;
+      position: absolute;
+      top: -10px;
+      left: 16px;
+      line-height: 1;
+    }
+
+    blockquote p {
+      font-family: 'Caveat', cursive;
+      font-size: 1.6rem;
+      color: var(--fp-text-light);
+      line-height: 1.6;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    blockquote cite {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--fp-holo-teal);
+      font-style: normal;
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta {
+      padding: var(--section-pad) 40px;
+      text-align: center;
+      background: var(--fp-bg-cave);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(
+        circle,
+        rgba(58, 237, 196, 0.04) 1px,
+        transparent 1px
+      );
+      background-size: 48px 48px;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    .cta::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(200, 146, 58, 0.06) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .cta__inner {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta h2 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--fp-ochre);
+      text-shadow: 0 0 20px rgba(200, 146, 58, 0.2);
+      margin-bottom: 16px;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      color: var(--fp-text-muted);
+      margin-bottom: 32px;
+      line-height: 1.8;
+    }
+
+    .cta .btn {
+      margin: 0 8px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--fp-manganese);
+      border-top: 1px solid rgba(200, 146, 58, 0.1);
+      padding: 48px 40px;
+    }
+
+    .footer__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+    }
+
+    .footer__brand {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: 1.1rem;
+      color: var(--fp-ochre);
+      letter-spacing: 0.06em;
+      margin-bottom: 12px;
+    }
+
+    .footer__text {
+      font-size: 0.85rem;
+      color: var(--fp-text-muted);
+      line-height: 1.7;
+      max-width: 300px;
+    }
+
+    .footer__heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--fp-text-light);
+      margin-bottom: 16px;
+    }
+
+    .footer__links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer__links a {
+      font-size: 0.85rem;
+      color: var(--fp-text-muted);
+      transition: color 0.25s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--fp-holo-teal);
+    }
+
+    .footer__bottom {
+      max-width: 1200px;
+      margin: 32px auto 0;
+      padding-top: 24px;
+      border-top: 1px solid rgba(200, 146, 58, 0.08);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer__copy {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--fp-text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    .footer__badge {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--fp-holo-teal);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       PETROGLYPH STROKE ANIMATION
+       ============================================ */
+    @keyframes fp-etch {
+      0% {
+        stroke-dashoffset: 300;
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      100% {
+        stroke-dashoffset: 0;
+        opacity: 1;
+      }
+    }
+
+    .petroglyph-svg path,
+    .petroglyph-svg circle {
+      stroke-dasharray: 300;
+      stroke-dashoffset: 300;
+      animation: fp-etch 3s ease-out forwards;
+    }
+
+    /* Pulse glow for holographic elements */
+    @keyframes fp-pulse {
+      0%, 100% { opacity: 0.6; }
+      50% { opacity: 1; }
+    }
+
+    .holo-pulse {
+      animation: fp-pulse 4s ease-in-out infinite;
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .footer__inner {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        min-height: auto;
+        padding: 80px 20px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 60px) 20px;
+      }
+
+      .nav__inner {
+        padding: 14px 20px;
+      }
+
+      .nav__links {
+        gap: 16px;
+      }
+
+      .nav__links a {
+        font-size: 0.75rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .type-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        text-align: center;
+      }
+
+      .hero__buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      blockquote {
+        padding: 24px 20px 24px 28px;
+      }
+
+      blockquote p {
+        font-size: 1.3rem;
+      }
+
+      .footer__inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .footer__bottom {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      .divider {
+        padding: 16px 20px;
+      }
+
+      .hero__glyph {
+        width: 300px;
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav__links {
+        gap: 12px;
+      }
+
+      .nav__links a {
+        font-size: 0.7rem;
+        letter-spacing: 0.04em;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav">
+    <div class="nav__inner">
+      <a href="#" class="nav__logo">FUTURE PRIMITIVE</a>
+      <ul class="nav__links">
+        <li><a href="#typography">Type</a></li>
+        <li><a href="#palette">Colors</a></li>
+        <li><a href="#components">Cards</a></li>
+        <li><a href="#effects">Effects</a></li>
+        <li><a href="#buttons">Buttons</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <header class="hero" id="hero">
+    <!-- Concentric petroglyph circles behind text -->
+    <svg class="hero__glyph" viewBox="0 0 500 500" aria-hidden="true">
+      <circle cx="250" cy="250" r="60" />
+      <circle cx="250" cy="250" r="100" />
+      <circle cx="250" cy="250" r="140" />
+      <circle cx="250" cy="250" r="180" />
+      <circle cx="250" cy="250" r="220" />
+    </svg>
+    <div class="hero__content">
+      <p class="hero__tag">// design.system.v1</p>
+      <h1>Future<br>Primitive</h1>
+      <p>Where cave paintings flicker as holograms. Ochre pigment meets laser light. The oldest marks made by human hands, projected through the newest screens.</p>
+      <div class="hero__buttons">
+        <a href="#components" class="btn">Explore Elements</a>
+        <a href="#effects" class="btn btn--holo">View Effects</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       TYPOGRAPHY SECTION
+       ============================================ -->
+  <section class="section section--charcoal noise-overlay" id="typography">
+    <div class="section__inner" style="position: relative; z-index: 2;">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Carved Stone Meets Laser Print</h2>
+      <p class="section-subtitle">monumental headings, technical body text, handmade annotations</p>
+
+      <div class="type-specimen">
+        <!-- Display specimen -->
+        <div class="type-specimen__item">
+          <span class="type-specimen__label">Display -- Archivo Black</span>
+          <div class="type-specimen__display">LASCAUX PROTOCOL</div>
+          <p class="type-specimen__body" style="margin-top: 8px;">
+            Heavy, monolithic letterforms that feel chiseled from basalt. Used for hero headlines and major section anchors where the design needs maximum gravitational weight.
+          </p>
+        </div>
+
+        <div class="type-grid">
+          <!-- Heading specimen -->
+          <div class="type-specimen__item">
+            <span class="type-specimen__label">Heading -- Secular One</span>
+            <div class="type-specimen__heading">Standing Stone Archive</div>
+            <p class="type-specimen__body">
+              Condensed slab-like weight for section headings and navigation labels. Dense and sturdy.
+            </p>
+          </div>
+
+          <!-- Subheading specimen -->
+          <div class="type-specimen__item">
+            <span class="type-specimen__label">Subheading -- Chakra Petch</span>
+            <div class="type-specimen__subheading">Angular Semi-Futuristic Labels</div>
+            <p class="type-specimen__body">
+              Sharp, angular forms bridge the gap between primitive weight and technological precision.
+            </p>
+          </div>
+
+          <!-- Body specimen -->
+          <div class="type-specimen__item">
+            <span class="type-specimen__label">Body -- Space Grotesk</span>
+            <p class="type-specimen__body">
+              The primary reading face. Geometric sans-serif with enough character to feel designed, but enough neutrality to let content breathe across long passages. Line height is generous at 1.75.
+            </p>
+          </div>
+
+          <!-- Mono specimen -->
+          <div class="type-specimen__item">
+            <span class="type-specimen__label">Data Readout -- IBM Plex Mono</span>
+            <p class="type-specimen__mono">
+              &gt; system.init :: pigment_analysis<br>
+              &gt; ochre_sample_014 :: fe2o3 :: 87.3%<br>
+              &gt; carbon_date :: -32,000 bce<br>
+              &gt; holographic_projection :: active
+            </p>
+          </div>
+
+          <!-- Annotation specimen -->
+          <div class="type-specimen__item">
+            <span class="type-specimen__label">Annotation -- Caveat</span>
+            <p class="type-specimen__annotation">
+              Hand-drawn notes in the margin, as if someone left a message on the cave wall for the next visitor to find.
+            </p>
+          </div>
+
+          <!-- Scale specimen -->
+          <div class="type-specimen__item">
+            <span class="type-specimen__label">UI Label -- Space Grotesk 600</span>
+            <p style="font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fp-text-muted);">
+              Petroglyph Archive &middot; Layer 04 &middot; Holographic Substrate
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       COLOR PALETTE SECTION
+       ============================================ -->
+  <section class="section section--cave" id="palette">
+    <div class="section__inner">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Pigment and Projected Light</h2>
+      <p class="section-subtitle">iron oxide reds, manganese blacks, holographic teals</p>
+
+      <p class="palette-group-label">Earth Grounds</p>
+      <div class="palette-grid" style="margin-bottom: 24px;">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #1a1612;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Cave Black</div>
+            <div class="palette-swatch__hex">#1A1612</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #2e2a25;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Charcoal Ash</div>
+            <div class="palette-swatch__hex">#2E2A25</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #3d3630;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Hearthstone</div>
+            <div class="palette-swatch__hex">#3D3630</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #e8ddd0;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Mammoth Bone</div>
+            <div class="palette-swatch__hex">#E8DDD0</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #f5f0e8;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Calcium Dust</div>
+            <div class="palette-swatch__hex">#F5F0E8</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="palette-group-label">Prehistoric Pigments</p>
+      <div class="palette-grid" style="margin-bottom: 24px;">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #c8923a;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Raw Ochre</div>
+            <div class="palette-swatch__hex">#C8923A</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #a0522d;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Burnt Sienna</div>
+            <div class="palette-swatch__hex">#A0522D</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #8b3a2a;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Iron Oxide Red</div>
+            <div class="palette-swatch__hex">#8B3A2A</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #d4a843;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Goethite Yellow</div>
+            <div class="palette-swatch__hex">#D4A843</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #2c1e1e;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Manganese Black</div>
+            <div class="palette-swatch__hex">#2C1E1E</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #e8662a;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Ember Glow</div>
+            <div class="palette-swatch__hex">#E8662A</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="palette-group-label">Holographic Accents</p>
+      <div class="palette-grid">
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #3aedc4;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Holo Teal</div>
+            <div class="palette-swatch__hex">#3AEDC4</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #4a9fe5;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Spectral Blue</div>
+            <div class="palette-swatch__hex">#4A9FE5</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #7bf5a5;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Plasma Phosphor</div>
+            <div class="palette-swatch__hex">#7BF5A5</div>
+          </div>
+        </div>
+        <div class="palette-swatch">
+          <div class="palette-swatch__color" style="background: #8b6fae;"></div>
+          <div class="palette-swatch__info">
+            <div class="palette-swatch__name">Petroglyph Violet</div>
+            <div class="palette-swatch__hex">#8B6FAE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       CARDS SECTION
+       ============================================ -->
+  <section class="section section--charcoal noise-overlay" id="components">
+    <div class="section__inner" style="position: relative; z-index: 2;">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Monolithic Cards</h2>
+      <p class="section-subtitle">standing stones in a holographic field</p>
+
+      <div class="card-grid">
+        <!-- Card 1 -->
+        <div class="card">
+          <span class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          <h3 class="card__title">Earth-Ground Duality</h3>
+          <p class="card__text">Raw natural textures -- stone, clay, bark, bone -- juxtaposed with holographic glows and translucent overlays. The surface remembers the cave wall.</p>
+          <span class="card__tag">// core.principle</span>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <span class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M4 20 C8 8, 16 8, 20 20" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <circle cx="12" cy="6" r="2" stroke="currentColor" stroke-width="1.5"/>
+            </svg>
+          </span>
+          <h3 class="card__title">Prehistoric Marks</h3>
+          <p class="card__text">Cave-painting-style hand-drawn lines, dot clusters, stenciled handprints, and abstract animal forms integrated as structural graphic elements.</p>
+          <span class="card__tag">// mark.making</span>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <span class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2 L22 8 L22 16 L12 22 L2 16 L2 8 Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+            </svg>
+          </span>
+          <h3 class="card__title">Sacred Geometry</h3>
+          <p class="card__text">Spirals, concentric circles, dot grids, and radial patterns referencing both petroglyphs and algorithmic generation in equal measure.</p>
+          <span class="card__tag">// generative.pattern</span>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <span class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" stroke="currentColor" stroke-width="1.5" fill="none" stroke-dasharray="4 2"/>
+            </svg>
+          </span>
+          <h3 class="card__title">Wireframe Scaffold</h3>
+          <p class="card__text">Faint structural grids visible beneath organic compositions, revealing the technological substrate beneath every earthen surface.</p>
+          <span class="card__tag">// infrastructure</span>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <span class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="2" y="6" width="20" height="12" rx="1" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <line x1="2" y1="10" x2="22" y2="10" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+            </svg>
+          </span>
+          <h3 class="card__title">Layered Translucency</h3>
+          <p class="card__text">Frosted glass panels and semi-transparent overlays that let rough textures bleed through from behind, creating depth without traditional shadows.</p>
+          <span class="card__tag">// depth.layer</span>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <span class="card__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3 L12 21 M3 12 L21 12" stroke="currentColor" stroke-width="1.5"/>
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1" opacity="0.3"/>
+            </svg>
+          </span>
+          <h3 class="card__title">Monolithic Presence</h3>
+          <p class="card__text">Large, weighty visual blocks that feel carved or erected rather than placed. Standing stones and megaliths translated into digital architecture.</p>
+          <span class="card__tag">// spatial.weight</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       CSS EFFECTS SECTION
+       ============================================ -->
+  <section class="section section--cave" id="effects">
+    <div class="section__inner">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">Textures and Techniques</h2>
+      <p class="section-subtitle">all the cave-meets-hologram effects, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-box effect--stone-grain">
+          <span class="effect-box__label">Stone Grain Noise</span>
+        </div>
+
+        <div class="effect-box effect--dot-grid">
+          <span class="effect-box__label">Holographic Dot Grid</span>
+        </div>
+
+        <div class="effect-box effect--shimmer">
+          <span class="effect-box__label">Iridescent Shimmer</span>
+        </div>
+
+        <div class="effect-box effect--fire-gradient">
+          <span class="effect-box__label">Ochre Fire Gradient</span>
+        </div>
+
+        <div class="effect-box effect--concentric">
+          <span class="effect-box__label">Concentric Petroglyphs</span>
+        </div>
+
+        <div class="effect-box effect--spectral-glass">
+          <span class="effect-box__label">Spectral Glass Panel</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       BUTTONS SECTION
+       ============================================ -->
+  <section class="section section--hearth noise-overlay" id="buttons">
+    <div class="section__inner" style="position: relative; z-index: 2;">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Ritual Buttons</h2>
+      <p class="section-subtitle">ochre borders, holographic glows, earth fills</p>
+
+      <div class="button-showcase">
+        <button class="btn">Ochre Default</button>
+        <button class="btn btn--holo">Holographic</button>
+        <button class="btn btn--earth">Earth Filled</button>
+        <button class="btn btn--ember">Ember Warning</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       BLOCKQUOTE SECTION
+       ============================================ -->
+  <section class="quote-section">
+    <div style="max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;">
+      <p class="section-label" style="margin-bottom: 32px;">Design Philosophy</p>
+      <blockquote>
+        <p>The future of architecture is found in the most primitive past. The cave is not a relic but a prototype -- an undefined, adaptable space that predates and outlasts any designed nest.</p>
+        <cite>-- Sou Fujimoto, Primitive Future</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <div class="divider"><span class="divider__mark"></span></div>
+
+  <!-- ============================================
+       CTA SECTION
+       ============================================ -->
+  <section class="cta">
+    <div class="cta__inner">
+      <p class="section-label" style="margin-bottom: 16px;">Begin the Ritual</p>
+      <h2>Build on the Oldest<br>Foundation</h2>
+      <p>Ten thousand years of mark-making meets zero-latency projection. Start your Future Primitive project where the campfire meets the server room.</p>
+      <div style="display: flex; gap: 16px; justify-content: center; flex-wrap: wrap;">
+        <a href="#" class="btn">Start Building</a>
+        <a href="#" class="btn btn--holo">Read the Archive</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__brand">FUTURE PRIMITIVE</div>
+        <p class="footer__text">A speculative design aesthetic fusing prehistoric mark-making with holographic technology. The cave wall is the first screen.</p>
+      </div>
+      <div>
+        <div class="footer__heading">Explore</div>
+        <div class="footer__links">
+          <a href="#typography">Typography</a>
+          <a href="#palette">Color Palette</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Visual Effects</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__heading">Resources</div>
+        <div class="footer__links">
+          <a href="#">Design Tokens</a>
+          <a href="#">CSS Reference</a>
+          <a href="#">Petroglyph Library</a>
+          <a href="#">Font Pairings</a>
+        </div>
+      </div>
+      <div>
+        <div class="footer__heading">Related</div>
+        <div class="footer__links">
+          <a href="#">Afrofuturism</a>
+          <a href="#">Wabi-Sabi</a>
+          <a href="#">Solarpunk</a>
+          <a href="#">Cyberpunk</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span class="footer__copy">Future Primitive Design System -- Reference Page</span>
+      <span class="footer__badge">cave.proto.v1</span>
+    </div>
+  </footer>
+
+</body>
+</html>

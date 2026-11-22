@@ -1,0 +1,2019 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Crypto Aesthetic -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Dark Bases --- */
+      --crypto-void: #0a0e17;
+      --crypto-deep-space: #111827;
+      --crypto-charcoal: #1a1f2e;
+      --crypto-gunmetal: #252b3b;
+
+      /* --- Neon Accents --- */
+      --crypto-purple: #7b3fe4;
+      --crypto-indigo: #6366f1;
+      --crypto-blue: #3b82f6;
+      --crypto-cyan: #00d4ff;
+      --crypto-green: #00ffa3;
+      --crypto-emerald: #10b981;
+
+      /* --- Status Colors --- */
+      --crypto-red: #f43f5e;
+      --crypto-amber: #f59e0b;
+      --crypto-pink: #ec4899;
+
+      /* --- Text --- */
+      --crypto-text-primary: #e2e8f0;
+      --crypto-text-secondary: #94a3b8;
+      --crypto-text-muted: #475569;
+      --crypto-text-bright: #f8fafc;
+
+      /* --- Signature Gradients --- */
+      --crypto-gradient-primary: linear-gradient(135deg, #7b3fe4, #3b82f6, #00d4ff);
+      --crypto-gradient-neon: linear-gradient(135deg, #00ffa3, #00d4ff, #7b3fe4);
+      --crypto-gradient-warm: linear-gradient(135deg, #7b3fe4, #ec4899, #f43f5e);
+      --crypto-gradient-subtle: linear-gradient(135deg, rgba(123, 63, 228, 0.15), rgba(0, 212, 255, 0.1));
+
+      /* --- Glass --- */
+      --crypto-glass-bg: rgba(255, 255, 255, 0.04);
+      --crypto-glass-border: rgba(255, 255, 255, 0.08);
+      --crypto-glass-blur: 16px;
+
+      /* --- Glow --- */
+      --crypto-glow-purple: 0 0 20px rgba(123, 63, 228, 0.3);
+      --crypto-glow-cyan: 0 0 20px rgba(0, 212, 255, 0.3);
+      --crypto-glow-green: 0 0 20px rgba(0, 255, 163, 0.3);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--crypto-text-secondary);
+      background-color: var(--crypto-void);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      color: var(--crypto-text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+
+    /* ============================================
+       MESH BACKGROUND (fixed, layered)
+       ============================================ */
+    .mesh-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .mesh-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(ellipse at 15% 30%, rgba(123, 63, 228, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 20%, rgba(0, 212, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(0, 255, 163, 0.06) 0%, transparent 50%);
+      animation: meshDrift 25s ease-in-out infinite alternate;
+    }
+
+    .mesh-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 80px 80px;
+    }
+
+    @keyframes meshDrift {
+      0% { transform: translate(0, 0); }
+      50% { transform: translate(-2%, 1%); }
+      100% { transform: translate(1%, -1.5%); }
+    }
+
+    .content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 16px 40px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 14, 23, 0.88);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--crypto-glass-border);
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      background: var(--crypto-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-logo:hover {
+      opacity: 0.8;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--crypto-text-secondary);
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--crypto-text-bright);
+    }
+
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .network-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 10px;
+      background: var(--crypto-glass-bg);
+      border: 1px solid var(--crypto-glass-border);
+      font-size: 0.8rem;
+      color: var(--crypto-text-secondary);
+    }
+
+    .network-badge::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--crypto-green);
+      box-shadow: 0 0 6px var(--crypto-green);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--crypto-gradient-primary);
+      background-size: 200% 200%;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 32px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background-position 0.4s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(123, 63, 228, 0.35);
+      background-position: 100% 50%;
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn--outline {
+      background: transparent;
+      border: 1px solid var(--crypto-purple);
+      color: var(--crypto-purple);
+      background-size: unset;
+    }
+
+    .btn--outline:hover {
+      background: rgba(123, 63, 228, 0.1);
+      box-shadow: var(--crypto-glow-purple);
+      transform: translateY(-2px);
+    }
+
+    .btn--glass {
+      background: var(--crypto-glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--crypto-glass-border);
+      color: var(--crypto-text-primary);
+      background-size: unset;
+    }
+
+    .btn--glass:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: none;
+      transform: translateY(-2px);
+    }
+
+    .btn--connect {
+      background: var(--crypto-gradient-neon);
+      background-size: 200% 200%;
+      animation: gradientPulse 3s ease infinite;
+    }
+
+    .btn--connect:hover {
+      box-shadow: 0 8px 30px rgba(0, 255, 163, 0.25);
+    }
+
+    @keyframes gradientPulse {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .btn--sm {
+      padding: 8px 18px;
+      font-size: 0.8rem;
+      border-radius: 8px;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--void {
+      background: var(--crypto-void);
+    }
+
+    .section--deep-space {
+      background: var(--crypto-deep-space);
+    }
+
+    .section--charcoal {
+      background: var(--crypto-charcoal);
+    }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--crypto-cyan);
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--crypto-text-primary);
+      margin-bottom: 10px;
+      letter-spacing: -0.03em;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      text-align: center;
+      color: var(--crypto-text-secondary);
+      margin-bottom: 56px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Gradient divider bar */
+    .gradient-bar {
+      height: 2px;
+      width: 100%;
+      background: var(--crypto-gradient-primary);
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      min-height: 92vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 63, 228, 0.15) 0%, transparent 70%);
+      top: 5%;
+      left: -8%;
+      animation: floatOrb 18s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 212, 255, 0.1) 0%, transparent 70%);
+      bottom: 5%;
+      right: -5%;
+      animation: floatOrb 14s ease-in-out infinite alternate-reverse;
+      pointer-events: none;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translate(0, 0) scale(1); }
+      50% { transform: translate(25px, -20px) scale(1.04); }
+      100% { transform: translate(-15px, 25px) scale(0.96); }
+    }
+
+    /* Node network decoration in hero */
+    .hero-nodes {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero-nodes::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 10% 20%, rgba(123, 63, 228, 0.25) 0%, transparent 2px),
+        radial-gradient(circle at 25% 60%, rgba(0, 212, 255, 0.2) 0%, transparent 2px),
+        radial-gradient(circle at 40% 15%, rgba(0, 255, 163, 0.15) 0%, transparent 2px),
+        radial-gradient(circle at 55% 75%, rgba(123, 63, 228, 0.2) 0%, transparent 2px),
+        radial-gradient(circle at 70% 30%, rgba(0, 212, 255, 0.18) 0%, transparent 2px),
+        radial-gradient(circle at 85% 55%, rgba(0, 255, 163, 0.12) 0%, transparent 2px),
+        radial-gradient(circle at 92% 85%, rgba(123, 63, 228, 0.15) 0%, transparent 2px),
+        radial-gradient(circle at 15% 90%, rgba(0, 212, 255, 0.12) 0%, transparent 2px),
+        radial-gradient(circle at 60% 45%, rgba(99, 102, 241, 0.1) 0%, transparent 2px),
+        radial-gradient(circle at 35% 35%, rgba(0, 255, 163, 0.08) 0%, transparent 2px);
+      animation: nodesDrift 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes nodesDrift {
+      0% { transform: translate(0, 0); opacity: 0.6; }
+      50% { transform: translate(10px, -8px); opacity: 1; }
+      100% { transform: translate(-5px, 12px); opacity: 0.7; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--crypto-cyan);
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5rem);
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.03em;
+      background: var(--crypto-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 500;
+      color: var(--crypto-text-primary);
+      margin-bottom: 12px;
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      color: var(--crypto-text-secondary);
+      max-width: 600px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       STATS BAR (below hero)
+       ============================================ */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      max-width: 1200px;
+      margin: -40px auto 0;
+      padding: 0 40px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .stat-card {
+      background: var(--crypto-glass-bg);
+      backdrop-filter: blur(var(--crypto-glass-blur));
+      -webkit-backdrop-filter: blur(var(--crypto-glass-blur));
+      border: 1px solid var(--crypto-glass-border);
+      border-radius: 14px;
+      padding: 22px 24px;
+      text-align: center;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(123, 63, 228, 0.3);
+      box-shadow: var(--crypto-glow-purple);
+    }
+
+    .stat-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--crypto-text-muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      color: var(--crypto-text-bright);
+    }
+
+    .stat-change {
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 4px;
+    }
+
+    .up { color: var(--crypto-green); }
+    .down { color: var(--crypto-red); }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--crypto-text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--crypto-gunmetal);
+    }
+
+    .typo-display {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      background: var(--crypto-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+
+    .typo-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--crypto-text-primary);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .typo-subheading {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 500;
+      color: var(--crypto-text-primary);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--crypto-text-secondary);
+      margin-bottom: 4px;
+    }
+
+    .typo-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--crypto-cyan);
+      line-height: 1.6;
+    }
+
+    .typo-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--crypto-text-muted);
+    }
+
+    .typo-right {
+      background: var(--crypto-glass-bg);
+      backdrop-filter: blur(var(--crypto-glass-blur));
+      -webkit-backdrop-filter: blur(var(--crypto-glass-blur));
+      border: 1px solid var(--crypto-glass-border);
+      border-radius: 16px;
+      padding: 36px;
+    }
+
+    .typo-right h3 {
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--crypto-gunmetal);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--crypto-text-muted);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--crypto-deep-space);
+      border: 1px solid var(--crypto-glass-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--crypto-glow-purple);
+      border-color: rgba(123, 63, 228, 0.3);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--crypto-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--crypto-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID (Component Cards)
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: var(--crypto-glass-bg);
+      backdrop-filter: blur(var(--crypto-glass-blur));
+      -webkit-backdrop-filter: blur(var(--crypto-glass-blur));
+      border: 1px solid var(--crypto-glass-border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: rgba(123, 63, 228, 0.3);
+      box-shadow: var(--crypto-glow-purple);
+      transform: translateY(-4px);
+    }
+
+    /* Gradient top border accent on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--crypto-gradient-primary);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .card-icon--purple {
+      background: rgba(123, 63, 228, 0.15);
+      border: 1px solid rgba(123, 63, 228, 0.25);
+    }
+
+    .card-icon--cyan {
+      background: rgba(0, 212, 255, 0.12);
+      border: 1px solid rgba(0, 212, 255, 0.2);
+    }
+
+    .card-icon--green {
+      background: rgba(0, 255, 163, 0.1);
+      border: 1px solid rgba(0, 255, 163, 0.2);
+    }
+
+    .card-icon--blue {
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .card-icon--pink {
+      background: rgba(236, 72, 153, 0.12);
+      border: 1px solid rgba(236, 72, 153, 0.2);
+    }
+
+    .card-icon--indigo {
+      background: rgba(99, 102, 241, 0.12);
+      border: 1px solid rgba(99, 102, 241, 0.2);
+    }
+
+    .card h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--crypto-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--crypto-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 20px;
+      border: 1px solid var(--crypto-glass-border);
+      color: var(--crypto-text-muted);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: rgba(123, 63, 228, 0.15);
+      color: var(--crypto-purple);
+      border-color: rgba(123, 63, 228, 0.3);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .effect-demo {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--crypto-glass-border);
+      background: var(--crypto-deep-space);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: rgba(123, 63, 228, 0.3);
+      box-shadow: var(--crypto-glow-purple);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. Glassmorphism effect */
+    .effect-glass {
+      background: linear-gradient(135deg, var(--crypto-charcoal), var(--crypto-void));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-glass::before {
+      content: '';
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123, 63, 228, 0.4) 0%, transparent 60%);
+      top: -20%;
+      left: -10%;
+    }
+
+    .effect-glass::after {
+      content: 'GLASS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--crypto-text-primary);
+      letter-spacing: 0.1em;
+      z-index: 2;
+      padding: 16px 32px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+    }
+
+    /* 2. Neon Glow effect */
+    .effect-glow {
+      background: var(--crypto-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-glow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(123, 63, 228, 0.08) 0%, transparent 60%);
+    }
+
+    .effect-glow::after {
+      content: 'NEON';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: var(--crypto-cyan);
+      text-shadow:
+        0 0 10px rgba(0, 212, 255, 0.6),
+        0 0 20px rgba(0, 212, 255, 0.4),
+        0 0 40px rgba(0, 212, 255, 0.2),
+        0 0 80px rgba(0, 212, 255, 0.1);
+      z-index: 1;
+      animation: neonPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes neonPulse {
+      0% {
+        text-shadow:
+          0 0 10px rgba(0, 212, 255, 0.6),
+          0 0 20px rgba(0, 212, 255, 0.4),
+          0 0 40px rgba(0, 212, 255, 0.2);
+      }
+      100% {
+        text-shadow:
+          0 0 15px rgba(0, 212, 255, 0.8),
+          0 0 30px rgba(0, 212, 255, 0.5),
+          0 0 60px rgba(0, 212, 255, 0.3),
+          0 0 100px rgba(0, 212, 255, 0.15);
+      }
+    }
+
+    /* 3. Gradient Mesh effect */
+    .effect-gradient-mesh {
+      background:
+        radial-gradient(ellipse at 25% 25%, rgba(123, 63, 228, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 75%, rgba(0, 212, 255, 0.3) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 20%, rgba(0, 255, 163, 0.2) 0%, transparent 50%),
+        var(--crypto-void);
+      animation: gradientMeshShift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradientMeshShift {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(20deg); }
+    }
+
+    .effect-gradient-mesh::after {
+      content: 'MESH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--crypto-text-bright);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* 4. Circuit Grid effect */
+    .effect-circuit {
+      background: var(--crypto-void);
+    }
+
+    .effect-circuit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(123, 63, 228, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(123, 63, 228, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(0, 212, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 10px 10px, 10px 10px;
+      animation: circuitPan 20s linear infinite;
+    }
+
+    @keyframes circuitPan {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(40px, 40px); }
+    }
+
+    .effect-circuit::after {
+      content: 'GRID';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 500;
+      color: var(--crypto-purple);
+      z-index: 1;
+      text-shadow: 0 0 20px rgba(123, 63, 228, 0.5);
+    }
+
+    /* 5. Gradient Border effect */
+    .effect-gradient-border {
+      background: var(--crypto-deep-space);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-gradient-border::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 120px;
+      height: 120px;
+      border-radius: 16px;
+      background: var(--crypto-deep-space);
+      z-index: 1;
+    }
+
+    .effect-gradient-border::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 122px;
+      height: 122px;
+      border-radius: 17px;
+      background: var(--crypto-gradient-primary);
+      animation: borderRotate 4s linear infinite;
+      z-index: 0;
+    }
+
+    @keyframes borderRotate {
+      0% { filter: hue-rotate(0deg); }
+      100% { filter: hue-rotate(360deg); }
+    }
+
+    /* 6. Particle Field effect */
+    .effect-particles {
+      background: var(--crypto-void);
+    }
+
+    .effect-particles::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 15% 25%, rgba(123, 63, 228, 0.4) 0%, transparent 3px),
+        radial-gradient(circle at 30% 65%, rgba(0, 212, 255, 0.35) 0%, transparent 2px),
+        radial-gradient(circle at 45% 15%, rgba(0, 255, 163, 0.3) 0%, transparent 2.5px),
+        radial-gradient(circle at 60% 80%, rgba(236, 72, 153, 0.25) 0%, transparent 2px),
+        radial-gradient(circle at 75% 35%, rgba(0, 212, 255, 0.3) 0%, transparent 3px),
+        radial-gradient(circle at 88% 70%, rgba(123, 63, 228, 0.35) 0%, transparent 2px),
+        radial-gradient(circle at 20% 85%, rgba(0, 255, 163, 0.2) 0%, transparent 1.5px),
+        radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.25) 0%, transparent 2px),
+        radial-gradient(circle at 70% 10%, rgba(0, 212, 255, 0.2) 0%, transparent 1.5px),
+        radial-gradient(circle at 5% 50%, rgba(123, 63, 228, 0.3) 0%, transparent 2px),
+        radial-gradient(circle at 95% 20%, rgba(0, 255, 163, 0.25) 0%, transparent 2px),
+        radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.15) 0%, transparent 1.5px);
+      animation: particleDrift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes particleDrift {
+      0% { transform: translate(0, 0); opacity: 0.7; }
+      33% { transform: translate(5px, -8px); opacity: 1; }
+      66% { transform: translate(-3px, 4px); opacity: 0.8; }
+      100% { transform: translate(6px, 2px); opacity: 0.9; }
+    }
+
+    .effect-particles::after {
+      content: 'PARTICLES';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: var(--crypto-text-primary);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--crypto-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--crypto-text-muted);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 56px 40px;
+      margin: 0 auto;
+      max-width: 780px;
+      background: var(--crypto-glass-bg);
+      backdrop-filter: blur(var(--crypto-glass-blur));
+      -webkit-backdrop-filter: blur(var(--crypto-glass-blur));
+      border: 1px solid var(--crypto-glass-border);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Gradient border glow on top */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--crypto-gradient-primary);
+    }
+
+    .quote-block::after {
+      content: '\201C';
+      font-family: 'Orbitron', sans-serif;
+      font-size: 6rem;
+      background: var(--crypto-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.15;
+      position: absolute;
+      top: 10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Exo 2', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 400;
+      font-style: italic;
+      color: var(--crypto-text-primary);
+      max-width: 580px;
+      margin: 0 auto 20px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--crypto-text-muted);
+      font-style: normal;
+      display: block;
+    }
+
+    .quote-block cite span {
+      color: var(--crypto-cyan);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 64px 48px;
+      border-radius: 20px;
+      background: var(--crypto-glass-bg);
+      backdrop-filter: blur(var(--crypto-glass-blur));
+      -webkit-backdrop-filter: blur(var(--crypto-glass-blur));
+      border: 1px solid var(--crypto-glass-border);
+      overflow: hidden;
+    }
+
+    /* Gradient border effect around CTA */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 1px;
+      background: var(--crypto-gradient-primary);
+      -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .cta-container h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 700;
+      background: var(--crypto-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .cta-container .cta-tagline {
+      font-family: 'Exo 2', sans-serif;
+      font-size: 1.1rem;
+      color: var(--crypto-text-primary);
+      margin-bottom: 16px;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--crypto-text-secondary);
+      max-width: 520px;
+      margin: 0 auto 28px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--crypto-deep-space);
+      border-top: 1px solid var(--crypto-glass-border);
+      padding: 64px 24px 28px;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      background: var(--crypto-gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: var(--crypto-text-muted);
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--crypto-text-muted);
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--crypto-text-bright);
+    }
+
+    .footer-decorative {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 24px;
+    }
+
+    .footer-decorative span {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .footer-decorative span:nth-child(1) { background: var(--crypto-purple); }
+    .footer-decorative span:nth-child(2) { background: var(--crypto-blue); }
+    .footer-decorative span:nth-child(3) { background: var(--crypto-cyan); }
+    .footer-decorative span:nth-child(4) { background: var(--crypto-green); }
+    .footer-decorative span:nth-child(5) { background: var(--crypto-pink); }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--crypto-text-muted);
+      letter-spacing: 0.04em;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.82rem;
+      }
+
+      .nav-right {
+        display: none;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        padding: 0 16px;
+        margin-top: -24px;
+        gap: 10px;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 24px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.88rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-bar {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .stat-card {
+        padding: 16px 12px;
+      }
+
+      .stat-value {
+        font-size: 1.2rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.75rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .mesh-bg::before,
+      .hero::before,
+      .hero::after,
+      .hero-nodes::before,
+      .effect-glow::after,
+      .effect-gradient-mesh,
+      .effect-circuit::before,
+      .effect-gradient-border::after,
+      .effect-particles::before,
+      .btn--connect {
+        animation: none;
+      }
+
+      .card, .color-chip, .tag, .btn, .stat-card, .effect-demo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== MESH BACKGROUND ===== -->
+  <div class="mesh-bg"></div>
+
+  <!-- ===== CONTENT WRAPPER ===== -->
+  <div class="content">
+
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="nav">
+      <a href="#" class="nav-logo">CryptoVault</a>
+      <div class="nav-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Type</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="nav-right">
+        <div class="network-badge">Ethereum Mainnet</div>
+        <a href="#" class="btn btn--sm">Connect Wallet</a>
+      </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <header class="hero" id="hero">
+      <div class="hero-nodes"></div>
+
+      <div class="hero-content">
+        <span class="hero-label">Design Aesthetic Reference</span>
+        <h1>Crypto Aesthetic</h1>
+        <p class="hero-subtitle">Dark Interfaces. Neon Gradients. Decentralized Design.</p>
+        <p class="hero-desc">
+          The visual language of Web3, blockchain, and DeFi &mdash; built on dark backgrounds illuminated by vibrant neon accents, glassmorphic panels, and data-rich dashboard layouts that communicate technological sophistication and digital luxury.
+        </p>
+        <div class="hero-actions">
+          <a href="#components" class="btn">Explore Components</a>
+          <a href="#palette" class="btn btn--outline">View Palette</a>
+        </div>
+      </div>
+    </header>
+
+    <!-- ===== STATS BAR ===== -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <p class="stat-label">Total Value Locked</p>
+        <p class="stat-value">$47.8B</p>
+        <p class="stat-change up">+12.4%</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">24h Volume</p>
+        <p class="stat-value">$2.1B</p>
+        <p class="stat-change up">+5.7%</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Gas Price</p>
+        <p class="stat-value">18 Gwei</p>
+        <p class="stat-change down">-8.2%</p>
+      </div>
+      <div class="stat-card">
+        <p class="stat-label">Active Wallets</p>
+        <p class="stat-value">842K</p>
+        <p class="stat-change up">+3.1%</p>
+      </div>
+    </div>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div style="margin-top: 60px;">
+      <div class="gradient-bar"></div>
+    </div>
+
+    <!-- ===== TYPOGRAPHY SECTION ===== -->
+    <section class="section section--void" id="typography">
+      <div class="container">
+        <p class="section-label">Typography</p>
+        <h2 class="section-title">Futuristic, Geometric &amp; Precise</h2>
+        <p class="section-subtitle">Squared letterforms, geometric grotesks, and monospace for data-dense interfaces</p>
+
+        <div class="typo-showcase">
+          <div class="typo-left">
+            <div class="typo-sample">
+              <p class="typo-sample-label">Display / Orbitron</p>
+              <p class="typo-display">BLOCKCHAIN</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Heading / Space Grotesk</p>
+              <p class="typo-heading">Decentralized Finance Protocol</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Subheading / Exo 2</p>
+              <p class="typo-subheading">Smart Contracts &amp; Token Economics</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Body / Inter</p>
+              <p class="typo-body">Screen-optimized text designed for data-dense dashboards, portfolio summaries, and transaction details. Clarity and legibility are paramount when users manage financial assets.</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">Monospace / JetBrains Mono</p>
+              <p class="typo-mono">0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D</p>
+            </div>
+            <div class="typo-sample">
+              <p class="typo-sample-label">UI Label / Space Grotesk</p>
+              <p class="typo-label">Total Value Locked &bull; 24h Volume &bull; Gas Price</p>
+            </div>
+          </div>
+          <div class="typo-right">
+            <h3>Type Scale</h3>
+            <div class="typo-scale">
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">5rem</span>
+                <span style="font-family: 'Orbitron', sans-serif; font-size: 1.8rem; font-weight: 700; background: var(--crypto-gradient-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">3rem</span>
+                <span style="font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem; font-weight: 600; color: var(--crypto-text-primary);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1.6rem</span>
+                <span style="font-family: 'Exo 2', sans-serif; font-size: 1.2rem; font-weight: 500; color: var(--crypto-text-primary);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">1rem</span>
+                <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--crypto-text-secondary);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">0.88rem</span>
+                <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.88rem; color: var(--crypto-cyan);">Aa</span>
+              </div>
+              <div class="typo-scale-item">
+                <span class="typo-scale-size">0.8rem</span>
+                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--crypto-text-muted);">Aa</span>
+              </div>
+            </div>
+
+            <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--crypto-gunmetal);">
+              <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+              <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px; color: var(--crypto-text-secondary);">
+                <strong style="font-family: 'Orbitron', sans-serif; color: var(--crypto-cyan);">Orbitron</strong> + <strong style="color: var(--crypto-text-primary);">Inter</strong><br>
+                <span style="color: var(--crypto-text-muted); font-size: 0.85rem;">Maximum futurism with classic crypto authority</span>
+              </p>
+              <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px; color: var(--crypto-text-secondary);">
+                <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--crypto-cyan);">Space Grotesk</strong> + <strong style="color: var(--crypto-text-primary);">Inter</strong><br>
+                <span style="color: var(--crypto-text-muted); font-size: 0.85rem;">Tech-forward but approachable and readable</span>
+              </p>
+              <p style="font-size: 0.92rem; line-height: 1.7; color: var(--crypto-text-secondary);">
+                <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--crypto-cyan);">Space Grotesk</strong> + <strong style="font-family: 'JetBrains Mono', monospace; color: var(--crypto-text-primary);">JetBrains Mono</strong><br>
+                <span style="color: var(--crypto-text-muted); font-size: 0.85rem;">Full developer and engineering aesthetic</span>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div class="gradient-bar"></div>
+
+    <!-- ===== COLOR PALETTE SECTION ===== -->
+    <section class="section section--deep-space" id="palette">
+      <div class="container">
+        <p class="section-label">Color Palette</p>
+        <h2 class="section-title">Dark Void &amp; Neon Glow</h2>
+        <p class="section-subtitle">Deep space foundations with electric accents drawn from the blue-purple-cyan-green spectrum</p>
+
+        <div class="palette-grid">
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #0a0e17;"></div>
+            <div class="color-info">
+              <div class="color-name">Void Black</div>
+              <div class="color-hex">#0A0E17</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #111827;"></div>
+            <div class="color-info">
+              <div class="color-name">Deep Space</div>
+              <div class="color-hex">#111827</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #1a1f2e;"></div>
+            <div class="color-info">
+              <div class="color-name">Charcoal</div>
+              <div class="color-hex">#1A1F2E</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #252b3b;"></div>
+            <div class="color-info">
+              <div class="color-name">Gunmetal</div>
+              <div class="color-hex">#252B3B</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #7b3fe4;"></div>
+            <div class="color-info">
+              <div class="color-name">Crypto Purple</div>
+              <div class="color-hex">#7B3FE4</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #6366f1;"></div>
+            <div class="color-info">
+              <div class="color-name">Electric Indigo</div>
+              <div class="color-hex">#6366F1</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #3b82f6;"></div>
+            <div class="color-info">
+              <div class="color-name">Neon Blue</div>
+              <div class="color-hex">#3B82F6</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #00d4ff;"></div>
+            <div class="color-info">
+              <div class="color-name">Cyber Cyan</div>
+              <div class="color-hex">#00D4FF</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #00ffa3;"></div>
+            <div class="color-info">
+              <div class="color-name">Matrix Green</div>
+              <div class="color-hex">#00FFA3</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #10b981;"></div>
+            <div class="color-info">
+              <div class="color-name">Emerald</div>
+              <div class="color-hex">#10B981</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #f43f5e;"></div>
+            <div class="color-info">
+              <div class="color-name">Alert Red</div>
+              <div class="color-hex">#F43F5E</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #f59e0b;"></div>
+            <div class="color-info">
+              <div class="color-name">Caution Amber</div>
+              <div class="color-hex">#F59E0B</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #ec4899;"></div>
+            <div class="color-info">
+              <div class="color-name">Hot Pink</div>
+              <div class="color-hex">#EC4899</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: #e2e8f0;"></div>
+            <div class="color-info">
+              <div class="color-name">Silver Text</div>
+              <div class="color-hex">#E2E8F0</div>
+            </div>
+          </div>
+          <div class="color-chip">
+            <div class="color-swatch" style="background: linear-gradient(135deg, #7b3fe4, #3b82f6, #00d4ff); position: relative;">
+              <div style="position: absolute; inset: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.2) 0%, transparent 50%);"></div>
+            </div>
+            <div class="color-info">
+              <div class="color-name">Primary Gradient</div>
+              <div class="color-hex">Purple &rarr; Cyan</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div class="gradient-bar"></div>
+
+    <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+    <section class="section section--void" id="components">
+      <div class="container">
+        <p class="section-label">Components</p>
+        <h2 class="section-title">Glassmorphic Cards &amp; Glowing Elements</h2>
+        <p class="section-subtitle">Frosted panels, gradient borders, and neon hover states define the Web3 interface</p>
+
+        <div class="card-grid">
+          <div class="card">
+            <div class="card-icon card-icon--purple">&#9670;</div>
+            <h3>Glassmorphism Panels</h3>
+            <p>Translucent cards with backdrop-filter blur sit above dark backgrounds, creating layered depth reminiscent of holographic HUDs and futuristic dashboards.</p>
+            <span class="tag">Glass</span>
+            <span class="tag">Depth</span>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon--cyan">&#9733;</div>
+            <h3>Neon Gradient Accents</h3>
+            <p>Vibrant purple-to-cyan gradients applied to buttons, borders, headings, and decorative elements create the signature glow that defines every crypto platform.</p>
+            <span class="tag">Gradient</span>
+            <span class="tag">Accent</span>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon--green">&#9681;</div>
+            <h3>Node Network Motifs</h3>
+            <p>Interconnected dots, hexagonal grids, and circuit-trace patterns reference blockchain's decentralized network topology and distributed architecture.</p>
+            <span class="tag">Pattern</span>
+            <span class="tag">Network</span>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon--blue">&#9632;</div>
+            <h3>Data-Dense Dashboards</h3>
+            <p>Modular grid systems organize charts, token tickers, portfolio summaries, and activity feeds with generous internal spacing and tight gaps between panels.</p>
+            <span class="tag">Layout</span>
+            <span class="tag">Data</span>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon--pink">&#9830;</div>
+            <h3>Glowing UI States</h3>
+            <p>Buttons, badges, and active elements emit soft neon glows through layered box-shadows. Hover states intensify the glow for clear interactive feedback.</p>
+            <span class="tag">Animation</span>
+            <span class="tag">Glow</span>
+          </div>
+          <div class="card">
+            <div class="card-icon card-icon--indigo">&#9678;</div>
+            <h3>Gradient Border Effects</h3>
+            <p>CSS mask-composite techniques create animated gradient borders that cycle through the neon spectrum, wrapping cards and panels in prismatic light.</p>
+            <span class="tag">Border</span>
+            <span class="tag">CSS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div class="gradient-bar"></div>
+
+    <!-- ===== EFFECTS SHOWCASE ===== -->
+    <section class="section section--deep-space" id="effects">
+      <div class="container">
+        <p class="section-label">Visual Effects</p>
+        <h2 class="section-title">CSS Techniques &amp; Glowing Surfaces</h2>
+        <p class="section-subtitle">All the crypto-native visual effects, achieved purely with CSS</p>
+
+        <div class="effects-grid">
+          <div class="effect-demo">
+            <div class="effect-preview effect-glass"></div>
+            <div class="effect-caption">
+              <h4>Glassmorphism</h4>
+              <p>Backdrop-filter blur with translucent backgrounds creates the frosted-glass panel effect.</p>
+            </div>
+          </div>
+          <div class="effect-demo">
+            <div class="effect-preview effect-glow"></div>
+            <div class="effect-caption">
+              <h4>Neon Glow</h4>
+              <p>Layered text-shadow with low-opacity neon colors creates the signature crypto glow.</p>
+            </div>
+          </div>
+          <div class="effect-demo">
+            <div class="effect-preview effect-gradient-mesh"></div>
+            <div class="effect-caption">
+              <h4>Gradient Mesh</h4>
+              <p>Overlapping radial gradients in neon tones drift with hue-rotate animation.</p>
+            </div>
+          </div>
+          <div class="effect-demo">
+            <div class="effect-preview effect-circuit"></div>
+            <div class="effect-caption">
+              <h4>Circuit Grid</h4>
+              <p>Layered linear gradients create a scrolling grid pattern evoking circuit boards.</p>
+            </div>
+          </div>
+          <div class="effect-demo">
+            <div class="effect-preview effect-gradient-border"></div>
+            <div class="effect-caption">
+              <h4>Gradient Border</h4>
+              <p>Animated hue-rotating gradient behind a masked element creates prismatic borders.</p>
+            </div>
+          </div>
+          <div class="effect-demo">
+            <div class="effect-preview effect-particles"></div>
+            <div class="effect-caption">
+              <h4>Particle Field</h4>
+              <p>Scattered radial gradient dots drift subtly, evoking data flowing through the network.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div class="gradient-bar"></div>
+
+    <!-- ===== BUTTON SHOWCASE ===== -->
+    <section class="section section--charcoal">
+      <div class="container">
+        <p class="section-label">Interactive Elements</p>
+        <h2 class="section-title">Glowing Buttons</h2>
+        <p class="section-subtitle">Gradient fills, glass surfaces, neon outlines, and animated connect states</p>
+
+        <div class="button-showcase">
+          <a href="#" class="btn">Primary Gradient</a>
+          <a href="#" class="btn btn--outline">Outline Glow</a>
+          <a href="#" class="btn btn--glass">Glass Surface</a>
+          <a href="#" class="btn btn--connect">Connect Wallet</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div class="gradient-bar"></div>
+
+    <!-- ===== QUOTE SECTION ===== -->
+    <section class="section section--void">
+      <div class="container">
+        <div class="quote-block">
+          <blockquote>
+            The Crypto Aesthetic projects confidence, trust, and cutting-edge technology &mdash; dark interfaces reimagined as cockpits of a spaceship, where every glow signals the constant pulse of a decentralized network.
+          </blockquote>
+          <cite>&mdash; <span>The Visual Language of Web3</span></cite>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="section section--deep-space">
+      <div class="container">
+        <div class="cta-container">
+          <h2>Enter the Void</h2>
+          <p class="cta-tagline">Build interfaces that pulse with the energy of the blockchain.</p>
+          <p>
+            The Crypto Aesthetic fuses dark backgrounds, neon gradient accents, glassmorphic panels, and data-rich layouts into a visual language of trust, precision, and digital luxury. Every glow serves a purpose. Every gradient tells a story.
+          </p>
+          <a href="#hero" class="btn">Back to the Top</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT BAR ===== -->
+    <div class="gradient-bar"></div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <div class="footer-content">
+        <h3>CryptoVault</h3>
+        <p>
+          A design aesthetic reference showcasing the visual language of Web3 and decentralized finance &mdash; dark voids, neon gradients, frosted glass, and glowing interfaces, all without a single image asset.
+        </p>
+        <div class="footer-links">
+          <a href="#hero">Overview</a>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Palette</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+        <div class="footer-decorative">
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <p class="footer-copy">Design Aesthetic Reference &bull; Crypto Aesthetic &bull; 0x000...VOID</p>
+      </div>
+    </footer>
+
+  </div><!-- end .content -->
+
+</body>
+</html>

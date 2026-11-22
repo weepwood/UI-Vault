@@ -1,0 +1,1866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grunge Revival -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Rubik+Dirt&family=Rock+Salt&family=Special+Elite&family=Londrina+Solid&family=Inter:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;700&family=Courier+Prime:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Darkest Tones --- */
+      --revival-void: #0c0c0c;
+      --revival-asphalt: #1a1a1e;
+      --revival-charcoal: #2c2a2a;
+      --revival-concrete: #4a4744;
+      --revival-smoke: #7a7672;
+
+      /* --- Warm Accents --- */
+      --revival-rust: #a04a2d;
+      --revival-amber: #b89234;
+      --revival-blood: #6b1515;
+      --revival-stain: #8b6f4e;
+
+      /* --- Cool Accents --- */
+      --revival-moss: #3a3f2a;
+      --revival-teal: #3d5a5c;
+      --revival-bruise: #4e3a5c;
+
+      /* --- Light Tones --- */
+      --revival-parchment: #d4c9a8;
+      --revival-white: #e8e2d5;
+      --revival-silver: #9a9590;
+
+      /* --- Functional Mappings --- */
+      --revival-bg-primary: var(--revival-asphalt);
+      --revival-bg-secondary: var(--revival-charcoal);
+      --revival-bg-surface: var(--revival-concrete);
+      --revival-text-primary: var(--revival-white);
+      --revival-text-secondary: var(--revival-parchment);
+      --revival-text-muted: var(--revival-smoke);
+      --revival-accent-warm: var(--revival-rust);
+      --revival-accent-cool: var(--revival-teal);
+      --revival-accent-highlight: var(--revival-amber);
+      --revival-border: var(--revival-concrete);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'IBM Plex Mono', system-ui, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--revival-text-secondary);
+      background: var(--revival-bg-primary);
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Global grain overlay on entire page */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.06;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      z-index: 9999;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: var(--revival-void);
+      border-bottom: 2px solid var(--revival-concrete);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    /* Subtle noise on nav */
+    .nav::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .nav-logo {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.3rem;
+      color: var(--revival-white);
+      transform: rotate(-0.8deg);
+      display: inline-block;
+      letter-spacing: 0.03em;
+      transition: color 0.15s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--revival-amber);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.85rem;
+      color: var(--revival-smoke);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      border-bottom: 2px solid transparent;
+      padding-bottom: 0.2rem;
+      transition: all 0.15s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--revival-amber);
+      border-bottom-color: var(--revival-amber);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 5rem 2rem;
+      background:
+        radial-gradient(ellipse at center, transparent 35%, rgba(12, 12, 12, 0.7) 100%),
+        radial-gradient(circle at 15% 75%, rgba(160, 74, 45, 0.06) 0%, transparent 50%),
+        radial-gradient(circle at 85% 20%, rgba(58, 63, 42, 0.08) 0%, transparent 40%),
+        var(--revival-void);
+      overflow: hidden;
+    }
+
+    /* Grain noise overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hg)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+      z-index: 1;
+    }
+
+    /* Diagonal scratch lines */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(-25deg, transparent, transparent 12px, rgba(255,255,255,0.008) 12px, rgba(255,255,255,0.008) 13px),
+        repeating-linear-gradient(40deg, transparent, transparent 16px, rgba(255,255,255,0.006) 16px, rgba(255,255,255,0.006) 17px);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--revival-smoke);
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      line-height: 0.92;
+      color: var(--revival-white);
+      text-transform: uppercase;
+      transform: rotate(-1.8deg);
+      margin-bottom: 1.5rem;
+      text-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.6),
+        -2px -2px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 em {
+      color: var(--revival-rust);
+      font-style: normal;
+    }
+
+    .hero .tagline {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(0.85rem, 1.8vw, 1.15rem);
+      color: var(--revival-smoke);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      transform: rotate(0.4deg);
+      display: inline-block;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--revival-parchment);
+      max-width: 580px;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative ink splatters in hero */
+    .hero-splatter {
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--revival-rust) 0%, transparent 70%);
+      opacity: 0.04;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-splatter--1 {
+      top: 15%;
+      right: 10%;
+      width: 180px;
+      height: 180px;
+    }
+
+    .hero-splatter--2 {
+      bottom: 20%;
+      right: 25%;
+      width: 90px;
+      height: 90px;
+      background: radial-gradient(circle, var(--revival-amber) 0%, transparent 70%);
+      opacity: 0.03;
+    }
+
+    .hero-splatter--3 {
+      top: 60%;
+      right: 5%;
+      width: 60px;
+      height: 60px;
+      background: radial-gradient(circle, var(--revival-moss) 0%, transparent 70%);
+      opacity: 0.05;
+    }
+
+    /* ============================================
+       TORN EDGE DIVIDER
+       ============================================ */
+    .torn-edge {
+      height: 16px;
+      background: var(--revival-asphalt);
+      clip-path: polygon(
+        0% 0%, 2% 55%, 5% 18%, 8% 72%, 12% 28%, 15% 78%,
+        19% 12%, 22% 62%, 25% 32%, 29% 82%, 32% 18%, 35% 68%,
+        38% 8%, 41% 52%, 44% 72%, 47% 18%, 50% 58%, 53% 32%,
+        56% 78%, 59% 12%, 62% 58%, 65% 28%, 68% 72%, 71% 38%,
+        74% 88%, 77% 22%, 80% 62%, 83% 8%, 86% 48%, 89% 72%,
+        92% 28%, 95% 62%, 98% 18%, 100% 48%,
+        100% 100%, 0% 100%
+      );
+    }
+
+    .torn-edge--dark {
+      background: var(--revival-void);
+    }
+
+    .torn-edge--charcoal {
+      background: var(--revival-charcoal);
+    }
+
+    /* ============================================
+       SPLATTER DIVIDER
+       ============================================ */
+    .splatter-divider {
+      border: none;
+      height: 1px;
+      background: var(--revival-concrete);
+      position: relative;
+      margin: 3rem auto;
+      max-width: 600px;
+      opacity: 0.35;
+    }
+
+    .splatter-divider::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 15%;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--revival-rust);
+      box-shadow:
+        28px 3px 0 2px var(--revival-rust),
+        60px -2px 0 1px var(--revival-rust),
+        100px 4px 0 3px var(--revival-rust),
+        155px -1px 0 1px var(--revival-rust),
+        220px 2px 0 2px var(--revival-rust);
+      opacity: 0.3;
+    }
+
+    .splatter-divider::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      right: 20%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--revival-amber);
+      box-shadow:
+        -25px 2px 0 1px var(--revival-amber),
+        -65px -1px 0 2px var(--revival-amber),
+        -110px 3px 0 1px var(--revival-amber);
+      opacity: 0.2;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--void {
+      background: var(--revival-void);
+    }
+
+    .section--asphalt {
+      background: var(--revival-asphalt);
+    }
+
+    .section--charcoal {
+      background: var(--revival-charcoal);
+    }
+
+    .section--moss {
+      background: var(--revival-moss);
+    }
+
+    .section-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--revival-smoke);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Rock Salt', 'Permanent Marker', cursive;
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      text-align: center;
+      color: var(--revival-amber);
+      text-transform: uppercase;
+      transform: rotate(-0.6deg);
+      margin-bottom: 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .section-subtitle {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      text-align: center;
+      color: var(--revival-smoke);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      font-family: 'Permanent Marker', 'Special Elite', cursive;
+      font-size: 1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--revival-white);
+      background: var(--revival-asphalt);
+      border: 2px solid var(--revival-rust);
+      cursor: pointer;
+      position: relative;
+      transform: rotate(-0.8deg);
+      transition: all 0.15s ease;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.45);
+    }
+
+    .btn:hover {
+      background: var(--revival-rust);
+      color: var(--revival-void);
+      transform: rotate(0.4deg) translate(-1px, -1px);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.55);
+    }
+
+    .btn:active {
+      transform: rotate(0deg) translate(2px, 2px);
+      box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--revival-amber);
+      outline-offset: 3px;
+    }
+
+    /* Ghost variant */
+    .btn--ghost {
+      background: transparent;
+      border: 2px solid var(--revival-smoke);
+      color: var(--revival-parchment);
+    }
+
+    .btn--ghost:hover {
+      border-color: var(--revival-amber);
+      color: var(--revival-amber);
+      background: rgba(184, 146, 52, 0.06);
+    }
+
+    /* Sticker variant */
+    .btn--sticker {
+      background: var(--revival-amber);
+      color: var(--revival-void);
+      border: 2px solid var(--revival-void);
+      transform: rotate(1.5deg);
+    }
+
+    .btn--sticker:hover {
+      transform: rotate(-0.5deg) scale(1.04);
+      box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    /* Distressed variant */
+    .btn--distressed {
+      border-style: dashed;
+      border-color: var(--revival-concrete);
+      background:
+        radial-gradient(circle at 80% 30%, rgba(160, 74, 45, 0.08) 0%, transparent 60%),
+        var(--revival-charcoal);
+    }
+
+    .btn--distressed:hover {
+      border-color: var(--revival-rust);
+      background: var(--revival-charcoal);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--revival-smoke);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--revival-concrete);
+    }
+
+    .typo-display {
+      font-family: 'Rubik Dirt', 'Permanent Marker', cursive;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--revival-rust);
+      line-height: 0.85;
+      margin-bottom: 8px;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .typo-heading {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--revival-white);
+      line-height: 0.95;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      transform: rotate(-1deg);
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.6);
+    }
+
+    .typo-scrawl {
+      font-family: 'Rock Salt', cursive;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--revival-amber);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      transform: rotate(-0.6deg);
+      display: inline-block;
+    }
+
+    .typo-typewriter {
+      font-family: 'Special Elite', 'Courier New', monospace;
+      font-size: 1.05rem;
+      color: var(--revival-parchment);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--revival-parchment);
+      margin-bottom: 8px;
+    }
+
+    .typo-mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      color: var(--revival-smoke);
+      line-height: 1.8;
+    }
+
+    .typo-right {
+      background:
+        radial-gradient(circle at 25% 20%, rgba(160, 74, 45, 0.04) 0%, transparent 50%),
+        var(--revival-charcoal);
+      padding: 36px;
+      border: 1px solid rgba(160, 74, 45, 0.2);
+      position: relative;
+    }
+
+    /* Tape strip on type panel */
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: 30%;
+      width: 70px;
+      height: 20px;
+      background: rgba(212, 201, 168, 0.12);
+      border: 1px solid rgba(212, 201, 168, 0.06);
+      transform: rotate(3deg);
+    }
+
+    .typo-right h3 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.4rem;
+      color: var(--revival-amber);
+      margin-bottom: 16px;
+      transform: rotate(-0.4deg);
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      margin-bottom: 16px;
+      color: var(--revival-parchment);
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(74, 71, 68, 0.5);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--revival-smoke);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--revival-charcoal);
+      border: 1px solid rgba(160, 74, 45, 0.15);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px) rotate(-0.5deg);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Halftone overlay on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0, 0, 0, 0.7) 0.7px, transparent 0.7px);
+      background-size: 4px 4px;
+      opacity: 0.035;
+      mix-blend-mode: multiply;
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.85rem;
+      color: var(--revival-parchment);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--revival-smoke);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background:
+        radial-gradient(circle at 25% 20%, rgba(160, 74, 45, 0.04) 0%, transparent 50%),
+        var(--revival-charcoal);
+      border: 1px solid rgba(160, 74, 45, 0.2);
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transform: rotate(calc(var(--tilt, -0.6) * 1deg));
+      box-shadow:
+        4px 4px 0 rgba(0, 0, 0, 0.45),
+        0 0 25px rgba(0, 0, 0, 0.2);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .card:hover {
+      transform: rotate(calc(var(--tilt, -0.6) * 0.3deg)) translateY(-2px);
+      box-shadow:
+        6px 6px 0 rgba(0, 0, 0, 0.5),
+        0 0 35px rgba(0, 0, 0, 0.25);
+    }
+
+    /* Tape strip pseudo-element */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: calc(35% + var(--tape-offset, 0px));
+      width: 70px;
+      height: 20px;
+      background: rgba(212, 201, 168, 0.15);
+      border: 1px solid rgba(212, 201, 168, 0.08);
+      transform: rotate(calc(var(--tape-tilt, 2) * 1deg));
+      z-index: 2;
+    }
+
+    /* Torn bottom edge */
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 10px;
+      background: var(--revival-charcoal);
+      clip-path: polygon(
+        0% 0%, 3% 60%, 7% 20%, 11% 70%, 16% 25%, 21% 75%,
+        26% 15%, 31% 65%, 36% 30%, 41% 80%, 47% 10%, 52% 55%,
+        57% 35%, 62% 80%, 67% 20%, 72% 60%, 77% 40%, 82% 70%,
+        87% 15%, 92% 55%, 97% 25%, 100% 45%, 100% 100%, 0% 100%
+      );
+    }
+
+    .card-tag {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--revival-rust);
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .card h3 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.2rem;
+      color: var(--revival-amber);
+      margin-bottom: 0.75rem;
+      transform: rotate(-0.4deg);
+    }
+
+    .card p {
+      font-family: 'Inter', sans-serif;
+      color: var(--revival-parchment);
+      line-height: 1.7;
+      font-size: 0.95rem;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 1px solid rgba(160, 74, 45, 0.2);
+      background: var(--revival-charcoal);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Film Grain */
+    .effect-grain {
+      background: var(--revival-void);
+    }
+
+    .effect-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='eg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='6' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23eg)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      mix-blend-mode: overlay;
+      animation: grainShift 0.5s steps(4) infinite;
+    }
+
+    @keyframes grainShift {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(-2px, 2px); }
+      50% { transform: translate(2px, -1px); }
+      75% { transform: translate(-1px, -2px); }
+      100% { transform: translate(0, 0); }
+    }
+
+    .effect-grain::after {
+      content: 'FILM GRAIN';
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.8rem;
+      color: var(--revival-white);
+      text-shadow: 3px 3px 0 rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Effect 2: Torn Paper Edge */
+    .effect-torn {
+      background:
+        linear-gradient(180deg, var(--revival-asphalt) 0%, var(--revival-asphalt) 45%, var(--revival-charcoal) 45.1%);
+    }
+
+    .effect-torn::before {
+      content: '';
+      position: absolute;
+      top: 43%;
+      left: 0;
+      right: 0;
+      height: 16px;
+      background: var(--revival-asphalt);
+      clip-path: polygon(
+        0% 0%, 2% 55%, 5% 18%, 8% 72%, 12% 28%, 15% 78%,
+        19% 12%, 22% 62%, 25% 32%, 29% 82%, 32% 18%, 35% 68%,
+        38% 8%, 41% 52%, 44% 72%, 47% 18%, 50% 58%, 53% 32%,
+        56% 78%, 59% 12%, 62% 58%, 65% 28%, 68% 72%, 71% 38%,
+        74% 88%, 77% 22%, 80% 62%, 83% 8%, 86% 48%, 89% 72%,
+        92% 28%, 95% 62%, 98% 18%, 100% 48%,
+        100% 100%, 0% 100%
+      );
+      z-index: 1;
+    }
+
+    .effect-torn::after {
+      content: 'TORN EDGE';
+      font-family: 'Special Elite', monospace;
+      font-size: 1.2rem;
+      color: var(--revival-parchment);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      z-index: 2;
+      position: relative;
+    }
+
+    /* Effect 3: Halftone Dots */
+    .effect-halftone {
+      background: linear-gradient(135deg, var(--revival-rust), var(--revival-blood));
+    }
+
+    .effect-halftone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0, 0, 0, 0.7) 1.5px, transparent 1.5px);
+      background-size: 6px 6px;
+      animation: halftoneShift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes halftoneShift {
+      0% { background-size: 6px 6px; }
+      100% { background-size: 8px 8px; }
+    }
+
+    .effect-halftone::after {
+      content: 'HALFTONE';
+      font-family: 'Rubik Dirt', cursive;
+      font-size: 2rem;
+      color: var(--revival-white);
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.4);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Effect 4: Tape Strip */
+    .effect-tape {
+      background: var(--revival-asphalt);
+      position: relative;
+    }
+
+    .effect-tape::before {
+      content: '';
+      position: absolute;
+      top: 30%;
+      left: 20%;
+      width: 60%;
+      height: 28px;
+      background: rgba(212, 201, 168, 0.12);
+      border: 1px solid rgba(212, 201, 168, 0.06);
+      transform: rotate(-3deg);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .effect-tape::after {
+      content: 'TAPE STRIP';
+      font-family: 'Rock Salt', cursive;
+      font-size: 1rem;
+      color: var(--revival-parchment);
+      z-index: 2;
+      position: relative;
+      top: 15px;
+    }
+
+    .effect-tape-extra {
+      position: absolute;
+      bottom: 25%;
+      left: 30%;
+      width: 50%;
+      height: 22px;
+      background: rgba(184, 146, 52, 0.08);
+      border: 1px solid rgba(184, 146, 52, 0.04);
+      transform: rotate(2deg);
+    }
+
+    /* Effect 5: Splatter */
+    .effect-splatter {
+      background: var(--revival-void);
+      position: relative;
+    }
+
+    .effect-splatter::before {
+      content: '';
+      position: absolute;
+      top: 40%;
+      left: 20%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--revival-rust);
+      box-shadow:
+        30px -15px 0 5px var(--revival-rust),
+        65px 10px 0 3px var(--revival-rust),
+        100px -8px 0 6px var(--revival-rust),
+        140px 12px 0 2px var(--revival-rust),
+        -20px 20px 0 4px var(--revival-amber),
+        50px 30px 0 2px var(--revival-amber),
+        110px 25px 0 3px var(--revival-amber),
+        -10px -10px 0 2px var(--revival-blood);
+      opacity: 0.5;
+    }
+
+    .effect-splatter::after {
+      content: 'INK SPLATTER';
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.3rem;
+      color: var(--revival-amber);
+      text-shadow: 2px 2px 0 rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      position: relative;
+    }
+
+    /* Effect 6: Xerox / Photocopy */
+    .effect-xerox {
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(255, 255, 255, 0.02) 2px,
+          rgba(255, 255, 255, 0.02) 4px
+        ),
+        linear-gradient(180deg, #2c2a2a 0%, #1a1a1e 100%);
+      position: relative;
+    }
+
+    .effect-xerox::before {
+      content: 'PHOTOCOPY';
+      font-family: 'Londrina Solid', sans-serif;
+      font-size: 3rem;
+      color: var(--revival-parchment);
+      position: relative;
+      z-index: 1;
+      filter: contrast(1.8) brightness(1.1);
+      opacity: 0.7;
+      text-shadow:
+        1px 0 0 rgba(212, 201, 168, 0.3),
+        -1px 0 0 rgba(212, 201, 168, 0.2),
+        0 1px 0 rgba(0, 0, 0, 0.4);
+    }
+
+    .effect-xerox::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='xr'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23xr)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      mix-blend-mode: overlay;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1rem;
+      color: var(--revival-amber);
+      margin-bottom: 4px;
+      transform: rotate(-0.3deg);
+    }
+
+    .effect-caption p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--revival-smoke);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 740px;
+      margin: 0 auto;
+      border-left: 4px solid var(--revival-rust);
+      padding: 1.5rem 1.5rem 1.5rem 2rem;
+      background: rgba(58, 63, 42, 0.15);
+      transform: rotate(-0.3deg);
+      position: relative;
+      font-style: italic;
+      color: var(--revival-white);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: -0.4rem;
+      left: 0.5rem;
+      font-family: 'Permanent Marker', cursive;
+      font-size: 3rem;
+      color: var(--revival-rust);
+      opacity: 0.25;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Courier Prime', monospace;
+      font-size: clamp(1rem, 1.8vw, 1.2rem);
+      line-height: 1.7;
+      color: var(--revival-white);
+      max-width: 600px;
+    }
+
+    .quote-block cite {
+      display: block;
+      margin-top: 1rem;
+      font-family: 'Share Tech Mono', monospace;
+      font-style: normal;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--revival-smoke);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background:
+        radial-gradient(ellipse at center, transparent 35%, rgba(12, 12, 12, 0.7) 100%),
+        radial-gradient(circle at 20% 50%, rgba(160, 74, 45, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(58, 63, 42, 0.06) 0%, transparent 50%),
+        var(--revival-void);
+      padding: 80px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Grain on CTA */
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.07;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='cg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='5' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23cg)'/%3E%3C/svg%3E");
+      background-size: 512px 512px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--revival-white);
+      text-transform: uppercase;
+      transform: rotate(-1.2deg);
+      margin-bottom: 16px;
+      text-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+    }
+
+    .cta-section h2 em {
+      color: var(--revival-rust);
+      font-style: normal;
+    }
+
+    .cta-section p {
+      font-family: 'Special Elite', monospace;
+      font-size: clamp(0.9rem, 1.5vw, 1.1rem);
+      color: var(--revival-smoke);
+      letter-spacing: 0.08em;
+      max-width: 500px;
+      margin: 0 auto 32px;
+      text-transform: uppercase;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--revival-void);
+      border-top: 2px solid var(--revival-concrete);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--revival-smoke);
+      position: relative;
+    }
+
+    /* Noise overlay on footer */
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='fg'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23fg)'/%3E%3C/svg%3E");
+      background-size: 256px 256px;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Permanent Marker', cursive;
+      font-size: 1.6rem;
+      color: var(--revival-amber);
+      margin-bottom: 10px;
+      transform: rotate(-0.5deg);
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: var(--revival-smoke);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Special Elite', monospace;
+      font-size: 0.85rem;
+      color: var(--revival-smoke);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border-bottom: 1px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--revival-amber);
+      border-bottom-color: var(--revival-amber);
+    }
+
+    .footer-copy {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: rgba(122, 118, 114, 0.5);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        gap: 0.75rem;
+        text-align: center;
+        padding: 0.8rem 1rem;
+      }
+
+      .nav-links {
+        gap: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.78rem;
+      }
+
+      .hero {
+        padding: 4rem 1.5rem;
+        min-height: 70vh;
+      }
+
+      .hero h1 {
+        transform: rotate(-1deg);
+      }
+
+      .hero-splatter {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        transform: rotate(calc(var(--tilt, -0.6) * 0.3deg));
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        transform: rotate(0deg);
+        padding: 1.2rem;
+      }
+
+      .cta-section {
+        padding: 56px 16px;
+      }
+
+      .cta-section h2 {
+        transform: rotate(-0.5deg);
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.75rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-grain::before {
+        animation: none;
+      }
+
+      .effect-halftone::before {
+        animation: none;
+      }
+
+      .card, .color-chip, .btn {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Grunge Revival</a>
+    <div class="nav-links">
+      <a href="#hero">Manifesto</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative splatters -->
+    <div class="hero-splatter hero-splatter--1"></div>
+    <div class="hero-splatter hero-splatter--2"></div>
+    <div class="hero-splatter hero-splatter--3"></div>
+
+    <div class="hero-content">
+      <span class="hero-label">// Design Aesthetic Reference</span>
+      <h1>Grunge<br><em>Revival</em></h1>
+      <p class="tagline">Raw textures // Controlled chaos // Analog warmth</p>
+      <p class="hero-desc">
+        The modern reinterpretation of 90s alternative visual culture &mdash; distressed textures, torn edges, and ink-splattered typography deployed within a structured, usable framework. Surface chaos with underlying order.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Explore Cards</a>
+        <a href="#palette" class="btn btn--ghost">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TORN EDGE ===== -->
+  <div class="torn-edge"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--asphalt" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Hand-Drawn &amp; Eroded</h2>
+      <p class="section-subtitle">marker strokes, typewriter grit, clean body text</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Rubik Dirt</p>
+            <p class="typo-display">SMASH THE GRID</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Permanent Marker</p>
+            <p class="typo-heading">Raw Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Rock Salt</p>
+            <p class="typo-scrawl">scrawled annotations &amp; margin notes</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Special Elite</p>
+            <p class="typo-typewriter">Distressed Typewriter Output</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter</p>
+            <p class="typo-body">Clean, readable body text designed for comfortable long-form reading. The Revival preserves usability beneath the visual roughness.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Mono / IBM Plex Mono</p>
+            <p class="typo-mono">code, metadata, timestamps &amp; structured content</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Rubik Dirt', cursive; font-size: 1.8rem; color: var(--revival-rust);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Permanent Marker', cursive; font-size: 1.5rem; color: var(--revival-white); text-shadow: 2px 2px 0 rgba(0,0,0,0.4);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Rock Salt', cursive; font-size: 1.1rem; color: var(--revival-amber);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.15rem</span>
+              <span style="font-family: 'Special Elite', monospace; font-size: 1rem; color: var(--revival-parchment); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--revival-parchment);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; color: var(--revival-smoke); text-transform: uppercase; letter-spacing: 0.2em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--revival-concrete);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Permanent Marker', cursive; color: var(--revival-rust);">Permanent Marker</strong> + <strong>Inter</strong><br>
+              <span style="color: var(--revival-smoke); font-size: 0.85rem;">Raw display energy meets clean modern readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Rubik Dirt', cursive; color: var(--revival-rust);">Rubik Dirt</strong> + <strong style="font-family: 'Courier Prime', monospace;">Courier Prime</strong><br>
+              <span style="color: var(--revival-smoke); font-size: 0.85rem;">Inky bold display over lo-fi typewriter body</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Rock Salt', cursive; color: var(--revival-rust);">Rock Salt</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--revival-smoke); font-size: 0.85rem;">Intimate hand-scrawled headings with clean text</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPLATTER DIVIDER ===== -->
+  <div class="section--asphalt" style="padding: 0;">
+    <hr class="splatter-divider">
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--charcoal" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Oxidized &amp; Weathered</h2>
+      <p class="section-subtitle">rust, charcoal, moss, amber &amp; aged parchment</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0c0c0c;"></div>
+          <div class="color-info">
+            <div class="color-name">Void Black</div>
+            <div class="color-hex">#0C0C0C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a1a1e;"></div>
+          <div class="color-info">
+            <div class="color-name">Asphalt</div>
+            <div class="color-hex">#1A1A1E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2c2a2a;"></div>
+          <div class="color-info">
+            <div class="color-name">Worn Charcoal</div>
+            <div class="color-hex">#2C2A2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a4744;"></div>
+          <div class="color-info">
+            <div class="color-name">Concrete Dust</div>
+            <div class="color-hex">#4A4744</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7a7672;"></div>
+          <div class="color-info">
+            <div class="color-name">Smoke Haze</div>
+            <div class="color-hex">#7A7672</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a04a2d;"></div>
+          <div class="color-info">
+            <div class="color-name">Oxidized Rust</div>
+            <div class="color-hex">#A04A2D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b89234;"></div>
+          <div class="color-info">
+            <div class="color-name">Faded Amber</div>
+            <div class="color-hex">#B89234</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6b1515;"></div>
+          <div class="color-info">
+            <div class="color-name">Dried Blood</div>
+            <div class="color-hex">#6B1515</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3a3f2a;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Moss</div>
+            <div class="color-hex">#3A3F2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3d5a5c;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Teal</div>
+            <div class="color-hex">#3D5A5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4e3a5c;"></div>
+          <div class="color-info">
+            <div class="color-name">Bruise Purple</div>
+            <div class="color-hex">#4E3A5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d4c9a8;"></div>
+          <div class="color-info">
+            <div class="color-name">Aged Parchment</div>
+            <div class="color-hex">#D4C9A8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e8e2d5;"></div>
+          <div class="color-info">
+            <div class="color-name">Dirty White</div>
+            <div class="color-hex">#E8E2D5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9a9590;"></div>
+          <div class="color-info">
+            <div class="color-name">Tarnished Silver</div>
+            <div class="color-hex">#9A9590</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b6f4e;"></div>
+          <div class="color-info">
+            <div class="color-name">Stain Brown</div>
+            <div class="color-hex">#8B6F4E</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TORN EDGE ===== -->
+  <div class="torn-edge--dark" style="height: 16px; clip-path: polygon(0% 0%, 2% 55%, 5% 18%, 8% 72%, 12% 28%, 15% 78%, 19% 12%, 22% 62%, 25% 32%, 29% 82%, 32% 18%, 35% 68%, 38% 8%, 41% 52%, 44% 72%, 47% 18%, 50% 58%, 53% 32%, 56% 78%, 59% 12%, 62% 58%, 65% 28%, 68% 72%, 71% 38%, 74% 88%, 77% 22%, 80% 62%, 83% 8%, 86% 48%, 89% 72%, 92% 28%, 95% 62%, 98% 18%, 100% 48%, 100% 100%, 0% 100%); background: var(--revival-void);"></div>
+
+  <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+  <section class="section section--void" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Distressed Cards</h2>
+      <p class="section-subtitle">tape strips, torn edges &amp; rough surfaces</p>
+
+      <div class="card-grid">
+        <div class="card" style="--tilt: -0.8; --tape-offset: -10px; --tape-tilt: 3;">
+          <span class="card-tag">// Texture</span>
+          <h3>Film Grain Overlay</h3>
+          <p>SVG feTurbulence noise layered at low opacity creates analog warmth. The grain shifts perception from digital precision to physical imperfection.</p>
+        </div>
+        <div class="card" style="--tilt: 0.5; --tape-offset: 15px; --tape-tilt: -2;">
+          <span class="card-tag">// Layout</span>
+          <h3>Torn Edge Dividers</h3>
+          <p>Irregular clip-path polygons replace clean horizontal rules with jagged, ripped-paper boundaries between sections and content areas.</p>
+        </div>
+        <div class="card" style="--tilt: -1.2; --tape-offset: -25px; --tape-tilt: 4;">
+          <span class="card-tag">// Motion</span>
+          <h3>Deliberate Rotation</h3>
+          <p>Subtle 0.5-3 degree tilts on cards and headings suggest hand-placement. The slight imperfection signals authenticity over machine precision.</p>
+        </div>
+        <div class="card" style="--tilt: 0.3; --tape-offset: 20px; --tape-tilt: -1;">
+          <span class="card-tag">// Decoration</span>
+          <h3>Tape Strip Accents</h3>
+          <p>Translucent pseudo-elements simulate adhesive tape holding cards in place. A physical metaphor that grounds the digital in analog craft.</p>
+        </div>
+        <div class="card" style="--tilt: -0.4; --tape-offset: 5px; --tape-tilt: 2;">
+          <span class="card-tag">// Typography</span>
+          <h3>Marker &amp; Typewriter</h3>
+          <p>Display fonts with marker strokes and eroded qualities paired with clean monospace body text. Chaos in the headlines, order in the paragraphs.</p>
+        </div>
+        <div class="card" style="--tilt: 0.9; --tape-offset: -15px; --tape-tilt: -3;">
+          <span class="card-tag">// Color</span>
+          <h3>Oxidized Earth Tones</h3>
+          <p>Rust, amber, moss, and dried blood on dark asphalt surfaces. Every color looks weathered, left in the rain, stained by coffee and ink.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPLATTER DIVIDER ===== -->
+  <div class="section--void" style="padding: 0;">
+    <hr class="splatter-divider">
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE (6 EFFECTS) ===== -->
+  <section class="section section--asphalt" id="effects">
+    <div class="container">
+      <p class="section-label">CSS Effects</p>
+      <h2 class="section-title">Distressed Techniques</h2>
+      <p class="section-subtitle">grain, halftone, torn edges &amp; analog artifacts</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-grain"></div>
+          <div class="effect-caption">
+            <h4>Film Grain</h4>
+            <p>Animated SVG feTurbulence noise with overlay blend mode creates shifting, organic film grain texture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-torn"></div>
+          <div class="effect-caption">
+            <h4>Torn Paper Edge</h4>
+            <p>Irregular clip-path polygon vertices simulate ripped paper between content sections.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-halftone"></div>
+          <div class="effect-caption">
+            <h4>Halftone Dots</h4>
+            <p>Coarse radial-gradient dot overlay referencing cheap printing processes and newsprint reproduction.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-tape">
+            <div class="effect-tape-extra"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Tape Strips</h4>
+            <p>Semi-transparent pseudo-elements with subtle borders simulate translucent adhesive tape.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-splatter"></div>
+          <div class="effect-caption">
+            <h4>Ink Splatter</h4>
+            <p>Scattered box-shadow dots in warm accent colors create organic paint-splatter dividers and accents.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-xerox"></div>
+          <div class="effect-caption">
+            <h4>Photocopy / Xerox</h4>
+            <p>High contrast, heavy noise, and scan-line artifacts simulate photocopied output with degraded fidelity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TORN EDGE ===== -->
+  <div class="torn-edge--charcoal" style="height: 16px; clip-path: polygon(0% 0%, 2% 55%, 5% 18%, 8% 72%, 12% 28%, 15% 78%, 19% 12%, 22% 62%, 25% 32%, 29% 82%, 32% 18%, 35% 68%, 38% 8%, 41% 52%, 44% 72%, 47% 18%, 50% 58%, 53% 32%, 56% 78%, 59% 12%, 62% 58%, 65% 28%, 68% 72%, 71% 38%, 74% 88%, 77% 22%, 80% 62%, 83% 8%, 86% 48%, 89% 72%, 92% 28%, 95% 62%, 98% 18%, 100% 48%, 100% 100%, 0% 100%); background: var(--revival-charcoal);"></div>
+
+  <!-- ===== BUTTON SHOWCASE (4 BUTTONS) ===== -->
+  <section class="section section--charcoal">
+    <div class="container">
+      <p class="section-label">Buttons</p>
+      <h2 class="section-title">Rough &amp; Tactile</h2>
+      <p class="section-subtitle">hand-stamped, peeling, and eroded button styles</p>
+
+      <div class="button-showcase">
+        <button class="btn">Primary Action</button>
+        <button class="btn btn--ghost">Ghost Variant</button>
+        <button class="btn btn--sticker">Sticker Label</button>
+        <button class="btn btn--distressed">Distressed</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SPLATTER DIVIDER ===== -->
+  <div class="section--charcoal" style="padding: 0;">
+    <hr class="splatter-divider">
+  </div>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--asphalt">
+    <div class="container">
+      <p class="section-label">Blockquote</p>
+      <h2 class="section-title">Words from the Underground</h2>
+      <p class="section-subtitle">rough-edged callout with paint-stroke border</p>
+
+      <div class="quote-block">
+        <blockquote>
+          The mess is visual rather than structural. Navigation hierarchies remain predictable, content architecture stays familiar, and readability is preserved &mdash; even as the surface layer screams chaos and imperfection.
+        </blockquote>
+        <cite>&mdash; Grunge Revival Design Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TORN EDGE ===== -->
+  <div class="torn-edge"></div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Embrace the <em>Imperfect</em></h2>
+      <p>Controlled rebellion -- the visual language of disorder deployed within an invisible structure.</p>
+      <div class="cta-buttons">
+        <a href="#hero" class="btn">Back to Top</a>
+        <a href="#components" class="btn btn--sticker">View Cards</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TORN EDGE ===== -->
+  <div class="torn-edge--dark" style="height: 16px; clip-path: polygon(0% 0%, 2% 55%, 5% 18%, 8% 72%, 12% 28%, 15% 78%, 19% 12%, 22% 62%, 25% 32%, 29% 82%, 32% 18%, 35% 68%, 38% 8%, 41% 52%, 44% 72%, 47% 18%, 50% 58%, 53% 32%, 56% 78%, 59% 12%, 62% 58%, 65% 28%, 68% 72%, 71% 38%, 74% 88%, 77% 22%, 80% 62%, 83% 8%, 86% 48%, 89% 72%, 92% 28%, 95% 62%, 98% 18%, 100% 48%, 100% 100%, 0% 100%); background: var(--revival-void);"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Grunge Revival</h3>
+      <p>
+        Surface chaos with underlying order. Every tilt, every torn edge, every grain overlay is a conscious design choice executed with precision to create the illusion of analog rawness.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Manifesto</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Grunge Revival &mdash; Design Aesthetic Reference</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rustic Modern -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Source+Sans+3:wght@300;400;600&family=Cabin:wght@400;500;600;700&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Warm Woods --- */
+      --rustic-walnut: #5C4033;
+      --rustic-barn-wood: #8B6F4E;
+      --rustic-oak: #A68B6B;
+      --rustic-sandstone: #C4A882;
+
+      /* --- Light Neutrals --- */
+      --rustic-linen: #E8DCC8;
+      --rustic-cream: #F5EDE0;
+      --rustic-parchment: #FAF6F0;
+
+      /* --- Brick and Clay --- */
+      --rustic-brick: #9E5A42;
+      --rustic-clay: #B87353;
+      --rustic-terracotta: #C67B5C;
+
+      /* --- Steel and Iron --- */
+      --rustic-steel: #6B7B86;
+      --rustic-iron: #4A5259;
+      --rustic-iron-dark: #363D42;
+
+      /* --- Greens --- */
+      --rustic-patina: #6B7F5E;
+      --rustic-copper: #7A8E6D;
+
+      /* --- Concrete and Stone --- */
+      --rustic-concrete: #B0A99F;
+      --rustic-cement: #D5CEC4;
+      --rustic-stone: #9A9590;
+
+      /* --- Text --- */
+      --rustic-text: #2C2A28;
+      --rustic-text-light: #6B6560;
+      --rustic-text-muted: #8A847E;
+
+      /* --- Functional Tokens --- */
+      --rustic-bg: var(--rustic-cream);
+      --rustic-surface: var(--rustic-parchment);
+      --rustic-accent: var(--rustic-brick);
+      --rustic-accent-secondary: var(--rustic-clay);
+      --rustic-heading: var(--rustic-walnut);
+      --rustic-border: var(--rustic-cement);
+      --rustic-border-strong: var(--rustic-sandstone);
+      --rustic-radius: 4px;
+
+      /* --- Shadows --- */
+      --rustic-shadow-sm: 0 2px 4px rgba(44, 42, 40, 0.06), 0 4px 12px rgba(44, 42, 40, 0.04);
+      --rustic-shadow-md: 0 4px 8px rgba(44, 42, 40, 0.08), 0 8px 24px rgba(44, 42, 40, 0.06);
+      --rustic-shadow-lg: 0 8px 16px rgba(44, 42, 40, 0.1), 0 16px 40px rgba(44, 42, 40, 0.08);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Source Sans 3', 'Cabin', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.75;
+      letter-spacing: 0.01em;
+      color: var(--rustic-text);
+      background: var(--rustic-cream);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Lora', Georgia, serif;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--rustic-heading);
+      letter-spacing: 0.01em;
+    }
+
+    h1 {
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    h2 {
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+    }
+
+    h3 {
+      font-size: clamp(1.125rem, 2vw, 1.5rem);
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--cream { background: var(--rustic-cream); }
+    .section--linen { background: var(--rustic-linen); }
+    .section--parchment { background: var(--rustic-parchment); }
+
+    .section-label {
+      font-family: 'Cabin', 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rustic-text-muted);
+      margin-bottom: 0.75rem;
+      text-align: center;
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--rustic-text-light);
+      font-size: 1rem;
+      max-width: 550px;
+      margin: 0 auto 3rem;
+      line-height: 1.65;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--rustic-walnut);
+      border-bottom: 3px solid var(--rustic-iron);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 60px;
+    }
+
+    /* Subtle brushed-metal sheen on nav */
+    .nav::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.03) 0%,
+        transparent 40%,
+        rgba(0, 0, 0, 0.05) 100%
+      );
+      pointer-events: none;
+    }
+
+    .nav-brand {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--rustic-cream);
+      text-decoration: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-brand span {
+      color: var(--rustic-clay);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-links a {
+      color: var(--rustic-linen);
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--rustic-clay);
+      transition: width 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--rustic-sandstone);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      padding: 8rem 2rem 6rem;
+      text-align: center;
+      background: var(--rustic-linen);
+      overflow: hidden;
+    }
+
+    /* Wood grain texture overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.035;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 64, 51, 0.3) 2px,
+          rgba(92, 64, 51, 0.3) 3px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          rgba(139, 111, 78, 0.15) 60px,
+          transparent 120px
+        );
+      pointer-events: none;
+    }
+
+    /* Warm radial glow at bottom */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(
+          ellipse at 50% 90%,
+          rgba(196, 168, 130, 0.2) 0%,
+          transparent 55%
+        ),
+        radial-gradient(
+          ellipse at 20% 20%,
+          rgba(158, 90, 66, 0.06) 0%,
+          transparent 40%
+        );
+      pointer-events: none;
+    }
+
+    .hero .label {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rustic-text-muted);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 1.25rem;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', 'Lora', Georgia, serif;
+      font-size: clamp(2.75rem, 7vw, 5.5rem);
+      font-weight: 700;
+      color: var(--rustic-walnut);
+      position: relative;
+      z-index: 1;
+      line-height: 1.05;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      color: var(--rustic-brick);
+    }
+
+    .hero .hero-description {
+      font-size: 1.15rem;
+      color: var(--rustic-text-light);
+      max-width: 560px;
+      margin: 1.5rem auto 2.5rem;
+      position: relative;
+      z-index: 1;
+      line-height: 1.7;
+    }
+
+    .hero .btn-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative beam lines at hero bottom */
+    .hero-beams {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      z-index: 2;
+      display: flex;
+    }
+
+    .hero-beams span {
+      flex: 1;
+      height: 100%;
+    }
+
+    .hero-beams span:nth-child(1) { background: var(--rustic-walnut); }
+    .hero-beams span:nth-child(2) { background: var(--rustic-barn-wood); }
+    .hero-beams span:nth-child(3) { background: var(--rustic-oak); }
+    .hero-beams span:nth-child(4) { background: var(--rustic-sandstone); }
+    .hero-beams span:nth-child(5) { background: var(--rustic-brick); }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Cabin', 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.8rem 2rem;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .btn--primary {
+      background: var(--rustic-brick);
+      color: var(--rustic-cream);
+      box-shadow: 0 2px 6px rgba(158, 90, 66, 0.25);
+    }
+
+    .btn--primary:hover {
+      background: var(--rustic-walnut);
+      box-shadow: 0 4px 12px rgba(92, 64, 51, 0.3);
+      transform: translateY(-1px);
+    }
+
+    .btn--secondary {
+      background: transparent;
+      color: var(--rustic-iron);
+      border: 2px solid var(--rustic-iron);
+    }
+
+    .btn--secondary:hover {
+      background: var(--rustic-iron);
+      color: var(--rustic-cream);
+    }
+
+    .btn--tertiary {
+      background: var(--rustic-linen);
+      color: var(--rustic-walnut);
+      border: 1px solid var(--rustic-sandstone);
+    }
+
+    .btn--tertiary:hover {
+      background: var(--rustic-sandstone);
+      color: var(--rustic-walnut);
+    }
+
+    .btn--ghost {
+      background: transparent;
+      color: var(--rustic-brick);
+      border: none;
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      text-decoration-color: var(--rustic-cement);
+      padding: 0.8rem 1rem;
+    }
+
+    .btn--ghost:hover {
+      color: var(--rustic-walnut);
+      text-decoration-color: var(--rustic-walnut);
+    }
+
+    /* ============================================
+       RIVETED DIVIDER
+       ============================================ */
+    .divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 0 auto;
+      max-width: 280px;
+      padding: 2.5rem 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--rustic-iron);
+    }
+
+    .divider .rivet {
+      width: 8px;
+      height: 8px;
+      background: radial-gradient(
+        circle at 35% 35%,
+        var(--rustic-steel),
+        var(--rustic-iron)
+      );
+      border-radius: 50%;
+      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    }
+
+    /* ============================================
+       STEEL BEAM DIVIDER (full-width)
+       ============================================ */
+    .steel-divider {
+      border: none;
+      height: 2px;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--rustic-iron) 15%,
+        var(--rustic-steel) 50%,
+        var(--rustic-iron) 85%,
+        transparent 100%
+      );
+      margin: 0 auto;
+      max-width: 60%;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .type-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .type-specimen {
+      padding: 2rem;
+      background: var(--rustic-parchment);
+      border: 1px solid var(--rustic-cement);
+      border-radius: var(--rustic-radius);
+      position: relative;
+    }
+
+    .type-specimen::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--rustic-barn-wood), var(--rustic-oak), var(--rustic-barn-wood));
+      border-radius: var(--rustic-radius) var(--rustic-radius) 0 0;
+    }
+
+    .type-specimen-label {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rustic-text-muted);
+      margin-bottom: 1rem;
+    }
+
+    .type-display {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 700;
+      color: var(--rustic-walnut);
+      line-height: 1.1;
+      margin-bottom: 0.75rem;
+    }
+
+    .type-heading {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--rustic-walnut);
+      line-height: 1.3;
+      margin-bottom: 0.75rem;
+    }
+
+    .type-body {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1rem;
+      color: var(--rustic-text-light);
+      line-height: 1.75;
+    }
+
+    .type-label-demo {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--rustic-text-muted);
+      margin-top: 1rem;
+    }
+
+    .type-meta {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      color: var(--rustic-concrete);
+      margin-top: 0.75rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-section {
+      background: var(--rustic-walnut);
+      padding: var(--section-pad) 0;
+      color: var(--rustic-linen);
+      position: relative;
+    }
+
+    /* Brick texture overlay */
+    .palette-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='22'%3E%3Crect width='42' height='22' fill='%235C4033'/%3E%3Crect x='1' y='1' width='18' height='9' rx='1' fill='%23704D3A' opacity='0.5'/%3E%3Crect x='22' y='1' width='18' height='9' rx='1' fill='%23654536' opacity='0.45'/%3E%3Crect x='11' y='12' width='18' height='9' rx='1' fill='%236B4A38' opacity='0.48'/%3E%3Crect x='32' y='12' width='9' height='9' rx='1' fill='%23704D3A' opacity='0.42'/%3E%3Crect x='0' y='12' width='8' height='9' rx='1' fill='%23654536' opacity='0.44'/%3E%3C/svg%3E");
+      background-size: 42px 22px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .palette-section .section-label {
+      color: var(--rustic-concrete);
+    }
+
+    .palette-section .section-title {
+      color: var(--rustic-cream);
+    }
+
+    .palette-section .section-subtitle {
+      color: var(--rustic-concrete);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 1.25rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .swatch {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: var(--rustic-radius);
+      padding: 1.25rem;
+      text-align: center;
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+
+    .swatch:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .swatch-color {
+      width: 52px;
+      height: 52px;
+      border-radius: 3px;
+      margin: 0 auto 0.75rem;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .swatch-name {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rustic-cream);
+      margin-bottom: 0.2rem;
+    }
+
+    .swatch-hex {
+      font-family: 'Source Sans 3', monospace;
+      font-size: 0.72rem;
+      color: var(--rustic-concrete);
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .card {
+      background: var(--rustic-parchment);
+      border: 1px solid var(--rustic-cement);
+      border-radius: var(--rustic-radius);
+      padding: 2rem;
+      position: relative;
+      box-shadow: var(--rustic-shadow-sm);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(
+        90deg,
+        var(--rustic-barn-wood),
+        var(--rustic-oak),
+        var(--rustic-barn-wood)
+      );
+      border-radius: var(--rustic-radius) var(--rustic-radius) 0 0;
+    }
+
+    .card:hover {
+      box-shadow: var(--rustic-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      background: var(--rustic-linen);
+      border: 1px solid var(--rustic-cement);
+      border-radius: 3px;
+      margin-bottom: 1.25rem;
+      font-size: 1.35rem;
+    }
+
+    .card-icon--brick { color: var(--rustic-brick); }
+    .card-icon--steel { color: var(--rustic-steel); }
+    .card-icon--patina { color: var(--rustic-patina); }
+    .card-icon--walnut { color: var(--rustic-walnut); }
+    .card-icon--clay { color: var(--rustic-clay); }
+    .card-icon--iron { color: var(--rustic-iron); }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: var(--rustic-text-light);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .card-tag {
+      display: inline-block;
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rustic-text-muted);
+      background: var(--rustic-linen);
+      border: 1px solid var(--rustic-cement);
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      margin-top: 1rem;
+      margin-right: 0.4rem;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER (Material Strip)
+       ============================================ */
+    .material-banner {
+      background: var(--rustic-iron);
+      padding: 4rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Noise grain overlay */
+    .material-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.06;
+      background-image:
+        repeating-linear-gradient(
+          85deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.15) 1px,
+          rgba(255, 255, 255, 0.15) 2px
+        ),
+        repeating-linear-gradient(
+          -3deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.08) 1px,
+          rgba(255, 255, 255, 0.08) 2px
+        );
+      pointer-events: none;
+    }
+
+    .material-banner .material-icons {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .material-banner .material-icons span {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 3px;
+      font-size: 1.5rem;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--rustic-sandstone);
+      transition: background 0.3s ease;
+    }
+
+    .material-banner .material-icons span:hover {
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .material-banner h2 {
+      font-family: 'Playfair Display', 'Lora', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      color: var(--rustic-cream);
+      position: relative;
+      z-index: 1;
+      margin-bottom: 0.75rem;
+    }
+
+    .material-banner p {
+      color: var(--rustic-concrete);
+      font-size: 1rem;
+      max-width: 480px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: grid;
+      gap: 0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .principle-item {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: 1.5rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid var(--rustic-cement);
+      align-items: start;
+    }
+
+    .principle-item:last-child {
+      border-bottom: none;
+    }
+
+    .principle-icon {
+      width: 56px;
+      height: 56px;
+      background: var(--rustic-linen);
+      border: 1px solid var(--rustic-cement);
+      border-radius: var(--rustic-radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* Steel-frame left accent on icon */
+    .principle-icon::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: var(--rustic-iron);
+      border-radius: var(--rustic-radius) 0 0 var(--rustic-radius);
+    }
+
+    .principle-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .principle-text h3 {
+      margin-bottom: 0.5rem;
+      font-size: 1.15rem;
+    }
+
+    .principle-text p {
+      color: var(--rustic-text-light);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      max-width: 40em;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .effect-demo {
+      border: 1px solid var(--rustic-cement);
+      border-radius: var(--rustic-radius);
+      overflow: hidden;
+      background: var(--rustic-parchment);
+      transition: box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      box-shadow: var(--rustic-shadow-md);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.25rem 1.5rem;
+      border-top: 1px solid var(--rustic-cement);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--rustic-walnut);
+      margin-bottom: 0.35rem;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      color: var(--rustic-text-muted);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Wood Grain */
+    .effect-woodgrain {
+      background: var(--rustic-sandstone);
+      background-image:
+        repeating-linear-gradient(
+          87deg,
+          transparent,
+          transparent 1px,
+          rgba(92, 64, 51, 0.25) 1px,
+          rgba(92, 64, 51, 0.25) 2px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          rgba(139, 111, 78, 0.18) 40px,
+          transparent 80px
+        ),
+        repeating-linear-gradient(
+          2deg,
+          transparent,
+          transparent 3px,
+          rgba(92, 64, 51, 0.08) 3px,
+          rgba(92, 64, 51, 0.08) 4px
+        );
+    }
+
+    /* Animated grain shimmer */
+    .effect-woodgrain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        110deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.06) 50%,
+        transparent 70%
+      );
+      animation: grain-shimmer 6s ease-in-out infinite;
+    }
+
+    @keyframes grain-shimmer {
+      0%, 100% { transform: translateX(-100%); }
+      50% { transform: translateX(100%); }
+    }
+
+    /* Effect 2: Exposed Brick */
+    .effect-brick {
+      background-color: var(--rustic-walnut);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='42' height='22'%3E%3Crect width='42' height='22' fill='%235C4033'/%3E%3Crect x='1' y='1' width='18' height='9' rx='1' fill='%23704D3A' opacity='0.5'/%3E%3Crect x='22' y='1' width='18' height='9' rx='1' fill='%23654536' opacity='0.45'/%3E%3Crect x='11' y='12' width='18' height='9' rx='1' fill='%236B4A38' opacity='0.48'/%3E%3Crect x='32' y='12' width='9' height='9' rx='1' fill='%23704D3A' opacity='0.42'/%3E%3Crect x='0' y='12' width='8' height='9' rx='1' fill='%23654536' opacity='0.44'/%3E%3C/svg%3E");
+      background-size: 42px 22px;
+    }
+
+    /* Mortar dust animation */
+    .effect-brick::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(245, 237, 224, 0.08) 0%, transparent 30%),
+        radial-gradient(circle at 70% 60%, rgba(245, 237, 224, 0.06) 0%, transparent 25%),
+        radial-gradient(circle at 50% 80%, rgba(245, 237, 224, 0.05) 0%, transparent 35%);
+      animation: mortar-dust 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes mortar-dust {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* Effect 3: Brushed Steel */
+    .effect-steel {
+      background: linear-gradient(
+        180deg,
+        var(--rustic-iron) 0%,
+        var(--rustic-steel) 50%,
+        var(--rustic-iron) 100%
+      );
+      background-image:
+        linear-gradient(
+          180deg,
+          var(--rustic-iron) 0%,
+          var(--rustic-steel) 50%,
+          var(--rustic-iron) 100%
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.03) 1px,
+          rgba(255, 255, 255, 0.03) 2px
+        );
+    }
+
+    .effect-steel::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        120deg,
+        transparent 25%,
+        rgba(255, 255, 255, 0.08) 45%,
+        rgba(255, 255, 255, 0.12) 50%,
+        rgba(255, 255, 255, 0.08) 55%,
+        transparent 75%
+      );
+      animation: steel-gleam 5s ease-in-out infinite;
+    }
+
+    @keyframes steel-gleam {
+      0%, 100% { transform: translateX(-120%); }
+      50% { transform: translateX(120%); }
+    }
+
+    /* Effect 4: Concrete Texture */
+    .effect-concrete {
+      background: var(--rustic-cement);
+      background-image:
+        radial-gradient(circle at 15% 25%, rgba(0, 0, 0, 0.04) 0%, transparent 40%),
+        radial-gradient(circle at 75% 65%, rgba(0, 0, 0, 0.03) 0%, transparent 35%),
+        radial-gradient(circle at 45% 85%, rgba(0, 0, 0, 0.02) 0%, transparent 25%);
+      position: relative;
+    }
+
+    .effect-concrete::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.015) 2px,
+          rgba(0, 0, 0, 0.015) 3px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.012) 2px,
+          rgba(0, 0, 0, 0.012) 3px
+        );
+    }
+
+    /* Effect 5: Linen Weave */
+    .effect-linen {
+      background: var(--rustic-linen);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 64, 51, 0.04) 2px,
+          rgba(92, 64, 51, 0.04) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 64, 51, 0.04) 2px,
+          rgba(92, 64, 51, 0.04) 3px
+        );
+    }
+
+    .effect-linen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        135deg,
+        rgba(196, 168, 130, 0.08) 25%,
+        transparent 25%,
+        transparent 50%,
+        rgba(196, 168, 130, 0.08) 50%,
+        rgba(196, 168, 130, 0.08) 75%,
+        transparent 75%
+      );
+      background-size: 8px 8px;
+      opacity: 0.5;
+    }
+
+    /* Effect 6: Patina Gradient */
+    .effect-patina {
+      background: linear-gradient(
+        145deg,
+        var(--rustic-barn-wood) 0%,
+        var(--rustic-oak) 30%,
+        var(--rustic-patina) 60%,
+        var(--rustic-copper) 100%
+      );
+      position: relative;
+    }
+
+    .effect-patina::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(107, 127, 94, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 70% 70%, rgba(122, 142, 109, 0.25) 0%, transparent 45%);
+      animation: patina-shift 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes patina-shift {
+      0% { opacity: 0.5; }
+      50% { opacity: 1; }
+      100% { opacity: 0.7; }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.25rem;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 700px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 2rem 0;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', Georgia, serif;
+      font-size: clamp(1.25rem, 2.5vw, 1.6rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--rustic-walnut);
+      line-height: 1.65;
+      position: relative;
+      padding: 0 2.5rem;
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 5rem;
+      font-style: normal;
+      color: var(--rustic-sandstone);
+      position: absolute;
+      top: -2rem;
+      left: -0.25rem;
+      line-height: 1;
+    }
+
+    .quote-block cite {
+      display: block;
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      font-style: normal;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rustic-text-muted);
+      margin-top: 1.75rem;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: var(--rustic-linen);
+      padding: var(--section-pad) 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle cross-hatch texture */
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.025;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 4px,
+          rgba(92, 64, 51, 0.3) 4px,
+          rgba(92, 64, 51, 0.3) 5px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 4px,
+          rgba(92, 64, 51, 0.3) 4px,
+          rgba(92, 64, 51, 0.3) 5px
+        );
+      pointer-events: none;
+    }
+
+    .cta-container {
+      max-width: 650px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      background: var(--rustic-parchment);
+      border: 1px solid var(--rustic-cement);
+      border-radius: var(--rustic-radius);
+      padding: 3.5rem 3rem;
+      box-shadow: var(--rustic-shadow-sm);
+    }
+
+    /* Steel-frame border accent */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      height: 4px;
+      background: linear-gradient(
+        90deg,
+        var(--rustic-iron),
+        var(--rustic-steel),
+        var(--rustic-iron)
+      );
+      border-radius: var(--rustic-radius) var(--rustic-radius) 0 0;
+    }
+
+    .cta-container h2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .cta-container .cta-tagline {
+      font-family: 'Lora', Georgia, serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--rustic-brick);
+      margin-bottom: 1.25rem;
+    }
+
+    .cta-container p {
+      color: var(--rustic-text-light);
+      max-width: 480px;
+      margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--rustic-iron);
+      border-top: 3px solid var(--rustic-walnut);
+      color: var(--rustic-concrete);
+      padding: 3rem 2rem 2rem;
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0.04;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.1) 1px,
+          rgba(255, 255, 255, 0.1) 2px
+        );
+      pointer-events: none;
+    }
+
+    .footer-content {
+      max-width: 1100px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-brand {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--rustic-cream);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-brand span {
+      color: var(--rustic-clay);
+    }
+
+    .footer p {
+      font-size: 0.88rem;
+      color: var(--rustic-concrete);
+      max-width: 420px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.65;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Cabin', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--rustic-sandstone);
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--rustic-cream);
+    }
+
+    .footer-divider {
+      border: none;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.1);
+      max-width: 300px;
+      margin: 0 auto 1.5rem;
+    }
+
+    .footer-bottom {
+      font-size: 0.78rem;
+      color: var(--rustic-stone);
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes fade-in-up {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-in {
+      opacity: 0;
+      animation: fade-in-up 0.6s ease forwards;
+    }
+
+    .animate-in:nth-child(2) { animation-delay: 0.1s; }
+    .animate-in:nth-child(3) { animation-delay: 0.2s; }
+    .animate-in:nth-child(4) { animation-delay: 0.3s; }
+    .animate-in:nth-child(5) { animation-delay: 0.4s; }
+    .animate-in:nth-child(6) { animation-delay: 0.5s; }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        flex-direction: column;
+        height: auto;
+        padding: 1rem;
+        gap: 0.75rem;
+      }
+
+      .nav-links {
+        gap: 1.25rem;
+      }
+
+      .hero {
+        padding: 5rem 1.5rem 4rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 8vw, 3rem);
+      }
+
+      .hero .btn-group {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .type-showcase {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.75rem;
+      }
+
+      .principle-item {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+      }
+
+      .material-banner .material-icons {
+        gap: 1.25rem;
+      }
+
+      .material-banner .material-icons span {
+        width: 44px;
+        height: 44px;
+        font-size: 1.15rem;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-container {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .quote-block blockquote {
+        padding: 0 1.5rem;
+      }
+
+      .footer-links {
+        gap: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-beams span:nth-child(5) {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">Timber <span>&</span> Steel</a>
+    <ul class="nav-links">
+      <li><a href="#typography">Type</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+      <li><a href="#principles">Principles</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <span class="label">Design Aesthetic Reference</span>
+    <h1>Where Raw Meets <em>Refined</em></h1>
+    <p class="hero-description">
+      Rustic Modern harmonizes the warmth of reclaimed wood, exposed brick, and hand-forged iron with the clean geometry of contemporary minimalism. Honest materials, deliberate tension, lasting craft.
+    </p>
+    <div class="btn-group">
+      <a href="#components" class="btn btn--primary">Explore Components</a>
+      <a href="#palette" class="btn btn--secondary">View Palette</a>
+    </div>
+    <div class="hero-beams">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </section>
+
+  <!-- ===== RIVETED DIVIDER ===== -->
+  <div class="divider">
+    <span class="rivet"></span>
+    <span class="rivet"></span>
+    <span class="rivet"></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SHOWCASE ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Sturdy Serifs, Clean Sans</h2>
+      <p class="section-subtitle">Characterful headings grounded by warm, readable body text -- like a hand-painted sign on a clean white wall</p>
+
+      <div class="type-showcase">
+        <div class="type-specimen">
+          <div class="type-specimen-label">Display / Playfair Display 700</div>
+          <div class="type-display">Weathered &amp; Built</div>
+          <div class="type-body">High-contrast transitional serif for hero headlines and editorial display. Carries the weight and presence of engraved signage on old storefronts.</div>
+          <div class="type-meta">Playfair Display -- 400, 700, 900</div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-label">Heading / Lora 600</div>
+          <div class="type-heading">Material Honesty in Every Detail</div>
+          <div class="type-body">Warm calligraphic serif for section headings and pull quotes. Organic curves with enough structure to feel modern, never nostalgic.</div>
+          <div class="type-meta">Lora -- 400, 500, 600, 700</div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-label">Body / Source Sans 3 -- 400</div>
+          <div class="type-body" style="max-width: none;">Every crack, every ring, every change in color is a chapter in a story that only time could write. The best interfaces feel like well-renovated spaces -- every original imperfection preserved with intention, every modern intervention seamlessly integrated into the existing character.</div>
+          <div class="type-meta">Source Sans 3 -- 300, 400, 600</div>
+        </div>
+
+        <div class="type-specimen">
+          <div class="type-specimen-label">UI Label / Cabin 600</div>
+          <div class="type-label-demo">Reclaimed Materials &middot; Hand-Finished &middot; Built to Last</div>
+          <div class="type-body" style="margin-top: 1rem;">Small caps with wide tracking for navigation, labels, tags, and structural UI elements. Warm geometric sans that pairs naturally with Lora headings.</div>
+          <div class="type-meta">Cabin -- 400, 500, 600, 700</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STEEL BEAM DIVIDER ===== -->
+  <hr class="steel-divider">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="palette-section" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Materials as Colors</h2>
+      <p class="section-subtitle">Drawn from walnut, brick, iron, sandstone, patina, and concrete -- never bright, never synthetic</p>
+
+      <div class="palette-grid">
+        <div class="swatch">
+          <div class="swatch-color" style="background: #5C4033;"></div>
+          <div class="swatch-name">Walnut</div>
+          <div class="swatch-hex">#5C4033</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #8B6F4E;"></div>
+          <div class="swatch-name">Barn Wood</div>
+          <div class="swatch-hex">#8B6F4E</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #A68B6B;"></div>
+          <div class="swatch-name">Oak</div>
+          <div class="swatch-hex">#A68B6B</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #C4A882;"></div>
+          <div class="swatch-name">Sandstone</div>
+          <div class="swatch-hex">#C4A882</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #E8DCC8;"></div>
+          <div class="swatch-name">Linen</div>
+          <div class="swatch-hex">#E8DCC8</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #9E5A42;"></div>
+          <div class="swatch-name">Brick</div>
+          <div class="swatch-hex">#9E5A42</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #B87353;"></div>
+          <div class="swatch-name">Clay</div>
+          <div class="swatch-hex">#B87353</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #6B7B86;"></div>
+          <div class="swatch-name">Steel</div>
+          <div class="swatch-hex">#6B7B86</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #4A5259;"></div>
+          <div class="swatch-name">Iron</div>
+          <div class="swatch-hex">#4A5259</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #6B7F5E;"></div>
+          <div class="swatch-name">Patina</div>
+          <div class="swatch-hex">#6B7F5E</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #B0A99F;"></div>
+          <div class="swatch-name">Concrete</div>
+          <div class="swatch-hex">#B0A99F</div>
+        </div>
+        <div class="swatch">
+          <div class="swatch-color" style="background: #2C2A28;"></div>
+          <div class="swatch-name">Charcoal</div>
+          <div class="swatch-hex">#2C2A28</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RIVETED DIVIDER ===== -->
+  <div class="divider">
+    <span class="rivet"></span>
+    <span class="rivet"></span>
+    <span class="rivet"></span>
+  </div>
+
+  <!-- ===== COMPONENT CARDS ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Honest Construction</h2>
+      <p class="section-subtitle">Visible structure, functional beauty -- like the exposed joinery of a well-built cabinet</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--brick">&#9656;</div>
+          <h3>Reclaimed Timber</h3>
+          <p>Weathered wood grain used as backgrounds, card surfaces, and decorative accents. Warm, unpolished, imperfect -- every board carries the story of its previous life.</p>
+          <span class="card-tag">Texture</span>
+          <span class="card-tag">Surface</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--steel">&#9670;</div>
+          <h3>Steel Framework</h3>
+          <p>Dark metal tones for borders, dividers, icon strokes, and structural UI elements. Brushed and blackened, never polished -- strength revealed through restraint.</p>
+          <span class="card-tag">Structure</span>
+          <span class="card-tag">Metal</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--walnut">&#9673;</div>
+          <h3>Exposed Brick</h3>
+          <p>Rough, matte brick patterns at low opacity suggest masonry walls and fireplaces. A warm textural anchor that references permanence and the hand-laid honesty of construction.</p>
+          <span class="card-tag">Pattern</span>
+          <span class="card-tag">Warmth</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--patina">&#9672;</div>
+          <h3>Patina &amp; Verdigris</h3>
+          <p>Weathered copper greens and aged brass tones serve as organic accents. The visual evidence of time passing, transforming raw material into something richer and more complex.</p>
+          <span class="card-tag">Aging</span>
+          <span class="card-tag">Organic</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--clay">&#9671;</div>
+          <h3>Natural Stone</h3>
+          <p>From rough-cut fieldstone to honed concrete, mineral surfaces anchor every space with permanence and quiet gravity. Cool counterpoint to warm wood and brick.</p>
+          <span class="card-tag">Mineral</span>
+          <span class="card-tag">Weight</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--iron">&#9654;</div>
+          <h3>Riveted Joinery</h3>
+          <p>Visible fasteners, exposed bolts, and honest construction details become decorative elements. The beauty of function displayed without concealment or pretense.</p>
+          <span class="card-tag">Detail</span>
+          <span class="card-tag">Craft</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="material-banner">
+    <div class="material-icons">
+      <span>&#9881;</span>
+      <span>&#9670;</span>
+      <span>&#10033;</span>
+      <span>&#9632;</span>
+      <span>&#9651;</span>
+    </div>
+    <h2>Honest Materials, Clean Forms</h2>
+    <p>Where every weathered beam is set against a clean white wall. Every steel bracket, hand-finished. Every imperfect grain, framed by precise geometry.</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section section--parchment" id="principles">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Rustic Modern Philosophy</h2>
+      <p class="section-subtitle">material honesty, structural clarity, warmth through restraint</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--rustic-brick);">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <line x1="3" y1="9" x2="21" y2="9"/>
+              <line x1="9" y1="3" x2="9" y2="21"/>
+            </svg>
+          </div>
+          <div class="principle-text">
+            <h3>Material Honesty</h3>
+            <p>Every texture, color, and surface should reference a real material without artificial embellishment or synthetic sheen. Wood looks like wood. Metal is brushed and raw, not chrome-polished to a mirror shine. Let surfaces be what they are.</p>
+          </div>
+        </div>
+
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--rustic-steel);">
+              <circle cx="12" cy="12" r="9"/>
+              <line x1="12" y1="3" x2="12" y2="21"/>
+              <path d="M3 12 C6 8, 10 8, 12 12 C14 16, 18 16, 21 12"/>
+            </svg>
+          </div>
+          <div class="principle-text">
+            <h3>Tension Between Raw &amp; Refined</h3>
+            <p>The aesthetic lives in the contrast between rough natural elements and clean modern geometry. Neither side should dominate. A weathered beam against a minimal white wall. An iron bracket holding a floating shelf. The interplay creates depth.</p>
+          </div>
+        </div>
+
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--rustic-patina);">
+              <path d="M12 2 L12 22"/>
+              <path d="M6 6 L18 6"/>
+              <path d="M4 12 L20 12"/>
+              <path d="M6 18 L18 18"/>
+            </svg>
+          </div>
+          <div class="principle-text">
+            <h3>Structural Clarity</h3>
+            <p>The underlying grid, hierarchy, and information architecture should be immediately legible, like the exposed beams of a well-built structure. Clear sightlines through the content. Visible container boundaries. Functional beauty in every element.</p>
+          </div>
+        </div>
+
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="color: var(--rustic-barn-wood);">
+              <path d="M12 3 C8 3, 3 8, 3 12 C3 16, 8 21, 12 21 C16 21, 21 16, 21 12"/>
+              <path d="M12 3 C14 7, 14 10, 12 12 C10 14, 10 17, 12 21"/>
+              <circle cx="18" cy="6" r="2"/>
+            </svg>
+          </div>
+          <div class="principle-text">
+            <h3>Patina Over Perfection</h3>
+            <p>Embrace the visual character of age, wear, and use. Imperfection communicates authenticity and human touch. Design choices should feel timeless and durable, not trend-chasing -- aging as gracefully as the materials they reference.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STEEL BEAM DIVIDER ===== -->
+  <hr class="steel-divider">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--cream" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Material Textures</h2>
+      <p class="section-subtitle">All textures rendered with pure CSS -- no image assets, no external dependencies</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-woodgrain"></div>
+          <div class="effect-caption">
+            <h4>Wood Grain</h4>
+            <p>Layered linear gradients simulate the directional grain and growth-ring patterns of reclaimed timber.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-brick"></div>
+          <div class="effect-caption">
+            <h4>Exposed Brick</h4>
+            <p>Inline SVG data URIs create a repeating masonry pattern with mortar lines and varied brick tones.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-steel"></div>
+          <div class="effect-caption">
+            <h4>Brushed Steel</h4>
+            <p>Fine horizontal lines over a cool gradient produce the directional texture of brushed metal surfaces.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-concrete"></div>
+          <div class="effect-caption">
+            <h4>Poured Concrete</h4>
+            <p>Soft radial gradients and cross-hatched noise suggest the aggregate texture and tonal variation of raw concrete.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-caption">
+            <h4>Linen Weave</h4>
+            <p>Intersecting horizontal and vertical gradients at low opacity create the warp-and-weft texture of natural fabric.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-patina"></div>
+          <div class="effect-caption">
+            <h4>Copper Patina</h4>
+            <p>Warm-to-green diagonal gradients with animated radial overlays simulate the oxidation process of aging copper.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== RIVETED DIVIDER ===== -->
+  <div class="divider">
+    <span class="rivet"></span>
+    <span class="rivet"></span>
+    <span class="rivet"></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--linen">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Grounded Buttons</h2>
+      <p class="section-subtitle">Warm, solid, and tactile -- designed to feel substantial rather than floating</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--primary">Exposed Brick</a>
+        <a href="#" class="btn btn--secondary">Steel Outline</a>
+        <a href="#" class="btn btn--tertiary">Warm Tertiary</a>
+        <a href="#" class="btn btn--ghost">Ghost Link</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The beauty of wood is that it tells you its own history. Every crack, every ring, every change in color is a chapter in a story that only time could write.
+        </blockquote>
+        <cite>&mdash; A Builder's Reflection</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Built to Last</h2>
+        <div class="cta-tagline">honest materials, clean forms, lasting craft</div>
+        <p>
+          The Rustic Modern aesthetic embraces material honesty, the tension between raw and refined, and the quiet beauty of surfaces that age with grace. Ground every layout in walnut, brick, and iron -- then let the warmth come from restraint.
+        </p>
+        <a href="#hero" class="btn btn--primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MATERIAL BEAM STRIP ===== -->
+  <div style="display: flex; height: 6px;">
+    <span style="flex: 1; background: var(--rustic-walnut);"></span>
+    <span style="flex: 1; background: var(--rustic-barn-wood);"></span>
+    <span style="flex: 1; background: var(--rustic-oak);"></span>
+    <span style="flex: 1; background: var(--rustic-sandstone);"></span>
+    <span style="flex: 1; background: var(--rustic-brick);"></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">Timber <span>&</span> Steel</div>
+      <p>
+        A design aesthetic reference celebrating the warmth of reclaimed materials and the clarity of modern construction. Walnut, brick, iron, and patina -- all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+        <a href="#principles">Principles</a>
+      </div>
+      <hr class="footer-divider">
+      <div class="footer-bottom">
+        Rustic Modern &mdash; Design Aesthetic Reference
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== SCROLL ANIMATION ===== -->
+  <script>
+    // Intersection Observer for scroll-triggered animations
+    (function() {
+      'use strict';
+
+      // Check for reduced motion preference
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+        var animateElements = document.querySelectorAll(
+          '.card, .effect-demo, .swatch, .principle-item, .type-specimen'
+        );
+
+        var observer = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('animate-in');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -40px 0px'
+        });
+
+        animateElements.forEach(function(el) {
+          el.style.opacity = '0';
+          observer.observe(el);
+        });
+      }
+    })();
+  </script>
+
+</body>
+</html>

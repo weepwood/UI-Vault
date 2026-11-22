@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo Deco -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Josefin+Sans:wght@300;400;600;700&family=Raleway:wght@200;300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Bebas+Neue&family=Playfair+Display:wght@400;600;700&family=Poiret+One&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --nd-bg-primary: #1B1B1F;
+      --nd-bg-secondary: #2A2A2E;
+      --nd-bg-elevated: #3A3A42;
+      --nd-bg-navy: #0F1A2E;
+
+      /* --- Jewel Tones --- */
+      --nd-green: #1A4D3E;
+      --nd-burgundy: #6B1D2A;
+      --nd-blue: #1A2744;
+      --nd-amber: #8B6914;
+      --nd-terracotta: #8B4A2B;
+
+      /* --- Metallics --- */
+      --nd-gold: #C9A84C;
+      --nd-gold-light: #E4D08E;
+      --nd-chrome: #B8BFC6;
+      --nd-gold-gradient: linear-gradient(
+        135deg, #A67C2E, #C9A84C, #E4D08E, #C9A84C, #A67C2E
+      );
+
+      /* --- Text --- */
+      --nd-text-primary: #F2EDE3;
+      --nd-text-secondary: #D9CDB8;
+      --nd-text-muted: #8A8380;
+
+      /* --- Light Theme --- */
+      --nd-bg-light: #F8F5F0;
+      --nd-text-dark: #1B1B1F;
+
+      /* --- Functional --- */
+      --nd-border: #C9A84C;
+      --nd-border-subtle: rgba(201, 168, 76, 0.25);
+      --nd-shadow: rgba(0, 0, 0, 0.35);
+
+      /* --- Shadows --- */
+      --nd-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+      --nd-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+      --nd-shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 112px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Raleway', 'Helvetica Neue', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      letter-spacing: 0.02em;
+      line-height: 1.75;
+      color: var(--nd-text-primary);
+      background-color: var(--nd-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--nd-gold);
+      font-weight: 600;
+      line-height: 1.2;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav-wrapper {
+      background: var(--nd-bg-primary);
+      border-bottom: 1px solid var(--nd-border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 40px;
+    }
+
+    .nav-logo {
+      font-family: 'Cinzel Decorative', serif;
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: var(--nd-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--nd-gold-light);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: var(--nd-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--nd-gold);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--nd-gold);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: var(--nd-bg-primary);
+      padding: 100px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Herringbone background pattern */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, rgba(201, 168, 76, 0.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(201, 168, 76, 0.03) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(201, 168, 76, 0.03) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(201, 168, 76, 0.03) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+      pointer-events: none;
+    }
+
+    /* Decorative top border with stepped effect */
+    .hero::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: var(--nd-gold-gradient);
+    }
+
+    /* Decorative fan arch behind hero */
+    .hero-fan {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 500px;
+      height: 250px;
+      background: conic-gradient(
+        from 180deg at 50% 100%,
+        rgba(201, 168, 76, 0.06) 0deg,
+        transparent 15deg,
+        rgba(201, 168, 76, 0.06) 30deg,
+        transparent 45deg,
+        rgba(201, 168, 76, 0.06) 60deg,
+        transparent 75deg,
+        rgba(201, 168, 76, 0.06) 90deg,
+        transparent 105deg,
+        rgba(201, 168, 76, 0.06) 120deg,
+        transparent 135deg,
+        rgba(201, 168, 76, 0.06) 150deg,
+        transparent 165deg,
+        rgba(201, 168, 76, 0.06) 180deg
+      );
+      border-radius: 500px 500px 0 0;
+      pointer-events: none;
+      animation: fanPulse 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes fanPulse {
+      0% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    /* Radial gold glow */
+    .hero-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(201, 168, 76, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+      animation: glowPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .hero-tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.85rem, 2vw, 1.1rem);
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--nd-text-secondary);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.8rem, 8vw, 6rem);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin-bottom: 12px;
+      background: var(--nd-gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--nd-gold);
+      margin-bottom: 28px;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-desc {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--nd-text-secondary);
+      max-width: 600px;
+      margin: 0 auto 40px;
+      line-height: 1.85;
+      letter-spacing: 0.03em;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative corner brackets in hero */
+    .hero-frame {
+      position: absolute;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .hero-frame--tl,
+    .hero-frame--tr,
+    .hero-frame--bl,
+    .hero-frame--br {
+      width: 60px;
+      height: 60px;
+      border-color: var(--nd-border-subtle);
+      border-style: solid;
+    }
+
+    .hero-frame--tl { top: 40px; left: 40px; border-width: 2px 0 0 2px; }
+    .hero-frame--tr { top: 40px; right: 40px; border-width: 2px 2px 0 0; }
+    .hero-frame--bl { bottom: 40px; left: 40px; border-width: 0 0 2px 2px; }
+    .hero-frame--br { bottom: 40px; right: 40px; border-width: 0 2px 2px 0; }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      padding: 14px 40px;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.4s ease;
+    }
+
+    .btn-primary {
+      background: transparent;
+      color: var(--nd-gold);
+      border: 1px solid var(--nd-gold);
+    }
+
+    .btn-primary:hover {
+      background: var(--nd-gold);
+      color: var(--nd-bg-primary);
+      box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+    }
+
+    .btn-filled {
+      background: linear-gradient(135deg, #A67C2E, #C9A84C, #E4D08E, #C9A84C, #A67C2E);
+      color: var(--nd-bg-primary);
+      border: none;
+      font-weight: 700;
+    }
+
+    .btn-filled:hover {
+      filter: brightness(1.15);
+      box-shadow: 0 4px 24px rgba(201, 168, 76, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .btn-stepped {
+      background: transparent;
+      color: var(--nd-gold);
+      border: 2px solid var(--nd-gold);
+      outline: 1px solid var(--nd-gold);
+      outline-offset: 4px;
+    }
+
+    .btn-stepped:hover {
+      outline-offset: 6px;
+      background: rgba(201, 168, 76, 0.08);
+    }
+
+    .btn-chrome {
+      background: linear-gradient(135deg, #9EA5AD, #B8BFC6, #D4DAE0, #B8BFC6, #9EA5AD);
+      color: var(--nd-bg-primary);
+      border: none;
+      font-weight: 600;
+    }
+
+    .btn-chrome:hover {
+      filter: brightness(1.12);
+      box-shadow: 0 4px 20px rgba(184, 191, 198, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       GEOMETRIC DIVIDER
+       ============================================ */
+    .geo-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 0;
+      height: 0;
+      border: none;
+      border-top: 2px solid var(--nd-gold);
+      border-bottom: 1px solid var(--nd-gold);
+      padding-top: 4px;
+      position: relative;
+      width: 50%;
+    }
+
+    .geo-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 10px;
+      height: 10px;
+      background: var(--nd-gold);
+      transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    /* Stepped gold band between sections */
+    .gold-band {
+      height: 3px;
+      width: 100%;
+      background: var(--nd-gold-gradient);
+      position: relative;
+    }
+
+    .gold-band::before,
+    .gold-band::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      height: 1px;
+      background: var(--nd-border-subtle);
+    }
+
+    .gold-band::before { top: -6px; width: 70%; }
+    .gold-band::after { bottom: -6px; width: 70%; }
+
+    .gold-band--thick {
+      height: 5px;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--dark {
+      background: var(--nd-bg-primary);
+    }
+
+    .section--secondary {
+      background: var(--nd-bg-secondary);
+    }
+
+    .section--navy {
+      background: var(--nd-bg-navy);
+    }
+
+    .section--light {
+      background: var(--nd-bg-light);
+      color: var(--nd-text-dark);
+    }
+
+    .section--light .section-label { color: var(--nd-amber); }
+    .section--light .section-title { color: var(--nd-text-dark); }
+    .section--light .section-subtitle { color: var(--nd-terracotta); }
+
+    .section--green {
+      background: var(--nd-green);
+    }
+
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--nd-text-secondary);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      text-align: center;
+      color: var(--nd-gold);
+      margin-bottom: 10px;
+      letter-spacing: 0.1em;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      text-align: center;
+      color: var(--nd-text-secondary);
+      margin-bottom: 56px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--nd-text-muted);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--nd-border-subtle);
+    }
+
+    .typo-display {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      background: var(--nd-gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1.1;
+      margin-bottom: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .typo-heading {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--nd-gold);
+      line-height: 1.2;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .typo-cinzel {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.7rem);
+      font-weight: 600;
+      color: var(--nd-gold);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .typo-body {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--nd-text-primary);
+      margin-bottom: 8px;
+      letter-spacing: 0.02em;
+    }
+
+    .typo-serif {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--nd-text-secondary);
+      line-height: 1.6;
+    }
+
+    .typo-impact {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      color: var(--nd-gold);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+
+    .typo-right {
+      background: var(--nd-bg-secondary);
+      border: 1px solid var(--nd-border-subtle);
+      padding: 36px;
+      position: relative;
+    }
+
+    /* Corner ornaments on type panel */
+    .typo-right::before,
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      border-color: var(--nd-gold);
+      border-style: solid;
+    }
+
+    .typo-right::before {
+      top: 8px;
+      left: 8px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .typo-right::after {
+      bottom: 8px;
+      right: 8px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .typo-right h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+      letter-spacing: 0.15em;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--nd-border-subtle);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--nd-text-muted);
+      min-width: 55px;
+      text-align: right;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--nd-bg-secondary);
+      border: 1px solid var(--nd-border-subtle);
+      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+      box-shadow: var(--nd-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--nd-shadow-lg);
+      border-color: var(--nd-gold);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--nd-text-primary);
+      margin-bottom: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    .color-hex {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--nd-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--nd-bg-secondary);
+      border: 1px solid var(--nd-border-subtle);
+      padding: 2.5rem;
+      position: relative;
+      text-align: center;
+      transition: border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    /* Geometric corner ornaments */
+    .card::before,
+    .card::after {
+      content: '';
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      border-color: var(--nd-gold);
+      border-style: solid;
+      transition: width 0.3s ease, height 0.3s ease;
+    }
+
+    .card::before {
+      top: 10px;
+      left: 10px;
+      border-width: 2px 0 0 2px;
+    }
+
+    .card::after {
+      bottom: 10px;
+      right: 10px;
+      border-width: 0 2px 2px 0;
+    }
+
+    .card:hover {
+      border-color: var(--nd-gold);
+      box-shadow: 0 8px 32px var(--nd-shadow);
+    }
+
+    .card:hover::before,
+    .card:hover::after {
+      width: 32px;
+      height: 32px;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin: 0 auto 20px;
+      position: relative;
+      border: 1px solid var(--nd-border-subtle);
+    }
+
+    .card-icon--green {
+      background: rgba(26, 77, 62, 0.4);
+      border-color: rgba(26, 77, 62, 0.6);
+    }
+
+    .card-icon--burgundy {
+      background: rgba(107, 29, 42, 0.4);
+      border-color: rgba(107, 29, 42, 0.6);
+    }
+
+    .card-icon--blue {
+      background: rgba(26, 39, 68, 0.5);
+      border-color: rgba(26, 39, 68, 0.7);
+    }
+
+    .card-icon--amber {
+      background: rgba(139, 105, 20, 0.3);
+      border-color: rgba(139, 105, 20, 0.5);
+    }
+
+    .card-icon--gold {
+      background: rgba(201, 168, 76, 0.15);
+      border-color: rgba(201, 168, 76, 0.35);
+    }
+
+    .card-icon--terracotta {
+      background: rgba(139, 74, 43, 0.35);
+      border-color: rgba(139, 74, 43, 0.55);
+    }
+
+    .card h3 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.15rem;
+      color: var(--nd-gold);
+      margin-bottom: 12px;
+      letter-spacing: 0.1em;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--nd-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 4px 14px;
+      border: 1px solid var(--nd-border-subtle);
+      color: var(--nd-text-muted);
+      margin-top: 16px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--nd-gold);
+      color: var(--nd-bg-primary);
+      border-color: var(--nd-gold);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 1px solid var(--nd-border-subtle);
+      background: var(--nd-bg-secondary);
+      transition: border-color 0.4s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: var(--nd-gold);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Herringbone effect */
+    .effect-herringbone {
+      background: var(--nd-bg-primary);
+    }
+
+    .effect-herringbone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, rgba(201, 168, 76, 0.08) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(201, 168, 76, 0.08) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(201, 168, 76, 0.08) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(201, 168, 76, 0.08) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+    }
+
+    .effect-herringbone::after {
+      content: 'HERRINGBONE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--nd-gold);
+      letter-spacing: 0.2em;
+      z-index: 1;
+    }
+
+    /* Gold gradient effect */
+    .effect-gold-gradient {
+      background: linear-gradient(135deg, #A67C2E, #C9A84C, #E4D08E, #C9A84C, #A67C2E);
+    }
+
+    .effect-gold-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 30% 40%, rgba(255, 255, 255, 0.2) 0%, transparent 40%),
+        radial-gradient(circle at 70% 60%, rgba(255, 255, 255, 0.15) 0%, transparent 35%);
+      animation: shimmer 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes shimmer {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .effect-gold-gradient::after {
+      content: 'SATIN GOLD';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--nd-bg-primary);
+      letter-spacing: 0.15em;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      z-index: 1;
+    }
+
+    /* Fan arch effect */
+    .effect-fan-arch {
+      background: var(--nd-bg-navy);
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .effect-fan-arch::before {
+      content: '';
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 200px;
+      height: 100px;
+      background: conic-gradient(
+        from 180deg at 50% 100%,
+        var(--nd-gold) 0deg,
+        transparent 12deg,
+        var(--nd-gold) 24deg,
+        transparent 36deg,
+        var(--nd-gold) 48deg,
+        transparent 60deg,
+        var(--nd-gold) 72deg,
+        transparent 84deg,
+        var(--nd-gold) 96deg,
+        transparent 108deg,
+        var(--nd-gold) 120deg,
+        transparent 132deg,
+        var(--nd-gold) 144deg,
+        transparent 156deg,
+        var(--nd-gold) 168deg,
+        transparent 180deg
+      );
+      border-radius: 200px 200px 0 0;
+      opacity: 0.2;
+      animation: fanSpin 20s linear infinite;
+    }
+
+    @keyframes fanSpin {
+      from { transform: translateX(-50%) rotate(0deg); }
+      to { transform: translateX(-50%) rotate(360deg); }
+    }
+
+    .effect-fan-arch::after {
+      content: 'FAN ARCH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--nd-gold);
+      letter-spacing: 0.2em;
+      z-index: 1;
+    }
+
+    /* Marble effect */
+    .effect-marble {
+      background: var(--nd-bg-light);
+      position: relative;
+    }
+
+    .effect-marble::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(180, 170, 155, 0.25) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(160, 150, 130, 0.2) 0%, transparent 40%),
+        radial-gradient(ellipse at 60% 80%, rgba(170, 160, 140, 0.22) 0%, transparent 45%),
+        radial-gradient(ellipse at 40% 20%, rgba(190, 180, 165, 0.15) 0%, transparent 35%);
+    }
+
+    .effect-marble::after {
+      content: 'MARBLE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--nd-text-dark);
+      letter-spacing: 0.2em;
+      z-index: 1;
+    }
+
+    /* Chrome effect */
+    .effect-chrome {
+      background: linear-gradient(135deg, #9EA5AD, #B8BFC6, #D4DAE0, #B8BFC6, #9EA5AD);
+    }
+
+    .effect-chrome::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.3) 0%, transparent 30%, transparent 70%, rgba(0, 0, 0, 0.1) 100%);
+      animation: chromeSlide 5s ease-in-out infinite alternate;
+    }
+
+    @keyframes chromeSlide {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .effect-chrome::after {
+      content: 'CHROME';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--nd-bg-primary);
+      letter-spacing: 0.25em;
+      text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+      z-index: 1;
+    }
+
+    /* Jewel tone gradient */
+    .effect-jewel {
+      background:
+        radial-gradient(ellipse at 30% 40%, #1A4D3E 0%, transparent 60%),
+        radial-gradient(ellipse at 70% 60%, #6B1D2A 0%, transparent 60%),
+        radial-gradient(ellipse at 50% 20%, #1A2744 0%, transparent 50%),
+        linear-gradient(135deg, #1B1B1F, #2A2A2E);
+      animation: jewelShift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes jewelShift {
+      0% { filter: hue-rotate(0deg) brightness(1); }
+      50% { filter: hue-rotate(5deg) brightness(1.05); }
+      100% { filter: hue-rotate(0deg) brightness(1); }
+    }
+
+    .effect-jewel::after {
+      content: 'JEWEL TONES';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--nd-gold-light);
+      letter-spacing: 0.2em;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--nd-gold);
+      margin-bottom: 4px;
+      letter-spacing: 0.1em;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--nd-text-muted);
+    }
+
+    /* ============================================
+       DECORATIVE MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: linear-gradient(135deg, var(--nd-bg-primary) 0%, var(--nd-bg-secondary) 100%);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg, rgba(201, 168, 76, 0.03) 25%, transparent 25%),
+        linear-gradient(-45deg, rgba(201, 168, 76, 0.03) 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, rgba(201, 168, 76, 0.03) 75%),
+        linear-gradient(-45deg, transparent 75%, rgba(201, 168, 76, 0.03) 75%);
+      background-size: 20px 20px;
+      background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+      pointer-events: none;
+    }
+
+    /* Top and bottom gold lines */
+    .motif-banner::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: var(--nd-gold-gradient);
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .motif-chevron {
+      width: 24px;
+      height: 24px;
+      border-right: 2px solid var(--nd-gold);
+      border-bottom: 2px solid var(--nd-gold);
+      transform: rotate(-45deg);
+      opacity: 0.3;
+      animation: chevronPulse 3s ease-in-out infinite;
+    }
+
+    .motif-chevron:nth-child(2) { animation-delay: -0.5s; }
+    .motif-chevron:nth-child(3) { animation-delay: -1s; }
+    .motif-chevron:nth-child(4) { animation-delay: -1.5s; }
+    .motif-chevron:nth-child(5) { animation-delay: -2s; }
+    .motif-chevron:nth-child(6) { animation-delay: -2.5s; }
+    .motif-chevron:nth-child(7) { animation-delay: -3s; }
+
+    @keyframes chevronPulse {
+      0%, 100% { opacity: 0.2; transform: rotate(-45deg) scale(1); }
+      50% { opacity: 0.5; transform: rotate(-45deg) scale(1.1); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      background: var(--nd-gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+      z-index: 1;
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--nd-text-secondary);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 56px 40px;
+      margin: 0 auto;
+      max-width: 760px;
+      background: var(--nd-bg-secondary);
+      border: 1px solid var(--nd-border-subtle);
+      position: relative;
+      box-shadow: var(--nd-shadow-md);
+    }
+
+    /* Corner ornaments */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      width: 28px;
+      height: 28px;
+      border-top: 2px solid var(--nd-gold);
+      border-left: 2px solid var(--nd-gold);
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      width: 28px;
+      height: 28px;
+      border-bottom: 2px solid var(--nd-gold);
+      border-right: 2px solid var(--nd-gold);
+    }
+
+    .quote-mark {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 5rem;
+      line-height: 1;
+      background: var(--nd-gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      opacity: 0.3;
+      display: block;
+      margin-bottom: -20px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--nd-text-primary);
+      max-width: 560px;
+      margin: 0 auto 20px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--nd-text-muted);
+      font-style: normal;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-frame {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--nd-bg-secondary);
+      padding: 64px 56px;
+      text-align: center;
+      position: relative;
+      border: 1px solid var(--nd-border-subtle);
+    }
+
+    /* Stepped double border */
+    .cta-frame::before {
+      content: '';
+      position: absolute;
+      inset: -8px;
+      border: 1px solid var(--nd-border-subtle);
+      pointer-events: none;
+    }
+
+    /* Gold gradient top line */
+    .cta-frame::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 20%;
+      right: 20%;
+      height: 3px;
+      background: var(--nd-gold-gradient);
+    }
+
+    .cta-frame h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      background: var(--nd-gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .cta-frame .cta-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--nd-text-secondary);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .cta-frame p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      color: var(--nd-text-secondary);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.8;
+    }
+
+    /* Decorative fan at bottom of CTA */
+    .cta-fan {
+      width: 120px;
+      height: 60px;
+      background: conic-gradient(
+        from 180deg at 50% 100%,
+        var(--nd-gold) 0deg,
+        transparent 15deg,
+        var(--nd-gold) 30deg,
+        transparent 45deg,
+        var(--nd-gold) 60deg,
+        transparent 75deg,
+        var(--nd-gold) 90deg,
+        transparent 105deg,
+        var(--nd-gold) 120deg,
+        transparent 135deg,
+        var(--nd-gold) 150deg,
+        transparent 165deg,
+        var(--nd-gold) 180deg
+      );
+      border-radius: 120px 120px 0 0;
+      opacity: 0.1;
+      margin: 28px auto 0;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--nd-bg-primary);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--nd-text-primary);
+      position: relative;
+      border-top: 1px solid var(--nd-border-subtle);
+    }
+
+    /* Top gold accent line */
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 25%;
+      right: 25%;
+      height: 2px;
+      background: var(--nd-gold-gradient);
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--nd-gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    .footer p {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 300;
+      font-size: 0.92rem;
+      color: var(--nd-text-muted);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 36px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 400;
+      color: var(--nd-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .footer-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--nd-gold);
+      transition: width 0.3s ease, left 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--nd-gold);
+    }
+
+    .footer-links a:hover::after {
+      width: 100%;
+      left: 0;
+    }
+
+    .footer-deco {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .footer-deco-line {
+      width: 40px;
+      height: 1px;
+      background: var(--nd-border-subtle);
+    }
+
+    .footer-deco-diamond {
+      width: 8px;
+      height: 8px;
+      background: var(--nd-gold);
+      transform: rotate(45deg);
+      opacity: 0.4;
+    }
+
+    .footer-copy {
+      font-family: 'Raleway', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: rgba(138, 131, 128, 0.5);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 14px 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .hero {
+        padding: 80px 20px;
+        min-height: 80vh;
+      }
+
+      .hero-frame--tl,
+      .hero-frame--tr,
+      .hero-frame--bl,
+      .hero-frame--br {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-frame {
+        padding: 48px 24px;
+        margin: 0 12px;
+      }
+
+      .cta-frame::before {
+        inset: -4px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.8rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.75rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-fan,
+      .hero-glow,
+      .effect-fan-arch::before,
+      .effect-gold-gradient::before,
+      .effect-chrome::before,
+      .effect-jewel {
+        animation: none;
+      }
+
+      .motif-chevron {
+        animation: none;
+      }
+
+      .card,
+      .color-chip,
+      .btn,
+      .tag,
+      .effect-demo,
+      .nav-links a,
+      .footer-links a {
+        transition: none;
+      }
+
+      .card::before,
+      .card::after {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <div class="nav-wrapper">
+    <nav class="nav">
+      <a href="#" class="nav-logo">Neo Deco</a>
+      <div class="nav-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Type</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+    </nav>
+  </div>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-fan"></div>
+
+    <!-- Decorative corner frames -->
+    <div class="hero-frame hero-frame--tl"></div>
+    <div class="hero-frame hero-frame--tr"></div>
+    <div class="hero-frame hero-frame--bl"></div>
+    <div class="hero-frame hero-frame--br"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Neo Deco</h1>
+      <p class="hero-subtitle">Geometry, Symmetry &amp; Metallic Restraint</p>
+      <p class="hero-desc">
+        A contemporary revival of 1920s Art Deco &mdash; filtering geometric precision, warm metallics, and architectural formality through a modern lens of restraint, deepened jewel tones, and controlled richness.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-filled">Explore Components</a>
+        <a href="#palette" class="btn btn-primary">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== GOLD BAND ===== -->
+  <div class="gold-band gold-band--thick"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--dark" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Geometric Confidence &amp; Restraint</h2>
+      <p class="section-subtitle">uppercase authority, metallic display, elegant readability</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cinzel Decorative</p>
+            <p class="typo-display">Gilded Age</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Josefin Sans</p>
+            <p class="typo-heading">Architectural Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Section Title / Cinzel</p>
+            <p class="typo-cinzel">Structured Elegance</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Raleway</p>
+            <p class="typo-body">Refined sans-serif text for comfortable reading. Neo Deco values geometric clarity and light-weight precision over decorative excess in body copy.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Editorial / Cormorant Garamond</p>
+            <p class="typo-serif">Elegant high-contrast serifs for pull quotes and refined editorial moments</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Impact / Bebas Neue</p>
+            <p class="typo-impact">Bold Condensed Headers</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; font-weight: 700; background: linear-gradient(135deg, #A67C2E, #C9A84C, #E4D08E, #C9A84C); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 1.5rem; font-weight: 600; color: var(--nd-gold); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Josefin Sans', sans-serif; font-size: 1.3rem; font-weight: 600; color: var(--nd-gold); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; font-style: italic; color: var(--nd-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Raleway', sans-serif; font-size: 1rem; font-weight: 300; color: var(--nd-text-primary); letter-spacing: 0.02em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Josefin Sans', sans-serif; font-weight: 400; font-size: 0.85rem; color: var(--nd-text-muted); text-transform: uppercase; letter-spacing: 0.15em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--nd-border-subtle);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Cinzel Decorative', serif; color: var(--nd-gold);">Cinzel Decorative</strong> + <strong style="color: var(--nd-text-primary);">Raleway</strong><br>
+              <span style="color: var(--nd-text-muted); font-size: 0.82rem;">Opulent luxury, formal elegance with airy readability</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Josefin Sans', sans-serif; color: var(--nd-gold);">Josefin Sans</strong> + <strong style="font-family: 'Cormorant Garamond', serif; color: var(--nd-text-primary);">Cormorant Garamond</strong><br>
+              <span style="color: var(--nd-text-muted); font-size: 0.82rem;">Geometric purity with editorial refinement</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--nd-gold);">Bebas Neue</strong> + <strong style="font-family: 'Raleway', sans-serif; color: var(--nd-text-primary);">Raleway</strong><br>
+              <span style="color: var(--nd-text-muted); font-size: 0.82rem;">Bold condensed impact paired with lightweight sans</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEOMETRIC DIVIDER ===== -->
+  <div class="section--dark" style="padding: 32px 0;">
+    <hr class="geo-divider">
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--secondary" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Jewel Tones &amp; Warm Metallics</h2>
+      <p class="section-subtitle">deepened hues, satin gold, brushed chrome, moody foundations</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B1B1F;"></div>
+          <div class="color-info">
+            <div class="color-name">Graphite Black</div>
+            <div class="color-hex">#1B1B1F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2A2A2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Warm</div>
+            <div class="color-hex">#2A2A2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3A3A42;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Deco</div>
+            <div class="color-hex">#3A3A42</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0F1A2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Navy</div>
+            <div class="color-hex">#0F1A2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A4D3E;"></div>
+          <div class="color-info">
+            <div class="color-name">Bottle Green</div>
+            <div class="color-hex">#1A4D3E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B1D2A;"></div>
+          <div class="color-info">
+            <div class="color-name">Burgundy</div>
+            <div class="color-hex">#6B1D2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A2744;"></div>
+          <div class="color-info">
+            <div class="color-name">Midnight Blue</div>
+            <div class="color-hex">#1A2744</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B6914;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Amber</div>
+            <div class="color-hex">#8B6914</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #A67C2E, #C9A84C, #E4D08E, #C9A84C, #A67C2E); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.2) 0%, transparent 40%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Satin Gold</div>
+            <div class="color-hex">#C9A84C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E4D08E;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Gold</div>
+            <div class="color-hex">#E4D08E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #9EA5AD, #B8BFC6, #D4DAE0, #B8BFC6, #9EA5AD); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 50%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Brushed Chrome</div>
+            <div class="color-hex">#B8BFC6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F2EDE3;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory Warm</div>
+            <div class="color-hex">#F2EDE3</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D9CDB8;"></div>
+          <div class="color-info">
+            <div class="color-name">Sand</div>
+            <div class="color-hex">#D9CDB8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B4A2B;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta Deep</div>
+            <div class="color-hex">#8B4A2B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F8F5F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Marble White</div>
+            <div class="color-hex">#F8F5F0</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GOLD BAND ===== -->
+  <div class="gold-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--dark" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Geometric Cards &amp; Architectural Detail</h2>
+      <p class="section-subtitle">stepped corners, metallic borders, structured precision</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#9670;</div>
+          <h3>Chevron Patterns</h3>
+          <p>Crisp chevron lines and zigzag motifs serve as signature decorative elements, referencing Art Deco's love of angular repetition.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Geometry</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">&#9651;</div>
+          <h3>Sunburst Motifs</h3>
+          <p>Radial fan arches and sunburst compositions create focal points with conic gradients, echoing the era's most iconic decorative form.</p>
+          <span class="tag">Radial</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">&#9632;</div>
+          <h3>Stepped Borders</h3>
+          <p>Ziggurat-inspired layered borders and double-line frames evoke architectural detailing and the stepped facades of Deco buildings.</p>
+          <span class="tag">Border</span>
+          <span class="tag">Structure</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--burgundy">&#10022;</div>
+          <h3>Metallic Accents</h3>
+          <p>Satin gold gradients, brushed chrome surfaces, and warm brass highlights create luminous focal points against dark backgrounds.</p>
+          <span class="tag">Gold</span>
+          <span class="tag">Chrome</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#9672;</div>
+          <h3>Corner Ornaments</h3>
+          <p>Geometric corner brackets and inset frames on cards and panels transform flat containers into architectural compositions.</p>
+          <span class="tag">Detail</span>
+          <span class="tag">Frame</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--terracotta">&#9733;</div>
+          <h3>Material Contrast</h3>
+          <p>Matte dark surfaces paired with glossy metallics and translucent smoked-glass panels create rich layered depth through texture variation.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Depth</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GEOMETRIC MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <div class="motif-chevron"></div>
+        <div class="motif-chevron"></div>
+        <div class="motif-chevron"></div>
+        <div class="motif-chevron"></div>
+        <div class="motif-chevron"></div>
+        <div class="motif-chevron"></div>
+        <div class="motif-chevron"></div>
+      </div>
+      <h2>Symmetry, Craft &amp; Precision</h2>
+      <p>Luxury earned through proportion and craftsmanship, not excess</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--secondary" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Materials</h2>
+      <p class="section-subtitle">gold, chrome, marble, and geometric precision without images</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-herringbone"></div>
+          <div class="effect-caption">
+            <h4>Herringbone Pattern</h4>
+            <p>Layered diagonal linear gradients create the classic Art Deco herringbone textile motif.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gold-gradient"></div>
+          <div class="effect-caption">
+            <h4>Satin Gold Surface</h4>
+            <p>Multi-stop metallic gradient with radial highlights simulates polished gold.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-fan-arch"></div>
+          <div class="effect-caption">
+            <h4>Fan Arch Motif</h4>
+            <p>Conic gradient radiating from a central point creates the iconic Art Deco fan shape.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-marble"></div>
+          <div class="effect-caption">
+            <h4>Marble Veining</h4>
+            <p>Overlapping elliptical radial gradients simulate natural marble surface textures.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-chrome"></div>
+          <div class="effect-caption">
+            <h4>Brushed Chrome</h4>
+            <p>Cool metallic gradient with directional light simulation for polished metal surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-jewel"></div>
+          <div class="effect-caption">
+            <h4>Jewel Tone Blend</h4>
+            <p>Radial gradient layers in green, burgundy, and navy create rich moody depth.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GOLD BAND ===== -->
+  <div class="gold-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--navy">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Deco Buttons</h2>
+      <p class="section-subtitle">sharp edges, metallic fills, stepped outlines</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Gold Outline</a>
+        <a href="#" class="btn btn-filled">Satin Gold</a>
+        <a href="#" class="btn btn-stepped">Stepped Border</a>
+        <a href="#" class="btn btn-chrome">Brushed Chrome</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--dark">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">&#8220;</span>
+        <blockquote>
+          Neo Deco is not nostalgia for the 1920s &mdash; it is the contemporary conviction that geometry, symmetry, and metallic warmth remain architecture's most powerful tools for creating spaces that feel both timeless and alive.
+        </blockquote>
+        <cite>&mdash; The Principles of Neo Deco Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--secondary">
+    <div class="container">
+      <div class="cta-frame">
+        <h2>Build With Precision</h2>
+        <span class="cta-subtitle">geometry, craft &amp; controlled richness</span>
+        <p>
+          Neo Deco grounds every layout in dark, warm foundations and illuminates with gold metallic accents, geometric dividers, and symmetrical compositions. Treat decoration as structure. Reserve the richest effects for focal points.
+        </p>
+        <a href="#hero" class="btn btn-filled">Back to the Top</a>
+        <div class="cta-fan"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GOLD BAND ===== -->
+  <div class="gold-band gold-band--thick"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Neo Deco</h3>
+      <p>
+        A design aesthetic reference celebrating the contemporary revival of Art Deco &mdash; geometric precision, warm metallics, deepened jewel tones, and architectural restraint, all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-deco">
+        <span class="footer-deco-line"></span>
+        <span class="footer-deco-diamond"></span>
+        <span class="footer-deco-line"></span>
+        <span class="footer-deco-diamond"></span>
+        <span class="footer-deco-line"></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Neo Deco &bull; Geometry, Symmetry &amp; Restraint</p>
+    </div>
+  </footer>
+
+</body>
+</html>

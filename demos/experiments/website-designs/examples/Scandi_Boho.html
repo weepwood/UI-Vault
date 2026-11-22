@@ -1,0 +1,2037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scandi Boho -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@300;400;500;600&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Caveat:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --sb-linen: #FAF6F0;
+      --sb-sand: #F0E8DC;
+      --sb-oat: #E8DFD0;
+
+      /* --- Borders & Separators --- */
+      --sb-desert: #D5C4AD;
+      --sb-rattan: #B89B78;
+
+      /* --- Accents --- */
+      --sb-terracotta: #C07856;
+      --sb-burnt-clay: #A4613A;
+      --sb-mustard: #D4A843;
+      --sb-sage: #8B9E7E;
+      --sb-olive: #6B7153;
+      --sb-dusty-rose: #C9A0A0;
+      --sb-pampas: #E8CFC0;
+
+      /* --- Text --- */
+      --sb-espresso: #3D332C;
+      --sb-taupe: #9E8B7D;
+      --sb-stone: #A49E97;
+
+      /* --- Semantic Aliases --- */
+      --sb-bg: var(--sb-linen);
+      --sb-surface: var(--sb-sand);
+      --sb-text: var(--sb-espresso);
+      --sb-text-muted: var(--sb-taupe);
+      --sb-accent: var(--sb-terracotta);
+      --sb-accent-hover: var(--sb-burnt-clay);
+      --sb-border: var(--sb-desert);
+
+      /* --- Shadows --- */
+      --sb-shadow-sm: 0 2px 8px rgba(61, 51, 44, 0.06);
+      --sb-shadow-md: 0 4px 16px rgba(61, 51, 44, 0.1);
+      --sb-shadow-lg: 0 8px 24px rgba(61, 51, 44, 0.14);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Lora', 'Georgia', serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--sb-espresso);
+      background-color: var(--sb-linen);
+      /* Linen weave texture */
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(61, 51, 44, 0.02) 3px,
+          rgba(61, 51, 44, 0.02) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(61, 51, 44, 0.015) 3px,
+          rgba(61, 51, 44, 0.015) 4px
+        );
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Albert Sans', 'Helvetica Neue', sans-serif;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      color: var(--sb-espresso);
+      line-height: 1.25;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: rgba(250, 246, 240, 0.92);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--sb-desert);
+      padding: 16px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      font-family: 'Albert Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--sb-espresso);
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-brand-leaf {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border-radius: 0 50% 0 50%;
+      background: var(--sb-sage);
+      opacity: 0.7;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--sb-taupe);
+      padding: 8px 16px;
+      border-radius: 6px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      transition: color 0.2s ease, background 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--sb-terracotta);
+      background: rgba(192, 120, 86, 0.08);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      background: linear-gradient(
+        175deg,
+        var(--sb-linen) 0%,
+        var(--sb-sand) 40%,
+        var(--sb-pampas) 100%
+      );
+      padding: 100px 40px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        rgba(192, 120, 86, 0.06) 0%,
+        transparent 70%
+      );
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(180deg, transparent, var(--sb-linen));
+    }
+
+    /* Floating botanical decorations */
+    .hero-botanical {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+
+    .hero-botanical--left {
+      top: 10%;
+      left: 5%;
+      width: 120px;
+      height: 180px;
+      animation: botanicalSway 8s ease-in-out infinite;
+    }
+
+    .hero-botanical--right {
+      top: 15%;
+      right: 6%;
+      width: 100px;
+      height: 160px;
+      animation: botanicalSway 10s ease-in-out infinite reverse;
+    }
+
+    @keyframes botanicalSway {
+      0%, 100% { transform: rotate(-2deg) translateY(0); }
+      50% { transform: rotate(2deg) translateY(-6px); }
+    }
+
+    .hero-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--sb-terracotta);
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.6rem);
+      font-weight: 300;
+      color: var(--sb-espresso);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+      line-height: 1.15;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 em {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      color: var(--sb-terracotta);
+    }
+
+    .hero-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: 1.4rem;
+      color: var(--sb-rattan);
+      margin-bottom: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-desc {
+      font-family: 'Lora', serif;
+      font-size: 1.15rem;
+      color: var(--sb-taupe);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 12px 32px;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--sb-terracotta);
+      color: var(--sb-linen);
+      box-shadow: 0 2px 8px rgba(192, 120, 86, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: var(--sb-burnt-clay);
+      color: var(--sb-linen);
+      box-shadow: 0 4px 16px rgba(192, 120, 86, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--sb-terracotta);
+      border: 1.5px solid var(--sb-terracotta);
+    }
+
+    .btn-outline:hover {
+      background: rgba(192, 120, 86, 0.08);
+      color: var(--sb-burnt-clay);
+    }
+
+    .btn-sage {
+      background: var(--sb-sage);
+      color: var(--sb-linen);
+      box-shadow: 0 2px 8px rgba(139, 158, 126, 0.25);
+    }
+
+    .btn-sage:hover {
+      background: var(--sb-olive);
+      color: var(--sb-linen);
+      box-shadow: 0 4px 16px rgba(139, 158, 126, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .btn-mustard {
+      background: var(--sb-mustard);
+      color: var(--sb-espresso);
+      box-shadow: 0 2px 8px rgba(212, 168, 67, 0.25);
+    }
+
+    .btn-mustard:hover {
+      background: #c09a38;
+      color: var(--sb-espresso);
+      box-shadow: 0 4px 16px rgba(212, 168, 67, 0.35);
+      transform: translateY(-1px);
+    }
+
+    /* ============================================
+       CONTAINERS & LAYOUT
+       ============================================ */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .container--narrow {
+      max-width: 780px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--sand {
+      background: var(--sb-sand);
+    }
+
+    .section--oat {
+      background-color: var(--sb-oat);
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 6px,
+          rgba(184, 155, 120, 0.04) 6px,
+          rgba(184, 155, 120, 0.04) 7px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 6px,
+          rgba(184, 155, 120, 0.03) 6px,
+          rgba(184, 155, 120, 0.03) 7px
+        );
+    }
+
+    .section--pampas {
+      background: linear-gradient(
+        170deg,
+        var(--sb-sand) 0%,
+        var(--sb-pampas) 50%,
+        var(--sb-sand) 100%
+      );
+    }
+
+    .section--sage-mist {
+      background: linear-gradient(
+        170deg,
+        var(--sb-linen) 0%,
+        rgba(139, 158, 126, 0.06) 50%,
+        var(--sb-sand) 100%
+      );
+    }
+
+    .section-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--sb-terracotta);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 400;
+      color: var(--sb-espresso);
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--sb-rattan);
+      margin-bottom: 40px;
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .divider {
+      border: none;
+      height: 2px;
+      max-width: 120px;
+      margin: 0 auto;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--sb-desert) 20%,
+        var(--sb-terracotta) 50%,
+        var(--sb-desert) 80%,
+        transparent 100%
+      );
+      border-radius: 2px;
+    }
+
+    .divider--dots {
+      border: none;
+      height: auto;
+      max-width: none;
+      background: none;
+      text-align: center;
+      margin: 0;
+      padding: 40px 0;
+      color: var(--sb-desert);
+      font-size: 1.2rem;
+      letter-spacing: 0.6em;
+    }
+
+    .divider--dots::before {
+      content: '\25CF  \25CB  \25CF  \25CB  \25CF';
+    }
+
+    /* Woven band divider */
+    .woven-band {
+      height: 24px;
+      background-color: var(--sb-oat);
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 8px,
+          rgba(184, 155, 120, 0.15) 8px,
+          rgba(184, 155, 120, 0.15) 10px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 4px,
+          rgba(192, 120, 86, 0.06) 4px,
+          rgba(192, 120, 86, 0.06) 5px
+        );
+      border-top: 1px solid var(--sb-desert);
+      border-bottom: 1px solid var(--sb-desert);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 28px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--sb-desert);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sb-terracotta);
+      margin-bottom: 8px;
+    }
+
+    .typo-display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 4vw, 3.2rem);
+      font-weight: 300;
+      color: var(--sb-espresso);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .typo-heading {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 500;
+      color: var(--sb-espresso);
+      line-height: 1.2;
+    }
+
+    .typo-body {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--sb-espresso);
+    }
+
+    .typo-ui {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--sb-taupe);
+    }
+
+    .typo-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.5rem;
+      color: var(--sb-rattan);
+    }
+
+    .typo-accent {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--sb-terracotta);
+    }
+
+    .typo-right h3 {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--sb-espresso);
+      margin-bottom: 16px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(213, 196, 173, 0.5);
+    }
+
+    .typo-scale-size {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--sb-stone);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-pairing {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 2px solid var(--sb-desert);
+    }
+
+    .typo-pairing h3 {
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .color-chip {
+      background: var(--sb-linen);
+      border: 1px solid var(--sb-desert);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sb-shadow-md);
+    }
+
+    .color-swatch {
+      height: 72px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px;
+    }
+
+    .color-name {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--sb-espresso);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: var(--sb-stone);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--sb-sand);
+      border: 1px solid var(--sb-desert);
+      border-radius: 12px;
+      padding: 28px;
+      box-shadow: var(--sb-shadow-sm);
+      transition: box-shadow 0.3s ease, transform 0.3s ease;
+    }
+
+    .card:hover {
+      box-shadow: var(--sb-shadow-md);
+      transform: translateY(-2px);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .card-icon--terracotta {
+      background: rgba(192, 120, 86, 0.12);
+      color: var(--sb-terracotta);
+    }
+
+    .card-icon--sage {
+      background: rgba(139, 158, 126, 0.15);
+      color: var(--sb-sage);
+    }
+
+    .card-icon--mustard {
+      background: rgba(212, 168, 67, 0.12);
+      color: var(--sb-mustard);
+    }
+
+    .card-icon--rose {
+      background: rgba(201, 160, 160, 0.15);
+      color: var(--sb-dusty-rose);
+    }
+
+    .card-icon--olive {
+      background: rgba(107, 113, 83, 0.12);
+      color: var(--sb-olive);
+    }
+
+    .card-icon--rattan {
+      background: rgba(184, 155, 120, 0.15);
+      color: var(--sb-rattan);
+    }
+
+    .card h3 {
+      font-family: 'Albert Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1.15rem;
+      color: var(--sb-espresso);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      color: var(--sb-taupe);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .card .tag {
+      display: inline-block;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: rgba(192, 120, 86, 0.08);
+      color: var(--sb-terracotta);
+      margin-right: 6px;
+    }
+
+    /* ============================================
+       DECORATIVE MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: linear-gradient(
+        160deg,
+        var(--sb-oat) 0%,
+        rgba(192, 120, 86, 0.08) 50%,
+        var(--sb-sand) 100%
+      );
+      border-top: 1px solid var(--sb-desert);
+      border-bottom: 1px solid var(--sb-desert);
+      padding: 56px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 12px,
+          rgba(184, 155, 120, 0.04) 12px,
+          rgba(184, 155, 120, 0.04) 13px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 12px,
+          rgba(184, 155, 120, 0.03) 12px,
+          rgba(184, 155, 120, 0.03) 13px
+        );
+      pointer-events: none;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 20px;
+    }
+
+    .motif-leaf {
+      width: 24px;
+      height: 24px;
+      border-radius: 0 50% 0 50%;
+      display: inline-block;
+      opacity: 0.5;
+    }
+
+    .motif-banner h2 {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--sb-espresso);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .motif-banner p {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--sb-rattan);
+      position: relative;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 24px;
+      align-items: flex-start;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--sb-desert);
+    }
+
+    .principle-item:last-child {
+      border-bottom: none;
+    }
+
+    .principle-marker {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: 1.5px solid var(--sb-desert);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--sb-terracotta);
+      background: var(--sb-linen);
+      margin-top: 2px;
+    }
+
+    .principle-text h3 {
+      font-family: 'Albert Sans', sans-serif;
+      font-weight: 500;
+      font-size: 1.1rem;
+      color: var(--sb-espresso);
+      margin-bottom: 6px;
+    }
+
+    .principle-text p {
+      color: var(--sb-taupe);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--sb-desert);
+      background: var(--sb-sand);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sb-shadow-md);
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--sb-espresso);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Lora', serif;
+      font-size: 0.85rem;
+      color: var(--sb-taupe);
+      line-height: 1.6;
+    }
+
+    /* Effect: Linen Weave */
+    .effect-linen {
+      background-color: var(--sb-linen);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(61, 51, 44, 0.035) 2px,
+          rgba(61, 51, 44, 0.035) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(61, 51, 44, 0.025) 2px,
+          rgba(61, 51, 44, 0.025) 3px
+        );
+    }
+
+    /* Effect: Rattan Crosshatch */
+    .effect-rattan {
+      background-color: var(--sb-sand);
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 4px,
+          rgba(184, 155, 120, 0.12) 4px,
+          rgba(184, 155, 120, 0.12) 5px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 4px,
+          rgba(184, 155, 120, 0.08) 4px,
+          rgba(184, 155, 120, 0.08) 5px
+        );
+    }
+
+    /* Effect: Sunrise Gradient */
+    .effect-sunrise {
+      background: linear-gradient(
+        175deg,
+        var(--sb-linen) 0%,
+        var(--sb-pampas) 40%,
+        rgba(192, 120, 86, 0.15) 70%,
+        var(--sb-sand) 100%
+      );
+    }
+
+    /* Effect: Kilim Pattern */
+    .effect-kilim {
+      background-color: var(--sb-oat);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 16px,
+          rgba(192, 120, 86, 0.08) 16px,
+          rgba(192, 120, 86, 0.08) 18px,
+          transparent 18px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 16px,
+          rgba(139, 158, 126, 0.06) 16px,
+          rgba(139, 158, 126, 0.06) 18px,
+          transparent 18px,
+          transparent 20px
+        ),
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 22px,
+          rgba(212, 168, 67, 0.05) 22px,
+          rgba(212, 168, 67, 0.05) 24px
+        );
+    }
+
+    /* Effect: Terracotta Wash */
+    .effect-terracotta-wash {
+      background: linear-gradient(
+        160deg,
+        var(--sb-sand) 0%,
+        rgba(192, 120, 86, 0.12) 30%,
+        rgba(164, 97, 58, 0.08) 60%,
+        var(--sb-pampas) 100%
+      );
+      position: relative;
+    }
+
+    .effect-terracotta-wash::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 30% 40%,
+        rgba(192, 120, 86, 0.1) 0%,
+        transparent 60%
+      );
+    }
+
+    /* Effect: Pampas Gradient Orbs */
+    .effect-pampas-orbs {
+      background-color: var(--sb-linen);
+      position: relative;
+    }
+
+    .effect-pampas-orbs::before {
+      content: '';
+      position: absolute;
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      top: 10%;
+      left: 15%;
+      background: radial-gradient(circle, rgba(232, 207, 192, 0.5) 0%, transparent 70%);
+      animation: orbFloat 6s ease-in-out infinite;
+    }
+
+    .effect-pampas-orbs::after {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      bottom: 15%;
+      right: 20%;
+      background: radial-gradient(circle, rgba(139, 158, 126, 0.2) 0%, transparent 70%);
+      animation: orbFloat 8s ease-in-out infinite reverse;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(8px, -6px) scale(1.05); }
+      66% { transform: translate(-4px, 4px) scale(0.97); }
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      background: var(--sb-sand);
+      border-radius: 16px;
+      padding: 48px;
+      text-align: center;
+      border: 1px solid var(--sb-desert);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem;
+      color: var(--sb-terracotta);
+      opacity: 0.2;
+      position: absolute;
+      top: 12px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Lora', serif;
+      font-size: 1.2rem;
+      font-style: italic;
+      color: var(--sb-espresso);
+      max-width: 600px;
+      margin: 0 auto 20px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'DM Sans', sans-serif;
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--sb-taupe);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: linear-gradient(
+        170deg,
+        var(--sb-sand) 0%,
+        var(--sb-pampas) 50%,
+        var(--sb-sand) 100%
+      );
+      border-radius: 20px;
+      padding: 64px 48px;
+      text-align: center;
+      border: 1px solid var(--sb-desert);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 20px,
+          rgba(184, 155, 120, 0.03) 20px,
+          rgba(184, 155, 120, 0.03) 21px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 20px,
+          rgba(184, 155, 120, 0.02) 20px,
+          rgba(184, 155, 120, 0.02) 21px
+        );
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-family: 'Albert Sans', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 400;
+      color: var(--sb-espresso);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .cta-section .cta-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--sb-rattan);
+      display: block;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cta-section p {
+      color: var(--sb-taupe);
+      max-width: 520px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+      position: relative;
+    }
+
+    .cta-section .btn {
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background-color: var(--sb-oat);
+      border-top: 1px solid var(--sb-desert);
+      padding: 48px 0 32px;
+      margin-top: 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 40px;
+    }
+
+    .footer-brand {
+      font-family: 'Albert Sans', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--sb-espresso);
+      margin-bottom: 8px;
+    }
+
+    .footer-tagline {
+      font-family: 'Caveat', cursive;
+      font-size: 1.1rem;
+      color: var(--sb-rattan);
+    }
+
+    .footer-col h4 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--sb-taupe);
+      margin-bottom: 12px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-family: 'Lora', serif;
+      font-size: 0.9rem;
+      color: var(--sb-taupe);
+      margin-bottom: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .footer-col a:hover {
+      color: var(--sb-terracotta);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      margin-top: 32px;
+      padding-top: 20px;
+      border-top: 1px solid var(--sb-desert);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--sb-stone);
+    }
+
+    /* Decorative leaf cluster in footer */
+    .footer-motif {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .footer-motif span {
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 0 50% 0 50%;
+      background: var(--sb-sage);
+      opacity: 0.35;
+    }
+
+    .footer-motif span:nth-child(2n) {
+      background: var(--sb-terracotta);
+      opacity: 0.25;
+    }
+
+    /* ============================================
+       ANIMATIONS
+       ============================================ */
+    @keyframes gentleFadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: gentleFadeUp 0.6s ease-out both;
+    }
+
+    /* Stagger children */
+    .stagger > *:nth-child(1) { animation-delay: 0s; }
+    .stagger > *:nth-child(2) { animation-delay: 0.08s; }
+    .stagger > *:nth-child(3) { animation-delay: 0.16s; }
+    .stagger > *:nth-child(4) { animation-delay: 0.24s; }
+    .stagger > *:nth-child(5) { animation-delay: 0.32s; }
+    .stagger > *:nth-child(6) { animation-delay: 0.4s; }
+
+    /* ============================================
+       PREFERS REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE BREAKPOINTS
+       ============================================ */
+    @media (max-width: 1024px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 20px;
+      }
+
+      .nav-links {
+        gap: 0;
+      }
+
+      .nav-links a {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+      }
+
+      .hero {
+        padding: 64px 24px 56px;
+      }
+
+      .hero h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero-botanical {
+        display: none;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .button-showcase .btn {
+        text-align: center;
+      }
+
+      .quote-block {
+        padding: 32px 24px;
+      }
+
+      .cta-section {
+        padding: 40px 24px;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .motif-banner {
+        padding: 40px 20px;
+      }
+
+      /* Remove texture on small screens for cleanliness */
+      body {
+        background-image: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .typo-display {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-brand">
+      <span class="nav-brand-leaf"></span>
+      Scandi Boho
+    </a>
+    <div class="nav-links">
+      <a href="#hero" class="active">Home</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative botanical: eucalyptus branch left -->
+    <svg class="hero-botanical hero-botanical--left" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 180 Q58 140 55 120 Q50 100 45 85 Q40 70 42 50 Q44 30 50 15 Q54 5 60 0" stroke="#8B9E7E" stroke-width="2" fill="none"/>
+      <ellipse cx="38" cy="40" rx="14" ry="20" transform="rotate(-25 38 40)" fill="#8B9E7E" opacity="0.3"/>
+      <ellipse cx="72" cy="55" rx="12" ry="18" transform="rotate(20 72 55)" fill="#8B9E7E" opacity="0.25"/>
+      <ellipse cx="35" cy="75" rx="13" ry="19" transform="rotate(-30 35 75)" fill="#8B9E7E" opacity="0.2"/>
+      <ellipse cx="70" cy="90" rx="11" ry="16" transform="rotate(25 70 90)" fill="#8B9E7E" opacity="0.22"/>
+      <ellipse cx="40" cy="110" rx="14" ry="18" transform="rotate(-20 40 110)" fill="#8B9E7E" opacity="0.18"/>
+    </svg>
+
+    <!-- Decorative botanical: pampas right -->
+    <svg class="hero-botanical hero-botanical--right" viewBox="0 0 100 160" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 160 Q48 130 50 100 Q52 70 50 40 Q49 20 50 0" stroke="#C9A0A0" stroke-width="1.5" fill="none"/>
+      <ellipse cx="50" cy="15" rx="20" ry="12" fill="#E8CFC0" opacity="0.4"/>
+      <ellipse cx="50" cy="10" rx="16" ry="8" fill="#C9A0A0" opacity="0.25"/>
+      <path d="M50 25 Q30 30 20 50 Q25 35 50 30" fill="#E8CFC0" opacity="0.3"/>
+      <path d="M50 25 Q70 30 80 50 Q75 35 50 30" fill="#E8CFC0" opacity="0.3"/>
+      <path d="M50 20 Q25 25 15 40 Q22 28 50 22" fill="#D5C4AD" opacity="0.2"/>
+      <path d="M50 20 Q75 25 85 40 Q78 28 50 22" fill="#D5C4AD" opacity="0.2"/>
+    </svg>
+
+    <p class="hero-label">Design Aesthetic Reference</p>
+    <h1>Where Clean Lines Meet <em>Woven Warmth</em></h1>
+    <p class="hero-subtitle">minimal structure, bohemian soul</p>
+    <p class="hero-desc">
+      Scandinavian simplicity and bohemian warmth, woven together into digital spaces that breathe with intention and glow with natural light.
+    </p>
+    <div class="hero-buttons">
+      <a href="#components" class="btn btn-primary">Explore Components</a>
+      <a href="#palette" class="btn btn-outline">View Palette</a>
+    </div>
+  </header>
+
+  <!-- ===== WOVEN BAND ===== -->
+  <div class="woven-band"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Geometric Clarity Meets Humanist Warmth</h2>
+      <p class="section-subtitle">clean sans-serifs, warm serifs, handwritten soul</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cormorant Garamond Light</p>
+            <p class="typo-display">Sunlit Simplicity</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Albert Sans Medium</p>
+            <p class="typo-heading">Curated with Intention</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora Regular</p>
+            <p class="typo-body">Warm humanist serif text designed for comfortable, unhurried reading. Every paragraph should feel like sunlight on linen.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / DM Sans</p>
+            <p class="typo-ui">Navigation &amp; Interface Elements</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Handwritten / Caveat</p>
+            <p class="typo-handwritten">gathered over time, with care</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Cormorant Garamond Italic</p>
+            <p class="typo-accent">A touch of bohemian elegance</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.2rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; font-weight: 300; color: var(--sb-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Albert Sans', sans-serif; font-size: 1.3rem; font-weight: 500; color: var(--sb-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.3rem</span>
+              <span style="font-family: 'Albert Sans', sans-serif; font-size: 1.1rem; font-weight: 500; color: var(--sb-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: var(--sb-espresso);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.9rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-weight: 400; font-size: 0.88rem; color: var(--sb-taupe); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--sb-rattan);">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Albert Sans', sans-serif; font-weight: 500; color: var(--sb-terracotta);">Albert Sans 500</strong> + <strong style="font-family: 'Lora', serif;">Lora 400</strong><br>
+              <span style="color: var(--sb-taupe); font-size: 0.85rem;">Clean Scandinavian structure with warm serif readability</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Cormorant Garamond', serif; font-weight: 400; color: var(--sb-terracotta);">Cormorant Garamond</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans</strong><br>
+              <span style="color: var(--sb-taupe); font-size: 0.85rem;">Elegant editorial display with functional body text</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Albert Sans', sans-serif; font-weight: 600; color: var(--sb-terracotta);">Albert Sans 600</strong> + <strong style="font-family: 'DM Sans', sans-serif; font-weight: 300;">DM Sans 300</strong><br>
+              <span style="color: var(--sb-taupe); font-size: 0.85rem;">All sans-serif; minimal Scandi with soft weight contrast</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="divider--dots"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--oat" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Warm Neutrals &amp; Earthy Accents</h2>
+      <p class="section-subtitle">sun-warmed linen, terracotta clay, sage from the garden</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF6F0;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Linen</div>
+            <div class="color-hex">#FAF6F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0E8DC;"></div>
+          <div class="color-info">
+            <div class="color-name">Sand Cream</div>
+            <div class="color-hex">#F0E8DC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8DFD0;"></div>
+          <div class="color-info">
+            <div class="color-name">Oat Milk</div>
+            <div class="color-hex">#E8DFD0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D5C4AD;"></div>
+          <div class="color-info">
+            <div class="color-name">Desert Sand</div>
+            <div class="color-hex">#D5C4AD</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C07856;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta</div>
+            <div class="color-hex">#C07856</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A4613A;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Clay</div>
+            <div class="color-hex">#A4613A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A843;"></div>
+          <div class="color-info">
+            <div class="color-name">Mustard Gold</div>
+            <div class="color-hex">#D4A843</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B9E7E;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Green</div>
+            <div class="color-hex">#8B9E7E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6B7153;"></div>
+          <div class="color-info">
+            <div class="color-name">Olive Dusk</div>
+            <div class="color-hex">#6B7153</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9A0A0;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Rose</div>
+            <div class="color-hex">#C9A0A0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9E8B7D;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Taupe</div>
+            <div class="color-hex">#9E8B7D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3D332C;"></div>
+          <div class="color-info">
+            <div class="color-name">Espresso</div>
+            <div class="color-hex">#3D332C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B89B78;"></div>
+          <div class="color-info">
+            <div class="color-name">Rattan Brown</div>
+            <div class="color-hex">#B89B78</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8CFC0;"></div>
+          <div class="color-info">
+            <div class="color-name">Pampas Blush</div>
+            <div class="color-hex">#E8CFC0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A49E97;"></div>
+          <div class="color-info">
+            <div class="color-name">Stone Gray</div>
+            <div class="color-hex">#A49E97</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WOVEN BAND ===== -->
+  <div class="woven-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Textured Cards &amp; Natural Details</h2>
+      <p class="section-subtitle">like objects on a well-styled shelf</p>
+
+      <div class="card-grid stagger">
+        <div class="card fade-in">
+          <div class="card-icon card-icon--terracotta">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z" fill="currentColor" opacity="0.7"/></svg>
+          </div>
+          <h3>Woven Textures</h3>
+          <p>Macrame, rattan, jute, and linen textures appear as subtle background patterns that evoke handcraft and natural warmth.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--sage">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M17 8C8 10 5.9 16.17 3.82 21.34l1.89.66c.32-.9.68-1.82 1.12-2.72C9.5 22.5 14 23 17 20c5.5-5.5 0-15 0-15s-2 2-5 4c2-4 5-7 5-7s-8 2-9 8c2-2 4-3 4-3z" fill="currentColor" opacity="0.7"/></svg>
+          </div>
+          <h3>Botanical Elements</h3>
+          <p>Eucalyptus, pampas grass, and dried flower arrangements appear as decorative motifs, connecting the digital to the natural world.</p>
+          <span class="tag">Nature</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--mustard">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="3.5" fill="currentColor" opacity="0.7"/><path d="M12 1v3M12 20v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M1 12h3M20 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.7"/></svg>
+          </div>
+          <h3>Warm Light Quality</h3>
+          <p>Gradients suggest soft natural light -- golden hour warmth, linen-filtered sunlight, or the gentle glow of candles through the space.</p>
+          <span class="tag">Gradient</span>
+          <span class="tag">Atmosphere</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--rose">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor" opacity="0.6"/></svg>
+          </div>
+          <h3>Handcrafted Imperfection</h3>
+          <p>Slightly irregular borders, organic shapes, and hand-drawn elements convey authenticity and human touch rather than machine precision.</p>
+          <span class="tag">Organic</span>
+          <span class="tag">Craft</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--olive">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h16v2H4z" fill="currentColor" opacity="0.7"/></svg>
+          </div>
+          <h3>Clean Grids</h3>
+          <p>Simple two- or three-column grids with generous gaps provide Scandinavian structure without rigid symmetry, leaving room to breathe.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Grid</span>
+        </div>
+        <div class="card fade-in">
+          <div class="card-icon card-icon--rattan">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor" opacity="0.6"/><rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor" opacity="0.4"/><rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor" opacity="0.4"/><rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor" opacity="0.6"/></svg>
+          </div>
+          <h3>Layered Surfaces</h3>
+          <p>Cards and containers sit on slightly different background tones -- linen on sand, sand on oat -- creating depth through tonal layering.</p>
+          <span class="tag">Surface</span>
+          <span class="tag">Depth</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-row">
+      <span class="motif-leaf" style="background: var(--sb-sage);"></span>
+      <span class="motif-leaf" style="background: var(--sb-terracotta);"></span>
+      <span class="motif-leaf" style="background: var(--sb-dusty-rose);"></span>
+      <span class="motif-leaf" style="background: var(--sb-mustard);"></span>
+      <span class="motif-leaf" style="background: var(--sb-sage);"></span>
+      <span class="motif-leaf" style="background: var(--sb-terracotta);"></span>
+      <span class="motif-leaf" style="background: var(--sb-dusty-rose);"></span>
+    </div>
+    <h2>Simplicity, Warmth &amp; Natural Soul</h2>
+    <p>from macrame textures to ceramic warmth, every surface tells a quiet story</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section section--sage-mist">
+    <div class="container container--narrow">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Scandi Boho Philosophy</h2>
+      <p class="section-subtitle">function first, warmth second, always intentional</p>
+
+      <div class="principles-list">
+        <div class="principle-item">
+          <div class="principle-marker">i</div>
+          <div class="principle-text">
+            <h3>Function First, Warmth Second</h3>
+            <p>Begin with Scandinavian functional clarity, then layer bohemian warmth on top. Decoration should never compromise usability -- every texture and accent serves the experience, not just the eye.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-marker">ii</div>
+          <div class="principle-text">
+            <h3>Texture Over Ornamentation</h3>
+            <p>Add visual interest through subtle material textures and woven patterns rather than decorative flourishes. A linen weave background says more than a dozen decorative borders ever could.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-marker">iii</div>
+          <div class="principle-text">
+            <h3>Collected, Not Matched</h3>
+            <p>Elements should look like they were gathered over time from different sources, unified by a shared warmth and sensibility rather than identical styling. A terracotta pot beside a sage leaf beside a rattan weave.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-marker">iv</div>
+          <div class="principle-text">
+            <h3>Restraint With Personality</h3>
+            <p>Show character through a few well-chosen bohemian touches -- a woven texture, a terracotta accent, a hand-drawn divider -- rather than applying boho elements everywhere. Less is warm.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="divider--dots"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Warm Surfaces</h2>
+      <p class="section-subtitle">all the tactile warmth, no image assets needed</p>
+
+      <div class="effects-grid stagger">
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-caption">
+            <h4>Linen Weave</h4>
+            <p>Perpendicular repeating gradients at low opacity simulate woven textile without any image assets.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-rattan"></div>
+          <div class="effect-caption">
+            <h4>Rattan Crosshatch</h4>
+            <p>Diagonal gradient lines at 45 and -45 degrees create a crosshatch pattern evoking woven rattan.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-sunrise"></div>
+          <div class="effect-caption">
+            <h4>Sunrise Gradient</h4>
+            <p>Warm linen-to-pampas gradient suggests golden hour light filtered through natural fabric.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-kilim"></div>
+          <div class="effect-caption">
+            <h4>Kilim Pattern</h4>
+            <p>Layered geometric grid lines in terracotta, sage, and mustard evoke woven textile patterns.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-terracotta-wash"></div>
+          <div class="effect-caption">
+            <h4>Terracotta Wash</h4>
+            <p>Soft gradient with a radial overlay creates the warmth of sun-baked clay surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo fade-in">
+          <div class="effect-preview effect-pampas-orbs"></div>
+          <div class="effect-caption">
+            <h4>Floating Orbs</h4>
+            <p>Gentle radial gradients with soft animation create an organic, breathing atmosphere.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WOVEN BAND ===== -->
+  <div class="woven-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--pampas">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Warm, Tactile Buttons</h2>
+      <p class="section-subtitle">rounded like smoothed pottery, never sharp</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Terracotta Primary</a>
+        <a href="#" class="btn btn-sage">Sage Green</a>
+        <a href="#" class="btn btn-mustard">Mustard Gold</a>
+        <a href="#" class="btn btn-outline">Outlined Variant</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="quote-block">
+        <blockquote>
+          The balance is what makes it special &mdash; clean enough to think clearly, warm enough to feel at home. Simplicity and soul coexist when every choice is intentional.
+        </blockquote>
+        <cite>&mdash; The Scandi Boho Ethos</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section">
+    <div class="container container--narrow">
+      <div class="cta-section">
+        <h2>Less, but Warmer</h2>
+        <span class="cta-handwritten">where every texture tells a quiet story</span>
+        <p>
+          The Scandi Boho aesthetic fuses Scandinavian functional clarity with bohemian warmth and craft. Ground every layout in warm linen, sand, and cream &mdash; then let terracotta, sage, and mustard bring it to life.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WOVEN BAND ===== -->
+  <div class="woven-band"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-inner">
+        <div>
+          <p class="footer-brand">Scandi Boho</p>
+          <p class="footer-tagline">where clean lines meet woven warmth</p>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#typography">Typography</a>
+          <a href="#palette">Colors</a>
+          <a href="#components">Components</a>
+          <a href="#effects">Effects</a>
+        </div>
+        <div class="footer-col">
+          <h4>Principles</h4>
+          <a href="#">Function First</a>
+          <a href="#">Texture Over Ornament</a>
+          <a href="#">Collected, Not Matched</a>
+        </div>
+        <div class="footer-col">
+          <h4>Related</h4>
+          <a href="#">Japandi</a>
+          <a href="#">Hygge</a>
+          <a href="#">Cottagecore</a>
+        </div>
+      </div>
+      <div class="footer-motif">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p class="footer-bottom">Design Aesthetic Reference &bull; Scandi Boho &bull; Crafted with intention</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS: Scroll-triggered fade-in ===== -->
+  <script>
+    (function() {
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.style.animationPlayState = 'running';
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+
+      document.querySelectorAll('.fade-in').forEach(function(el) {
+        el.style.opacity = '0';
+        el.style.animationPlayState = 'paused';
+        observer.observe(el);
+      });
+
+      // Smooth active nav link highlighting
+      var navLinks = document.querySelectorAll('.nav-links a');
+      var sections = document.querySelectorAll('section[id]');
+
+      window.addEventListener('scroll', function() {
+        var scrollPos = window.scrollY + 120;
+        sections.forEach(function(section) {
+          if (section.offsetTop <= scrollPos && (section.offsetTop + section.offsetHeight) > scrollPos) {
+            navLinks.forEach(function(link) {
+              link.classList.remove('active');
+              if (link.getAttribute('href') === '#' + section.id) {
+                link.classList.add('active');
+              }
+            });
+          }
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

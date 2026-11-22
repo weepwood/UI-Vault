@@ -1,0 +1,2116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stained Glass -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=UnifrakturCook:wght@700&family=Spectral:ital,wght@0,400;0,500;1,400&family=MedievalSharp&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Background & Structure --- */
+      --glass-bg-dark: #1a1a2e;
+      --glass-bg-deep: #12121f;
+      --glass-lead: #2d2d3f;
+      --glass-lead-dark: #1e1e30;
+      --glass-solder: #b8860b;
+
+      /* --- Blues --- */
+      --glass-sapphire: #0f52ba;
+      --glass-cathedral-blue: #1a3a6b;
+      --glass-sapphire-glow: rgba(15, 82, 186, 0.7);
+
+      /* --- Reds --- */
+      --glass-ruby: #9b111e;
+      --glass-cardinal: #c41e3a;
+      --glass-ruby-glow: rgba(155, 17, 30, 0.7);
+
+      /* --- Greens --- */
+      --glass-emerald: #009473;
+      --glass-forest: #1b5e20;
+      --glass-emerald-glow: rgba(0, 148, 115, 0.7);
+
+      /* --- Purples --- */
+      --glass-amethyst: #7b2d8e;
+      --glass-violet: #9966cc;
+      --glass-amethyst-glow: rgba(123, 45, 142, 0.7);
+
+      /* --- Golds & Yellows --- */
+      --glass-gold: #d4af37;
+      --glass-gold-dark: #b8860b;
+      --glass-topaz: #e8a317;
+
+      /* --- Light & Text --- */
+      --glass-parchment: #f5f0e1;
+      --glass-light: #fafafa;
+      --glass-text-primary: #f5f0e1;
+      --glass-text-secondary: rgba(245, 240, 225, 0.75);
+
+      /* --- Functional Aliases --- */
+      --glass-bg-primary: var(--glass-bg-dark);
+      --glass-border: var(--glass-lead);
+      --glass-accent: var(--glass-sapphire);
+      --glass-accent-warm: var(--glass-ruby);
+      --glass-highlight: var(--glass-gold);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--glass-bg-dark);
+      color: var(--glass-text-primary);
+      font-family: 'EB Garamond', 'Cormorant Garamond', 'Georgia', serif;
+      font-weight: 400;
+      font-size: 1.1rem;
+      letter-spacing: 0.02em;
+      line-height: 1.8;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+      font-family: 'Cinzel', 'Times New Roman', serif;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.25;
+      color: var(--glass-parchment);
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      color: var(--glass-gold);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    a:hover {
+      color: var(--glass-topaz);
+    }
+
+    /* ============================================
+       UTILITY / LAYOUT
+       ============================================ */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: 'Uncial Antiqua', 'Cinzel', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--glass-gold);
+      margin-bottom: 0.5rem;
+      text-align: center;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    }
+
+    .section-title {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      letter-spacing: 0.1em;
+      color: var(--glass-parchment);
+      text-align: center;
+      margin-bottom: 0.4rem;
+    }
+
+    .section-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--glass-text-secondary);
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .glass-nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--glass-bg-deep);
+      border-bottom: 3px solid var(--glass-lead);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .glass-nav a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem 1.8rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--glass-text-secondary);
+      border-right: 2px solid var(--glass-lead);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .glass-nav a:first-child {
+      border-left: 2px solid var(--glass-lead);
+    }
+
+    .glass-nav a:hover {
+      color: var(--glass-parchment);
+      background: rgba(15, 82, 186, 0.12);
+      box-shadow: inset 0 0 20px rgba(15, 82, 186, 0.08);
+    }
+
+    .glass-nav a.active {
+      color: var(--glass-gold);
+      background: rgba(212, 175, 55, 0.08);
+      box-shadow: inset 0 -3px 0 var(--glass-gold);
+    }
+
+    /* Solder dot at nav junctions */
+    .glass-nav a::after {
+      content: '';
+      position: absolute;
+      right: -4px;
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+      width: 5px;
+      height: 5px;
+      background: var(--glass-solder);
+      border-radius: 1px;
+      z-index: 1;
+    }
+
+    .glass-nav a:last-child::after {
+      display: none;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .glass-hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 4rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Rose window radial glow */
+    .glass-hero::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(
+        circle,
+        rgba(212, 175, 55, 0.08) 0%,
+        rgba(15, 82, 186, 0.06) 25%,
+        rgba(123, 45, 142, 0.04) 45%,
+        rgba(155, 17, 30, 0.03) 65%,
+        transparent 85%
+      );
+      border-radius: 50%;
+      pointer-events: none;
+      animation: roseGlow 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes roseGlow {
+      0% { opacity: 0.8; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 1; transform: translate(-50%, -50%) scale(1.05); }
+    }
+
+    /* Rose window outer ring */
+    .glass-hero::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 600px;
+      border: 2px solid rgba(45, 45, 63, 0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      box-shadow:
+        0 0 0 28px rgba(26, 26, 46, 0.25),
+        0 0 0 30px rgba(45, 45, 63, 0.35),
+        0 0 0 60px rgba(26, 26, 46, 0.1),
+        0 0 0 62px rgba(45, 45, 63, 0.15);
+    }
+
+    .glass-hero h1 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2.5rem, 8vw, 6rem);
+      font-weight: 400;
+      color: var(--glass-gold);
+      letter-spacing: 0.12em;
+      text-shadow:
+        0 0 30px rgba(212, 175, 55, 0.3),
+        0 0 60px rgba(212, 175, 55, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass-hero .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-style: italic;
+      color: var(--glass-text-secondary);
+      margin-top: 1rem;
+      letter-spacing: 0.06em;
+      position: relative;
+      z-index: 1;
+    }
+
+    .glass-hero .hero-blackletter {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: var(--glass-gold-dark);
+      letter-spacing: 0.05em;
+      margin-top: 0.5rem;
+      position: relative;
+      z-index: 1;
+      opacity: 0.7;
+    }
+
+    .glass-hero .scroll-hint {
+      position: relative;
+      z-index: 1;
+      margin-top: 3rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--glass-text-secondary);
+      opacity: 0.6;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .scroll-hint-diamond {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--glass-gold);
+      transform: rotate(45deg);
+      margin: 0 0.6rem;
+      vertical-align: middle;
+      opacity: 0.5;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.8; }
+    }
+
+    /* ============================================
+       DIVIDERS
+       ============================================ */
+    .glass-divider {
+      width: 50%;
+      max-width: 400px;
+      height: 3px;
+      margin: 3rem auto;
+      position: relative;
+      background: var(--glass-lead);
+    }
+
+    .glass-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(45deg);
+      width: 10px;
+      height: 10px;
+      background: var(--glass-gold);
+      border: 2px solid var(--glass-lead);
+    }
+
+    .glass-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 25%;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--glass-solder);
+      border-radius: 50%;
+      box-shadow: calc(50vw * 0.5) 0 0 var(--glass-solder);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4px;
+      background: var(--glass-lead);
+      border: 4px solid var(--glass-lead);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .typo-left,
+    .typo-right {
+      background: var(--glass-bg-dark);
+      padding: 2.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .typo-left::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 20%, rgba(15, 82, 186, 0.08) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 80%, rgba(123, 45, 142, 0.06) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .typo-sample {
+      margin-bottom: 1.8rem;
+      position: relative;
+    }
+
+    .typo-sample:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Spectral', serif;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--glass-gold-dark);
+      margin-bottom: 0.3rem;
+      opacity: 0.8;
+    }
+
+    .typo-display {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      line-height: 1.1;
+      color: var(--glass-gold);
+      text-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+    }
+
+    .typo-heading {
+      font-family: 'Cinzel', serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      color: var(--glass-parchment);
+    }
+
+    .typo-medieval {
+      font-family: 'MedievalSharp', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--glass-parchment);
+      letter-spacing: 0.04em;
+    }
+
+    .typo-blackletter {
+      font-family: 'UnifrakturCook', cursive;
+      font-size: clamp(1.4rem, 3vw, 1.8rem);
+      color: var(--glass-gold);
+      letter-spacing: 0.05em;
+    }
+
+    .typo-body {
+      font-family: 'EB Garamond', serif;
+      font-size: 1.1rem;
+      color: var(--glass-text-secondary);
+      line-height: 1.8;
+    }
+
+    .typo-caption {
+      font-family: 'Spectral', serif;
+      font-size: 0.85rem;
+      color: var(--glass-text-secondary);
+      letter-spacing: 0.04em;
+      opacity: 0.8;
+    }
+
+    .typo-uncial {
+      font-family: 'Uncial Antiqua', serif;
+      font-size: 1.1rem;
+      color: var(--glass-violet);
+      letter-spacing: 0.06em;
+    }
+
+    .typo-right h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1rem;
+      color: var(--glass-parchment);
+      position: relative;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(45, 45, 63, 0.5);
+      position: relative;
+    }
+
+    .typo-scale-size {
+      font-family: 'Spectral', serif;
+      font-size: 0.75rem;
+      color: var(--glass-gold-dark);
+      letter-spacing: 0.05em;
+      opacity: 0.7;
+    }
+
+    .typo-pairings {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid var(--glass-lead);
+    }
+
+    .typo-pairing-item {
+      margin-bottom: 0.8rem;
+      font-size: 0.9rem;
+      line-height: 1.7;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-note {
+      font-family: 'Spectral', serif;
+      color: var(--glass-text-secondary);
+      font-size: 0.8rem;
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-section {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .palette-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(15, 82, 186, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 4px;
+      background: var(--glass-lead);
+      border: 4px solid var(--glass-lead);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .color-chip {
+      background: var(--glass-bg-dark);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .color-chip:hover {
+      z-index: 1;
+      box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.08);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Glass texture on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 40% 30%,
+        rgba(255, 255, 255, 0.15) 0%,
+        transparent 60%
+      );
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 0.7rem 0.8rem;
+    }
+
+    .color-name {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--glass-parchment);
+      margin-bottom: 0.15rem;
+    }
+
+    .color-hex {
+      font-family: 'Spectral', serif;
+      font-size: 0.7rem;
+      color: var(--glass-text-secondary);
+      letter-spacing: 0.03em;
+      opacity: 0.7;
+    }
+
+    /* ============================================
+       GLASS CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 4px;
+      background: var(--glass-lead);
+      border: 4px solid var(--glass-lead);
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .glass-card {
+      background: var(--glass-bg-dark);
+      padding: 2.2rem;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 1;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Glass texture overlay on cards */
+    .glass-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .glass-card:hover {
+      z-index: 1;
+    }
+
+    /* Color variants */
+    .glass-card--sapphire::before { background: radial-gradient(ellipse at 50% 30%, rgba(15,82,186,0.22) 0%, rgba(15,82,186,0.06) 55%, transparent 80%); }
+    .glass-card--sapphire:hover { box-shadow: inset 0 0 30px rgba(15,82,186,0.15), 0 0 15px rgba(15,82,186,0.1); }
+    .glass-card--ruby::before { background: radial-gradient(ellipse at 50% 30%, rgba(155,17,30,0.22) 0%, rgba(155,17,30,0.06) 55%, transparent 80%); }
+    .glass-card--ruby:hover { box-shadow: inset 0 0 30px rgba(155,17,30,0.15), 0 0 15px rgba(155,17,30,0.1); }
+    .glass-card--emerald::before { background: radial-gradient(ellipse at 50% 30%, rgba(0,148,115,0.22) 0%, rgba(0,148,115,0.06) 55%, transparent 80%); }
+    .glass-card--emerald:hover { box-shadow: inset 0 0 30px rgba(0,148,115,0.15), 0 0 15px rgba(0,148,115,0.1); }
+    .glass-card--amethyst::before { background: radial-gradient(ellipse at 50% 30%, rgba(123,45,142,0.22) 0%, rgba(123,45,142,0.06) 55%, transparent 80%); }
+    .glass-card--amethyst:hover { box-shadow: inset 0 0 30px rgba(123,45,142,0.15), 0 0 15px rgba(123,45,142,0.1); }
+    .glass-card--gold::before { background: radial-gradient(ellipse at 50% 30%, rgba(212,175,55,0.18) 0%, rgba(212,175,55,0.05) 55%, transparent 80%); }
+    .glass-card--gold:hover { box-shadow: inset 0 0 30px rgba(212,175,55,0.12), 0 0 15px rgba(212,175,55,0.08); }
+    .glass-card--forest::before { background: radial-gradient(ellipse at 50% 30%, rgba(27,94,32,0.22) 0%, rgba(27,94,32,0.06) 55%, transparent 80%); }
+    .glass-card--forest:hover { box-shadow: inset 0 0 30px rgba(27,94,32,0.15), 0 0 15px rgba(27,94,32,0.1); }
+
+    .glass-card .card-icon {
+      font-size: 1.6rem;
+      margin-bottom: 1rem;
+      display: block;
+      position: relative;
+      color: var(--glass-gold);
+    }
+
+    .glass-card h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.8rem;
+      position: relative;
+    }
+
+    .glass-card p {
+      color: var(--glass-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .glass-card .card-tags {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .tag {
+      font-family: 'Spectral', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--glass-lead);
+      color: var(--glass-text-secondary);
+      text-transform: uppercase;
+      display: inline-block;
+    }
+
+    .tag--gold {
+      border-color: rgba(212, 175, 55, 0.3);
+      color: var(--glass-gold);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      border-top: 4px solid var(--glass-lead);
+      border-bottom: 4px solid var(--glass-lead);
+      background: var(--glass-bg-deep);
+      padding: 3.5rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 50%, rgba(155, 17, 30, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 35%),
+        radial-gradient(circle at 80% 50%, rgba(15, 82, 186, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .motif-banner .motif-row {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.2rem;
+      position: relative;
+    }
+
+    .motif-banner .motif-row span {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      background: var(--glass-gold);
+      transform: rotate(45deg);
+      opacity: 0.5;
+      border: 1px solid var(--glass-lead);
+    }
+
+    .motif-banner .motif-row span:nth-child(2) { background: var(--glass-sapphire); opacity: 0.6; }
+    .motif-banner .motif-row span:nth-child(3) { background: var(--glass-ruby); opacity: 0.5; }
+    .motif-banner .motif-row span:nth-child(4) { background: var(--glass-emerald); opacity: 0.6; }
+    .motif-banner .motif-row span:nth-child(5) { background: var(--glass-amethyst); opacity: 0.5; }
+    .motif-banner .motif-row span:nth-child(6) { background: var(--glass-gold); opacity: 0.6; }
+    .motif-banner .motif-row span:nth-child(7) { background: var(--glass-sapphire); opacity: 0.5; }
+
+    .motif-banner h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 400;
+      color: var(--glass-gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.6rem;
+      position: relative;
+      text-shadow: 0 0 30px rgba(212, 175, 55, 0.15);
+    }
+
+    .motif-banner p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--glass-text-secondary);
+      font-size: 1.05rem;
+      position: relative;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-list {
+      max-width: 900px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      background: var(--glass-lead);
+      border: 4px solid var(--glass-lead);
+    }
+
+    .principle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 2rem 2.5rem;
+      background: var(--glass-bg-dark);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .principle-item::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .principle-item:nth-child(1)::before { background: radial-gradient(ellipse at 10% 50%, rgba(15,82,186,0.1) 0%, transparent 50%); }
+    .principle-item:nth-child(2)::before { background: radial-gradient(ellipse at 10% 50%, rgba(155,17,30,0.1) 0%, transparent 50%); }
+    .principle-item:nth-child(3)::before { background: radial-gradient(ellipse at 10% 50%, rgba(0,148,115,0.1) 0%, transparent 50%); }
+    .principle-item:nth-child(4)::before { background: radial-gradient(ellipse at 10% 50%, rgba(123,45,142,0.1) 0%, transparent 50%); }
+
+    .principle-item:hover {
+      box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.04);
+    }
+
+    .principle-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .principle-icon::before {
+      content: '';
+      width: 12px;
+      height: 12px;
+      background: var(--glass-gold);
+      transform: rotate(45deg);
+      border: 2px solid var(--glass-lead);
+    }
+
+    .principle-item:nth-child(1) .principle-icon::before { background: var(--glass-sapphire); }
+    .principle-item:nth-child(2) .principle-icon::before { background: var(--glass-ruby); }
+    .principle-item:nth-child(3) .principle-icon::before { background: var(--glass-emerald); }
+    .principle-item:nth-child(4) .principle-icon::before { background: var(--glass-amethyst); }
+
+    .principle-text {
+      position: relative;
+    }
+
+    .principle-text h3 {
+      font-family: 'Cinzel', serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+
+    .principle-text p {
+      color: var(--glass-text-secondary);
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 4px;
+      background: var(--glass-lead);
+      border: 4px solid var(--glass-lead);
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .effect-demo {
+      background: var(--glass-bg-dark);
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      z-index: 1;
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1.2rem 1.5rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cinzel', serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.3rem;
+      color: var(--glass-parchment);
+    }
+
+    .effect-caption p {
+      font-family: 'Spectral', serif;
+      font-size: 0.82rem;
+      color: var(--glass-text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Rose Window */
+    .effect-rose-window {
+      background: var(--glass-bg-deep);
+    }
+
+    .effect-rose-window::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 3px solid var(--glass-lead);
+      background:
+        radial-gradient(
+          circle at 50% 50%,
+          rgba(212, 175, 55, 0.4) 0%,
+          rgba(212, 175, 55, 0.15) 15%,
+          transparent 16%
+        ),
+        conic-gradient(
+          from 0deg,
+          rgba(15, 82, 186, 0.3) 0deg,
+          rgba(155, 17, 30, 0.3) 60deg,
+          rgba(0, 148, 115, 0.3) 120deg,
+          rgba(123, 45, 142, 0.3) 180deg,
+          rgba(15, 82, 186, 0.3) 240deg,
+          rgba(155, 17, 30, 0.3) 300deg,
+          rgba(15, 82, 186, 0.3) 360deg
+        );
+    }
+
+    .effect-rose-window::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      background:
+        linear-gradient(0deg, transparent 48%, var(--glass-lead) 48%, var(--glass-lead) 52%, transparent 52%),
+        linear-gradient(90deg, transparent 48%, var(--glass-lead) 48%, var(--glass-lead) 52%, transparent 52%),
+        linear-gradient(45deg, transparent 48.5%, var(--glass-lead) 48.5%, var(--glass-lead) 51.5%, transparent 51.5%),
+        linear-gradient(-45deg, transparent 48.5%, var(--glass-lead) 48.5%, var(--glass-lead) 51.5%, transparent 51.5%);
+    }
+
+    /* Effect 2: Light Through Glass */
+    .effect-light-through {
+      background: var(--glass-bg-deep);
+    }
+
+    .effect-light-through::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(15, 82, 186, 0.35) 0%, rgba(15, 82, 186, 0.1) 30%, transparent 60%),
+        radial-gradient(ellipse at 70% 60%, rgba(155, 17, 30, 0.3) 0%, rgba(155, 17, 30, 0.08) 30%, transparent 60%),
+        radial-gradient(ellipse at 50% 20%, rgba(212, 175, 55, 0.2) 0%, transparent 40%);
+    }
+
+    .effect-light-through::after {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 2px solid var(--glass-lead);
+    }
+
+    /* Effect 3: Lead Came Grid */
+    .effect-lead-grid {
+      background: var(--glass-lead);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 3px;
+    }
+
+    .effect-lead-grid span {
+      display: block;
+    }
+
+    .effect-lead-grid span:nth-child(1) { background: rgba(15, 82, 186, 0.25); }
+    .effect-lead-grid span:nth-child(2) { background: rgba(155, 17, 30, 0.2); }
+    .effect-lead-grid span:nth-child(3) { background: rgba(0, 148, 115, 0.25); }
+    .effect-lead-grid span:nth-child(4) { background: rgba(212, 175, 55, 0.15); }
+    .effect-lead-grid span:nth-child(5) { background: rgba(123, 45, 142, 0.2); }
+    .effect-lead-grid span:nth-child(6) { background: rgba(15, 82, 186, 0.2); }
+    .effect-lead-grid span:nth-child(7) { background: rgba(155, 17, 30, 0.15); }
+    .effect-lead-grid span:nth-child(8) { background: rgba(0, 148, 115, 0.2); }
+    .effect-lead-grid span:nth-child(9) { background: rgba(212, 175, 55, 0.2); }
+
+    /* Effect 4: Gothic Arch */
+    .effect-gothic-arch {
+      background: var(--glass-bg-deep);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-gothic-arch::before {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 150px;
+      clip-path: polygon(
+        0% 100%,
+        0% 40%,
+        15% 15%,
+        50% 0%,
+        85% 15%,
+        100% 40%,
+        100% 100%
+      );
+      background: var(--glass-lead);
+    }
+
+    .effect-gothic-arch::after {
+      content: '';
+      position: absolute;
+      width: 92px;
+      height: 146px;
+      clip-path: polygon(
+        0% 100%,
+        0% 40%,
+        15% 15%,
+        50% 0%,
+        85% 15%,
+        100% 40%,
+        100% 100%
+      );
+      background: rgba(15, 82, 186, 0.2);
+      box-shadow: inset 0 -20px 40px rgba(15, 82, 186, 0.1);
+    }
+
+    /* Effect 5: Jewel Gradient */
+    .effect-jewel-gradient {
+      background:
+        linear-gradient(135deg,
+          rgba(155, 17, 30, 0.4) 0%,
+          rgba(123, 45, 142, 0.3) 25%,
+          rgba(15, 82, 186, 0.35) 50%,
+          rgba(0, 148, 115, 0.3) 75%,
+          rgba(212, 175, 55, 0.25) 100%
+        );
+    }
+
+    .effect-jewel-gradient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 50% 50%,
+        rgba(255, 255, 255, 0.06) 0%,
+        transparent 70%
+      );
+    }
+
+    /* Effect 6: Solder Joint Pattern */
+    .effect-solder-pattern {
+      background: var(--glass-bg-deep);
+    }
+
+    .effect-solder-pattern::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(0deg, transparent 49%, var(--glass-lead) 49%, var(--glass-lead) 51%, transparent 51%),
+        linear-gradient(90deg, transparent 49%, var(--glass-lead) 49%, var(--glass-lead) 51%, transparent 51%);
+      background-size: 50px 50px;
+    }
+
+    .effect-solder-pattern::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(
+        circle 4px at center,
+        var(--glass-solder) 0%,
+        var(--glass-solder) 60%,
+        transparent 61%
+      );
+      background-size: 50px 50px;
+      background-position: 0 0;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem 0;
+    }
+
+    .glass-btn {
+      display: inline-block;
+      padding: 0.85rem 2.2rem;
+      font-family: 'Cinzel', serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--glass-parchment);
+      background: linear-gradient(
+        135deg,
+        rgba(15, 82, 186, 0.35) 0%,
+        rgba(15, 82, 186, 0.55) 50%,
+        rgba(15, 82, 186, 0.3) 100%
+      );
+      border: 2px solid var(--glass-lead);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .glass-btn::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(
+        circle at 35% 25%,
+        rgba(255, 255, 255, 0.12) 0%,
+        transparent 50%
+      );
+      pointer-events: none;
+    }
+
+    .glass-btn:hover {
+      background: linear-gradient(
+        135deg,
+        rgba(15, 82, 186, 0.5) 0%,
+        rgba(15, 82, 186, 0.7) 50%,
+        rgba(15, 82, 186, 0.45) 100%
+      );
+      box-shadow:
+        0 0 15px rgba(15, 82, 186, 0.25),
+        inset 0 0 15px rgba(15, 82, 186, 0.12);
+      border-color: var(--glass-sapphire);
+      color: var(--glass-light);
+    }
+
+    .glass-btn:active {
+      transform: scale(0.98);
+      box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .glass-btn--ruby {
+      background: linear-gradient(135deg, rgba(155,17,30,0.35) 0%, rgba(155,17,30,0.55) 50%, rgba(155,17,30,0.3) 100%);
+    }
+    .glass-btn--ruby:hover {
+      background: linear-gradient(135deg, rgba(155,17,30,0.5) 0%, rgba(155,17,30,0.7) 50%, rgba(155,17,30,0.45) 100%);
+      box-shadow: 0 0 15px rgba(155,17,30,0.25), inset 0 0 15px rgba(155,17,30,0.12);
+      border-color: var(--glass-ruby);
+    }
+
+    .glass-btn--gold {
+      background: linear-gradient(135deg, rgba(212,175,55,0.3) 0%, rgba(212,175,55,0.5) 50%, rgba(212,175,55,0.25) 100%);
+    }
+    .glass-btn--gold:hover {
+      background: linear-gradient(135deg, rgba(212,175,55,0.45) 0%, rgba(212,175,55,0.65) 50%, rgba(212,175,55,0.4) 100%);
+      box-shadow: 0 0 15px rgba(212,175,55,0.2), inset 0 0 15px rgba(212,175,55,0.1);
+      border-color: var(--glass-gold);
+    }
+
+    .glass-btn--emerald {
+      background: linear-gradient(135deg, rgba(0,148,115,0.35) 0%, rgba(0,148,115,0.55) 50%, rgba(0,148,115,0.3) 100%);
+    }
+    .glass-btn--emerald:hover {
+      background: linear-gradient(135deg, rgba(0,148,115,0.5) 0%, rgba(0,148,115,0.7) 50%, rgba(0,148,115,0.45) 100%);
+      box-shadow: 0 0 15px rgba(0,148,115,0.25), inset 0 0 15px rgba(0,148,115,0.12);
+      border-color: var(--glass-emerald);
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 750px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3rem 2.5rem;
+      border: 3px solid var(--glass-lead);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-style: italic;
+      font-weight: 300;
+      line-height: 1.7;
+      color: var(--glass-parchment);
+      position: relative;
+      margin-bottom: 1.2rem;
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 4rem;
+      color: var(--glass-gold);
+      opacity: 0.3;
+      position: absolute;
+      top: -0.5rem;
+      left: -0.5rem;
+      line-height: 1;
+    }
+
+    .quote-block cite {
+      font-family: 'Cinzel', serif;
+      font-size: 0.8rem;
+      font-style: normal;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--glass-gold-dark);
+      opacity: 0.7;
+      display: block;
+      position: relative;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 5rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(212, 175, 55, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 30% 70%, rgba(15, 82, 186, 0.04) 0%, transparent 40%),
+        radial-gradient(ellipse at 70% 30%, rgba(155, 17, 30, 0.03) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .cta-section h2 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 400;
+      color: var(--glass-gold);
+      margin-bottom: 0.8rem;
+      position: relative;
+      letter-spacing: 0.1em;
+      text-shadow:
+        0 0 30px rgba(212, 175, 55, 0.2),
+        0 0 60px rgba(212, 175, 55, 0.08);
+    }
+
+    .cta-section .cta-subtitle {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--glass-text-secondary);
+      max-width: 550px;
+      margin: 0 auto 2rem;
+      font-size: 1.1rem;
+      position: relative;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .glass-footer {
+      border-top: 3px solid var(--glass-lead);
+      background: var(--glass-bg-deep);
+      padding: 2.5rem 2rem;
+      position: relative;
+    }
+
+    .glass-footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(45, 45, 63, 0.3) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .footer-content {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+    }
+
+    .footer-content h3 {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--glass-gold);
+      letter-spacing: 0.1em;
+      margin-bottom: 0.8rem;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    }
+
+    .footer-content > p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem;
+      color: var(--glass-text-secondary);
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--glass-text-secondary);
+      padding: 0.6rem 1.2rem;
+      border-right: 1px solid var(--glass-lead);
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:first-child {
+      border-left: 1px solid var(--glass-lead);
+    }
+
+    .footer-links a:hover {
+      color: var(--glass-gold);
+      background: rgba(212, 175, 55, 0.05);
+    }
+
+    .footer-diamonds {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .footer-diamonds span {
+      display: inline-block;
+      width: 7px;
+      height: 7px;
+      background: var(--glass-gold);
+      transform: rotate(45deg);
+      opacity: 0.5;
+    }
+
+    .footer-diamonds span:nth-child(2) { background: var(--glass-sapphire); opacity: 0.6; }
+    .footer-diamonds span:nth-child(4) { background: var(--glass-ruby); opacity: 0.5; }
+
+    .footer-copy {
+      font-family: 'Cinzel', serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--glass-text-secondary);
+      opacity: 0.5;
+    }
+
+    .footer-accent {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--glass-gold);
+      transform: rotate(45deg);
+      margin: 0 0.7rem;
+      vertical-align: middle;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .glass-nav {
+        flex-wrap: wrap;
+      }
+
+      .glass-nav a {
+        padding: 0.7rem 1.1rem;
+        font-size: 0.65rem;
+      }
+
+      .glass-hero h1 {
+        font-size: clamp(2rem, 10vw, 3.5rem);
+      }
+
+      .glass-hero::after {
+        width: 350px;
+        height: 350px;
+      }
+
+      .glass-hero::before {
+        width: 500px;
+        height: 500px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      }
+
+      .principles-list {
+        margin: 0 1rem;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1.5rem;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .glass-btn {
+        text-align: center;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .footer-links a {
+        border-right: none;
+        border-bottom: 1px solid var(--glass-lead);
+        padding: 0.5rem 1rem;
+      }
+
+      .footer-links a:first-child {
+        border-left: none;
+      }
+
+      .quote-block {
+        padding: 2rem 1.5rem;
+        margin: 0 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .glass-nav a {
+        padding: 0.6rem 0.7rem;
+        font-size: 0.58rem;
+        letter-spacing: 0.05em;
+      }
+
+      .glass-card {
+        padding: 1.5rem;
+      }
+
+      .motif-banner .motif-row {
+        gap: 0.8rem;
+      }
+
+      .motif-banner .motif-row span {
+        width: 10px;
+        height: 10px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="glass-nav">
+    <a href="#hero" class="active">Sanctum</a>
+    <a href="#typography">Scriptorium</a>
+    <a href="#palette">Pigments</a>
+    <a href="#components">Relics</a>
+    <a href="#effects">Luminance</a>
+    <a href="#buttons">Vespers</a>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="glass-hero" id="hero">
+    <h1>Lux Aeterna</h1>
+    <p class="tagline">Light eternal, rendered in glass and lead</p>
+    <p class="hero-blackletter">In Nomine Lucis</p>
+    <p class="scroll-hint">
+      <span class="scroll-hint-diamond"></span>
+      Descend into the nave
+      <span class="scroll-hint-diamond"></span>
+    </p>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Inscribed in Light &amp; Lead</h2>
+      <p class="section-subtitle">blackletter gravitas, inscriptional authority, humanist warmth</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cinzel Decorative</p>
+            <p class="typo-display">Lux Aeterna</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cinzel</p>
+            <p class="typo-heading">Sacred Luminance</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Medieval / MedievalSharp</p>
+            <p class="typo-medieval">Cathedral of Light &amp; Colour</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Blackletter / UnifrakturCook</p>
+            <p class="typo-blackletter">Gloria in Excelsis</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / EB Garamond</p>
+            <p class="typo-body">For a thousand years, stained glass has transformed sunlight into narrative color, dissolving stone walls into fields of sapphire, ruby, and gold.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Uncial Antiqua</p>
+            <p class="typo-uncial">Illuminated Letters &amp; Sacred Text</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Spectral</p>
+            <p class="typo-caption">Small text for captions, labels, and metadata inscriptions</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Cinzel Decorative', serif; font-size: 1.8rem; color: var(--glass-gold);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 600; color: var(--glass-parchment);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'UnifrakturCook', cursive; font-size: 1.3rem; color: var(--glass-gold);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'MedievalSharp', serif; font-size: 1.1rem; color: var(--glass-parchment);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'EB Garamond', serif; font-size: 1rem; color: var(--glass-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Spectral', serif; font-size: 0.85rem; color: var(--glass-text-secondary); letter-spacing: 0.04em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3 style="margin-bottom: 0.8rem;">Font Pairings</h3>
+            <div class="typo-pairing-item">
+              <strong style="font-family: 'Cinzel Decorative', serif; color: var(--glass-gold);">Cinzel Decorative</strong> + <strong style="font-family: 'Cormorant Garamond', serif;">Cormorant Garamond</strong><br>
+              <span class="typo-pairing-note">Ornamental heading with elegant serif body</span>
+            </div>
+            <div class="typo-pairing-item">
+              <strong style="font-family: 'Cinzel', serif; color: var(--glass-parchment);">Cinzel</strong> + <strong style="font-family: 'EB Garamond', serif;">EB Garamond</strong><br>
+              <span class="typo-pairing-note">Inscriptional headings with highly readable body</span>
+            </div>
+            <div class="typo-pairing-item">
+              <strong style="font-family: 'UnifrakturCook', cursive; color: var(--glass-gold);">UnifrakturCook</strong> + <strong style="font-family: 'Spectral', serif;">Spectral</strong><br>
+              <span class="typo-pairing-note">Blackletter display with clean serif body for contrast</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section palette-section" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Jewel Tones &amp; Sacred Light</h2>
+      <p class="section-subtitle">cobalt, ruby, emerald, amethyst and gold -- the hues of medieval glass</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0F52BA;"></div>
+          <div class="color-info">
+            <div class="color-name">Sapphire Blue</div>
+            <div class="color-hex">#0F52BA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A3A6B;"></div>
+          <div class="color-info">
+            <div class="color-name">Cathedral Blue</div>
+            <div class="color-hex">#1A3A6B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9B111E;"></div>
+          <div class="color-info">
+            <div class="color-name">Ruby Red</div>
+            <div class="color-hex">#9B111E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C41E3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Cardinal Red</div>
+            <div class="color-hex">#C41E3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #009473;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald Green</div>
+            <div class="color-hex">#009473</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1B5E20;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Green</div>
+            <div class="color-hex">#1B5E20</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7B2D8E;"></div>
+          <div class="color-info">
+            <div class="color-name">Amethyst Purple</div>
+            <div class="color-hex">#7B2D8E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9966CC;"></div>
+          <div class="color-info">
+            <div class="color-name">Violet Glass</div>
+            <div class="color-hex">#9966CC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #D4AF37, #E8A317, #D4AF37); position: relative;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 50%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Gold Stain</div>
+            <div class="color-hex">#D4AF37</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8860B;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Gold</div>
+            <div class="color-hex">#B8860B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8A317;"></div>
+          <div class="color-info">
+            <div class="color-name">Topaz Yellow</div>
+            <div class="color-hex">#E8A317</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A1A2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Cathedral Dark</div>
+            <div class="color-hex">#1A1A2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D2D3F;"></div>
+          <div class="color-info">
+            <div class="color-name">Lead Grey</div>
+            <div class="color-hex">#2D2D3F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F0E1;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#F5F0E1</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAFAFA;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure Light</div>
+            <div class="color-hex">#FAFAFA</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Sacred Relics</h2>
+      <p class="section-subtitle">panels of light, each bearing its own purpose</p>
+
+      <div class="card-grid">
+        <div class="glass-card glass-card--sapphire">
+          <span class="card-icon">&#9670;</span>
+          <h3>Sapphire Clarity</h3>
+          <p>The blue of the heavens, symbol of divine truth and the mantle of the Virgin. Used where understanding must shine through darkness.</p>
+          <div class="card-tags">
+            <span class="tag">Primary</span>
+            <span class="tag tag--gold">Celestial</span>
+          </div>
+        </div>
+        <div class="glass-card glass-card--ruby">
+          <span class="card-icon">&#9670;</span>
+          <h3>Ruby Devotion</h3>
+          <p>The red of sacrifice and passion. This glass burns with the intensity of conviction, drawing the eye to what matters most.</p>
+          <div class="card-tags">
+            <span class="tag">Emphasis</span>
+            <span class="tag tag--gold">CTA</span>
+          </div>
+        </div>
+        <div class="glass-card glass-card--emerald">
+          <span class="card-icon">&#9670;</span>
+          <h3>Emerald Renewal</h3>
+          <p>The green of rebirth and eternal spring. A color of hope and growth that brings life to every composition it touches.</p>
+          <div class="card-tags">
+            <span class="tag">Nature</span>
+            <span class="tag tag--gold">Growth</span>
+          </div>
+        </div>
+        <div class="glass-card glass-card--amethyst">
+          <span class="card-icon">&#9670;</span>
+          <h3>Amethyst Wisdom</h3>
+          <p>The purple of royalty and contemplation. Reserved for the sacred and the profound, it speaks in the language of mystery.</p>
+          <div class="card-tags">
+            <span class="tag">Royal</span>
+            <span class="tag tag--gold">Sacred</span>
+          </div>
+        </div>
+        <div class="glass-card glass-card--gold">
+          <span class="card-icon">&#9670;</span>
+          <h3>Gold Radiance</h3>
+          <p>The warmth of divine light itself, achieved through the ancient silver stain technique. Gold illuminates and sanctifies all.</p>
+          <div class="card-tags">
+            <span class="tag">Accent</span>
+            <span class="tag tag--gold">Divine</span>
+          </div>
+        </div>
+        <div class="glass-card glass-card--forest">
+          <span class="card-icon">&#9670;</span>
+          <h3>Forest Eternity</h3>
+          <p>A deeper shade of nature for quiet reverence and contemplative spaces where the light is soft, even, and enduring.</p>
+          <div class="card-tags">
+            <span class="tag">Depth</span>
+            <span class="tag tag--gold">Eternal</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-row">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <h2>Structure, Luminance &amp; Sacred Color</h2>
+    <p>From the great cathedrals of Chartres and Sainte-Chapelle, the art of light endures</p>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Glazier's Philosophy</h2>
+      <p class="section-subtitle">lead, light, color, and meaning</p>
+
+      <div class="principles-list">
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Structure Defines Beauty</h3>
+            <p>The dark lead lines are not merely functional separators but an integral part of the visual composition. The bold came work gives stained glass its distinctive character -- without it, you have only colored tiles.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Light as Content</h3>
+            <p>Color and luminosity carry meaning. The glow of a panel communicates importance and hierarchy more than size alone. The most important content glows brightest; secondary elements use deeper, less saturated tones.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Containment &amp; Revelation</h3>
+            <p>Each panel is a self-contained unit that simultaneously belongs to a larger compositional whole, like individual glass pieces forming a scene. Content is compartmentalized yet unified.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon"></div>
+          <div class="principle-text">
+            <h3>Darkness Intensifies Radiance</h3>
+            <p>The dark lead lines and dark background serve to intensify the luminous brilliance of the colored glass panels. Contrast is not decoration -- it is the mechanism by which beauty becomes visible.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Luminance &amp; Texture</h2>
+      <p class="section-subtitle">all the sacred techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-rose-window"></div>
+          <div class="effect-caption">
+            <h4>Rose Window</h4>
+            <p>Conic gradient segments with radial lead lines create the iconic circular window form.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-light-through"></div>
+          <div class="effect-caption">
+            <h4>Light Through Glass</h4>
+            <p>Layered radial gradients simulate sunlight passing through colored glass panels.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-lead-grid">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+          <div class="effect-caption">
+            <h4>Lead Came Grid</h4>
+            <p>CSS Grid gap colored as lead lines with translucent jewel-tone cells.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-gothic-arch"></div>
+          <div class="effect-caption">
+            <h4>Gothic Arch</h4>
+            <p>Clip-path pointed arch containers evoke the lancet windows of Gothic cathedrals.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-jewel-gradient"></div>
+          <div class="effect-caption">
+            <h4>Jewel Gradient</h4>
+            <p>Multi-color gradient blending all five jewel tones into a luminous spectrum.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-solder-pattern"></div>
+          <div class="effect-caption">
+            <h4>Solder Joint Pattern</h4>
+            <p>Repeating lead grid with golden solder dots at every intersection point.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section" id="buttons">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Sacred Buttons</h2>
+      <p class="section-subtitle">jewel-toned glass with lead borders, lit from within</p>
+
+      <div class="button-showcase">
+        <a href="#" class="glass-btn">Sapphire Primary</a>
+        <a href="#" class="glass-btn glass-btn--ruby">Ruby Emphasis</a>
+        <a href="#" class="glass-btn glass-btn--gold">Gold Illuminate</a>
+        <a href="#" class="glass-btn glass-btn--emerald">Emerald Action</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The windows of a cathedral are not mere decoration &mdash; they are walls of light, dissolving stone into color and narrative. Each pane of glass is a sermon without words, a theology rendered in sapphire and gold.
+        </blockquote>
+        <cite>&mdash; The Spirit of the Gothic Glazier</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="glass-divider"></div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <h2>Enter the Light</h2>
+    <p class="cta-subtitle">Step through the colored glass into a world where every surface glows with meaning and every border tells a story.</p>
+    <div class="cta-buttons">
+      <a href="#hero" class="glass-btn">Begin the Journey</a>
+      <a href="#" class="glass-btn glass-btn--ruby">Light a Candle</a>
+      <a href="#" class="glass-btn glass-btn--gold">Illuminate</a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="glass-footer">
+    <div class="footer-content">
+      <h3>Lux Aeterna</h3>
+      <p>
+        A design aesthetic reference celebrating the luminous art of stained glass -- jewel tones, lead cames, sacred geometry, and the eternal interplay of darkness and light.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Sanctum</a>
+        <a href="#typography">Scriptorium</a>
+        <a href="#palette">Pigments</a>
+        <a href="#components">Relics</a>
+        <a href="#effects">Luminance</a>
+        <a href="#buttons">Vespers</a>
+      </div>
+      <div class="footer-diamonds">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">
+        Design Aesthetic Reference
+        <span class="footer-accent"></span>
+        Stained Glass
+        <span class="footer-accent"></span>
+        Lux Aeterna
+      </p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    // Active nav link tracking on scroll
+    (function() {
+      const sections = document.querySelectorAll('section[id], header[id]');
+      const navLinks = document.querySelectorAll('.glass-nav a');
+
+      function setActiveLink() {
+        let current = '';
+        const scrollY = window.scrollY + 120;
+
+        sections.forEach(function(section) {
+          const top = section.offsetTop;
+          const height = section.offsetHeight;
+          if (scrollY >= top && scrollY < top + height) {
+            current = section.getAttribute('id');
+          }
+        });
+
+        navLinks.forEach(function(link) {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === '#' + current) {
+            link.classList.add('active');
+          }
+        });
+      }
+
+      window.addEventListener('scroll', setActiveLink, { passive: true });
+      setActiveLink();
+    })();
+  </script>
+</body>
+</html>

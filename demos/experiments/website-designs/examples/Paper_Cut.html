@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paper Cut -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700&family=Quicksand:wght@400;500;600;700&family=Comfortaa:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Base surfaces */
+      --paper-canvas: #faf3e8;
+      --paper-kraft: #c9a96e;
+      --paper-white: #f5f0eb;
+
+      /* Primary palette */
+      --paper-sky: #6bafe2;
+      --paper-forest: #3d8b5f;
+      --paper-goldenrod: #e8b84b;
+      --paper-terracotta: #c85a3a;
+      --paper-rose: #d4808a;
+
+      /* Secondary palette */
+      --paper-navy: #2a3d5c;
+      --paper-sage: #8db48e;
+      --paper-sunset: #e8844a;
+      --paper-lavender: #b8a9d4;
+      --paper-coral: #f0a898;
+      --paper-pine: #2d5e45;
+
+      /* Charcoal */
+      --paper-charcoal: #3e4147;
+
+      /* Text */
+      --paper-text-primary: #2a3d5c;
+      --paper-text-secondary: #5a6475;
+      --paper-text-light: #f5f0eb;
+      --paper-text-dark: #3e4147;
+
+      /* Shadows */
+      --paper-shadow-sm: 0 2px 4px rgba(42, 61, 92, 0.10);
+      --paper-shadow-md: 0 4px 8px rgba(42, 61, 92, 0.12), 0 2px 4px rgba(42, 61, 92, 0.08);
+      --paper-shadow-lg: 0 8px 16px rgba(42, 61, 92, 0.14), 0 4px 8px rgba(42, 61, 92, 0.08);
+      --paper-shadow-xl: 0 12px 24px rgba(42, 61, 92, 0.16), 0 6px 12px rgba(42, 61, 92, 0.10);
+      --paper-shadow-float: 0 16px 32px rgba(42, 61, 92, 0.18), 0 8px 16px rgba(42, 61, 92, 0.10);
+
+      /* Depth layer elevations */
+      --paper-layer-1: 0 1px 3px rgba(42, 61, 92, 0.08);
+      --paper-layer-2: 0 3px 6px rgba(42, 61, 92, 0.10), 0 1px 3px rgba(42, 61, 92, 0.06);
+      --paper-layer-3: 0 6px 12px rgba(42, 61, 92, 0.12), 0 3px 6px rgba(42, 61, 92, 0.06);
+      --paper-layer-4: 0 10px 20px rgba(42, 61, 92, 0.14), 0 4px 8px rgba(42, 61, 92, 0.08);
+      --paper-layer-5: 0 14px 28px rgba(42, 61, 92, 0.16), 0 6px 12px rgba(42, 61, 92, 0.08);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Nunito', 'Quicksand', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--paper-text-primary);
+      background-color: var(--paper-canvas);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Fredoka', 'Nunito', sans-serif;
+      color: var(--paper-text-primary);
+      line-height: 1.15;
+    }
+
+    /* Paper texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--paper-white);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow:
+        0 4px 8px rgba(42, 61, 92, 0.08),
+        0 2px 4px rgba(42, 61, 92, 0.04);
+    }
+
+    .nav-logo {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--paper-terracotta);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--paper-sunset);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--paper-text-primary);
+      padding: 8px 18px;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--paper-goldenrod);
+      color: var(--paper-text-primary);
+      box-shadow: 0 2px 4px rgba(232, 184, 75, 0.25);
+    }
+
+    /* ============================================
+       HERO SECTION - Paper-Cut Landscape
+       ============================================ */
+    .hero {
+      background: var(--paper-sky);
+      padding: 100px 24px 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 700px;
+    }
+
+    .hero-tagline {
+      font-family: 'Quicksand', sans-serif;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--paper-white);
+      margin-bottom: 12px;
+      opacity: 0.9;
+    }
+
+    .hero h1 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(3rem, 9vw, 6rem);
+      color: var(--paper-white);
+      text-shadow:
+        3px 4px 0 rgba(42, 61, 92, 0.15),
+        6px 8px 0 rgba(42, 61, 92, 0.08);
+      margin-bottom: 8px;
+      line-height: 1.05;
+    }
+
+    .hero-subtitle {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1.1rem, 3vw, 1.6rem);
+      font-weight: 600;
+      color: var(--paper-goldenrod);
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 0 rgba(42, 61, 92, 0.10);
+    }
+
+    .hero-desc {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: rgba(245, 240, 235, 0.9);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 80px;
+    }
+
+    /* Sun element */
+    .hero-sun {
+      position: absolute;
+      top: 12%;
+      right: 15%;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--paper-goldenrod);
+      box-shadow:
+        0 4px 12px rgba(232, 184, 75, 0.40),
+        0 0 60px rgba(232, 184, 75, 0.20);
+      z-index: 1;
+      animation: sunPulse 6s ease-in-out infinite;
+    }
+
+    @keyframes sunPulse {
+      0%, 100% { box-shadow: 0 4px 12px rgba(232, 184, 75, 0.40), 0 0 60px rgba(232, 184, 75, 0.20); }
+      50% { box-shadow: 0 4px 16px rgba(232, 184, 75, 0.50), 0 0 80px rgba(232, 184, 75, 0.30); }
+    }
+
+    /* Cloud elements */
+    .hero-cloud {
+      position: absolute;
+      background: var(--paper-white);
+      border-radius: 40px;
+      opacity: 0.75;
+      z-index: 2;
+      box-shadow: 0 3px 8px rgba(42, 61, 92, 0.06);
+      animation: cloudDrift 20s ease-in-out infinite;
+    }
+
+    .hero-cloud::before,
+    .hero-cloud::after {
+      content: '';
+      position: absolute;
+      background: var(--paper-white);
+      border-radius: 50%;
+    }
+
+    .hero-cloud--1 {
+      width: 120px;
+      height: 38px;
+      top: 18%;
+      left: 8%;
+    }
+
+    .hero-cloud--1::before {
+      width: 48px;
+      height: 48px;
+      top: -20px;
+      left: 20px;
+    }
+
+    .hero-cloud--1::after {
+      width: 34px;
+      height: 34px;
+      top: -14px;
+      left: 55px;
+    }
+
+    .hero-cloud--2 {
+      width: 90px;
+      height: 28px;
+      top: 28%;
+      left: 65%;
+      opacity: 0.5;
+      animation-delay: -8s;
+      animation-duration: 25s;
+    }
+
+    .hero-cloud--2::before {
+      width: 36px;
+      height: 36px;
+      top: -16px;
+      left: 14px;
+    }
+
+    .hero-cloud--2::after {
+      width: 26px;
+      height: 26px;
+      top: -10px;
+      left: 42px;
+    }
+
+    @keyframes cloudDrift {
+      0%, 100% { transform: translateX(0); }
+      50% { transform: translateX(20px); }
+    }
+
+    /* Layered mountain/hill silhouettes */
+    .hero-layer {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+    }
+
+    .hero-layer--back {
+      height: 35%;
+      background: var(--paper-sage);
+      clip-path: polygon(
+        0 60%, 5% 50%, 10% 55%, 15% 40%, 20% 48%,
+        25% 35%, 30% 42%, 35% 30%, 40% 38%, 45% 28%,
+        50% 35%, 55% 25%, 60% 32%, 65% 22%, 70% 30%,
+        75% 20%, 80% 28%, 85% 35%, 90% 25%, 95% 40%,
+        100% 30%, 100% 100%, 0 100%
+      );
+      z-index: 3;
+      filter: drop-shadow(0 -3px 4px rgba(42, 61, 92, 0.08));
+    }
+
+    .hero-layer--mid {
+      height: 28%;
+      background: var(--paper-forest);
+      clip-path: polygon(
+        0 65%, 8% 50%, 15% 58%, 22% 42%, 28% 55%,
+        35% 38%, 42% 48%, 48% 35%, 55% 45%, 62% 30%,
+        68% 42%, 75% 32%, 82% 45%, 88% 35%, 95% 50%,
+        100% 40%, 100% 100%, 0 100%
+      );
+      z-index: 4;
+      filter: drop-shadow(0 -4px 6px rgba(42, 61, 92, 0.10));
+    }
+
+    .hero-layer--front {
+      height: 20%;
+      background: var(--paper-pine);
+      clip-path: polygon(
+        0 70%, 10% 55%, 20% 65%, 30% 50%, 40% 60%,
+        50% 45%, 60% 55%, 70% 42%, 80% 55%, 90% 48%,
+        100% 58%, 100% 100%, 0 100%
+      );
+      z-index: 5;
+      filter: drop-shadow(0 -5px 8px rgba(42, 61, 92, 0.12));
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Quicksand', 'Nunito', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .btn-primary {
+      background: var(--paper-terracotta);
+      color: var(--paper-text-light);
+      box-shadow:
+        0 3px 6px rgba(200, 90, 58, 0.25),
+        0 1px 3px rgba(200, 90, 58, 0.15);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 6px 12px rgba(200, 90, 58, 0.30),
+        0 3px 6px rgba(200, 90, 58, 0.15);
+    }
+
+    .btn-primary:active {
+      transform: translateY(1px);
+      box-shadow:
+        0 1px 3px rgba(200, 90, 58, 0.20),
+        0 1px 2px rgba(200, 90, 58, 0.10);
+    }
+
+    .btn-secondary {
+      background: var(--paper-goldenrod);
+      color: var(--paper-text-primary);
+      box-shadow:
+        0 3px 6px rgba(232, 184, 75, 0.25),
+        0 1px 3px rgba(232, 184, 75, 0.15);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 6px 12px rgba(232, 184, 75, 0.30),
+        0 3px 6px rgba(232, 184, 75, 0.15);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--paper-terracotta);
+      border: 2px solid var(--paper-terracotta);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--paper-terracotta);
+      color: var(--paper-text-light);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(200, 90, 58, 0.20);
+    }
+
+    .btn-forest {
+      background: var(--paper-forest);
+      color: var(--paper-text-light);
+      box-shadow:
+        0 3px 6px rgba(61, 139, 95, 0.25),
+        0 1px 3px rgba(61, 139, 95, 0.15);
+    }
+
+    .btn-forest:hover {
+      transform: translateY(-2px);
+      box-shadow:
+        0 6px 12px rgba(61, 139, 95, 0.30),
+        0 3px 6px rgba(61, 139, 95, 0.15);
+    }
+
+    /* Hero variant buttons */
+    .btn-hero-primary {
+      background: var(--paper-terracotta);
+      color: var(--paper-text-light);
+      box-shadow:
+        0 4px 12px rgba(200, 90, 58, 0.35),
+        0 2px 4px rgba(200, 90, 58, 0.15);
+    }
+
+    .btn-hero-primary:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        0 8px 20px rgba(200, 90, 58, 0.40),
+        0 3px 6px rgba(200, 90, 58, 0.20);
+    }
+
+    .btn-hero-outline {
+      background: transparent;
+      color: var(--paper-white);
+      border: 2px solid rgba(245, 240, 235, 0.6);
+    }
+
+    .btn-hero-outline:hover {
+      background: rgba(245, 240, 235, 0.15);
+      border-color: var(--paper-white);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       WAVY SECTION DIVIDERS
+       ============================================ */
+    .wave-divider {
+      width: 100%;
+      height: 60px;
+      display: block;
+    }
+
+    .wave-divider--canvas { fill: var(--paper-canvas); }
+    .wave-divider--white { fill: var(--paper-white); }
+    .wave-divider--kraft { fill: var(--paper-kraft); }
+    .wave-divider--sky { fill: var(--paper-sky); }
+    .wave-divider--sage { fill: var(--paper-sage); }
+
+    /* ============================================
+       PAPER LAYER BAND (color strips)
+       ============================================ */
+    .paper-strip {
+      display: flex;
+      height: 8px;
+      width: 100%;
+      filter: drop-shadow(0 2px 3px rgba(42, 61, 92, 0.08));
+    }
+
+    .paper-strip--thick {
+      height: 18px;
+    }
+
+    .paper-strip span { flex: 1; }
+    .paper-strip span:nth-child(1) { background: var(--paper-terracotta); }
+    .paper-strip span:nth-child(2) { background: var(--paper-goldenrod); }
+    .paper-strip span:nth-child(3) { background: var(--paper-forest); }
+    .paper-strip span:nth-child(4) { background: var(--paper-sky); }
+    .paper-strip span:nth-child(5) { background: var(--paper-rose); }
+    .paper-strip span:nth-child(6) { background: var(--paper-lavender); }
+    .paper-strip span:nth-child(7) { background: var(--paper-sunset); }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--canvas {
+      background: var(--paper-canvas);
+    }
+
+    .section--white {
+      background: var(--paper-white);
+    }
+
+    .section--kraft {
+      background: var(--paper-kraft);
+      color: var(--paper-text-primary);
+    }
+
+    .section--pine {
+      background: var(--paper-pine);
+      color: var(--paper-text-light);
+    }
+
+    .section--pine .section-label { color: var(--paper-goldenrod); }
+    .section--pine .section-title { color: var(--paper-text-light); }
+    .section--pine .section-subtitle { color: var(--paper-sage); }
+
+    .section-label {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--paper-terracotta);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      text-align: center;
+      color: var(--paper-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      font-weight: 400;
+      text-align: center;
+      color: var(--paper-text-secondary);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       PAPER DIVIDER (scissors/decorative)
+       ============================================ */
+    .paper-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .paper-divider::before,
+    .paper-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, transparent, var(--paper-kraft), transparent);
+    }
+
+    .paper-divider span {
+      padding: 0 18px;
+      font-size: 1.4rem;
+      color: var(--paper-terracotta);
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--paper-terracotta);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--paper-kraft);
+    }
+
+    .typo-display {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      color: var(--paper-text-primary);
+      line-height: 1.1;
+      margin-bottom: 8px;
+      text-shadow: 2px 3px 0 rgba(42, 61, 92, 0.08);
+    }
+
+    .typo-heading {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--paper-text-primary);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--paper-terracotta);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Nunito', sans-serif;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--paper-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-ui {
+      font-family: 'Quicksand', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      color: var(--paper-text-secondary);
+    }
+
+    .typo-decorative {
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 600;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--paper-forest);
+      line-height: 1.4;
+    }
+
+    .typo-right {
+      background: var(--paper-white);
+      border-radius: 16px;
+      padding: 36px;
+      box-shadow: var(--paper-layer-3);
+      position: relative;
+    }
+
+    /* Dog-ear fold on typography card */
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 36px 36px 0;
+      border-color: transparent var(--paper-canvas) transparent transparent;
+      border-radius: 0 16px 0 0;
+    }
+
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(225deg, transparent 50%, rgba(42, 61, 92, 0.05) 50%);
+      border-radius: 0 16px 0 0;
+      z-index: 1;
+    }
+
+    .typo-right h3 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      color: var(--paper-text-primary);
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(201, 169, 110, 0.3);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--paper-text-secondary);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--paper-white);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--paper-layer-2);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--paper-layer-4);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle paper grain on swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--paper-text-primary);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--paper-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--paper-white);
+      border-radius: 16px;
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow:
+        0 4px 8px rgba(42, 61, 92, 0.10),
+        0 2px 4px rgba(42, 61, 92, 0.06);
+    }
+
+    /* Paper texture on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
+      pointer-events: none;
+      border-radius: 16px;
+    }
+
+    /* Stacked paper sheets behind card */
+    .card::after {
+      content: '';
+      position: absolute;
+      left: 6px;
+      right: 6px;
+      bottom: -6px;
+      height: 100%;
+      border-radius: 16px;
+      background: rgba(42, 61, 92, 0.03);
+      box-shadow: 0 2px 4px rgba(42, 61, 92, 0.05);
+      z-index: -1;
+      transform: rotate(0.4deg);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow:
+        0 12px 24px rgba(42, 61, 92, 0.14),
+        0 4px 8px rgba(42, 61, 92, 0.08);
+    }
+
+    .card-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      position: relative;
+      box-shadow: var(--paper-layer-2);
+    }
+
+    .card-icon--terracotta {
+      background: var(--paper-terracotta);
+    }
+
+    .card-icon--goldenrod {
+      background: var(--paper-goldenrod);
+    }
+
+    .card-icon--forest {
+      background: var(--paper-forest);
+    }
+
+    .card-icon--sky {
+      background: var(--paper-sky);
+    }
+
+    .card-icon--rose {
+      background: var(--paper-rose);
+    }
+
+    .card-icon--lavender {
+      background: var(--paper-lavender);
+    }
+
+    .card h3 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1.35rem;
+      color: var(--paper-text-primary);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--paper-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      background: rgba(42, 61, 92, 0.06);
+      color: var(--paper-text-secondary);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      background: var(--paper-goldenrod);
+      color: var(--paper-text-primary);
+      box-shadow: 0 2px 4px rgba(232, 184, 75, 0.20);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      border-radius: 16px;
+      overflow: hidden;
+      background: var(--paper-white);
+      box-shadow: var(--paper-layer-3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--paper-layer-4);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Stacked Layers */
+    .effect-layers {
+      background: var(--paper-sky);
+    }
+
+    .effect-layers::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 55%;
+      background: var(--paper-sage);
+      clip-path: polygon(
+        0 40%, 10% 30%, 20% 42%, 30% 25%, 40% 38%,
+        50% 20%, 60% 35%, 70% 22%, 80% 35%, 90% 25%,
+        100% 38%, 100% 100%, 0 100%
+      );
+      filter: drop-shadow(0 -3px 4px rgba(42, 61, 92, 0.10));
+    }
+
+    .effect-layers::after {
+      content: 'LAYERS';
+      position: absolute;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.6rem;
+      color: var(--paper-white);
+      text-shadow: 2px 2px 0 rgba(42, 61, 92, 0.12);
+      z-index: 1;
+    }
+
+    /* Effect 2: Paper Fold / Dog-Ear */
+    .effect-fold {
+      background: var(--paper-terracotta);
+    }
+
+    .effect-fold::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 60px 60px 0;
+      border-color: transparent var(--paper-white) transparent transparent;
+      filter: drop-shadow(-3px 3px 4px rgba(42, 61, 92, 0.15));
+      z-index: 2;
+    }
+
+    .effect-fold::after {
+      content: 'FOLD';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--paper-text-light);
+      text-shadow: 2px 2px 0 rgba(42, 61, 92, 0.12);
+      z-index: 1;
+    }
+
+    /* Effect 3: Torn Paper Edge */
+    .effect-torn {
+      background: var(--paper-goldenrod);
+      clip-path: polygon(
+        0% 0%, 100% 0%,
+        100% 82%, 98% 85%, 96% 80%, 93% 86%, 90% 82%,
+        87% 88%, 84% 83%, 81% 87%, 78% 81%, 75% 85%,
+        72% 80%, 69% 86%, 66% 82%, 63% 88%, 60% 83%,
+        57% 87%, 54% 81%, 51% 85%, 48% 80%, 45% 86%,
+        42% 82%, 39% 88%, 36% 83%, 33% 87%, 30% 81%,
+        27% 85%, 24% 80%, 21% 86%, 18% 82%, 15% 88%,
+        12% 83%, 9% 87%, 6% 82%, 3% 86%, 0% 83%
+      );
+    }
+
+    .effect-torn::after {
+      content: 'TORN';
+      position: absolute;
+      top: 42%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--paper-text-primary);
+      z-index: 1;
+    }
+
+    /* Effect 4: Paper Grain / Texture */
+    .effect-grain {
+      background: var(--paper-forest);
+      position: relative;
+    }
+
+    .effect-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.12'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .effect-grain::after {
+      content: 'TEXTURE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--paper-text-light);
+      text-shadow: 2px 2px 0 rgba(42, 61, 92, 0.15);
+      z-index: 1;
+    }
+
+    /* Effect 5: Paper Stack / Depth */
+    .effect-stack {
+      background: var(--paper-white);
+      position: relative;
+    }
+
+    .effect-stack-layer {
+      position: absolute;
+      border-radius: 12px;
+    }
+
+    .effect-stack-layer--1 {
+      width: 70%;
+      height: 60%;
+      background: var(--paper-rose);
+      top: 15%;
+      left: 10%;
+      box-shadow: var(--paper-layer-2);
+      transform: rotate(-3deg);
+    }
+
+    .effect-stack-layer--2 {
+      width: 65%;
+      height: 55%;
+      background: var(--paper-sky);
+      top: 20%;
+      left: 18%;
+      box-shadow: var(--paper-layer-3);
+      transform: rotate(2deg);
+    }
+
+    .effect-stack-layer--3 {
+      width: 60%;
+      height: 50%;
+      background: var(--paper-goldenrod);
+      top: 25%;
+      left: 25%;
+      box-shadow: var(--paper-layer-4);
+      transform: rotate(-1deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-stack-label {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--paper-text-primary);
+    }
+
+    /* Effect 6: Wavy Cut Edge */
+    .effect-wavy {
+      background: var(--paper-lavender);
+      position: relative;
+    }
+
+    .effect-wavy-inner {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 40%;
+      background: var(--paper-rose);
+      clip-path: polygon(
+        0 50%, 5% 35%, 10% 50%, 15% 30%, 20% 45%,
+        25% 25%, 30% 40%, 35% 20%, 40% 35%, 45% 25%,
+        50% 40%, 55% 20%, 60% 35%, 65% 25%, 70% 42%,
+        75% 28%, 80% 40%, 85% 22%, 90% 38%, 95% 30%,
+        100% 45%, 100% 100%, 0 100%
+      );
+      box-shadow: 0 -4px 8px rgba(42, 61, 92, 0.10);
+    }
+
+    .effect-wavy::after {
+      content: 'WAVY';
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 2rem;
+      color: var(--paper-text-primary);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--paper-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--paper-text-secondary);
+    }
+
+    /* ============================================
+       CRAFT MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--paper-navy);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle paper texture overlay */
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 2rem;
+      opacity: 0.4;
+    }
+
+    .motif-row span {
+      animation: paperFloat 5s ease-in-out infinite;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.7s; }
+    .motif-row span:nth-child(3) { animation-delay: -1.4s; }
+    .motif-row span:nth-child(4) { animation-delay: -2.1s; }
+    .motif-row span:nth-child(5) { animation-delay: -2.8s; }
+    .motif-row span:nth-child(6) { animation-delay: -3.5s; }
+    .motif-row span:nth-child(7) { animation-delay: -4.2s; }
+
+    @keyframes paperFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(3deg); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      color: var(--paper-text-light);
+      margin-bottom: 12px;
+      text-shadow: 2px 3px 0 rgba(0, 0, 0, 0.10);
+    }
+
+    .motif-banner p {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      color: var(--paper-goldenrod);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--paper-white);
+      border-radius: 20px;
+      position: relative;
+      box-shadow: var(--paper-layer-4);
+    }
+
+    /* Stacked sheets behind */
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      right: 8px;
+      bottom: -8px;
+      height: 100%;
+      border-radius: 20px;
+      background: rgba(42, 61, 92, 0.03);
+      box-shadow: 0 2px 6px rgba(42, 61, 92, 0.05);
+      z-index: -1;
+      transform: rotate(0.6deg);
+    }
+
+    .quote-mark {
+      font-family: 'Fredoka', sans-serif;
+      font-size: 6rem;
+      font-weight: 700;
+      color: var(--paper-goldenrod);
+      opacity: 0.25;
+      line-height: 0.8;
+      margin-bottom: -20px;
+      display: block;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--paper-text-primary);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--paper-terracotta);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION - Paper Cut Container
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      background: var(--paper-white);
+      border-radius: 24px;
+      padding: 60px 48px;
+      text-align: center;
+      box-shadow: var(--paper-layer-5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Colored paper strip along top */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: linear-gradient(90deg,
+        var(--paper-terracotta),
+        var(--paper-goldenrod),
+        var(--paper-forest),
+        var(--paper-sky),
+        var(--paper-rose),
+        var(--paper-lavender)
+      );
+    }
+
+    /* Dog-ear fold */
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 44px 44px 0;
+      border-color: transparent var(--paper-canvas) transparent transparent;
+      border-radius: 0 24px 0 0;
+    }
+
+    .cta-container h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 12px;
+      color: var(--paper-text-primary);
+    }
+
+    .cta-container .cta-accent {
+      font-family: 'Comfortaa', sans-serif;
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--paper-terracotta);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--paper-text-secondary);
+      margin-bottom: 28px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--paper-pine);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--paper-text-light);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--paper-goldenrod);
+      margin-bottom: 10px;
+      text-shadow: 1px 2px 0 rgba(0, 0, 0, 0.08);
+    }
+
+    .footer p {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(245, 240, 235, 0.65);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Quicksand', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: rgba(245, 240, 235, 0.5);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--paper-goldenrod);
+    }
+
+    .footer-craft {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      font-size: 1.2rem;
+      opacity: 0.35;
+    }
+
+    .footer-copy {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(245, 240, 235, 0.3);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 6px 14px;
+        font-size: 0.82rem;
+      }
+
+      .hero {
+        padding: 80px 20px 0;
+        min-height: 80vh;
+      }
+
+      .hero-sun {
+        width: 60px;
+        height: 60px;
+        top: 8%;
+        right: 10%;
+      }
+
+      .hero-cloud--1 {
+        width: 80px;
+        height: 26px;
+      }
+
+      .hero-cloud--2 {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 28px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.9rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+
+      .hero-cloud--1 {
+        display: none;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-sun {
+        animation: none;
+      }
+
+      .hero-cloud,
+      .motif-row span {
+        animation: none;
+      }
+
+      .card, .btn, .color-chip, .tag, .effect-demo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Paper Cut</a>
+    <div class="nav-links">
+      <a href="#hero">Craft</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Sun -->
+    <div class="hero-sun"></div>
+
+    <!-- Clouds -->
+    <div class="hero-cloud hero-cloud--1"></div>
+    <div class="hero-cloud hero-cloud--2"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Paper Cut</h1>
+      <p class="hero-subtitle">Layered Depth &amp; Handmade Warmth</p>
+      <p class="hero-desc">
+        A tactile design language that translates centuries-old paper cutting traditions into digital interfaces &mdash; stacked layers, soft shadows, bold flat colors, and the warmth of hand-cut craft.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-hero-primary">Explore Layers</a>
+        <a href="#palette" class="btn btn-hero-outline">View Palette</a>
+      </div>
+    </div>
+
+    <!-- Paper-cut mountain layers -->
+    <div class="hero-layer hero-layer--back"></div>
+    <div class="hero-layer hero-layer--mid"></div>
+    <div class="hero-layer hero-layer--front"></div>
+  </header>
+
+  <!-- ===== PAPER STRIP ===== -->
+  <div class="paper-strip paper-strip--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--canvas" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Rounded, Warm &amp; Crafted</h2>
+      <p class="section-subtitle">Friendly display fonts paired with clean, readable body text</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Fredoka 700</p>
+            <p class="typo-display">Paper Craft</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Fredoka 600</p>
+            <p class="typo-heading">Layered Section Headings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Nunito 700</p>
+            <p class="typo-subheading">Warm, readable subheadings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Nunito 400</p>
+            <p class="typo-body">Soft, rounded text for comfortable long-form reading. The Paper Cut aesthetic pairs whimsical display type with grounded, legible body fonts.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Decorative / Comfortaa</p>
+            <p class="typo-decorative">gentle &amp; soft creative details</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Quicksand 600</p>
+            <p class="typo-ui">Buttons &amp; Navigation Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4.5rem</span>
+              <span style="font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 2rem; color: var(--paper-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.4rem</span>
+              <span style="font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.5rem; color: var(--paper-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 1.2rem; color: var(--paper-terracotta);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.1rem</span>
+              <span style="font-family: 'Comfortaa', sans-serif; font-weight: 600; font-size: 1rem; color: var(--paper-forest);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-size: 1rem; color: var(--paper-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Quicksand', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--paper-text-secondary); text-transform: uppercase; letter-spacing: 0.03em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 2px solid rgba(201, 169, 110, 0.3);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Fredoka', sans-serif; color: var(--paper-terracotta);">Fredoka</strong> + <strong>Nunito</strong><br>
+              <span style="color: var(--paper-text-secondary); font-size: 0.85rem;">Playful, warm, approachable &mdash; the primary pairing</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Comfortaa', sans-serif; color: var(--paper-terracotta);">Comfortaa</strong> + <strong style="font-family: 'Quicksand', sans-serif;">Quicksand</strong><br>
+              <span style="color: var(--paper-text-secondary); font-size: 0.85rem;">Gentle, soft, minimal geometric warmth</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Fredoka', sans-serif; color: var(--paper-terracotta);">Fredoka</strong> + <strong style="font-family: 'DM Sans', sans-serif;">DM Sans</strong><br>
+              <span style="color: var(--paper-text-secondary); font-size: 0.85rem;">Crafty headline meets professional body text</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAPER DIVIDER ===== -->
+  <div class="section--canvas" style="padding: 0;">
+    <div class="paper-divider">
+      <span>&#9986; &#9986; &#9986;</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--white" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Craft Paper &amp; Cardstock</h2>
+      <p class="section-subtitle">Bold but slightly muted, like dyed construction paper</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FAF3E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Cream Canvas</div>
+            <div class="color-hex">#FAF3E8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C9A96E;"></div>
+          <div class="color-info">
+            <div class="color-name">Kraft Brown</div>
+            <div class="color-hex">#C9A96E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5F0EB;"></div>
+          <div class="color-info">
+            <div class="color-name">Paper White</div>
+            <div class="color-hex">#F5F0EB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #6BAFE2;"></div>
+          <div class="color-info">
+            <div class="color-name">Sky Blue</div>
+            <div class="color-hex">#6BAFE2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3D8B5F;"></div>
+          <div class="color-info">
+            <div class="color-name">Forest Green</div>
+            <div class="color-hex">#3D8B5F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8B84B;"></div>
+          <div class="color-info">
+            <div class="color-name">Goldenrod</div>
+            <div class="color-hex">#E8B84B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C85A3A;"></div>
+          <div class="color-info">
+            <div class="color-name">Terracotta</div>
+            <div class="color-hex">#C85A3A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4808A;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Rose</div>
+            <div class="color-hex">#D4808A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2A3D5C;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Navy</div>
+            <div class="color-hex">#2A3D5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8DB48E;"></div>
+          <div class="color-info">
+            <div class="color-name">Sage Green</div>
+            <div class="color-hex">#8DB48E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8844A;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunset Orange</div>
+            <div class="color-hex">#E8844A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B8A9D4;"></div>
+          <div class="color-info">
+            <div class="color-name">Cloud Lavender</div>
+            <div class="color-hex">#B8A9D4</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3E4147;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Paper</div>
+            <div class="color-hex">#3E4147</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0A898;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Coral</div>
+            <div class="color-hex">#F0A898</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D5E45;"></div>
+          <div class="color-info">
+            <div class="color-name">Pine Dark</div>
+            <div class="color-hex">#2D5E45</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAPER STRIP ===== -->
+  <div class="paper-strip">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--canvas" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Paper Layer Cards</h2>
+      <p class="section-subtitle">Each card is a sheet of paper floating above the surface</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--terracotta">&#9986;</div>
+          <h3>Stacked Shadows</h3>
+          <p>Multi-layered box-shadows at increasing blur radii create the illusion of physically elevated paper sheets casting realistic light onto surfaces below.</p>
+          <span class="tag">Depth</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--goldenrod">&#9998;</div>
+          <h3>Wavy Dividers</h3>
+          <p>Organic, curved clip-path silhouettes replace hard horizontal rules, making each section transition feel like one paper layer peeling away to reveal the next.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--forest">&#127795;</div>
+          <h3>Craft Illustrations</h3>
+          <p>Scenery and decorative elements are composed from overlapping paper-like shapes &mdash; mountains, trees, clouds &mdash; using flat colors and stacked layers.</p>
+          <span class="tag">Visual</span>
+          <span class="tag">Organic</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sky">&#9729;</div>
+          <h3>Paper Texture</h3>
+          <p>Faint grain overlays on surfaces suggest the tactile quality of real construction paper, adding physical warmth without overwhelming the visual content.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Filter</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--rose">&#10047;</div>
+          <h3>Dog-Ear Folds</h3>
+          <p>Folded corner details on cards and containers reinforce the paper metaphor &mdash; a subtle triangle that suggests a page corner peeling back to reveal layers beneath.</p>
+          <span class="tag">Detail</span>
+          <span class="tag">Craft</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--lavender">&#9733;</div>
+          <h3>Dimensional Type</h3>
+          <p>Letterforms appear cut from paper with shadow offsets or layered color behind them, creating text that feels physically present and elevated on the page.</p>
+          <span class="tag">Typography</span>
+          <span class="tag">Shadow</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CRAFT MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&#9986;</span>
+        <span>&#128220;</span>
+        <span>&#127912;</span>
+        <span>&#9997;</span>
+        <span>&#128220;</span>
+        <span>&#9986;</span>
+        <span>&#127912;</span>
+      </div>
+      <h2>Layers, Craft &amp; Dimension</h2>
+      <p>From Chinese jianzhi to Polish wycinanki, the art of paper cutting spans centuries</p>
+    </div>
+  </div>
+
+  <!-- ===== WAVY DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C80,55 160,5 240,30 C320,55 400,5 480,30 C560,55 640,5 720,30 C800,55 880,5 960,30 C1040,55 1120,5 1200,30 L1200,60 L0,60 Z" class="wave-divider--canvas"/>
+  </svg>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--canvas" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Paper Techniques</h2>
+      <p class="section-subtitle">All the paper-cut magic, no image assets required</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-layers"></div>
+          <div class="effect-caption">
+            <h4>Paper Layers</h4>
+            <p>Stacked clip-path silhouettes with drop-shadow filters create layered mountain landscapes.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-fold"></div>
+          <div class="effect-caption">
+            <h4>Dog-Ear Fold</h4>
+            <p>Border-based triangle corners simulate a page fold, with subtle drop-shadow for realism.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-torn"></div>
+          <div class="effect-caption">
+            <h4>Torn Paper Edge</h4>
+            <p>Irregular clip-path polygons along edges mimic hand-torn paper for organic boundaries.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-grain"></div>
+          <div class="effect-caption">
+            <h4>Paper Grain</h4>
+            <p>SVG noise filter overlays add tactile fiber texture to flat color surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stack">
+            <div class="effect-stack-layer effect-stack-layer--1"></div>
+            <div class="effect-stack-layer effect-stack-layer--2"></div>
+            <div class="effect-stack-layer effect-stack-layer--3">
+              <span class="effect-stack-label">DEPTH</span>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Paper Stack</h4>
+            <p>Overlapping rotated elements at increasing z-indices with layered box-shadows create tangible depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-wavy">
+            <div class="effect-wavy-inner"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Wavy Cut</h4>
+            <p>Organic clip-path curves simulate hand-cut paper edges for whimsical section transitions.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAPER STRIP ===== -->
+  <div class="paper-strip">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Paper Cut Buttons</h2>
+      <p class="section-subtitle">Small clickable paper pieces that lift on hover</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Action</a>
+        <a href="#" class="btn btn-secondary">Goldenrod</a>
+        <a href="#" class="btn btn-forest">Forest Green</a>
+        <a href="#" class="btn btn-outline">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--canvas">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">&ldquo;</span>
+        <blockquote>
+          Paper Cut design reminds us that the most compelling digital experiences feel crafted by hand &mdash; layered, tactile, warm, and full of the depth that only physical materials can inspire.
+        </blockquote>
+        <cite>&mdash; The Art of Paper Craft Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVY DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0,30 C100,55 200,5 300,30 C400,55 500,5 600,30 C700,55 800,5 900,30 C1000,55 1100,5 1200,30 L1200,60 L0,60 Z" class="wave-divider--white"/>
+  </svg>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Cut, Layer, Create</h2>
+        <span class="cta-accent">craft depth from flat surfaces</span>
+        <p>
+          The Paper Cut aesthetic embraces bold flat colors, multi-layered shadows, organic silhouettes, and the warmth of handmade craft. Stack your paper layers, cast your shadows &mdash; and let the depth tell the story.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PAPER STRIP ===== -->
+  <div class="paper-strip paper-strip--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Paper Cut</h3>
+      <p>
+        A design aesthetic reference celebrating the art of paper cutting translated into digital interfaces. Layered depth, craft textures, and warm cardstock colors &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Craft</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-craft">
+        <span>&#9986;</span>
+        <span>&#128220;</span>
+        <span>&#9986;</span>
+        <span>&#128220;</span>
+        <span>&#9986;</span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Paper Cut &bull; Layered depth &amp; handmade warmth</p>
+    </div>
+  </footer>
+
+</body>
+</html>

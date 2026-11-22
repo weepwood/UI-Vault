@@ -1,0 +1,1879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tropical Maximalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Abril+Fatface&family=Cormorant+Garamond:wght@500;600;700&family=Pacifico&family=Josefin+Sans:wght@300;400;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Greens: the foundation --- */
+      --tm-jungle: #1A5C2A;
+      --tm-monstera: #2D8B4E;
+      --tm-palm: #5CAD3E;
+      --tm-lime: #A8D54B;
+      --tm-deep-canopy: #0B3D1A;
+
+      /* --- Warm Accents: the flowers --- */
+      --tm-hibiscus: #E8184A;
+      --tm-fuchsia: #D4327D;
+      --tm-coral: #FF6F61;
+      --tm-mango: #FF9A2E;
+      --tm-papaya: #FFBE5C;
+
+      /* --- Cool Accents: the water --- */
+      --tm-teal: #00877A;
+      --tm-turquoise: #40C9C2;
+
+      /* --- Metallics & Neutrals --- */
+      --tm-gold: #D4A017;
+      --tm-bark: #4A2C1A;
+      --tm-coconut: #FFF8E8;
+
+      /* --- Functional Aliases --- */
+      --tm-bg-primary: var(--tm-deep-canopy);
+      --tm-bg-secondary: var(--tm-jungle);
+      --tm-bg-card: var(--tm-monstera);
+      --tm-text-primary: var(--tm-coconut);
+      --tm-text-dark: var(--tm-bark);
+      --tm-accent-primary: var(--tm-hibiscus);
+      --tm-accent-secondary: var(--tm-fuchsia);
+      --tm-border-accent: var(--tm-gold);
+      --tm-link: var(--tm-turquoise);
+      --tm-link-hover: var(--tm-lime);
+
+      /* --- Shadows --- */
+      --tm-shadow-sm: 0 2px 8px rgba(11, 61, 26, 0.2);
+      --tm-shadow-md: 0 4px 16px rgba(11, 61, 26, 0.3);
+      --tm-shadow-lg: 0 8px 32px rgba(11, 61, 26, 0.4);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Josefin Sans', 'Helvetica Neue', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--tm-coconut);
+      background: var(--tm-deep-canopy);
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', 'Georgia', serif;
+      font-weight: 800;
+      letter-spacing: 0.01em;
+      color: var(--tm-coconut);
+      text-shadow: 2px 2px 6px rgba(11, 61, 26, 0.6);
+    }
+
+    h1 {
+      font-size: clamp(3rem, 8vw, 6rem);
+      line-height: 1.0;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: linear-gradient(180deg, rgba(11, 61, 26, 0.97) 0%, rgba(26, 92, 42, 0.95) 100%);
+      backdrop-filter: blur(8px);
+      border-bottom: 2px solid var(--tm-gold);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(11, 61, 26, 0.5);
+    }
+
+    .nav-logo {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.6rem;
+      color: var(--tm-papaya);
+      text-decoration: none;
+      padding: 1rem 0;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+      transition: color 0.25s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--tm-mango);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0;
+    }
+
+    .nav-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--tm-coconut);
+      text-decoration: none;
+      padding: 1.2rem 1.4rem;
+      display: block;
+      position: relative;
+      transition: color 0.25s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--tm-hibiscus), var(--tm-mango));
+      border-radius: 3px 3px 0 0;
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--tm-lime);
+    }
+
+    .nav-links a:hover::after {
+      width: 80%;
+    }
+
+    /* Mobile hamburger */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--tm-coconut);
+      margin: 5px 0;
+      transition: all 0.3s ease;
+      border-radius: 2px;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 6rem 2rem;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 300px 200px at 20% 30%, rgba(168, 213, 75, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 250px 350px at 80% 60%, rgba(212, 50, 125, 0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 200px 200px at 50% 80%, rgba(64, 201, 194, 0.12) 0%, transparent 70%),
+        linear-gradient(175deg, var(--tm-deep-canopy) 0%, var(--tm-jungle) 40%, #153D22 70%, var(--tm-deep-canopy) 100%);
+    }
+
+    /* Foreground leaf silhouette overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 400px 120px at -5% 20%, rgba(45, 139, 78, 0.5) 0%, transparent 70%),
+        radial-gradient(ellipse 120px 400px at 95% 70%, rgba(45, 139, 78, 0.4) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 100px at 10% 90%, rgba(26, 92, 42, 0.6) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Animated floating leaf shapes */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 180px 60px at 75% 15%, rgba(92, 173, 62, 0.2) 0%, transparent 70%),
+        radial-gradient(ellipse 60px 200px at 8% 55%, rgba(168, 213, 75, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 250px 80px at 90% 85%, rgba(26, 92, 42, 0.35) 0%, transparent 70%),
+        radial-gradient(ellipse 100px 300px at 3% 80%, rgba(45, 139, 78, 0.25) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 1;
+      animation: foliage-sway 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes foliage-sway {
+      0% { transform: translateX(0) translateY(0); }
+      50% { transform: translateX(8px) translateY(-4px); }
+      100% { transform: translateX(-5px) translateY(3px); }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      line-height: 0.95;
+      text-shadow: 0 2px 20px rgba(11, 61, 26, 0.7), 0 0 60px rgba(168, 213, 75, 0.15);
+    }
+
+    .hero-tagline {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      color: var(--tm-turquoise);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-script {
+      font-family: 'Pacifico', cursive;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      color: var(--tm-papaya);
+      margin-top: 1.5rem;
+      text-shadow: 1px 1px 3px rgba(11, 61, 26, 0.4);
+    }
+
+    .hero-desc {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      max-width: 560px;
+      margin: 2rem auto 0;
+      color: rgba(255, 248, 232, 0.85);
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative leaf SVGs in hero */
+    .hero-leaf {
+      position: absolute;
+      z-index: 1;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    .hero-leaf--left {
+      left: -30px;
+      bottom: 10%;
+      transform: rotate(-20deg);
+      animation: leaf-drift-left 8s ease-in-out infinite alternate;
+    }
+
+    .hero-leaf--right {
+      right: -20px;
+      top: 15%;
+      transform: rotate(15deg);
+      animation: leaf-drift-right 10s ease-in-out infinite alternate;
+    }
+
+    .hero-leaf--top {
+      left: 20%;
+      top: -10px;
+      transform: rotate(-5deg);
+      animation: leaf-drift-top 9s ease-in-out infinite alternate;
+    }
+
+    @keyframes leaf-drift-left {
+      0% { transform: rotate(-20deg) translateY(0); }
+      100% { transform: rotate(-15deg) translateY(-12px); }
+    }
+    @keyframes leaf-drift-right {
+      0% { transform: rotate(15deg) translateX(0); }
+      100% { transform: rotate(20deg) translateX(-8px); }
+    }
+    @keyframes leaf-drift-top {
+      0% { transform: rotate(-5deg) translateY(0); }
+      100% { transform: rotate(-10deg) translateY(6px); }
+    }
+
+    /* ============================================
+       TROPICAL STRIP DIVIDER
+       ============================================ */
+    .tropical-strip {
+      height: 6px;
+      border: none;
+      margin: 0;
+      background: linear-gradient(
+        90deg,
+        var(--tm-deep-canopy),
+        var(--tm-monstera),
+        var(--tm-lime),
+        var(--tm-mango),
+        var(--tm-hibiscus),
+        var(--tm-fuchsia),
+        var(--tm-turquoise),
+        var(--tm-monstera),
+        var(--tm-deep-canopy)
+      );
+    }
+
+    /* ============================================
+       SHARED SECTION STYLES
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 2rem;
+      position: relative;
+    }
+
+    .section--jungle {
+      background:
+        repeating-linear-gradient(60deg, transparent, transparent 40px, rgba(45, 139, 78, 0.07) 40px, rgba(45, 139, 78, 0.07) 41px),
+        repeating-linear-gradient(120deg, transparent, transparent 40px, rgba(92, 173, 62, 0.05) 40px, rgba(92, 173, 62, 0.05) 41px),
+        linear-gradient(180deg, var(--tm-deep-canopy) 0%, var(--tm-jungle) 50%, var(--tm-deep-canopy) 100%);
+    }
+
+    .section--lagoon {
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(64, 201, 194, 0.1), transparent 60%),
+        linear-gradient(180deg, var(--tm-deep-canopy) 0%, #0A2E2B 50%, var(--tm-deep-canopy) 100%);
+    }
+
+    .section--bloom {
+      background:
+        radial-gradient(ellipse at 70% 30%, rgba(232, 24, 74, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 20% 70%, rgba(212, 50, 125, 0.06) 0%, transparent 50%),
+        var(--tm-deep-canopy);
+    }
+
+    .section--canopy {
+      background:
+        radial-gradient(ellipse 600px 300px at 50% 0%, rgba(45, 139, 78, 0.15) 0%, transparent 70%),
+        repeating-linear-gradient(60deg, transparent, transparent 40px, rgba(45, 139, 78, 0.04) 40px, rgba(45, 139, 78, 0.04) 41px),
+        linear-gradient(175deg, var(--tm-deep-canopy) 0%, #102E1A 50%, var(--tm-deep-canopy) 100%);
+    }
+
+    .section--rattan {
+      background-color: #3D2815;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(74, 44, 26, 0.2) 8px, rgba(74, 44, 26, 0.2) 10px),
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(74, 44, 26, 0.15) 8px, rgba(74, 44, 26, 0.15) 10px);
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      color: var(--tm-lime);
+      margin-bottom: 0.5rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 8px rgba(11, 61, 26, 0.5);
+    }
+
+    .section-script {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.2rem;
+      color: var(--tm-papaya);
+      margin-bottom: 2rem;
+      display: block;
+    }
+
+    .section p.section-desc {
+      max-width: 700px;
+      margin-bottom: 1.5rem;
+      color: rgba(255, 248, 232, 0.9);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .typo-sample {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(212, 160, 23, 0.2);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-sample-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--tm-turquoise);
+      margin-bottom: 0.5rem;
+    }
+
+    .typo-display {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      color: var(--tm-coconut);
+      line-height: 1.1;
+      text-shadow: 2px 2px 8px rgba(11, 61, 26, 0.5);
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', serif;
+      font-weight: 800;
+      font-size: clamp(1.6rem, 4vw, 2.5rem);
+      color: var(--tm-coconut);
+      line-height: 1.2;
+    }
+
+    .typo-subheading {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.5rem;
+      color: var(--tm-papaya);
+      line-height: 1.4;
+    }
+
+    .typo-body {
+      font-family: 'Lora', serif;
+      font-size: 1.05rem;
+      color: rgba(255, 248, 232, 0.9);
+      line-height: 1.8;
+    }
+
+    .typo-script {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem;
+      color: var(--tm-papaya);
+      text-shadow: 1px 1px 3px rgba(11, 61, 26, 0.4);
+    }
+
+    .typo-ui {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--tm-lime);
+    }
+
+    .typo-right h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.3rem;
+      color: var(--tm-papaya);
+      margin-bottom: 1rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0.75rem;
+      background: rgba(26, 92, 42, 0.3);
+      border-radius: 8px;
+      border-left: 3px solid var(--tm-gold);
+    }
+
+    .typo-scale-size {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--tm-turquoise);
+      letter-spacing: 0.05em;
+    }
+
+    .typo-pairing-section {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 2px solid rgba(212, 160, 23, 0.25);
+    }
+
+    .typo-pairing-section p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 0.75rem;
+    }
+
+    .typo-pairing-section .pair-vibe {
+      color: var(--tm-turquoise);
+      font-size: 0.82rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .color-chip {
+      background: rgba(26, 92, 42, 0.35);
+      border: 1px solid rgba(212, 160, 23, 0.25);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(11, 61, 26, 0.4);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 0.6rem 0.75rem;
+    }
+
+    .color-name {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--tm-coconut);
+      margin-bottom: 0.15rem;
+    }
+
+    .color-hex {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--tm-turquoise);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .card {
+      background: linear-gradient(160deg, rgba(45, 139, 78, 0.85) 0%, rgba(26, 92, 42, 0.92) 100%);
+      border: 2px solid rgba(212, 160, 23, 0.4);
+      border-radius: 16px;
+      padding: 2rem 2rem 2rem 2.5rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(11, 61, 26, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Leaf vein texture overlay */
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(110deg, transparent, transparent 30px, rgba(168, 213, 75, 0.05) 30px, rgba(168, 213, 75, 0.05) 31px),
+        repeating-linear-gradient(70deg, transparent, transparent 45px, rgba(255, 248, 232, 0.02) 45px, rgba(255, 248, 232, 0.02) 46px);
+      pointer-events: none;
+    }
+
+    /* Gold accent bar on left edge */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      bottom: 16px;
+      left: 0;
+      width: 4px;
+      background: linear-gradient(180deg, var(--tm-gold), var(--tm-mango), var(--tm-gold));
+      border-radius: 0 4px 4px 0;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(11, 61, 26, 0.5), 0 4px 12px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: var(--tm-papaya);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      color: rgba(255, 248, 232, 0.85);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-top: 0.75rem;
+      margin-right: 0.4rem;
+      background: rgba(212, 160, 23, 0.2);
+      color: var(--tm-gold);
+      border: 1px solid rgba(212, 160, 23, 0.3);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 400px 200px at 25% 40%, rgba(232, 24, 74, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 300px 250px at 75% 60%, rgba(212, 50, 125, 0.1) 0%, transparent 70%),
+        linear-gradient(170deg, var(--tm-jungle) 0%, var(--tm-deep-canopy) 50%, #0D2A14 100%);
+      padding: clamp(3rem, 6vw, 5rem) 2rem;
+      text-align: center;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 300px 80px at 0% 50%, rgba(45, 139, 78, 0.4) 0%, transparent 70%),
+        radial-gradient(ellipse 80px 300px at 100% 50%, rgba(45, 139, 78, 0.3) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .motif-banner .motif-row {
+      font-size: 2.5rem;
+      letter-spacing: 1rem;
+      margin-bottom: 1.5rem;
+      position: relative;
+      z-index: 1;
+      animation: motif-float 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes motif-float {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-6px); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      color: var(--tm-coconut);
+      margin-bottom: 0.75rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-banner p {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.1rem;
+      color: var(--tm-papaya);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding: 1.5rem;
+      background: rgba(26, 92, 42, 0.25);
+      border-radius: 12px;
+      border: 1px solid rgba(212, 160, 23, 0.2);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .principle-item:hover {
+      transform: translateX(6px);
+      background: rgba(26, 92, 42, 0.4);
+    }
+
+    .principle-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--tm-monstera), var(--tm-teal));
+      border: 2px solid var(--tm-gold);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      box-shadow: 0 4px 12px rgba(11, 61, 26, 0.3);
+    }
+
+    .principle-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--tm-papaya);
+      margin-bottom: 0.5rem;
+      text-shadow: none;
+    }
+
+    .principle-text p {
+      font-size: 0.95rem;
+      color: rgba(255, 248, 232, 0.85);
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(212, 160, 23, 0.25);
+      background: rgba(11, 61, 26, 0.5);
+      transition: transform 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px);
+    }
+
+    .effect-preview {
+      height: 160px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 1rem 1.25rem;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--tm-papaya);
+      margin-bottom: 0.3rem;
+      text-shadow: none;
+    }
+
+    .effect-caption p {
+      font-size: 0.82rem;
+      color: rgba(255, 248, 232, 0.75);
+      line-height: 1.5;
+    }
+
+    /* Effect 1: Dense Foliage */
+    .effect-foliage {
+      background-color: var(--tm-deep-canopy);
+      background-image:
+        repeating-linear-gradient(60deg, transparent, transparent 40px, rgba(45, 139, 78, 0.08) 40px, rgba(45, 139, 78, 0.08) 41px),
+        repeating-linear-gradient(120deg, transparent, transparent 40px, rgba(92, 173, 62, 0.06) 40px, rgba(92, 173, 62, 0.06) 41px),
+        radial-gradient(circle 3px at 25px 25px, rgba(168, 213, 75, 0.07) 0%, transparent 100%),
+        radial-gradient(circle 2px at 55px 40px, rgba(255, 190, 92, 0.05) 0%, transparent 100%),
+        linear-gradient(180deg, var(--tm-deep-canopy) 0%, rgba(26, 92, 42, 0.3) 50%, var(--tm-deep-canopy) 100%);
+      background-size: 60px 60px, 60px 60px, 80px 60px, 80px 60px, 100% 100%;
+    }
+
+    /* Effect 2: Rattan Weave */
+    .effect-rattan {
+      background-color: #8B6D3F;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 8px, rgba(74, 44, 26, 0.2) 8px, rgba(74, 44, 26, 0.2) 10px),
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(74, 44, 26, 0.15) 8px, rgba(74, 44, 26, 0.15) 10px);
+    }
+
+    /* Effect 3: Tropical Bloom Gradient */
+    .effect-bloom {
+      background:
+        radial-gradient(circle at 30% 40%, var(--tm-hibiscus) 0%, transparent 50%),
+        radial-gradient(circle at 70% 30%, var(--tm-fuchsia) 0%, transparent 45%),
+        radial-gradient(circle at 50% 80%, var(--tm-coral) 0%, transparent 50%),
+        radial-gradient(circle at 20% 70%, var(--tm-mango) 0%, transparent 40%),
+        var(--tm-deep-canopy);
+    }
+
+    /* Effect 4: Dappled Light */
+    .effect-dappled {
+      background-color: var(--tm-jungle);
+      background-image:
+        radial-gradient(ellipse 40px 25px at 20% 30%, rgba(168, 213, 75, 0.25) 0%, transparent 70%),
+        radial-gradient(ellipse 30px 45px at 60% 15%, rgba(255, 248, 232, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50px 30px at 45% 65%, rgba(168, 213, 75, 0.2) 0%, transparent 70%),
+        radial-gradient(ellipse 25px 35px at 80% 55%, rgba(255, 190, 92, 0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 35px 20px at 10% 80%, rgba(168, 213, 75, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 20px 40px at 90% 85%, rgba(255, 248, 232, 0.08) 0%, transparent 70%);
+      animation: dappled-shift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes dappled-shift {
+      0% { background-position: 0 0; }
+      100% { background-position: 10px -8px; }
+    }
+
+    /* Effect 5: Monstera Leaf Vein */
+    .effect-leaf-vein {
+      background-color: var(--tm-monstera);
+      background-image:
+        repeating-linear-gradient(75deg, transparent, transparent 20px, rgba(168, 213, 75, 0.1) 20px, rgba(168, 213, 75, 0.1) 21px),
+        repeating-linear-gradient(105deg, transparent, transparent 25px, rgba(255, 248, 232, 0.05) 25px, rgba(255, 248, 232, 0.05) 26px),
+        linear-gradient(90deg, rgba(26, 92, 42, 0.5) 0%, transparent 3%, transparent 97%, rgba(26, 92, 42, 0.5) 100%),
+        linear-gradient(180deg, rgba(11, 61, 26, 0.3) 0%, transparent 20%, transparent 80%, rgba(11, 61, 26, 0.3) 100%);
+    }
+
+    .effect-leaf-vein::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, rgba(168, 213, 75, 0.15), rgba(92, 173, 62, 0.2), rgba(168, 213, 75, 0.15), transparent);
+    }
+
+    /* Effect 6: Tropical Water */
+    .effect-lagoon {
+      background:
+        radial-gradient(ellipse 200px 100px at 30% 40%, rgba(64, 201, 194, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse 150px 200px at 70% 60%, rgba(0, 135, 122, 0.25) 0%, transparent 60%),
+        radial-gradient(ellipse 180px 80px at 50% 80%, rgba(64, 201, 194, 0.2) 0%, transparent 60%),
+        linear-gradient(180deg, #06312B 0%, #0A4A42 50%, #06312B 100%);
+      animation: lagoon-ripple 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes lagoon-ripple {
+      0% { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 5px 3px, -3px -2px, 2px 4px, 0 0; }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-radius: 30px;
+      padding: 14px 36px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      border: 2px solid transparent;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s ease;
+    }
+
+    .btn span {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Primary: Hibiscus gradient */
+    .btn--primary {
+      background: linear-gradient(135deg, var(--tm-hibiscus) 0%, var(--tm-fuchsia) 100%);
+      color: var(--tm-coconut);
+      box-shadow: 0 4px 16px rgba(232, 24, 74, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    .btn--primary::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, var(--tm-mango) 0%, var(--tm-coral) 100%);
+      opacity: 0;
+      transition: opacity 0.35s ease;
+    }
+
+    .btn--primary:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(232, 24, 74, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      border-color: var(--tm-gold);
+    }
+
+    .btn--primary:hover::before {
+      opacity: 1;
+    }
+
+    /* Outline: Turquoise border */
+    .btn--outline {
+      background: transparent;
+      border-color: var(--tm-turquoise);
+      color: var(--tm-turquoise);
+      box-shadow: none;
+    }
+
+    .btn--outline:hover {
+      background: var(--tm-turquoise);
+      color: var(--tm-deep-canopy);
+      box-shadow: 0 4px 16px rgba(64, 201, 194, 0.35);
+    }
+
+    /* Gold: Metallic */
+    .btn--gold {
+      background: linear-gradient(135deg, var(--tm-gold) 0%, var(--tm-papaya) 50%, var(--tm-gold) 100%);
+      color: var(--tm-bark);
+      box-shadow: 0 4px 16px rgba(212, 160, 23, 0.3);
+      border-color: transparent;
+      font-weight: 700;
+    }
+
+    .btn--gold:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(212, 160, 23, 0.5);
+      background: linear-gradient(135deg, var(--tm-papaya) 0%, var(--tm-gold) 50%, var(--tm-papaya) 100%);
+    }
+
+    /* Jungle: Deep green */
+    .btn--jungle {
+      background: linear-gradient(135deg, var(--tm-monstera) 0%, var(--tm-jungle) 100%);
+      color: var(--tm-coconut);
+      border-color: var(--tm-lime);
+      box-shadow: 0 4px 16px rgba(26, 92, 42, 0.35);
+    }
+
+    .btn--jungle:hover {
+      transform: translateY(-2px) scale(1.03);
+      background: linear-gradient(135deg, var(--tm-palm) 0%, var(--tm-monstera) 100%);
+      box-shadow: 0 8px 24px rgba(26, 92, 42, 0.5);
+      border-color: var(--tm-gold);
+    }
+
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: clamp(1.4rem, 3vw, 2.2rem);
+      font-style: italic;
+      max-width: 700px;
+      margin: 0 auto;
+      line-height: 1.5;
+      color: var(--tm-coconut);
+    }
+
+    .quote-block blockquote::before {
+      content: '\201C';
+      font-size: 5rem;
+      color: var(--tm-gold);
+      display: block;
+      line-height: 0.5;
+      margin-bottom: 1rem;
+      opacity: 0.6;
+    }
+
+    .quote-block cite {
+      display: block;
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--tm-turquoise);
+      margin-top: 1.5rem;
+      font-style: normal;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      text-align: center;
+      padding: 3.5rem;
+      background: linear-gradient(160deg, rgba(45, 139, 78, 0.7) 0%, rgba(26, 92, 42, 0.85) 100%);
+      border: 2px solid var(--tm-gold);
+      border-radius: 24px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(11, 61, 26, 0.4);
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 300px 150px at 20% 30%, rgba(168, 213, 75, 0.1) 0%, transparent 70%),
+        radial-gradient(ellipse 200px 300px at 80% 70%, rgba(212, 50, 125, 0.08) 0%, transparent 70%),
+        repeating-linear-gradient(60deg, transparent, transparent 40px, rgba(45, 139, 78, 0.04) 40px, rgba(45, 139, 78, 0.04) 41px);
+      pointer-events: none;
+    }
+
+    .cta-container h2 {
+      font-family: 'Abril Fatface', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 0.5rem;
+      position: relative;
+    }
+
+    .cta-container .cta-script {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.3rem;
+      color: var(--tm-papaya);
+      margin-bottom: 1.5rem;
+      display: block;
+      position: relative;
+    }
+
+    .cta-container p {
+      max-width: 600px;
+      margin: 0 auto 2rem;
+      color: rgba(255, 248, 232, 0.9);
+      line-height: 1.8;
+      position: relative;
+    }
+
+    .cta-container .btn {
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: linear-gradient(180deg, var(--tm-deep-canopy) 0%, #061F0D 100%);
+      border-top: 2px solid var(--tm-gold);
+      padding: 3rem 2rem 2rem;
+      text-align: center;
+    }
+
+    .footer-content h3 {
+      font-family: 'Pacifico', cursive;
+      font-size: 1.8rem;
+      color: var(--tm-papaya);
+      margin-bottom: 1rem;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .footer-content p {
+      max-width: 500px;
+      margin: 0 auto 1.5rem;
+      font-size: 0.92rem;
+      color: rgba(255, 248, 232, 0.7);
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--tm-turquoise);
+      padding: 0.5rem 1rem;
+      transition: color 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--tm-lime);
+    }
+
+    .footer-motif {
+      font-size: 1.5rem;
+      letter-spacing: 0.5rem;
+      margin-bottom: 1.5rem;
+      opacity: 0.5;
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(255, 248, 232, 0.4);
+      letter-spacing: 0.05em;
+    }
+
+    /* ============================================
+       WAVE DIVIDER
+       ============================================ */
+    .wave-divider {
+      display: block;
+      width: 100%;
+      height: 50px;
+      background: var(--tm-deep-canopy);
+    }
+
+    .wave-divider--to-jungle {
+      fill: var(--tm-deep-canopy);
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: linear-gradient(180deg, rgba(11, 61, 26, 0.98), rgba(26, 92, 42, 0.97));
+        border-bottom: 2px solid var(--tm-gold);
+        box-shadow: 0 8px 24px rgba(11, 61, 26, 0.5);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .nav-links a {
+        padding: 1rem 2rem;
+        border-bottom: 1px solid rgba(212, 160, 23, 0.15);
+      }
+
+      .nav-toggle {
+        display: block;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.5rem, 12vw, 5rem);
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .principle-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .cta-container {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .motif-banner .motif-row {
+        letter-spacing: 0.5rem;
+        font-size: 1.8rem;
+      }
+
+      .hero-leaf {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section {
+        padding: clamp(40px, 6vw, 64px) 1.25rem;
+      }
+
+      .hero {
+        padding: 4rem 1.25rem;
+        min-height: 90vh;
+      }
+
+      .card {
+        padding: 1.5rem 1.5rem 1.5rem 2rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 0.6rem;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .color-info {
+        padding: 0.4rem 0.5rem;
+      }
+
+      .color-name {
+        font-size: 0.68rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+
+      .nav {
+        padding: 0 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Tropical Maximalism</a>
+    <button class="nav-toggle" aria-label="Toggle navigation" onclick="document.querySelector('.nav-links').classList.toggle('active')">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    <div class="nav-links">
+      <a href="#hero">Canopy</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative leaf: left monstera -->
+    <svg class="hero-leaf hero-leaf--left" width="120" height="180" viewBox="0 0 120 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 180 C60 180 60 90 60 40 C40 20 10 30 5 60 C0 90 20 100 40 90 C30 100 10 110 5 130 C0 150 15 165 35 155 C25 160 15 175 20 180" fill="#2D8B4E" opacity="0.5"/>
+      <path d="M60 180 C60 180 60 90 60 40 C80 20 110 30 115 60 C120 90 100 100 80 90 C90 100 110 110 115 130 C120 150 105 165 85 155 C95 160 105 175 100 180" fill="#1A5C2A" opacity="0.4"/>
+      <line x1="60" y1="40" x2="60" y2="180" stroke="#A8D54B" stroke-width="1.5" opacity="0.2"/>
+    </svg>
+
+    <!-- Decorative leaf: right palm -->
+    <svg class="hero-leaf hero-leaf--right" width="100" height="200" viewBox="0 0 100 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M50 200 C50 200 50 100 50 30 C30 10 5 25 3 55 C1 85 25 80 45 70" fill="#5CAD3E" opacity="0.35"/>
+      <path d="M50 200 C50 200 50 100 50 30 C70 10 95 25 97 55 C99 85 75 80 55 70" fill="#2D8B4E" opacity="0.3"/>
+      <line x1="50" y1="30" x2="50" y2="200" stroke="#A8D54B" stroke-width="1" opacity="0.15"/>
+    </svg>
+
+    <!-- Decorative leaf: top frond -->
+    <svg class="hero-leaf hero-leaf--top" width="200" height="80" viewBox="0 0 200 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 40 C30 20 60 10 100 10 C140 10 170 20 200 40 C170 35 140 30 100 35 C60 30 30 35 0 40Z" fill="#1A5C2A" opacity="0.35"/>
+      <path d="M20 50 C50 30 75 25 100 25 C125 25 150 30 180 50 C150 40 125 38 100 40 C75 38 50 40 20 50Z" fill="#2D8B4E" opacity="0.25"/>
+    </svg>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Tropical<br>Maximalism</h1>
+      <p class="hero-script">lush, vivid &amp; gloriously excessive</p>
+      <p class="hero-desc">
+        A bold, exuberant design language fusing dense jungle canopies, oversized botanical prints, and vivid tropical flowers with the &ldquo;more is more&rdquo; philosophy of maximalist design.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--primary"><span>Explore Components</span></a>
+        <a href="#palette" class="btn btn--outline"><span>View Palette</span></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== TROPICAL STRIP ===== -->
+  <div class="tropical-strip"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--jungle" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Bold, Lush &amp; Expressive</h2>
+      <span class="section-script">dramatic serifs meet resort script</span>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Abril Fatface</p>
+            <p class="typo-display">Wild Canopy</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display 800</p>
+            <p class="typo-heading">Botanical Abundance</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Cormorant Garamond 600</p>
+            <p class="typo-subheading">Elegant Tropical Detail &amp; Luxury</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora 400</p>
+            <p class="typo-body">Warm serif text for comfortable long-form reading, providing legibility against lush botanical backgrounds with humanist warmth.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Script / Pacifico</p>
+            <p class="typo-script">paradise found</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Josefin Sans 600</p>
+            <p class="typo-ui">Buttons &amp; Interface Elements</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4rem</span>
+              <span style="font-family: 'Abril Fatface', serif; font-size: 1.8rem; color: var(--tm-coconut);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-weight: 800; font-size: 1.4rem; color: var(--tm-coconut);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 1.2rem; color: var(--tm-papaya);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Pacifico', cursive; font-size: 1.1rem; color: var(--tm-papaya);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: rgba(255,248,232,0.9);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Josefin Sans', sans-serif; font-weight: 600; font-size: 0.82rem; color: var(--tm-lime); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing-section">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p>
+              <strong style="font-family: 'Playfair Display', serif; font-weight: 800; color: var(--tm-papaya);">Playfair Display</strong> + <strong style="font-family: 'Josefin Sans', sans-serif;">Josefin Sans</strong><br>
+              <span class="pair-vibe">Bold luxury resort editorial</span>
+            </p>
+            <p>
+              <strong style="font-family: 'Abril Fatface', serif; color: var(--tm-papaya);">Abril Fatface</strong> + <strong style="font-family: 'Lora', serif;">Lora</strong><br>
+              <span class="pair-vibe">Dramatic tropical statement with soft readability</span>
+            </p>
+            <p>
+              <strong style="font-family: 'Pacifico', cursive; color: var(--tm-papaya);">Pacifico</strong> + <strong style="font-family: 'Josefin Sans', sans-serif; font-weight: 300;">Josefin Sans Light</strong><br>
+              <span class="pair-vibe">Playful beachside casual</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TROPICAL STRIP ===== -->
+  <div class="tropical-strip"></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--lagoon" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Jungle Greens &amp; Bloom Accents</h2>
+      <span class="section-script">deep canopy to hot hibiscus</span>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0B3D1A;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Canopy</div>
+            <div class="color-hex">#0B3D1A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1A5C2A;"></div>
+          <div class="color-info">
+            <div class="color-name">Jungle Green</div>
+            <div class="color-hex">#1A5C2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2D8B4E;"></div>
+          <div class="color-info">
+            <div class="color-name">Monstera Leaf</div>
+            <div class="color-hex">#2D8B4E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5CAD3E;"></div>
+          <div class="color-info">
+            <div class="color-name">Palm Frond</div>
+            <div class="color-hex">#5CAD3E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A8D54B;"></div>
+          <div class="color-info">
+            <div class="color-name">Lime Canopy</div>
+            <div class="color-hex">#A8D54B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8184A;"></div>
+          <div class="color-info">
+            <div class="color-name">Hot Hibiscus</div>
+            <div class="color-hex">#E8184A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4327D;"></div>
+          <div class="color-info">
+            <div class="color-name">Fuchsia Bloom</div>
+            <div class="color-hex">#D4327D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF6F61;"></div>
+          <div class="color-info">
+            <div class="color-name">Coral Plumeria</div>
+            <div class="color-hex">#FF6F61</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FF9A2E;"></div>
+          <div class="color-info">
+            <div class="color-name">Mango Orange</div>
+            <div class="color-hex">#FF9A2E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFBE5C;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunset Papaya</div>
+            <div class="color-hex">#FFBE5C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00877A;"></div>
+          <div class="color-info">
+            <div class="color-name">Tropical Teal</div>
+            <div class="color-hex">#00877A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #40C9C2;"></div>
+          <div class="color-info">
+            <div class="color-name">Turquoise Lagoon</div>
+            <div class="color-hex">#40C9C2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #D4A017, #FFBE5C, #D4A017); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.35) 0%, transparent 50%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.25) 0%, transparent 40%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Paradise Gold</div>
+            <div class="color-hex">#D4A017</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4A2C1A;"></div>
+          <div class="color-info">
+            <div class="color-name">Bark Brown</div>
+            <div class="color-hex">#4A2C1A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFF8E8;"></div>
+          <div class="color-info">
+            <div class="color-name">Cream Coconut</div>
+            <div class="color-hex">#FFF8E8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TROPICAL STRIP ===== -->
+  <div class="tropical-strip"></div>
+
+  <!-- ===== COMPONENTS SECTION (6 CARDS) ===== -->
+  <section class="section section--canopy" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Dense Cards &amp; Jungle Layers</h2>
+      <span class="section-script">every surface should sprout a leaf</span>
+
+      <div class="card-grid">
+        <div class="card">
+          <span class="card-icon">&#127811;</span>
+          <h3>Botanical Layering</h3>
+          <p>Multiple overlapping leaf and frond silhouettes -- monstera, palm, banana, fern -- stacked in complex compositions that fill every available surface.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Foliage</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127804;</span>
+          <h3>Hibiscus Accents</h3>
+          <p>Vivid hot pinks, coral, and fuchsia flower bursts emerge from the green foundation like tropical blooms breaking through the canopy.</p>
+          <span class="tag">Color</span>
+          <span class="tag">Accent</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#129680;</span>
+          <h3>Gold &amp; Brass Details</h3>
+          <p>Warm metallic accents on borders, typography, and ornamental details elevate the aesthetic from casual jungle to luxurious resort glamour.</p>
+          <span class="tag">Metallic</span>
+          <span class="tag">Luxury</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127796;</span>
+          <h3>Oversized Scale</h3>
+          <p>Leaves and flowers rendered at dramatic, larger-than-life proportions that break out of their containers and bleed off viewport edges.</p>
+          <span class="tag">Scale</span>
+          <span class="tag">Layout</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#128038;</span>
+          <h3>Tropical Fauna</h3>
+          <p>Parrots, toucans, flamingos, and butterflies appear as decorative motifs alongside the botanical elements, adding movement and personality.</p>
+          <span class="tag">Motif</span>
+          <span class="tag">Wildlife</span>
+        </div>
+        <div class="card">
+          <span class="card-icon">&#127906;</span>
+          <h3>Rattan Textures</h3>
+          <p>Woven rattan, bamboo, carved wood, and wicker surface textures reference natural materials and add tactile depth to digital containers.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Material</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&#127811;</span>
+        <span>&#127804;</span>
+        <span>&#127796;</span>
+        <span>&#128038;</span>
+        <span>&#127804;</span>
+        <span>&#127811;</span>
+        <span>&#127796;</span>
+      </div>
+      <h2>Lush, Layered &amp; Alive</h2>
+      <p>where every surface blooms with tropical abundance</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES (4) ===== -->
+  <section class="section section--bloom">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Tropical Philosophy</h2>
+      <span class="section-script">controlled botanical chaos</span>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-icon">&#127811;</div>
+          <div class="principle-text">
+            <h3>Horror Vacui, Tropicalis</h3>
+            <p>Fill every surface with botanical density. Bare backgrounds should feel like clearings in a jungle, not empty rooms. When a composition feels complete, add another layer of foliage -- the aesthetic demands visual abundance.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">&#127774;</div>
+          <div class="principle-text">
+            <h3>Warm Over Cool</h3>
+            <p>Even blues and purples lean warm -- turquoise rather than navy, violet-pink rather than slate. The overall temperature is equatorial, sun-drenched, and humid. Cold corporate tones have no place here.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">&#128269;</div>
+          <div class="principle-text">
+            <h3>Controlled Botanical Chaos</h3>
+            <p>The layering should feel intentional, like a curated greenhouse, not a neglected garden. Hierarchy still matters -- the eye should flow through lush density along a clear path of visual weight.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">&#127758;</div>
+          <div class="principle-text">
+            <h3>Immersive, Not Decorative</h3>
+            <p>The botanical elements should feel environmental -- you are standing in the jungle -- rather than applied like stickers. Texture, depth, and overlap create the sensation of genuine tropical immersion.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAVE DIVIDER ===== -->
+  <svg class="wave-divider" viewBox="0 0 1200 50" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" style="background: var(--tm-deep-canopy);">
+    <path d="M0,25 C100,45 200,5 300,25 C400,45 500,5 600,25 C700,45 800,5 900,25 C1000,45 1100,5 1200,25 L1200,50 L0,50 Z" fill="var(--tm-deep-canopy)"/>
+  </svg>
+
+  <!-- ===== EFFECTS SHOWCASE (6) ===== -->
+  <section class="section section--jungle" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Botanicals</h2>
+      <span class="section-script">all the lush techniques, no image assets needed</span>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-foliage"></div>
+          <div class="effect-caption">
+            <h4>Dense Foliage Pattern</h4>
+            <p>Layered leaf-vein gradients with dappled light spots simulate the canopy floor.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-rattan"></div>
+          <div class="effect-caption">
+            <h4>Rattan Weave</h4>
+            <p>Cross-hatched linear gradients simulate the woven texture of natural rattan furniture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-bloom"></div>
+          <div class="effect-caption">
+            <h4>Tropical Bloom</h4>
+            <p>Overlapping radial gradients in hibiscus, fuchsia, and coral create a flowering burst.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-dappled"></div>
+          <div class="effect-caption">
+            <h4>Dappled Sunlight</h4>
+            <p>Scattered elliptical gradients with subtle animation mimic light filtering through leaves.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-leaf-vein"></div>
+          <div class="effect-caption">
+            <h4>Monstera Leaf Vein</h4>
+            <p>Angled repeating gradients recreate the distinctive vein pattern of tropical leaves.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-lagoon"></div>
+          <div class="effect-caption">
+            <h4>Turquoise Lagoon</h4>
+            <p>Layered teal radial gradients with ripple animation evoke tropical water surfaces.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TROPICAL STRIP ===== -->
+  <div class="tropical-strip"></div>
+
+  <!-- ===== BUTTON SHOWCASE (4 VARIANTS) ===== -->
+  <section class="section section--rattan">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Tropical Buttons</h2>
+      <span class="section-script">bold, rounded &amp; irresistible</span>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--primary"><span>Hibiscus Primary</span></a>
+        <a href="#" class="btn btn--gold"><span>Paradise Gold</span></a>
+        <a href="#" class="btn btn--jungle"><span>Jungle Green</span></a>
+        <a href="#" class="btn btn--outline"><span>Turquoise Outline</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--bloom">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Tropical Maximalism is the design equivalent of stepping off a plane into a Bali resort lobby: overwhelming, intoxicating, and impossible to ignore. Every surface breathes with life.
+        </blockquote>
+        <cite>&mdash; The Spirit of Tropical Maximalism</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--lagoon">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Enter the Canopy</h2>
+        <span class="cta-script">design with density, warmth &amp; botanical soul</span>
+        <p>
+          Tropical Maximalism embraces lush layering, vivid saturated color, and the overwhelming sensory richness of rainforest ecosystems. Ground every layout in deep jungle greens, let hibiscus blooms erupt through the foliage, and never leave a surface bare.
+        </p>
+        <a href="#hero" class="btn btn--primary"><span>Back to the Canopy</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TROPICAL STRIP ===== -->
+  <div class="tropical-strip"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Tropical Maximalism</h3>
+      <p>
+        A design aesthetic reference celebrating dense botanical layering, vivid tropical color, and the gloriously excessive &ldquo;more is more&rdquo; philosophy &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Canopy</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-motif">
+        <span>&#127811;</span>
+        <span>&#127804;</span>
+        <span>&#127811;</span>
+        <span>&#127804;</span>
+        <span>&#127811;</span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Tropical Maximalism &bull; More leaves, more life</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,2478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scrollytelling -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Backgrounds */
+      --scroll-bg-primary: #0d1117;
+      --scroll-bg-surface: #161b22;
+      --scroll-bg-elevated: #21262d;
+      --scroll-bg-light: #fafbfc;
+
+      /* Borders */
+      --scroll-border: #30363d;
+
+      /* Text */
+      --scroll-text-heading: #f0f6fc;
+      --scroll-text-body: #c9d1d9;
+      --scroll-text-muted: #8b949e;
+      --scroll-text-dark: #161b22;
+
+      /* Accents */
+      --scroll-accent-blue: #58a6ff;
+      --scroll-accent-teal: #3fb8af;
+      --scroll-accent-coral: #f97583;
+      --scroll-accent-amber: #e3b341;
+      --scroll-accent-lavender: #bc8cff;
+      --scroll-accent-green: #56d364;
+      --scroll-accent-sienna: #da6d42;
+
+      /* Layout tokens */
+      --scroll-section-padding: clamp(4rem, 10vh, 8rem);
+      --scroll-content-width: 680px;
+      --scroll-wide-width: 1120px;
+
+      /* Shadows */
+      --scroll-shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.2);
+      --scroll-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+      --scroll-shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      font-weight: 400;
+      font-size: 1.125rem;
+      line-height: 1.75;
+      color: var(--scroll-text-body);
+      background-color: var(--scroll-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      color: var(--scroll-text-heading);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    /* ============================================
+       SCROLL PROGRESS BAR
+       ============================================ */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 2px;
+      background: var(--scroll-accent-blue);
+      z-index: 1000;
+      transition: width 0.1s ease-out;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(13, 17, 23, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(48, 54, 61, 0.5);
+      transform: translateY(-100%);
+      transition: transform 0.4s ease;
+    }
+
+    .nav.is-visible {
+      transform: translateY(0);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--scroll-text-heading);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--scroll-accent-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--scroll-text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      transition: color 0.3s ease, background 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--scroll-text-heading);
+      background: var(--scroll-bg-elevated);
+    }
+
+    .nav-links a.is-active {
+      color: var(--scroll-accent-blue);
+      background: rgba(88, 166, 255, 0.1);
+    }
+
+    /* ============================================
+       HERO SECTION -- Cinematic Opening
+       ============================================ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: var(--scroll-bg-primary);
+    }
+
+    /* Layered parallax background */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(88, 166, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(188, 140, 255, 0.06) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(63, 184, 175, 0.05) 0%, transparent 50%),
+        linear-gradient(180deg, var(--scroll-bg-primary) 0%, #0a0e14 100%);
+      transform: scale(1.1);
+      animation: heroZoom 20s ease-out forwards;
+    }
+
+    @keyframes heroZoom {
+      to { transform: scale(1); }
+    }
+
+    /* Ambient floating particles */
+    .hero-particles {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .hero-particles::before,
+    .hero-particles::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particleFloat 8s ease-in-out infinite;
+    }
+
+    .hero-particles::before {
+      width: 3px;
+      height: 3px;
+      background: var(--scroll-accent-blue);
+      top: 30%;
+      left: 15%;
+      animation-delay: 0s;
+    }
+
+    .hero-particles::after {
+      width: 2px;
+      height: 2px;
+      background: var(--scroll-accent-lavender);
+      top: 60%;
+      right: 20%;
+      animation-delay: -4s;
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { opacity: 0; transform: translateY(0); }
+      30% { opacity: 0.6; }
+      70% { opacity: 0.4; }
+      100% { opacity: 0; transform: translateY(-120px); }
+    }
+
+    /* Grid lines overlay for depth */
+    .hero-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(48, 54, 61, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(48, 54, 61, 0.15) 1px, transparent 1px);
+      background-size: 80px 80px;
+      mask-image: radial-gradient(ellipse at center, transparent 20%, black 100%);
+      -webkit-mask-image: radial-gradient(ellipse at center, transparent 20%, black 100%);
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      max-width: 800px;
+      padding: 2rem;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--scroll-accent-blue);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: heroReveal 1s ease-out 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.8rem, 7vw, 6rem);
+      font-weight: 900;
+      color: var(--scroll-text-heading);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(30px);
+      animation: heroReveal 1.2s ease-out 0.4s forwards;
+    }
+
+    .hero-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 2vw, 1.35rem);
+      color: var(--scroll-text-muted);
+      line-height: 1.7;
+      max-width: 540px;
+      margin: 0 auto 2.5rem;
+      opacity: 0;
+      animation: heroReveal 1.2s ease-out 0.7s forwards;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      opacity: 0;
+      animation: heroReveal 1s ease-out 1s forwards;
+    }
+
+    .hero-scroll-cue {
+      position: absolute;
+      bottom: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      opacity: 0;
+      animation: heroReveal 1s ease-out 1.4s forwards;
+    }
+
+    .hero-scroll-cue span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--scroll-text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .hero-scroll-cue::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 48px;
+      background: var(--scroll-text-muted);
+      margin: 0 auto;
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes heroReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0) translateX(0);
+      }
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 32px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-primary {
+      background: var(--scroll-accent-blue);
+      color: var(--scroll-bg-primary);
+    }
+
+    .btn-primary:hover {
+      background: #79b8ff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(88, 166, 255, 0.25);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 8px rgba(88, 166, 255, 0.15);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--scroll-text-heading);
+      border: 1px solid var(--scroll-border);
+    }
+
+    .btn-ghost:hover {
+      background: var(--scroll-bg-elevated);
+      border-color: var(--scroll-text-muted);
+    }
+
+    .btn-cta {
+      background: var(--scroll-accent-sienna);
+      color: #ffffff;
+      font-size: 1.05rem;
+      padding: 16px 40px;
+      border-radius: 10px;
+    }
+
+    .btn-cta:hover {
+      background: #e5885e;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 28px rgba(218, 109, 66, 0.3);
+    }
+
+    .btn-teal {
+      background: var(--scroll-accent-teal);
+      color: var(--scroll-bg-primary);
+    }
+
+    .btn-teal:hover {
+      background: #5cc9c0;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(63, 184, 175, 0.25);
+    }
+
+    .btn-coral {
+      background: transparent;
+      color: var(--scroll-accent-coral);
+      border: 1.5px solid var(--scroll-accent-coral);
+    }
+
+    .btn-coral:hover {
+      background: rgba(249, 117, 131, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Arrow animation on buttons */
+    .btn-arrow {
+      transition: transform 0.3s ease;
+    }
+
+    .btn:hover .btn-arrow {
+      transform: translateX(4px);
+    }
+
+    /* ============================================
+       CHAPTER DIVIDER BAND
+       ============================================ */
+    .chapter-band {
+      display: flex;
+      height: 3px;
+      width: 100%;
+    }
+
+    .chapter-band--thick {
+      height: 4px;
+    }
+
+    .chapter-band span { flex: 1; }
+    .chapter-band span:nth-child(1) { background: var(--scroll-accent-blue); }
+    .chapter-band span:nth-child(2) { background: var(--scroll-accent-teal); }
+    .chapter-band span:nth-child(3) { background: var(--scroll-accent-coral); }
+    .chapter-band span:nth-child(4) { background: var(--scroll-accent-amber); }
+    .chapter-band span:nth-child(5) { background: var(--scroll-accent-lavender); }
+    .chapter-band span:nth-child(6) { background: var(--scroll-accent-green); }
+    .chapter-band span:nth-child(7) { background: var(--scroll-accent-sienna); }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: var(--scroll-wide-width);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .container--narrow {
+      max-width: var(--scroll-content-width);
+    }
+
+    .section {
+      padding: var(--scroll-section-padding) 24px;
+      position: relative;
+    }
+
+    .section--primary {
+      background: var(--scroll-bg-primary);
+    }
+
+    .section--surface {
+      background: var(--scroll-bg-surface);
+    }
+
+    .section--elevated {
+      background: var(--scroll-bg-elevated);
+    }
+
+    .section--light {
+      background: var(--scroll-bg-light);
+      color: var(--scroll-text-dark);
+    }
+
+    .section--light .section-label { color: var(--scroll-accent-blue); }
+    .section--light .section-title { color: var(--scroll-text-dark); }
+    .section--light .section-subtitle { color: var(--scroll-text-muted); }
+
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--scroll-accent-blue);
+      text-align: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--scroll-text-heading);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.01em;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      text-align: center;
+      color: var(--scroll-text-muted);
+      margin-bottom: 48px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       EDITORIAL DIVIDER
+       ============================================ */
+    .editorial-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .editorial-divider::before,
+    .editorial-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--scroll-border), transparent);
+    }
+
+    .editorial-divider span {
+      padding: 0 18px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--scroll-text-muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* ============================================
+       SCROLL REVEAL ANIMATIONS
+       ============================================ */
+    .scroll-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scroll-reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .scroll-reveal--left {
+      transform: translateX(-60px);
+    }
+
+    .scroll-reveal--left.is-visible {
+      transform: translateX(0);
+    }
+
+    .scroll-reveal--right {
+      transform: translateX(60px);
+    }
+
+    .scroll-reveal--right.is-visible {
+      transform: translateX(0);
+    }
+
+    .scroll-reveal--scale {
+      transform: scale(0.92);
+    }
+
+    .scroll-reveal--scale.is-visible {
+      transform: scale(1);
+    }
+
+    /* Staggered children */
+    .scroll-reveal-group .scroll-reveal:nth-child(1) { transition-delay: 0s; }
+    .scroll-reveal-group .scroll-reveal:nth-child(2) { transition-delay: 0.1s; }
+    .scroll-reveal-group .scroll-reveal:nth-child(3) { transition-delay: 0.15s; }
+    .scroll-reveal-group .scroll-reveal:nth-child(4) { transition-delay: 0.2s; }
+    .scroll-reveal-group .scroll-reveal:nth-child(5) { transition-delay: 0.25s; }
+    .scroll-reveal-group .scroll-reveal:nth-child(6) { transition-delay: 0.3s; }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--scroll-accent-blue);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--scroll-border);
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 3.8rem);
+      font-weight: 900;
+      color: var(--scroll-text-heading);
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--scroll-text-heading);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 700;
+      color: var(--scroll-accent-teal);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body-sample {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.125rem;
+      line-height: 1.75;
+      color: var(--scroll-text-body);
+      margin-bottom: 8px;
+    }
+
+    .typo-caption {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--scroll-text-muted);
+    }
+
+    .typo-data {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-variant-numeric: tabular-nums;
+      color: var(--scroll-accent-blue);
+      letter-spacing: -0.02em;
+    }
+
+    .typo-right {
+      background: var(--scroll-bg-surface);
+      border-radius: 12px;
+      padding: 36px;
+      border: 1px solid var(--scroll-border);
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      color: var(--scroll-text-heading);
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.75;
+      margin-bottom: 16px;
+      color: var(--scroll-text-body);
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--scroll-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--scroll-text-muted);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: 12px;
+      overflow: hidden;
+      background: var(--scroll-bg-surface);
+      border: 1px solid var(--scroll-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--scroll-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--scroll-shadow-md);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.82rem;
+      color: var(--scroll-text-heading);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--scroll-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--scroll-bg-surface);
+      border: 1px solid var(--scroll-border);
+      border-radius: 12px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+      box-shadow: var(--scroll-shadow-sm);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--scroll-shadow-md);
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+
+    /* Top accent line on cards */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--scroll-accent-blue), var(--scroll-accent-teal));
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.75rem;
+      display: inline-block;
+    }
+
+    .card-eyebrow--blue { color: var(--scroll-accent-blue); }
+    .card-eyebrow--teal { color: var(--scroll-accent-teal); }
+    .card-eyebrow--coral { color: var(--scroll-accent-coral); }
+    .card-eyebrow--amber { color: var(--scroll-accent-amber); }
+    .card-eyebrow--lavender { color: var(--scroll-accent-lavender); }
+    .card-eyebrow--green { color: var(--scroll-accent-green); }
+
+    .card h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--scroll-text-heading);
+      margin-bottom: 0.75rem;
+      line-height: 1.3;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--scroll-text-body);
+    }
+
+    .card-stat {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--scroll-accent-teal);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border-radius: 6px;
+      border: 1px solid var(--scroll-border);
+      color: var(--scroll-text-muted);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: rgba(88, 166, 255, 0.1);
+      color: var(--scroll-accent-blue);
+      border-color: rgba(88, 166, 255, 0.3);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--scroll-border);
+      background: var(--scroll-bg-surface);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--scroll-shadow-md);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Parallax Depth Layers */
+    .effect-parallax {
+      background: var(--scroll-bg-primary);
+    }
+
+    .effect-parallax::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 50%, rgba(88, 166, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(188, 140, 255, 0.08) 0%, transparent 40%),
+        radial-gradient(ellipse at 50% 80%, rgba(63, 184, 175, 0.06) 0%, transparent 50%);
+      animation: parallaxShift 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes parallaxShift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(10px, -8px) scale(1.05); }
+    }
+
+    .effect-parallax::after {
+      content: 'DEPTH';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--scroll-text-heading);
+      letter-spacing: 0.1em;
+      z-index: 2;
+      text-shadow: 0 2px 20px rgba(88, 166, 255, 0.3);
+    }
+
+    /* Effect 2: Progressive Reveal */
+    .effect-reveal {
+      background: var(--scroll-bg-surface);
+    }
+
+    .effect-reveal-bars {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 1.5rem 2rem;
+      gap: 10px;
+    }
+
+    .effect-reveal-bar {
+      height: 8px;
+      border-radius: 4px;
+      transform-origin: left;
+      animation: barReveal 3s ease-out infinite;
+    }
+
+    .effect-reveal-bar:nth-child(1) {
+      background: var(--scroll-accent-blue);
+      width: 85%;
+      animation-delay: 0s;
+    }
+
+    .effect-reveal-bar:nth-child(2) {
+      background: var(--scroll-accent-teal);
+      width: 65%;
+      animation-delay: 0.2s;
+    }
+
+    .effect-reveal-bar:nth-child(3) {
+      background: var(--scroll-accent-coral);
+      width: 75%;
+      animation-delay: 0.4s;
+    }
+
+    .effect-reveal-bar:nth-child(4) {
+      background: var(--scroll-accent-amber);
+      width: 50%;
+      animation-delay: 0.6s;
+    }
+
+    .effect-reveal-bar:nth-child(5) {
+      background: var(--scroll-accent-lavender);
+      width: 70%;
+      animation-delay: 0.8s;
+    }
+
+    @keyframes barReveal {
+      0% { transform: scaleX(0); opacity: 0; }
+      20% { opacity: 1; }
+      40%, 100% { transform: scaleX(1); opacity: 1; }
+    }
+
+    /* Effect 3: Sticky Scroll Pattern */
+    .effect-sticky {
+      background: var(--scroll-bg-primary);
+      border-top: 2px solid var(--scroll-accent-amber);
+    }
+
+    .effect-sticky::before {
+      content: '';
+      position: absolute;
+      left: 55%;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      background: var(--scroll-border);
+    }
+
+    .effect-sticky-blocks {
+      position: absolute;
+      inset: 0;
+      padding: 1rem;
+    }
+
+    .effect-sticky-panel {
+      position: absolute;
+      left: 10%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38%;
+      height: 60%;
+      background: var(--scroll-bg-elevated);
+      border: 1px solid var(--scroll-border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-sticky-panel::after {
+      content: 'STICKY';
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--scroll-accent-amber);
+    }
+
+    .effect-sticky-text {
+      position: absolute;
+      right: 8%;
+      width: 30%;
+    }
+
+    .effect-sticky-text span {
+      display: block;
+      height: 6px;
+      background: var(--scroll-text-muted);
+      border-radius: 3px;
+      margin-bottom: 5px;
+      opacity: 0.25;
+      animation: stickyScroll 4s ease-in-out infinite;
+    }
+
+    .effect-sticky-text span:nth-child(1) { width: 90%; top: 15%; animation-delay: 0s; }
+    .effect-sticky-text span:nth-child(2) { width: 75%; animation-delay: 0.3s; }
+    .effect-sticky-text span:nth-child(3) { width: 85%; animation-delay: 0.6s; }
+    .effect-sticky-text span:nth-child(4) { width: 60%; animation-delay: 0.9s; }
+    .effect-sticky-text span:nth-child(5) { width: 80%; animation-delay: 1.2s; }
+    .effect-sticky-text span:nth-child(6) { width: 70%; animation-delay: 1.5s; }
+
+    @keyframes stickyScroll {
+      0%, 100% { opacity: 0.2; transform: translateY(0); }
+      50% { opacity: 0.6; transform: translateY(-8px); }
+    }
+
+    /* Effect 4: Cinematic Gradient */
+    .effect-cinematic {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+    }
+
+    .effect-cinematic::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 25% 50%, rgba(218, 109, 66, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 50%, rgba(88, 166, 255, 0.12) 0%, transparent 50%);
+      animation: cinematicPan 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes cinematicPan {
+      0% { transform: translateX(-5%); }
+      100% { transform: translateX(5%); }
+    }
+
+    .effect-cinematic::after {
+      content: 'CINEMATIC';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--scroll-text-heading);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Data Viz Counter */
+    .effect-dataviz {
+      background: var(--scroll-bg-primary);
+    }
+
+    .effect-dataviz-content {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .effect-dataviz-num {
+      text-align: center;
+    }
+
+    .effect-dataviz-num strong {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+    }
+
+    .effect-dataviz-num span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--scroll-text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .effect-dataviz-num:nth-child(1) strong { color: var(--scroll-accent-blue); }
+    .effect-dataviz-num:nth-child(2) strong { color: var(--scroll-accent-teal); }
+    .effect-dataviz-num:nth-child(3) strong { color: var(--scroll-accent-coral); }
+
+    /* Animated line between data points */
+    .effect-dataviz::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 15%;
+      right: 15%;
+      height: 1px;
+      background: var(--scroll-border);
+      transform: translateY(-50%);
+    }
+
+    /* Effect 6: Ambient Motion */
+    .effect-ambient {
+      background: var(--scroll-bg-primary);
+      overflow: hidden;
+    }
+
+    .effect-ambient::before {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(188, 140, 255, 0.15) 0%, transparent 70%);
+      top: -20%;
+      left: -10%;
+      animation: ambientDrift 10s ease-in-out infinite alternate;
+    }
+
+    .effect-ambient::after {
+      content: '';
+      position: absolute;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(63, 184, 175, 0.12) 0%, transparent 70%);
+      bottom: -20%;
+      right: -10%;
+      animation: ambientDrift 8s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes ambientDrift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(30px, 20px); }
+    }
+
+    .effect-ambient-label {
+      position: relative;
+      z-index: 1;
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      color: var(--scroll-text-heading);
+      opacity: 0.8;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--scroll-text-heading);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--scroll-text-muted);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .narrative-banner {
+      background: var(--scroll-bg-surface);
+      padding: 80px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      border-top: 1px solid var(--scroll-border);
+      border-bottom: 1px solid var(--scroll-border);
+    }
+
+    .narrative-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(88, 166, 255, 0.04) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 50%, rgba(218, 109, 66, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    /* Decorative vertical lines */
+    .narrative-banner::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(90deg, transparent 49.5%, rgba(48, 54, 61, 0.2) 49.5%, rgba(48, 54, 61, 0.2) 50.5%, transparent 50.5%);
+      background-size: 120px 100%;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    .narrative-banner-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .narrative-counter-row {
+      display: flex;
+      justify-content: center;
+      gap: 4rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .narrative-counter {
+      text-align: center;
+    }
+
+    .narrative-counter strong {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 500;
+      font-variant-numeric: tabular-nums;
+      color: var(--scroll-accent-blue);
+      line-height: 1;
+    }
+
+    .narrative-counter:nth-child(2) strong { color: var(--scroll-accent-teal); }
+    .narrative-counter:nth-child(3) strong { color: var(--scroll-accent-coral); }
+
+    .narrative-counter span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--scroll-text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .narrative-banner h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 900;
+      color: var(--scroll-text-heading);
+      margin-bottom: 0.75rem;
+    }
+
+    .narrative-banner p {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--scroll-text-muted);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES - FEATURE LIST
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .principle-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      background: var(--scroll-bg-surface);
+      border-radius: 12px;
+      padding: 2rem;
+      border: 1px solid var(--scroll-border);
+      transition: transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease;
+    }
+
+    .principle-item:hover {
+      transform: translateX(8px);
+      box-shadow: var(--scroll-shadow-md);
+      border-color: rgba(88, 166, 255, 0.2);
+    }
+
+    .principle-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      position: relative;
+    }
+
+    .principle-icon--blue {
+      background: rgba(88, 166, 255, 0.1);
+      border: 1px solid rgba(88, 166, 255, 0.2);
+    }
+
+    .principle-icon--teal {
+      background: rgba(63, 184, 175, 0.1);
+      border: 1px solid rgba(63, 184, 175, 0.2);
+    }
+
+    .principle-icon--amber {
+      background: rgba(227, 179, 65, 0.1);
+      border: 1px solid rgba(227, 179, 65, 0.2);
+    }
+
+    .principle-icon--coral {
+      background: rgba(249, 117, 131, 0.1);
+      border: 1px solid rgba(249, 117, 131, 0.2);
+    }
+
+    /* Step number inside the icon */
+    .principle-icon span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 500;
+    }
+
+    .principle-icon--blue span { color: var(--scroll-accent-blue); }
+    .principle-icon--teal span { color: var(--scroll-accent-teal); }
+    .principle-icon--amber span { color: var(--scroll-accent-amber); }
+    .principle-icon--coral span { color: var(--scroll-accent-coral); }
+
+    .principle-text h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--scroll-text-heading);
+      margin-bottom: 0.5rem;
+    }
+
+    .principle-text p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--scroll-text-body);
+    }
+
+    /* ============================================
+       QUOTE / PULLQUOTE
+       ============================================ */
+    .pullquote-block {
+      text-align: center;
+      padding: 3.5rem 2.5rem;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--scroll-bg-surface);
+      border-radius: 12px;
+      border: 1px solid var(--scroll-border);
+      position: relative;
+      box-shadow: var(--scroll-shadow-md);
+    }
+
+    .pullquote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--scroll-accent-amber), var(--scroll-accent-sienna));
+      border-radius: 12px 12px 0 0;
+    }
+
+    .pullquote-block::after {
+      content: '\201C';
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 8rem;
+      font-weight: 900;
+      color: var(--scroll-accent-amber);
+      opacity: 0.1;
+      position: absolute;
+      top: -20px;
+      left: 28px;
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .pullquote-block blockquote {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      color: var(--scroll-text-heading);
+      max-width: 540px;
+      margin: 0 auto 1.25rem;
+      line-height: 1.6;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pullquote-block cite {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--scroll-accent-amber);
+      font-style: normal;
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 3.5rem 2.5rem;
+      background: var(--scroll-bg-surface);
+      border-radius: 16px;
+      border: 1px solid var(--scroll-border);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--scroll-shadow-lg);
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(88, 166, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(218, 109, 66, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-container h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      color: var(--scroll-text-heading);
+      margin-bottom: 0.75rem;
+      position: relative;
+    }
+
+    .cta-container .cta-subtitle {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--scroll-accent-amber);
+      margin-bottom: 1.5rem;
+      display: block;
+      position: relative;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--scroll-text-body);
+      margin-bottom: 2rem;
+      position: relative;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cta-container .btn {
+      position: relative;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--scroll-bg-primary);
+      border-top: 1px solid var(--scroll-border);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--scroll-text-body);
+      position: relative;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--scroll-text-heading);
+      margin-bottom: 0.75rem;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+      color: var(--scroll-text-muted);
+      max-width: 500px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--scroll-text-muted);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--scroll-accent-blue);
+    }
+
+    .footer-divider {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-divider span {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--scroll-border);
+    }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: rgba(139, 148, 158, 0.4);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0.75rem 1.25rem;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        height: 90vh;
+      }
+
+      .hero h1 {
+        font-size: clamp(2.2rem, 8vw, 3.5rem);
+      }
+
+      .section {
+        padding: clamp(3rem, 6vw, 5rem) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 70px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 14px;
+        padding: 1.5rem;
+      }
+
+      .pullquote-block {
+        padding: 2.5rem 1.5rem;
+      }
+
+      .cta-container {
+        padding: 2.5rem 1.5rem;
+        margin: 0 12px;
+      }
+
+      .narrative-counter-row {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        font-size: 0.88rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.72rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-bg,
+      .hero-particles::before,
+      .hero-particles::after,
+      .hero-scroll-cue::after,
+      .effect-parallax::before,
+      .effect-cinematic::before,
+      .effect-ambient::before,
+      .effect-ambient::after,
+      .effect-reveal-bar,
+      .effect-sticky-text span {
+        animation: none;
+      }
+
+      .hero h1,
+      .hero-eyebrow,
+      .hero-subtitle,
+      .hero-buttons,
+      .hero-scroll-cue {
+        opacity: 1;
+        transform: none;
+        animation: none;
+      }
+
+      .scroll-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .card,
+      .principle-item,
+      .btn,
+      .color-chip,
+      .tag,
+      .effect-demo,
+      .nav {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== SCROLL PROGRESS BAR ===== -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="mainNav">
+    <a href="#" class="nav-logo">Scrollytelling</a>
+    <div class="nav-links">
+      <a href="#hero">Story</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-particles"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-content">
+      <p class="hero-eyebrow">Design Aesthetic Reference</p>
+      <h1>Scrollytelling</h1>
+      <p class="hero-subtitle">
+        Narrative-driven web design that transforms scrolling into an immersive storytelling experience &mdash; one step, one idea, one reveal at a time.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components <span class="btn-arrow">&rarr;</span></a>
+        <a href="#palette" class="btn btn-ghost">View Palette</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll-cue">
+      <span>Scroll to explore</span>
+    </div>
+  </header>
+
+  <!-- ===== CHAPTER BAND ===== -->
+  <div class="chapter-band chapter-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--primary" id="typography">
+    <div class="container">
+      <p class="section-label">Chapter 01 &mdash; Typography</p>
+      <h2 class="section-title">Editorial &amp; Cinematic</h2>
+      <p class="section-subtitle">High-contrast serif headlines, screen-optimized sans body, monospace data callouts</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left scroll-reveal">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display 900</p>
+            <p class="typo-display">Snow Fall</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Playfair Display 700</p>
+            <p class="typo-heading">The Avalanche at Tunnel Creek</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / DM Sans 700</p>
+            <p class="typo-subheading">Interactive Data Stories</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body-sample">Scrollytelling weds long-form narrative with interactive visuals, parallax layering, and progressive content reveals that unfold in direct response to the user's scroll position.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Inter 500</p>
+            <p class="typo-caption">Figure 3.2 &mdash; Annual scroll engagement rate</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Data / JetBrains Mono 500</p>
+            <p class="typo-data">2,847,392 readers</p>
+          </div>
+        </div>
+        <div class="typo-right scroll-reveal" style="transition-delay: 0.15s;">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 900; color: var(--scroll-text-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.2rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--scroll-text-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--scroll-accent-teal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.125rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--scroll-text-body);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 500; font-size: 0.82rem; color: var(--scroll-text-muted); text-transform: uppercase; letter-spacing: 0.04em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">mono</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 1rem; font-weight: 500; color: var(--scroll-accent-blue);">0123</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--scroll-border);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--scroll-accent-blue);">Playfair Display</strong> + <strong>Inter</strong><br>
+              <span style="color: var(--scroll-text-muted); font-size: 0.82rem;">Classic editorial gravitas, NYT-inspired storytelling</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'DM Sans', sans-serif; color: var(--scroll-accent-blue);">DM Sans</strong> + <strong>Inter</strong><br>
+              <span style="color: var(--scroll-text-muted); font-size: 0.82rem;">Modern data-forward, clean tech storytelling</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'JetBrains Mono', monospace; color: var(--scroll-accent-blue);">JetBrains Mono</strong> + <strong>Inter</strong><br>
+              <span style="color: var(--scroll-text-muted); font-size: 0.82rem;">Data callouts and tabular figures for statistics</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EDITORIAL DIVIDER ===== -->
+  <div class="section--primary" style="padding: 0;">
+    <div class="editorial-divider">
+      <span>///</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--surface" id="palette">
+    <div class="container">
+      <p class="section-label">Chapter 02 &mdash; Color</p>
+      <h2 class="section-title">Editorial &amp; Cinematic</h2>
+      <p class="section-subtitle">Dark immersive backgrounds with data-visualization accents that carry narrative weight</p>
+
+      <div class="palette-grid scroll-reveal-group">
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #0d1117;"></div>
+          <div class="color-info">
+            <div class="color-name">Midnight</div>
+            <div class="color-hex">#0D1117</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #161b22;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink</div>
+            <div class="color-hex">#161B22</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #21262d;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate</div>
+            <div class="color-hex">#21262D</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #30363d;"></div>
+          <div class="color-info">
+            <div class="color-name">Graphite</div>
+            <div class="color-hex">#30363D</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #8b949e;"></div>
+          <div class="color-info">
+            <div class="color-name">Ash</div>
+            <div class="color-hex">#8B949E</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #c9d1d9;"></div>
+          <div class="color-info">
+            <div class="color-name">Fog</div>
+            <div class="color-hex">#C9D1D9</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #f0f6fc;"></div>
+          <div class="color-info">
+            <div class="color-name">Snow</div>
+            <div class="color-hex">#F0F6FC</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #fafbfc;"></div>
+          <div class="color-info">
+            <div class="color-name">Canvas</div>
+            <div class="color-hex">#FAFBFC</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #58a6ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Signal Blue</div>
+            <div class="color-hex">#58A6FF</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #3fb8af;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Teal</div>
+            <div class="color-hex">#3FB8AF</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #f97583;"></div>
+          <div class="color-info">
+            <div class="color-name">Coral</div>
+            <div class="color-hex">#F97583</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #e3b341;"></div>
+          <div class="color-info">
+            <div class="color-name">Amber</div>
+            <div class="color-hex">#E3B341</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #bc8cff;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender</div>
+            <div class="color-hex">#BC8CFF</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #56d364;"></div>
+          <div class="color-info">
+            <div class="color-name">Moss</div>
+            <div class="color-hex">#56D364</div>
+          </div>
+        </div>
+        <div class="color-chip scroll-reveal">
+          <div class="color-swatch" style="background: #da6d42;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Sienna</div>
+            <div class="color-hex">#DA6D42</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER BAND ===== -->
+  <div class="chapter-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--primary" id="components">
+    <div class="container">
+      <p class="section-label">Chapter 03 &mdash; Components</p>
+      <h2 class="section-title">Narrative Cards &amp; Data Panels</h2>
+      <p class="section-subtitle">Key statistics, contextual sidebars, and scroll-triggered content blocks</p>
+
+      <div class="card-grid scroll-reveal-group">
+        <div class="card scroll-reveal">
+          <span class="card-eyebrow card-eyebrow--blue">Layout Pattern</span>
+          <h3>Sticky Graphic Panels</h3>
+          <p>A visualization remains fixed via position:sticky while explanatory text scrolls past it, anchoring attention and creating the core scrollytelling rhythm.</p>
+          <span class="tag">Sticky</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card scroll-reveal">
+          <span class="card-eyebrow card-eyebrow--teal">Interaction</span>
+          <h3>Progressive Reveal</h3>
+          <p>Elements fade in, slide up, or scale into view only when the user reaches their scroll position, preventing information overload and controlling pacing.</p>
+          <span class="tag">Animation</span>
+          <span class="tag">Observer</span>
+        </div>
+        <div class="card scroll-reveal">
+          <span class="card-eyebrow card-eyebrow--coral">Visual</span>
+          <h3>Parallax Depth Layers</h3>
+          <p>Foreground text, midground illustrations, and background imagery move at different scroll speeds, producing a three-dimensional sense of cinematic depth.</p>
+          <span class="tag">Parallax</span>
+          <span class="tag">Depth</span>
+        </div>
+        <div class="card scroll-reveal">
+          <span class="card-eyebrow card-eyebrow--amber">Data</span>
+          <h3>Scroll-Linked Charts</h3>
+          <p>Chart lines draw, counters increment, and diagrams assemble in direct response to scroll position rather than time, mapping story beats to visual state.</p>
+          <span class="tag">D3</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card scroll-reveal">
+          <span class="card-eyebrow card-eyebrow--lavender">UX</span>
+          <h3>Progress Indicators</h3>
+          <p>Subtle dots, bars, or chapter markers along the viewport edge communicate how far through the story the reader has progressed, providing orientation.</p>
+          <span class="tag">Navigation</span>
+          <span class="tag">UI</span>
+        </div>
+        <div class="card scroll-reveal">
+          <span class="card-eyebrow card-eyebrow--green">Atmosphere</span>
+          <h3>Ambient Motion</h3>
+          <p>Floating particles, gradient shifts, or slowly panning backgrounds create a living, breathing atmosphere even when the user pauses scrolling.</p>
+          <span class="tag">Motion</span>
+          <span class="tag">CSS</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== NARRATIVE BANNER ===== -->
+  <div class="narrative-banner">
+    <div class="narrative-banner-content">
+      <div class="narrative-counter-row">
+        <div class="narrative-counter scroll-reveal">
+          <strong>60fps</strong>
+          <span>Target Framerate</span>
+        </div>
+        <div class="narrative-counter scroll-reveal" style="transition-delay: 0.15s;">
+          <strong>100vh</strong>
+          <span>Section Height</span>
+        </div>
+        <div class="narrative-counter scroll-reveal" style="transition-delay: 0.3s;">
+          <strong>680px</strong>
+          <span>Content Width</span>
+        </div>
+      </div>
+      <h2 class="scroll-reveal" style="transition-delay: 0.4s;">Scroll Position Is the Timeline</h2>
+      <p class="scroll-reveal" style="transition-delay: 0.5s;">Every pixel of scroll travel maps to a specific state of the visual narrative &mdash; just as cuts and dissolves control a film</p>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section section--primary">
+    <div class="container">
+      <p class="section-label">Chapter 04 &mdash; Principles</p>
+      <h2 class="section-title">The Scrollytelling Philosophy</h2>
+      <p class="section-subtitle">Narrative rhythm, reader agency, and graceful degradation</p>
+
+      <div class="principle-list scroll-reveal-group">
+        <div class="principle-item scroll-reveal">
+          <div class="principle-icon principle-icon--blue">
+            <span>01</span>
+          </div>
+          <div class="principle-text">
+            <h3>One Step, One Idea</h3>
+            <p>Each scroll-triggered section communicates a single concept, keeping the cognitive load low and the narrative focused. Treat each viewport-height section as a single beat in the story, not a container for multiple ideas.</p>
+          </div>
+        </div>
+        <div class="principle-item scroll-reveal">
+          <div class="principle-icon principle-icon--teal">
+            <span>02</span>
+          </div>
+          <div class="principle-text">
+            <h3>Show, Then Tell</h3>
+            <p>Lead with the visual &mdash; image, chart, animation &mdash; and let text arrive to explain it, not the other way around. The graphic captures attention; the narrative text provides context and meaning.</p>
+          </div>
+        </div>
+        <div class="principle-item scroll-reveal">
+          <div class="principle-icon principle-icon--amber">
+            <span>03</span>
+          </div>
+          <div class="principle-text">
+            <h3>Degrade Gracefully</h3>
+            <p>The story must remain readable and coherent even when JavaScript fails, animations are disabled, or the user has prefers-reduced-motion set. A scrollytelling page without JS should be a clean long-form article.</p>
+          </div>
+        </div>
+        <div class="principle-item scroll-reveal">
+          <div class="principle-icon principle-icon--coral">
+            <span>04</span>
+          </div>
+          <div class="principle-text">
+            <h3>Respect the Reader's Agency</h3>
+            <p>Scrollytelling works because the user controls the speed. Never auto-scroll, hijack scroll direction, or lock the viewport without consent. The reader's thumb is the remote control &mdash; honor it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER BAND ===== -->
+  <div class="chapter-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--surface" id="effects">
+    <div class="container">
+      <p class="section-label">Chapter 05 &mdash; Visual Effects</p>
+      <h2 class="section-title">CSS Techniques &amp; Atmosphere</h2>
+      <p class="section-subtitle">All scrollytelling visual effects, rendered purely with CSS</p>
+
+      <div class="effects-grid scroll-reveal-group">
+        <div class="effect-demo scroll-reveal">
+          <div class="effect-preview effect-parallax"></div>
+          <div class="effect-caption">
+            <h4>Parallax Depth Layers</h4>
+            <p>Multi-speed gradient layers shift at different rates, creating a sense of three-dimensional space.</p>
+          </div>
+        </div>
+        <div class="effect-demo scroll-reveal">
+          <div class="effect-preview effect-reveal">
+            <div class="effect-reveal-bars">
+              <div class="effect-reveal-bar"></div>
+              <div class="effect-reveal-bar"></div>
+              <div class="effect-reveal-bar"></div>
+              <div class="effect-reveal-bar"></div>
+              <div class="effect-reveal-bar"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Progressive Reveal</h4>
+            <p>Data bars animate into view with staggered delays, simulating scroll-triggered chart rendering.</p>
+          </div>
+        </div>
+        <div class="effect-demo scroll-reveal">
+          <div class="effect-preview effect-sticky">
+            <div class="effect-sticky-blocks">
+              <div class="effect-sticky-panel"></div>
+              <div class="effect-sticky-text" style="top: 15%;">
+                <span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Sticky Graphic Pattern</h4>
+            <p>The foundational scrollytelling layout: a panel sticks in place while text scrolls past it.</p>
+          </div>
+        </div>
+        <div class="effect-demo scroll-reveal">
+          <div class="effect-preview effect-cinematic"></div>
+          <div class="effect-caption">
+            <h4>Cinematic Gradient</h4>
+            <p>Warm and cool radial gradients pan slowly across a dark background for atmospheric depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo scroll-reveal">
+          <div class="effect-preview effect-dataviz">
+            <div class="effect-dataviz-content">
+              <div class="effect-dataviz-num">
+                <strong>47%</strong>
+                <span>Engagement</span>
+              </div>
+              <div class="effect-dataviz-num">
+                <strong>3.2x</strong>
+                <span>Retention</span>
+              </div>
+              <div class="effect-dataviz-num">
+                <strong>89s</strong>
+                <span>Avg. Read</span>
+              </div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Data Visualization</h4>
+            <p>Monospace tabular numerals with color-coded accent values for inline data presentation.</p>
+          </div>
+        </div>
+        <div class="effect-demo scroll-reveal">
+          <div class="effect-preview effect-ambient">
+            <span class="effect-ambient-label">breathing</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Ambient Motion</h4>
+            <p>Soft, drifting gradient orbs create a living atmosphere even when the user pauses scrolling.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER BAND ===== -->
+  <div class="chapter-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--primary">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Action Buttons</h2>
+      <p class="section-subtitle">Chapter navigation, calls to action, and interactive data controls</p>
+
+      <div class="button-showcase scroll-reveal">
+        <a href="#" class="btn btn-primary">Primary Action <span class="btn-arrow">&rarr;</span></a>
+        <a href="#" class="btn btn-cta">Call to Action</a>
+        <a href="#" class="btn btn-teal">Teal Accent</a>
+        <a href="#" class="btn btn-ghost">Ghost Button</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PULLQUOTE SECTION ===== -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="pullquote-block scroll-reveal scroll-reveal--scale">
+        <blockquote>
+          The scroll itself becomes the primary input mechanism: as readers advance down the page, text fades in, charts animate, backgrounds shift, and media slides into view &mdash; turning passive consumption into active participation.
+        </blockquote>
+        <cite>&mdash; The Scrollytelling Design Language</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--primary">
+    <div class="container">
+      <div class="cta-container scroll-reveal scroll-reveal--scale">
+        <h2>Begin Your Story</h2>
+        <span class="cta-subtitle">one step, one idea, one reveal</span>
+        <p>
+          Scrollytelling transforms the simple act of scrolling into an immersive narrative experience. Dark cinematic backgrounds, editorial typography, and carefully choreographed motion &mdash; every pixel of scroll travel maps to your story.
+        </p>
+        <a href="#hero" class="btn btn-cta">Back to the Top <span class="btn-arrow">&uarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CHAPTER BAND ===== -->
+  <div class="chapter-band chapter-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Scrollytelling</h3>
+      <p>
+        A design aesthetic reference celebrating narrative-driven web design &mdash; editorial typography, cinematic dark palettes, and scroll-triggered reveals. All rendered without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Story</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-divider">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Scrollytelling &bull; Scroll position is the timeline</p>
+    </div>
+  </footer>
+
+  <!-- ===== VANILLA JS ===== -->
+  <script>
+    (function() {
+      'use strict';
+
+      /* --- Scroll Progress Bar --- */
+      var progressBar = document.getElementById('scrollProgress');
+
+      function updateProgress() {
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        var docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        var progress = (scrollTop / docHeight) * 100;
+        progressBar.style.width = progress + '%';
+      }
+
+      /* --- Nav visibility after hero --- */
+      var nav = document.getElementById('mainNav');
+      var hero = document.getElementById('hero');
+
+      function updateNav() {
+        var heroBottom = hero.offsetTop + hero.offsetHeight;
+        var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+        if (scrollTop > heroBottom - 80) {
+          nav.classList.add('is-visible');
+        } else {
+          nav.classList.remove('is-visible');
+        }
+      }
+
+      /* --- Scroll Reveal via IntersectionObserver --- */
+      var revealEls = document.querySelectorAll('.scroll-reveal');
+      var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (prefersReducedMotion) {
+        // Make all elements visible immediately
+        revealEls.forEach(function(el) {
+          el.classList.add('is-visible');
+        });
+      } else {
+        var revealObserver = new IntersectionObserver(function(entries) {
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.15,
+          rootMargin: '0px 0px -60px 0px'
+        });
+
+        revealEls.forEach(function(el) {
+          revealObserver.observe(el);
+        });
+      }
+
+      /* --- Active nav link tracking --- */
+      var sections = document.querySelectorAll('section[id]');
+      var navLinks = document.querySelectorAll('.nav-links a');
+
+      function updateActiveLink() {
+        var scrollPos = window.pageYOffset + 200;
+
+        sections.forEach(function(section) {
+          var top = section.offsetTop;
+          var height = section.offsetHeight;
+          var id = section.getAttribute('id');
+
+          if (scrollPos >= top && scrollPos < top + height) {
+            navLinks.forEach(function(link) {
+              link.classList.remove('is-active');
+              if (link.getAttribute('href') === '#' + id) {
+                link.classList.add('is-active');
+              }
+            });
+          }
+        });
+      }
+
+      /* --- Throttled scroll handler --- */
+      var ticking = false;
+
+      function onScroll() {
+        if (!ticking) {
+          window.requestAnimationFrame(function() {
+            updateProgress();
+            updateNav();
+            updateActiveLink();
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+
+      window.addEventListener('scroll', onScroll, { passive: true });
+
+      // Initial calls
+      updateProgress();
+      updateNav();
+    })();
+  </script>
+
+</body>
+</html>

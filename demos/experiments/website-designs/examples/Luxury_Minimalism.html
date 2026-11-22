@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Luxury Minimalism -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Warm neutral foundations */
+      --lm-parchment: #faf7f2;
+      --lm-warm-white: #f5f1eb;
+      --lm-ivory: #efebe4;
+      --lm-linen: #e8e2d9;
+      --lm-sandstone: #d4cbc0;
+
+      /* Text tones */
+      --lm-taupe: #b0a89e;
+      --lm-stone: #8a837b;
+      --lm-charcoal: #3d3a37;
+      --lm-deep-charcoal: #2a2826;
+      --lm-near-black: #1a1918;
+
+      /* Accents */
+      --lm-champagne: #c9b98f;
+      --lm-gold: #b89d62;
+      --lm-sage: #88856a;
+      --lm-blush: #c9ada7;
+      --lm-olive: #5c5a47;
+
+      /* Functional mappings */
+      --lm-bg-primary: var(--lm-parchment);
+      --lm-bg-surface: var(--lm-warm-white);
+      --lm-bg-elevated: var(--lm-ivory);
+      --lm-bg-invert: var(--lm-near-black);
+      --lm-text-primary: var(--lm-charcoal);
+      --lm-text-secondary: var(--lm-taupe);
+      --lm-text-heading: var(--lm-deep-charcoal);
+      --lm-accent: var(--lm-champagne);
+      --lm-accent-hover: var(--lm-gold);
+      --lm-border: var(--lm-linen);
+      --lm-border-subtle: var(--lm-ivory);
+
+      /* Shadows -- warm undertone */
+      --lm-shadow-sm: 0 1px 3px rgba(58, 54, 50, 0.06);
+      --lm-shadow-md: 0 4px 16px rgba(58, 54, 50, 0.08);
+      --lm-shadow-lg: 0 8px 40px rgba(58, 54, 50, 0.10);
+      --lm-shadow-xl: 0 16px 64px rgba(58, 54, 50, 0.12);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: 'Inter', 'Helvetica Neue', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--lm-text-primary);
+      background: var(--lm-bg-primary);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Cormorant Garamond', 'Georgia', serif;
+      font-weight: 500;
+      color: var(--lm-text-heading);
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    h1 {
+      font-size: clamp(2.75rem, 6vw, 5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 500;
+    }
+
+    h3 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 600;
+    }
+
+    h4 {
+      font-size: clamp(1.25rem, 2vw, 1.5rem);
+      font-weight: 500;
+    }
+
+    p {
+      margin-bottom: 1.5em;
+    }
+
+    /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 5vw;
+    }
+
+    .container--narrow {
+      max-width: 720px;
+    }
+
+    .container--wide {
+      max-width: 1280px;
+    }
+
+    .section {
+      padding: 120px 0;
+    }
+
+    .section--sm {
+      padding: 80px 0;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+    }
+
+    .label--accent {
+      color: var(--lm-champagne);
+    }
+
+    .tracked {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--lm-champagne);
+    }
+
+    .divider {
+      width: 60px;
+      height: 1px;
+      background: var(--lm-champagne);
+      border: none;
+      margin: 0 auto;
+    }
+
+    .divider--wide {
+      width: 120px;
+    }
+
+    .divider--full {
+      width: 100%;
+      background: var(--lm-border);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 28px 5vw;
+      background: rgba(250, 247, 242, 0.9);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: padding 0.4s ease, background 0.4s ease;
+    }
+
+    .nav--scrolled {
+      padding: 16px 5vw;
+      background: rgba(250, 247, 242, 0.97);
+      border-bottom: 1px solid var(--lm-border-subtle);
+      box-shadow: var(--lm-shadow-sm);
+    }
+
+    .nav__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--lm-text-heading);
+      letter-spacing: 0.05em;
+    }
+
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav__link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lm-stone);
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav__link:hover {
+      color: var(--lm-charcoal);
+    }
+
+    .nav__link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--lm-champagne);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s ease;
+    }
+
+    .nav__link:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 120px 5vw;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero__content {
+      max-width: 780px;
+    }
+
+    .hero__label {
+      margin-bottom: 32px;
+    }
+
+    .hero__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 8vw, 6.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--lm-deep-charcoal);
+      margin-bottom: 32px;
+    }
+
+    .hero__subtitle {
+      font-weight: 300;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--lm-stone);
+      max-width: 520px;
+      margin: 0 auto 48px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 1px;
+      background: var(--lm-champagne);
+    }
+
+    /* Subtle grain texture overlay for luxury feel */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: transparent;
+      color: var(--lm-charcoal);
+      border: 1px solid var(--lm-charcoal);
+      padding: 14px 44px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+    }
+
+    .btn:hover {
+      background: var(--lm-charcoal);
+      color: var(--lm-parchment);
+    }
+
+    .btn--secondary {
+      border-color: var(--lm-champagne);
+      color: var(--lm-stone);
+    }
+
+    .btn--secondary:hover {
+      background: var(--lm-champagne);
+      color: var(--lm-near-black);
+      border-color: var(--lm-champagne);
+    }
+
+    .btn--invert {
+      border-color: rgba(250, 247, 242, 0.4);
+      color: var(--lm-parchment);
+    }
+
+    .btn--invert:hover {
+      border-color: var(--lm-parchment);
+      background: var(--lm-parchment);
+      color: var(--lm-near-black);
+    }
+
+    .btn--text {
+      border: none;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lm-charcoal);
+      background: transparent;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .btn--text::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: var(--lm-champagne);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.4s ease;
+    }
+
+    .btn--text:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .type-showcase {
+      background: var(--lm-bg-surface);
+    }
+
+    .type-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px;
+      align-items: start;
+    }
+
+    .type-specimen {
+      margin-bottom: 48px;
+    }
+
+    .type-specimen__label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--lm-border);
+    }
+
+    .type-specimen__sample--display {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--lm-deep-charcoal);
+    }
+
+    .type-specimen__sample--heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 500;
+      line-height: 1.15;
+      color: var(--lm-text-heading);
+    }
+
+    .type-specimen__sample--subheading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: var(--lm-text-heading);
+    }
+
+    .type-specimen__sample--body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.85;
+      color: var(--lm-text-primary);
+    }
+
+    .type-specimen__sample--label-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+    }
+
+    .type-specimen__sample--tracked-text {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--lm-champagne);
+    }
+
+    .type-specimen__sample--quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.75rem;
+      line-height: 1.5;
+      color: var(--lm-stone);
+    }
+
+    .type-info {
+      font-size: 0.8rem;
+      color: var(--lm-taupe);
+      margin-top: 12px;
+      font-weight: 400;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-section {
+      background: var(--lm-bg-primary);
+    }
+
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+
+    .swatch {
+      text-align: center;
+    }
+
+    .swatch__color {
+      width: 100%;
+      aspect-ratio: 1;
+      border: 1px solid var(--lm-border);
+      margin-bottom: 16px;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    .swatch:hover .swatch__color {
+      transform: translateY(-4px);
+      box-shadow: var(--lm-shadow-lg);
+    }
+
+    .swatch__name {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--lm-charcoal);
+      margin-bottom: 4px;
+    }
+
+    .swatch__hex {
+      font-family: 'Raleway', sans-serif;
+      font-weight: 400;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+    }
+
+    /* ============================================
+       CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+
+    .card {
+      background: var(--lm-bg-surface);
+      border: 1px solid var(--lm-border-subtle);
+      padding: 48px 36px;
+      transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    }
+
+    .card:hover {
+      border-color: var(--lm-sandstone);
+      box-shadow: var(--lm-shadow-lg);
+    }
+
+    .card__label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+      margin-bottom: 20px;
+    }
+
+    .card__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 500;
+      color: var(--lm-text-heading);
+      margin-bottom: 16px;
+      line-height: 1.25;
+    }
+
+    .card__text {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--lm-stone);
+      margin-bottom: 24px;
+    }
+
+    .card__link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--lm-charcoal);
+      border-bottom: 1px solid var(--lm-champagne);
+      padding-bottom: 2px;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .card__link:hover {
+      color: var(--lm-gold);
+      border-color: var(--lm-gold);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+    }
+
+    .effect-box {
+      background: var(--lm-bg-surface);
+      border: 1px solid var(--lm-border-subtle);
+      padding: 40px 32px;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-box__label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+      margin-bottom: 16px;
+    }
+
+    .effect-box__title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--lm-text-heading);
+      line-height: 1.25;
+    }
+
+    /* Effect 1: Warm Shadow Elevation */
+    .effect--shadow-elevation {
+      transition: box-shadow 0.5s ease, transform 0.5s ease;
+    }
+
+    .effect--shadow-elevation:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--lm-shadow-xl);
+    }
+
+    /* Effect 2: Champagne Border Reveal */
+    .effect--border-reveal {
+      border-color: transparent;
+      transition: border-color 0.5s ease;
+    }
+
+    .effect--border-reveal::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border: 1px solid var(--lm-champagne);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .effect--border-reveal:hover::before {
+      opacity: 1;
+    }
+
+    /* Effect 3: Fade Up Reveal */
+    .effect--fade-up {
+      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .effect--fade-up:hover {
+      transform: translateY(-8px);
+    }
+
+    .effect--fade-up .effect-box__title {
+      transition: color 0.4s ease;
+    }
+
+    .effect--fade-up:hover .effect-box__title {
+      color: var(--lm-gold);
+    }
+
+    /* Effect 4: Hairline Underline Expand */
+    .effect--underline-expand .effect-box__title {
+      position: relative;
+      display: inline-block;
+    }
+
+    .effect--underline-expand .effect-box__title::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--lm-champagne);
+      transition: width 0.5s ease, left 0.5s ease;
+    }
+
+    .effect--underline-expand:hover .effect-box__title::after {
+      width: 100%;
+      left: 0;
+    }
+
+    /* Effect 5: Soft Background Shift */
+    .effect--bg-shift {
+      transition: background 0.6s ease;
+    }
+
+    .effect--bg-shift:hover {
+      background: var(--lm-ivory);
+    }
+
+    .effect--bg-shift:hover .effect-box__label {
+      color: var(--lm-champagne);
+      transition: color 0.4s ease;
+    }
+
+    /* Effect 6: Grain Texture Overlay */
+    .effect--grain-overlay::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0;
+      transition: opacity 0.5s ease;
+      pointer-events: none;
+    }
+
+    .effect--grain-overlay:hover::after {
+      opacity: 1;
+    }
+
+    .effect--grain-overlay {
+      transition: border-color 0.5s ease;
+    }
+
+    .effect--grain-overlay:hover {
+      border-color: var(--lm-sandstone);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      background: var(--lm-bg-surface);
+    }
+
+    .button-grid {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    /* ============================================
+       BLOCKQUOTE / PULL QUOTE
+       ============================================ */
+    .pull-quote {
+      text-align: center;
+      padding: 100px 5vw;
+    }
+
+    .pull-quote__text {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: clamp(1.5rem, 3vw, 2.25rem);
+      color: var(--lm-stone);
+      line-height: 1.55;
+      max-width: 700px;
+      margin: 0 auto 24px;
+    }
+
+    .pull-quote__attribution {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+    }
+
+    blockquote {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-weight: 400;
+      font-size: 1.75rem;
+      color: var(--lm-stone);
+      line-height: 1.5;
+      border-left: 1px solid var(--lm-champagne);
+      padding-left: 32px;
+      margin: 48px 0;
+    }
+
+    /* ============================================
+       DARK INVERTED SECTION
+       ============================================ */
+    .section--dark {
+      background: var(--lm-bg-invert);
+      color: var(--lm-parchment);
+    }
+
+    .section--dark h2,
+    .section--dark h3 {
+      color: var(--lm-warm-white);
+    }
+
+    .section--dark p {
+      color: var(--lm-sandstone);
+    }
+
+    .section--dark .label {
+      color: var(--lm-champagne);
+    }
+
+    .section--dark .divider {
+      background: var(--lm-champagne);
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: var(--lm-bg-elevated);
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px;
+      height: 1px;
+      background: var(--lm-champagne);
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 80px 5vw;
+      text-align: center;
+      border-top: 1px solid var(--lm-border);
+    }
+
+    .footer__logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: var(--lm-text-heading);
+      margin-bottom: 24px;
+    }
+
+    .footer__links {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      list-style: none;
+      margin-bottom: 40px;
+    }
+
+    .footer__link {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--lm-taupe);
+      transition: color 0.3s ease;
+    }
+
+    .footer__link:hover {
+      color: var(--lm-charcoal);
+    }
+
+    .footer__copy {
+      font-size: 0.75rem;
+      color: var(--lm-taupe);
+    }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal--visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .palette-grid {
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+      }
+    }
+
+    @media (max-width: 900px) {
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 32px;
+      }
+
+      .type-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .nav__links {
+        gap: 24px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero {
+        padding: 100px 6vw;
+        min-height: 90vh;
+      }
+
+      .section {
+        padding: 80px 0;
+      }
+
+      .nav {
+        padding: 20px 5vw;
+      }
+
+      .nav__links {
+        display: none;
+      }
+
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .button-grid {
+        flex-direction: column;
+        gap: 24px;
+      }
+
+      .footer__links {
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav__logo">Maison</a>
+    <ul class="nav__links">
+      <li><a href="#typography" class="nav__link">Typography</a></li>
+      <li><a href="#palette" class="nav__link">Palette</a></li>
+      <li><a href="#collection" class="nav__link">Collection</a></li>
+      <li><a href="#effects" class="nav__link">Effects</a></li>
+      <li><a href="#contact" class="nav__link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero__content">
+      <p class="label label--accent hero__label">Design Aesthetic Reference</p>
+      <h1 class="hero__title">Luxury<br>Minimalism</h1>
+      <p class="hero__subtitle">
+        A refined design language where editorial restraint, impeccable typography,
+        and the strategic deployment of whitespace communicate quiet authority.
+      </p>
+      <a href="#collection" class="btn">Explore Collection</a>
+    </div>
+  </header>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section type-showcase" id="typography">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom: 72px;">
+        <p class="label label--accent" style="margin-bottom: 16px;">Typography</p>
+        <h2>Typographic Hierarchy</h2>
+      </div>
+
+      <div class="type-grid">
+        <div class="reveal">
+          <div class="type-specimen">
+            <p class="type-specimen__label">Display / Hero</p>
+            <p class="type-specimen__sample--display">Refined<br>Elegance</p>
+            <p class="type-info">Cormorant Garamond 300 -- clamp(3rem, 8vw, 6.5rem)</p>
+          </div>
+
+          <div class="type-specimen">
+            <p class="type-specimen__label">Section Heading</p>
+            <p class="type-specimen__sample--heading">Considered Objects</p>
+            <p class="type-info">Cormorant Garamond 500 -- clamp(2rem, 4vw, 3.25rem)</p>
+          </div>
+
+          <div class="type-specimen">
+            <p class="type-specimen__label">Subheading</p>
+            <p class="type-specimen__sample--subheading">Crafted With Intention</p>
+            <p class="type-info">Cormorant Garamond 600 -- clamp(1.5rem, 2.5vw, 2rem)</p>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="type-specimen">
+            <p class="type-specimen__label">Body Text</p>
+            <p class="type-specimen__sample--body">
+              We believe that every object in a space should earn its presence.
+              Our curation process is one of subtraction, removing the unnecessary
+              until only the essential remains. What stays is crafted with intention,
+              built from honest materials, and designed to age with grace.
+            </p>
+            <p class="type-info">Inter 300 -- 1rem / 1.85 line-height</p>
+          </div>
+
+          <div class="type-specimen">
+            <p class="type-specimen__label">Label / Navigation</p>
+            <p class="type-specimen__sample--label-text">The Collection</p>
+            <p class="type-info">Inter 400 -- 0.7rem / 0.18em tracking</p>
+          </div>
+
+          <div class="type-specimen">
+            <p class="type-specimen__label">Tracked Accent</p>
+            <p class="type-specimen__sample--tracked-text">Established 2024</p>
+            <p class="type-info">Raleway 400 -- 0.65rem / 0.25em tracking</p>
+          </div>
+
+          <div class="type-specimen">
+            <p class="type-specimen__label">Pull Quote</p>
+            <p class="type-specimen__sample--quote">"Less, but better."</p>
+            <p class="type-info">Cormorant Garamond Italic 400 -- 1.75rem</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider divider--wide">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section palette-section" id="palette">
+    <div class="container container--wide">
+      <div class="text-center reveal" style="margin-bottom: 72px;">
+        <p class="label label--accent" style="margin-bottom: 16px;">Color Palette</p>
+        <h2>Warm Neutrals &amp; Muted Accents</h2>
+      </div>
+
+      <div class="palette-grid reveal">
+        <!-- Warm neutral foundations -->
+        <div class="swatch">
+          <div class="swatch__color" style="background: #faf7f2;"></div>
+          <p class="swatch__name">Parchment</p>
+          <p class="swatch__hex">#FAF7F2</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #f5f1eb;"></div>
+          <p class="swatch__name">Warm White</p>
+          <p class="swatch__hex">#F5F1EB</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #efebe4;"></div>
+          <p class="swatch__name">Ivory</p>
+          <p class="swatch__hex">#EFEBE4</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #e8e2d9;"></div>
+          <p class="swatch__name">Linen</p>
+          <p class="swatch__hex">#E8E2D9</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #d4cbc0;"></div>
+          <p class="swatch__name">Sandstone</p>
+          <p class="swatch__hex">#D4CBC0</p>
+        </div>
+
+        <!-- Text tones -->
+        <div class="swatch">
+          <div class="swatch__color" style="background: #b0a89e;"></div>
+          <p class="swatch__name">Warm Taupe</p>
+          <p class="swatch__hex">#B0A89E</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #8a837b;"></div>
+          <p class="swatch__name">Stone</p>
+          <p class="swatch__hex">#8A837B</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #3d3a37;"></div>
+          <p class="swatch__name">Charcoal</p>
+          <p class="swatch__hex">#3D3A37</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #2a2826;"></div>
+          <p class="swatch__name">Deep Charcoal</p>
+          <p class="swatch__hex">#2A2826</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #1a1918;"></div>
+          <p class="swatch__name">Near Black</p>
+          <p class="swatch__hex">#1A1918</p>
+        </div>
+
+        <!-- Accents -->
+        <div class="swatch">
+          <div class="swatch__color" style="background: #c9b98f;"></div>
+          <p class="swatch__name">Champagne</p>
+          <p class="swatch__hex">#C9B98F</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #b89d62;"></div>
+          <p class="swatch__name">Muted Gold</p>
+          <p class="swatch__hex">#B89D62</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #88856a;"></div>
+          <p class="swatch__name">Sage</p>
+          <p class="swatch__hex">#88856A</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #c9ada7;"></div>
+          <p class="swatch__name">Blush</p>
+          <p class="swatch__hex">#C9ADA7</p>
+        </div>
+        <div class="swatch">
+          <div class="swatch__color" style="background: #5c5a47;"></div>
+          <p class="swatch__name">Deep Olive</p>
+          <p class="swatch__hex">#5C5A47</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLLECTION CARDS ===== -->
+  <section id="collection" class="section" style="background: var(--lm-bg-surface);">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom: 72px;">
+        <p class="label label--accent" style="margin-bottom: 16px;">The Collection</p>
+        <h2>Considered Objects</h2>
+      </div>
+
+      <div class="card-grid">
+        <div class="card reveal">
+          <p class="card__label">Ceramics</p>
+          <h3 class="card__title">Stoneware Vessels</h3>
+          <p class="card__text">
+            Hand-thrown in small batches from locally sourced clay.
+            Each piece carries the quiet imperfections that mark
+            authentic craftsmanship.
+          </p>
+          <a href="#" class="card__link">View Pieces</a>
+        </div>
+
+        <div class="card reveal">
+          <p class="card__label">Textiles</p>
+          <h3 class="card__title">Linen Collection</h3>
+          <p class="card__text">
+            Woven from European flax and finished without chemical
+            softeners. The texture improves with every wash, growing
+            softer over time.
+          </p>
+          <a href="#" class="card__link">View Pieces</a>
+        </div>
+
+        <div class="card reveal">
+          <p class="card__label">Lighting</p>
+          <h3 class="card__title">Sculptural Lamps</h3>
+          <p class="card__text">
+            Minimal forms in brushed brass and hand-blown glass.
+            Designed to cast warm, ambient light that transforms
+            the atmosphere of a room.
+          </p>
+          <a href="#" class="card__link">View Pieces</a>
+        </div>
+
+        <div class="card reveal">
+          <p class="card__label">Furniture</p>
+          <h3 class="card__title">Timeless Seating</h3>
+          <p class="card__text">
+            Frames carved from sustainably harvested hardwood,
+            upholstered in undyed organic cotton. Forms that
+            distill comfort to its essential geometry.
+          </p>
+          <a href="#" class="card__link">View Pieces</a>
+        </div>
+
+        <div class="card reveal">
+          <p class="card__label">Objects</p>
+          <h3 class="card__title">Marble Editions</h3>
+          <p class="card__text">
+            Each piece quarried from a single block, preserving
+            the natural veining that makes every object unique.
+            Stone polished to a silk-matte finish.
+          </p>
+          <a href="#" class="card__link">View Pieces</a>
+        </div>
+
+        <div class="card reveal">
+          <p class="card__label">Fragrance</p>
+          <h3 class="card__title">Scent Portraits</h3>
+          <p class="card__text">
+            Composed from botanical extracts and rare essences.
+            Subtle, personal, and designed to evolve with the
+            warmth of the wearer throughout the day.
+          </p>
+          <a href="#" class="card__link">View Pieces</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom: 72px;">
+        <p class="label label--accent" style="margin-bottom: 16px;">CSS Techniques</p>
+        <h2>Interaction &amp; Effects</h2>
+      </div>
+
+      <div class="effects-grid">
+        <div class="effect-box effect--shadow-elevation reveal">
+          <p class="effect-box__label">Effect 01</p>
+          <p class="effect-box__title">Warm Shadow Elevation</p>
+          <p style="font-size: 0.8rem; color: var(--lm-taupe); margin-top: 12px;">Hover to lift with warm-toned shadow</p>
+        </div>
+
+        <div class="effect-box effect--border-reveal reveal">
+          <p class="effect-box__label">Effect 02</p>
+          <p class="effect-box__title">Champagne Border Reveal</p>
+          <p style="font-size: 0.8rem; color: var(--lm-taupe); margin-top: 12px;">Hover to reveal gold border</p>
+        </div>
+
+        <div class="effect-box effect--fade-up reveal">
+          <p class="effect-box__label">Effect 03</p>
+          <p class="effect-box__title">Fade Up with Color Shift</p>
+          <p style="font-size: 0.8rem; color: var(--lm-taupe); margin-top: 12px;">Hover for upward float and gold text</p>
+        </div>
+
+        <div class="effect-box effect--underline-expand reveal">
+          <p class="effect-box__label">Effect 04</p>
+          <p class="effect-box__title">Hairline Underline Expand</p>
+          <p style="font-size: 0.8rem; color: var(--lm-taupe); margin-top: 12px;">Hover to expand champagne underline</p>
+        </div>
+
+        <div class="effect-box effect--bg-shift reveal">
+          <p class="effect-box__label">Effect 05</p>
+          <p class="effect-box__title">Soft Background Shift</p>
+          <p style="font-size: 0.8rem; color: var(--lm-taupe); margin-top: 12px;">Hover for subtle tonal change</p>
+        </div>
+
+        <div class="effect-box effect--grain-overlay reveal">
+          <p class="effect-box__label">Effect 06</p>
+          <p class="effect-box__title">Grain Texture Overlay</p>
+          <p style="font-size: 0.8rem; color: var(--lm-taupe); margin-top: 12px;">Hover to reveal tactile grain</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider divider--wide">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section button-showcase">
+    <div class="container">
+      <div class="text-center reveal" style="margin-bottom: 72px;">
+        <p class="label label--accent" style="margin-bottom: 16px;">Components</p>
+        <h2>Button Styles</h2>
+      </div>
+
+      <div class="button-grid reveal">
+        <a href="#" class="btn">Primary</a>
+        <a href="#" class="btn btn--secondary">Secondary</a>
+        <button class="btn--text">Text Link</button>
+        <a href="#" class="btn" style="border-color: var(--lm-gold); color: var(--lm-gold);">Gold Accent</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE / PULL QUOTE ===== -->
+  <section class="pull-quote reveal">
+    <hr class="divider" style="margin-bottom: 48px;">
+    <p class="pull-quote__text">
+      "Perfection is achieved not when there is nothing more to add,
+      but when there is nothing left to take away."
+    </p>
+    <p class="pull-quote__attribution">Antoine de Saint-Exupery</p>
+    <hr class="divider" style="margin-top: 48px;">
+  </section>
+
+  <!-- ===== CTA SECTION (Dark Inversion) ===== -->
+  <section class="section section--dark cta-section">
+    <div class="container container--narrow text-center">
+      <div class="reveal">
+        <p class="label" style="margin-bottom: 16px;">Begin Your Journey</p>
+        <h2 style="margin-bottom: 32px;">Crafted With Intention</h2>
+        <p style="max-width: 560px; margin: 0 auto 48px;">
+          Every material is chosen for its honesty. Every form is refined
+          until nothing remains but purpose. We work with artisans who
+          share our belief that the most beautiful objects are those
+          that reveal their making.
+        </p>
+        <a href="#" class="btn btn--invert">Discover Our Process</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer id="contact" class="footer">
+    <p class="footer__logo">Maison</p>
+    <ul class="footer__links">
+      <li><a href="#" class="footer__link">About</a></li>
+      <li><a href="#" class="footer__link">Collection</a></li>
+      <li><a href="#" class="footer__link">Journal</a></li>
+      <li><a href="#" class="footer__link">Contact</a></li>
+      <li><a href="#" class="footer__link">Instagram</a></li>
+    </ul>
+    <p class="footer__copy">&copy; 2026 Maison. All rights reserved.</p>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Scroll reveal using IntersectionObserver
+    const revealEls = document.querySelectorAll('.reveal');
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('reveal--visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealEls.forEach(el => revealObserver.observe(el));
+    } else {
+      // If reduced motion, make everything visible immediately
+      revealEls.forEach(el => el.classList.add('reveal--visible'));
+    }
+
+    // Navigation scroll behavior
+    const nav = document.getElementById('nav');
+
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 60) {
+        nav.classList.add('nav--scrolled');
+      } else {
+        nav.classList.remove('nav--scrolled');
+      }
+    });
+  </script>
+
+</body>
+</html>

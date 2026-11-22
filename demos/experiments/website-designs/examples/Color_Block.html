@@ -1,0 +1,1967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Block -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Primary blocks */
+      --cb-red: #e63946;
+      --cb-blue-deep: #1d3557;
+      --cb-yellow: #ffd60a;
+      --cb-blue-cobalt: #2a6fdb;
+
+      /* Neutrals */
+      --cb-white: #ffffff;
+      --cb-black: #111111;
+      --cb-ivory: #f8f7f2;
+      --cb-charcoal: #2b2d42;
+      --cb-slate: #4a4e69;
+
+      /* Secondary accents */
+      --cb-green: #2dc653;
+      --cb-coral: #ff6b6b;
+      --cb-violet: #7b2d8e;
+      --cb-tangerine: #ff8c42;
+      --cb-teal: #0b8a8a;
+      --cb-blush: #f4acb7;
+
+      /* Functional */
+      --cb-text-on-dark: #ffffff;
+      --cb-text-on-light: #111111;
+      --cb-divider-color: #111111;
+      --cb-divider-width: 4px;
+      --cb-block-padding: clamp(40px, 6vw, 80px);
+      --cb-transition: 0.3s ease;
+
+      /* Shadows (used sparingly -- flat is the default) */
+      --cb-shadow-subtle: 0 2px 0 rgba(0, 0, 0, 0.1);
+      --cb-shadow-card: 0 4px 0 rgba(0, 0, 0, 0.15);
+
+      /* Typography scale */
+      --cb-font-display: clamp(3rem, 7vw, 6rem);
+      --cb-font-heading: clamp(1.8rem, 4vw, 3rem);
+      --cb-font-subheading: clamp(1.2rem, 2vw, 1.5rem);
+      --cb-font-body: 1rem;
+      --cb-font-small: 0.85rem;
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      font-size: var(--cb-font-body);
+      line-height: 1.7;
+      color: var(--cb-black);
+      background: var(--cb-white);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Bebas Neue', 'Arial Black', sans-serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      line-height: 1.0;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .cb-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 64px;
+      background: var(--cb-white);
+      border-bottom: var(--cb-divider-width) solid var(--cb-black);
+      z-index: 100;
+    }
+
+    .cb-nav__logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      color: var(--cb-black);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: color var(--cb-transition);
+    }
+
+    .cb-nav__logo:hover {
+      color: var(--cb-red);
+    }
+
+    .cb-nav__logo::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: var(--cb-red);
+      border: 2px solid var(--cb-black);
+    }
+
+    .cb-nav__links {
+      display: flex;
+      gap: 0;
+      list-style: none;
+      height: 100%;
+    }
+
+    .cb-nav__links li {
+      height: 100%;
+    }
+
+    .cb-nav__links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: var(--cb-font-small);
+      color: var(--cb-black);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 0 24px;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      border-left: 2px solid var(--cb-black);
+      transition: background var(--cb-transition), color var(--cb-transition);
+    }
+
+    .cb-nav__links a:hover {
+      background: var(--cb-black);
+      color: var(--cb-white);
+    }
+
+    .cb-nav__toggle {
+      display: none;
+      width: 32px;
+      height: 24px;
+      flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+    }
+
+    .cb-nav__toggle span {
+      display: block;
+      width: 100%;
+      height: 3px;
+      background: var(--cb-black);
+      transition: transform var(--cb-transition), opacity var(--cb-transition);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .cb-hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--cb-block-padding);
+      padding-top: calc(var(--cb-block-padding) + 64px);
+      background: var(--cb-red);
+      color: var(--cb-white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cb-hero__content {
+      max-width: 800px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    .cb-hero__label {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--cb-font-small);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0.85;
+    }
+
+    .cb-hero__content h1 {
+      font-size: var(--cb-font-display);
+      margin-bottom: 28px;
+      line-height: 0.92;
+    }
+
+    .cb-hero__content p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.15rem;
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.9;
+    }
+
+    .cb-hero__actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* Decorative Mondrian-style geometric elements */
+    .cb-hero__decor {
+      position: absolute;
+      border: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .cb-hero__decor--1 {
+      width: 120px;
+      height: 180px;
+      background: var(--cb-yellow);
+      top: 12%;
+      right: 8%;
+      animation: decorFloat 6s ease-in-out infinite;
+    }
+
+    .cb-hero__decor--2 {
+      width: 80px;
+      height: 80px;
+      background: var(--cb-blue-cobalt);
+      bottom: 18%;
+      left: 6%;
+      animation: decorFloat 8s ease-in-out infinite reverse;
+    }
+
+    .cb-hero__decor--3 {
+      width: 160px;
+      height: 50px;
+      background: var(--cb-white);
+      bottom: 30%;
+      right: 14%;
+      opacity: 0.3;
+    }
+
+    .cb-hero__decor--4 {
+      width: 60px;
+      height: 120px;
+      background: var(--cb-green);
+      top: 25%;
+      left: 12%;
+      opacity: 0.6;
+    }
+
+    .cb-hero__decor--5 {
+      width: 100px;
+      height: 40px;
+      background: var(--cb-tangerine);
+      bottom: 12%;
+      right: 4%;
+      opacity: 0.5;
+    }
+
+    @keyframes decorFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .cb-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 40px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: var(--cb-font-small);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: 3px solid var(--cb-black);
+      cursor: pointer;
+      position: relative;
+      transition: all var(--cb-transition);
+    }
+
+    .cb-btn--primary {
+      background: var(--cb-black);
+      color: var(--cb-white);
+      border-color: var(--cb-black);
+    }
+
+    .cb-btn--primary:hover {
+      background: var(--cb-red);
+      border-color: var(--cb-red);
+      color: var(--cb-white);
+    }
+
+    .cb-btn--secondary {
+      background: transparent;
+      color: var(--cb-black);
+      border-color: var(--cb-black);
+    }
+
+    .cb-btn--secondary:hover {
+      background: var(--cb-black);
+      color: var(--cb-white);
+    }
+
+    .cb-btn--on-dark {
+      background: var(--cb-white);
+      color: var(--cb-black);
+      border-color: var(--cb-white);
+    }
+
+    .cb-btn--on-dark:hover {
+      background: var(--cb-yellow);
+      border-color: var(--cb-yellow);
+      color: var(--cb-black);
+    }
+
+    .cb-btn--red {
+      background: var(--cb-red);
+      color: var(--cb-white);
+      border-color: var(--cb-red);
+    }
+
+    .cb-btn--red:hover {
+      background: var(--cb-white);
+      color: var(--cb-red);
+      border-color: var(--cb-red);
+    }
+
+    .cb-btn--yellow {
+      background: var(--cb-yellow);
+      color: var(--cb-black);
+      border-color: var(--cb-yellow);
+    }
+
+    .cb-btn--yellow:hover {
+      background: var(--cb-black);
+      color: var(--cb-yellow);
+      border-color: var(--cb-black);
+    }
+
+    .cb-btn--shadow {
+      box-shadow: 4px 4px 0 var(--cb-black);
+    }
+
+    .cb-btn--shadow:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--cb-black);
+    }
+
+    .cb-btn--shadow:active {
+      transform: translate(4px, 4px);
+      box-shadow: none;
+    }
+
+    /* ============================================
+       FULL-WIDTH COLOR SECTIONS
+       ============================================ */
+    .cb-section {
+      width: 100%;
+      padding: var(--cb-block-padding);
+      position: relative;
+    }
+
+    .cb-section--red { background: var(--cb-red); color: var(--cb-text-on-dark); }
+    .cb-section--blue { background: var(--cb-blue-deep); color: var(--cb-text-on-dark); }
+    .cb-section--cobalt { background: var(--cb-blue-cobalt); color: var(--cb-text-on-dark); }
+    .cb-section--yellow { background: var(--cb-yellow); color: var(--cb-text-on-light); }
+    .cb-section--green { background: var(--cb-green); color: var(--cb-text-on-light); }
+    .cb-section--white { background: var(--cb-white); color: var(--cb-text-on-light); }
+    .cb-section--ivory { background: var(--cb-ivory); color: var(--cb-text-on-light); }
+    .cb-section--charcoal { background: var(--cb-charcoal); color: var(--cb-text-on-dark); }
+    .cb-section--black { background: var(--cb-black); color: var(--cb-text-on-dark); }
+    .cb-section--coral { background: var(--cb-coral); color: var(--cb-text-on-dark); }
+    .cb-section--teal { background: var(--cb-teal); color: var(--cb-text-on-dark); }
+    .cb-section--violet { background: var(--cb-violet); color: var(--cb-text-on-dark); }
+    .cb-section--tangerine { background: var(--cb-tangerine); color: var(--cb-text-on-light); }
+
+    .cb-section--bordered {
+      border-bottom: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .cb-section__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Section headers */
+    .cb-section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--cb-font-small);
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      margin-bottom: 8px;
+      opacity: 0.7;
+    }
+
+    .cb-section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: var(--cb-font-heading);
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .cb-section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: var(--cb-font-subheading);
+      font-weight: 400;
+      text-align: center;
+      margin-bottom: 48px;
+      opacity: 0.75;
+    }
+
+    /* ============================================
+       THICK BLACK DIVIDER BAND
+       ============================================ */
+    .cb-divider-band {
+      display: flex;
+      height: 8px;
+      width: 100%;
+      border-top: var(--cb-divider-width) solid var(--cb-black);
+      border-bottom: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .cb-divider-band span { flex: 1; }
+    .cb-divider-band span:nth-child(1) { background: var(--cb-red); }
+    .cb-divider-band span:nth-child(2) { background: var(--cb-yellow); }
+    .cb-divider-band span:nth-child(3) { background: var(--cb-blue-cobalt); }
+    .cb-divider-band span:nth-child(4) { background: var(--cb-green); }
+    .cb-divider-band span:nth-child(5) { background: var(--cb-tangerine); }
+
+    .cb-divider-band--thick {
+      height: 16px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--cb-slate);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--cb-black);
+      opacity: 0.15;
+    }
+
+    .typo-display {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      color: var(--cb-black);
+      line-height: 0.92;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Archivo Black', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: var(--cb-black);
+      line-height: 1.05;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      color: var(--cb-charcoal);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--cb-charcoal);
+      margin-bottom: 8px;
+    }
+
+    .typo-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      font-size: var(--cb-font-small);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cb-red);
+    }
+
+    .typo-caption {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem;
+      color: var(--cb-slate);
+      line-height: 1.5;
+    }
+
+    .typo-right {
+      background: var(--cb-ivory);
+      border: var(--cb-divider-width) solid var(--cb-black);
+      padding: 36px;
+    }
+
+    .typo-right h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 2px solid var(--cb-black);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--cb-slate);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0;
+      border: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--cb-white);
+      border-right: var(--cb-divider-width) solid var(--cb-black);
+      border-bottom: var(--cb-divider-width) solid var(--cb-black);
+      transition: transform var(--cb-transition);
+    }
+
+    .color-chip:hover {
+      transform: scale(1.05);
+      z-index: 2;
+    }
+
+    .color-swatch {
+      height: 100px;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      color: var(--cb-black);
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--cb-slate);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID (COMPONENT CARDS)
+       ============================================ */
+    .cb-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0;
+      border: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .cb-card {
+      background: var(--cb-white);
+      border-right: var(--cb-divider-width) solid var(--cb-black);
+      border-bottom: var(--cb-divider-width) solid var(--cb-black);
+      padding: 0;
+      overflow: hidden;
+      transition: transform var(--cb-transition), box-shadow var(--cb-transition);
+    }
+
+    .cb-card:hover {
+      transform: none;
+      box-shadow: inset 0 0 0 4px var(--cb-red);
+    }
+
+    .cb-card__color-bar {
+      height: 8px;
+      width: 100%;
+    }
+
+    .cb-card__body {
+      padding: 32px;
+    }
+
+    .cb-card__body h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--cb-black);
+    }
+
+    .cb-card__body p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--cb-slate);
+      margin-bottom: 20px;
+    }
+
+    .cb-tag {
+      display: inline-block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 12px;
+      border: 2px solid var(--cb-black);
+      color: var(--cb-black);
+      margin-right: 6px;
+      transition: all var(--cb-transition);
+    }
+
+    .cb-tag:hover {
+      background: var(--cb-black);
+      color: var(--cb-white);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 0;
+      border: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      background: var(--cb-white);
+      border-right: var(--cb-divider-width) solid var(--cb-black);
+      border-bottom: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Mondrian Grid */
+    .effect-mondrian {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 3px;
+      background: var(--cb-black);
+    }
+
+    .effect-mondrian__cell:nth-child(1) { background: var(--cb-red); }
+    .effect-mondrian__cell:nth-child(2) { background: var(--cb-white); }
+    .effect-mondrian__cell:nth-child(3) { background: var(--cb-yellow); }
+    .effect-mondrian__cell:nth-child(4) { background: var(--cb-blue-cobalt); }
+
+    .effect-mondrian::after {
+      content: 'MONDRIAN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--cb-black);
+      text-shadow: 0 0 20px rgba(255,255,255,0.8);
+      z-index: 1;
+      letter-spacing: 0.06em;
+    }
+
+    /* Effect 2: Color Split */
+    .effect-split {
+      background: linear-gradient(90deg, var(--cb-red) 0%, var(--cb-red) 33.3%, var(--cb-yellow) 33.3%, var(--cb-yellow) 66.6%, var(--cb-blue-cobalt) 66.6%, var(--cb-blue-cobalt) 100%);
+    }
+
+    .effect-split::after {
+      content: 'SPLIT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.5rem;
+      color: var(--cb-white);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* Effect 3: Hard Edge Transition */
+    .effect-hard-edge {
+      background:
+        linear-gradient(135deg, var(--cb-teal) 0%, var(--cb-teal) 25%, var(--cb-tangerine) 25%, var(--cb-tangerine) 50%, var(--cb-violet) 50%, var(--cb-violet) 75%, var(--cb-green) 75%, var(--cb-green) 100%);
+    }
+
+    .effect-hard-edge::after {
+      content: 'HARD EDGE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--cb-white);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+      z-index: 1;
+      letter-spacing: 0.06em;
+    }
+
+    /* Effect 4: Checkerboard */
+    .effect-checker {
+      background:
+        repeating-conic-gradient(
+          var(--cb-red) 0% 25%,
+          var(--cb-yellow) 0% 50%
+        ) 0 0 / 50px 50px;
+    }
+
+    .effect-checker::after {
+      content: 'CHECKER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--cb-black);
+      text-shadow: 0 0 16px rgba(255,255,255,0.9);
+      z-index: 1;
+      letter-spacing: 0.06em;
+    }
+
+    /* Effect 5: Stripe Pattern */
+    .effect-stripe {
+      background: repeating-linear-gradient(
+        90deg,
+        var(--cb-blue-deep) 0px,
+        var(--cb-blue-deep) 20px,
+        var(--cb-coral) 20px,
+        var(--cb-coral) 40px,
+        var(--cb-yellow) 40px,
+        var(--cb-yellow) 60px,
+        var(--cb-green) 60px,
+        var(--cb-green) 80px
+      );
+      animation: stripeSlide 10s linear infinite;
+    }
+
+    @keyframes stripeSlide {
+      0% { background-position: 0 0; }
+      100% { background-position: 80px 0; }
+    }
+
+    .effect-stripe::after {
+      content: 'STRIPES';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--cb-white);
+      text-shadow: 2px 2px 0 rgba(0,0,0,0.4);
+      z-index: 1;
+      letter-spacing: 0.06em;
+    }
+
+    /* Effect 6: Block Reveal */
+    .effect-reveal {
+      background: var(--cb-charcoal);
+      overflow: hidden;
+    }
+
+    .effect-reveal__block {
+      position: absolute;
+      animation: blockReveal 4s ease-in-out infinite;
+    }
+
+    .effect-reveal__block:nth-child(1) {
+      width: 60%;
+      height: 40%;
+      top: 0;
+      left: 0;
+      background: var(--cb-red);
+      animation-delay: 0s;
+    }
+
+    .effect-reveal__block:nth-child(2) {
+      width: 40%;
+      height: 60%;
+      top: 0;
+      right: 0;
+      background: var(--cb-yellow);
+      animation-delay: -1s;
+    }
+
+    .effect-reveal__block:nth-child(3) {
+      width: 50%;
+      height: 50%;
+      bottom: 0;
+      left: 25%;
+      background: var(--cb-blue-cobalt);
+      animation-delay: -2s;
+    }
+
+    @keyframes blockReveal {
+      0%, 100% { opacity: 0.3; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1); }
+    }
+
+    .effect-reveal::after {
+      content: 'REVEAL';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem;
+      color: var(--cb-white);
+      z-index: 2;
+      letter-spacing: 0.06em;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      color: var(--cb-black);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--cb-slate);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .cb-quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      border: var(--cb-divider-width) solid var(--cb-black);
+      position: relative;
+      background: var(--cb-white);
+    }
+
+    .cb-quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 8px;
+      height: 100%;
+      background: var(--cb-red);
+    }
+
+    .cb-quote-block::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 8px;
+      height: 100%;
+      background: var(--cb-blue-cobalt);
+    }
+
+    .cb-quote-block blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 500;
+      color: var(--cb-charcoal);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.6;
+    }
+
+    .cb-quote-block cite {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--cb-red);
+      font-style: normal;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cb-cta-container {
+      max-width: 700px;
+      margin: 0 auto;
+      border: var(--cb-divider-width) solid var(--cb-black);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cb-cta-bar {
+      height: 12px;
+      display: flex;
+    }
+
+    .cb-cta-bar span:nth-child(1) { flex: 2; background: var(--cb-red); }
+    .cb-cta-bar span:nth-child(2) { flex: 1; background: var(--cb-yellow); }
+    .cb-cta-bar span:nth-child(3) { flex: 1; background: var(--cb-blue-cobalt); }
+
+    .cb-cta-body {
+      padding: 60px 48px;
+    }
+
+    .cb-cta-body h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+
+    .cb-cta-body p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--cb-slate);
+      margin-bottom: 28px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .cb-footer {
+      background: var(--cb-blue-deep);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--cb-text-on-dark);
+      position: relative;
+      border-top: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .cb-footer__content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cb-footer h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem;
+      color: var(--cb-white);
+      margin-bottom: 10px;
+      letter-spacing: 0.06em;
+    }
+
+    .cb-footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.65);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .cb-footer__links {
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .cb-footer__links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 8px 20px;
+      border: 2px solid rgba(255, 255, 255, 0.15);
+      transition: all var(--cb-transition);
+    }
+
+    .cb-footer__links a:hover {
+      background: var(--cb-white);
+      color: var(--cb-blue-deep);
+      border-color: var(--cb-white);
+    }
+
+    .cb-footer__blocks {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .cb-footer__blocks span {
+      width: 16px;
+      height: 16px;
+      display: inline-block;
+      border: 2px solid rgba(255,255,255,0.2);
+    }
+
+    .cb-footer__blocks span:nth-child(1) { background: var(--cb-red); }
+    .cb-footer__blocks span:nth-child(2) { background: var(--cb-yellow); }
+    .cb-footer__blocks span:nth-child(3) { background: var(--cb-blue-cobalt); }
+    .cb-footer__blocks span:nth-child(4) { background: var(--cb-green); }
+    .cb-footer__blocks span:nth-child(5) { background: var(--cb-white); }
+
+    .cb-footer__copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.3);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================
+       MONDRIAN DECORATIVE GRID BANNER
+       ============================================ */
+    .cb-mondrian-banner {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      grid-template-rows: 120px 80px;
+      gap: var(--cb-divider-width);
+      background: var(--cb-black);
+      border: var(--cb-divider-width) solid var(--cb-black);
+    }
+
+    .cb-mondrian-banner__cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cb-mondrian-banner__cell:nth-child(1) {
+      grid-row: 1 / 3;
+      background: var(--cb-red);
+    }
+
+    .cb-mondrian-banner__cell:nth-child(2) {
+      background: var(--cb-white);
+    }
+
+    .cb-mondrian-banner__cell:nth-child(3) {
+      background: var(--cb-yellow);
+    }
+
+    .cb-mondrian-banner__cell:nth-child(4) {
+      background: var(--cb-blue-cobalt);
+      grid-column: 2 / 4;
+    }
+
+    .cb-mondrian-banner h2 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      color: var(--cb-white);
+      letter-spacing: 0.06em;
+    }
+
+    .cb-mondrian-banner p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--cb-white);
+    }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .cb-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+    }
+
+    .cb-reveal--left {
+      transform: translateX(-60px);
+    }
+
+    .cb-reveal--right {
+      transform: translateX(60px);
+    }
+
+    .cb-reveal.is-visible {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .cb-nav {
+        padding: 0 24px;
+      }
+
+      .cb-nav__links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        background: var(--cb-white);
+        border-bottom: var(--cb-divider-width) solid var(--cb-black);
+      }
+
+      .cb-nav__links.open {
+        display: flex;
+      }
+
+      .cb-nav__links a {
+        border-left: none;
+        border-top: 2px solid var(--cb-black);
+        padding: 16px 24px;
+        height: auto;
+      }
+
+      .cb-nav__toggle {
+        display: flex;
+      }
+
+      .cb-hero {
+        min-height: 80vh;
+        padding: 80px 24px 48px;
+      }
+
+      .cb-hero__decor {
+        display: none;
+      }
+
+      .cb-hero__actions {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cb-section {
+        padding: clamp(32px, 5vw, 56px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .cb-card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cb-card {
+        border-right: none;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effect-demo {
+        border-right: none;
+      }
+
+      .cb-quote-block {
+        padding: 40px 24px;
+      }
+
+      .cb-cta-body {
+        padding: 40px 24px;
+      }
+
+      .cb-footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .cb-btn {
+        padding: 12px 28px;
+        font-size: 0.8rem;
+      }
+
+      .cb-mondrian-banner {
+        grid-template-columns: 1fr;
+        grid-template-rows: 80px 60px 60px 60px;
+      }
+
+      .cb-mondrian-banner__cell:nth-child(1) {
+        grid-row: auto;
+      }
+
+      .cb-mondrian-banner__cell:nth-child(4) {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .cb-hero__decor--1,
+      .cb-hero__decor--2 {
+        animation: none;
+      }
+
+      .effect-stripe {
+        animation: none;
+      }
+
+      .effect-reveal__block {
+        animation: none;
+        opacity: 0.7;
+      }
+
+      .cb-card, .cb-btn, .color-chip, .cb-tag, .effect-demo {
+        transition: none;
+      }
+
+      .cb-reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="cb-nav">
+    <a href="#" class="cb-nav__logo">Color Block</a>
+    <ul class="cb-nav__links" id="navLinks">
+      <li><a href="#hero">Hero</a></li>
+      <li><a href="#typography">Type</a></li>
+      <li><a href="#palette">Colors</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+    <button class="cb-nav__toggle" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="cb-hero" id="hero">
+    <!-- Mondrian-style floating blocks -->
+    <div class="cb-hero__decor cb-hero__decor--1"></div>
+    <div class="cb-hero__decor cb-hero__decor--2"></div>
+    <div class="cb-hero__decor cb-hero__decor--3"></div>
+    <div class="cb-hero__decor cb-hero__decor--4"></div>
+    <div class="cb-hero__decor cb-hero__decor--5"></div>
+
+    <div class="cb-hero__content">
+      <p class="cb-hero__label">Design Aesthetic Reference</p>
+      <h1>Color Block</h1>
+      <p>
+        Bold, flat, saturated panels of pure color separated by crisp hard edges. Inspired by Mondrian and De Stijl, Color Block makes hue the primary structural and decorative element.
+      </p>
+      <div class="cb-hero__actions">
+        <a href="#components" class="cb-btn cb-btn--on-dark cb-btn--shadow">Explore Components</a>
+        <a href="#palette" class="cb-btn cb-btn--on-dark" style="background: transparent; border-color: var(--cb-white); color: var(--cb-white);">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER BAND ===== -->
+  <div class="cb-divider-band cb-divider-band--thick">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="cb-section cb-section--ivory cb-section--bordered" id="typography">
+    <div class="cb-section__inner">
+      <p class="cb-section-label">Typography</p>
+      <h2 class="cb-section-title">Bold, Geometric &amp; Decisive</h2>
+      <p class="cb-section-subtitle">Uppercase confidence, clean geometry, maximum contrast</p>
+
+      <div class="typo-showcase cb-reveal">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Bebas Neue</p>
+            <p class="typo-display">Pure Color</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Archivo Black</p>
+            <p class="typo-heading">Chromatic Confidence</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Space Grotesk</p>
+            <p class="typo-subheading">Geometric clarity for secondary hierarchy</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter</p>
+            <p class="typo-body">Clean, highly legible body text that relies on contrast against saturated color backgrounds rather than decorative styling. Weight contrast creates hierarchy.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Eyebrow / Inter Bold</p>
+            <p class="typo-label">Design Systems &amp; Visual Language</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / DM Sans</p>
+            <p class="typo-caption">Small text for metadata, timestamps, and secondary information</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--cb-black); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Archivo Black', sans-serif; font-size: 1.6rem; color: var(--cb-black); text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--cb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--cb-charcoal);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.85rem; color: var(--cb-red); text-transform: uppercase; letter-spacing: 0.1em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 0.8rem; color: var(--cb-slate);">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 2px solid var(--cb-black);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--cb-red); text-transform: uppercase;">Bebas Neue</strong> + <strong>Inter</strong><br>
+              <span style="color: var(--cb-slate); font-size: 0.85rem;">Bold Mondrian-gallery feel, maximum contrast</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Archivo Black', sans-serif; color: var(--cb-red); text-transform: uppercase;">Archivo Black</strong> + <strong style="font-family: 'Inter', sans-serif;">DM Sans</strong><br>
+              <span style="color: var(--cb-slate); font-size: 0.85rem;">Ultra-bold poster aesthetic, strong and direct</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--cb-red);">Space Grotesk</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--cb-slate); font-size: 0.85rem;">Contemporary tech-forward, architectural clarity</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="cb-section cb-section--yellow cb-section--bordered" id="palette">
+    <div class="cb-section__inner">
+      <p class="cb-section-label" style="color: var(--cb-black);">Color Palette</p>
+      <h2 class="cb-section-title" style="color: var(--cb-black);">Saturated &amp; Confident</h2>
+      <p class="cb-section-subtitle" style="color: var(--cb-black);">Mondrian primaries, bold secondaries, decisive neutrals</p>
+
+      <div class="palette-grid cb-reveal">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e63946;"></div>
+          <div class="color-info">
+            <div class="color-name">Mondrian Red</div>
+            <div class="color-hex">#E63946</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1d3557;"></div>
+          <div class="color-info">
+            <div class="color-name">Primary Blue</div>
+            <div class="color-hex">#1D3557</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffd60a;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunflower Yellow</div>
+            <div class="color-hex">#FFD60A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2a6fdb;"></div>
+          <div class="color-info">
+            <div class="color-name">Cobalt Blue</div>
+            <div class="color-hex">#2A6FDB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #111111;"></div>
+          <div class="color-info">
+            <div class="color-name">Jet Black</div>
+            <div class="color-hex">#111111</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2dc653;"></div>
+          <div class="color-info">
+            <div class="color-name">Emerald Green</div>
+            <div class="color-hex">#2DC653</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff6b6b;"></div>
+          <div class="color-info">
+            <div class="color-name">Hot Coral</div>
+            <div class="color-hex">#FF6B6B</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7b2d8e;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Violet</div>
+            <div class="color-hex">#7B2D8E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff8c42;"></div>
+          <div class="color-info">
+            <div class="color-name">Tangerine</div>
+            <div class="color-hex">#FF8C42</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a4e69;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Gray</div>
+            <div class="color-hex">#4A4E69</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f8f7f2;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory</div>
+            <div class="color-hex">#F8F7F2</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0b8a8a;"></div>
+          <div class="color-info">
+            <div class="color-name">Teal</div>
+            <div class="color-hex">#0B8A8A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2b2d42;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal</div>
+            <div class="color-hex">#2B2D42</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f4acb7;"></div>
+          <div class="color-info">
+            <div class="color-name">Blush Pink</div>
+            <div class="color-hex">#F4ACB7</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffffff; border-bottom: 1px solid #eee;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER BAND ===== -->
+  <div class="cb-divider-band">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="cb-section cb-section--white cb-section--bordered" id="components">
+    <div class="cb-section__inner">
+      <p class="cb-section-label">Components</p>
+      <h2 class="cb-section-title">Flat Cards &amp; Hard Edges</h2>
+      <p class="cb-section-subtitle">Sharp rectangles, thick borders, color-bar accents</p>
+
+      <div class="cb-card-grid cb-reveal">
+        <div class="cb-card">
+          <div class="cb-card__color-bar" style="background: var(--cb-red);"></div>
+          <div class="cb-card__body">
+            <h3>Solid Color Panels</h3>
+            <p>Full-width sections filled with a single saturated hue create the fundamental building block. Each color serves a structural purpose, dividing content through chromatic contrast.</p>
+            <span class="cb-tag">Layout</span>
+            <span class="cb-tag">Structure</span>
+          </div>
+        </div>
+        <div class="cb-card">
+          <div class="cb-card__color-bar" style="background: var(--cb-yellow);"></div>
+          <div class="cb-card__body">
+            <h3>Mondrian Grids</h3>
+            <p>Asymmetric grid cells inspired by Piet Mondrian's compositions, using CSS Grid with unequal column and row tracks, separated by thick black dividing lines.</p>
+            <span class="cb-tag">Grid</span>
+            <span class="cb-tag">De Stijl</span>
+          </div>
+        </div>
+        <div class="cb-card">
+          <div class="cb-card__color-bar" style="background: var(--cb-blue-cobalt);"></div>
+          <div class="cb-card__body">
+            <h3>Hard Edge Buttons</h3>
+            <p>Sharp-cornered rectangles with thick borders, solid fills, and offset hard shadows. Hover states invert colors rather than adding gradients or rounded corners.</p>
+            <span class="cb-tag">Interactive</span>
+            <span class="cb-tag">Flat</span>
+          </div>
+        </div>
+        <div class="cb-card">
+          <div class="cb-card__color-bar" style="background: var(--cb-green);"></div>
+          <div class="cb-card__body">
+            <h3>Color-Coded Navigation</h3>
+            <p>Different sections identified by their block color create intuitive wayfinding. The color itself becomes the information hierarchy, replacing borders and shadows.</p>
+            <span class="cb-tag">Wayfinding</span>
+            <span class="cb-tag">UX</span>
+          </div>
+        </div>
+        <div class="cb-card">
+          <div class="cb-card__color-bar" style="background: var(--cb-tangerine);"></div>
+          <div class="cb-card__body">
+            <h3>Geometric Typography</h3>
+            <p>Bold, condensed sans-serif typefaces set in uppercase. White or black text directly against saturated backgrounds creates maximum readability and visual impact.</p>
+            <span class="cb-tag">Type</span>
+            <span class="cb-tag">Contrast</span>
+          </div>
+        </div>
+        <div class="cb-card">
+          <div class="cb-card__color-bar" style="background: var(--cb-teal);"></div>
+          <div class="cb-card__body">
+            <h3>Feature Grids</h3>
+            <p>Each feature item becomes its own mini color block. Zero-gap grids with thick borders create a gallery of bold, self-contained panels that scale to any viewport.</p>
+            <span class="cb-tag">Grid</span>
+            <span class="cb-tag">Responsive</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== MONDRIAN GRID BANNER ===== -->
+  <div class="cb-mondrian-banner">
+    <div class="cb-mondrian-banner__cell">
+      <h2>Color Is Structure</h2>
+    </div>
+    <div class="cb-mondrian-banner__cell">
+      <span style="display: block; width: 24px; height: 24px; background: var(--cb-black);"></span>
+    </div>
+    <div class="cb-mondrian-banner__cell">
+      <span style="display: block; width: 24px; height: 24px; border: 3px solid var(--cb-black);"></span>
+    </div>
+    <div class="cb-mondrian-banner__cell">
+      <p>Inspired by De Stijl &amp; Piet Mondrian</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="cb-section cb-section--ivory cb-section--bordered" id="effects">
+    <div class="cb-section__inner">
+      <p class="cb-section-label">Visual Effects</p>
+      <h2 class="cb-section-title">CSS-Only Color Techniques</h2>
+      <p class="cb-section-subtitle">All the bold flat techniques, no image assets needed</p>
+
+      <div class="effects-grid cb-reveal">
+        <div class="effect-demo">
+          <div class="effect-preview effect-mondrian" style="position: relative;">
+            <div class="effect-mondrian__cell"></div>
+            <div class="effect-mondrian__cell"></div>
+            <div class="effect-mondrian__cell"></div>
+            <div class="effect-mondrian__cell"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Mondrian Grid</h4>
+            <p>CSS Grid with asymmetric tracks and thick black gap lines creates the iconic composition.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-split"></div>
+          <div class="effect-caption">
+            <h4>Color Split</h4>
+            <p>Hard-stop linear gradients divide a surface into equal color bands with zero blending.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-hard-edge"></div>
+          <div class="effect-caption">
+            <h4>Hard Edge Diagonal</h4>
+            <p>Angled hard-stop gradients create bold diagonal color transitions across panels.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-checker"></div>
+          <div class="effect-caption">
+            <h4>Checkerboard</h4>
+            <p>Repeating conic gradients produce a bold two-tone checkerboard pattern at any scale.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-stripe"></div>
+          <div class="effect-caption">
+            <h4>Color Stripes</h4>
+            <p>Repeating linear gradients create bold vertical color bands that scroll endlessly.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-reveal">
+            <div class="effect-reveal__block"></div>
+            <div class="effect-reveal__block"></div>
+            <div class="effect-reveal__block"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Block Reveal</h4>
+            <p>Overlapping animated color rectangles emerge and recede, creating a dynamic composition.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER BAND ===== -->
+  <div class="cb-divider-band">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="cb-section cb-section--cobalt cb-section--bordered">
+    <div class="cb-section__inner">
+      <p class="cb-section-label" style="color: rgba(255,255,255,0.7);">Interactive Elements</p>
+      <h2 class="cb-section-title" style="color: var(--cb-white);">Flat Buttons</h2>
+      <p class="cb-section-subtitle" style="color: rgba(255,255,255,0.75);">Sharp corners, thick borders, hard shadows</p>
+
+      <div class="button-showcase cb-reveal">
+        <a href="#" class="cb-btn cb-btn--primary cb-btn--shadow">Primary Action</a>
+        <a href="#" class="cb-btn cb-btn--red cb-btn--shadow">Mondrian Red</a>
+        <a href="#" class="cb-btn cb-btn--yellow cb-btn--shadow">Sunflower</a>
+        <a href="#" class="cb-btn cb-btn--on-dark">On Dark</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="cb-section cb-section--white">
+    <div class="cb-section__inner">
+      <div class="cb-quote-block cb-reveal">
+        <blockquote>
+          Color Block design is a walk through a modern art gallery: each scroll reveals a new panel of decisive color, creating rhythm, surprise, and a sense of purposeful composition.
+        </blockquote>
+        <cite>&mdash; The Spirit of Color Block Design</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cb-section cb-section--charcoal">
+    <div class="cb-section__inner">
+      <div class="cb-cta-container cb-reveal" style="background: var(--cb-white);">
+        <div class="cb-cta-bar">
+          <span></span><span></span><span></span>
+        </div>
+        <div class="cb-cta-body">
+          <h2>Start With Color</h2>
+          <p>
+            The Color Block aesthetic strips away gradients, textures, and shadows in favor of pure, unmodulated hue. Let color do the heavy lifting &mdash; each slab bold, flat, and confident.
+          </p>
+          <a href="#hero" class="cb-btn cb-btn--primary cb-btn--shadow">Back to the Top</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER BAND ===== -->
+  <div class="cb-divider-band cb-divider-band--thick">
+    <span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="cb-footer">
+    <div class="cb-footer__content">
+      <h3>Color Block</h3>
+      <p>
+        A design aesthetic reference celebrating bold, flat, saturated panels of pure color separated by crisp hard edges. Mondrian primaries, geometric type, and zero gradients &mdash; all without a single image asset.
+      </p>
+      <div class="cb-footer__links">
+        <a href="#hero">Hero</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="cb-footer__blocks">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="cb-footer__copy">Design Aesthetic Reference &bull; Color Block &bull; Bold flat color as structure</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', function () {
+      navLinks.classList.toggle('open');
+      const spans = navToggle.querySelectorAll('span');
+      if (navLinks.classList.contains('open')) {
+        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+        spans[1].style.opacity = '0';
+        spans[2].style.transform = 'rotate(-45deg) translate(7px, -7px)';
+      } else {
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      }
+    });
+
+    // Close mobile nav on link click
+    navLinks.querySelectorAll('a').forEach(function (link) {
+      link.addEventListener('click', function () {
+        navLinks.classList.remove('open');
+        const spans = navToggle.querySelectorAll('span');
+        spans[0].style.transform = 'none';
+        spans[1].style.opacity = '1';
+        spans[2].style.transform = 'none';
+      });
+    });
+
+    // Scroll reveal with Intersection Observer
+    const revealElements = document.querySelectorAll('.cb-reveal');
+
+    if ('IntersectionObserver' in window) {
+      const revealObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealElements.forEach(function (el) {
+        revealObserver.observe(el);
+      });
+    } else {
+      // Fallback: show all elements immediately
+      revealElements.forEach(function (el) {
+        el.classList.add('is-visible');
+      });
+    }
+  </script>
+
+</body>
+</html>

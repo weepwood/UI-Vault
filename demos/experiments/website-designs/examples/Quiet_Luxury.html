@@ -1,0 +1,1781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiet Luxury -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&family=Jost:wght@300;400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Neutral Palette --- */
+      --ql-parchment-ivory: #F9F6F0;
+      --ql-warm-linen: #F3EDE4;
+      --ql-cashmere-cream: #EDE7DB;
+      --ql-stone-taupe: #D5CEC4;
+      --ql-brushed-sand: #C6BDB0;
+      --ql-driftwood-gray: #A69E93;
+      --ql-pewter: #8A827A;
+      --ql-charcoal-linen: #5C564E;
+      --ql-espresso-slate: #3B3631;
+      --ql-deep-umber: #2A2520;
+
+      /* --- Accents --- */
+      --ql-saddle-leather: #8C7056;
+      --ql-dusty-olive: #7A7D5F;
+      --ql-aged-brass: #B5A078;
+      --ql-chalky-rose: #C4AEAA;
+      --ql-slate-blue: #8C9AA4;
+
+      /* --- Functional Tokens --- */
+      --ql-bg: var(--ql-parchment-ivory);
+      --ql-text: var(--ql-charcoal-linen);
+      --ql-heading: var(--ql-espresso-slate);
+      --ql-accent: var(--ql-saddle-leather);
+      --ql-surface: var(--ql-cashmere-cream);
+      --ql-border: rgba(213, 206, 196, 0.35);
+      --ql-border-light: rgba(213, 206, 196, 0.2);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      letter-spacing: 0.01em;
+      color: var(--ql-text);
+      background: var(--ql-bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: var(--ql-accent);
+      transition: color 0.4s ease;
+    }
+
+    a:hover {
+      color: var(--ql-heading);
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    h1, h2, h3, h4 {
+      font-family: 'Cormorant', 'Georgia', serif;
+      font-weight: 300;
+      letter-spacing: 0.03em;
+      line-height: 1.2;
+      color: var(--ql-heading);
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 4.2rem);
+      letter-spacing: 0.05em;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3vw, 2rem);
+      font-weight: 400;
+    }
+
+    h3 {
+      font-size: 1.35rem;
+      font-weight: 400;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    p {
+      margin-bottom: 1.4em;
+    }
+
+    .eyebrow {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.68rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--ql-driftwood-gray);
+    }
+
+    .caption {
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: var(--ql-driftwood-gray);
+      letter-spacing: 0.02em;
+    }
+
+    .accent-serif {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+    }
+
+    /* ============================================
+       LAYOUT UTILITIES
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 48px;
+    }
+
+    .container--narrow {
+      max-width: 740px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+    }
+
+    .section--linen {
+      background: var(--ql-warm-linen);
+      position: relative;
+    }
+
+    .section--linen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 86, 78, 0.015) 2px,
+          rgba(92, 86, 78, 0.015) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 86, 78, 0.015) 2px,
+          rgba(92, 86, 78, 0.015) 3px
+        );
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .section--linen > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .section--umber {
+      background: var(--ql-deep-umber);
+      color: var(--ql-brushed-sand);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-header .eyebrow {
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      color: var(--ql-pewter);
+      max-width: 520px;
+      margin: 20px auto 0;
+      font-size: 0.95rem;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 28px 48px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid var(--ql-border-light);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      background: rgba(249, 246, 240, 0.85);
+    }
+
+    .nav__brand {
+      font-family: 'Cormorant', serif;
+      font-weight: 400;
+      font-size: 1.3rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ql-heading);
+      text-decoration: none;
+    }
+
+    .nav__brand:hover {
+      color: var(--ql-heading);
+    }
+
+    .nav__links {
+      display: flex;
+      gap: 40px;
+    }
+
+    .nav__links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ql-pewter);
+      position: relative;
+    }
+
+    .nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--ql-accent);
+      transition: width 0.4s ease;
+    }
+
+    .nav__links a:hover {
+      color: var(--ql-heading);
+    }
+
+    .nav__links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 90vh;
+      padding: 120px 48px;
+      text-align: center;
+      background: var(--ql-bg);
+    }
+
+    .hero__eyebrow {
+      display: block;
+      margin-bottom: 32px;
+    }
+
+    .hero__title {
+      max-width: 720px;
+      margin-bottom: 28px;
+    }
+
+    .hero__subtitle {
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--ql-pewter);
+      max-width: 480px;
+      margin-bottom: 48px;
+    }
+
+    .hero__divider {
+      width: 48px;
+      height: 1px;
+      background: var(--ql-aged-brass);
+      border: none;
+      margin-bottom: 48px;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ql-heading);
+      background: transparent;
+      border: 1px solid var(--ql-stone-taupe);
+      border-radius: 0;
+      padding: 14px 40px;
+      cursor: pointer;
+      transition: all 0.45s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      color: var(--ql-parchment-ivory);
+      background: var(--ql-heading);
+      border-color: var(--ql-heading);
+    }
+
+    .btn--primary {
+      color: var(--ql-parchment-ivory);
+      background: var(--ql-charcoal-linen);
+      border-color: var(--ql-charcoal-linen);
+    }
+
+    .btn--primary:hover {
+      background: var(--ql-deep-umber);
+      border-color: var(--ql-deep-umber);
+      color: var(--ql-parchment-ivory);
+    }
+
+    .btn--ghost {
+      border: none;
+      border-bottom: 1px solid var(--ql-accent);
+      color: var(--ql-accent);
+      padding: 14px 0;
+      background: transparent;
+    }
+
+    .btn--ghost:hover {
+      color: var(--ql-heading);
+      border-bottom-color: var(--ql-heading);
+      background: transparent;
+    }
+
+    .btn--subtle {
+      border-color: transparent;
+      color: var(--ql-pewter);
+      background: var(--ql-cashmere-cream);
+    }
+
+    .btn--subtle:hover {
+      color: var(--ql-heading);
+      background: var(--ql-stone-taupe);
+      border-color: transparent;
+    }
+
+    /* ============================================
+       BRASS RULE DIVIDER
+       ============================================ */
+    .brass-rule {
+      border: none;
+      height: 1px;
+      max-width: 80px;
+      margin: 0 auto;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        var(--ql-aged-brass) 20%,
+        var(--ql-aged-brass) 80%,
+        transparent 100%
+      );
+      opacity: 0.5;
+    }
+
+    .brass-rule--wide {
+      max-width: 200px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid var(--ql-border-light);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ql-driftwood-gray);
+      margin-bottom: 12px;
+    }
+
+    .typo-display {
+      font-family: 'Cormorant', serif;
+      font-weight: 300;
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      letter-spacing: 0.05em;
+      line-height: 1.15;
+      color: var(--ql-heading);
+    }
+
+    .typo-heading {
+      font-family: 'Cormorant', serif;
+      font-weight: 400;
+      font-size: 1.9rem;
+      letter-spacing: 0.04em;
+      line-height: 1.25;
+      color: var(--ql-heading);
+    }
+
+    .typo-accent {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.4rem;
+      color: var(--ql-accent);
+      line-height: 1.5;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--ql-text);
+    }
+
+    .typo-nav-label {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ql-pewter);
+    }
+
+    .typo-caption {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: var(--ql-driftwood-gray);
+      letter-spacing: 0.02em;
+    }
+
+    .typo-right h3 {
+      margin-bottom: 20px;
+      font-size: 1.15rem;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--ql-border-light);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ql-driftwood-gray);
+      min-width: 60px;
+    }
+
+    .typo-pairings {
+      margin-top: 36px;
+      padding-top: 36px;
+      border-top: 1px solid var(--ql-border-light);
+    }
+
+    .typo-pairings h3 {
+      margin-bottom: 16px;
+    }
+
+    .typo-pairing {
+      margin-bottom: 14px;
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .typo-pairing-vibe {
+      display: block;
+      color: var(--ql-driftwood-gray);
+      font-size: 0.82rem;
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 24px;
+    }
+
+    .color-chip {
+      transition: transform 0.5s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-2px);
+    }
+
+    .color-swatch {
+      height: 80px;
+      border-radius: 2px;
+      margin-bottom: 10px;
+      border: 1px solid var(--ql-border-light);
+    }
+
+    .color-name {
+      font-family: 'Jost', sans-serif;
+      font-weight: 400;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--ql-heading);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      color: var(--ql-driftwood-gray);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--ql-surface);
+      border: 1px solid var(--ql-border);
+      border-radius: 2px;
+      padding: 48px 40px;
+      transition: background 0.5s ease, border-color 0.5s ease, transform 0.5s ease;
+    }
+
+    .card:hover {
+      background: var(--ql-warm-linen);
+      border-color: rgba(181, 160, 120, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .card__icon {
+      width: 40px;
+      height: 1px;
+      background: var(--ql-aged-brass);
+      opacity: 0.5;
+      margin-bottom: 28px;
+    }
+
+    .card__eyebrow {
+      display: block;
+      margin-bottom: 16px;
+    }
+
+    .card h3 {
+      margin-bottom: 16px;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--ql-text);
+      margin-bottom: 0;
+    }
+
+    .card__link {
+      display: inline-block;
+      margin-top: 24px;
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ql-accent);
+      border-bottom: 1px solid var(--ql-accent);
+      padding-bottom: 2px;
+      transition: color 0.4s ease, border-color 0.4s ease;
+    }
+
+    .card__link:hover {
+      color: var(--ql-heading);
+      border-color: var(--ql-heading);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--ql-deep-umber);
+      padding: 80px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(181, 160, 120, 0.04) 0%, transparent 50%),
+        linear-gradient(315deg, rgba(181, 160, 120, 0.04) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .motif-banner__rule {
+      width: 48px;
+      height: 1px;
+      background: var(--ql-aged-brass);
+      opacity: 0.4;
+      margin: 0 auto 32px;
+      border: none;
+    }
+
+    .motif-banner h2 {
+      font-family: 'Cormorant', serif;
+      font-weight: 300;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      letter-spacing: 0.06em;
+      color: var(--ql-cashmere-cream);
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .motif-banner p {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 0.9rem;
+      color: var(--ql-driftwood-gray);
+      max-width: 460px;
+      margin: 0 auto;
+      line-height: 1.7;
+      position: relative;
+    }
+
+    .motif-banner__rule-bottom {
+      width: 48px;
+      height: 1px;
+      background: var(--ql-aged-brass);
+      opacity: 0.4;
+      margin: 32px auto 0;
+      border: none;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 48px 64px;
+    }
+
+    .principle-item {
+      padding-top: 24px;
+      border-top: 1px solid var(--ql-border-light);
+    }
+
+    .principle-number {
+      font-family: 'Cormorant', serif;
+      font-weight: 300;
+      font-size: 2rem;
+      color: var(--ql-stone-taupe);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .principle-item h3 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .principle-item p {
+      font-size: 0.92rem;
+      line-height: 1.75;
+      color: var(--ql-text);
+      margin-bottom: 0;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      border: 1px solid var(--ql-border);
+      border-radius: 2px;
+      overflow: hidden;
+      transition: border-color 0.5s ease, transform 0.5s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: rgba(181, 160, 120, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 24px 28px;
+      background: var(--ql-surface);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Cormorant', serif;
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: var(--ql-heading);
+      margin-bottom: 8px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.65;
+      color: var(--ql-pewter);
+      margin-bottom: 0;
+    }
+
+    /* --- Effect 1: Linen Weave --- */
+    .effect-linen {
+      background: var(--ql-warm-linen);
+    }
+
+    .effect-linen::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 86, 78, 0.03) 2px,
+          rgba(92, 86, 78, 0.03) 3px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 2px,
+          rgba(92, 86, 78, 0.03) 2px,
+          rgba(92, 86, 78, 0.03) 3px
+        );
+    }
+
+    .effect-linen::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 8px,
+          rgba(92, 86, 78, 0.008) 8px,
+          rgba(92, 86, 78, 0.008) 9px
+        );
+    }
+
+    /* --- Effect 2: Brushed Metal --- */
+    .effect-metal {
+      background: linear-gradient(
+        135deg,
+        var(--ql-stone-taupe) 0%,
+        var(--ql-brushed-sand) 30%,
+        var(--ql-stone-taupe) 50%,
+        var(--ql-brushed-sand) 70%,
+        var(--ql-stone-taupe) 100%
+      );
+    }
+
+    .effect-metal::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.03) 1px,
+          rgba(255, 255, 255, 0.03) 2px
+        );
+    }
+
+    .effect-metal::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at 30% 40%,
+        rgba(255, 255, 255, 0.08) 0%,
+        transparent 60%
+      );
+    }
+
+    /* --- Effect 3: Marble Veining --- */
+    .effect-marble {
+      background: var(--ql-parchment-ivory);
+      background-image:
+        radial-gradient(ellipse at 20% 50%, rgba(213, 206, 196, 0.4) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, rgba(198, 189, 176, 0.3) 0%, transparent 40%),
+        radial-gradient(ellipse at 60% 80%, rgba(213, 206, 196, 0.25) 0%, transparent 45%);
+    }
+
+    .effect-marble::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(160deg, transparent 30%, rgba(213, 206, 196, 0.2) 32%, transparent 34%),
+        linear-gradient(155deg, transparent 45%, rgba(198, 189, 176, 0.15) 46.5%, transparent 48%),
+        linear-gradient(165deg, transparent 60%, rgba(213, 206, 196, 0.12) 61%, transparent 62.5%),
+        linear-gradient(150deg, transparent 20%, rgba(198, 189, 176, 0.1) 21%, transparent 22.5%);
+    }
+
+    /* --- Effect 4: Aged Parchment --- */
+    .effect-parchment {
+      background: var(--ql-cashmere-cream);
+      background-image:
+        radial-gradient(ellipse at 0% 0%, rgba(181, 160, 120, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 100% 100%, rgba(181, 160, 120, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(166, 158, 147, 0.06) 0%, transparent 70%);
+    }
+
+    .effect-parchment::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(92, 86, 78, 0.01) 3px,
+          rgba(92, 86, 78, 0.01) 4px
+        );
+    }
+
+    .effect-parchment::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 15% 85%, rgba(140, 112, 86, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 85% 15%, rgba(140, 112, 86, 0.06) 0%, transparent 20%);
+    }
+
+    /* --- Effect 5: Tonal Gradient --- */
+    .effect-tonal {
+      background: linear-gradient(
+        135deg,
+        var(--ql-parchment-ivory) 0%,
+        var(--ql-warm-linen) 25%,
+        var(--ql-cashmere-cream) 50%,
+        var(--ql-warm-linen) 75%,
+        var(--ql-parchment-ivory) 100%
+      );
+    }
+
+    .effect-tonal::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        circle at 50% 50%,
+        transparent 30%,
+        rgba(92, 86, 78, 0.03) 100%
+      );
+    }
+
+    /* --- Effect 6: Grain Texture --- */
+    .effect-grain {
+      background: var(--ql-warm-linen);
+    }
+
+    .effect-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        radial-gradient(circle at 25% 25%, rgba(92, 86, 78, 0.04) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, rgba(92, 86, 78, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 50% 10%, rgba(92, 86, 78, 0.02) 1px, transparent 1px),
+        radial-gradient(circle at 10% 60%, rgba(92, 86, 78, 0.03) 1px, transparent 1px),
+        radial-gradient(circle at 90% 40%, rgba(92, 86, 78, 0.02) 1px, transparent 1px);
+      background-size: 7px 7px, 11px 11px, 13px 13px, 9px 9px, 15px 15px;
+    }
+
+    .effect-grain::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(249, 246, 240, 0.3) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(42, 37, 32, 0.03) 100%
+      );
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 32px;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-section {
+      text-align: center;
+      padding: var(--section-pad) 48px;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .quote-section blockquote {
+      font-family: 'Cormorant', serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      line-height: 1.5;
+      color: var(--ql-heading);
+      margin-bottom: 32px;
+    }
+
+    .quote-section blockquote::before {
+      content: '';
+      display: block;
+      width: 32px;
+      height: 1px;
+      background: var(--ql-aged-brass);
+      opacity: 0.5;
+      margin: 0 auto 28px;
+    }
+
+    .quote-section cite {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-style: normal;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ql-driftwood-gray);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: var(--section-pad) 48px;
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .cta-section .eyebrow {
+      display: block;
+      margin-bottom: 20px;
+    }
+
+    .cta-section h2 {
+      margin-bottom: 20px;
+    }
+
+    .cta-section p {
+      color: var(--ql-pewter);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.75;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--ql-deep-umber);
+      color: var(--ql-brushed-sand);
+      padding: 80px 48px 48px;
+    }
+
+    .footer__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 48px;
+    }
+
+    .footer__brand {
+      font-family: 'Cormorant', serif;
+      font-weight: 400;
+      font-size: 1.2rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ql-cashmere-cream);
+    }
+
+    .footer__text {
+      font-size: 0.88rem;
+      color: var(--ql-driftwood-gray);
+      max-width: 340px;
+      margin-top: 12px;
+      line-height: 1.7;
+    }
+
+    .footer__links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .footer__links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ql-brushed-sand);
+      transition: color 0.4s ease;
+    }
+
+    .footer__links a:hover {
+      color: var(--ql-cashmere-cream);
+    }
+
+    .footer__bottom {
+      max-width: 1200px;
+      margin: 48px auto 0;
+      padding-top: 32px;
+      border-top: 1px solid rgba(198, 189, 176, 0.15);
+      text-align: center;
+    }
+
+    .footer__bottom p {
+      font-size: 0.75rem;
+      color: var(--ql-driftwood-gray);
+      letter-spacing: 0.04em;
+      margin: 0;
+    }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-stagger > * {
+      opacity: 0;
+      transform: translateY(12px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal-stagger.is-visible > *:nth-child(1) { transition-delay: 0s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(2) { transition-delay: 0.12s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(3) { transition-delay: 0.12s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(4) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(5) { transition-delay: 0.24s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(6) { transition-delay: 0.36s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(7) { transition-delay: 0.36s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(8) { transition-delay: 0.48s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(9) { transition-delay: 0.48s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(10) { transition-delay: 0.6s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(11) { transition-delay: 0.6s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(12) { transition-delay: 0.72s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(13) { transition-delay: 0.72s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(14) { transition-delay: 0.84s; opacity: 1; transform: translateY(0); }
+    .reveal-stagger.is-visible > *:nth-child(15) { transition-delay: 0.84s; opacity: 1; transform: translateY(0); }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+
+      .reveal-stagger > * {
+        opacity: 1;
+        transform: none;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE -- TABLET
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 20px 24px;
+      }
+
+      .nav__links {
+        gap: 24px;
+      }
+
+      .hero {
+        padding: 80px 24px;
+        min-height: 80vh;
+      }
+
+      .container {
+        padding: 0 24px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 16px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .principles-grid {
+        grid-template-columns: 1fr;
+        gap: 36px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .footer__inner {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer__text {
+        max-width: none;
+      }
+
+      .footer__links {
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .motif-banner {
+        padding: 60px 24px;
+      }
+
+      .quote-section {
+        padding: var(--section-pad) 24px;
+      }
+
+      .cta-section {
+        padding: var(--section-pad) 24px;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE -- MOBILE
+       ============================================ */
+    @media (max-width: 480px) {
+      .nav__links {
+        display: none;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      .btn {
+        padding: 12px 28px;
+      }
+
+      .typo-display {
+        font-size: 2rem;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-name {
+        font-size: 0.62rem;
+      }
+
+      .color-hex {
+        font-size: 0.62rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav__brand">Atelier</a>
+    <ul class="nav__links">
+      <li><a href="#typography">Typography</a></li>
+      <li><a href="#palette">Palette</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#effects">Effects</a></li>
+    </ul>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section class="hero" id="hero">
+    <span class="eyebrow hero__eyebrow">Design Aesthetic Reference</span>
+    <h1 class="hero__title">The Art of<br>Quiet Distinction</h1>
+    <p class="hero__subtitle">
+      True refinement does not announce itself. It resides in proportion, material, and the confidence to let silence speak.
+    </p>
+    <hr class="hero__divider">
+    <a href="#typography" class="btn">Explore the Aesthetic</a>
+  </section>
+
+  <!-- ===== BRASS RULE ===== -->
+  <hr class="brass-rule">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Typography</span>
+        <h2>Whisper-Weight Precision</h2>
+        <p>Light weights, generous letter-spacing, and the restraint of engraved stationery</p>
+      </div>
+
+      <div class="typo-showcase reveal">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Cormorant 300</p>
+            <p class="typo-display">Quiet Distinction</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Cormorant 400</p>
+            <p class="typo-heading">The Measure of Refinement</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Accent / Instrument Serif Italic</p>
+            <p class="typo-accent">Beauty emerges from proportion and restraint</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 300</p>
+            <p class="typo-body">Quiet Luxury typography embodies quality over quantity, restraint over spectacle. Every letterform earns its place through considered spacing and weight.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Navigation &amp; Labels / Jost 300</p>
+            <p class="typo-nav-label">Collections &emsp; Philosophy &emsp; Journal</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Caption / Inter 400</p>
+            <p class="typo-caption">Cashmere blend, undyed natural, hand-finished in Italy</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">4.2rem</span>
+              <span style="font-family: 'Cormorant', serif; font-weight: 300; font-size: 1.8rem; color: var(--ql-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.0rem</span>
+              <span style="font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.4rem; color: var(--ql-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.35rem</span>
+              <span style="font-family: 'Cormorant', serif; font-weight: 400; font-size: 1.15rem; color: var(--ql-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.4rem</span>
+              <span style="font-family: 'Instrument Serif', serif; font-style: italic; font-size: 1.1rem; color: var(--ql-accent);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.0rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-weight: 300; font-size: 0.95rem; color: var(--ql-text);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.72rem</span>
+              <span style="font-family: 'Jost', sans-serif; font-weight: 300; font-size: 0.72rem; color: var(--ql-pewter); text-transform: uppercase; letter-spacing: 0.2em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing">
+              <strong style="font-family: 'Cormorant', serif; font-weight: 300; color: var(--ql-heading);">Cormorant 300</strong> + <strong style="font-family: 'Inter', sans-serif; font-weight: 300;">Inter 300</strong>
+              <span class="typo-pairing-vibe">Timeless contrast, quiet editorial</span>
+            </p>
+            <p class="typo-pairing">
+              <strong style="font-family: 'Cormorant', serif; font-weight: 400; font-style: italic; color: var(--ql-heading);">Cormorant Italic</strong> + <strong style="font-family: 'Jost', sans-serif; font-weight: 300;">Jost 300</strong>
+              <span class="typo-pairing-vibe">Modern heritage, gallery catalogue</span>
+            </p>
+            <p class="typo-pairing" style="margin-bottom: 0;">
+              <strong style="font-family: 'Instrument Serif', serif; font-style: italic; color: var(--ql-accent);">Instrument Serif</strong> + <strong style="font-family: 'Inter', sans-serif; font-weight: 300;">Inter 300</strong>
+              <span class="typo-pairing-vibe">Contemporary restraint, boutique hotel</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRASS RULE ===== -->
+  <hr class="brass-rule">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--linen" id="palette">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Color Palette</span>
+        <h2>Cashmere, Stone &amp; Aged Brass</h2>
+        <p>Muted neutrals drawn from undyed cashmere, Carrara marble, and the patina of time</p>
+      </div>
+
+      <div class="palette-grid reveal-stagger">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F9F6F0;"></div>
+          <div class="color-name">Parchment Ivory</div>
+          <div class="color-hex">#F9F6F0</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F3EDE4;"></div>
+          <div class="color-name">Warm Linen</div>
+          <div class="color-hex">#F3EDE4</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #EDE7DB;"></div>
+          <div class="color-name">Cashmere Cream</div>
+          <div class="color-hex">#EDE7DB</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D5CEC4;"></div>
+          <div class="color-name">Stone Taupe</div>
+          <div class="color-hex">#D5CEC4</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C6BDB0;"></div>
+          <div class="color-name">Brushed Sand</div>
+          <div class="color-hex">#C6BDB0</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A69E93;"></div>
+          <div class="color-name">Driftwood Gray</div>
+          <div class="color-hex">#A69E93</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8A827A;"></div>
+          <div class="color-name">Pewter</div>
+          <div class="color-hex">#8A827A</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5C564E;"></div>
+          <div class="color-name">Charcoal Linen</div>
+          <div class="color-hex">#5C564E</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3B3631;"></div>
+          <div class="color-name">Espresso Slate</div>
+          <div class="color-hex">#3B3631</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2A2520;"></div>
+          <div class="color-name">Deep Umber</div>
+          <div class="color-hex">#2A2520</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8C7056;"></div>
+          <div class="color-name">Saddle Leather</div>
+          <div class="color-hex">#8C7056</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A7D5F;"></div>
+          <div class="color-name">Dusty Olive</div>
+          <div class="color-hex">#7A7D5F</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #B5A078;"></div>
+          <div class="color-name">Aged Brass</div>
+          <div class="color-hex">#B5A078</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C4AEAA;"></div>
+          <div class="color-name">Chalky Rose</div>
+          <div class="color-hex">#C4AEAA</div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8C9AA4;"></div>
+          <div class="color-name">Slate Blue</div>
+          <div class="color-hex">#8C9AA4</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRASS RULE ===== -->
+  <hr class="brass-rule">
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Components</span>
+        <h2>Understated Elements</h2>
+        <p>Every element earns its place through function; beauty emerges from proportion and spacing alone</p>
+      </div>
+
+      <div class="card-grid reveal-stagger">
+        <article class="card">
+          <div class="card__icon"></div>
+          <span class="eyebrow card__eyebrow">Material</span>
+          <h3>Hairline Borders</h3>
+          <p>Card edges dissolve into near-invisible 1px lines at low opacity, replaced by spatial separation. The border is felt more than seen, like the seam on a bespoke garment.</p>
+          <a href="#" class="card__link">View technique</a>
+        </article>
+        <article class="card">
+          <div class="card__icon"></div>
+          <span class="eyebrow card__eyebrow">Texture</span>
+          <h3>Linen Weave Surfaces</h3>
+          <p>Subtle CSS background textures referencing high-thread-count linen give flat surfaces tactile depth without visual noise or photographic dependencies.</p>
+          <a href="#" class="card__link">View technique</a>
+        </article>
+        <article class="card">
+          <div class="card__icon"></div>
+          <span class="eyebrow card__eyebrow">Motion</span>
+          <h3>Deliberate Transitions</h3>
+          <p>Hover effects are tonal shifts rather than spatial movements. Transitions use 400&ndash;800ms durations and gentle easing, as though the interface breathes unhurried.</p>
+          <a href="#" class="card__link">View technique</a>
+        </article>
+        <article class="card">
+          <div class="card__icon"></div>
+          <span class="eyebrow card__eyebrow">Typography</span>
+          <h3>Spaced Uppercase Labels</h3>
+          <p>Navigation and metadata set in spaced uppercase creates the feel of embossed signage or engraved brass plates found in the lobbies of unmarked members' clubs.</p>
+          <a href="#" class="card__link">View technique</a>
+        </article>
+        <article class="card">
+          <div class="card__icon"></div>
+          <span class="eyebrow card__eyebrow">Accent</span>
+          <h3>Aged Brass Details</h3>
+          <p>A single thin brass rule or warm metallic accent appears sparingly between sections, referencing the hardware of fine furniture and bespoke leather goods.</p>
+          <a href="#" class="card__link">View technique</a>
+        </article>
+        <article class="card">
+          <div class="card__icon"></div>
+          <span class="eyebrow card__eyebrow">Layout</span>
+          <h3>Generous Negative Space</h3>
+          <p>White space is the primary design element. Sections breathe with 80&ndash;140px vertical gaps and narrow content columns, creating a sense of curated exclusivity.</p>
+          <a href="#" class="card__link">View technique</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DECORATIVE BANNER ===== -->
+  <div class="motif-banner">
+    <hr class="motif-banner__rule">
+    <h2>Restraint as the Highest Form of Luxury</h2>
+    <p>What you choose not to include matters more than what you add. The silence between notes is what makes the music.</p>
+    <hr class="motif-banner__rule-bottom">
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Design Principles</span>
+        <h2>The Philosophy of Less</h2>
+        <p>Confidence through omission, warmth through material, hierarchy through space</p>
+      </div>
+
+      <div class="principles-grid reveal">
+        <div class="principle-item">
+          <div class="principle-number">01</div>
+          <h3>Restraint as Primary Decision</h3>
+          <p>Let what you choose not to include carry the design. Remove until it breathes. If a page section feels full, it has too much. The absence of decoration itself becomes the luxury.</p>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">02</div>
+          <h3>Negative Space as Material</h3>
+          <p>Treat white space as the most valuable material in the composition. It is the cashmere of the layout. Build hierarchy through spacing and weight rather than color contrast or size extremes.</p>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">03</div>
+          <h3>Unhurried Interactions</h3>
+          <p>Every interaction should feel unhurried. Speed communicates anxiety; slowness communicates confidence. Transitions use 400&ndash;800ms durations with gentle easing, moving at the pace of a deep breath.</p>
+        </div>
+        <div class="principle-item">
+          <div class="principle-number">04</div>
+          <h3>Material Warmth Without Decoration</h3>
+          <p>Use texture and material references to create warmth without resorting to ornamentation. Design as though every pixel will be printed on heavyweight cotton stock: if it would look cheap on paper, it looks cheap on screen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRASS RULE ===== -->
+  <hr class="brass-rule brass-rule--wide">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--linen" id="effects">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Visual Effects</span>
+        <h2>CSS Textures &amp; Surfaces</h2>
+        <p>Tactile depth through code alone, no image assets required</p>
+      </div>
+
+      <div class="effects-grid reveal-stagger">
+        <div class="effect-demo">
+          <div class="effect-preview effect-linen"></div>
+          <div class="effect-caption">
+            <h4>Linen Weave</h4>
+            <p>Repeating linear gradients in both axes create the tactile warmth of high-thread-count linen.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-metal"></div>
+          <div class="effect-caption">
+            <h4>Brushed Metal</h4>
+            <p>Fine horizontal lines with a soft radial highlight simulate the patina of brushed brass hardware.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-marble"></div>
+          <div class="effect-caption">
+            <h4>Carrara Marble</h4>
+            <p>Layered radial gradients and angled linear veins evoke polished stone surfaces.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-parchment"></div>
+          <div class="effect-caption">
+            <h4>Aged Parchment</h4>
+            <p>Warm corner vignettes and faint horizontal grain suggest paper softened by decades of light.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-tonal"></div>
+          <div class="effect-caption">
+            <h4>Tonal Gradient</h4>
+            <p>Subtle value shifts within a single warm hue family build monochromatic depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-grain"></div>
+          <div class="effect-caption">
+            <h4>Fine Grain</h4>
+            <p>Scattered micro-dot radial gradients at varying sizes create an organic grain texture.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BRASS RULE ===== -->
+  <hr class="brass-rule">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="eyebrow">Interactive Elements</span>
+        <h2>Stealth Buttons</h2>
+        <p>Calm authority, typographic precision, and dignified tonal inversions on hover</p>
+      </div>
+
+      <div class="button-showcase reveal">
+        <a href="#" class="btn">Default</a>
+        <a href="#" class="btn btn--primary">Primary</a>
+        <a href="#" class="btn btn--ghost">Ghost Link</a>
+        <a href="#" class="btn btn--subtle">Subtle</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BLOCKQUOTE ===== -->
+  <div class="quote-section reveal">
+    <blockquote>
+      True luxury is not about what you wear or what you own. It is the quiet confidence that comes from knowing that every detail has been considered, and nothing needs to prove itself.
+    </blockquote>
+    <cite>&mdash; The Philosophy of Stealth Wealth</cite>
+  </div>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section--linen">
+    <div class="cta-section reveal">
+      <span class="eyebrow">Begin</span>
+      <h2>Design With Considered Restraint</h2>
+      <p>
+        The Quiet Luxury aesthetic achieves impact through what it omits. Muted neutrals, whisper-weight typography, generous negative space, and materials that speak for themselves.
+      </p>
+      <a href="#hero" class="btn btn--primary">Return to the Beginning</a>
+    </div>
+  </section>
+
+  <!-- ===== BRASS RULE ===== -->
+  <hr class="brass-rule">
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div>
+        <div class="footer__brand">Quiet Luxury</div>
+        <p class="footer__text">
+          A design aesthetic reference celebrating restraint, material warmth, and the confidence to let silence speak. No images, no gradients, no decoration &mdash; only proportion and considered space.
+        </p>
+      </div>
+      <nav class="footer__links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </nav>
+    </div>
+    <div class="footer__bottom">
+      <p>Design Aesthetic Reference &middot; Quiet Luxury &middot; Restraint is the highest form of confidence</p>
+    </div>
+  </footer>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    /* Intersection Observer for scroll reveal */
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (!prefersReducedMotion) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+        observer.observe(el);
+      });
+    } else {
+      /* If reduced motion is preferred, make everything visible immediately */
+      document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+        el.classList.add('is-visible');
+      });
+    }
+  </script>
+
+</body>
+</html>

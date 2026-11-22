@@ -1,0 +1,1688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grotesk Display -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Neutrals --- */
+      --gd-black: #0a0a0a;
+      --gd-white: #ffffff;
+      --gd-off-white: #f5f5f0;
+      --gd-cream: #faf8f2;
+      --gd-light-gray: #e8e8e3;
+      --gd-mid-gray: #9e9e99;
+      --gd-dark-gray: #3d3d3a;
+      --gd-stone: #c8c4bc;
+      --gd-charcoal: #2a2a28;
+      --gd-ink: #1a1a18;
+
+      /* --- Accent: Red --- */
+      --gd-red: #e63222;
+      --gd-red-hover: #b8281c;
+
+      /* --- Accent: Blue --- */
+      --gd-blue: #1a5cff;
+      --gd-blue-hover: #1244cc;
+
+      /* --- Accent: Yellow (rare) --- */
+      --gd-yellow: #ffe424;
+
+      /* --- Semantic --- */
+      --gd-bg-primary: #ffffff;
+      --gd-bg-secondary: #f5f5f0;
+      --gd-bg-dark: #0a0a0a;
+      --gd-bg-dark-secondary: #2a2a28;
+      --gd-text-primary: #0a0a0a;
+      --gd-text-secondary: #3d3d3a;
+      --gd-text-muted: #9e9e99;
+      --gd-text-inverse: #ffffff;
+      --gd-border: #e8e8e3;
+      --gd-border-dark: #3d3d3a;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--gd-text-secondary);
+      background-color: var(--gd-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 700;
+      color: var(--gd-text-primary);
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 28px 40px;
+      border-bottom: 1px solid var(--gd-border);
+      position: sticky;
+      top: 0;
+      background: var(--gd-white);
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--gd-black);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--gd-red);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 0.85rem;
+      color: var(--gd-text-muted);
+      letter-spacing: 0.02em;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--gd-black);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: 100vh;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 120px 40px 80px;
+      position: relative;
+    }
+
+    .hero-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gd-text-muted);
+      margin-bottom: 24px;
+    }
+
+    .hero-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(4rem, 14vw, 14rem);
+      font-weight: 700;
+      letter-spacing: -0.05em;
+      line-height: 0.85;
+      text-transform: uppercase;
+      color: var(--gd-text-primary);
+      margin-bottom: 48px;
+    }
+
+    .hero-heading em {
+      font-style: normal;
+      font-weight: 300;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-heading .accent {
+      color: var(--gd-red);
+    }
+
+    .hero-body {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 40px;
+    }
+
+    .hero-intro {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1.15rem;
+      color: var(--gd-text-secondary);
+      max-width: 440px;
+      line-height: 1.7;
+    }
+
+    .hero-meta {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gd-text-muted);
+      text-align: right;
+    }
+
+    .hero-meta span {
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .section {
+      padding: var(--section-pad) 0;
+      position: relative;
+    }
+
+    .section--light {
+      background: var(--gd-bg-primary);
+    }
+
+    .section--off-white {
+      background: var(--gd-bg-secondary);
+    }
+
+    .section--dark {
+      background: var(--gd-bg-dark);
+      color: var(--gd-text-inverse);
+    }
+
+    .section--dark h2,
+    .section--dark h3,
+    .section--dark h4 {
+      color: var(--gd-white);
+    }
+
+    .section--dark p {
+      color: var(--gd-mid-gray);
+    }
+
+    .section--dark .section-label {
+      color: var(--gd-mid-gray);
+    }
+
+    .section--charcoal {
+      background: var(--gd-bg-dark-secondary);
+      color: var(--gd-text-inverse);
+    }
+
+    .section--charcoal h2 { color: var(--gd-white); }
+    .section--charcoal p { color: var(--gd-mid-gray); }
+
+    .section-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gd-text-muted);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.05;
+      margin-bottom: 16px;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--gd-text-muted);
+      max-width: 540px;
+      line-height: 1.6;
+      margin-bottom: 56px;
+    }
+
+    /* ============================================
+       DIVIDER
+       ============================================ */
+    .gd-divider {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .gd-divider hr {
+      border: none;
+      height: 1px;
+      background: var(--gd-border);
+    }
+
+    .gd-divider--dark hr {
+      background: var(--gd-border-dark);
+    }
+
+    .gd-divider--heavy hr {
+      height: 3px;
+      background: var(--gd-black);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 36px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gd-text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gd-border);
+    }
+
+    .typo-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.9;
+      text-transform: uppercase;
+      color: var(--gd-black);
+    }
+
+    .typo-display-thin {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: var(--gd-black);
+    }
+
+    .typo-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      color: var(--gd-black);
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.65;
+      color: var(--gd-text-secondary);
+    }
+
+    .typo-lead {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1.25rem;
+      line-height: 1.7;
+      color: var(--gd-text-secondary);
+    }
+
+    .typo-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gd-text-muted);
+    }
+
+    .typo-right {
+      background: var(--gd-off-white);
+      padding: 40px;
+      border-bottom: 2px solid var(--gd-border);
+    }
+
+    .typo-right h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 20px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--gd-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--gd-text-muted);
+      min-width: 60px;
+      text-align: right;
+    }
+
+    .typo-pairings {
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 2px solid var(--gd-border);
+    }
+
+    .typo-pairing {
+      margin-bottom: 16px;
+    }
+
+    .typo-pairing:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--gd-black);
+      letter-spacing: -0.01em;
+    }
+
+    .typo-pairing-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: var(--gd-text-muted);
+      line-height: 1.5;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0;
+    }
+
+    .color-chip {
+      border-right: 1px solid var(--gd-border);
+      border-bottom: 1px solid var(--gd-border);
+      transition: opacity 0.3s ease;
+    }
+
+    .color-chip:hover {
+      opacity: 0.85;
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 14px 16px;
+    }
+
+    .color-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--gd-black);
+      letter-spacing: -0.01em;
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: var(--gd-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .color-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem;
+      color: var(--gd-stone);
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 0;
+    }
+
+    .card {
+      background: var(--gd-white);
+      border-bottom: 2px solid var(--gd-border);
+      border-right: 1px solid var(--gd-border);
+      padding: 40px 32px;
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.3s ease;
+    }
+
+    .card:hover {
+      border-bottom-color: var(--gd-black);
+    }
+
+    .card-number {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--gd-light-gray);
+      margin-bottom: 20px;
+      transition: color 0.3s ease;
+    }
+
+    .card:hover .card-number {
+      color: var(--gd-red);
+    }
+
+    .card-label {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gd-text-muted);
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      margin-bottom: 14px;
+      color: var(--gd-black);
+      transition: letter-spacing 0.3s ease;
+    }
+
+    .card:hover .card-title {
+      letter-spacing: 0em;
+    }
+
+    .card-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: var(--gd-text-muted);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 0;
+    }
+
+    .effect-demo {
+      border-right: 1px solid var(--gd-border-dark);
+      border-bottom: 1px solid var(--gd-border-dark);
+    }
+
+    .effect-preview {
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Effect 1: Weight Morph */
+    .effect-weight-morph {
+      background: var(--gd-bg-dark);
+    }
+
+    .effect-weight-morph-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--gd-white);
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      font-weight: 300;
+      animation: weightMorph 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes weightMorph {
+      0% { font-weight: 300; letter-spacing: 0.02em; }
+      100% { font-weight: 700; letter-spacing: -0.04em; }
+    }
+
+    /* Effect 2: Tracking Expand */
+    .effect-tracking {
+      background: var(--gd-black);
+    }
+
+    .effect-tracking-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--gd-white);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      animation: trackingExpand 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes trackingExpand {
+      0% { letter-spacing: 0.06em; }
+      100% { letter-spacing: 0.5em; }
+    }
+
+    /* Effect 3: Inverted Block */
+    .effect-invert {
+      background: var(--gd-white);
+      border: none;
+    }
+
+    .effect-invert-inner {
+      display: flex;
+      gap: 4px;
+    }
+
+    .effect-invert-char {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 1;
+      padding: 8px 4px;
+      transition: all 0.2s ease;
+    }
+
+    .effect-invert-char:nth-child(odd) {
+      background: var(--gd-black);
+      color: var(--gd-white);
+    }
+
+    .effect-invert-char:nth-child(even) {
+      background: var(--gd-white);
+      color: var(--gd-black);
+    }
+
+    .effect-invert:hover .effect-invert-char:nth-child(odd) {
+      background: var(--gd-red);
+    }
+
+    /* Effect 4: Stacked Lines */
+    .effect-stacked {
+      background: var(--gd-bg-dark);
+      flex-direction: column;
+      gap: 0;
+      padding: 20px;
+    }
+
+    .effect-stacked-line {
+      font-family: 'Space Grotesk', sans-serif;
+      text-transform: uppercase;
+      line-height: 1;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .effect-stacked-line:nth-child(1) {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 700;
+      color: var(--gd-white);
+      letter-spacing: -0.04em;
+    }
+
+    .effect-stacked-line:nth-child(2) {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 300;
+      color: var(--gd-mid-gray);
+      letter-spacing: 0em;
+    }
+
+    .effect-stacked-line:nth-child(3) {
+      font-size: clamp(1.5rem, 3vw, 2.5rem);
+      font-weight: 700;
+      color: var(--gd-red);
+      letter-spacing: -0.04em;
+    }
+
+    /* Effect 5: Outline Text */
+    .effect-outline {
+      background: var(--gd-off-white);
+    }
+
+    .effect-outline-text {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.04em;
+      -webkit-text-stroke: 2px var(--gd-black);
+      color: transparent;
+      transition: color 0.3s ease;
+    }
+
+    .effect-outline:hover .effect-outline-text {
+      color: var(--gd-black);
+    }
+
+    /* Effect 6: Scale Contrast */
+    .effect-scale {
+      background: var(--gd-black);
+      gap: 0;
+      position: relative;
+    }
+
+    .effect-scale-big {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(5rem, 10vw, 8rem);
+      font-weight: 700;
+      color: var(--gd-charcoal);
+      text-transform: uppercase;
+      letter-spacing: -0.05em;
+      line-height: 0.8;
+      position: absolute;
+    }
+
+    .effect-scale-small {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--gd-mid-gray);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      position: relative;
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 20px 24px;
+      background: var(--gd-bg-dark);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--gd-white);
+      letter-spacing: -0.01em;
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      color: var(--gd-mid-gray);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .gd-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--gd-black);
+      color: var(--gd-white);
+      border: 2px solid var(--gd-black);
+      border-radius: 0;
+      padding: 14px 32px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.25s ease, color 0.25s ease, letter-spacing 0.25s ease;
+    }
+
+    .gd-button:hover {
+      background: transparent;
+      color: var(--gd-black);
+      letter-spacing: 0.14em;
+    }
+
+    .gd-button__arrow {
+      display: inline-block;
+      transition: transform 0.25s ease;
+    }
+
+    .gd-button:hover .gd-button__arrow {
+      transform: translateX(4px);
+    }
+
+    /* Outline variant */
+    .gd-button--outline {
+      background: transparent;
+      color: var(--gd-black);
+    }
+
+    .gd-button--outline:hover {
+      background: var(--gd-black);
+      color: var(--gd-white);
+      letter-spacing: 0.08em;
+    }
+
+    /* Accent variant */
+    .gd-button--accent {
+      background: var(--gd-red);
+      border-color: var(--gd-red);
+    }
+
+    .gd-button--accent:hover {
+      background: var(--gd-red-hover);
+      border-color: var(--gd-red-hover);
+      color: var(--gd-white);
+      letter-spacing: 0.08em;
+    }
+
+    /* Inverse variant (for dark backgrounds) */
+    .gd-button--inverse {
+      background: var(--gd-white);
+      color: var(--gd-black);
+      border-color: var(--gd-white);
+    }
+
+    .gd-button--inverse:hover {
+      background: transparent;
+      color: var(--gd-white);
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      position: relative;
+      padding: 80px 40px;
+    }
+
+    .quote-block::before {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 3px;
+      background: var(--gd-red);
+      margin: 0 auto 48px;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      color: var(--gd-black);
+      margin-bottom: 28px;
+    }
+
+    .quote-block blockquote em {
+      font-style: normal;
+      font-weight: 300;
+      color: var(--gd-mid-gray);
+    }
+
+    .quote-block cite {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--gd-text-muted);
+      font-style: normal;
+      display: block;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: var(--gd-bg-dark);
+      padding: 120px 0;
+    }
+
+    .cta-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 40px;
+      text-align: center;
+    }
+
+    .cta-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 0.95;
+      text-transform: uppercase;
+      color: var(--gd-white);
+      margin-bottom: 24px;
+    }
+
+    .cta-heading em {
+      font-style: normal;
+      font-weight: 300;
+      color: var(--gd-mid-gray);
+    }
+
+    .cta-body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 300;
+      font-size: 1.1rem;
+      color: var(--gd-mid-gray);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.7;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--gd-bg-dark);
+      color: var(--gd-mid-gray);
+      border-top: 1px solid var(--gd-border-dark);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 40px;
+    }
+
+    .footer-brand {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--gd-white);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: var(--gd-mid-gray);
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gd-white);
+    }
+
+    .footer-copy {
+      font-size: 0.75rem;
+      color: var(--gd-mid-gray);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 18px 24px;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .nav-links {
+        gap: 20px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .hero {
+        min-height: auto;
+        padding: 80px 24px 60px;
+      }
+
+      .hero-body {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero-meta {
+        text-align: left;
+      }
+
+      .section {
+        padding: clamp(48px, 6vw, 80px) 0;
+      }
+
+      .container {
+        padding: 0 24px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        border-right: none;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effect-demo {
+        border-right: none;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .quote-block {
+        padding: 48px 24px;
+      }
+
+      .button-showcase {
+        gap: 14px;
+      }
+
+      .gd-button {
+        padding: 12px 24px;
+        font-size: 0.8rem;
+      }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+        padding: 28px 24px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .cta-inner {
+        padding: 0 24px;
+      }
+
+      .gd-divider {
+        padding: 0 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.7rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-weight-morph-text,
+      .effect-tracking-text {
+        animation: none;
+      }
+
+      .card,
+      .gd-button,
+      .color-chip,
+      .card-number,
+      .card-title,
+      .effect-invert-char,
+      .effect-outline-text,
+      .nav-logo,
+      .nav-links a,
+      .footer-links a {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Grotesk Display</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <p class="hero-label">Design Aesthetic Reference</p>
+    <h1 class="hero-heading">
+      <em>The</em><br>
+      Grotesk<br>
+      <span class="accent">Display</span>
+    </h1>
+    <div class="hero-body">
+      <p class="hero-intro">
+        A bold, typography-driven aesthetic that elevates massive sans-serif letterforms into the primary visual element. Rooted in the grotesque tradition from Akzidenz-Grotesk to Helvetica, refined through Swiss International Style, and amplified to monumental scale.
+      </p>
+      <div class="hero-meta">
+        <span>Lineage: Swiss / Neo-Grotesque</span>
+        <span>Palette: Monochromatic + Signal Red</span>
+        <span>Era: 1896 &rarr; Present</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="gd-divider gd-divider--heavy"><hr></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--light" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Type Is the Design</h2>
+      <p class="section-subtitle">Massive display grotesques, extreme weight contrast, tight tracking, and functional body text. Every letterform earns its place.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Space Grotesk 700</p>
+            <p class="typo-display">Grotesk</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display Thin / Space Grotesk 300</p>
+            <p class="typo-display-thin">Hairline</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Space Grotesk 700</p>
+            <p class="typo-heading">Bold Functional Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body">Minimal, functional body text stays small and well-spaced to counterbalance the drama of massive display headings. The tension between colossal type and quiet supporting copy is the defining dynamic.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Lead / Inter 300</p>
+            <p class="typo-lead">Larger introductory paragraphs set in light weight create an elegant bridge between display headings and body content.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Space Grotesk 500</p>
+            <p class="typo-label">Section Label &bull; 0.12em Tracking</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">14vw</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--gd-black); letter-spacing: -0.04em; text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">14vw</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 300; color: var(--gd-black); letter-spacing: -0.02em; text-transform: uppercase;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; font-weight: 700; color: var(--gd-black); letter-spacing: -0.03em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.25rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1.1rem; font-weight: 300; color: var(--gd-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 400; color: var(--gd-text-secondary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 0.75rem; color: var(--gd-text-muted); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3 style="margin-bottom: 16px;">Font Pairings</h3>
+            <div class="typo-pairing">
+              <p class="typo-pairing-label">
+                <span style="font-family: 'Space Grotesk', sans-serif;">Space Grotesk 700</span>
+                + <span style="font-family: 'Inter', sans-serif; font-weight: 400;">Inter 400</span>
+              </p>
+              <p class="typo-pairing-desc">Tech-forward, modern clarity</p>
+            </div>
+            <div class="typo-pairing">
+              <p class="typo-pairing-label">
+                <span style="font-family: 'Space Grotesk', sans-serif;">Space Grotesk 300</span>
+                vs <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 700;">Space Grotesk 700</span>
+              </p>
+              <p class="typo-pairing-desc">Weight contrast within a single family</p>
+            </div>
+            <div class="typo-pairing">
+              <p class="typo-pairing-label">
+                <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 500;">Space Grotesk 500</span>
+                + <span style="font-family: 'Inter', sans-serif; font-weight: 300;">Inter 300</span>
+              </p>
+              <p class="typo-pairing-desc">Labels over lead paragraphs, editorial refinement</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="gd-divider"><hr></div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--off-white" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Austere Neutrals, Singular Accent</h2>
+      <p class="section-subtitle">The palette is deliberately reduced. Typography carries all the visual weight; color is punctuation, not prose.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0a0a0a;"></div>
+          <div class="color-info">
+            <div class="color-name">Jet Black</div>
+            <div class="color-hex">#0A0A0A</div>
+            <div class="color-role">Primary text, display</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffffff; border-bottom: 1px solid #e8e8e3;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+            <div class="color-role">Light backgrounds</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f5f5f0;"></div>
+          <div class="color-info">
+            <div class="color-name">Off-White</div>
+            <div class="color-hex">#F5F5F0</div>
+            <div class="color-role">Secondary backgrounds</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #faf8f2;"></div>
+          <div class="color-info">
+            <div class="color-name">Cream</div>
+            <div class="color-hex">#FAF8F2</div>
+            <div class="color-role">Warm light-mode alt</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e8e8e3;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Gray</div>
+            <div class="color-hex">#E8E8E3</div>
+            <div class="color-role">Dividers, separators</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c8c4bc;"></div>
+          <div class="color-info">
+            <div class="color-name">Stone</div>
+            <div class="color-hex">#C8C4BC</div>
+            <div class="color-role">Borders, inactive UI</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9e9e99;"></div>
+          <div class="color-info">
+            <div class="color-name">Mid Gray</div>
+            <div class="color-hex">#9E9E99</div>
+            <div class="color-role">Captions, metadata</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3d3d3a;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Gray</div>
+            <div class="color-hex">#3D3D3A</div>
+            <div class="color-role">Secondary text</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2a2a28;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Charcoal</div>
+            <div class="color-hex">#2A2A28</div>
+            <div class="color-role">Dark-mode secondary</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a1a18;"></div>
+          <div class="color-info">
+            <div class="color-name">Ink</div>
+            <div class="color-hex">#1A1A18</div>
+            <div class="color-role">Softer-than-black alt</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e63222;"></div>
+          <div class="color-info">
+            <div class="color-name">Signal Red</div>
+            <div class="color-hex">#E63222</div>
+            <div class="color-role">Primary accent, CTA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b8281c;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Red</div>
+            <div class="color-hex">#B8281C</div>
+            <div class="color-role">Hover/pressed state</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1a5cff;"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Blue</div>
+            <div class="color-hex">#1A5CFF</div>
+            <div class="color-role">Links, secondary accent</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1244cc;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Blue</div>
+            <div class="color-hex">#1244CC</div>
+            <div class="color-role">Hover/pressed state</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffe424;"></div>
+          <div class="color-info">
+            <div class="color-name">Highlight Yellow</div>
+            <div class="color-hex">#FFE424</div>
+            <div class="color-role">Rare tertiary accent</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="gd-divider"><hr></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--light" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Core Design Traits</h2>
+      <p class="section-subtitle">Six defining characteristics of the Grotesk Display aesthetic, each rooted in typographic tradition and modernist restraint.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-number">01</div>
+          <p class="card-label">Scale</p>
+          <h3 class="card-title">Oversized Display Typography</h3>
+          <p class="card-body">Headlines occupy 60&ndash;100% of viewport width with sizes ranging from 8vw to 20vw. Type is not just content &mdash; it is the composition itself, commanding attention through sheer scale.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">02</div>
+          <p class="card-label">Contrast</p>
+          <h3 class="card-title">Extreme Weight Contrast</h3>
+          <p class="card-body">Thin (100&ndash;200) and Black (800&ndash;900) weights sit side by side, creating dramatic visual tension between whisper-light and ultra-heavy letterforms within a single family.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">03</div>
+          <p class="card-label">Proportion</p>
+          <h3 class="card-title">Condensed Letterforms</h3>
+          <p class="card-body">Narrow, tall proportions maximize vertical impact while allowing more characters per line. Referencing historical Annonce Grotesk display faces, these compressed forms fill every pixel.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">04</div>
+          <p class="card-label">Palette</p>
+          <h3 class="card-title">Monochromatic Restraint</h3>
+          <p class="card-body">Black, white, and gray dominate. Color is used sparingly, often limited to a single high-contrast accent. Chromatic restraint amplifies the power of pure typographic form.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">05</div>
+          <p class="card-label">Space</p>
+          <h3 class="card-title">Generous Negative Space</h3>
+          <p class="card-body">Vast areas of white or black surround the massive type, creating breathing room. White space is not empty &mdash; it is an active compositional force that gives type room to command attention.</p>
+        </div>
+        <div class="card">
+          <div class="card-number">06</div>
+          <p class="card-label">Detail</p>
+          <h3 class="card-title">Tight Display Tracking</h3>
+          <p class="card-body">Negative letter-spacing of -0.02em to -0.06em pulls oversized characters into dense, unified blocks of typographic texture. Each headline becomes a solid graphic element.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DARK STATEMENT SECTION ===== -->
+  <section class="section section--dark" style="padding: 100px 0;">
+    <div class="container" style="text-align: center;">
+      <p style="font-family: 'Space Grotesk', sans-serif; font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 700; letter-spacing: -0.03em; line-height: 1.05; max-width: 900px; margin: 0 auto; color: var(--gd-white);">
+        Typography <em style="font-style: normal; font-weight: 300; color: var(--gd-mid-gray);">is not decoration.</em><br>
+        It is <span style="color: var(--gd-red);">the design.</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--dark" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title" style="color: var(--gd-white);">CSS Techniques</h2>
+      <p class="section-subtitle" style="color: var(--gd-mid-gray);">Six typographic effects built with pure CSS. No images, no JavaScript &mdash; just letterforms, transitions, and the raw geometry of type.</p>
+
+      <div class="effects-grid">
+        <!-- Effect 1: Weight Morph -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-weight-morph">
+            <span class="effect-weight-morph-text">Weight</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Weight Morph</h4>
+            <p>Smooth animation between Thin and Bold weights using font-weight transitions on variable fonts.</p>
+          </div>
+        </div>
+
+        <!-- Effect 2: Tracking Expand -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-tracking">
+            <span class="effect-tracking-text">Tracking</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Tracking Expand</h4>
+            <p>Letter-spacing animates from tight to ultra-wide, revealing space between each character.</p>
+          </div>
+        </div>
+
+        <!-- Effect 3: Inverted Block -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-invert">
+            <div class="effect-invert-inner">
+              <span class="effect-invert-char">B</span>
+              <span class="effect-invert-char">L</span>
+              <span class="effect-invert-char">O</span>
+              <span class="effect-invert-char">C</span>
+              <span class="effect-invert-char">K</span>
+              <span class="effect-invert-char">S</span>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Inverted Blocks</h4>
+            <p>Alternating black-on-white and white-on-black characters create a checkerboard of typographic mass.</p>
+          </div>
+        </div>
+
+        <!-- Effect 4: Stacked Lines -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-stacked">
+            <span class="effect-stacked-line">Bold Display</span>
+            <span class="effect-stacked-line">Thin Contrast</span>
+            <span class="effect-stacked-line">Red Accent</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Stacked Contrast</h4>
+            <p>Layered lines at the same size but different weights and colors create visual hierarchy through contrast alone.</p>
+          </div>
+        </div>
+
+        <!-- Effect 5: Outline Text -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-outline">
+            <span class="effect-outline-text">Stroke</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Outline Fill</h4>
+            <p>Stroked-only text fills with solid color on hover, transitioning from ghost to solid presence.</p>
+          </div>
+        </div>
+
+        <!-- Effect 6: Scale Contrast -->
+        <div class="effect-demo">
+          <div class="effect-preview effect-scale">
+            <span class="effect-scale-big">Bg</span>
+            <span class="effect-scale-small">Massive type as texture layer</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Scale Contrast</h4>
+            <p>Enormous background letterforms serve as texture while small foreground text delivers the content.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="gd-divider gd-divider--heavy"><hr></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--light">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Buttons</h2>
+      <p class="section-subtitle">Sharp corners, uppercase labels, wide tracking. Hover reveals the inverse state with a tracking shift.</p>
+
+      <div class="button-showcase">
+        <a href="#" class="gd-button">Primary <span class="gd-button__arrow">&rarr;</span></a>
+        <a href="#" class="gd-button gd-button--outline">Outline <span class="gd-button__arrow">&rarr;</span></a>
+        <a href="#" class="gd-button gd-button--accent">Accent <span class="gd-button__arrow">&rarr;</span></a>
+        <a href="#" class="gd-button" style="background: var(--gd-blue); border-color: var(--gd-blue);">Blue Link <span class="gd-button__arrow">&rarr;</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <div class="gd-divider"><hr></div>
+
+  <!-- ===== BLOCKQUOTE SECTION ===== -->
+  <section class="section section--off-white">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Where Helvetica <em>whispered neutrality,</em> Grotesk Display <em>shouts presence.</em> It is modernism distilled to its typographic essence, then amplified to a scale that demands attention.
+        </blockquote>
+        <cite>&mdash; The Grotesk Display Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-inner">
+      <p class="section-label" style="color: var(--gd-mid-gray); margin-bottom: 24px;">Call to Action</p>
+      <h2 class="cta-heading">
+        Let the<br>
+        <em>letterforms</em><br>
+        speak<span style="color: var(--gd-red);">.</span>
+      </h2>
+      <p class="cta-body">
+        Strip away ornament. Reduce the palette. Scale the type to monumental proportions. Then step back and let the raw geometry of the grotesk letterform do all the work.
+      </p>
+      <a href="#hero" class="gd-button gd-button--inverse">Back to Top <span class="gd-button__arrow">&rarr;</span></a>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <span class="footer-brand">Grotesk Display</span>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <span class="footer-copy">Design Aesthetic Reference &bull; Grotesk Display &bull; Type is the design</span>
+    </div>
+  </footer>
+
+</body>
+</html>

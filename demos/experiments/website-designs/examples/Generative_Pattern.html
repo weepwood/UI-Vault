@@ -1,0 +1,2148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Generative Pattern -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --gp-bg-void: #0a0a0f;
+      --gp-bg-code: #12131a;
+      --gp-bg-grid: #1e2030;
+      --gp-bg-wire: #2a2d42;
+
+      /* --- Text --- */
+      --gp-text-muted: #4a4e6a;
+      --gp-text-secondary: #8b90a8;
+      --gp-text-primary: #c8cce0;
+      --gp-text-heading: #f0f2ff;
+
+      /* --- Accents --- */
+      --gp-cyan: #00e5ff;
+      --gp-cyan-dim: rgba(0, 229, 255, 0.15);
+      --gp-green: #39ff85;
+      --gp-green-dim: rgba(57, 255, 133, 0.15);
+      --gp-magenta: #e040fb;
+      --gp-magenta-dim: rgba(224, 64, 251, 0.15);
+      --gp-amber: #ffb300;
+      --gp-amber-dim: rgba(255, 179, 0, 0.15);
+      --gp-blue: #448aff;
+      --gp-blue-dim: rgba(68, 138, 255, 0.15);
+      --gp-violet: #7c4dff;
+      --gp-violet-dim: rgba(124, 77, 255, 0.15);
+
+      /* --- Utilities --- */
+      --gp-glow-white: #ffffff;
+      --gp-border: #2a2d42;
+      --gp-border-accent: rgba(0, 229, 255, 0.3);
+
+      /* --- Radii --- */
+      --gp-radius-sm: 4px;
+      --gp-radius-md: 8px;
+      --gp-radius-lg: 16px;
+
+      /* --- Shadows / Glows --- */
+      --gp-glow-cyan: 0 0 20px rgba(0, 229, 255, 0.25);
+      --gp-glow-magenta: 0 0 20px rgba(224, 64, 251, 0.25);
+      --gp-glow-green: 0 0 20px rgba(57, 255, 133, 0.25);
+      --gp-glow-amber: 0 0 20px rgba(255, 179, 0, 0.25);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(64px, 8vw, 100px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gp-text-primary);
+      background-color: var(--gp-bg-void);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    code, .mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* ============================================
+       GENERATIVE BACKGROUND PATTERN (CSS-only)
+       ============================================ */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        radial-gradient(circle at 15% 25%, var(--gp-cyan-dim) 0%, transparent 40%),
+        radial-gradient(circle at 85% 15%, var(--gp-magenta-dim) 0%, transparent 35%),
+        radial-gradient(circle at 50% 75%, var(--gp-violet-dim) 0%, transparent 45%),
+        radial-gradient(circle at 75% 60%, var(--gp-green-dim) 0%, transparent 30%),
+        radial-gradient(circle at 20% 80%, var(--gp-blue-dim) 0%, transparent 35%);
+      opacity: 0.6;
+    }
+
+    /* Dot grid pattern overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background-image: radial-gradient(circle, var(--gp-text-muted) 0.5px, transparent 0.5px);
+      background-size: 32px 32px;
+      opacity: 0.15;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(10, 10, 15, 0.8);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--gp-border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--gp-text-heading);
+      letter-spacing: 0.02em;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--gp-cyan);
+    }
+
+    .nav-logo-icon {
+      width: 28px;
+      height: 28px;
+      border: 2px solid var(--gp-cyan);
+      border-radius: 50%;
+      position: relative;
+    }
+
+    .nav-logo-icon::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: var(--gp-cyan);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 400;
+      font-size: 0.8rem;
+      color: var(--gp-text-secondary);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--gp-cyan);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--gp-cyan);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gp-cyan);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      text-align: center;
+      color: var(--gp-text-heading);
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      text-align: center;
+      color: var(--gp-text-secondary);
+      margin-bottom: 48px;
+      max-width: 560px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.6;
+    }
+
+    /* ============================================
+       SECTION DIVIDER
+       ============================================ */
+    .gp-divider {
+      border: none;
+      height: 1px;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gp-border-accent),
+        var(--gp-cyan),
+        var(--gp-border-accent),
+        transparent
+      );
+      margin: 0 auto;
+      max-width: 600px;
+    }
+
+    /* ============================================
+       PARAMETER STRIP
+       ============================================ */
+    .param-strip {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      padding: 12px 40px;
+      background: var(--gp-bg-code);
+      border-top: 1px solid var(--gp-border);
+      border-bottom: 1px solid var(--gp-border);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gp-text-muted);
+      letter-spacing: 0.04em;
+      overflow-x: auto;
+      white-space: nowrap;
+      position: relative;
+      z-index: 1;
+    }
+
+    .param-strip .key {
+      color: var(--gp-text-secondary);
+    }
+
+    .param-strip .val {
+      color: var(--gp-cyan);
+    }
+
+    .param-strip .sep {
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 40px 80px;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    /* Generative-style hero background */
+    .hero-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(0, 229, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 30%, rgba(224, 64, 251, 0.1) 0%, transparent 45%),
+        radial-gradient(ellipse at 50% 70%, rgba(124, 77, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, rgba(57, 255, 133, 0.06) 0%, transparent 40%);
+    }
+
+    /* Animated grid lines */
+    .hero-grid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--gp-border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--gp-border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      opacity: 0.15;
+      animation: gridDrift 20s linear infinite;
+    }
+
+    @keyframes gridDrift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
+    }
+
+    /* Floating particles */
+    .hero-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      background:
+        radial-gradient(circle at 10% 20%, var(--gp-cyan) 1px, transparent 1px),
+        radial-gradient(circle at 25% 65%, var(--gp-magenta) 1px, transparent 1px),
+        radial-gradient(circle at 45% 15%, var(--gp-green) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 60% 80%, var(--gp-cyan) 1.2px, transparent 1.2px),
+        radial-gradient(circle at 80% 35%, var(--gp-violet) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 90% 70%, var(--gp-amber) 1px, transparent 1px),
+        radial-gradient(circle at 35% 90%, var(--gp-magenta) 0.6px, transparent 0.6px),
+        radial-gradient(circle at 70% 50%, var(--gp-cyan) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 15% 50%, var(--gp-green) 1px, transparent 1px),
+        radial-gradient(circle at 55% 45%, var(--gp-violet) 1.2px, transparent 1.2px);
+      animation: particleDrift 12s ease-in-out infinite alternate;
+      opacity: 0.7;
+    }
+
+    @keyframes particleDrift {
+      0% { transform: translate(0, 0); opacity: 0.5; }
+      50% { opacity: 0.8; }
+      100% { transform: translate(15px, -10px); opacity: 0.5; }
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, transparent 0%, var(--gp-bg-void) 75%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      max-width: 800px;
+    }
+
+    .hero-tagline {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--gp-cyan);
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 12px;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--gp-cyan), var(--gp-magenta), var(--gp-violet));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--gp-text-secondary);
+      margin-bottom: 24px;
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--gp-text-secondary);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 48px;
+    }
+
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--gp-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .hero-meta span {
+      color: var(--gp-cyan);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: transparent;
+      color: var(--gp-cyan);
+      border: 1px solid var(--gp-cyan);
+      border-radius: var(--gp-radius-sm);
+      padding: 12px 28px;
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.8rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .btn:hover {
+      background: var(--gp-cyan-dim);
+      box-shadow: var(--gp-glow-cyan);
+      color: var(--gp-glow-white);
+    }
+
+    /* Scan-line sweep on hover */
+    .btn::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.1), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::after {
+      left: 100%;
+    }
+
+    .btn--filled {
+      background: var(--gp-cyan);
+      color: var(--gp-bg-void);
+      border-color: var(--gp-cyan);
+    }
+
+    .btn--filled:hover {
+      background: #33ebff;
+      box-shadow: var(--gp-glow-cyan);
+      color: var(--gp-bg-void);
+    }
+
+    .btn--magenta {
+      color: var(--gp-magenta);
+      border-color: var(--gp-magenta);
+    }
+
+    .btn--magenta:hover {
+      background: var(--gp-magenta-dim);
+      box-shadow: var(--gp-glow-magenta);
+      color: var(--gp-glow-white);
+    }
+
+    .btn--magenta::after {
+      background: linear-gradient(90deg, transparent, rgba(224, 64, 251, 0.1), transparent);
+    }
+
+    .btn--green {
+      color: var(--gp-green);
+      border-color: var(--gp-green);
+    }
+
+    .btn--green:hover {
+      background: var(--gp-green-dim);
+      box-shadow: var(--gp-glow-green);
+      color: var(--gp-glow-white);
+    }
+
+    .btn--green::after {
+      background: linear-gradient(90deg, transparent, rgba(57, 255, 133, 0.1), transparent);
+    }
+
+    .btn--amber {
+      color: var(--gp-amber);
+      border-color: var(--gp-amber);
+    }
+
+    .btn--amber:hover {
+      background: var(--gp-amber-dim);
+      box-shadow: var(--gp-glow-amber);
+      color: var(--gp-glow-white);
+    }
+
+    .btn--amber::after {
+      background: linear-gradient(90deg, transparent, rgba(255, 179, 0, 0.1), transparent);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--gp-cyan);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--gp-border);
+    }
+
+    .typo-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--gp-cyan), var(--gp-magenta));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .typo-heading-sample {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .typo-mono-display {
+      font-family: 'Space Mono', monospace;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 700;
+      color: var(--gp-cyan);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gp-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.875rem;
+      line-height: 1.6;
+      color: var(--gp-green);
+    }
+
+    .typo-label-sample {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 500;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gp-amber);
+    }
+
+    .typo-right {
+      background: rgba(18, 19, 26, 0.85);
+      border-radius: var(--gp-radius-md);
+      padding: 36px;
+      border: 1px solid var(--gp-border);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .typo-right h3 {
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gp-border);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      color: var(--gp-text-muted);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      border-radius: var(--gp-radius-md);
+      overflow: hidden;
+      background: var(--gp-bg-code);
+      border: 1px solid var(--gp-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--gp-glow-cyan);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--gp-text-heading);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--gp-text-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: rgba(18, 19, 26, 0.85);
+      border: 1px solid var(--gp-border);
+      border-radius: var(--gp-radius-md);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    /* Gradient line at top */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gp-cyan), var(--gp-magenta), var(--gp-violet));
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .card:hover {
+      border-color: var(--gp-cyan);
+      box-shadow: var(--gp-glow-cyan);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: var(--gp-radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+    }
+
+    .card-icon--cyan {
+      background: var(--gp-cyan-dim);
+      border: 1px solid rgba(0, 229, 255, 0.3);
+    }
+
+    .card-icon--magenta {
+      background: var(--gp-magenta-dim);
+      border: 1px solid rgba(224, 64, 251, 0.3);
+    }
+
+    .card-icon--green {
+      background: var(--gp-green-dim);
+      border: 1px solid rgba(57, 255, 133, 0.3);
+    }
+
+    .card-icon--violet {
+      background: var(--gp-violet-dim);
+      border: 1px solid rgba(124, 77, 255, 0.3);
+    }
+
+    .card-icon--amber {
+      background: var(--gp-amber-dim);
+      border: 1px solid rgba(255, 179, 0, 0.3);
+    }
+
+    .card-icon--blue {
+      background: var(--gp-blue-dim);
+      border: 1px solid rgba(68, 138, 255, 0.3);
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .card p {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      color: var(--gp-text-secondary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 3px 10px;
+      border-radius: var(--gp-radius-sm);
+      border: 1px solid var(--gp-border);
+      color: var(--gp-text-muted);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--gp-cyan-dim);
+      color: var(--gp-cyan);
+      border-color: var(--gp-cyan);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: var(--gp-radius-md);
+      overflow: hidden;
+      border: 1px solid var(--gp-border);
+      background: var(--gp-bg-code);
+      transition: border-color 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      border-color: var(--gp-border-accent);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. Flow Field effect */
+    .effect-flow {
+      background: var(--gp-bg-void);
+    }
+
+    .effect-flow::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 229, 255, 0.08) 2px,
+          rgba(0, 229, 255, 0.08) 3px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 4px,
+          rgba(224, 64, 251, 0.06) 4px,
+          rgba(224, 64, 251, 0.06) 5px
+        );
+      animation: flowShift 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes flowShift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(10px, 10px); }
+    }
+
+    .effect-flow::after {
+      content: 'FLOW FIELD';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* 2. Voronoi Tessellation effect */
+    .effect-voronoi {
+      background: var(--gp-bg-void);
+    }
+
+    .effect-voronoi::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.2) 0%, transparent 20%),
+        radial-gradient(circle at 70% 20%, rgba(224, 64, 251, 0.15) 0%, transparent 25%),
+        radial-gradient(circle at 40% 70%, rgba(57, 255, 133, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 85% 65%, rgba(124, 77, 255, 0.2) 0%, transparent 22%),
+        radial-gradient(circle at 15% 80%, rgba(255, 179, 0, 0.12) 0%, transparent 18%),
+        radial-gradient(circle at 55% 40%, rgba(68, 138, 255, 0.15) 0%, transparent 20%),
+        radial-gradient(circle at 30% 50%, rgba(0, 229, 255, 0.1) 0%, transparent 15%),
+        radial-gradient(circle at 90% 40%, rgba(224, 64, 251, 0.1) 0%, transparent 15%);
+      animation: voronoiPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes voronoiPulse {
+      0% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    .effect-voronoi::after {
+      content: 'VORONOI';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      text-shadow: 0 0 20px rgba(224, 64, 251, 0.4);
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* 3. Perlin Noise effect */
+    .effect-noise {
+      background: var(--gp-bg-void);
+    }
+
+    .effect-noise::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        radial-gradient(ellipse at 25% 50%, rgba(57, 255, 133, 0.15) 0%, transparent 60%),
+        radial-gradient(ellipse at 75% 50%, rgba(0, 229, 255, 0.12) 0%, transparent 55%),
+        radial-gradient(ellipse at 50% 25%, rgba(124, 77, 255, 0.1) 0%, transparent 50%);
+      filter: blur(20px);
+      animation: noiseDrift 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes noiseDrift {
+      0% { transform: scale(1) translate(0, 0); }
+      100% { transform: scale(1.1) translate(-10px, 5px); }
+    }
+
+    .effect-noise::after {
+      content: 'PERLIN NOISE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      text-shadow: 0 0 20px rgba(57, 255, 133, 0.4);
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* 4. Particle System effect */
+    .effect-particles {
+      background: var(--gp-bg-void);
+    }
+
+    .effect-particles::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(circle at 5% 10%, var(--gp-cyan) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 12% 35%, var(--gp-magenta) 0.6px, transparent 0.6px),
+        radial-gradient(circle at 18% 70%, var(--gp-cyan) 1px, transparent 1px),
+        radial-gradient(circle at 25% 20%, var(--gp-green) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 30% 55%, var(--gp-violet) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 38% 85%, var(--gp-cyan) 0.6px, transparent 0.6px),
+        radial-gradient(circle at 42% 15%, var(--gp-amber) 1px, transparent 1px),
+        radial-gradient(circle at 50% 40%, var(--gp-magenta) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 55% 75%, var(--gp-cyan) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 62% 30%, var(--gp-green) 0.6px, transparent 0.6px),
+        radial-gradient(circle at 68% 60%, var(--gp-violet) 1px, transparent 1px),
+        radial-gradient(circle at 75% 10%, var(--gp-cyan) 0.5px, transparent 0.5px),
+        radial-gradient(circle at 80% 50%, var(--gp-magenta) 0.8px, transparent 0.8px),
+        radial-gradient(circle at 88% 80%, var(--gp-amber) 0.6px, transparent 0.6px),
+        radial-gradient(circle at 95% 25%, var(--gp-cyan) 1px, transparent 1px);
+      animation: particleMove 15s linear infinite;
+    }
+
+    @keyframes particleMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(-50%, -50%); }
+    }
+
+    .effect-particles::after {
+      content: 'PARTICLES';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.4);
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* 5. Fractal Grid effect */
+    .effect-fractal {
+      background: var(--gp-bg-void);
+    }
+
+    .effect-fractal::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.15) 1px, transparent 1px),
+        linear-gradient(rgba(224, 64, 251, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(224, 64, 251, 0.08) 1px, transparent 1px);
+      background-size: 40px 40px, 40px 40px, 10px 10px, 10px 10px;
+      animation: fractalRotate 30s linear infinite;
+    }
+
+    @keyframes fractalRotate {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(2deg) scale(1.05); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    .effect-fractal::after {
+      content: 'FRACTAL GRID';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      text-shadow: 0 0 20px rgba(124, 77, 255, 0.4);
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    /* 6. Wave Interference effect */
+    .effect-wave {
+      background: var(--gp-bg-void);
+    }
+
+    .effect-wave::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        repeating-radial-gradient(circle at 30% 50%, transparent, transparent 10px, rgba(0, 229, 255, 0.06) 10px, rgba(0, 229, 255, 0.06) 11px),
+        repeating-radial-gradient(circle at 70% 50%, transparent, transparent 10px, rgba(224, 64, 251, 0.06) 10px, rgba(224, 64, 251, 0.06) 11px);
+      animation: waveExpand 8s ease-in-out infinite alternate;
+    }
+
+    @keyframes waveExpand {
+      0% { transform: scale(0.95); opacity: 0.8; }
+      100% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .effect-wave::after {
+      content: 'INTERFERENCE';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      text-shadow: 0 0 20px rgba(255, 179, 0, 0.4);
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--gp-text-heading);
+      margin-bottom: 4px;
+      letter-spacing: -0.01em;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--gp-text-secondary);
+    }
+
+    /* ============================================
+       ALGORITHM BANNER (decorative divider section)
+       ============================================ */
+    .algo-banner {
+      background: var(--gp-bg-code);
+      border-top: 1px solid var(--gp-border);
+      border-bottom: 1px solid var(--gp-border);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+
+    .algo-banner::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(rgba(0, 229, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .algo-banner-code {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--gp-text-muted);
+      opacity: 0.5;
+    }
+
+    .algo-banner h2 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .algo-banner p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem;
+      color: var(--gp-text-secondary);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: rgba(18, 19, 26, 0.85);
+      border-radius: var(--gp-radius-md);
+      border: 1px solid var(--gp-border);
+      position: relative;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gp-cyan), var(--gp-magenta), var(--gp-violet));
+      border-radius: var(--gp-radius-md) var(--gp-radius-md) 0 0;
+    }
+
+    .quote-mark {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--gp-cyan), var(--gp-magenta));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: -20px;
+      opacity: 0.3;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1.05rem, 2vw, 1.25rem);
+      font-style: italic;
+      color: var(--gp-text-primary);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gp-cyan);
+      font-style: normal;
+      display: block;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: rgba(18, 19, 26, 0.9);
+      border-radius: var(--gp-radius-lg);
+      padding: 64px 48px;
+      text-align: center;
+      border: 1px solid var(--gp-border);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    /* Animated gradient border glow */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: var(--gp-radius-lg);
+      background: linear-gradient(135deg, var(--gp-cyan), var(--gp-magenta), var(--gp-violet), var(--gp-cyan));
+      background-size: 300% 300%;
+      z-index: -1;
+      opacity: 0.3;
+      animation: glowBorder 6s ease-in-out infinite;
+    }
+
+    @keyframes glowBorder {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .cta-container::after {
+      content: '';
+      position: absolute;
+      top: 1px;
+      left: 1px;
+      right: 1px;
+      bottom: 1px;
+      border-radius: calc(var(--gp-radius-lg) - 1px);
+      background: rgba(10, 10, 15, 0.95);
+      z-index: -1;
+    }
+
+    .cta-container h2 {
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .cta-mono {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--gp-cyan);
+      margin-bottom: 20px;
+      letter-spacing: 0.04em;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.7;
+      color: var(--gp-text-secondary);
+      margin-bottom: 32px;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--gp-bg-code);
+      border-top: 1px solid var(--gp-border);
+      padding: 64px 24px 28px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background:
+        linear-gradient(rgba(0, 229, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 229, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--gp-text-heading);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-size: 0.9rem;
+      color: var(--gp-text-secondary);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--gp-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--gp-cyan);
+    }
+
+    .footer-nodes {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .footer-node {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .footer-node:nth-child(1) { background: var(--gp-cyan); }
+    .footer-node:nth-child(2) { background: var(--gp-magenta); }
+    .footer-node:nth-child(3) { background: var(--gp-green); }
+    .footer-node:nth-child(4) { background: var(--gp-violet); }
+    .footer-node:nth-child(5) { background: var(--gp-amber); }
+
+    .footer-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gp-text-muted);
+      letter-spacing: 0.04em;
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 0.72rem;
+      }
+
+      .hero {
+        padding: 100px 24px 60px;
+        min-height: 85vh;
+      }
+
+      .hero-meta {
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .section {
+        padding: clamp(48px, 6vw, 72px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 28px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 10px 22px;
+        font-size: 0.75rem;
+      }
+
+      .param-strip {
+        gap: 16px;
+        padding: 12px 20px;
+        font-size: 0.6rem;
+      }
+
+      .algo-banner-code {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .color-swatch {
+        height: 48px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.75rem;
+      }
+
+      .color-hex {
+        font-size: 0.6rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-grid,
+      .hero-particles,
+      .effect-flow::before,
+      .effect-voronoi::before,
+      .effect-noise::before,
+      .effect-particles::before,
+      .effect-fractal::before,
+      .effect-wave::before,
+      .cta-container::before {
+        animation: none;
+      }
+
+      .card, .color-chip, .btn, .tag,
+      .nav-links a, .effect-demo {
+        transition: none;
+      }
+
+      .btn::after {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span class="nav-logo-icon"></span>
+      gen::pattern
+    </a>
+    <div class="nav-links">
+      <a href="#hero">System</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-canvas"></div>
+    <div class="hero-grid"></div>
+    <div class="hero-particles"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">// design aesthetic reference</p>
+      <h1>Generative Pattern</h1>
+      <p class="hero-subtitle">Where Algorithm Meets Art</p>
+      <p class="hero-desc">
+        A design aesthetic rooted in the marriage of code and creativity &mdash; where mathematical structures, noise functions, and procedural geometry become visual beauty that could never be drawn by hand.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn--filled">Explore Components</a>
+        <a href="#palette" class="btn">View Palette</a>
+      </div>
+      <div class="hero-meta">
+        <span>seed: <span>0xA7F3</span></span>
+        <span>nodes: <span>2048</span></span>
+        <span>fps: <span>60</span></span>
+        <span>noise: <span>perlin</span></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== PARAMETER STRIP ===== -->
+  <div class="param-strip">
+    <span><span class="key">resolution</span> <span class="val">1920x1080</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">algorithm</span> <span class="val">voronoi</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">particles</span> <span class="val">4096</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">octaves</span> <span class="val">6</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">frequency</span> <span class="val">0.005</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">seed</span> <span class="val">42</span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section" id="typography">
+    <div class="container">
+      <p class="section-label">// typography</p>
+      <h2 class="section-title">Monospace-Forward, Geometric Precision</h2>
+      <p class="section-subtitle">Code-optimized monospace meets clean geometric sans-serif for a look that celebrates computation as craft.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Space Grotesk 700</p>
+            <p class="typo-display">System Rules</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Space Grotesk 700</p>
+            <p class="typo-heading-sample">Emergent Complexity</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Monospace Display / Space Mono 700</p>
+            <p class="typo-mono-display">procedural_beauty()</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter 400</p>
+            <p class="typo-body">Simple rules, when repeated and layered, produce visually rich results that exceed the apparent complexity of the underlying code. The system produces the art.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Code / JetBrains Mono 400</p>
+            <p class="typo-code">const noise = perlin(x * freq, y * freq);</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / JetBrains Mono 500</p>
+            <p class="typo-label-sample">Parameter Controls</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-size: 2rem; font-weight: 700; color: var(--gp-text-heading); letter-spacing: -0.03em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.2rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; font-weight: 700; color: var(--gp-text-heading); letter-spacing: -0.02em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Space Mono', monospace; font-size: 1.2rem; font-weight: 700; color: var(--gp-cyan);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--gp-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.875rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.875rem; color: var(--gp-green);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'JetBrains Mono', monospace; font-weight: 500; font-size: 0.75rem; color: var(--gp-amber); text-transform: uppercase; letter-spacing: 0.08em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--gp-border);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--gp-cyan);">Space Grotesk</strong> + <strong style="font-family: 'JetBrains Mono', monospace;">JetBrains Mono</strong><br>
+              <span style="color: var(--gp-text-muted); font-size: 0.82rem;">Technical sophistication with readable code</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Space Mono', monospace; color: var(--gp-cyan);">Space Mono</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--gp-text-muted); font-size: 0.82rem;">Classic generative: code meets clarity</span>
+            </p>
+            <p style="font-size: 0.9rem; line-height: 1.7;">
+              <strong style="font-family: 'Space Grotesk', sans-serif; color: var(--gp-cyan);">Space Grotesk</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: var(--gp-text-muted); font-size: 0.82rem;">Clean geometric with high legibility</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="gp-divider">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section" id="palette">
+    <div class="container">
+      <p class="section-label">// color.palette</p>
+      <h2 class="section-title">Dark Canvas, Luminous Strokes</h2>
+      <p class="section-subtitle">A deep, immersive void punctuated by bright accents that glow like bioluminescent organisms and neon circuitry.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0a0a0f;"></div>
+          <div class="color-info">
+            <div class="color-name">Void Black</div>
+            <div class="color-hex">#0A0A0F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #12131a;"></div>
+          <div class="color-info">
+            <div class="color-name">Code Dark</div>
+            <div class="color-hex">#12131A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1e2030;"></div>
+          <div class="color-info">
+            <div class="color-name">Grid Gray</div>
+            <div class="color-hex">#1E2030</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2a2d42;"></div>
+          <div class="color-info">
+            <div class="color-name">Wire Gray</div>
+            <div class="color-hex">#2A2D42</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4a4e6a;"></div>
+          <div class="color-info">
+            <div class="color-name">Node Gray</div>
+            <div class="color-hex">#4A4E6A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b90a8;"></div>
+          <div class="color-info">
+            <div class="color-name">Signal Silver</div>
+            <div class="color-hex">#8B90A8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c8cce0;"></div>
+          <div class="color-info">
+            <div class="color-name">Light Mesh</div>
+            <div class="color-hex">#C8CCE0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f0f2ff;"></div>
+          <div class="color-info">
+            <div class="color-name">White Glow</div>
+            <div class="color-hex">#F0F2FF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00e5ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Circuit Cyan</div>
+            <div class="color-hex">#00E5FF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #39ff85;"></div>
+          <div class="color-info">
+            <div class="color-name">Matrix Green</div>
+            <div class="color-hex">#39FF85</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #e040fb;"></div>
+          <div class="color-info">
+            <div class="color-name">Fractal Magenta</div>
+            <div class="color-hex">#E040FB</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffb300;"></div>
+          <div class="color-info">
+            <div class="color-name">Noise Amber</div>
+            <div class="color-hex">#FFB300</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #448aff;"></div>
+          <div class="color-info">
+            <div class="color-name">Wave Blue</div>
+            <div class="color-hex">#448AFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7c4dff;"></div>
+          <div class="color-info">
+            <div class="color-name">Perlin Violet</div>
+            <div class="color-hex">#7C4DFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffffff; border-bottom: 1px solid var(--gp-border);"></div>
+          <div class="color-info">
+            <div class="color-name">Glow White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="gp-divider">
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section" id="components">
+    <div class="container">
+      <p class="section-label">// components</p>
+      <h2 class="section-title">Algorithmic Elements</h2>
+      <p class="section-subtitle">Semi-transparent cards with glowing accents, designed to float above the generative canvas layer.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--cyan">&#9670;</div>
+          <h3>Procedural Geometry</h3>
+          <p>Voronoi tessellations, Delaunay triangulations, and fractal subdivisions form the foundation of every surface and background.</p>
+          <span class="tag">Voronoi</span>
+          <span class="tag">SVG</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--magenta">&#9711;</div>
+          <h3>Noise Functions</h3>
+          <p>Perlin noise, Simplex noise, and fractal Brownian motion produce organic terrain-like gradients and topographic contour textures.</p>
+          <span class="tag">Perlin</span>
+          <span class="tag">fBm</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--green">&#9679;</div>
+          <h3>Particle Systems</h3>
+          <p>Thousands of tiny elements follow vector forces, accumulating into organic density maps and directional flow field textures.</p>
+          <span class="tag">Canvas</span>
+          <span class="tag">WebGL</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--violet">&#9733;</div>
+          <h3>Mathematical Constants</h3>
+          <p>The golden ratio, Fibonacci spirals, and Lissajous curves inform proportions, spacing, and the deep structure of every layout.</p>
+          <span class="tag">Fibonacci</span>
+          <span class="tag">Golden</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">&#9676;</div>
+          <h3>Interactive Parameters</h3>
+          <p>Mouse movement, scroll position, and user clicks feed back into the generative system, creating responsive, living visuals.</p>
+          <span class="tag">Input</span>
+          <span class="tag">Reactive</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--blue">&#9674;</div>
+          <h3>Recursive Structures</h3>
+          <p>Fractal motifs where the same geometric logic repeats at multiple scales, from macro page layout down to micro texture detail.</p>
+          <span class="tag">Fractal</span>
+          <span class="tag">Scale</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ALGORITHM BANNER ===== -->
+  <div class="algo-banner">
+    <div class="algo-banner-code">
+      <span>for (let i = 0; i &lt; nodes; i++)</span>
+      <span>{</span>
+      <span>draw(vertex[i]);</span>
+      <span>connect(nearest(i));</span>
+      <span>}</span>
+    </div>
+    <h2>System Over Specimen</h2>
+    <p>// design the rules, not the output &mdash; let computation produce the art</p>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section" id="effects">
+    <div class="container">
+      <p class="section-label">// effects.showcase</p>
+      <h2 class="section-title">CSS Generative Techniques</h2>
+      <p class="section-subtitle">Procedural patterns rendered entirely with CSS gradients and animations &mdash; no image assets required.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-flow"></div>
+          <div class="effect-caption">
+            <h4>Flow Field</h4>
+            <p>Angled repeating gradients create directional line textures that simulate vector flow fields.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-voronoi"></div>
+          <div class="effect-caption">
+            <h4>Voronoi Cells</h4>
+            <p>Overlapping radial gradients approximate cellular tessellation with luminous node points.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-noise"></div>
+          <div class="effect-caption">
+            <h4>Perlin Noise</h4>
+            <p>Blurred elliptical gradients drift and morph to simulate organic noise terrain.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-particles"></div>
+          <div class="effect-caption">
+            <h4>Particle System</h4>
+            <p>Multi-colored dot gradients at various sizes move in a continuous stream of particles.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-fractal"></div>
+          <div class="effect-caption">
+            <h4>Fractal Grid</h4>
+            <p>Nested grids at multiple scales with subtle rotation create recursive, self-similar depth.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-wave"></div>
+          <div class="effect-caption">
+            <h4>Wave Interference</h4>
+            <p>Repeating radial gradients from two sources overlap to produce moire interference patterns.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="gp-divider">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section">
+    <div class="container">
+      <p class="section-label">// interactive.elements</p>
+      <h2 class="section-title">Glowing Controls</h2>
+      <p class="section-subtitle">Monospace-labeled buttons with scan-line sweeps and luminous hover states.</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn--filled">Run System</a>
+        <a href="#" class="btn">Circuit Cyan</a>
+        <a href="#" class="btn btn--magenta">Fractal Magenta</a>
+        <a href="#" class="btn btn--green">Matrix Green</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="quote-block">
+        <div class="quote-mark">&ldquo;</div>
+        <blockquote>
+          Simple rules, when repeated and layered, produce visually rich results that exceed the apparent complexity of the underlying code. The system produces the art &mdash; the designer produces the system.
+        </blockquote>
+        <cite>// the generative pattern philosophy</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Initialize Your System</h2>
+        <p class="cta-mono">// controlled randomness, emergent beauty</p>
+        <p>
+          The Generative Pattern aesthetic celebrates code as the primary creative instrument. Define your rules, set your parameters, and let computation produce intricate, mesmerizing visual beauty.
+        </p>
+        <a href="#hero" class="btn btn--filled">Return to Origin</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PARAMETER STRIP ===== -->
+  <div class="param-strip">
+    <span><span class="key">render</span> <span class="val">complete</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">frames</span> <span class="val">18,432</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">elapsed</span> <span class="val">307.2s</span></span>
+    <span class="sep">|</span>
+    <span><span class="key">memory</span> <span class="val">128MB</span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-logo">gen::pattern</div>
+      <p>
+        A design aesthetic reference celebrating the marriage of algorithm and art. Procedural geometry, luminous accents on dark canvas, and monospace typography &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">System</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-nodes">
+        <span class="footer-node"></span>
+        <span class="footer-node"></span>
+        <span class="footer-node"></span>
+        <span class="footer-node"></span>
+        <span class="footer-node"></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Generative Pattern &bull; System over specimen</p>
+    </div>
+  </footer>
+
+</body>
+</html>

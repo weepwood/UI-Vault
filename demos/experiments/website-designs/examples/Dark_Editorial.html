@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dark Editorial -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Dark Foundation --- */
+      --de-obsidian: #0C0C0E;
+      --de-graphite: #141416;
+      --de-charcoal: #1C1B1F;
+      --de-slate: #242428;
+      --de-smoke: #2E2E34;
+
+      /* --- Text Tones --- */
+      --de-pewter: #6B6B76;
+      --de-silver: #9E9EA8;
+      --de-parchment: #E8E4DF;
+      --de-ivory: #F5F2ED;
+      --de-white: #FFFFFF;
+
+      /* --- Accents --- */
+      --de-gold: #C9A84C;
+      --de-brass: #A8872A;
+      --de-burgundy: #6B1D2A;
+      --de-wine: #8C2F3E;
+      --de-sage: #4A5D4A;
+
+      /* --- Functional Tokens --- */
+      --de-bg: var(--de-obsidian);
+      --de-text: var(--de-parchment);
+      --de-heading: var(--de-ivory);
+      --de-accent: var(--de-gold);
+      --de-surface: var(--de-charcoal);
+      --de-border: rgba(255, 255, 255, 0.06);
+      --de-border-gold: rgba(201, 168, 76, 0.2);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(80px, 10vw, 140px);
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      min-height: 100vh;
+      font-family: 'Source Sans 3', 'Helvetica Neue', Arial, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--de-parchment);
+      background: var(--de-obsidian);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+      font-weight: 700;
+      color: var(--de-ivory);
+      line-height: 1.15;
+    }
+
+    h1 {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      letter-spacing: -0.01em;
+    }
+
+    h3 {
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      letter-spacing: 0;
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 48px;
+      height: 60px;
+      background: rgba(12, 12, 14, 0.85);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(12, 12, 14, 0.96);
+      border-bottom-color: rgba(201, 168, 76, 0.15);
+    }
+
+    .nav .masthead {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--de-ivory);
+      letter-spacing: 0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    .nav-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--de-silver);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 6px 0;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--de-gold);
+      transition: width 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--de-ivory);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* ============================================
+       SECTION UTILITIES
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 64px;
+    }
+
+    .section--obsidian {
+      background: var(--de-obsidian);
+    }
+
+    .section--graphite {
+      background: var(--de-graphite);
+    }
+
+    .section--charcoal {
+      background: var(--de-charcoal);
+    }
+
+    .section--slate {
+      background: var(--de-slate);
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .container--narrow {
+      max-width: 680px;
+    }
+
+    .section-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--de-gold);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--de-ivory);
+      line-height: 1.15;
+      margin-bottom: 24px;
+    }
+
+    .section-intro {
+      max-width: 600px;
+      color: var(--de-silver);
+      line-height: 1.8;
+      margin-bottom: 64px;
+    }
+
+    .divider {
+      border: none;
+      height: 1px;
+      background: var(--de-border-gold);
+      margin: 0;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+      padding: 80px 64px;
+      overflow: hidden;
+      background: var(--de-graphite);
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      /* CSS-only hero visual: layered dark gradients with subtle texture */
+      background:
+        radial-gradient(ellipse 80% 60% at 65% 40%, rgba(201, 168, 76, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 70% at 20% 70%, rgba(107, 29, 42, 0.08) 0%, transparent 50%),
+        linear-gradient(165deg, var(--de-graphite) 0%, var(--de-obsidian) 40%, var(--de-charcoal) 70%, var(--de-graphite) 100%);
+      transition: transform 8s ease;
+    }
+
+    /* Subtle grain texture via pseudo-element */
+    .hero-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+      opacity: 0.5;
+    }
+
+    /* Decorative editorial lines */
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 8%;
+      width: 1px;
+      height: 30vh;
+      background: linear-gradient(to bottom, transparent, rgba(201, 168, 76, 0.15), transparent);
+      transform: translateY(-50%);
+    }
+
+    .hero:hover .hero-bg {
+      transform: scale(1.02);
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(12, 12, 14, 0.95) 0%,
+        rgba(12, 12, 14, 0.5) 40%,
+        transparent 100%
+      );
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 720px;
+    }
+
+    .hero-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--de-gold);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 700;
+      color: var(--de-white);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero-subtitle {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.1rem;
+      color: var(--de-parchment);
+      line-height: 1.7;
+      max-width: 520px;
+      margin-bottom: 36px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .hero-meta {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--de-pewter);
+    }
+
+    .hero-meta span {
+      color: var(--de-gold);
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--de-ivory);
+      border: 1px solid var(--de-gold);
+      border-radius: 0;
+      padding: 14px 36px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 100%;
+      background: var(--de-gold);
+      transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      z-index: -1;
+    }
+
+    .btn:hover {
+      color: var(--de-obsidian);
+    }
+
+    .btn:hover::before {
+      width: 100%;
+    }
+
+    /* Filled variant */
+    .btn--filled {
+      background: var(--de-gold);
+      color: var(--de-obsidian);
+      border-color: var(--de-gold);
+    }
+
+    .btn--filled::before {
+      background: var(--de-brass);
+    }
+
+    .btn--filled:hover {
+      color: var(--de-obsidian);
+    }
+
+    /* Text variant */
+    .btn--text {
+      border: none;
+      padding: 14px 0;
+      color: var(--de-gold);
+      letter-spacing: 0.12em;
+    }
+
+    .btn--text::before {
+      display: none;
+    }
+
+    .btn--text::after {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--de-gold);
+      vertical-align: middle;
+      margin-left: 12px;
+      transition: width 0.3s ease;
+    }
+
+    .btn--text:hover {
+      color: var(--de-ivory);
+    }
+
+    .btn--text:hover::after {
+      width: 40px;
+    }
+
+    /* Burgundy variant */
+    .btn--burgundy {
+      border-color: var(--de-wine);
+      color: var(--de-parchment);
+    }
+
+    .btn--burgundy::before {
+      background: var(--de-wine);
+    }
+
+    .btn--burgundy:hover {
+      color: var(--de-white);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      margin-bottom: 40px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid var(--de-border);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .typo-sample-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--de-gold);
+      margin-bottom: 12px;
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 800;
+      color: var(--de-white);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .typo-heading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--de-ivory);
+      line-height: 1.2;
+    }
+
+    .typo-pullquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.3rem, 2.5vw, 2rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--de-ivory);
+      line-height: 1.5;
+    }
+
+    .typo-body {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 1.05rem;
+      color: var(--de-parchment);
+      line-height: 1.85;
+    }
+
+    .typo-editorial-label {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--de-gold);
+    }
+
+    .typo-meta {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--de-pewter);
+    }
+
+    .typo-right h3 {
+      font-size: 1rem;
+      color: var(--de-ivory);
+      margin-bottom: 20px;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--de-border);
+    }
+
+    .typo-scale-size {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--de-pewter);
+      min-width: 60px;
+    }
+
+    .typo-pairings {
+      margin-top: 32px;
+      padding-top: 28px;
+      border-top: 1px solid var(--de-border-gold);
+    }
+
+    .typo-pairing-item {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-vibe {
+      font-size: 0.8rem;
+      color: var(--de-pewter);
+      display: block;
+      margin-top: 2px;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 24px;
+    }
+
+    .color-chip {
+      transition: transform 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+    }
+
+    .color-swatch {
+      width: 100%;
+      aspect-ratio: 1;
+      position: relative;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .color-info {
+      padding: 14px 0 0;
+    }
+
+    .color-name {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--de-ivory);
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--de-pewter);
+    }
+
+    .color-role {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.68rem;
+      color: var(--de-silver);
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    /* ============================================
+       COMPONENT CARDS
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .card {
+      background: var(--de-charcoal);
+      overflow: hidden;
+      transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-visual {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card-visual-inner {
+      width: 100%;
+      height: 100%;
+      transition: transform 0.6s ease;
+    }
+
+    .card:hover .card-visual-inner {
+      transform: scale(1.03);
+    }
+
+    .card-body {
+      padding: 28px 24px 32px;
+    }
+
+    .card-category {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--de-gold);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--de-ivory);
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .card-excerpt {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.95rem;
+      color: var(--de-silver);
+      line-height: 1.7;
+    }
+
+    .card-meta {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--de-pewter);
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--de-border);
+    }
+
+    /* Card visual CSS backgrounds */
+    .card-visual--architecture {
+      background:
+        linear-gradient(135deg, var(--de-slate) 0%, var(--de-smoke) 50%, var(--de-charcoal) 100%),
+        repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(201, 168, 76, 0.04) 40px, rgba(201, 168, 76, 0.04) 41px);
+      background-blend-mode: normal;
+    }
+
+    .card-visual--typography {
+      background: var(--de-slate);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-visual--typography::after {
+      content: 'Aa';
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 4rem;
+      font-weight: 800;
+      color: rgba(201, 168, 76, 0.12);
+      letter-spacing: -0.03em;
+    }
+
+    .card-visual--photography {
+      background:
+        radial-gradient(circle at 30% 40%, rgba(107, 29, 42, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 70% 60%, rgba(201, 168, 76, 0.08) 0%, transparent 40%),
+        linear-gradient(160deg, var(--de-graphite), var(--de-slate));
+    }
+
+    .card-visual--layout {
+      background: var(--de-slate);
+      position: relative;
+    }
+
+    .card-visual--layout::before {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(201, 168, 76, 0.1);
+      background:
+        linear-gradient(to right, transparent 60%, rgba(201, 168, 76, 0.04) 60%);
+    }
+
+    .card-visual--color {
+      background:
+        linear-gradient(135deg, var(--de-obsidian), var(--de-charcoal) 30%, var(--de-burgundy) 60%, var(--de-gold) 100%);
+    }
+
+    .card-visual--motion {
+      background: var(--de-slate);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card-visual--motion::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: -20%;
+      width: 140%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--de-gold), transparent);
+      animation: motionLine 3s ease-in-out infinite;
+    }
+
+    @keyframes motionLine {
+      0%, 100% { transform: translateY(-20px); opacity: 0; }
+      50% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+    }
+
+    .effect-preview {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 20px 0;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--de-ivory);
+      margin-bottom: 8px;
+    }
+
+    .effect-caption p {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.88rem;
+      color: var(--de-silver);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Tenebrism Gradient */
+    .effect-tenebrism {
+      background:
+        radial-gradient(ellipse 40% 50% at 35% 45%, rgba(201, 168, 76, 0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 40% at 70% 55%, rgba(107, 29, 42, 0.1) 0%, transparent 60%),
+        linear-gradient(180deg, var(--de-obsidian) 0%, var(--de-graphite) 50%, var(--de-obsidian) 100%);
+    }
+
+    /* Effect 2: Editorial Grid Lines */
+    .effect-grid-lines {
+      background: var(--de-graphite);
+      position: relative;
+    }
+
+    .effect-grid-lines::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent calc(100% / 12 - 1px),
+          rgba(201, 168, 76, 0.06) calc(100% / 12 - 1px),
+          rgba(201, 168, 76, 0.06) calc(100% / 12)
+        );
+    }
+
+    .effect-grid-lines::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 47px,
+          rgba(255, 255, 255, 0.02) 47px,
+          rgba(255, 255, 255, 0.02) 48px
+        );
+    }
+
+    /* Effect 3: Film Grain */
+    .effect-grain {
+      background:
+        linear-gradient(170deg, var(--de-charcoal), var(--de-slate), var(--de-charcoal));
+      position: relative;
+    }
+
+    .effect-grain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 200px 200px;
+    }
+
+    .effect-grain::after {
+      content: '';
+      position: absolute;
+      bottom: 20%;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(201, 168, 76, 0.2), transparent);
+    }
+
+    /* Effect 4: Dark Surface Layers */
+    .effect-layers {
+      background: var(--de-obsidian);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 24px;
+    }
+
+    .effect-layers .layer {
+      flex: 1;
+      height: 70%;
+      transition: transform 0.4s ease;
+    }
+
+    .effect-layers:hover .layer {
+      transform: translateY(-4px);
+    }
+
+    /* Effect 5: Gold Accent Line */
+    .effect-gold-line {
+      background: var(--de-graphite);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-gold-line::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent 0%,
+        var(--de-gold) 20%,
+        var(--de-gold) 80%,
+        transparent 100%
+      );
+      opacity: 0.4;
+    }
+
+    .effect-gold-line::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--de-gold);
+      transform: rotate(45deg);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Effect 6: Duotone Overlay */
+    .effect-duotone {
+      position: relative;
+      background:
+        radial-gradient(circle at 50% 50%, var(--de-slate) 0%, var(--de-obsidian) 100%);
+    }
+
+    .effect-duotone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg,
+          rgba(107, 29, 42, 0.3) 0%,
+          transparent 40%,
+          rgba(201, 168, 76, 0.15) 80%,
+          rgba(201, 168, 76, 0.25) 100%
+        );
+      mix-blend-mode: overlay;
+    }
+
+    .effect-duotone::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(12, 12, 14, 0.15) 3px,
+          rgba(12, 12, 14, 0.15) 4px
+        );
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE / PULL QUOTE
+       ============================================ */
+    .pull-quote {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 0;
+      text-align: center;
+      border-top: 1px solid var(--de-gold);
+      border-bottom: 1px solid var(--de-gold);
+    }
+
+    .pull-quote blockquote {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
+      font-style: italic;
+      font-weight: 400;
+      color: var(--de-ivory);
+      line-height: 1.5;
+    }
+
+    .pull-quote cite {
+      display: block;
+      margin-top: 24px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      font-style: normal;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--de-gold);
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: var(--section-pad) 64px;
+      background: var(--de-graphite);
+      position: relative;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 50%, rgba(201, 168, 76, 0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .cta-content {
+      position: relative;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .cta-content .section-label {
+      margin-bottom: 20px;
+    }
+
+    .cta-content h2 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      color: var(--de-ivory);
+      margin-bottom: 20px;
+      line-height: 1.15;
+    }
+
+    .cta-content p {
+      color: var(--de-silver);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      padding: 64px;
+      border-top: 1px solid var(--de-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--de-obsidian);
+    }
+
+    .footer .footer-masthead {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--de-ivory);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--de-pewter);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--de-gold);
+    }
+
+    .footer-copy {
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 0.75rem;
+      color: var(--de-pewter);
+    }
+
+    /* ============================================
+       SCROLL REVEAL
+       ============================================ */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                  transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal.delay-1 { transition-delay: 0.1s; }
+    .reveal.delay-2 { transition-delay: 0.2s; }
+    .reveal.delay-3 { transition-delay: 0.3s; }
+    .reveal.delay-4 { transition-delay: 0.4s; }
+    .reveal.delay-5 { transition-delay: 0.5s; }
+
+    .reveal.from-left {
+      transform: translateX(-40px);
+    }
+
+    .reveal.from-left.visible {
+      transform: translateX(0);
+    }
+
+    .reveal.from-right {
+      transform: translateX(40px);
+    }
+
+    .reveal.from-right.visible {
+      transform: translateX(0);
+    }
+
+    /* ============================================
+       DROP CAP
+       ============================================ */
+    .drop-cap::first-letter {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: 4.2em;
+      font-weight: 700;
+      float: left;
+      line-height: 0.8;
+      margin-right: 12px;
+      margin-top: 6px;
+      color: var(--de-ivory);
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 1024px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .nav {
+        padding: 0 24px;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .hero {
+        padding: 60px 24px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 8vw, 3rem);
+      }
+
+      .section {
+        padding: 80px 24px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 16px;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .footer {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+        padding: 48px 24px;
+      }
+
+      .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .cta-section {
+        padding: 80px 24px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* ============================================
+       PREFERS REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+
+      .hero-bg {
+        transition: none;
+      }
+
+      .card,
+      .card .card-visual-inner,
+      .color-chip,
+      .btn,
+      .btn::before,
+      .btn--text::after,
+      .nav-links a::after,
+      .effect-layers .layer {
+        transition: none;
+      }
+
+      .card-visual--motion::before {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="masthead">Dark Editorial</a>
+    <div class="nav-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-bg" role="img" aria-label="Abstract dark editorial composition"></div>
+    <div class="hero-content">
+      <span class="hero-label">Design Aesthetic Reference</span>
+      <h1>Dark Editorial</h1>
+      <p class="hero-subtitle">
+        A moody, magazine-inspired aesthetic that merges print editorial sophistication with the atmospheric intensity of dark-themed digital interfaces. Every element is intentional, every contrast carefully controlled.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Explore Components</a>
+        <a href="#palette" class="btn btn--text">View Palette</a>
+      </div>
+      <p class="hero-meta">Refined Serif Typography &mdash; <span>Muted Gold Accents</span> &mdash; Cinematic Restraint</p>
+    </div>
+  </header>
+
+  <!-- ===== THIN DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--obsidian" id="typography">
+    <div class="container">
+      <p class="section-label reveal">Typography</p>
+      <h2 class="section-title reveal">Serifs, Hierarchy &amp; Editorial Cadence</h2>
+      <p class="section-intro reveal">High-contrast serif display type evokes print mastheads. Clean sans-serifs ensure body readability on dark surfaces. Italic serifs bring pull quotes to life.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample reveal">
+            <p class="typo-sample-label">Display / Playfair Display 800</p>
+            <p class="typo-display">The Art of Restraint</p>
+          </div>
+          <div class="typo-sample reveal">
+            <p class="typo-sample-label">Heading / Playfair Display 700</p>
+            <p class="typo-heading">Controlled Contrast Over Uniform Darkness</p>
+          </div>
+          <div class="typo-sample reveal">
+            <p class="typo-sample-label">Pull Quote / Cormorant Garamond Italic</p>
+            <p class="typo-pullquote">"The frame is not a boundary but a conversation between presence and absence."</p>
+          </div>
+          <div class="typo-sample reveal">
+            <p class="typo-sample-label">Body / Source Sans 3 400</p>
+            <p class="typo-body">Modern editorial design carries this philosophy into the digital realm. The dark background is not empty -- it is charged with potential, a visual silence that amplifies every element placed within it.</p>
+          </div>
+          <div class="typo-sample reveal">
+            <p class="typo-sample-label">Editorial Label / Source Sans 3 600</p>
+            <p class="typo-editorial-label">Culture &middot; Photography &middot; Design</p>
+          </div>
+          <div class="typo-sample reveal">
+            <p class="typo-sample-label">Metadata / Source Sans 3 500</p>
+            <p class="typo-meta">March 2026 &middot; 12 Min Read &middot; By Eleanor Voss</p>
+          </div>
+        </div>
+
+        <div class="typo-right reveal">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">5.5rem</span>
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 2rem; font-weight: 800; color: var(--de-white);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.8rem</span>
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.5rem; font-weight: 700; color: var(--de-ivory);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Playfair Display', Georgia, serif; font-size: 1.2rem; font-weight: 700; color: var(--de-ivory);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.3rem; font-style: italic; color: var(--de-ivory);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Source Sans 3', sans-serif; font-size: 1rem; color: var(--de-parchment);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Source Sans 3', sans-serif; font-size: 0.75rem; font-weight: 600; color: var(--de-gold); text-transform: uppercase; letter-spacing: 0.14em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairings">
+            <h3 style="margin-bottom: 16px;">Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Playfair Display', Georgia, serif; color: var(--de-ivory);">Playfair Display 700</strong> + <strong style="color: var(--de-parchment);">Source Sans 3 400</strong>
+              <span class="typo-pairing-vibe">Classic luxury editorial; fashion magazine</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Cormorant Garamond', Georgia, serif; color: var(--de-ivory);">Cormorant Garamond 600</strong> + <strong style="color: var(--de-parchment);">Source Sans 3 400</strong>
+              <span class="typo-pairing-vibe">Refined literary journal; elegant long-form</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Playfair Display', Georgia, serif; color: var(--de-ivory);">Playfair Display 800</strong> + <strong style="color: var(--de-parchment);">Inter 400</strong>
+              <span class="typo-pairing-vibe">Bold masthead energy; cultural magazine cover</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--graphite" id="palette">
+    <div class="container">
+      <p class="section-label reveal">Color Palette</p>
+      <h2 class="section-title reveal">Warm Darks &amp; Burnished Accents</h2>
+      <p class="section-intro reveal">A restrained palette of layered near-blacks, muted metallics, and carefully selected accent tones. Color is a compositional tool, not decoration.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip reveal delay-1">
+          <div class="color-swatch" style="background: #0C0C0E;"></div>
+          <div class="color-info">
+            <div class="color-name">Obsidian</div>
+            <div class="color-hex">#0C0C0E</div>
+            <div class="color-role">Primary background</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-1">
+          <div class="color-swatch" style="background: #141416;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Graphite</div>
+            <div class="color-hex">#141416</div>
+            <div class="color-role">Secondary background</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-2">
+          <div class="color-swatch" style="background: #1C1B1F;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Warm</div>
+            <div class="color-hex">#1C1B1F</div>
+            <div class="color-role">Card backgrounds</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-2">
+          <div class="color-swatch" style="background: #242428;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Dark</div>
+            <div class="color-hex">#242428</div>
+            <div class="color-role">Tertiary surface</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-3">
+          <div class="color-swatch" style="background: #2E2E34;"></div>
+          <div class="color-info">
+            <div class="color-name">Smoke</div>
+            <div class="color-hex">#2E2E34</div>
+            <div class="color-role">Hover states</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-3">
+          <div class="color-swatch" style="background: #6B6B76;"></div>
+          <div class="color-info">
+            <div class="color-name">Pewter</div>
+            <div class="color-hex">#6B6B76</div>
+            <div class="color-role">Muted metadata</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-3">
+          <div class="color-swatch" style="background: #9E9EA8;"></div>
+          <div class="color-info">
+            <div class="color-name">Silver Prose</div>
+            <div class="color-hex">#9E9EA8</div>
+            <div class="color-role">Secondary body text</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-4">
+          <div class="color-swatch" style="background: #E8E4DF;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#E8E4DF</div>
+            <div class="color-role">Primary body text</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-4">
+          <div class="color-swatch" style="background: #F5F2ED;"></div>
+          <div class="color-info">
+            <div class="color-name">Ivory</div>
+            <div class="color-hex">#F5F2ED</div>
+            <div class="color-role">Display headings</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-4">
+          <div class="color-swatch" style="background: #FFFFFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure White</div>
+            <div class="color-hex">#FFFFFF</div>
+            <div class="color-role">Maximum emphasis</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-5">
+          <div class="color-swatch" style="background: #C9A84C;"></div>
+          <div class="color-info">
+            <div class="color-name">Antique Gold</div>
+            <div class="color-hex">#C9A84C</div>
+            <div class="color-role">Primary accent</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-5">
+          <div class="color-swatch" style="background: #A8872A;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnished Brass</div>
+            <div class="color-hex">#A8872A</div>
+            <div class="color-role">Gold hover state</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-5">
+          <div class="color-swatch" style="background: #6B1D2A;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Burgundy</div>
+            <div class="color-hex">#6B1D2A</div>
+            <div class="color-role">Tertiary accent</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-5">
+          <div class="color-swatch" style="background: #8C2F3E;"></div>
+          <div class="color-info">
+            <div class="color-name">Wine</div>
+            <div class="color-hex">#8C2F3E</div>
+            <div class="color-role">Burgundy hover</div>
+          </div>
+        </div>
+        <div class="color-chip reveal delay-5">
+          <div class="color-swatch" style="background: #4A5D4A;"></div>
+          <div class="color-info">
+            <div class="color-name">Muted Sage</div>
+            <div class="color-hex">#4A5D4A</div>
+            <div class="color-role">Optional accent</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--obsidian" id="components">
+    <div class="container">
+      <p class="section-label reveal">Components</p>
+      <h2 class="section-title reveal">Editorial Cards &amp; Sharp Geometry</h2>
+      <p class="section-intro reveal">Rectilinear surfaces with no border-radius. Layered dark tones create depth. Gold accents mark categories with the precision of a magazine art director.</p>
+
+      <div class="card-grid">
+        <article class="card reveal delay-1">
+          <div class="card-visual">
+            <div class="card-visual-inner card-visual--architecture"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Architecture</span>
+            <h3 class="card-title">Structures of Silence</h3>
+            <p class="card-excerpt">How contemporary architects design spaces where natural light becomes the primary material, transforming throughout the day.</p>
+            <p class="card-meta">March 2026 &middot; 10 min</p>
+          </div>
+        </article>
+
+        <article class="card reveal delay-2">
+          <div class="card-visual">
+            <div class="card-visual-inner card-visual--typography"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Typography</span>
+            <h3 class="card-title">Weight and Whisper</h3>
+            <p class="card-excerpt">The revival of Didone serif typefaces is reshaping digital editorial design, restoring typographic authority to the screen.</p>
+            <p class="card-meta">February 2026 &middot; 8 min</p>
+          </div>
+        </article>
+
+        <article class="card reveal delay-3">
+          <div class="card-visual">
+            <div class="card-visual-inner card-visual--photography"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Photography</span>
+            <h3 class="card-title">The Last Analog Frame</h3>
+            <p class="card-excerpt">Inside the vanishing world of film photography, where grain and blur capture what digital precision cannot reproduce.</p>
+            <p class="card-meta">January 2026 &middot; 12 min</p>
+          </div>
+        </article>
+
+        <article class="card reveal delay-1">
+          <div class="card-visual">
+            <div class="card-visual-inner card-visual--layout"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Layout</span>
+            <h3 class="card-title">Asymmetry as Grammar</h3>
+            <p class="card-excerpt">Why off-center compositions communicate more than centered symmetry ever could, lessons from sixty years of editorial grid systems.</p>
+            <p class="card-meta">December 2025 &middot; 9 min</p>
+          </div>
+        </article>
+
+        <article class="card reveal delay-2">
+          <div class="card-visual">
+            <div class="card-visual-inner card-visual--color"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Color Theory</span>
+            <h3 class="card-title">Palette of Absence</h3>
+            <p class="card-excerpt">The deliberate restraint of the dark editorial palette and how scarcity of color amplifies each accent's visual impact.</p>
+            <p class="card-meta">November 2025 &middot; 7 min</p>
+          </div>
+        </article>
+
+        <article class="card reveal delay-3">
+          <div class="card-visual">
+            <div class="card-visual-inner card-visual--motion"></div>
+          </div>
+          <div class="card-body">
+            <span class="card-category">Motion</span>
+            <h3 class="card-title">The Scroll as Narrative</h3>
+            <p class="card-excerpt">Scroll-triggered reveals and cinematic pacing transform web reading into the sequential experience of turning magazine pages.</p>
+            <p class="card-meta">October 2025 &middot; 6 min</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--graphite" id="effects">
+    <div class="container">
+      <p class="section-label reveal">Visual Effects</p>
+      <h2 class="section-title reveal">CSS Techniques &amp; Dark Surfaces</h2>
+      <p class="section-intro reveal">All visuals rendered in pure CSS. Layered gradients, fine rules, and controlled grain create editorial depth without a single image asset.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo reveal delay-1">
+          <div class="effect-preview effect-tenebrism"></div>
+          <div class="effect-caption">
+            <h4>Tenebrism Gradient</h4>
+            <p>Layered radial gradients in gold and burgundy emerge from deep obsidian, mimicking the dramatic light of Baroque painting.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo reveal delay-2">
+          <div class="effect-preview effect-grid-lines"></div>
+          <div class="effect-caption">
+            <h4>Editorial Grid Lines</h4>
+            <p>A 12-column grid overlay in faint gold with horizontal baseline rhythm lines, the invisible skeleton of magazine layout.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo reveal delay-3">
+          <div class="effect-preview effect-grain"></div>
+          <div class="effect-caption">
+            <h4>Film Grain Texture</h4>
+            <p>SVG noise filter creates subtle photographic grain over dark surfaces, adding analog warmth to digital compositions.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo reveal delay-1">
+          <div class="effect-preview effect-layers">
+            <div class="layer" style="background: var(--de-obsidian);"></div>
+            <div class="layer" style="background: var(--de-graphite);"></div>
+            <div class="layer" style="background: var(--de-charcoal);"></div>
+            <div class="layer" style="background: var(--de-slate);"></div>
+            <div class="layer" style="background: var(--de-smoke);"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Dark Surface Layers</h4>
+            <p>Five distinct near-black tones create spatial hierarchy without borders or shadows. Depth through subtlety.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo reveal delay-2">
+          <div class="effect-preview effect-gold-line"></div>
+          <div class="effect-caption">
+            <h4>Gold Accent Rule</h4>
+            <p>Thin horizontal gold lines with gradient fade serve as elegant section dividers, a direct borrowing from print editorial convention.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo reveal delay-3">
+          <div class="effect-preview effect-duotone"></div>
+          <div class="effect-caption">
+            <h4>Duotone Overlay</h4>
+            <p>Burgundy-to-gold gradient overlay with scanline texture creates the desaturated, cinematic treatment of editorial photography.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--charcoal">
+    <div class="container">
+      <p class="section-label reveal">Interactive Elements</p>
+      <h2 class="section-title reveal">Editorial Buttons</h2>
+      <p class="section-intro reveal">Sharp geometry, uppercase tracking, and controlled hover transitions. No rounded corners -- the editorial aesthetic is rectilinear and precise.</p>
+
+      <div class="button-showcase reveal">
+        <a href="#" class="btn">Outlined Default</a>
+        <a href="#" class="btn btn--filled">Filled Gold</a>
+        <a href="#" class="btn btn--burgundy">Burgundy Accent</a>
+        <a href="#" class="btn btn--text">Read More</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--graphite">
+    <div class="container">
+      <div class="pull-quote reveal">
+        <blockquote>
+          "The most powerful element in any composition is the space you choose to leave empty. Restraint signals luxury; abundance cheapens."
+        </blockquote>
+        <cite>Alexei Brodovitch, Art Director</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="cta-section">
+    <div class="cta-content reveal">
+      <p class="section-label">Begin Your Editorial</p>
+      <h2>Content Deserves<br>to Be Experienced</h2>
+      <p>
+        Dark Editorial transforms web reading into an immersive act. Refined serifs, controlled contrast, generous negative space, and purposeful gold accents create the cadence of a premium publication -- inviting prolonged engagement rather than hurried scanning.
+      </p>
+      <a href="#hero" class="btn btn--filled">Return to the Top</a>
+    </div>
+  </section>
+
+  <!-- ===== DIVIDER ===== -->
+  <hr class="divider">
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <span class="footer-masthead">Dark Editorial</span>
+    <div class="footer-links">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Typography</a>
+      <a href="#palette">Palette</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <p class="footer-copy">Design Aesthetic Reference &middot; Dark Editorial &middot; 2026</p>
+  </footer>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Scroll-triggered reveal
+    const revealElements = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    revealElements.forEach(el => revealObserver.observe(el));
+
+    // Nav scroll state
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  </script>
+
+</body>
+</html>

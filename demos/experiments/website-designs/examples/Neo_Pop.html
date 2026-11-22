@@ -1,0 +1,1920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neo Pop -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bangers&family=Bebas+Neue&family=Bungee&family=Inter:wght@400;500;700&family=Space+Grotesk:wght@400;500;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Primary Accents --- */
+      --np-red: #ff0033;
+      --np-blue: #0066ff;
+      --np-yellow: #ffd600;
+
+      /* --- Secondary Accents --- */
+      --np-magenta: #ff00aa;
+      --np-green: #00cc44;
+      --np-orange: #ff6600;
+
+      /* --- Tertiary Accents --- */
+      --np-violet: #7700cc;
+      --np-cyan: #00ccdd;
+      --np-bubblegum: #ff88cc;
+
+      /* --- Structural Neutrals --- */
+      --np-black: #111111;
+      --np-deep-black: #000000;
+      --np-white: #ffffff;
+      --np-soft-white: #f5f5f0;
+      --np-cream: #fff8e7;
+      --np-gray: #cccccc;
+
+      /* --- Functional Mappings --- */
+      --np-bg-primary: var(--np-white);
+      --np-bg-secondary: var(--np-soft-white);
+      --np-bg-dark: var(--np-deep-black);
+      --np-text-primary: var(--np-black);
+      --np-text-inverse: var(--np-white);
+      --np-outline: var(--np-black);
+      --np-accent: var(--np-red);
+      --np-accent-alt: var(--np-blue);
+      --np-highlight: var(--np-yellow);
+      --np-border-width: 3px;
+      --np-outline-width: 4px;
+
+      /* --- Shadows -- bold, graphic, non-diffused --- */
+      --np-shadow-hard: 4px 4px 0 var(--np-black);
+      --np-shadow-color: 4px 4px 0 var(--np-red);
+      --np-shadow-large: 6px 6px 0 var(--np-black);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', 'Outfit', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--np-text-primary);
+      background-color: var(--np-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Anton', 'Bebas Neue', sans-serif;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+      line-height: 1.05;
+      color: var(--np-black);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      height: 64px;
+      background: var(--np-white);
+      border-bottom: 3px solid var(--np-black);
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      color: var(--np-black);
+      letter-spacing: 0.05em;
+      transition: color 0.15s ease;
+    }
+
+    .nav-logo span {
+      color: var(--np-red);
+    }
+
+    .nav-logo:hover {
+      color: var(--np-blue);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 0.25rem;
+    }
+
+    .nav-links a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--np-black);
+      padding: 0.4rem 1rem;
+      border: 2px solid transparent;
+      transition: all 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      background: var(--np-yellow);
+      border-color: var(--np-black);
+    }
+
+    .nav-links a.active {
+      background: var(--np-red);
+      color: var(--np-white);
+      border-color: var(--np-black);
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      text-align: center;
+      padding: 6rem 2rem 5rem;
+      background: var(--np-white);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 4px solid var(--np-black);
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Halftone dot background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--np-gray) 1px, transparent 1px);
+      background-size: 20px 20px;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tagline {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.3rem);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--np-blue);
+      margin-bottom: 16px;
+      display: inline-block;
+      padding: 0.3rem 1.5rem;
+      border: 2px solid var(--np-black);
+      background: var(--np-yellow);
+      box-shadow: 3px 3px 0 var(--np-black);
+    }
+
+    .hero h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 8rem);
+      text-transform: uppercase;
+      color: var(--np-red);
+      -webkit-text-stroke: 3px var(--np-black);
+      paint-order: stroke fill;
+      line-height: 0.95;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-subtitle {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.3rem, 3.5vw, 2.2rem);
+      color: var(--np-blue);
+      margin-bottom: 16px;
+      text-shadow: 2px 2px 0 var(--np-black);
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .hero-desc {
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+      color: #444;
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative accent shapes */
+    .accent {
+      position: absolute;
+      border: 3px solid var(--np-black);
+      z-index: 0;
+    }
+
+    .accent--1 {
+      width: 120px;
+      height: 120px;
+      background: var(--np-yellow);
+      top: 10%;
+      left: 5%;
+      transform: rotate(12deg);
+    }
+
+    .accent--2 {
+      width: 80px;
+      height: 80px;
+      background: var(--np-blue);
+      bottom: 15%;
+      right: 8%;
+      border-radius: 50%;
+    }
+
+    .accent--3 {
+      width: 60px;
+      height: 60px;
+      background: var(--np-magenta);
+      top: 20%;
+      right: 12%;
+      transform: rotate(25deg);
+    }
+
+    .accent--4 {
+      width: 40px;
+      height: 40px;
+      background: var(--np-green);
+      bottom: 20%;
+      left: 8%;
+      transform: rotate(-10deg);
+    }
+
+    .accent--5 {
+      width: 50px;
+      height: 50px;
+      background: var(--np-orange);
+      top: 55%;
+      right: 4%;
+      transform: rotate(40deg);
+    }
+
+    .accent--6 {
+      width: 35px;
+      height: 35px;
+      background: var(--np-violet);
+      bottom: 35%;
+      left: 15%;
+      border-radius: 50%;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2.5rem;
+      font-family: 'Bebas Neue', 'Anton', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--np-white);
+      background: var(--np-red);
+      border: 3px solid var(--np-black);
+      border-radius: 0;
+      box-shadow: 4px 4px 0 var(--np-black);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      position: relative;
+    }
+
+    .btn:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 6px 6px 0 var(--np-black);
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--np-black);
+    }
+
+    .btn--blue { background: var(--np-blue); }
+    .btn--yellow { background: var(--np-yellow); color: var(--np-black); }
+    .btn--magenta { background: var(--np-magenta); }
+    .btn--green { background: var(--np-green); color: var(--np-black); }
+
+    .btn--outline {
+      background: var(--np-white);
+      color: var(--np-black);
+    }
+
+    .btn--outline:hover {
+      background: var(--np-yellow);
+    }
+
+    /* ============================================
+       COLOR BAND DIVIDER
+       ============================================ */
+    .color-band {
+      display: flex;
+      height: 8px;
+      width: 100%;
+    }
+
+    .color-band--thick {
+      height: 20px;
+    }
+
+    .color-band span { flex: 1; }
+    .color-band span:nth-child(1) { background: var(--np-red); }
+    .color-band span:nth-child(2) { background: var(--np-blue); }
+    .color-band span:nth-child(3) { background: var(--np-yellow); }
+    .color-band span:nth-child(4) { background: var(--np-magenta); }
+    .color-band span:nth-child(5) { background: var(--np-green); }
+    .color-band span:nth-child(6) { background: var(--np-orange); }
+    .color-band span:nth-child(7) { background: var(--np-violet); }
+    .color-band span:nth-child(8) { background: var(--np-cyan); }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--white {
+      background: var(--np-white);
+    }
+
+    .section--soft-white {
+      background: var(--np-soft-white);
+    }
+
+    .section--yellow {
+      background: var(--np-yellow);
+      border-top: 3px solid var(--np-black);
+      border-bottom: 3px solid var(--np-black);
+    }
+
+    .section--blue {
+      background: var(--np-blue);
+      border-top: 3px solid var(--np-black);
+      border-bottom: 3px solid var(--np-black);
+      color: var(--np-white);
+    }
+
+    .section--blue .section-label { color: var(--np-yellow); }
+    .section--blue .section-title { color: var(--np-white); }
+    .section--blue .section-subtitle { color: var(--np-yellow); }
+
+    .section--dark {
+      background: var(--np-deep-black);
+      color: var(--np-white);
+    }
+
+    .section--dark .section-label { color: var(--np-yellow); }
+    .section--dark .section-title { color: var(--np-white); }
+    .section--dark .section-subtitle { color: var(--np-cyan); }
+
+    .section-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--np-blue);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      text-align: center;
+      color: var(--np-black);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .section-subtitle {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      text-align: center;
+      color: var(--np-red);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       POP DIVIDER
+       ============================================ */
+    .pop-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .pop-divider::before,
+    .pop-divider::after {
+      content: '';
+      flex: 1;
+      height: 3px;
+      background: var(--np-black);
+    }
+
+    .pop-divider span {
+      padding: 0 18px;
+      font-family: 'Bangers', cursive;
+      font-size: 1.6rem;
+      color: var(--np-red);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--np-blue);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: var(--np-black);
+    }
+
+    .typo-display {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      color: var(--np-red);
+      -webkit-text-stroke: 2px var(--np-black);
+      paint-order: stroke fill;
+      line-height: 1.05;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--np-black);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .typo-comic {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      color: var(--np-magenta);
+      text-shadow: 2px 2px 0 var(--np-black);
+      line-height: 1.3;
+      margin-bottom: 8px;
+      transform: rotate(-2deg);
+      display: inline-block;
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--np-black);
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 500;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+      color: var(--np-blue);
+      line-height: 1.4;
+    }
+
+    .typo-ui {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--np-red);
+    }
+
+    .typo-right {
+      background: var(--np-white);
+      padding: 36px;
+      border: 3px solid var(--np-black);
+      box-shadow: var(--np-shadow-hard);
+    }
+
+    .typo-right h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 2px solid var(--np-black);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: var(--np-blue);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--np-white);
+      border: 3px solid var(--np-black);
+      box-shadow: 3px 3px 0 var(--np-black);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .color-chip:hover {
+      transform: translate(-2px, -2px);
+      box-shadow: 5px 5px 0 var(--np-black);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Halftone overlay on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.1) 1px, transparent 1px);
+      background-size: 6px 6px;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+      border-top: 2px solid var(--np-black);
+    }
+
+    .color-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--np-black);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--np-white);
+      border: 3px solid var(--np-black);
+      padding: 0 0 2rem;
+      position: relative;
+      box-shadow: 5px 5px 0 var(--np-black);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .card:hover {
+      transform: translate(-3px, -3px);
+      box-shadow: 8px 8px 0 var(--np-black);
+    }
+
+    /* Colored accent bar at top */
+    .card-bar {
+      height: 8px;
+      width: 100%;
+    }
+
+    .card-bar--red { background: var(--np-red); }
+    .card-bar--blue { background: var(--np-blue); }
+    .card-bar--yellow { background: var(--np-yellow); }
+    .card-bar--magenta { background: var(--np-magenta); }
+    .card-bar--green { background: var(--np-green); }
+    .card-bar--orange { background: var(--np-orange); }
+
+    .card-body {
+      padding: 1.5rem 2rem 0;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border: 3px solid var(--np-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 16px;
+    }
+
+    .card-icon--red { background: var(--np-red); }
+    .card-icon--blue { background: var(--np-blue); }
+    .card-icon--yellow { background: var(--np-yellow); }
+    .card-icon--magenta { background: var(--np-magenta); }
+    .card-icon--green { background: var(--np-green); }
+    .card-icon--orange { background: var(--np-orange); }
+
+    .card h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      text-transform: uppercase;
+      color: var(--np-black);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: #333;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      border: 2px solid var(--np-black);
+      color: var(--np-black);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.15s ease;
+    }
+
+    .tag:hover {
+      background: var(--np-yellow);
+    }
+
+    /* ============================================
+       POP MOTIF BANNER
+       ============================================ */
+    .motif-banner {
+      background: var(--np-red);
+      border-top: 3px solid var(--np-black);
+      border-bottom: 3px solid var(--np-black);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Ben-Day dot overlay on banner */
+    .motif-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(0,0,0,0.15) 1.5px, transparent 1.5px);
+      background-size: 10px 10px;
+      pointer-events: none;
+    }
+
+    .motif-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .motif-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 2.5rem;
+    }
+
+    .motif-row span {
+      animation: np-pop 1.5s ease-in-out infinite;
+      display: inline-block;
+    }
+
+    .motif-row span:nth-child(2) { animation-delay: -0.2s; }
+    .motif-row span:nth-child(3) { animation-delay: -0.4s; }
+    .motif-row span:nth-child(4) { animation-delay: -0.6s; }
+    .motif-row span:nth-child(5) { animation-delay: -0.8s; }
+    .motif-row span:nth-child(6) { animation-delay: -1s; }
+    .motif-row span:nth-child(7) { animation-delay: -1.2s; }
+
+    @keyframes np-pop {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    .motif-banner h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--np-white);
+      text-transform: uppercase;
+      -webkit-text-stroke: 2px var(--np-black);
+      paint-order: stroke fill;
+      margin-bottom: 12px;
+    }
+
+    .motif-banner p {
+      font-family: 'Bangers', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--np-yellow);
+      text-shadow: 2px 2px 0 var(--np-black);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 3px solid var(--np-black);
+      box-shadow: 4px 4px 0 var(--np-black);
+      background: var(--np-white);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Halftone Ben-Day Dots */
+    .effect-halftone {
+      background: var(--np-blue);
+    }
+
+    .effect-halftone::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--np-white) 2px, transparent 2px);
+      background-size: 10px 10px;
+      opacity: 0.3;
+      animation: halftoneGrow 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes halftoneGrow {
+      0% { background-size: 10px 10px; }
+      100% { background-size: 14px 14px; }
+    }
+
+    .effect-halftone::after {
+      content: 'POP!';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bangers', cursive;
+      font-size: 3rem;
+      color: var(--np-yellow);
+      text-shadow: 3px 3px 0 var(--np-black);
+      z-index: 1;
+    }
+
+    /* Effect 2: Hard Shadow Stack */
+    .effect-shadow {
+      background: var(--np-soft-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-shadow::before {
+      content: 'WOW';
+      font-family: 'Anton', sans-serif;
+      font-size: 4rem;
+      text-transform: uppercase;
+      color: var(--np-red);
+      text-shadow:
+        3px 3px 0 var(--np-black),
+        6px 6px 0 var(--np-blue),
+        9px 9px 0 var(--np-black),
+        12px 12px 0 var(--np-yellow);
+    }
+
+    /* Effect 3: Color Block Grid */
+    .effect-colorblock {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+    }
+
+    .effect-colorblock::before {
+      content: '';
+      background: var(--np-red);
+      border-right: 2px solid var(--np-black);
+      border-bottom: 2px solid var(--np-black);
+    }
+
+    .effect-colorblock::after {
+      content: '';
+      background: var(--np-blue);
+      border-bottom: 2px solid var(--np-black);
+    }
+
+    .color-block-3 {
+      background: var(--np-yellow);
+      border-right: 2px solid var(--np-black);
+    }
+
+    .color-block-4 {
+      background: var(--np-green);
+    }
+
+    /* Effect 4: Comic Outline */
+    .effect-outline {
+      background: var(--np-white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-outline::before {
+      content: 'BOOM';
+      font-family: 'Bangers', cursive;
+      font-size: 4.5rem;
+      color: var(--np-white);
+      -webkit-text-stroke: 3px var(--np-black);
+      paint-order: stroke fill;
+      text-shadow: 4px 4px 0 var(--np-magenta);
+      transform: rotate(-5deg);
+    }
+
+    /* Effect 5: Starburst */
+    .effect-starburst {
+      background: var(--np-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-starburst::before {
+      content: 'NEW!';
+      font-family: 'Anton', sans-serif;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      color: var(--np-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 130px;
+      height: 130px;
+      background: var(--np-red);
+      color: var(--np-white);
+      clip-path: polygon(
+        50% 0%, 61% 11%, 75% 3%, 79% 18%,
+        95% 20%, 88% 35%, 100% 44%, 90% 56%,
+        98% 70%, 83% 72%, 82% 88%, 68% 82%,
+        58% 98%, 50% 85%, 42% 98%, 32% 82%,
+        18% 88%, 17% 72%, 2% 70%, 10% 56%,
+        0% 44%, 12% 35%, 5% 20%, 21% 18%,
+        25% 3%, 39% 11%
+      );
+      animation: np-wiggle 2s ease-in-out infinite;
+    }
+
+    @keyframes np-wiggle {
+      0%, 100% { transform: rotate(-3deg); }
+      50% { transform: rotate(3deg); }
+    }
+
+    /* Effect 6: Speech Bubble */
+    .effect-speech {
+      background: var(--np-deep-black);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-speech-bubble {
+      background: var(--np-yellow);
+      border: 3px solid var(--np-black);
+      border-radius: 24px;
+      padding: 1rem 1.8rem;
+      font-family: 'Bangers', cursive;
+      font-size: 1.5rem;
+      color: var(--np-black);
+      box-shadow: 3px 3px 0 var(--np-black);
+      position: relative;
+    }
+
+    .effect-speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -16px;
+      left: 28px;
+      width: 0;
+      height: 0;
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 16px solid var(--np-yellow);
+    }
+
+    .effect-speech-bubble::before {
+      content: '';
+      position: absolute;
+      bottom: -20px;
+      left: 26px;
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-top: 20px solid var(--np-black);
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+      border-top: 2px solid var(--np-black);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--np-black);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--np-yellow);
+      border: 3px solid var(--np-black);
+      box-shadow: 6px 6px 0 var(--np-black);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Anton', sans-serif;
+      font-size: 8rem;
+      color: var(--np-red);
+      opacity: 0.25;
+      position: absolute;
+      top: -20px;
+      left: 28px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 500;
+      color: var(--np-black);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.7;
+    }
+
+    .quote-block cite {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--np-red);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 700px;
+      margin: 0 auto;
+      background: var(--np-white);
+      border: 4px solid var(--np-black);
+      box-shadow: 8px 8px 0 var(--np-black);
+      padding: 60px 48px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Halftone background in CTA */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, var(--np-gray) 1px, transparent 1px);
+      background-size: 14px 14px;
+      opacity: 0.15;
+      pointer-events: none;
+    }
+
+    .cta-container > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-container h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      color: var(--np-red);
+      -webkit-text-stroke: 2px var(--np-black);
+      paint-order: stroke fill;
+    }
+
+    .cta-container .cta-sub {
+      font-family: 'Bangers', cursive;
+      font-size: 1.3rem;
+      color: var(--np-blue);
+      text-shadow: 1px 1px 0 var(--np-black);
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .cta-container p {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 28px;
+      color: #444;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--np-deep-black);
+      border-top: 4px solid var(--np-black);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--np-white);
+      position: relative;
+    }
+
+    /* Ben-Day dots overlay on footer */
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 12px 12px;
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      color: var(--np-red);
+      -webkit-text-stroke: 1px var(--np-white);
+      paint-order: stroke fill;
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.92rem;
+      color: rgba(255, 255, 255, 0.55);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.4);
+      transition: color 0.15s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--np-yellow);
+    }
+
+    .footer-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .footer-dots span {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .footer-dots span:nth-child(1) { background: var(--np-red); }
+    .footer-dots span:nth-child(2) { background: var(--np-blue); }
+    .footer-dots span:nth-child(3) { background: var(--np-yellow); }
+    .footer-dots span:nth-child(4) { background: var(--np-magenta); }
+    .footer-dots span:nth-child(5) { background: var(--np-green); }
+
+    .footer-copy {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.25);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+        height: auto;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 4px 10px;
+        font-size: 0.85rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .accent--1,
+      .accent--3,
+      .accent--5 {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 24px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 10px 24px;
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .effect-halftone::before,
+      .effect-starburst::before,
+      .motif-row span {
+        animation: none;
+      }
+
+      .card, .btn, .color-chip, .tag, .effect-demo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Neo <span>Pop</span></a>
+    <div class="nav-links">
+      <a href="#hero" class="active">Home</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <!-- Decorative accent shapes -->
+    <div class="accent accent--1"></div>
+    <div class="accent accent--2"></div>
+    <div class="accent accent--3"></div>
+    <div class="accent accent--4"></div>
+    <div class="accent accent--5"></div>
+    <div class="accent accent--6"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Neo Pop</h1>
+      <p class="hero-subtitle">Bold Outlines &amp; Saturated Color!</p>
+      <p class="hero-desc">
+        A graphic-forward design language born from Pop Art and consumer culture &mdash; bold black outlines, flat saturated color fills, comic-book typography, and unapologetic commercial energy elevated to gallery status.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Explore Cards</a>
+        <a href="#palette" class="btn btn--outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== COLOR BAND ===== -->
+  <div class="color-band color-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--white" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Bold, Graphic &amp; Confrontational</h2>
+      <p class="section-subtitle">Poster headlines, comic energy, clean body text</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Anton</p>
+            <p class="typo-display">Buy Now!</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Bebas Neue</p>
+            <p class="typo-heading">Commercial Grade Headlines</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Comic / Bangers</p>
+            <p class="typo-comic">POW! ZAP! KAPOW!</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Inter</p>
+            <p class="typo-body">Clean, readable sans-serif for body content. Neo Pop pairs industrial-weight display type with crisp geometric body text for maximum contrast and hierarchy.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Space Grotesk</p>
+            <p class="typo-subheading">Modern Geometric Subheadings</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Bebas Neue</p>
+            <p class="typo-ui">Category Tags &amp; UI Labels</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">8rem</span>
+              <span style="font-family: 'Anton', sans-serif; font-size: 2rem; color: var(--np-red); text-transform: uppercase; -webkit-text-stroke: 1px var(--np-black); paint-order: stroke fill;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.4rem</span>
+              <span style="font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--np-black); text-transform: uppercase; letter-spacing: 0.05em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Bangers', cursive; font-size: 1.4rem; color: var(--np-magenta); text-shadow: 1px 1px 0 var(--np-black);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.6rem</span>
+              <span style="font-family: 'Space Grotesk', sans-serif; font-weight: 500; font-size: 1.1rem; color: var(--np-blue);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--np-black);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.8rem</span>
+              <span style="font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; color: var(--np-red); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 3px solid var(--np-black);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Anton', sans-serif; color: var(--np-red); text-transform: uppercase;">Anton</strong> + <strong>Inter</strong><br>
+              <span style="color: #666; font-size: 0.85rem;">High-impact poster meets clean readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Bebas Neue', sans-serif; color: var(--np-red); text-transform: uppercase;">Bebas Neue</strong> + <strong>Outfit</strong><br>
+              <span style="color: #666; font-size: 0.85rem;">Condensed commercial headline with modern body</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Bangers', cursive; color: var(--np-red);">Bangers</strong> + <strong style="font-family: 'Inter', sans-serif;">Inter</strong><br>
+              <span style="color: #666; font-size: 0.85rem;">Playful comic energy with professional content</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== POP DIVIDER ===== -->
+  <div class="section--white" style="padding: 0;">
+    <div class="pop-divider">
+      <span>POW!</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--soft-white" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Saturated &amp; Unapologetic</h2>
+      <p class="section-subtitle">Primary power, commercial printing ink at full density</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff0033;"></div>
+          <div class="color-info">
+            <div class="color-name">Pop Red</div>
+            <div class="color-hex">#FF0033</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0066ff;"></div>
+          <div class="color-info">
+            <div class="color-name">Electric Blue</div>
+            <div class="color-hex">#0066FF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffd600;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunshine Yellow</div>
+            <div class="color-hex">#FFD600</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff00aa;"></div>
+          <div class="color-info">
+            <div class="color-name">Hot Magenta</div>
+            <div class="color-hex">#FF00AA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00cc44;"></div>
+          <div class="color-info">
+            <div class="color-name">Vivid Green</div>
+            <div class="color-hex">#00CC44</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff6600;"></div>
+          <div class="color-info">
+            <div class="color-name">Pure Orange</div>
+            <div class="color-hex">#FF6600</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7700cc;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Violet</div>
+            <div class="color-hex">#7700CC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #00ccdd;"></div>
+          <div class="color-info">
+            <div class="color-name">Cyan Pop</div>
+            <div class="color-hex">#00CCDD</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ff88cc;"></div>
+          <div class="color-info">
+            <div class="color-name">Bubble Gum</div>
+            <div class="color-hex">#FF88CC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #111111;"></div>
+          <div class="color-info">
+            <div class="color-name">Outline Black</div>
+            <div class="color-hex">#111111</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #ffffff; border-bottom: 1px solid #eee;"></div>
+          <div class="color-info">
+            <div class="color-name">Canvas White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f5f5f0;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft White</div>
+            <div class="color-hex">#F5F5F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #cccccc;"></div>
+          <div class="color-info">
+            <div class="color-name">Halftone Gray</div>
+            <div class="color-hex">#CCCCCC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #fff8e7;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Cream</div>
+            <div class="color-hex">#FFF8E7</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #000000;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Black</div>
+            <div class="color-hex">#000000</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOR BAND ===== -->
+  <div class="color-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--white" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Bold Cards &amp; Hard Edges</h2>
+      <p class="section-subtitle">Like a gallery wall meets a comic book store</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-bar card-bar--red"></div>
+          <div class="card-body">
+            <div class="card-icon card-icon--red">&#9733;</div>
+            <h3>Bold Outlines</h3>
+            <p>Thick, definitive contour lines around all visual elements give the design a graphic, comic-book clarity inspired by Keith Haring and Roy Lichtenstein.</p>
+            <span class="tag">Graphic</span>
+            <span class="tag">Core</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-bar card-bar--blue"></div>
+          <div class="card-body">
+            <div class="card-icon card-icon--blue">&#9632;</div>
+            <h3>Flat Color Fills</h3>
+            <p>Large areas of pure, high-chroma color with no gradient or texture. Every surface reads as a clean, confident plane of pigment at full ink density.</p>
+            <span class="tag">Color</span>
+            <span class="tag">Surface</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-bar card-bar--yellow"></div>
+          <div class="card-body">
+            <div class="card-icon card-icon--yellow">&#9679;</div>
+            <h3>Ben-Day Dots</h3>
+            <p>The iconic dot-screen printing pattern from 1960s comic books, used as decorative texture, background fills, or overlay effects throughout the design.</p>
+            <span class="tag">Pattern</span>
+            <span class="tag">Texture</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-bar card-bar--magenta"></div>
+          <div class="card-body">
+            <div class="card-icon card-icon--magenta">&#9829;</div>
+            <h3>Consumer Icons</h3>
+            <p>Appropriated logos, price tags, barcodes, and brand-adjacent imagery used as decorative elements and cultural commentary throughout the interface.</p>
+            <span class="tag">Culture</span>
+            <span class="tag">Irony</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-bar card-bar--green"></div>
+          <div class="card-body">
+            <div class="card-icon card-icon--green">&#9998;</div>
+            <h3>Comic Typography</h3>
+            <p>Speech bubbles, thought clouds, and onomatopoeic text like POW, BOOM, WOW used as graphic elements and interactive cues across the page.</p>
+            <span class="tag">Type</span>
+            <span class="tag">Display</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-bar card-bar--orange"></div>
+          <div class="card-body">
+            <div class="card-icon card-icon--orange">&#9851;</div>
+            <h3>Serial Repetition</h3>
+            <p>Warhol-influenced grid repetition of motifs, icons, or color variations of the same element, emphasizing mass-production and commodity culture themes.</p>
+            <span class="tag">Layout</span>
+            <span class="tag">Warhol</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== POP MOTIF BANNER ===== -->
+  <div class="motif-banner">
+    <div class="motif-content">
+      <div class="motif-row">
+        <span>&#9733;</span>
+        <span>&#9679;</span>
+        <span>&#9632;</span>
+        <span>&#9829;</span>
+        <span>&#9733;</span>
+        <span>&#9679;</span>
+        <span>&#9632;</span>
+      </div>
+      <h2>Surface, Color &amp; Commerce</h2>
+      <p>From gallery walls to streetwear flagships, Neo Pop blurs art and advertising</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--white" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Techniques &amp; Pop Treatments</h2>
+      <p class="section-subtitle">All the graphic punch, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-halftone"></div>
+          <div class="effect-caption">
+            <h4>Ben-Day Halftone</h4>
+            <p>Radial gradient dot grids simulate the iconic Lichtenstein comic-book printing texture.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-shadow"></div>
+          <div class="effect-caption">
+            <h4>Hard Shadow Stack</h4>
+            <p>Multiple offset text-shadows in alternating colors create a bold, layered depth effect.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-colorblock">
+            <div class="color-block-3"></div>
+            <div class="color-block-4"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Color Block Grid</h4>
+            <p>Sharp-edged color panels with black borders create a Mondrian-meets-Pop-Art composition.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-outline"></div>
+          <div class="effect-caption">
+            <h4>Comic Outline Text</h4>
+            <p>CSS text-stroke with colored drop shadows creates bold comic-book impact lettering.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-starburst"></div>
+          <div class="effect-caption">
+            <h4>Starburst Badge</h4>
+            <p>CSS clip-path creates the classic price-tag explosion shape for callouts and labels.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-speech">
+            <div class="effect-speech-bubble">Hey, nice design!</div>
+          </div>
+          <div class="effect-caption">
+            <h4>Speech Bubble</h4>
+            <p>Comic-strip speech balloons with CSS triangles and bold outlines for interactive cues.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOR BAND ===== -->
+  <div class="color-band">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--yellow">
+    <div class="container">
+      <p class="section-label" style="color: var(--np-black);">Interactive Elements</p>
+      <h2 class="section-title" style="color: var(--np-black);">Pop Buttons</h2>
+      <p class="section-subtitle" style="color: var(--np-deep-black);">Hard shadows, zero radius, maximum impact</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Pop Red</a>
+        <a href="#" class="btn btn--blue">Electric Blue</a>
+        <a href="#" class="btn btn--magenta">Hot Magenta</a>
+        <a href="#" class="btn btn--outline">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--white">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          Neo Pop isn't just bold color and thick outlines &mdash; it's the tension between high art and consumer culture, between gallery walls and shopping aisles, rendered in unapologetic saturated ink.
+        </blockquote>
+        <cite>&mdash; The Neo Pop Design Manifesto</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--soft-white">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Go Bold or Go Home</h2>
+        <span class="cta-sub">Surface over depth, commercial as aesthetic!</span>
+        <p>
+          The Neo Pop aesthetic produces graphic-forward, poster-like layouts with bold outlined shapes, saturated primary color blocks, and playful iconography drawn from consumer culture. Every element is high-chroma, high-contrast, and unapologetically commercial.
+        </p>
+        <a href="#hero" class="btn">Back to the Top</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== COLOR BAND ===== -->
+  <div class="color-band color-band--thick">
+    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>Neo Pop</h3>
+      <p>
+        A design aesthetic reference celebrating bold outlines, flat saturated color, comic-book energy, and consumer culture iconography &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-dots">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Neo Pop &bull; Bold outlines &amp; saturated color</p>
+    </div>
+  </footer>
+
+</body>
+</html>

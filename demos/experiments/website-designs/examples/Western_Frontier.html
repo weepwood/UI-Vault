@@ -1,0 +1,2343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Western Frontier -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rye&family=Alfa+Slab+One&family=Lora:ital,wght@0,400;0,500;0,700;1,400&family=Source+Serif+4:wght@300;400;600;700&family=Crete+Round&family=Playfair+Display:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* Primary browns */
+      --western-saddle: #8b4513;
+      --western-saddle-light: #a0602e;
+      --western-saddle-dark: #6b3410;
+      --western-rawhide: #d2b48c;
+      --western-raw-umber: #704214;
+
+      /* Sand and parchment */
+      --western-desert-sand: #edc9af;
+      --western-parchment: #f5e6d0;
+      --western-bone: #f9f6f0;
+
+      /* Reds */
+      --western-oxblood: #800020;
+      --western-dusty-red: #b5403d;
+      --western-burnt-sienna: #a0522d;
+      --western-rust: #c1440e;
+
+      /* Dark tones */
+      --western-dark-sienna: #3a160e;
+      --western-charcoal: #2c2c2c;
+
+      /* Accent cool tones */
+      --western-turquoise: #40e0d0;
+      --western-turquoise-muted: #5f9ea0;
+
+      /* Metallics */
+      --western-gold: #daa520;
+      --western-gold-light: #e8c24a;
+      --western-brass: #b5a642;
+      --western-iron: #48453e;
+
+      /* Effects and transparencies */
+      --western-leather-shadow: rgba(58, 22, 14, 0.5);
+      --western-dust: rgba(210, 180, 140, 0.15);
+      --western-parchment-overlay: rgba(245, 230, 208, 0.85);
+      --western-smoke: rgba(44, 44, 44, 0.6);
+      --western-brand-glow: rgba(193, 68, 14, 0.35);
+
+      /* Functional mappings */
+      --western-bg-primary: var(--western-parchment);
+      --western-bg-secondary: var(--western-desert-sand);
+      --western-bg-surface: var(--western-rawhide);
+      --western-bg-dark: var(--western-dark-sienna);
+      --western-text-primary: var(--western-dark-sienna);
+      --western-text-secondary: var(--western-raw-umber);
+      --western-text-on-dark: var(--western-bone);
+      --western-accent: var(--western-oxblood);
+      --western-accent-warm: var(--western-rust);
+      --western-accent-cool: var(--western-turquoise-muted);
+      --western-border: var(--western-saddle);
+
+      /* Spacing */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Lora', 'Source Serif 4', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.75;
+      color: var(--western-text-primary);
+      background-color: var(--western-bg-primary);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(139, 69, 19, 0.02) 2px,
+          rgba(139, 69, 19, 0.02) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(112, 66, 20, 0.015) 3px,
+          rgba(112, 66, 20, 0.015) 6px
+        ),
+        radial-gradient(
+          ellipse at 20% 50%,
+          rgba(160, 82, 45, 0.08) 0%,
+          transparent 60%
+        ),
+        radial-gradient(
+          ellipse at 80% 30%,
+          rgba(139, 69, 19, 0.06) 0%,
+          transparent 50%
+        );
+      overflow-x: hidden;
+    }
+
+    h1, h2 {
+      font-family: 'Rye', 'Alfa Slab One', serif;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--western-dark-sienna);
+      line-height: 1.1;
+    }
+
+    h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      color: var(--western-raw-umber);
+    }
+
+    /* Aged paper vignette on body */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      box-shadow:
+        inset 0 0 120px rgba(112, 66, 20, 0.12),
+        inset 0 0 300px rgba(58, 22, 14, 0.06);
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: linear-gradient(180deg, #5a3a1e 0%, #4a2e14 50%, #3a200a 100%);
+      border-bottom: 4px solid var(--western-saddle-dark);
+      padding: 0.75rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.08),
+        0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .nav-logo {
+      font-family: 'Rye', serif;
+      font-size: 1.3rem;
+      color: var(--western-gold);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--western-gold-light);
+      text-shadow: 0 0 12px rgba(218, 165, 32, 0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: var(--western-rawhide);
+      font-family: 'Crete Round', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.4rem 1rem;
+      transition: color 0.3s ease, text-shadow 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--western-gold-light);
+      text-shadow: 0 0 8px rgba(218, 165, 32, 0.3);
+    }
+
+    .nav-sep {
+      color: var(--western-gold);
+      font-size: 0.5rem;
+      opacity: 0.5;
+    }
+
+    /* Brass nail head decorations */
+    .nav::before,
+    .nav::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: radial-gradient(
+        circle at 35% 35%,
+        #b5a642 0%,
+        #8a7a30 50%,
+        #6a5a20 100%
+      );
+      box-shadow:
+        inset 0 -1px 2px rgba(0, 0, 0, 0.4),
+        0 1px 2px rgba(0, 0, 0, 0.3);
+    }
+
+    /* ============================================
+       HERO SECTION - Desert Sunset
+       ============================================ */
+    .hero {
+      min-height: 95vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 100px 24px 90px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Desert sunset gradient */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background:
+        linear-gradient(
+          180deg,
+          #1a0a04 0%,
+          #3a160e 15%,
+          #8b4513 45%,
+          #c1440e 65%,
+          #daa520 80%,
+          #edc9af 95%
+        );
+      opacity: 0.6;
+    }
+
+    /* Mesa silhouette horizon */
+    .hero-landscape {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 200px;
+      z-index: 1;
+      background:
+        linear-gradient(to top, var(--western-parchment) 0%, transparent 60%);
+    }
+
+    .hero-landscape::before {
+      content: '';
+      position: absolute;
+      bottom: 40px;
+      left: 0;
+      right: 0;
+      height: 120px;
+      background:
+        /* Mesa formations */
+        polygon(0% 100%, 0% 60%, 5% 55%, 8% 30%, 12% 30%, 15% 55%, 22% 50%, 25% 20%, 32% 18%, 35% 22%, 38% 50%, 45% 48%, 50% 35%, 55% 32%, 58% 35%, 60% 48%, 65% 45%, 70% 25%, 78% 22%, 82% 40%, 88% 42%, 92% 30%, 95% 28%, 98% 45%, 100% 50%, 100% 100%);
+      clip-path: polygon(0% 100%, 0% 60%, 5% 55%, 8% 30%, 12% 30%, 15% 55%, 22% 50%, 25% 20%, 32% 18%, 35% 22%, 38% 50%, 45% 48%, 50% 35%, 55% 32%, 58% 35%, 60% 48%, 65% 45%, 70% 25%, 78% 22%, 82% 40%, 88% 42%, 92% 30%, 95% 28%, 98% 45%, 100% 50%, 100% 100%);
+      background: rgba(58, 22, 14, 0.35);
+    }
+
+    /* Dust particle effect */
+    .hero-dust {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      background:
+        radial-gradient(circle at 15% 30%, rgba(218, 165, 32, 0.15) 0%, transparent 2px),
+        radial-gradient(circle at 82% 20%, rgba(245, 230, 208, 0.12) 0%, transparent 1.5px),
+        radial-gradient(circle at 45% 75%, rgba(218, 165, 32, 0.1) 0%, transparent 2px),
+        radial-gradient(circle at 70% 55%, rgba(249, 246, 240, 0.1) 0%, transparent 1px),
+        radial-gradient(circle at 25% 60%, rgba(218, 165, 32, 0.08) 0%, transparent 2px),
+        radial-gradient(circle at 90% 70%, rgba(245, 230, 208, 0.1) 0%, transparent 1.5px);
+      pointer-events: none;
+      animation: dustDrift 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes dustDrift {
+      0% { transform: translate(0, 0); opacity: 0.4; }
+      50% { opacity: 0.8; }
+      100% { transform: translate(10px, -5px); opacity: 0.4; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-tagline {
+      font-family: 'Crete Round', serif;
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--western-gold);
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .hero h1 {
+      font-family: 'Rye', serif;
+      font-size: clamp(3.2rem, 10vw, 7rem);
+      color: var(--western-bone);
+      text-shadow:
+        3px 3px 0 rgba(58, 22, 14, 0.6),
+        0 0 40px rgba(218, 165, 32, 0.2);
+      margin-bottom: 8px;
+      line-height: 1.0;
+    }
+
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      font-style: italic;
+      color: var(--western-rawhide);
+      letter-spacing: 0.12em;
+      margin-bottom: 12px;
+    }
+
+    .hero-rule {
+      width: min(300px, 80%);
+      height: 6px;
+      border: none;
+      margin: 1rem auto 1.5rem;
+      opacity: 0.6;
+      background:
+        linear-gradient(
+          180deg,
+          var(--western-gold) 0%,
+          var(--western-gold) 25%,
+          transparent 25%,
+          transparent 50%,
+          var(--western-gold) 50%,
+          var(--western-gold) 75%,
+          transparent 75%
+        );
+    }
+
+    .hero-desc {
+      font-family: 'Lora', serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: rgba(249, 246, 240, 0.8);
+      max-width: 560px;
+      margin: 0 auto 36px;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      padding: 0.8rem 2.2rem;
+      border: 2px solid var(--western-saddle);
+      border-radius: 2px;
+      color: var(--western-bone);
+      font-family: 'Crete Round', 'Alfa Slab One', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      background: linear-gradient(180deg, #a0602e 0%, #8b4513 40%, #6b3410 100%);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+        0 3px 6px rgba(58, 22, 14, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      background: linear-gradient(180deg, #b57040 0%, #a0602e 40%, #8b4513 100%);
+      color: var(--western-bone);
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -2px 0 rgba(0, 0, 0, 0.2),
+        0 5px 12px rgba(58, 22, 14, 0.45);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+      box-shadow:
+        inset 0 2px 4px rgba(0, 0, 0, 0.3),
+        0 1px 2px rgba(58, 22, 14, 0.3);
+    }
+
+    .btn--wanted {
+      background: linear-gradient(180deg, #9a1030 0%, #800020 40%, #600018 100%);
+      border-color: var(--western-oxblood);
+    }
+
+    .btn--wanted:hover {
+      background: linear-gradient(180deg, #b01840 0%, #9a1030 40%, #800020 100%);
+    }
+
+    .btn--outline {
+      background: transparent;
+      color: var(--western-saddle);
+      border: 2px solid var(--western-saddle);
+      box-shadow: none;
+    }
+
+    .btn--outline:hover {
+      background: var(--western-saddle);
+      color: var(--western-bone);
+    }
+
+    .btn--turquoise {
+      background: linear-gradient(180deg, #6db8ad 0%, #5f9ea0 40%, #4a8082 100%);
+      border-color: var(--western-turquoise-muted);
+    }
+
+    .btn--turquoise:hover {
+      background: linear-gradient(180deg, #7dc8bd 0%, #6db8ad 40%, #5f9ea0 100%);
+    }
+
+    /* ============================================
+       ROPE DIVIDER BAND
+       ============================================ */
+    .rope-band {
+      height: 8px;
+      width: 100%;
+      background: repeating-linear-gradient(
+        120deg,
+        #b5903a 0px,
+        #d2b48c 5px,
+        #a07828 10px,
+        #c4a060 15px,
+        #b5903a 20px
+      );
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.15),
+        0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+
+    .rope-band--thick {
+      height: 14px;
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--parchment {
+      background: var(--western-parchment);
+    }
+
+    .section--sand {
+      background: var(--western-desert-sand);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(139, 69, 19, 0.025) 2px,
+          rgba(139, 69, 19, 0.025) 4px
+        );
+    }
+
+    .section--bone {
+      background: var(--western-bone);
+    }
+
+    .section--dark {
+      background: linear-gradient(180deg, var(--western-dark-sienna) 0%, var(--western-charcoal) 100%);
+      color: var(--western-rawhide);
+    }
+
+    .section--dark .section-label { color: var(--western-gold); }
+    .section--dark .section-title { color: var(--western-bone); }
+    .section--dark .section-subtitle { color: var(--western-rawhide); }
+
+    .section-label {
+      font-family: 'Crete Round', serif;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--western-burnt-sienna);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Rye', serif;
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      text-align: center;
+      color: var(--western-oxblood);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      font-style: italic;
+      text-align: center;
+      color: var(--western-raw-umber);
+      margin-bottom: 48px;
+    }
+
+    /* Double-rule decorative divider */
+    .double-rule {
+      width: min(200px, 60%);
+      height: 6px;
+      border: none;
+      margin: 12px auto 0;
+      opacity: 0.4;
+      background:
+        linear-gradient(
+          180deg,
+          var(--western-saddle) 0%,
+          var(--western-saddle) 30%,
+          transparent 30%,
+          transparent 55%,
+          var(--western-saddle) 55%,
+          var(--western-saddle) 100%
+        );
+    }
+
+    .section--dark .double-rule {
+      background:
+        linear-gradient(
+          180deg,
+          var(--western-gold) 0%,
+          var(--western-gold) 30%,
+          transparent 30%,
+          transparent 55%,
+          var(--western-gold) 55%,
+          var(--western-gold) 100%
+        );
+    }
+
+    /* Star ornament divider */
+    .star-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .star-divider::before,
+    .star-divider::after {
+      content: '';
+      flex: 1;
+      height: 3px;
+      background:
+        linear-gradient(
+          180deg,
+          var(--western-saddle) 0%,
+          var(--western-saddle) 35%,
+          transparent 35%,
+          transparent 65%,
+          var(--western-saddle) 65%,
+          var(--western-saddle) 100%
+        );
+      opacity: 0.3;
+    }
+
+    .star-divider span {
+      padding: 0 18px;
+      font-size: 1.2rem;
+      color: var(--western-gold);
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Crete Round', serif;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--western-burnt-sienna);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--western-rawhide);
+    }
+
+    .typo-display {
+      font-family: 'Rye', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--western-oxblood);
+      line-height: 1.0;
+      text-shadow: 2px 2px 0 rgba(58, 22, 14, 0.2);
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Alfa Slab One', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--western-dark-sienna);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 900;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-style: italic;
+      color: var(--western-raw-umber);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--western-dark-sienna);
+      margin-bottom: 8px;
+    }
+
+    .typo-label {
+      font-family: 'Crete Round', serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--western-burnt-sienna);
+    }
+
+    .typo-secondary {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--western-raw-umber);
+    }
+
+    .typo-right {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(245, 230, 208, 0.95) 0%,
+          rgba(237, 201, 175, 0.9) 100%
+        );
+      border: 3px solid var(--western-saddle);
+      border-radius: 2px;
+      padding: 36px;
+      box-shadow: 4px 4px 0 var(--western-raw-umber);
+      position: relative;
+    }
+
+    /* Corner pins */
+    .typo-right::before,
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        var(--western-gold) 30%,
+        var(--western-saddle) 60%,
+        transparent 70%
+      );
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .typo-right::before { top: 10px; left: 10px; }
+    .typo-right::after { top: 10px; right: 10px; }
+
+    .typo-right h3 {
+      font-family: 'Rye', serif;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--western-oxblood);
+      margin-bottom: 16px;
+      text-align: center;
+      padding-bottom: 12px;
+      border-bottom: 3px double var(--western-saddle);
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(139, 69, 19, 0.15);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Crete Round', serif;
+      font-size: 0.7rem;
+      color: var(--western-burnt-sienna);
+      min-width: 55px;
+      text-align: right;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border: 3px solid var(--western-saddle);
+      border-radius: 2px;
+      overflow: hidden;
+      background: var(--western-parchment);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 3px 3px 0 var(--western-raw-umber);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: 3px 3px 0 var(--western-raw-umber), 0 8px 20px rgba(58, 22, 14, 0.25);
+    }
+
+    .color-swatch {
+      height: 90px;
+      position: relative;
+    }
+
+    /* Aged texture on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(0, 0, 0, 0.03) 2px,
+          rgba(0, 0, 0, 0.03) 3px
+        );
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+      border-top: 2px solid var(--western-saddle);
+    }
+
+    .color-name {
+      font-family: 'Crete Round', serif;
+      font-size: 0.85rem;
+      color: var(--western-dark-sienna);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.72rem;
+      color: var(--western-burnt-sienna);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background:
+        linear-gradient(
+          135deg,
+          rgba(245, 230, 208, 0.95) 0%,
+          rgba(237, 201, 175, 0.9) 100%
+        );
+      border: 3px solid var(--western-saddle);
+      border-radius: 2px;
+      padding: 2rem 1.5rem;
+      position: relative;
+      box-shadow:
+        4px 4px 0 var(--western-raw-umber),
+        0 8px 24px rgba(58, 22, 14, 0.2);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    /* Gold pin corner decorations */
+    .card::before,
+    .card::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle,
+        var(--western-gold) 30%,
+        var(--western-saddle) 60%,
+        transparent 70%
+      );
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    }
+
+    .card::before { top: 8px; left: 8px; }
+    .card::after { top: 8px; right: 8px; }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow:
+        4px 4px 0 var(--western-raw-umber),
+        0 14px 36px rgba(58, 22, 14, 0.3);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      margin: 0 auto 14px;
+      background: var(--western-gold);
+      color: var(--western-dark-sienna);
+      clip-path: polygon(
+        50% 0%, 63% 25%, 93% 25%,
+        72% 45%, 80% 75%, 50% 58%,
+        20% 75%, 28% 45%, 7% 25%,
+        37% 25%
+      );
+    }
+
+    .card-title {
+      font-family: 'Rye', serif;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--western-oxblood);
+      text-align: center;
+      padding-bottom: 0.75rem;
+      margin-bottom: 1rem;
+      border-bottom: 3px double var(--western-saddle);
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--western-raw-umber);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Crete Round', serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 12px;
+      border: 2px solid var(--western-saddle);
+      color: var(--western-saddle);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--western-saddle);
+      color: var(--western-bone);
+    }
+
+    /* ============================================
+       DECORATIVE BANNER (Wanted Poster)
+       ============================================ */
+    .wanted-banner {
+      background: linear-gradient(180deg, var(--western-dark-sienna) 0%, #2a100a 100%);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wanted-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(139, 69, 19, 0.04) 2px,
+          rgba(139, 69, 19, 0.04) 4px
+        );
+      pointer-events: none;
+    }
+
+    .wanted-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .wanted-frame {
+      display: inline-block;
+      background: var(--western-parchment);
+      border: 4px solid var(--western-dark-sienna);
+      outline: 2px solid var(--western-saddle);
+      outline-offset: 4px;
+      padding: 2.5rem 3rem;
+      max-width: 520px;
+      text-align: center;
+      position: relative;
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.35),
+        inset 0 0 40px rgba(112, 66, 20, 0.12);
+    }
+
+    /* Curled corner effect */
+    .wanted-frame::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(
+        225deg,
+        var(--western-desert-sand) 50%,
+        rgba(112, 66, 20, 0.3) 50%
+      );
+    }
+
+    .wanted-frame h2 {
+      font-family: 'Rye', serif;
+      font-size: clamp(2.4rem, 6vw, 3.5rem);
+      color: var(--western-oxblood);
+      letter-spacing: 0.14em;
+      margin-bottom: 0.25rem;
+    }
+
+    .wanted-frame .reward-line {
+      font-family: 'Alfa Slab One', serif;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--western-dark-sienna);
+      border-top: 3px double var(--western-dark-sienna);
+      border-bottom: 3px double var(--western-dark-sienna);
+      padding: 0.5rem 0;
+      margin: 1rem auto;
+      display: inline-block;
+    }
+
+    .wanted-frame .amount {
+      font-family: 'Rye', serif;
+      font-size: 2rem;
+      color: var(--western-oxblood);
+      margin: 0.5rem 0;
+    }
+
+    .wanted-frame .description {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      color: var(--western-raw-umber);
+      font-size: 0.95rem;
+      line-height: 1.6;
+      max-width: 380px;
+      margin: 1rem auto;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+    }
+
+    .effect-demo {
+      border: 3px solid var(--western-saddle);
+      border-radius: 2px;
+      overflow: hidden;
+      background: var(--western-parchment);
+      box-shadow: 4px 4px 0 var(--western-raw-umber);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. Desert sunset gradient */
+    .effect-sunset {
+      background:
+        linear-gradient(
+          180deg,
+          #1a0a04 0%,
+          #3a160e 20%,
+          #8b4513 45%,
+          #c1440e 65%,
+          #daa520 82%,
+          #edc9af 100%
+        );
+    }
+
+    .effect-sunset::after {
+      content: 'SUNSET';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Rye', serif;
+      font-size: 2rem;
+      color: var(--western-bone);
+      text-shadow: 2px 2px 0 rgba(58, 22, 14, 0.5);
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+
+    /* 2. Parchment / aged paper */
+    .effect-parchment {
+      background-color: var(--western-parchment);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 2px,
+          rgba(139, 69, 19, 0.03) 2px,
+          rgba(139, 69, 19, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(112, 66, 20, 0.02) 3px,
+          rgba(112, 66, 20, 0.02) 6px
+        ),
+        radial-gradient(
+          ellipse at 25% 40%,
+          rgba(160, 82, 45, 0.12) 0%,
+          transparent 60%
+        ),
+        radial-gradient(
+          ellipse at 75% 60%,
+          rgba(139, 69, 19, 0.1) 0%,
+          transparent 50%
+        );
+      box-shadow: inset 0 0 60px rgba(112, 66, 20, 0.2);
+    }
+
+    .effect-parchment::after {
+      content: 'PARCHMENT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Rye', serif;
+      font-size: 1.5rem;
+      color: var(--western-raw-umber);
+      text-shadow: 1px 1px 0 rgba(245, 230, 208, 0.6);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* 3. Leather texture */
+    .effect-leather {
+      background-color: #5a3210;
+      background-image:
+        repeating-linear-gradient(
+          45deg,
+          transparent,
+          transparent 1px,
+          rgba(0, 0, 0, 0.05) 1px,
+          rgba(0, 0, 0, 0.05) 2px
+        ),
+        repeating-linear-gradient(
+          -45deg,
+          transparent,
+          transparent 1px,
+          rgba(255, 255, 255, 0.02) 1px,
+          rgba(255, 255, 255, 0.02) 2px
+        ),
+        radial-gradient(
+          ellipse at 30% 50%,
+          rgba(139, 69, 19, 0.4) 0%,
+          transparent 70%
+        ),
+        radial-gradient(
+          ellipse at 70% 40%,
+          rgba(112, 66, 20, 0.3) 0%,
+          transparent 60%
+        ),
+        linear-gradient(
+          180deg,
+          #6b3c14 0%,
+          #5a3210 30%,
+          #4a280c 60%,
+          #5a3210 100%
+        );
+      box-shadow:
+        inset 0 0 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .effect-leather::after {
+      content: 'LEATHER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Alfa Slab One', serif;
+      font-size: 1.8rem;
+      color: var(--western-gold);
+      text-shadow:
+        1px 1px 0 rgba(0, 0, 0, 0.4),
+        -1px -1px 0 rgba(255, 255, 255, 0.05);
+      letter-spacing: 0.12em;
+      z-index: 1;
+    }
+
+    /* 4. Branded iron / hot stamp */
+    .effect-brand {
+      background:
+        linear-gradient(
+          135deg,
+          var(--western-saddle-dark) 0%,
+          var(--western-saddle) 50%,
+          var(--western-saddle-dark) 100%
+        );
+    }
+
+    .effect-brand::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100px;
+      height: 100px;
+      border: 4px solid var(--western-rust);
+      border-radius: 50%;
+      box-shadow:
+        0 0 20px var(--western-brand-glow),
+        0 0 40px var(--western-brand-glow),
+        inset 0 0 15px var(--western-brand-glow);
+      animation: brandGlow 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes brandGlow {
+      0% {
+        box-shadow:
+          0 0 10px var(--western-brand-glow),
+          0 0 20px var(--western-brand-glow),
+          inset 0 0 8px var(--western-brand-glow);
+      }
+      100% {
+        box-shadow:
+          0 0 25px var(--western-brand-glow),
+          0 0 50px var(--western-brand-glow),
+          inset 0 0 20px var(--western-brand-glow);
+      }
+    }
+
+    .effect-brand::after {
+      content: 'BRAND';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Rye', serif;
+      font-size: 1.6rem;
+      color: var(--western-rust);
+      text-shadow:
+        0 0 12px var(--western-brand-glow),
+        0 0 24px var(--western-brand-glow);
+      letter-spacing: 0.15em;
+      z-index: 1;
+    }
+
+    /* 5. Rope / lasso texture */
+    .effect-rope {
+      background: var(--western-desert-sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-rope::before {
+      content: '';
+      position: absolute;
+      inset: 20px;
+      border: 8px solid transparent;
+      border-image: repeating-linear-gradient(
+        90deg,
+        #b5903a 0px,
+        #d2b48c 4px,
+        #a07828 8px,
+        #c4a060 12px,
+        #b5903a 16px
+      ) 8;
+    }
+
+    .effect-rope::after {
+      content: 'LASSO';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Rye', serif;
+      font-size: 2rem;
+      color: var(--western-saddle);
+      text-shadow: 1px 1px 0 rgba(245, 230, 208, 0.5);
+      letter-spacing: 0.1em;
+      z-index: 1;
+    }
+
+    /* 6. Turquoise & silver jewelry */
+    .effect-turquoise {
+      background:
+        linear-gradient(135deg, #2c2c2c 0%, #3a3a3a 50%, #2c2c2c 100%);
+    }
+
+    .effect-turquoise::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background:
+        radial-gradient(
+          circle,
+          #40e0d0 0%,
+          #5f9ea0 40%,
+          #3a8a8c 70%,
+          transparent 71%
+        );
+      box-shadow:
+        0 0 0 6px #c0c0c0,
+        0 0 0 8px #a0a0a0,
+        0 0 20px rgba(64, 224, 208, 0.3),
+        0 0 40px rgba(64, 224, 208, 0.15);
+      animation: turquoiseShimmer 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes turquoiseShimmer {
+      0% { box-shadow: 0 0 0 6px #c0c0c0, 0 0 0 8px #a0a0a0, 0 0 15px rgba(64, 224, 208, 0.2), 0 0 30px rgba(64, 224, 208, 0.1); }
+      100% { box-shadow: 0 0 0 6px #d0d0d0, 0 0 0 8px #b0b0b0, 0 0 25px rgba(64, 224, 208, 0.4), 0 0 50px rgba(64, 224, 208, 0.2); }
+    }
+
+    .effect-turquoise::after {
+      content: 'TURQUOISE';
+      position: absolute;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Crete Round', serif;
+      font-size: 0.85rem;
+      color: var(--western-turquoise);
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 14px 18px;
+      border-top: 2px solid var(--western-saddle);
+    }
+
+    .effect-caption h4 {
+      font-family: 'Crete Round', serif;
+      font-size: 1.05rem;
+      color: var(--western-dark-sienna);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--western-raw-umber);
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES (FEATURE LIST)
+       ============================================ */
+    .feature-list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(245, 230, 208, 0.9) 0%,
+          rgba(237, 201, 175, 0.85) 100%
+        );
+      border: 2px solid var(--western-saddle);
+      border-radius: 2px;
+      padding: 28px 32px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 3px 3px 0 var(--western-raw-umber);
+    }
+
+    .feature-item:hover {
+      transform: translateX(6px);
+      box-shadow: 3px 3px 0 var(--western-raw-umber), 0 6px 16px rgba(58, 22, 14, 0.15);
+    }
+
+    .feature-icon {
+      flex-shrink: 0;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      background: var(--western-gold);
+      color: var(--western-dark-sienna);
+      clip-path: polygon(
+        50% 0%, 63% 25%, 93% 25%,
+        72% 45%, 80% 75%, 50% 58%,
+        20% 75%, 28% 45%, 7% 25%,
+        37% 25%
+      );
+    }
+
+    .feature-text h3 {
+      font-family: 'Crete Round', serif;
+      font-size: 1.15rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--western-dark-sienna);
+      margin-bottom: 6px;
+    }
+
+    .feature-text p {
+      font-size: 0.95rem;
+      line-height: 1.75;
+      color: var(--western-raw-umber);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--western-parchment);
+      border: 4px solid var(--western-dark-sienna);
+      outline: 2px solid var(--western-saddle);
+      outline-offset: 4px;
+      position: relative;
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.2),
+        inset 0 0 40px rgba(112, 66, 20, 0.08);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Rye', serif;
+      font-size: 7rem;
+      color: var(--western-gold);
+      opacity: 0.25;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-style: italic;
+      color: var(--western-dark-sienna);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Crete Round', serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--western-burnt-sienna);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       CTA SECTION (Wanted Poster Style)
+       ============================================ */
+    .cta-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--western-parchment);
+      border: 4px solid var(--western-dark-sienna);
+      outline: 2px solid var(--western-saddle);
+      outline-offset: 4px;
+      padding: 60px 48px 48px;
+      text-align: center;
+      position: relative;
+      box-shadow:
+        0 8px 24px rgba(0, 0, 0, 0.3),
+        inset 0 0 40px rgba(112, 66, 20, 0.1);
+    }
+
+    /* Curled corner */
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 30px;
+      height: 30px;
+      background: linear-gradient(
+        225deg,
+        var(--western-desert-sand) 50%,
+        rgba(112, 66, 20, 0.3) 50%
+      );
+    }
+
+    .cta-container h2 {
+      font-family: 'Rye', serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      color: var(--western-oxblood);
+      margin-bottom: 8px;
+    }
+
+    .cta-container .tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-style: italic;
+      color: var(--western-raw-umber);
+      margin-bottom: 20px;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--western-dark-sienna);
+      margin-bottom: 28px;
+    }
+
+    .cta-rule {
+      width: 120px;
+      height: 6px;
+      border: none;
+      margin: 0 auto 20px;
+      background:
+        linear-gradient(
+          180deg,
+          var(--western-saddle) 0%,
+          var(--western-saddle) 30%,
+          transparent 30%,
+          transparent 55%,
+          var(--western-saddle) 55%,
+          var(--western-saddle) 100%
+        );
+      opacity: 0.4;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: linear-gradient(180deg, var(--western-charcoal) 0%, #1a0e06 100%);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--western-rawhide);
+      position: relative;
+    }
+
+    /* Top border accent */
+    .footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          var(--western-saddle) 20%,
+          var(--western-gold) 50%,
+          var(--western-saddle) 80%,
+          transparent
+        );
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-brand {
+      font-family: 'Rye', serif;
+      font-size: 1.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--western-gold);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Lora', serif;
+      font-size: 0.92rem;
+      color: rgba(210, 180, 140, 0.6);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .footer-links a {
+      font-family: 'Crete Round', serif;
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(210, 180, 140, 0.5);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--western-gold);
+    }
+
+    .footer-ornament {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      opacity: 0.25;
+    }
+
+    .footer-ornament span {
+      width: 8px;
+      height: 8px;
+      background: var(--western-gold);
+      clip-path: polygon(
+        50% 0%, 63% 25%, 93% 25%,
+        72% 45%, 80% 75%, 50% 58%,
+        20% 75%, 28% 45%, 7% 25%,
+        37% 25%
+      );
+    }
+
+    .footer-copy {
+      font-family: 'Source Serif 4', serif;
+      font-size: 0.75rem;
+      color: rgba(210, 180, 140, 0.3);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 6px 12px;
+        font-size: 0.72rem;
+        letter-spacing: 0.08em;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-item {
+        flex-direction: column;
+        gap: 14px;
+        padding: 24px;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 48px 24px 36px;
+        margin: 0 12px;
+      }
+
+      .wanted-frame {
+        padding: 1.5rem 1.5rem;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 0.6rem 1.6rem;
+        font-size: 0.78rem;
+      }
+
+      .hero-landscape::before {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.78rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-dust {
+        animation: none;
+      }
+
+      .effect-brand::before,
+      .effect-turquoise::before {
+        animation: none;
+      }
+
+      .card, .feature-item, .btn, .color-chip, .tag {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">Western Frontier</a>
+    <div class="nav-links">
+      <a href="#hero">Home</a>
+      <span class="nav-sep">&#10022;</span>
+      <a href="#typography">Type</a>
+      <span class="nav-sep">&#10022;</span>
+      <a href="#palette">Colors</a>
+      <span class="nav-sep">&#10022;</span>
+      <a href="#components">Components</a>
+      <span class="nav-sep">&#10022;</span>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-dust"></div>
+    <div class="hero-landscape"></div>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Western Frontier</h1>
+      <p class="hero-subtitle">Forged in Dust, Tempered by the Open Sky</p>
+      <hr class="hero-rule">
+      <p class="hero-desc">
+        A rugged, evocative design language rooted in the visual culture of the 19th-century American Old West &mdash; bold slab-serif typography, weathered leather textures, and a palette of sunbaked earth tones.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn">Explore Components</a>
+        <a href="#palette" class="btn btn--outline" style="color: var(--western-bone); border-color: var(--western-rawhide);">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== ROPE BAND ===== -->
+  <div class="rope-band rope-band--thick"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--parchment" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Slab Serifs &amp; Wood Type</h2>
+      <hr class="double-rule">
+      <p class="section-subtitle">heavy letterforms, commanding hierarchy, frontier authority</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Rye</p>
+            <p class="typo-display">Wanted</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Alfa Slab One</p>
+            <p class="typo-heading">Dead or Alive</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading / Playfair Display</p>
+            <p class="typo-subheading">By Order of the Sheriff</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Lora</p>
+            <p class="typo-body">Warm, readable serif text for long-form content. The frontier demanded clear communication across dusty broadsheets and posted notices.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Label / Crete Round</p>
+            <p class="typo-label">Frontier Navigation &amp; UI Labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Secondary / Source Serif 4</p>
+            <p class="typo-secondary">Versatile workhorse text for captions, metadata, and secondary content across the territory.</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">6rem</span>
+              <span style="font-family: 'Rye', serif; font-size: 2rem; text-transform: uppercase; color: var(--western-oxblood);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3rem</span>
+              <span style="font-family: 'Alfa Slab One', serif; font-size: 1.6rem; text-transform: uppercase; color: var(--western-dark-sienna);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; font-size: 1.3rem; color: var(--western-raw-umber);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1rem; color: var(--western-dark-sienna);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.95rem</span>
+              <span style="font-family: 'Source Serif 4', serif; font-size: 0.95rem; color: var(--western-raw-umber);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Crete Round', serif; font-size: 0.75rem; color: var(--western-burnt-sienna); text-transform: uppercase; letter-spacing: 0.12em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 3px double var(--western-saddle);">
+            <h3 style="border-bottom: none; padding-bottom: 0; margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px; color: var(--western-raw-umber);">
+              <strong style="font-family: 'Rye', serif; color: var(--western-oxblood);">Rye</strong> + <strong>Lora</strong><br>
+              <span style="color: var(--western-burnt-sienna); font-size: 0.85rem;">Classic saloon signage with warm, readable body text</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px; color: var(--western-raw-umber);">
+              <strong style="font-family: 'Alfa Slab One', serif; color: var(--western-oxblood);">Alfa Slab One</strong> + <strong>Source Serif 4</strong><br>
+              <span style="color: var(--western-burnt-sienna); font-size: 0.85rem;">Bold wanted-poster headlines with clean professional body</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; color: var(--western-raw-umber);">
+              <strong style="font-family: 'Playfair Display', serif; font-weight: 900; color: var(--western-oxblood);">Playfair Display</strong> + <strong style="font-family: 'Source Serif 4', serif;">Source Serif 4</strong><br>
+              <span style="color: var(--western-burnt-sienna); font-size: 0.85rem;">Editorial authority meets frontier storytelling</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== STAR DIVIDER ===== -->
+  <div class="section--parchment" style="padding: 0;">
+    <div class="star-divider">
+      <span>&#9733; &#10022; &#9733;</span>
+    </div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--sand" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Earth Tones &amp; Desert Sky</h2>
+      <hr class="double-rule">
+      <p class="section-subtitle">sun-baked earth, weathered leather, turquoise &amp; prairie gold</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8b4513;"></div>
+          <div class="color-info">
+            <div class="color-name">Saddle Leather</div>
+            <div class="color-hex">#8B4513</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #d2b48c;"></div>
+          <div class="color-info">
+            <div class="color-name">Rawhide Tan</div>
+            <div class="color-hex">#D2B48C</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #edc9af;"></div>
+          <div class="color-info">
+            <div class="color-name">Desert Sand</div>
+            <div class="color-hex">#EDC9AF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f5e6d0;"></div>
+          <div class="color-info">
+            <div class="color-name">Parchment</div>
+            <div class="color-hex">#F5E6D0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #a0522d;"></div>
+          <div class="color-info">
+            <div class="color-name">Burnt Sienna</div>
+            <div class="color-hex">#A0522D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #800020;"></div>
+          <div class="color-info">
+            <div class="color-name">Oxblood Red</div>
+            <div class="color-hex">#800020</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #b5403d;"></div>
+          <div class="color-info">
+            <div class="color-name">Dusty Red</div>
+            <div class="color-hex">#B5403D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #704214;"></div>
+          <div class="color-info">
+            <div class="color-name">Raw Umber</div>
+            <div class="color-hex">#704214</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #3a160e;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Sienna</div>
+            <div class="color-hex">#3A160E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #40e0d0;"></div>
+          <div class="color-info">
+            <div class="color-name">Turquoise</div>
+            <div class="color-hex">#40E0D0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #5f9ea0;"></div>
+          <div class="color-info">
+            <div class="color-name">Tarnished Turquoise</div>
+            <div class="color-hex">#5F9EA0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #c1440e;"></div>
+          <div class="color-info">
+            <div class="color-name">Rust Orange</div>
+            <div class="color-hex">#C1440E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #daa520, #e8c24a, #daa520); position: relative;">
+            <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.3) 0%, transparent 50%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Prairie Gold</div>
+            <div class="color-hex">#DAA520</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #f9f6f0;"></div>
+          <div class="color-info">
+            <div class="color-name">Bone White</div>
+            <div class="color-hex">#F9F6F0</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2c2c2c;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Smoke</div>
+            <div class="color-hex">#2C2C2C</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROPE BAND ===== -->
+  <div class="rope-band"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--parchment" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Frontier Notices &amp; Posted Bills</h2>
+      <hr class="double-rule">
+      <p class="section-subtitle">like a bulletin board in a dusty frontier town</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">&#9733;</div>
+          <h3 class="card-title">Slab-Serif Display</h3>
+          <p>Heavy, blocky letterforms with thick serifs dominate headlines, recalling 19th-century broadsheet printing and frontier saloon signage.</p>
+          <span class="tag">Typography</span>
+          <span class="tag">Display</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#9733;</div>
+          <h3 class="card-title">Parchment Textures</h3>
+          <p>Sun-yellowed paper, cracked vellum, and coffee-stained broadsheets ground designs in a tactile, analog authenticity unique to the frontier.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">CSS</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#9733;</div>
+          <h3 class="card-title">Rope &amp; Iron Motifs</h3>
+          <p>Lasso rope borders, cattle-brand symbols, horseshoe shapes, and wrought-iron scrollwork serve as recurring decorative elements.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Decoration</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#9733;</div>
+          <h3 class="card-title">Wanted-Poster Layout</h3>
+          <p>Centered, symmetrical compositions with bold headlines, decorative rule lines, and stacked typographic hierarchies reference the iconic reward broadside.</p>
+          <span class="tag">Layout</span>
+          <span class="tag">Structure</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#9733;</div>
+          <h3 class="card-title">Turquoise Accents</h3>
+          <p>Jewelry-inspired details referencing Southwest Native American silversmithing add cool contrast to the warm, earthy base palette.</p>
+          <span class="tag">Color</span>
+          <span class="tag">Accent</span>
+        </div>
+        <div class="card">
+          <div class="card-icon">&#9733;</div>
+          <h3 class="card-title">Branded Iron Effects</h3>
+          <p>Text appears pressed, burned, or stamped into surfaces with embossed treatments and glow effects simulating hot-iron cattle brands.</p>
+          <span class="tag">Effect</span>
+          <span class="tag">Craft</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WANTED POSTER DECORATIVE BANNER ===== -->
+  <div class="wanted-banner">
+    <div class="wanted-content">
+      <div class="wanted-frame">
+        <h2>Wanted</h2>
+        <div class="reward-line">Dead or Alive</div>
+        <div class="amount">$5,000 Reward</div>
+        <p class="description">
+          For the capture of exceptional design &mdash; rugged, authentic, and unforgettable. Known to leave a lasting impression across these territories.
+        </p>
+        <div class="reward-line">Contact the Sheriff</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== DESIGN PRINCIPLES SECTION ===== -->
+  <section class="section section--bone">
+    <div class="container">
+      <p class="section-label">Design Principles</p>
+      <h2 class="section-title">The Frontier Code</h2>
+      <hr class="double-rule">
+      <p class="section-subtitle">weight, craft, hierarchy &amp; honest materials</p>
+
+      <div class="feature-list">
+        <div class="feature-item">
+          <div class="feature-icon">&#9733;</div>
+          <div class="feature-text">
+            <h3>Weight &amp; Substance Over Delicacy</h3>
+            <p>Every element should feel heavy, solid, and physically present. Thin lines and airy whitespace are replaced by thick borders, dense fills, and material textures that project permanence.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#9733;</div>
+          <div class="feature-text">
+            <h3>Crafted Authenticity Over Digital Polish</h3>
+            <p>Design should evoke hand-lettering, letterpress printing, and physical craftsmanship rather than smooth digital perfection. Every surface tells a story of use and age.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#9733;</div>
+          <div class="feature-text">
+            <h3>Typographic Hierarchy Is King</h3>
+            <p>The wanted-poster tradition demands clear, dramatic size contrasts between headlines, subheads, and body text with decorative rules separating sections into a commanding visual order.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <div class="feature-icon">&#9733;</div>
+          <div class="feature-text">
+            <h3>Restraint Prevents Costume</h3>
+            <p>The line between evocative design and theme-park kitsch requires discipline. Use Western elements as accent, not costume &mdash; every motif must earn its place through purpose.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROPE BAND ===== -->
+  <div class="rope-band"></div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--parchment" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Techniques</h2>
+      <hr class="double-rule">
+      <p class="section-subtitle">all the frontier techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-sunset"></div>
+          <div class="effect-caption">
+            <h4>Desert Sunset</h4>
+            <p>Vertical linear gradients from dark sienna through saddle brown, rust, and gold recreate the iconic Western sky.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-parchment"></div>
+          <div class="effect-caption">
+            <h4>Aged Parchment</h4>
+            <p>Layered repeating gradients and radial stains simulate sun-yellowed, weathered paper.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-leather"></div>
+          <div class="effect-caption">
+            <h4>Tooled Leather</h4>
+            <p>Cross-hatched fine gradients with inner shadows create a burnished hide surface.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-brand"></div>
+          <div class="effect-caption">
+            <h4>Branded Iron</h4>
+            <p>Glowing ring and text effects simulate hot-iron cattle brands on leather.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-rope"></div>
+          <div class="effect-caption">
+            <h4>Rope Lasso</h4>
+            <p>Repeating linear gradients via border-image create convincing twisted rope borders.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-turquoise"></div>
+          <div class="effect-caption">
+            <h4>Turquoise &amp; Silver</h4>
+            <p>Radial gradients with metallic box-shadows evoke Southwest jewelry craftsmanship.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROPE BAND ===== -->
+  <div class="rope-band"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--sand">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Frontier Buttons</h2>
+      <hr class="double-rule">
+      <p class="section-subtitle">heavy, tactile &amp; commanding</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn">Saddle Leather</a>
+        <a href="#" class="btn btn--wanted">Oxblood Wanted</a>
+        <a href="#" class="btn btn--turquoise">Turquoise Accent</a>
+        <a href="#" class="btn btn--outline">Parchment Outline</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--parchment">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          There was no trail before we rode through. Every mile was earned, every sunset a reward for the day's labor. This is the spirit we carry in everything we build.
+        </blockquote>
+        <cite>&mdash; The Founders, est. 1887</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--bone">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Ride With Us</h2>
+        <hr class="cta-rule">
+        <span class="tagline">stake your claim on the frontier</span>
+        <p>
+          The Western Frontier aesthetic embraces weight, craft, and honest materials. Ground every layout in earth tones, bold slab-serif type, and weathered textures &mdash; then let the turquoise and gold accents shine through.
+        </p>
+        <a href="#hero" class="btn btn--wanted">Back to the Trail</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROPE BAND ===== -->
+  <div class="rope-band rope-band--thick"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-brand">Western Frontier</div>
+      <p>
+        A design aesthetic reference celebrating the rugged, handcrafted visual language of the 19th-century American Old West. Saddle leather, parchment, and prairie gold &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-ornament">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Western Frontier &bull; Est. 1887</p>
+    </div>
+  </footer>
+
+</body>
+</html>

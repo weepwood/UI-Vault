@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pixel Noir -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Silkscreen:wght@400;700&family=Share+Tech+Mono&family=IBM+Plex+Mono:wght@400;500;700&family=Space+Mono:wght@400;700&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Backgrounds --- */
+      --noir-bg-void: #080808;
+      --noir-bg-soot: #121212;
+      --noir-bg-charcoal: #1c1c1e;
+      --noir-bg-gunmetal: #2a2a2d;
+
+      /* --- Grays / Dither tones --- */
+      --noir-smoke: #3a3a3e;
+      --noir-ash: #555558;
+      --noir-fog: #7a7a80;
+
+      /* --- Text --- */
+      --noir-text-primary: #c8c0b0;
+      --noir-text-secondary: #7a7a80;
+      --noir-text-muted: #555558;
+
+      /* --- Warm Accents --- */
+      --noir-amber: #d4a020;
+      --noir-gold: #b8860b;
+      --noir-red: #8b1a1a;
+      --noir-neon-red: #cc2222;
+
+      /* --- Cool Accents --- */
+      --noir-midnight: #1a1a2e;
+      --noir-rain-blue: #4a6580;
+      --noir-green: #2a8a2a;
+
+      /* --- Glows --- */
+      --noir-glow-amber: 0 0 6px rgba(212, 160, 32, 0.4), 0 0 20px rgba(212, 160, 32, 0.1);
+      --noir-glow-red: 0 0 6px rgba(204, 34, 34, 0.5), 0 0 20px rgba(204, 34, 34, 0.15);
+      --noir-glow-green: 0 0 6px rgba(42, 138, 42, 0.4), 0 0 20px rgba(42, 138, 42, 0.1);
+
+      /* --- Borders --- */
+      --noir-border: 1px solid #2a2a2d;
+      --noir-border-amber: 1px solid rgba(212, 160, 32, 0.3);
+
+      /* --- Pixel rendering --- */
+      --noir-pixel-size: 4px;
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-font-smoothing: none;
+      -moz-osx-font-smoothing: unset;
+      text-rendering: optimizeSpeed;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'VT323', monospace;
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: var(--noir-text-primary);
+      background-color: var(--noir-bg-void);
+      overflow-x: hidden;
+      image-rendering: pixelated;
+      min-height: 100vh;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Press Start 2P', monospace;
+      color: var(--noir-text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 2;
+    }
+
+    /* CRT Scan line overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(200, 192, 176, 0.012) 2px,
+        rgba(200, 192, 176, 0.012) 4px
+      );
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: var(--noir-bg-soot);
+      border-bottom: 2px solid var(--noir-bg-gunmetal);
+      padding: 0;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 12px 24px;
+    }
+
+    .nav-logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.7rem;
+      color: var(--noir-amber);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-shadow: 2px 2px 0 #080808;
+      transition: text-shadow 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      text-shadow: 2px 2px 0 #080808, 0 0 8px rgba(212, 160, 32, 0.3);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.75rem;
+      color: var(--noir-text-secondary);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 0;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--noir-amber);
+      border-bottom-color: var(--noir-amber);
+    }
+
+    /* ============================================
+       HERO SECTION - Rain-soaked Noir
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 95vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 80px 24px;
+      background: var(--noir-bg-void);
+      overflow: hidden;
+    }
+
+    /* Scan line overlay */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(200, 192, 176, 0.015) 2px,
+        rgba(200, 192, 176, 0.015) 4px
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Venetian blind shadow effect */
+    .hero::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 20px,
+        rgba(0, 0, 0, 0.3) 20px,
+        rgba(0, 0, 0, 0.3) 28px
+      );
+      transform: skewY(-5deg);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.4;
+    }
+
+    /* Rain animation */
+    .hero-rain {
+      position: absolute;
+      inset: 0;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='40'%3E%3Crect x='1' y='0' width='1' height='3' fill='rgba(120,140,160,0.15)'/%3E%3C/svg%3E");
+      animation: noirRain 0.8s linear infinite;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    @keyframes noirRain {
+      0% { background-position: 0 0; }
+      100% { background-position: -20px 200px; }
+    }
+
+    /* Vignette effect */
+    .hero-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 40%,
+        rgba(8, 8, 8, 0.7) 100%
+      );
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Dithered background pattern */
+    .hero-dither {
+      position: absolute;
+      inset: 0;
+      background-color: var(--noir-bg-void);
+      background-image:
+        linear-gradient(45deg,
+          var(--noir-bg-soot) 25%, transparent 25%,
+          transparent 75%, var(--noir-bg-soot) 75%),
+        linear-gradient(45deg,
+          var(--noir-bg-soot) 25%, transparent 25%,
+          transparent 75%, var(--noir-bg-soot) 75%);
+      background-size: 4px 4px;
+      background-position: 0 0, 2px 2px;
+      opacity: 0.5;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 3;
+      max-width: 700px;
+    }
+
+    .hero-tagline {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--noir-fog);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      color: var(--noir-amber);
+      text-shadow: 3px 3px 0 #080808, 0 0 12px rgba(212, 160, 32, 0.25);
+      margin-bottom: 2rem;
+      line-height: 2;
+    }
+
+    .hero-subtitle {
+      font-family: 'VT323', monospace;
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      color: var(--noir-text-secondary);
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.8;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      background: transparent;
+      color: var(--noir-amber);
+      border: 2px solid var(--noir-amber);
+      padding: 12px 28px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      image-rendering: pixelated;
+      transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+      position: relative;
+    }
+
+    .btn:hover {
+      background: var(--noir-amber);
+      color: var(--noir-bg-void);
+      box-shadow: var(--noir-glow-amber);
+    }
+
+    .btn:active {
+      transform: translate(2px, 2px);
+      box-shadow: none;
+    }
+
+    /* Pixel shadow variant */
+    .btn--pixel {
+      box-shadow: 4px 4px 0 var(--noir-bg-gunmetal);
+    }
+
+    .btn--pixel:hover {
+      box-shadow: 4px 4px 0 var(--noir-bg-gunmetal), var(--noir-glow-amber);
+    }
+
+    .btn--pixel:active {
+      box-shadow: none;
+      transform: translate(4px, 4px);
+    }
+
+    /* Danger variant */
+    .btn--danger {
+      color: var(--noir-neon-red);
+      border-color: var(--noir-neon-red);
+    }
+
+    .btn--danger:hover {
+      background: var(--noir-neon-red);
+      color: var(--noir-bg-void);
+      box-shadow: var(--noir-glow-red);
+    }
+
+    /* Ghost variant */
+    .btn--ghost {
+      border-color: var(--noir-bg-gunmetal);
+      color: var(--noir-text-secondary);
+    }
+
+    .btn--ghost:hover {
+      border-color: var(--noir-amber);
+      color: var(--noir-amber);
+      background: transparent;
+    }
+
+    /* ============================================
+       PIXEL DIVIDER
+       ============================================ */
+    .pixel-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      max-width: 500px;
+      padding: 32px 0;
+    }
+
+    .pixel-divider::before,
+    .pixel-divider::after {
+      content: '';
+      flex: 1;
+      height: 2px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--noir-bg-gunmetal) 0px,
+        var(--noir-bg-gunmetal) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+    }
+
+    .pixel-divider span {
+      padding: 0 16px;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.5rem;
+      color: var(--noir-smoke);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--void {
+      background: var(--noir-bg-void);
+    }
+
+    .section--soot {
+      background: var(--noir-bg-soot);
+    }
+
+    .section--charcoal {
+      background: var(--noir-bg-charcoal);
+    }
+
+    .section--midnight {
+      background: var(--noir-midnight);
+    }
+
+    .section-label {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--noir-fog);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(0.8rem, 2vw, 1.2rem);
+      text-align: center;
+      color: var(--noir-amber);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      line-height: 2;
+    }
+
+    .section-subtitle {
+      font-family: 'VT323', monospace;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      text-align: center;
+      color: var(--noir-text-secondary);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE SECTION
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 80px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--noir-amber);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--noir-bg-gunmetal);
+    }
+
+    .typo-display {
+      font-family: 'Press Start 2P', monospace;
+      font-size: clamp(1.2rem, 3vw, 1.8rem);
+      color: var(--noir-amber);
+      text-shadow: 2px 2px 0 #080808, 0 0 8px rgba(212, 160, 32, 0.3);
+      text-transform: uppercase;
+      line-height: 2.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Pixelify Sans', monospace;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--noir-text-primary);
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .typo-terminal {
+      font-family: 'VT323', monospace;
+      font-size: 1.3rem;
+      color: var(--noir-green);
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: var(--noir-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-data {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.9rem;
+      color: var(--noir-rain-blue);
+      line-height: 1.6;
+    }
+
+    .typo-ui {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--noir-text-secondary);
+    }
+
+    .typo-right {
+      background: var(--noir-bg-soot);
+      border: 1px solid var(--noir-bg-gunmetal);
+      padding: 32px;
+      position: relative;
+    }
+
+    /* Pixel corner accents */
+    .typo-right::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--noir-amber);
+      border-left: 2px solid var(--noir-amber);
+    }
+
+    .typo-right::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid var(--noir-amber);
+      border-right: 2px solid var(--noir-amber);
+    }
+
+    .typo-right h3 {
+      font-size: 0.7rem;
+      color: var(--noir-amber);
+      margin-bottom: 16px;
+      line-height: 2;
+    }
+
+    .typo-right p {
+      font-family: 'VT323', monospace;
+      font-size: 1.15rem;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      color: var(--noir-text-primary);
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--noir-bg-gunmetal);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--noir-fog);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE SECTION
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      overflow: hidden;
+      background: var(--noir-bg-soot);
+      border: 1px solid var(--noir-bg-gunmetal);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .color-chip:hover {
+      border-color: var(--noir-amber);
+      transform: translateY(-2px);
+    }
+
+    .color-swatch {
+      height: 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Dither overlay on color swatches */
+    .color-swatch::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg,
+          rgba(0,0,0,0.1) 25%, transparent 25%,
+          transparent 75%, rgba(0,0,0,0.1) 75%),
+        linear-gradient(45deg,
+          rgba(0,0,0,0.1) 25%, transparent 25%,
+          transparent 75%, rgba(0,0,0,0.1) 75%);
+      background-size: 4px 4px;
+      background-position: 0 0, 2px 2px;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    .color-info {
+      padding: 10px 12px;
+    }
+
+    .color-name {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.6rem;
+      color: var(--noir-text-primary);
+      margin-bottom: 2px;
+      text-transform: uppercase;
+    }
+
+    .color-hex {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--noir-fog);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: var(--noir-bg-soot);
+      border: 1px solid var(--noir-bg-gunmetal);
+      padding: 28px 24px;
+      position: relative;
+      transition: border-color 0.2s ease;
+    }
+
+    /* Pixel corner accents */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--noir-amber);
+      border-left: 2px solid var(--noir-amber);
+    }
+
+    .card::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 8px;
+      height: 8px;
+      border-bottom: 2px solid var(--noir-amber);
+      border-right: 2px solid var(--noir-amber);
+    }
+
+    .card:hover {
+      border-color: var(--noir-amber);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.55rem;
+      margin-bottom: 16px;
+      border: 1px solid var(--noir-bg-gunmetal);
+      background: var(--noir-bg-charcoal);
+      color: var(--noir-amber);
+      text-transform: uppercase;
+    }
+
+    .card-icon--amber { color: var(--noir-amber); border-color: rgba(212, 160, 32, 0.3); }
+    .card-icon--red { color: var(--noir-neon-red); border-color: rgba(204, 34, 34, 0.3); }
+    .card-icon--blue { color: var(--noir-rain-blue); border-color: rgba(74, 101, 128, 0.3); }
+    .card-icon--green { color: var(--noir-green); border-color: rgba(42, 138, 42, 0.3); }
+    .card-icon--gold { color: var(--noir-gold); border-color: rgba(184, 134, 11, 0.3); }
+    .card-icon--fog { color: var(--noir-fog); border-color: rgba(122, 122, 128, 0.3); }
+
+    .card h3 {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--noir-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      line-height: 2;
+    }
+
+    .card p {
+      font-family: 'VT323', monospace;
+      font-size: 1.1rem;
+      line-height: 1.7;
+      color: var(--noir-text-primary);
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.55rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 12px;
+      border: 1px solid var(--noir-bg-gunmetal);
+      color: var(--noir-fog);
+      margin-top: 14px;
+      margin-right: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .tag:hover {
+      border-color: var(--noir-amber);
+      color: var(--noir-amber);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .effect-demo {
+      overflow: hidden;
+      border: 1px solid var(--noir-bg-gunmetal);
+      background: var(--noir-bg-soot);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 1. Dithered Checkerboard effect */
+    .effect-dither {
+      background-color: var(--noir-bg-void);
+      background-image:
+        linear-gradient(45deg,
+          var(--noir-bg-soot) 25%, transparent 25%,
+          transparent 75%, var(--noir-bg-soot) 75%),
+        linear-gradient(45deg,
+          var(--noir-bg-soot) 25%, transparent 25%,
+          transparent 75%, var(--noir-bg-soot) 75%);
+      background-size: 4px 4px;
+      background-position: 0 0, 2px 2px;
+    }
+
+    .effect-dither::after {
+      content: 'DITHER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.2rem;
+      color: var(--noir-amber);
+      text-shadow: 2px 2px 0 #080808;
+      z-index: 1;
+    }
+
+    /* 2. Venetian Blind Shadow effect */
+    .effect-blinds {
+      background: var(--noir-bg-charcoal);
+    }
+
+    .effect-blinds::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 16px,
+        rgba(0, 0, 0, 0.35) 16px,
+        rgba(0, 0, 0, 0.35) 24px
+      );
+      transform: skewY(-3deg);
+      opacity: 0.7;
+    }
+
+    .effect-blinds::after {
+      content: 'BLINDS';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.2rem;
+      color: var(--noir-text-primary);
+      text-shadow: 2px 2px 0 #080808;
+      z-index: 1;
+    }
+
+    /* 3. Neon Flicker effect */
+    .effect-neon {
+      background: var(--noir-bg-void);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-neon::after {
+      content: 'BAR';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.6rem;
+      color: var(--noir-neon-red);
+      animation: noirFlicker 4s infinite;
+      z-index: 1;
+    }
+
+    @keyframes noirFlicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+        text-shadow:
+          0 0 4px var(--noir-neon-red),
+          0 0 12px rgba(204, 34, 34, 0.4),
+          0 0 24px rgba(204, 34, 34, 0.15);
+        opacity: 1;
+      }
+      20%, 24%, 55% {
+        text-shadow: none;
+        opacity: 0.7;
+      }
+    }
+
+    /* 4. CRT Vignette effect */
+    .effect-vignette {
+      background: var(--noir-bg-charcoal);
+    }
+
+    .effect-vignette::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(
+        ellipse at center,
+        transparent 30%,
+        rgba(8, 8, 8, 0.8) 100%
+      );
+      z-index: 1;
+    }
+
+    .effect-vignette::after {
+      content: 'CRT';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.2rem;
+      color: var(--noir-fog);
+      text-shadow: 0 0 8px rgba(122, 122, 128, 0.3);
+      z-index: 2;
+    }
+
+    /* 5. Rain Streak effect */
+    .effect-rain {
+      background: var(--noir-midnight);
+    }
+
+    .effect-rain::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='40'%3E%3Crect x='1' y='0' width='1' height='3' fill='rgba(120,140,160,0.2)'/%3E%3C/svg%3E");
+      animation: noirRain 0.8s linear infinite;
+    }
+
+    .effect-rain::after {
+      content: 'RAIN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Press Start 2P', monospace;
+      font-size: 1.2rem;
+      color: var(--noir-rain-blue);
+      text-shadow: 2px 2px 0 #080808;
+      z-index: 1;
+    }
+
+    /* 6. Amber Glow Terminal effect */
+    .effect-terminal {
+      background: var(--noir-bg-void);
+    }
+
+    .effect-terminal::before {
+      content: '> CASE_FILE_001\A> STATUS: OPEN\A> SUSPECTS: 3\A> EVIDENCE: PENDING\A> _';
+      white-space: pre;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-family: 'VT323', monospace;
+      font-size: 1rem;
+      color: var(--noir-amber);
+      text-shadow: 0 0 4px rgba(212, 160, 32, 0.3);
+      line-height: 1.8;
+      animation: terminalBlink 1.2s step-end infinite;
+      z-index: 1;
+    }
+
+    @keyframes terminalBlink {
+      0%, 100% { border-right: 2px solid var(--noir-amber); }
+      50% { border-right: 2px solid transparent; }
+    }
+
+    .effect-caption {
+      padding: 14px 16px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.65rem;
+      color: var(--noir-text-primary);
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      line-height: 1.6;
+    }
+
+    .effect-caption p {
+      font-family: 'VT323', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: var(--noir-fog);
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 48px 32px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--noir-bg-soot);
+      border: 1px solid var(--noir-bg-gunmetal);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '';
+      position: absolute;
+      top: 4px;
+      left: 4px;
+      width: 12px;
+      height: 12px;
+      border-top: 2px solid var(--noir-amber);
+      border-left: 2px solid var(--noir-amber);
+    }
+
+    .quote-block::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      right: 4px;
+      width: 12px;
+      height: 12px;
+      border-bottom: 2px solid var(--noir-amber);
+      border-right: 2px solid var(--noir-amber);
+    }
+
+    .quote-mark {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 2rem;
+      color: var(--noir-amber);
+      opacity: 0.3;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .quote-block blockquote {
+      font-family: 'VT323', monospace;
+      font-size: clamp(1.2rem, 2vw, 1.5rem);
+      color: var(--noir-text-primary);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.8;
+    }
+
+    .quote-block cite {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.65rem;
+      color: var(--noir-amber);
+      font-style: normal;
+      display: block;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      background: var(--noir-bg-soot);
+      padding: 80px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(45deg,
+          var(--noir-bg-charcoal) 25%, transparent 25%,
+          transparent 75%, var(--noir-bg-charcoal) 75%),
+        linear-gradient(45deg,
+          var(--noir-bg-charcoal) 25%, transparent 25%,
+          transparent 75%, var(--noir-bg-charcoal) 75%);
+      background-size: 4px 4px;
+      background-position: 0 0, 2px 2px;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+
+    /* Venetian blind overlay */
+    .cta-section::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 20px,
+        rgba(0, 0, 0, 0.2) 20px,
+        rgba(0, 0, 0, 0.2) 28px
+      );
+      transform: skewY(-3deg);
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    .cta-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .cta-section h2 {
+      font-size: clamp(0.8rem, 2vw, 1.1rem);
+      color: var(--noir-amber);
+      text-shadow: 2px 2px 0 #080808, 0 0 8px rgba(212, 160, 32, 0.2);
+      margin-bottom: 1.5rem;
+    }
+
+    .cta-section p {
+      font-family: 'VT323', monospace;
+      font-size: 1.2rem;
+      color: var(--noir-text-secondary);
+      max-width: 520px;
+      margin: 0 auto 2rem;
+      line-height: 1.8;
+    }
+
+    .cta-buttons {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--noir-bg-soot);
+      border-top: 2px solid var(--noir-bg-gunmetal);
+      padding: 48px 24px;
+      text-align: center;
+    }
+
+    .footer-inner {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .footer-logo {
+      font-family: 'Press Start 2P', monospace;
+      font-size: 0.6rem;
+      color: var(--noir-amber);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      text-shadow: 2px 2px 0 #080808;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-family: 'Silkscreen', monospace;
+      font-size: 0.65rem;
+      color: var(--noir-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 0;
+      border-bottom: 1px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--noir-amber);
+      border-bottom-color: var(--noir-amber);
+    }
+
+    .footer-divider {
+      width: 100%;
+      height: 1px;
+      background: repeating-linear-gradient(
+        90deg,
+        var(--noir-bg-gunmetal) 0px,
+        var(--noir-bg-gunmetal) 4px,
+        transparent 4px,
+        transparent 8px
+      );
+      margin: 24px 0;
+    }
+
+    .footer-meta {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--noir-text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-meta span {
+      color: var(--noir-fog);
+    }
+
+    /* Amber cursor blink in footer */
+    .footer-cursor {
+      display: inline-block;
+      width: 8px;
+      height: 14px;
+      background: var(--noir-amber);
+      vertical-align: middle;
+      margin-left: 4px;
+      animation: cursorBlink 1s step-end infinite;
+    }
+
+    @keyframes cursorBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ============================================
+       RESPONSIVE
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 12px;
+      }
+
+      .nav-links a {
+        font-size: 0.6rem;
+      }
+
+      .hero {
+        min-height: 80vh;
+        padding: 60px 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn {
+        text-align: center;
+      }
+
+      .quote-block {
+        padding: 32px 20px;
+      }
+
+      .footer-links {
+        flex-direction: column;
+        gap: 12px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .nav-inner {
+        flex-direction: column;
+        gap: 12px;
+        padding: 12px 16px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1rem, 5vw, 1.5rem);
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================
+       NAVIGATION
+       ============================================ -->
+  <nav class="nav" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Pixel_Noir</a>
+      <div class="nav-links">
+        <a href="#typography" class="active">Typo</a>
+        <a href="#palette">Palette</a>
+        <a href="#cards">Cards</a>
+        <a href="#effects">Effects</a>
+        <a href="#buttons">Buttons</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================
+       HERO SECTION
+       ============================================ -->
+  <section class="hero" aria-label="Hero banner">
+    <div class="hero-dither"></div>
+    <div class="hero-rain"></div>
+    <div class="hero-vignette"></div>
+    <div class="hero-content">
+      <p class="hero-tagline">// Case File #0091 -- Design Reference</p>
+      <h1>Pixel Noir</h1>
+      <p class="hero-subtitle">
+        The rain hammers the neon-soaked pavement. Shadows flicker behind venetian blinds.
+        Every pixel tells a story in this fusion of 8-bit constraint and film noir atmosphere.
+      </p>
+      <div class="hero-buttons">
+        <a href="#cards" class="btn btn--pixel">Open Case File</a>
+        <a href="#effects" class="btn btn--ghost">View Evidence</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       TYPOGRAPHY SECTION
+       ============================================ -->
+  <section id="typography" class="section section--void">
+    <div class="container">
+      <p class="section-label">// System.fonts</p>
+      <h2 class="section-title">Typography</h2>
+      <p class="section-subtitle">Bitmap fonts stamped on the pixel grid -- no curves, no smoothing, no mercy.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Hero -- Press Start 2P</p>
+            <p class="typo-display">The Case Goes Cold</p>
+          </div>
+
+          <div class="typo-sample">
+            <p class="typo-sample-label">Subheading -- Pixelify Sans</p>
+            <p class="typo-heading">Shadows in the alleyway whisper forgotten names</p>
+          </div>
+
+          <div class="typo-sample">
+            <p class="typo-sample-label">Terminal / Narrative -- VT323</p>
+            <p class="typo-terminal">> The detective lit a cigarette and stared at the rain. The case was going nowhere, but the night was still young.</p>
+          </div>
+
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Long-form -- IBM Plex Mono</p>
+            <p class="typo-body">In the constrained world of pixel noir, every character must be deliberately placed. There is no room for ambiguity in the grid -- only purpose, restraint, and the relentless pursuit of atmospheric clarity.</p>
+          </div>
+
+          <div class="typo-sample">
+            <p class="typo-sample-label">Data Readout -- Share Tech Mono</p>
+            <p class="typo-data">CASE: #0091 | STATUS: ACTIVE | PRIORITY: HIGH<br>LAST_UPDATED: 2026-03-04T23:47:00Z</p>
+          </div>
+
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Labels -- Silkscreen</p>
+            <p class="typo-ui">Navigation / Metadata / Tags / Timestamps</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale Reference</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.5rem</span>
+              <span style="font-family: 'Press Start 2P', monospace; font-size: 0.9rem; color: var(--noir-amber); text-transform: uppercase;">Hero Display</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.8rem</span>
+              <span style="font-family: 'Pixelify Sans', monospace; font-size: 1.4rem; font-weight: 700; color: var(--noir-text-primary);">Section Heading</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.3rem</span>
+              <span style="font-family: 'VT323', monospace; font-size: 1.3rem; color: var(--noir-green);">Terminal Narrative</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.95rem</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.95rem; color: var(--noir-text-primary);">Body text for long passages</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Share Tech Mono', monospace; font-size: 0.85rem; color: var(--noir-rain-blue);">DATA_READOUT: 0x4A6580</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.75rem</span>
+              <span style="font-family: 'Silkscreen', monospace; font-size: 0.65rem; color: var(--noir-fog); text-transform: uppercase; letter-spacing: 0.1em;">UI Label / Metadata</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--noir-bg-gunmetal);">
+            <p style="color: var(--noir-fog); font-size: 1rem;">
+              All typography renders with <span style="color: var(--noir-amber);">-webkit-font-smoothing: none</span> to maintain crisp pixel edges. No anti-aliasing. No sub-pixel rendering. Every glyph snaps to the grid.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pixel-divider"><span>///</span></div>
+
+  <!-- ============================================
+       COLOR PALETTE SECTION
+       ============================================ -->
+  <section id="palette" class="section section--soot">
+    <div class="container">
+      <p class="section-label">// System.palette</p>
+      <h2 class="section-title">Color Palette</h2>
+      <p class="section-subtitle">Extreme darkness punctuated by rationed amber, blood red, and cold blue moonlight.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #080808;"></div>
+          <div class="color-info">
+            <p class="color-name">Void Black</p>
+            <p class="color-hex">#080808</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #121212;"></div>
+          <div class="color-info">
+            <p class="color-name">Soot</p>
+            <p class="color-hex">#121212</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #1c1c1e;"></div>
+          <div class="color-info">
+            <p class="color-name">Charcoal</p>
+            <p class="color-hex">#1C1C1E</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #2a2a2d;"></div>
+          <div class="color-info">
+            <p class="color-name">Gunmetal</p>
+            <p class="color-hex">#2A2A2D</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #3a3a3e;"></div>
+          <div class="color-info">
+            <p class="color-name">Smoke</p>
+            <p class="color-hex">#3A3A3E</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #555558;"></div>
+          <div class="color-info">
+            <p class="color-name">Ash</p>
+            <p class="color-hex">#555558</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #7a7a80;"></div>
+          <div class="color-info">
+            <p class="color-name">Fog</p>
+            <p class="color-hex">#7A7A80</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #c8c0b0;"></div>
+          <div class="color-info">
+            <p class="color-name">Bone</p>
+            <p class="color-hex">#C8C0B0</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #d4a020;"></div>
+          <div class="color-info">
+            <p class="color-name">Lamplight Amber</p>
+            <p class="color-hex">#D4A020</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #b8860b;"></div>
+          <div class="color-info">
+            <p class="color-name">Whiskey Gold</p>
+            <p class="color-hex">#B8860B</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #8b1a1a;"></div>
+          <div class="color-info">
+            <p class="color-name">Blood Red</p>
+            <p class="color-hex">#8B1A1A</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #cc2222;"></div>
+          <div class="color-info">
+            <p class="color-name">Neon Red</p>
+            <p class="color-hex">#CC2222</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #1a1a2e;"></div>
+          <div class="color-info">
+            <p class="color-name">Midnight Blue</p>
+            <p class="color-hex">#1A1A2E</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #4a6580;"></div>
+          <div class="color-info">
+            <p class="color-name">Rain Blue</p>
+            <p class="color-hex">#4A6580</p>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background-color: #2a8a2a;"></div>
+          <div class="color-info">
+            <p class="color-name">Fluorescent Green</p>
+            <p class="color-hex">#2A8A2A</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pixel-divider"><span>///</span></div>
+
+  <!-- ============================================
+       CARD GRID SECTION
+       ============================================ -->
+  <section id="cards" class="section section--void">
+    <div class="container">
+      <p class="section-label">// Case.files</p>
+      <h2 class="section-title">Design Elements</h2>
+      <p class="section-subtitle">Dossiers from the investigation -- each card a piece of the puzzle.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--amber">01</div>
+          <h3>Dithering Patterns</h3>
+          <p>Checkerboard and ordered dithering create mid-tones and atmospheric fog without introducing new colors. The pattern is the texture -- embrace the grid.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Atmosphere</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--red">02</div>
+          <h3>Chiaroscuro Lighting</h3>
+          <p>Harsh pools of light surrounded by deep shadow, mimicking the high-contrast cinematography of classic noir. Light is earned, never given freely.</p>
+          <span class="tag">Contrast</span>
+          <span class="tag">Mood</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--blue">03</div>
+          <h3>Bitmap Typography</h3>
+          <p>All text rendered on the pixel grid with no anti-aliasing. Monospaced and mechanical -- like typewritten case reports from a 1940s police station.</p>
+          <span class="tag">Pixel Font</span>
+          <span class="tag">Monospace</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--green">04</div>
+          <h3>Terminal Readouts</h3>
+          <p>Data displays with amber or green phosphor glow, mimicking old CRT monitors. Status readouts, case numbers, and timestamps reinforce the investigative narrative.</p>
+          <span class="tag">CRT</span>
+          <span class="tag">Data</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--gold">05</div>
+          <h3>Neon Sign Accents</h3>
+          <p>Occasional bright color used sparingly to simulate glowing signage against dark cityscapes. One or two neon accents per viewport -- never more.</p>
+          <span class="tag">Glow</span>
+          <span class="tag">Restraint</span>
+        </div>
+
+        <div class="card">
+          <div class="card-icon card-icon--fog">06</div>
+          <h3>Single-Pixel Borders</h3>
+          <p>UI elements use crisp 1px borders with no rounded corners, no gradients, and no soft shadows. Every line is hard, every edge deliberate.</p>
+          <span class="tag">Borders</span>
+          <span class="tag">Minimal</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pixel-divider"><span>///</span></div>
+
+  <!-- ============================================
+       CSS EFFECTS SHOWCASE
+       ============================================ -->
+  <section id="effects" class="section section--soot">
+    <div class="container">
+      <p class="section-label">// Render.effects</p>
+      <h2 class="section-title">CSS Effects</h2>
+      <p class="section-subtitle">Pure CSS techniques that bring the noir atmosphere to life -- no images required.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-dither"></div>
+          <div class="effect-caption">
+            <h4>Checkerboard Dithering</h4>
+            <p>Dual 45-degree gradients at 4px scale create authentic pixel dither patterns for mid-tone simulation.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-blinds"></div>
+          <div class="effect-caption">
+            <h4>Venetian Blind Shadows</h4>
+            <p>Skewed repeating gradients cast horizontal stripe shadows -- the iconic motif of film noir cinematography.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-neon"></div>
+          <div class="effect-caption">
+            <h4>Neon Flicker</h4>
+            <p>Keyframe-driven text-shadow flicker simulates a faulty neon bar sign buzzing in a rain-soaked alley.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-vignette"></div>
+          <div class="effect-caption">
+            <h4>CRT Vignette</h4>
+            <p>Radial gradient darkening at edges replicates the barrel distortion and phosphor fade of old CRT monitors.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-rain"></div>
+          <div class="effect-caption">
+            <h4>Rain Streaks</h4>
+            <p>SVG data-URI rain drops animated in a linear loop -- pixel-scale precipitation on a midnight backdrop.</p>
+          </div>
+        </div>
+
+        <div class="effect-demo">
+          <div class="effect-preview effect-terminal"></div>
+          <div class="effect-caption">
+            <h4>Terminal Glow</h4>
+            <p>Amber text with soft glow shadows on a void background, complete with a blinking cursor for authenticity.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="pixel-divider"><span>///</span></div>
+
+  <!-- ============================================
+       BUTTON SHOWCASE SECTION
+       ============================================ -->
+  <section id="buttons" class="section section--void">
+    <div class="container">
+      <p class="section-label">// UI.buttons</p>
+      <h2 class="section-title">Button Variants</h2>
+      <p class="section-subtitle">Hard borders, pixel shadows, and rationed color -- every click feels deliberate.</p>
+
+      <div class="button-showcase">
+        <button class="btn">Primary Action</button>
+        <button class="btn btn--pixel">Pixel Shadow</button>
+        <button class="btn btn--danger">Danger / Alert</button>
+        <button class="btn btn--ghost">Ghost Button</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="pixel-divider"><span>///</span></div>
+
+  <!-- ============================================
+       BLOCKQUOTE SECTION
+       ============================================ -->
+  <section class="section section--soot">
+    <div class="container">
+      <div class="quote-block">
+        <span class="quote-mark">"</span>
+        <blockquote>
+          Darkness is the default state; light must be justified and deliberate. Every pixel matters -- at low resolution, a single misplaced pixel changes the entire composition.
+        </blockquote>
+        <cite>-- Pixel Noir Design Principles</cite>
+      </div>
+    </div>
+  </section>
+
+  <div class="pixel-divider"><span>///</span></div>
+
+  <!-- ============================================
+       CTA SECTION
+       ============================================ -->
+  <section class="cta-section" aria-label="Call to action">
+    <div class="cta-content">
+      <p class="section-label">// Case.status = "Active"</p>
+      <h2>Begin Your Investigation</h2>
+      <p>
+        The rain is not letting up. The clues are scattered across the grid.
+        Open the case file and start placing your pixels with purpose.
+      </p>
+      <div class="cta-buttons">
+        <a href="#" class="btn btn--pixel">Start Building</a>
+        <a href="#" class="btn btn--ghost">Read the Dossier</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================
+       FOOTER
+       ============================================ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <span class="footer-logo">Pixel_Noir</span>
+
+      <div class="footer-links">
+        <a href="#typography">Typography</a>
+        <a href="#palette">Palette</a>
+        <a href="#cards">Cards</a>
+        <a href="#effects">Effects</a>
+        <a href="#buttons">Buttons</a>
+      </div>
+
+      <div class="footer-divider"></div>
+
+      <div class="footer-meta">
+        <p>
+          <span>CASE_ID:</span> PXNR-0091 &nbsp;|&nbsp;
+          <span>STATUS:</span> ACTIVE &nbsp;|&nbsp;
+          <span>FILED:</span> 2026-03-04
+        </p>
+        <p style="margin-top: 8px;">
+          Design aesthetic reference -- pixel art meets film noir.
+          Built with pure HTML5 and CSS3. No images. No JavaScript.<span class="footer-cursor"></span>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

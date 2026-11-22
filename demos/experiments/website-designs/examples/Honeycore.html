@@ -1,0 +1,1963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honeycore -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500;600;700&family=Merriweather:wght@300;400;700&family=Amatic+SC:wght@400;700&family=Nunito:wght@300;400;600;700&family=Caveat:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Honeycore Palette --- */
+      --hc-honeycomb-gold: #D4A017;
+      --hc-amber-glow: #FFBF00;
+      --hc-dark-honey: #945609;
+      --hc-beeswax-cream: #FFF8E7;
+      --hc-golden-nectar: #E8BE14;
+      --hc-mustard-field: #C5962E;
+      --hc-sunflower-petal: #F4D03F;
+      --hc-honeydew-white: #FDF6EC;
+      --hc-warm-straw: #DDBD73;
+      --hc-toasted-amber: #C07830;
+      --hc-pollen-dust: #DFD492;
+      --hc-deep-topaz: #8B6914;
+      --hc-meadow-sage: #7A8B5D;
+      --hc-clover-honey: #D0902D;
+      --hc-linen-warm: #F5ECD7;
+
+      /* --- Semantic Tokens --- */
+      --hc-bg-primary: var(--hc-beeswax-cream);
+      --hc-bg-surface: var(--hc-honeydew-white);
+      --hc-bg-alt: var(--hc-linen-warm);
+      --hc-text-primary: var(--hc-dark-honey);
+      --hc-text-heading: var(--hc-deep-topaz);
+      --hc-accent-primary: var(--hc-honeycomb-gold);
+      --hc-accent-secondary: var(--hc-amber-glow);
+      --hc-accent-cta: var(--hc-toasted-amber);
+      --hc-border: var(--hc-warm-straw);
+      --hc-shadow: rgba(148, 86, 9, 0.12);
+      --hc-radius: 18px;
+      --hc-radius-lg: 24px;
+      --hc-radius-pill: 28px;
+
+      /* --- Shadows --- */
+      --hc-shadow-sm: 0 2px 8px rgba(148, 86, 9, 0.08);
+      --hc-shadow-md: 0 4px 16px rgba(148, 86, 9, 0.12);
+      --hc-shadow-lg: 0 8px 32px rgba(148, 86, 9, 0.16);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(56px, 8vw, 96px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Merriweather', Georgia, serif;
+      font-size: 1.05rem;
+      line-height: 1.8;
+      color: var(--hc-text-primary);
+      background-color: var(--hc-bg-primary);
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-weight: 600;
+      color: var(--hc-text-heading);
+      line-height: 1.2;
+      letter-spacing: 0.01em;
+    }
+
+    /* Subtle linen texture overlay on entire page */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.025;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(148, 86, 9, 0.06) 3px,
+          rgba(148, 86, 9, 0.06) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(148, 86, 9, 0.04) 3px,
+          rgba(148, 86, 9, 0.04) 4px
+        );
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      background: linear-gradient(180deg, var(--hc-bg-surface) 0%, var(--hc-bg-alt) 100%);
+      border-bottom: 2px solid var(--hc-border);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 500;
+      box-shadow: 0 2px 8px var(--hc-shadow);
+    }
+
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--hc-text-heading);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-logo:hover {
+      color: var(--hc-accent-primary);
+    }
+
+    .nav-logo .bee-icon {
+      font-size: 1.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--hc-text-primary);
+      padding: 8px 18px;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(212, 160, 23, 0.14);
+      color: var(--hc-text-heading);
+    }
+
+    /* ============================================
+       HERO SECTION -- Golden Hour Meadow
+       ============================================ */
+    .hero {
+      background:
+        linear-gradient(
+          180deg,
+          var(--hc-bg-primary) 0%,
+          var(--hc-bg-alt) 40%,
+          var(--hc-warm-straw) 100%
+        );
+      padding: 100px 24px 90px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Golden light glow orbs */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(255, 191, 0, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(244, 208, 63, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(232, 190, 20, 0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    /* Floating pollen particles */
+    .hero-pollen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(circle at 12% 25%, rgba(255, 191, 0, 0.3) 0%, transparent 2px),
+        radial-gradient(circle at 78% 18%, rgba(244, 208, 63, 0.25) 0%, transparent 1.5px),
+        radial-gradient(circle at 42% 82%, rgba(212, 160, 23, 0.2) 0%, transparent 2px),
+        radial-gradient(circle at 68% 55%, rgba(255, 191, 0, 0.18) 0%, transparent 1.5px),
+        radial-gradient(circle at 22% 60%, rgba(244, 208, 63, 0.22) 0%, transparent 2px),
+        radial-gradient(circle at 88% 72%, rgba(212, 160, 23, 0.2) 0%, transparent 1.5px),
+        radial-gradient(circle at 55% 35%, rgba(255, 191, 0, 0.15) 0%, transparent 1px),
+        radial-gradient(circle at 8% 88%, rgba(244, 208, 63, 0.2) 0%, transparent 2px);
+      pointer-events: none;
+      animation: pollenDrift 6s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+
+    @keyframes pollenDrift {
+      0% { transform: translate(0, 0); opacity: 0.4; }
+      50% { opacity: 0.8; }
+      100% { transform: translate(6px, -6px); opacity: 0.4; }
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+    }
+
+    .hero-tagline {
+      font-family: 'Nunito', sans-serif;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--hc-accent-primary);
+      margin-bottom: 16px;
+      opacity: 0.9;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3rem, 9vw, 5.5rem);
+      font-weight: 700;
+      color: var(--hc-text-heading);
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+
+    .hero-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.3rem, 3.5vw, 2rem);
+      color: var(--hc-mustard-field);
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(0.95rem, 1.5vw, 1.1rem);
+      color: var(--hc-text-primary);
+      max-width: 580px;
+      margin: 0 auto 36px;
+      line-height: 1.85;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    /* Decorative honeycomb SVGs in hero */
+    .hero-hex {
+      position: absolute;
+      z-index: 1;
+      opacity: 0.08;
+      animation: hexFloat 5s ease-in-out infinite;
+    }
+
+    .hero-hex--left {
+      bottom: 60px;
+      left: 5%;
+    }
+
+    .hero-hex--right {
+      top: 80px;
+      right: 5%;
+      animation-delay: -2.5s;
+    }
+
+    @keyframes hexFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(3deg); }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-block;
+      font-family: 'Merriweather', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      padding: 14px 36px;
+      border: none;
+      border-radius: var(--hc-radius-pill);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s ease;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--hc-honeycomb-gold), var(--hc-toasted-amber));
+      color: var(--hc-bg-primary);
+      box-shadow: 0 3px 12px rgba(148, 86, 9, 0.25);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--hc-toasted-amber), var(--hc-dark-honey));
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(148, 86, 9, 0.35);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(148, 86, 9, 0.2);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--hc-honeycomb-gold);
+      border: 2px solid var(--hc-honeycomb-gold);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: var(--hc-honeycomb-gold);
+      color: var(--hc-bg-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 3px 12px rgba(148, 86, 9, 0.2);
+    }
+
+    .btn-nectar {
+      background: linear-gradient(135deg, var(--hc-amber-glow), var(--hc-golden-nectar));
+      color: var(--hc-dark-honey);
+      box-shadow: 0 3px 12px rgba(255, 191, 0, 0.3);
+    }
+
+    .btn-nectar:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 191, 0, 0.4);
+    }
+
+    .btn-sage {
+      background: linear-gradient(135deg, var(--hc-meadow-sage), #8FA86A);
+      color: var(--hc-bg-primary);
+      box-shadow: 0 3px 12px rgba(122, 139, 93, 0.3);
+    }
+
+    .btn-sage:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(122, 139, 93, 0.4);
+    }
+
+    /* ============================================
+       HONEY DRIP DIVIDER
+       ============================================ */
+    .honey-drip {
+      width: 100%;
+      height: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .honey-drip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(90deg, var(--hc-honeycomb-gold), var(--hc-amber-glow), var(--hc-honeycomb-gold));
+    }
+
+    .honey-drip::after {
+      content: '';
+      position: absolute;
+      top: 8px;
+      left: 0;
+      right: 0;
+      height: 32px;
+      background:
+        radial-gradient(ellipse 20px 24px at 10% 0%, var(--hc-amber-glow) 70%, transparent 71%),
+        radial-gradient(ellipse 14px 18px at 30% 0%, var(--hc-honeycomb-gold) 70%, transparent 71%),
+        radial-gradient(ellipse 18px 28px at 55% 0%, var(--hc-amber-glow) 70%, transparent 71%),
+        radial-gradient(ellipse 12px 16px at 75% 0%, var(--hc-honeycomb-gold) 70%, transparent 71%),
+        radial-gradient(ellipse 16px 20px at 92% 0%, var(--hc-amber-glow) 70%, transparent 71%);
+    }
+
+    /* ============================================
+       CONTAINERS & SECTIONS
+       ============================================ */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .section {
+      padding: var(--section-pad) 24px;
+      position: relative;
+    }
+
+    .section--cream {
+      background: var(--hc-bg-primary);
+    }
+
+    .section--linen {
+      background: var(--hc-bg-alt);
+    }
+
+    .section--surface {
+      background: var(--hc-bg-surface);
+    }
+
+    .section--pollen {
+      background: var(--hc-pollen-dust);
+    }
+
+    .section-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--hc-accent-primary);
+      text-align: center;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      text-align: center;
+      color: var(--hc-text-heading);
+      margin-bottom: 10px;
+    }
+
+    .section-subtitle {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+      text-align: center;
+      color: var(--hc-mustard-field);
+      margin-bottom: 48px;
+    }
+
+    /* ============================================
+       DOT DIVIDER
+       ============================================ */
+    .dot-divider {
+      text-align: center;
+      margin: 24px 0;
+      color: var(--hc-accent-primary);
+      font-size: 1.2rem;
+      letter-spacing: 0.6em;
+      opacity: 0.5;
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .typo-left {
+      position: sticky;
+      top: 100px;
+    }
+
+    .typo-sample {
+      margin-bottom: 32px;
+    }
+
+    .typo-sample-label {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--hc-accent-primary);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .typo-sample-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--hc-border);
+    }
+
+    .typo-display {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 3.5rem);
+      font-weight: 700;
+      color: var(--hc-text-heading);
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .typo-heading {
+      font-family: 'Lora', serif;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: var(--hc-text-heading);
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+
+    .typo-subheading {
+      font-family: 'Amatic SC', cursive;
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 700;
+      color: var(--hc-mustard-field);
+      line-height: 1.3;
+      margin-bottom: 8px;
+    }
+
+    .typo-body {
+      font-family: 'Merriweather', serif;
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--hc-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .typo-handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.3rem, 2vw, 1.6rem);
+      color: var(--hc-mustard-field);
+      line-height: 1.5;
+    }
+
+    .typo-ui {
+      font-family: 'Nunito', sans-serif;
+      font-weight: 600;
+      font-size: 0.95rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--hc-accent-primary);
+    }
+
+    .typo-right {
+      background: var(--hc-bg-surface);
+      border-radius: 20px;
+      padding: 36px;
+      border: 1px solid var(--hc-border);
+      box-shadow: var(--hc-shadow-sm);
+    }
+
+    .typo-right h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p {
+      font-size: 1rem;
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+
+    .typo-right p:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-scale {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(221, 189, 115, 0.3);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--hc-meadow-sage);
+      min-width: 55px;
+      text-align: right;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 20px;
+    }
+
+    .color-chip {
+      border-radius: var(--hc-radius);
+      overflow: hidden;
+      background: var(--hc-bg-surface);
+      border: 1px solid var(--hc-border);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--hc-shadow-sm);
+    }
+
+    .color-chip:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--hc-shadow-lg);
+    }
+
+    .color-swatch {
+      height: 100px;
+      position: relative;
+    }
+
+    .color-info {
+      padding: 12px 14px;
+    }
+
+    .color-name {
+      font-family: 'Lora', serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: var(--hc-text-heading);
+      margin-bottom: 2px;
+    }
+
+    .color-hex {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--hc-meadow-sage);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* ============================================
+       CARD GRID
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 28px;
+    }
+
+    .card {
+      background: var(--hc-bg-surface);
+      border: 1px solid var(--hc-border);
+      border-radius: var(--hc-radius);
+      padding: 32px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: var(--hc-shadow-sm);
+    }
+
+    /* Golden honey gradient top stripe */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: 20px;
+      right: 20px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--hc-honeycomb-gold), var(--hc-amber-glow), var(--hc-sunflower-petal));
+      border-radius: 4px;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--hc-shadow-lg);
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+      margin-bottom: 18px;
+      position: relative;
+    }
+
+    .card-icon--gold {
+      background: linear-gradient(135deg, var(--hc-honeycomb-gold), var(--hc-amber-glow));
+      box-shadow: 0 4px 12px rgba(212, 160, 23, 0.25);
+    }
+
+    .card-icon--amber {
+      background: linear-gradient(135deg, var(--hc-toasted-amber), var(--hc-clover-honey));
+      box-shadow: 0 4px 12px rgba(192, 120, 48, 0.25);
+    }
+
+    .card-icon--nectar {
+      background: linear-gradient(135deg, var(--hc-golden-nectar), var(--hc-sunflower-petal));
+      box-shadow: 0 4px 12px rgba(232, 190, 20, 0.25);
+    }
+
+    .card-icon--sage {
+      background: linear-gradient(135deg, var(--hc-meadow-sage), #8FA86A);
+      box-shadow: 0 4px 12px rgba(122, 139, 93, 0.25);
+    }
+
+    .card-icon--straw {
+      background: linear-gradient(135deg, var(--hc-warm-straw), var(--hc-pollen-dust));
+      box-shadow: 0 4px 12px rgba(221, 189, 115, 0.25);
+    }
+
+    .card-icon--topaz {
+      background: linear-gradient(135deg, var(--hc-deep-topaz), var(--hc-mustard-field));
+      box-shadow: 0 4px 12px rgba(139, 105, 20, 0.25);
+    }
+
+    .card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--hc-text-heading);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      font-size: 0.98rem;
+      line-height: 1.75;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 4px 14px;
+      border-radius: 20px;
+      border: 1.5px solid var(--hc-border);
+      color: var(--hc-mustard-field);
+      margin-top: 14px;
+      margin-right: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .tag:hover {
+      background: var(--hc-honeycomb-gold);
+      color: var(--hc-bg-primary);
+      border-color: var(--hc-honeycomb-gold);
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+    }
+
+    .effect-demo {
+      border-radius: var(--hc-radius);
+      overflow: hidden;
+      border: 1px solid var(--hc-border);
+      background: var(--hc-bg-surface);
+      box-shadow: var(--hc-shadow-sm);
+    }
+
+    .effect-preview {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Effect 1: Honeycomb pattern */
+    .effect-honeycomb {
+      background-color: var(--hc-beeswax-cream);
+      background-image:
+        linear-gradient(30deg, rgba(221, 189, 115, 0.18) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.18) 87.5%),
+        linear-gradient(150deg, rgba(221, 189, 115, 0.18) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.18) 87.5%),
+        linear-gradient(30deg, rgba(221, 189, 115, 0.18) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.18) 87.5%),
+        linear-gradient(150deg, rgba(221, 189, 115, 0.18) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.18) 87.5%),
+        linear-gradient(60deg, rgba(244, 208, 63, 0.12) 25%, transparent 25.5%, transparent 75%, rgba(244, 208, 63, 0.12) 75%),
+        linear-gradient(60deg, rgba(244, 208, 63, 0.12) 25%, transparent 25.5%, transparent 75%, rgba(244, 208, 63, 0.12) 75%);
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+    }
+
+    .effect-honeycomb::after {
+      content: 'HONEYCOMB';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--hc-text-heading);
+      z-index: 1;
+      letter-spacing: 0.06em;
+    }
+
+    /* Effect 2: Honey drip gradient */
+    .effect-honey-drip {
+      background: linear-gradient(
+        180deg,
+        var(--hc-amber-glow) 0%,
+        var(--hc-honeycomb-gold) 30%,
+        var(--hc-toasted-amber) 60%,
+        var(--hc-dark-honey) 100%
+      );
+    }
+
+    .effect-honey-drip::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 60%;
+      background:
+        radial-gradient(ellipse 30px 40px at 15% 100%, var(--hc-amber-glow) 60%, transparent 61%),
+        radial-gradient(ellipse 20px 30px at 40% 100%, var(--hc-amber-glow) 60%, transparent 61%),
+        radial-gradient(ellipse 25px 50px at 65% 100%, var(--hc-amber-glow) 60%, transparent 61%),
+        radial-gradient(ellipse 18px 25px at 85% 100%, var(--hc-amber-glow) 60%, transparent 61%);
+    }
+
+    .effect-honey-drip::after {
+      content: 'DRIPPING';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Caveat', cursive;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--hc-bg-primary);
+      text-shadow: 0 2px 4px rgba(148, 86, 9, 0.3);
+      z-index: 1;
+    }
+
+    /* Effect 3: Golden glow text */
+    .effect-golden-glow {
+      background: linear-gradient(
+        135deg,
+        var(--hc-deep-topaz) 0%,
+        #5C4510 50%,
+        var(--hc-dark-honey) 100%
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-golden-glow::after {
+      content: 'GOLDEN';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #8B6914, #D4A017, #FFBF00, #D4A017, #8B6914);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      filter: drop-shadow(0 0 12px rgba(255, 191, 0, 0.4));
+      z-index: 1;
+    }
+
+    /* Effect 4: Beeswax texture */
+    .effect-beeswax {
+      background-color: var(--hc-bg-surface);
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(148, 86, 9, 0.03) 3px,
+          rgba(148, 86, 9, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 3px,
+          rgba(148, 86, 9, 0.02) 3px,
+          rgba(148, 86, 9, 0.02) 4px
+        ),
+        radial-gradient(
+          ellipse at 50% 50%,
+          rgba(212, 160, 23, 0.08) 0%,
+          transparent 70%
+        );
+    }
+
+    .effect-beeswax::after {
+      content: 'BEESWAX';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--hc-text-heading);
+      letter-spacing: 0.08em;
+      z-index: 1;
+    }
+
+    /* Effect 5: Warm amber shimmer */
+    .effect-shimmer {
+      background: linear-gradient(135deg, var(--hc-warm-straw), var(--hc-pollen-dust), var(--hc-warm-straw));
+      overflow: hidden;
+    }
+
+    .effect-shimmer::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background:
+        radial-gradient(circle at 25% 35%, rgba(255, 191, 0, 0.35) 0%, transparent 3%),
+        radial-gradient(circle at 65% 25%, rgba(255, 255, 255, 0.3) 0%, transparent 2%),
+        radial-gradient(circle at 85% 55%, rgba(255, 191, 0, 0.28) 0%, transparent 3%),
+        radial-gradient(circle at 45% 75%, rgba(255, 255, 255, 0.35) 0%, transparent 1.5%),
+        radial-gradient(circle at 15% 85%, rgba(244, 208, 63, 0.3) 0%, transparent 2%),
+        radial-gradient(circle at 75% 90%, rgba(255, 255, 255, 0.25) 0%, transparent 2.5%);
+      animation: shimmerFloat 4s ease-in-out infinite alternate;
+      z-index: 1;
+    }
+
+    @keyframes shimmerFloat {
+      0% { transform: translate(0, 0); opacity: 0.5; }
+      100% { transform: translate(8px, -8px); opacity: 1; }
+    }
+
+    .effect-shimmer::after {
+      content: 'SHIMMER';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--hc-text-heading);
+      text-shadow: 0 0 20px rgba(255, 191, 0, 0.4);
+      z-index: 2;
+      animation: glowPulse 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes glowPulse {
+      0% { text-shadow: 0 0 12px rgba(255, 191, 0, 0.3); }
+      100% { text-shadow: 0 0 24px rgba(255, 191, 0, 0.6), 0 0 48px rgba(255, 191, 0, 0.2); }
+    }
+
+    /* Effect 6: Meadow gradient */
+    .effect-meadow {
+      background:
+        radial-gradient(ellipse at 20% 50%, var(--hc-amber-glow) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 30%, var(--hc-sunflower-petal) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, var(--hc-meadow-sage) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, var(--hc-toasted-amber) 0%, transparent 40%),
+        linear-gradient(145deg, var(--hc-golden-nectar), var(--hc-warm-straw));
+      animation: meadowFlow 10s ease-in-out infinite alternate;
+    }
+
+    @keyframes meadowFlow {
+      0% { filter: hue-rotate(0deg) saturate(1); }
+      100% { filter: hue-rotate(8deg) saturate(1.1); }
+    }
+
+    .effect-meadow::after {
+      content: 'MEADOW';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Caveat', cursive;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--hc-bg-primary);
+      text-shadow: 2px 2px 0 rgba(148, 86, 9, 0.3);
+      z-index: 1;
+    }
+
+    .effect-caption {
+      padding: 16px 20px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--hc-text-heading);
+      margin-bottom: 4px;
+    }
+
+    .effect-caption p {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--hc-mustard-field);
+    }
+
+    /* ============================================
+       BEE MOTIF BANNER
+       ============================================ */
+    .bee-banner {
+      background: linear-gradient(135deg, var(--hc-deep-topaz) 0%, #5C4510 50%, var(--hc-dark-honey) 100%);
+      padding: 64px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .bee-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 25% 75%, rgba(255, 191, 0, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 75% 25%, rgba(244, 208, 63, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .bee-banner-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .bee-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 2.2rem;
+      opacity: 0.4;
+    }
+
+    .bee-row span {
+      animation: beeFloat 3.5s ease-in-out infinite;
+    }
+
+    .bee-row span:nth-child(2) { animation-delay: -0.5s; }
+    .bee-row span:nth-child(3) { animation-delay: -1s; }
+    .bee-row span:nth-child(4) { animation-delay: -1.5s; }
+    .bee-row span:nth-child(5) { animation-delay: -2s; }
+    .bee-row span:nth-child(6) { animation-delay: -2.5s; }
+    .bee-row span:nth-child(7) { animation-delay: -3s; }
+
+    @keyframes beeFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .bee-banner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--hc-beeswax-cream);
+      margin-bottom: 12px;
+    }
+
+    .bee-banner p {
+      font-family: 'Caveat', cursive;
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--hc-amber-glow);
+    }
+
+    /* ============================================
+       QUOTE BLOCK
+       ============================================ */
+    .quote-block {
+      text-align: center;
+      padding: 52px 36px;
+      margin: 0 auto;
+      max-width: 740px;
+      background: var(--hc-bg-surface);
+      border-radius: var(--hc-radius-lg);
+      border: 1px solid var(--hc-border);
+      position: relative;
+      box-shadow: var(--hc-shadow-md);
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      font-family: 'Playfair Display', serif;
+      font-size: 7rem;
+      color: var(--hc-amber-glow);
+      opacity: 0.2;
+      position: absolute;
+      top: -10px;
+      left: 32px;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Merriweather', serif;
+      font-size: clamp(1.1rem, 2vw, 1.3rem);
+      font-style: italic;
+      color: var(--hc-text-primary);
+      max-width: 540px;
+      margin: 0 auto 18px;
+      line-height: 1.75;
+    }
+
+    .quote-block cite {
+      font-family: 'Caveat', cursive;
+      font-size: 1.2rem;
+      color: var(--hc-mustard-field);
+      font-style: normal;
+      display: block;
+    }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-container {
+      max-width: 680px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, var(--hc-warm-straw) 0%, var(--hc-pollen-dust) 100%);
+      border-radius: var(--hc-radius-lg);
+      padding: 56px 48px;
+      text-align: center;
+      border: 1px solid var(--hc-border);
+      box-shadow: var(--hc-shadow-lg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-container::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(255, 191, 0, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 20%, rgba(244, 208, 63, 0.08) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .cta-container h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 700;
+      color: var(--hc-text-heading);
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .cta-container .handwritten {
+      font-family: 'Caveat', cursive;
+      font-size: 1.3rem;
+      color: var(--hc-mustard-field);
+      margin-bottom: 20px;
+      display: block;
+      position: relative;
+    }
+
+    .cta-container p {
+      font-size: 1rem;
+      line-height: 1.8;
+      color: var(--hc-text-primary);
+      max-width: 480px;
+      margin: 0 auto 28px;
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      background: var(--hc-deep-topaz);
+      padding: 64px 24px 28px;
+      text-align: center;
+      color: var(--hc-pollen-dust);
+      position: relative;
+    }
+
+    .footer::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 3px,
+          rgba(255, 191, 0, 0.02) 3px,
+          rgba(255, 191, 0, 0.02) 4px
+        );
+      pointer-events: none;
+    }
+
+    .footer-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--hc-amber-glow);
+      margin-bottom: 10px;
+    }
+
+    .footer p {
+      font-family: 'Merriweather', serif;
+      font-size: 0.92rem;
+      color: var(--hc-warm-straw);
+      max-width: 500px;
+      margin: 0 auto 28px;
+      line-height: 1.75;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+    }
+
+    .footer-links a {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--hc-pollen-dust);
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--hc-amber-glow);
+    }
+
+    .footer-bees {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      font-size: 1.3rem;
+      opacity: 0.35;
+    }
+
+    .footer-copy {
+      font-family: 'Nunito', sans-serif;
+      font-size: 0.75rem;
+      color: var(--hc-mustard-field);
+      opacity: 0.6;
+      letter-spacing: 0.02em;
+      border-top: 1px solid rgba(221, 189, 115, 0.15);
+      padding-top: 20px;
+    }
+
+    /* ============================================
+       HONEYCOMB BACKGROUND SECTION OVERLAY
+       ============================================ */
+    .honeycomb-bg {
+      overflow: hidden;
+    }
+
+    .honeycomb-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: transparent;
+      background-image:
+        linear-gradient(30deg, rgba(221, 189, 115, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.1) 87.5%),
+        linear-gradient(150deg, rgba(221, 189, 115, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.1) 87.5%),
+        linear-gradient(30deg, rgba(221, 189, 115, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.1) 87.5%),
+        linear-gradient(150deg, rgba(221, 189, 115, 0.1) 12%, transparent 12.5%, transparent 87%, rgba(221, 189, 115, 0.1) 87.5%),
+        linear-gradient(60deg, rgba(244, 208, 63, 0.07) 25%, transparent 25.5%, transparent 75%, rgba(244, 208, 63, 0.07) 75%),
+        linear-gradient(60deg, rgba(244, 208, 63, 0.07) 25%, transparent 25.5%, transparent 75%, rgba(244, 208, 63, 0.07) 75%);
+      background-size: 80px 140px;
+      background-position: 0 0, 0 0, 40px 70px, 40px 70px, 0 0, 40px 70px;
+      pointer-events: none;
+    }
+
+    /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+    @media (max-width: 768px) {
+      .nav {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .nav-links {
+        gap: 2px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        padding: 6px 14px;
+        font-size: 0.82rem;
+      }
+
+      .hero {
+        padding: 80px 20px 70px;
+        min-height: 80vh;
+      }
+
+      .hero-hex {
+        display: none;
+      }
+
+      .section {
+        padding: clamp(40px, 6vw, 64px) 16px;
+      }
+
+      .typo-showcase {
+        grid-template-columns: 1fr;
+      }
+
+      .typo-left {
+        position: static;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 14px;
+      }
+
+      .color-swatch {
+        height: 72px;
+      }
+
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .quote-block {
+        padding: 40px 24px;
+      }
+
+      .cta-container {
+        padding: 40px 24px;
+        margin: 0 12px;
+      }
+
+      .footer {
+        padding: 48px 16px 24px;
+      }
+
+      .button-showcase {
+        gap: 12px;
+      }
+
+      .btn {
+        padding: 12px 28px;
+        font-size: 0.92rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 56px;
+      }
+
+      .color-info {
+        padding: 8px 10px;
+      }
+
+      .color-name {
+        font-size: 0.8rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+    }
+
+    /* ============================================
+       REDUCED MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-pollen,
+      .bee-row span,
+      .effect-shimmer::before,
+      .effect-shimmer::after,
+      .effect-meadow {
+        animation: none;
+      }
+
+      .hero-hex {
+        animation: none;
+      }
+
+      .card, .btn, .color-chip, .tag, .effect-demo {
+        transition: none;
+      }
+
+      html {
+        scroll-behavior: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav">
+    <a href="#" class="nav-logo">
+      <span class="bee-icon">&#x1F41D;</span>
+      Honeycore
+    </a>
+    <div class="nav-links">
+      <a href="#hero">Hive</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Cards</a>
+      <a href="#effects">Effects</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <header class="hero" id="hero">
+    <div class="hero-pollen"></div>
+
+    <!-- Decorative hexagon left -->
+    <svg class="hero-hex hero-hex--left" width="120" height="104" viewBox="0 0 120 104" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M60 0 L113.3 26 L113.3 78 L60 104 L6.7 78 L6.7 26 Z" fill="#D4A017" opacity="0.5"/>
+      <path d="M60 12 L103 33 L103 71 L60 92 L17 71 L17 33 Z" fill="none" stroke="#FFBF00" stroke-width="1.5" opacity="0.3"/>
+      <path d="M60 24 L92.8 40 L92.8 64 L60 80 L27.2 64 L27.2 40 Z" fill="#F4D03F" opacity="0.15"/>
+    </svg>
+
+    <!-- Decorative hexagon right -->
+    <svg class="hero-hex hero-hex--right" width="90" height="78" viewBox="0 0 90 78" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M45 0 L85 19.5 L85 58.5 L45 78 L5 58.5 L5 19.5 Z" fill="#FFBF00" opacity="0.4"/>
+      <path d="M45 10 L75 25 L75 53 L45 68 L15 53 L15 25 Z" fill="none" stroke="#D4A017" stroke-width="1.5" opacity="0.3"/>
+    </svg>
+
+    <div class="hero-content">
+      <p class="hero-tagline">Design Aesthetic Reference</p>
+      <h1>Honeycore</h1>
+      <p class="hero-subtitle">Sun-Drenched Sweetness &amp; Golden Warmth</p>
+      <p class="hero-desc">
+        A warm, golden-toned aesthetic that celebrates honey, bees, and meadow wildflowers &mdash; amber glows, hexagonal geometry, beeswax textures, and the perpetual comfort of golden hour.
+      </p>
+      <div class="hero-buttons">
+        <a href="#components" class="btn btn-primary">Explore Components</a>
+        <a href="#palette" class="btn btn-outline">View Palette</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== HONEY DRIP DIVIDER ===== -->
+  <div class="honey-drip"></div>
+
+  <!-- ===== TYPOGRAPHY SECTION ===== -->
+  <section class="section section--cream" id="typography">
+    <div class="container">
+      <p class="section-label">Typography</p>
+      <h2 class="section-title">Warm, Organic &amp; Handcrafted</h2>
+      <p class="section-subtitle">elegant serifs, rounded sans, handwritten charm</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-sample-label">Display / Playfair Display</p>
+            <p class="typo-display">Golden Honey</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Heading / Lora</p>
+            <p class="typo-heading">Wildflower Meadow</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Decorative / Amatic SC</p>
+            <p class="typo-subheading">Farmstand Labels &amp; Honey Jars</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Body / Merriweather</p>
+            <p class="typo-body">Warm serif text for comfortable, leisurely reading. Every line should feel like a handwritten note on a jar of wildflower honey.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">Handwritten / Caveat</p>
+            <p class="typo-handwritten">sweet as honey, warm as sunlight</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-sample-label">UI Label / Nunito</p>
+            <p class="typo-ui">Buttons &amp; Navigation</p>
+          </div>
+        </div>
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--hc-text-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Lora', serif; font-size: 1.5rem; font-weight: 600; color: var(--hc-text-heading);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2rem</span>
+              <span style="font-family: 'Amatic SC', cursive; font-size: 1.5rem; font-weight: 700; color: var(--hc-mustard-field);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'Caveat', cursive; font-size: 1.2rem; color: var(--hc-mustard-field);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.05rem</span>
+              <span style="font-family: 'Merriweather', serif; font-size: 1rem; color: var(--hc-text-primary);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Nunito', sans-serif; font-weight: 600; font-size: 0.85rem; color: var(--hc-accent-primary); text-transform: uppercase; letter-spacing: 0.06em;">Aa</span>
+            </div>
+          </div>
+
+          <div style="margin-top: 28px; padding-top: 24px; border-top: 1px solid var(--hc-border);">
+            <h3 style="margin-bottom: 12px;">Font Pairings</h3>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Playfair Display', serif; color: var(--hc-text-heading);">Playfair Display 600</strong> + <strong>Merriweather 400</strong><br>
+              <span style="color: var(--hc-meadow-sage); font-size: 0.85rem;">Refined honey-label elegance with warm readability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7; margin-bottom: 12px;">
+              <strong style="font-family: 'Lora', serif; color: var(--hc-text-heading);">Lora 600</strong> + <strong style="font-family: 'Nunito', sans-serif;">Nunito 400</strong><br>
+              <span style="color: var(--hc-meadow-sage); font-size: 0.85rem;">Classic warmth with modern approachability</span>
+            </p>
+            <p style="font-size: 0.92rem; line-height: 1.7;">
+              <strong style="font-family: 'Amatic SC', cursive; color: var(--hc-text-heading);">Amatic SC 700</strong> + <strong style="font-family: 'Merriweather', serif;">Merriweather 400</strong><br>
+              <span style="color: var(--hc-meadow-sage); font-size: 0.85rem;">Farmstand charm with serious readability</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== DOT DIVIDER ===== -->
+  <div class="section--cream" style="padding: 0;">
+    <div class="dot-divider">&#x2B22; &#x2B22; &#x2B22;</div>
+  </div>
+
+  <!-- ===== COLOR PALETTE SECTION ===== -->
+  <section class="section section--linen honeycomb-bg" id="palette">
+    <div class="container">
+      <p class="section-label">Color Palette</p>
+      <h2 class="section-title">Golden Warmth &amp; Amber Tones</h2>
+      <p class="section-subtitle">honey golds, beeswax creams &amp; meadow sage</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D4A017;"></div>
+          <div class="color-info">
+            <div class="color-name">Honeycomb Gold</div>
+            <div class="color-hex">#D4A017</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFBF00;"></div>
+          <div class="color-info">
+            <div class="color-name">Amber Glow</div>
+            <div class="color-hex">#FFBF00</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #945609;"></div>
+          <div class="color-info">
+            <div class="color-name">Dark Honey</div>
+            <div class="color-hex">#945609</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFF8E7;"></div>
+          <div class="color-info">
+            <div class="color-name">Beeswax Cream</div>
+            <div class="color-hex">#FFF8E7</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #E8BE14;"></div>
+          <div class="color-info">
+            <div class="color-name">Golden Nectar</div>
+            <div class="color-hex">#E8BE14</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C5962E;"></div>
+          <div class="color-info">
+            <div class="color-name">Mustard Field</div>
+            <div class="color-hex">#C5962E</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F4D03F;"></div>
+          <div class="color-info">
+            <div class="color-name">Sunflower Petal</div>
+            <div class="color-hex">#F4D03F</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FDF6EC;"></div>
+          <div class="color-info">
+            <div class="color-name">Honeydew White</div>
+            <div class="color-hex">#FDF6EC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #DDBD73;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Straw</div>
+            <div class="color-hex">#DDBD73</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #C07830;"></div>
+          <div class="color-info">
+            <div class="color-name">Toasted Amber</div>
+            <div class="color-hex">#C07830</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #DFD492;"></div>
+          <div class="color-info">
+            <div class="color-name">Pollen Dust</div>
+            <div class="color-hex">#DFD492</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #8B6914;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Topaz</div>
+            <div class="color-hex">#8B6914</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #7A8B5D;"></div>
+          <div class="color-info">
+            <div class="color-name">Meadow Sage</div>
+            <div class="color-hex">#7A8B5D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #D0902D;"></div>
+          <div class="color-info">
+            <div class="color-name">Clover Honey</div>
+            <div class="color-hex">#D0902D</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F5ECD7;"></div>
+          <div class="color-info">
+            <div class="color-name">Linen Warm</div>
+            <div class="color-hex">#F5ECD7</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HONEY DRIP DIVIDER ===== -->
+  <div class="honey-drip"></div>
+
+  <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+  <section class="section section--cream" id="components">
+    <div class="container">
+      <p class="section-label">Components</p>
+      <h2 class="section-title">Warm Cards &amp; Golden Details</h2>
+      <p class="section-subtitle">like honey jars on a sunlit kitchen shelf</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon card-icon--gold">&#x1F36F;</div>
+          <h3>Hexagonal Geometry</h3>
+          <p>Honeycomb patterns serve as the defining geometric motif, appearing in backgrounds, grid layouts, borders, and decorative elements throughout the design.</p>
+          <span class="tag">Pattern</span>
+          <span class="tag">Grid</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--amber">&#x1F41D;</div>
+          <h3>Bee &amp; Apiary Imagery</h3>
+          <p>Illustrations of bees, beehives, honey dippers, and apiaries serve as icons, dividers, and ornamental details that carry the aesthetic's core identity.</p>
+          <span class="tag">Icons</span>
+          <span class="tag">Motif</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--nectar">&#x1F33B;</div>
+          <h3>Sunflower Botanicals</h3>
+          <p>Botanical elements lean toward sunflowers, daisies, chamomile, and other golden-petaled flowers that reinforce the warm, natural palette.</p>
+          <span class="tag">Floral</span>
+          <span class="tag">Nature</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--sage">&#x1F33E;</div>
+          <h3>Natural Textures</h3>
+          <p>Backgrounds and surfaces reference beeswax, raw linen, straw weave, aged wood grain, and parchment paper for tactile depth and authenticity.</p>
+          <span class="tag">Texture</span>
+          <span class="tag">Organic</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--straw">&#x2728;</div>
+          <h3>Golden-Hour Glow</h3>
+          <p>Photography and gradients simulate the warm, diffused amber glow of late-afternoon sunlight filtering through jars of golden honey.</p>
+          <span class="tag">Light</span>
+          <span class="tag">Gradient</span>
+        </div>
+        <div class="card">
+          <div class="card-icon card-icon--topaz">&#x1F4DC;</div>
+          <h3>Artisanal Typography</h3>
+          <p>Fonts suggest hand-painted signage on a farmstand or handwritten labels on a mason jar of wildflower honey, blending elegance with handcraft.</p>
+          <span class="tag">Serif</span>
+          <span class="tag">Script</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== BEE MOTIF BANNER ===== -->
+  <div class="bee-banner">
+    <div class="bee-banner-content">
+      <div class="bee-row">
+        <span>&#x1F33B;</span>
+        <span>&#x1F41D;</span>
+        <span>&#x1F33C;</span>
+        <span>&#x1F36F;</span>
+        <span>&#x1F33C;</span>
+        <span>&#x1F41D;</span>
+        <span>&#x1F33B;</span>
+      </div>
+      <h2>Warmth, Nature &amp; Sweetness</h2>
+      <p>Every element should feel hand-gathered, sun-kissed, and sweetly inviting</p>
+    </div>
+  </div>
+
+  <!-- ===== EFFECTS SHOWCASE ===== -->
+  <section class="section section--cream" id="effects">
+    <div class="container">
+      <p class="section-label">Visual Effects</p>
+      <h2 class="section-title">CSS Textures &amp; Golden Warmth</h2>
+      <p class="section-subtitle">all the honey-drenched techniques, no image assets needed</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-honeycomb"></div>
+          <div class="effect-caption">
+            <h4>Honeycomb Pattern</h4>
+            <p>Layered linear gradients at precise angles create the iconic hexagonal tessellation.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-honey-drip"></div>
+          <div class="effect-caption">
+            <h4>Honey Drip Gradient</h4>
+            <p>Vertical gradient with radial drip shapes creates the flowing honey effect.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-golden-glow"></div>
+          <div class="effect-caption">
+            <h4>Golden Glow Text</h4>
+            <p>Multi-stop gradient clipped to text with a drop-shadow filter for warm luminance.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-beeswax"></div>
+          <div class="effect-caption">
+            <h4>Beeswax Texture</h4>
+            <p>Fine cross-hatched lines with a subtle radial glow simulate the tactile feel of wax.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-shimmer"></div>
+          <div class="effect-caption">
+            <h4>Amber Shimmer</h4>
+            <p>Scattered radial gradients with gentle animation create warm golden sparkle.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-meadow"></div>
+          <div class="effect-caption">
+            <h4>Meadow Gradient</h4>
+            <p>Overlapping radial gradients in honey and sage tones blend into a sunlit field.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HONEY DRIP DIVIDER ===== -->
+  <div class="honey-drip"></div>
+
+  <!-- ===== BUTTON SHOWCASE ===== -->
+  <section class="section section--linen honeycomb-bg">
+    <div class="container">
+      <p class="section-label">Interactive Elements</p>
+      <h2 class="section-title">Warm Buttons</h2>
+      <p class="section-subtitle">rounded, golden &amp; inviting</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Honeycomb Gold</a>
+        <a href="#" class="btn btn-nectar">Golden Nectar</a>
+        <a href="#" class="btn btn-sage">Meadow Sage</a>
+        <a href="#" class="btn btn-outline">Outlined</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== QUOTE SECTION ===== -->
+  <section class="section section--cream">
+    <div class="container">
+      <div class="quote-block">
+        <blockquote>
+          The world of honey is golden, unhurried, and endlessly sweet &mdash; a place where sunlight pours like nectar and every surface glows with the warmth of a thousand amber afternoons.
+        </blockquote>
+        <cite>&mdash; The Spirit of Honeycore</cite>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA SECTION ===== -->
+  <section class="section section--surface">
+    <div class="container">
+      <div class="cta-container">
+        <h2>Stay Golden</h2>
+        <span class="handwritten">sweetness, warmth &amp; golden-hour light</span>
+        <p>
+          The Honeycore aesthetic radiates with amber warmth, hexagonal geometry, and artisanal charm. Ground every layout in beeswax cream and honeycomb gold &mdash; then let the golden hour glow through.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Hive</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HONEY DRIP DIVIDER ===== -->
+  <div class="honey-drip"></div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-content">
+      <h3>&#x1F41D; Honeycore</h3>
+      <p>
+        A design aesthetic reference celebrating the warm, golden, bee-inspired visual language of Honeycore. Amber glows, honeycomb patterns, and beeswax textures &mdash; all without a single image asset.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Hive</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Cards</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-bees">
+        <span>&#x1F41D;</span>
+        <span>&#x1F33B;</span>
+        <span>&#x1F41D;</span>
+        <span>&#x1F33B;</span>
+        <span>&#x1F41D;</span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Honeycore &bull; Stay golden</p>
+    </div>
+  </footer>
+
+</body>
+</html>

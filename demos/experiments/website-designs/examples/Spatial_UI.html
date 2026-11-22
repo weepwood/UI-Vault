@@ -1,0 +1,2205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spatial UI -- Design Aesthetic Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&family=DM+Sans:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       CSS CUSTOM PROPERTIES
+       ============================================ */
+    :root {
+      /* --- Deep Backgrounds --- */
+      --sp-void: #0D0D12;
+      --sp-deep-space: #141420;
+      --sp-charcoal: #1C1C2A;
+      --sp-slate: #252536;
+      --sp-ambient: #2A2A4A;
+
+      /* --- Foreground / Text --- */
+      --sp-white: #FFFFFF;
+      --sp-soft-white: #F0F0F5;
+      --sp-mist: #A0A0B8;
+
+      /* --- Accent Colors --- */
+      --sp-lavender: #9B8FFF;
+      --sp-sky: #64B5F6;
+      --sp-cyan: #80DEEA;
+      --sp-blush: #F8A4C8;
+      --sp-teal: #4DB6AC;
+
+      /* --- Glass Material Tokens --- */
+      --sp-glass-bg: rgba(255, 255, 255, 0.06);
+      --sp-glass-bg-hover: rgba(255, 255, 255, 0.1);
+      --sp-glass-border: rgba(255, 255, 255, 0.1);
+      --sp-glass-blur: 40px;
+      --sp-glass-radius: 20px;
+      --sp-glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.18);
+      --sp-shadow: rgba(0, 0, 0, 0.2);
+
+      /* --- Spacing --- */
+      --section-pad: clamp(80px, 10vw, 120px);
+    }
+
+    /* ============================================
+       CSS RESET
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    img, picture, video, canvas, svg {
+      display: block;
+      max-width: 100%;
+    }
+
+    input, button, textarea, select {
+      font: inherit;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      overflow-wrap: break-word;
+    }
+
+    ul, ol {
+      list-style: none;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* ============================================
+       BASE TYPOGRAPHY
+       ============================================ */
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.75;
+      color: var(--sp-white);
+      background: var(--sp-void);
+      letter-spacing: 0.01em;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1.2;
+      color: var(--sp-white);
+    }
+
+    h1 { font-size: clamp(2rem, 4.5vw, 3.5rem); }
+    h2 { font-size: clamp(1.4rem, 3vw, 2.2rem); }
+    h3 { font-size: clamp(1.1rem, 2vw, 1.5rem); }
+
+    /* ============================================
+       AMBIENT BACKGROUND
+       ============================================ */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: var(--sp-void);
+    }
+
+    .ambient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 25% 20%, rgba(155, 143, 255, 0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 75% 75%, rgba(100, 181, 246, 0.05) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(128, 222, 234, 0.03) 0%, transparent 40%);
+      animation: ambientDrift 25s ease-in-out infinite alternate;
+    }
+
+    .ambient::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 60% 30%, rgba(248, 164, 200, 0.04) 0%, transparent 45%),
+        radial-gradient(ellipse at 15% 70%, rgba(155, 143, 255, 0.03) 0%, transparent 40%);
+      animation: ambientDrift 30s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes ambientDrift {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      50% { transform: translate(-1.5%, 1%) scale(1.01); opacity: 0.85; }
+      100% { transform: translate(1%, -0.5%) scale(1); opacity: 1; }
+    }
+
+    /* ============================================
+       NAVIGATION
+       ============================================ */
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 40px;
+      background: rgba(13, 13, 18, 0.45);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(40px) saturate(1.3);
+      -webkit-backdrop-filter: blur(40px) saturate(1.3);
+      transition: background 0.4s ease, border-color 0.4s ease;
+    }
+
+    .nav.scrolled {
+      background: rgba(13, 13, 18, 0.82);
+      border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-logo {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--sp-white);
+      letter-spacing: -0.01em;
+    }
+
+    .nav-logo span {
+      color: var(--sp-lavender);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 4px;
+    }
+
+    .nav-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--sp-mist);
+      padding: 8px 18px;
+      border-radius: 10px;
+      transition: color 0.25s ease, background 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--sp-white);
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 8px;
+      border: none;
+      background: none;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--sp-mist);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ============================================
+       CONTENT WRAPPER
+       ============================================ */
+    .content-wrapper {
+      position: relative;
+      z-index: 10;
+    }
+
+    /* ============================================
+       HERO SECTION
+       ============================================ */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 24px 80px;
+      overflow: hidden;
+    }
+
+    .hero-ambient {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 20%, rgba(155, 143, 255, 0.1) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 80%, rgba(100, 181, 246, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(128, 222, 234, 0.05) 0%, transparent 40%);
+      pointer-events: none;
+      animation: heroGlow 15s ease-in-out infinite alternate;
+    }
+
+    @keyframes heroGlow {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0.7; transform: scale(1.05); }
+    }
+
+    /* Floating orbs in hero */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      pointer-events: none;
+      animation: orbFloat 20s ease-in-out infinite;
+    }
+
+    .hero-orb--lavender {
+      width: 300px;
+      height: 300px;
+      top: 15%;
+      left: 10%;
+      background: rgba(155, 143, 255, 0.1);
+      animation-delay: 0s;
+    }
+
+    .hero-orb--sky {
+      width: 250px;
+      height: 250px;
+      bottom: 20%;
+      right: 10%;
+      background: rgba(100, 181, 246, 0.08);
+      animation-delay: -7s;
+    }
+
+    .hero-orb--blush {
+      width: 200px;
+      height: 200px;
+      top: 60%;
+      left: 50%;
+      background: rgba(248, 164, 200, 0.06);
+      animation-delay: -14s;
+    }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translate(0, 0); }
+      25% { transform: translate(20px, -30px); }
+      50% { transform: translate(-15px, 20px); }
+      75% { transform: translate(25px, 15px); }
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 5;
+      max-width: 700px;
+    }
+
+    .hero-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--sp-lavender);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 20px;
+      background: rgba(155, 143, 255, 0.1);
+      border: 1px solid rgba(155, 143, 255, 0.15);
+    }
+
+    .hero h1 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2.6rem, 6vw, 4.2rem);
+      font-weight: 800;
+      line-height: 1.08;
+      color: var(--sp-white);
+      margin-bottom: 24px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--sp-lavender), var(--sp-sky));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-subtitle {
+      font-size: 1.1rem;
+      color: var(--sp-mist);
+      line-height: 1.8;
+      max-width: 540px;
+      margin: 0 auto 40px;
+    }
+
+    .hero-cta {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--sp-mist);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      animation: hintFloat 3s ease-in-out infinite;
+    }
+
+    .scroll-hint .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--sp-lavender);
+      opacity: 0.6;
+    }
+
+    @keyframes hintFloat {
+      0%, 100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+      50% { transform: translateX(-50%) translateY(8px); opacity: 0.5; }
+    }
+
+    /* ============================================
+       BUTTONS
+       ============================================ */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 30px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      text-decoration: none;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+      pointer-events: none;
+    }
+
+    .btn-primary {
+      color: var(--sp-white);
+      background: rgba(155, 143, 255, 0.2);
+      border: 1px solid rgba(155, 143, 255, 0.3);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-primary:hover {
+      background: rgba(155, 143, 255, 0.3);
+      border-color: rgba(155, 143, 255, 0.5);
+      box-shadow: 0 8px 28px rgba(155, 143, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0) scale(0.98);
+      transition-duration: 0.1s;
+    }
+
+    .btn-ghost {
+      color: var(--sp-soft-white);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-ghost:hover {
+      color: var(--sp-white);
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .btn-sky {
+      color: var(--sp-white);
+      background: rgba(100, 181, 246, 0.15);
+      border: 1px solid rgba(100, 181, 246, 0.25);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-sky:hover {
+      background: rgba(100, 181, 246, 0.25);
+      border-color: rgba(100, 181, 246, 0.45);
+      box-shadow: 0 8px 28px rgba(100, 181, 246, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .btn-teal {
+      color: var(--sp-white);
+      background: rgba(77, 182, 172, 0.15);
+      border: 1px solid rgba(77, 182, 172, 0.25);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .btn-teal:hover {
+      background: rgba(77, 182, 172, 0.25);
+      border-color: rgba(77, 182, 172, 0.45);
+      box-shadow: 0 8px 28px rgba(77, 182, 172, 0.12);
+      transform: translateY(-2px);
+    }
+
+    /* ============================================
+       SECTION LAYOUT
+       ============================================ */
+    .section {
+      padding: var(--section-pad) 24px;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--sp-lavender);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--sp-white);
+      margin-bottom: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .section-desc {
+      font-size: 1.05rem;
+      color: var(--sp-mist);
+      max-width: 560px;
+      line-height: 1.8;
+      margin-bottom: 48px;
+    }
+
+    /* Soft gradient divider */
+    .divider {
+      height: 1px;
+      max-width: 1080px;
+      margin: 0 auto;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(155, 143, 255, 0.12),
+        rgba(100, 181, 246, 0.08),
+        transparent
+      );
+    }
+
+    /* ============================================
+       GLASS CARD
+       ============================================ */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      border-radius: var(--sp-glass-radius);
+      padding: 36px;
+      backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      -webkit-backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.18),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.4s ease,
+                  background 0.3s ease,
+                  border-color 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      background: var(--sp-glass-bg-hover);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.25),
+        inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .card .icon-wrap {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      margin-bottom: 20px;
+    }
+
+    .icon-wrap--lavender {
+      background: rgba(155, 143, 255, 0.12);
+      border: 1px solid rgba(155, 143, 255, 0.15);
+    }
+
+    .icon-wrap--sky {
+      background: rgba(100, 181, 246, 0.12);
+      border: 1px solid rgba(100, 181, 246, 0.15);
+    }
+
+    .icon-wrap--cyan {
+      background: rgba(128, 222, 234, 0.12);
+      border: 1px solid rgba(128, 222, 234, 0.15);
+    }
+
+    .icon-wrap--blush {
+      background: rgba(248, 164, 200, 0.12);
+      border: 1px solid rgba(248, 164, 200, 0.15);
+    }
+
+    .icon-wrap--teal {
+      background: rgba(77, 182, 172, 0.12);
+      border: 1px solid rgba(77, 182, 172, 0.15);
+    }
+
+    .icon-wrap--white {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .card h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--sp-white);
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--sp-mist);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+
+    .card .tag-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      padding: 4px 12px;
+      border-radius: 8px;
+      background: rgba(155, 143, 255, 0.08);
+      border: 1px solid rgba(155, 143, 255, 0.12);
+      color: var(--sp-lavender);
+    }
+
+    /* ============================================
+       TYPOGRAPHY SHOWCASE
+       ============================================ */
+    .typo-showcase {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    .typo-sample {
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .typo-sample:last-child {
+      border-bottom: none;
+    }
+
+    .typo-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--sp-lavender);
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .typo-display {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--sp-white);
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+    }
+
+    .typo-heading {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 700;
+      color: var(--sp-white);
+      letter-spacing: -0.01em;
+    }
+
+    .typo-subheading {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--sp-soft-white);
+    }
+
+    .typo-body {
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--sp-mist);
+      line-height: 1.75;
+    }
+
+    .typo-caption {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.03em;
+      color: var(--sp-mist);
+    }
+
+    .typo-mono {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: var(--sp-cyan);
+    }
+
+    .typo-right {
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      border-radius: var(--sp-glass-radius);
+      padding: 32px;
+      backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      -webkit-backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      box-shadow: var(--sp-glass-shadow);
+    }
+
+    .typo-right h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--sp-white);
+      margin-bottom: 20px;
+    }
+
+    .typo-scale-item {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .typo-scale-item:last-child {
+      border-bottom: none;
+    }
+
+    .typo-scale-size {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--sp-mist);
+      min-width: 60px;
+    }
+
+    .typo-pairing {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .typo-pairing h3 {
+      margin-bottom: 14px;
+    }
+
+    .typo-pairing-item {
+      font-size: 0.92rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .typo-pairing-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .typo-pairing-vibe {
+      color: var(--sp-mist);
+      font-size: 0.82rem;
+    }
+
+    /* ============================================
+       COLOR PALETTE
+       ============================================ */
+    .palette-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .color-chip {
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      border-radius: 16px;
+      overflow: hidden;
+      backdrop-filter: blur(20px) saturate(1.3);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+
+    .color-chip:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.18);
+    }
+
+    .color-swatch {
+      height: 80px;
+      border-radius: 0;
+    }
+
+    .color-info {
+      padding: 14px 16px;
+    }
+
+    .color-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--sp-white);
+      margin-bottom: 4px;
+    }
+
+    .color-hex {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--sp-mist);
+      letter-spacing: 0.02em;
+    }
+
+    /* ============================================
+       DECORATIVE BANNER
+       ============================================ */
+    .spatial-banner {
+      position: relative;
+      padding: 80px 24px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .spatial-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 40% 50%, rgba(155, 143, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 60% 50%, rgba(100, 181, 246, 0.06) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .spatial-banner-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .banner-glyphs {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      margin-bottom: 28px;
+      font-size: 1.6rem;
+      opacity: 0.5;
+    }
+
+    .banner-glyph {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(155, 143, 255, 0.08);
+      border: 1px solid rgba(155, 143, 255, 0.1);
+    }
+
+    .spatial-banner h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--sp-white);
+      margin-bottom: 12px;
+    }
+
+    .spatial-banner p {
+      color: var(--sp-mist);
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ============================================
+       DESIGN PRINCIPLES
+       ============================================ */
+    .principle-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .principle-item {
+      display: flex;
+      gap: 28px;
+      padding: 36px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      align-items: flex-start;
+    }
+
+    .principle-item:first-child {
+      padding-top: 0;
+    }
+
+    .principle-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .principle-icon {
+      width: 52px;
+      height: 52px;
+      min-width: 52px;
+      border-radius: 16px;
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .principle-text h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--sp-white);
+      margin-bottom: 8px;
+    }
+
+    .principle-text p {
+      color: var(--sp-mist);
+      font-size: 0.95rem;
+      line-height: 1.75;
+    }
+
+    /* ============================================
+       EFFECTS SHOWCASE
+       ============================================ */
+    .effects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .effect-demo {
+      border-radius: var(--sp-glass-radius);
+      overflow: hidden;
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      backdrop-filter: blur(20px) saturate(1.3);
+      -webkit-backdrop-filter: blur(20px) saturate(1.3);
+      transition: transform 0.35s ease, border-color 0.3s ease;
+    }
+
+    .effect-demo:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    .effect-preview {
+      height: 180px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .effect-caption {
+      padding: 20px 24px;
+    }
+
+    .effect-caption h4 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--sp-white);
+      margin-bottom: 6px;
+    }
+
+    .effect-caption p {
+      font-size: 0.82rem;
+      color: var(--sp-mist);
+      line-height: 1.6;
+    }
+
+    /* Effect 1: Glass Blur */
+    .effect-glass {
+      background: linear-gradient(135deg, var(--sp-charcoal), var(--sp-ambient));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .effect-glass::before {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--sp-lavender);
+      top: 20%;
+      left: 25%;
+      filter: blur(30px);
+      opacity: 0.5;
+    }
+
+    .effect-glass::after {
+      content: '';
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--sp-sky);
+      bottom: 25%;
+      right: 25%;
+      filter: blur(25px);
+      opacity: 0.4;
+    }
+
+    .glass-card-demo {
+      position: relative;
+      z-index: 2;
+      width: 120px;
+      height: 80px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+    }
+
+    /* Effect 2: Ambient Gradients */
+    .effect-ambient {
+      background: var(--sp-void);
+    }
+
+    .effect-ambient::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 30% 30%, rgba(155, 143, 255, 0.15) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 70%, rgba(100, 181, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 10%, rgba(128, 222, 234, 0.08) 0%, transparent 40%);
+      animation: ambientPulse 6s ease-in-out infinite alternate;
+    }
+
+    @keyframes ambientPulse {
+      0% { opacity: 1; transform: scale(1); }
+      100% { opacity: 0.6; transform: scale(1.08); }
+    }
+
+    /* Effect 3: Depth Shadows */
+    .effect-depth {
+      background: linear-gradient(180deg, var(--sp-deep-space), var(--sp-charcoal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      padding: 24px;
+    }
+
+    .depth-layer {
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .depth-layer--1 {
+      width: 60px;
+      height: 50px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+      opacity: 0.5;
+    }
+
+    .depth-layer--2 {
+      width: 70px;
+      height: 60px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.18), 0 2px 8px rgba(0, 0, 0, 0.08);
+      opacity: 0.7;
+    }
+
+    .depth-layer--3 {
+      width: 80px;
+      height: 70px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.12);
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(255, 255, 255, 0.12);
+    }
+
+    /* Effect 4: Light Edge Borders */
+    .effect-light-edge {
+      background: var(--sp-deep-space);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      padding: 24px;
+    }
+
+    .light-edge-panel {
+      width: 90px;
+      height: 70px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1),
+        inset 0 0 0 1px rgba(255, 255, 255, 0.03);
+      position: relative;
+    }
+
+    .light-edge-panel::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    }
+
+    .light-edge-panel:nth-child(2) {
+      background: rgba(155, 143, 255, 0.08);
+      box-shadow:
+        0 8px 32px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(155, 143, 255, 0.15),
+        inset 0 0 0 1px rgba(155, 143, 255, 0.05);
+    }
+
+    .light-edge-panel:nth-child(2)::after {
+      background: linear-gradient(90deg, transparent, rgba(155, 143, 255, 0.3), transparent);
+    }
+
+    /* Effect 5: Floating Animation */
+    .effect-float {
+      background: linear-gradient(135deg, var(--sp-charcoal), var(--sp-deep-space));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .float-panels {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .float-panel {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      animation: panelFloat 4s ease-in-out infinite;
+    }
+
+    .float-panel:nth-child(1) {
+      animation-delay: 0s;
+      background: rgba(155, 143, 255, 0.1);
+      border-color: rgba(155, 143, 255, 0.15);
+    }
+
+    .float-panel:nth-child(2) {
+      width: 60px;
+      height: 60px;
+      animation-delay: -1.3s;
+    }
+
+    .float-panel:nth-child(3) {
+      animation-delay: -2.6s;
+      background: rgba(100, 181, 246, 0.08);
+      border-color: rgba(100, 181, 246, 0.12);
+    }
+
+    @keyframes panelFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Effect 6: Pill Shapes */
+    .effect-pill {
+      background: var(--sp-deep-space);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 28px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--sp-soft-white);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .pill--active {
+      background: rgba(155, 143, 255, 0.12);
+      border-color: rgba(155, 143, 255, 0.2);
+      color: var(--sp-lavender);
+    }
+
+    .pill-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .pill-dot--lavender { background: var(--sp-lavender); }
+    .pill-dot--sky { background: var(--sp-sky); }
+    .pill-dot--cyan { background: var(--sp-cyan); }
+    .pill-dot--blush { background: var(--sp-blush); }
+
+    /* ============================================
+       BUTTON SHOWCASE
+       ============================================ */
+    .button-showcase {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    /* ============================================
+       BLOCKQUOTE
+       ============================================ */
+    .quote-block {
+      max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+      padding: 60px 40px;
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      border-radius: 28px;
+      backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      -webkit-backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      position: relative;
+    }
+
+    .quote-block::before {
+      content: '\201C';
+      position: absolute;
+      top: 24px;
+      left: 32px;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 4rem;
+      font-weight: 800;
+      color: var(--sp-lavender);
+      opacity: 0.2;
+      line-height: 1;
+    }
+
+    .quote-block blockquote {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 500;
+      color: var(--sp-soft-white);
+      line-height: 1.7;
+      margin-bottom: 20px;
+      font-style: normal;
+    }
+
+    .quote-block cite {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem;
+      color: var(--sp-mist);
+      font-style: normal;
+      font-weight: 500;
+    }
+
+    /* ============================================
+       CTA SECTION
+       ============================================ */
+    .cta-section {
+      text-align: center;
+      padding: 100px 24px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .cta-panel {
+      background: var(--sp-glass-bg);
+      border: 1px solid var(--sp-glass-border);
+      border-radius: 28px;
+      padding: 64px 48px;
+      backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      -webkit-backdrop-filter: blur(var(--sp-glass-blur)) saturate(1.4);
+      box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.22),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-panel::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 0%, rgba(155, 143, 255, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .cta-panel h2 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-weight: 700;
+      color: var(--sp-white);
+      margin-bottom: 8px;
+      position: relative;
+    }
+
+    .cta-panel .cta-sub {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      color: var(--sp-lavender);
+      margin-bottom: 20px;
+      font-weight: 500;
+      position: relative;
+    }
+
+    .cta-panel p {
+      color: var(--sp-mist);
+      font-size: 1rem;
+      line-height: 1.8;
+      max-width: 460px;
+      margin: 0 auto 32px;
+      position: relative;
+    }
+
+    .cta-panel .btn {
+      position: relative;
+    }
+
+    /* ============================================
+       FOOTER
+       ============================================ */
+    .footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 60px 24px 40px;
+      text-align: center;
+      background: rgba(13, 13, 18, 0.4);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .footer h3 {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--sp-white);
+      margin-bottom: 12px;
+    }
+
+    .footer h3 span {
+      color: var(--sp-lavender);
+    }
+
+    .footer-desc {
+      color: var(--sp-mist);
+      font-size: 0.92rem;
+      max-width: 480px;
+      margin: 0 auto 28px;
+      line-height: 1.7;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+    }
+
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--sp-mist);
+      padding: 6px 16px;
+      border-radius: 8px;
+      transition: color 0.25s ease, background 0.25s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--sp-white);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .footer-dots {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .footer-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+
+    .footer-copy {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      color: var(--sp-mist);
+      opacity: 0.6;
+    }
+
+    /* ============================================
+       PREFERS-REDUCED-MOTION
+       ============================================ */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.2s !important;
+      }
+      html {
+        scroll-behavior: auto;
+      }
+      .hero-orb,
+      .scroll-hint,
+      .float-panel {
+        animation: none !important;
+      }
+      .ambient::before,
+      .ambient::after {
+        animation: none !important;
+      }
+      .hero-ambient {
+        animation: none !important;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE -- TABLET
+       ============================================ */
+    @media (max-width: 900px) {
+      .typo-showcase {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+        gap: 12px;
+      }
+
+      .principle-item {
+        gap: 20px;
+      }
+
+      .cta-panel {
+        padding: 48px 32px;
+      }
+    }
+
+    /* ============================================
+       RESPONSIVE -- MOBILE
+       ============================================ */
+    @media (max-width: 640px) {
+      .nav {
+        padding: 14px 20px;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        padding: 16px 20px;
+        background: rgba(13, 13, 18, 0.95);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(40px);
+        -webkit-backdrop-filter: blur(40px);
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-hamburger {
+        display: flex;
+      }
+
+      .hero {
+        padding: 100px 20px 60px;
+      }
+
+      .hero h1 {
+        font-size: clamp(1.8rem, 7vw, 2.6rem);
+      }
+
+      .hero-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .section {
+        padding: clamp(56px, 8vw, 80px) 20px;
+      }
+
+      .card-grid,
+      .effects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        padding: 28px;
+      }
+
+      .palette-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+
+      .color-swatch {
+        height: 60px;
+      }
+
+      .color-info {
+        padding: 10px 12px;
+      }
+
+      .color-name {
+        font-size: 0.72rem;
+      }
+
+      .color-hex {
+        font-size: 0.65rem;
+      }
+
+      .principle-item {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .button-showcase {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .quote-block {
+        padding: 40px 28px;
+      }
+
+      .quote-block blockquote {
+        font-size: 1.05rem;
+      }
+
+      .cta-panel {
+        padding: 40px 24px;
+      }
+
+      .spatial-banner {
+        padding: 60px 20px;
+      }
+
+      .banner-glyphs {
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== AMBIENT BACKGROUND ===== -->
+  <div class="ambient" aria-hidden="true"></div>
+
+  <!-- ===== NAVIGATION ===== -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav-logo">Spatial<span>UI</span></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#hero">Overview</a>
+      <a href="#typography">Type</a>
+      <a href="#palette">Colors</a>
+      <a href="#components">Components</a>
+      <a href="#effects">Effects</a>
+    </div>
+    <button class="nav-hamburger" id="navToggle" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- ===== CONTENT WRAPPER ===== -->
+  <div class="content-wrapper">
+
+    <!-- ===== HERO SECTION ===== -->
+    <header class="hero" id="hero">
+      <div class="hero-ambient" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb--lavender" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb--sky" aria-hidden="true"></div>
+      <div class="hero-orb hero-orb--blush" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+        <span class="hero-eyebrow">Design Aesthetic Reference</span>
+        <h1>Spatial <span class="highlight">UI</span></h1>
+        <p class="hero-subtitle">
+          Frosted glass panels, ambient depth, and weightless interactions &mdash; the web's interpretation of spatial computing for interfaces that breathe.
+        </p>
+        <div class="hero-cta">
+          <a href="#components" class="btn btn-primary">Explore Components</a>
+          <a href="#palette" class="btn btn-ghost">View Palette</a>
+        </div>
+      </div>
+
+      <div class="scroll-hint" aria-hidden="true">
+        <span class="dot"></span>
+        <span>Scroll</span>
+      </div>
+    </header>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== TYPOGRAPHY SECTION ===== -->
+    <section class="section" id="typography">
+      <p class="section-eyebrow">Typography</p>
+      <h2 class="section-title">Generous, Airy, Precise</h2>
+      <p class="section-desc">Medium-weight geometric sans-serifs with open letter-spacing and generous line heights for calm readability on glass surfaces.</p>
+
+      <div class="typo-showcase">
+        <div class="typo-left">
+          <div class="typo-sample">
+            <p class="typo-label">Display / Plus Jakarta Sans 800</p>
+            <p class="typo-display">Spatial Depth</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-label">Heading / Plus Jakarta Sans 700</p>
+            <p class="typo-heading">Floating Glass Panels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-label">Subheading / DM Sans 500</p>
+            <p class="typo-subheading">Ambient layered environments with frosted translucency</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-label">Body / Inter 400</p>
+            <p class="typo-body">Clean, legible text optimized for readability against blurred glass surfaces. Generous line height and open tracking provide the calm precision spatial interfaces demand.</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-label">Caption / Inter 500</p>
+            <p class="typo-caption">Metadata, timestamps, and secondary labels</p>
+          </div>
+          <div class="typo-sample">
+            <p class="typo-label">Mono / IBM Plex Mono 400</p>
+            <p class="typo-mono">backdrop-filter: blur(40px) saturate(1.4);</p>
+          </div>
+        </div>
+
+        <div class="typo-right">
+          <h3>Type Scale</h3>
+          <div class="typo-scale">
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">3.5rem</span>
+              <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.6rem; font-weight: 800; color: var(--sp-white);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">2.2rem</span>
+              <span style="font-family: 'Plus Jakarta Sans', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--sp-white);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1.5rem</span>
+              <span style="font-family: 'DM Sans', sans-serif; font-size: 1.1rem; font-weight: 500; color: var(--sp-soft-white);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">1rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--sp-mist);">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.85rem</span>
+              <span style="font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500; color: var(--sp-mist); letter-spacing: 0.03em;">Aa</span>
+            </div>
+            <div class="typo-scale-item">
+              <span class="typo-scale-size">0.88rem</span>
+              <span style="font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; color: var(--sp-cyan); letter-spacing: 0.02em;">Aa</span>
+            </div>
+          </div>
+
+          <div class="typo-pairing">
+            <h3>Font Pairings</h3>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Plus Jakarta Sans', sans-serif; color: var(--sp-lavender);">Plus Jakarta Sans 700</strong> + <strong style="color: var(--sp-soft-white);">Inter 400</strong><br>
+              <span class="typo-pairing-vibe">Clean spatial OS; visionOS-inspired</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Plus Jakarta Sans', sans-serif; color: var(--sp-lavender);">Plus Jakarta Sans 600</strong> + <strong style="font-family: 'DM Sans', sans-serif; color: var(--sp-soft-white);">DM Sans 400</strong><br>
+              <span class="typo-pairing-vibe">Soft, approachable ambient interface</span>
+            </p>
+            <p class="typo-pairing-item">
+              <strong style="font-family: 'Plus Jakarta Sans', sans-serif; color: var(--sp-lavender);">Plus Jakarta Sans 600</strong> + <strong style="color: var(--sp-soft-white);">Outfit 400</strong><br>
+              <span class="typo-pairing-vibe">Modern spatial product UI; warm and precise</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== COLOR PALETTE SECTION ===== -->
+    <section class="section" id="palette">
+      <p class="section-eyebrow">Color Palette</p>
+      <h2 class="section-title">Deep Backgrounds, Luminous Foregrounds</h2>
+      <p class="section-desc">Restrained, cool-toned palette with ethereal accents &mdash; glass-tinted surfaces over receding dark backgrounds.</p>
+
+      <div class="palette-grid">
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #0D0D12;"></div>
+          <div class="color-info">
+            <div class="color-name">Void</div>
+            <div class="color-hex">#0D0D12</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #141420;"></div>
+          <div class="color-info">
+            <div class="color-name">Deep Space</div>
+            <div class="color-hex">#141420</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #1C1C2A;"></div>
+          <div class="color-info">
+            <div class="color-name">Charcoal Glass</div>
+            <div class="color-hex">#1C1C2A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #252536;"></div>
+          <div class="color-info">
+            <div class="color-name">Slate Layer</div>
+            <div class="color-hex">#252536</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #2A2A4A;"></div>
+          <div class="color-info">
+            <div class="color-name">Ambient Indigo</div>
+            <div class="color-hex">#2A2A4A</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #FFFFFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Glass White</div>
+            <div class="color-hex">#FFFFFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F0F0F5;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft White</div>
+            <div class="color-hex">#F0F0F5</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #A0A0B8;"></div>
+          <div class="color-info">
+            <div class="color-name">Mist Grey</div>
+            <div class="color-hex">#A0A0B8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #9B8FFF;"></div>
+          <div class="color-info">
+            <div class="color-name">Lavender Accent</div>
+            <div class="color-hex">#9B8FFF</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #64B5F6;"></div>
+          <div class="color-info">
+            <div class="color-name">Sky Blue</div>
+            <div class="color-hex">#64B5F6</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #80DEEA;"></div>
+          <div class="color-info">
+            <div class="color-name">Soft Cyan</div>
+            <div class="color-hex">#80DEEA</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #F8A4C8;"></div>
+          <div class="color-info">
+            <div class="color-name">Warm Blush</div>
+            <div class="color-hex">#F8A4C8</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: #4DB6AC;"></div>
+          <div class="color-info">
+            <div class="color-name">Faint Teal</div>
+            <div class="color-hex">#4DB6AC</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.12)); position: relative; border-bottom: 1px solid rgba(255,255,255,0.06);">
+            <div style="position: absolute; inset: 0; backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Glass Surface</div>
+            <div class="color-hex">rgba(255,255,255,0.06)</div>
+          </div>
+        </div>
+        <div class="color-chip">
+          <div class="color-swatch" style="background: linear-gradient(135deg, #0D0D12, #2A2A4A); position: relative;">
+            <div style="position: absolute; inset: 0; background: radial-gradient(circle at 50% 50%, rgba(155,143,255,0.12) 0%, transparent 70%);"></div>
+          </div>
+          <div class="color-info">
+            <div class="color-name">Ambient Glow</div>
+            <div class="color-hex">gradient</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== COMPONENTS SECTION (CARDS) ===== -->
+    <section class="section" id="components">
+      <p class="section-eyebrow">Components</p>
+      <h2 class="section-title">Glass Panels and Spatial Elements</h2>
+      <p class="section-desc">Translucent containers that float above layered backgrounds with soft elevation and frosted materiality.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="icon-wrap icon-wrap--lavender">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9B8FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <h3>Glass Panels</h3>
+          <p>Translucent containers with backdrop-filter blur that soften the background into diffused color fields, mimicking visionOS glass material.</p>
+          <div class="tag-row">
+            <span class="tag">backdrop-filter</span>
+            <span class="tag">blur</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-wrap icon-wrap--sky">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64B5F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3>Depth Hierarchy</h3>
+          <p>Content organized across distinct z-planes with background environments, mid-ground elements, and foreground interactive panels.</p>
+          <div class="tag-row">
+            <span class="tag">z-index</span>
+            <span class="tag">elevation</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-wrap icon-wrap--cyan">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#80DEEA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <h3>Ambient Gradients</h3>
+          <p>Subtle, large-scale radial gradients in cool tones create the impression of environmental lighting behind glass surfaces.</p>
+          <div class="tag-row">
+            <span class="tag">radial-gradient</span>
+            <span class="tag">ambient</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-wrap icon-wrap--blush">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F8A4C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="6"/><circle cx="8" cy="12" r="2"/><circle cx="16" cy="12" r="2"/></svg>
+          </div>
+          <h3>Pill Shapes</h3>
+          <p>Large, consistent border radii produce smooth organic shapes that feel touchable and approachable, following spatial computing conventions.</p>
+          <div class="tag-row">
+            <span class="tag">border-radius</span>
+            <span class="tag">pill</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-wrap icon-wrap--teal">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4DB6AC" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18"/><path d="M5.63 5.63l12.74 12.74"/><path d="M3 12h18"/><path d="M5.63 18.37l12.74-12.74"/></svg>
+          </div>
+          <h3>Diffused Shadows</h3>
+          <p>Large, blurred, low-opacity shadows suggest floating elevation rather than hard surface contact, reinforcing the spatial metaphor.</p>
+          <div class="tag-row">
+            <span class="tag">box-shadow</span>
+            <span class="tag">elevation</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="icon-wrap icon-wrap--white">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F0F0F5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/><rect x="3" y="3" width="18" height="18" rx="4" stroke-dasharray="4 2"/></svg>
+          </div>
+          <h3>Light Edge Borders</h3>
+          <p>Thin borders using low-opacity white catch ambient light along panel edges, defining boundaries without harsh visual lines.</p>
+          <div class="tag-row">
+            <span class="tag">inset shadow</span>
+            <span class="tag">border</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== DECORATIVE BANNER ===== -->
+    <div class="spatial-banner">
+      <div class="spatial-banner-inner">
+        <div class="banner-glyphs" aria-hidden="true">
+          <span class="banner-glyph">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9B8FFF" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </span>
+          <span class="banner-glyph">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64B5F6" stroke-width="1.5" stroke-linecap="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>
+          </span>
+          <span class="banner-glyph">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#80DEEA" stroke-width="1.5" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </span>
+          <span class="banner-glyph">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F8A4C8" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          </span>
+          <span class="banner-glyph">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4DB6AC" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="4"/><path d="M8 21h8"/><path d="M12 17v4"/></svg>
+          </span>
+        </div>
+        <h2>Glass, Depth, and Weightless Interaction</h2>
+        <p>Where digital elements coexist with the user's environment rather than demanding full attention on a flat screen</p>
+      </div>
+    </div>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== DESIGN PRINCIPLES ===== -->
+    <section class="section">
+      <p class="section-eyebrow">Design Principles</p>
+      <h2 class="section-title">The Spatial Philosophy</h2>
+      <p class="section-desc">Calm precision, physical materiality, and ambient awareness define every design decision.</p>
+
+      <div class="principle-list">
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9B8FFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="principle-text">
+            <h3>Depth Communicates Hierarchy</h3>
+            <p>Elements closer to the viewer are more important. Higher z-index, larger shadows, and increased opacity signal prominence. Receding elements are contextual or environmental, providing ambient support without competing for attention.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#64B5F6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="M3 9h18"/><path d="M9 21V9"/></svg>
+          </div>
+          <div class="principle-text">
+            <h3>Glass Over Opacity</h3>
+            <p>Prefer backdrop-filter blur over flat semi-transparent backgrounds. The blurred pass-through connects panels to their environment rather than isolating them. Glass creates trust by letting users perceive what exists behind interface elements.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#80DEEA" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M12 6v6l4 2"/></svg>
+          </div>
+          <div class="principle-text">
+            <h3>Comfort Drives Layout</h3>
+            <p>Primary content stays centered in the viewport, following visionOS guidance that centered content is most comfortable for the eyes. Avoid forcing excessive scanning. Generous whitespace and restrained density reduce cognitive load.</p>
+          </div>
+        </div>
+        <div class="principle-item">
+          <div class="principle-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F8A4C8" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="principle-text">
+            <h3>Transparency Builds Trust</h3>
+            <p>Letting the background show through panels creates a feeling of openness and honesty. Fully opaque containers feel heavy and disconnected. Progressive disclosure through spatial layers reveals content at comfortable pace.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== EFFECTS SHOWCASE ===== -->
+    <section class="section" id="effects">
+      <p class="section-eyebrow">Visual Effects</p>
+      <h2 class="section-title">CSS Spatial Techniques</h2>
+      <p class="section-desc">All visual depth and materiality achieved through CSS only &mdash; no image assets, no WebGL, no external dependencies.</p>
+
+      <div class="effects-grid">
+        <div class="effect-demo">
+          <div class="effect-preview effect-glass">
+            <div class="glass-card-demo"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Glass Material</h4>
+            <p>Backdrop-filter blur with saturate creates frosted translucency over colored backgrounds.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-ambient"></div>
+          <div class="effect-caption">
+            <h4>Ambient Gradients</h4>
+            <p>Overlapping radial gradients with subtle animation create environmental lighting behind glass.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-depth">
+            <div class="depth-layer depth-layer--1"></div>
+            <div class="depth-layer depth-layer--2"></div>
+            <div class="depth-layer depth-layer--3"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Depth Shadow System</h4>
+            <p>Progressive shadow sizes communicate elevation levels for spatial hierarchy.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-light-edge">
+            <div class="light-edge-panel"></div>
+            <div class="light-edge-panel"></div>
+          </div>
+          <div class="effect-caption">
+            <h4>Inset Light Edges</h4>
+            <p>Top-edge inset shadows simulate light catching glass panel rims for physical presence.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-float">
+            <div class="float-panels">
+              <div class="float-panel"></div>
+              <div class="float-panel"></div>
+              <div class="float-panel"></div>
+            </div>
+          </div>
+          <div class="effect-caption">
+            <h4>Floating Animation</h4>
+            <p>Spring-like easing with gentle vertical translation creates weightless, hovering panels.</p>
+          </div>
+        </div>
+        <div class="effect-demo">
+          <div class="effect-preview effect-pill">
+            <span class="pill pill--active"><span class="pill-dot pill-dot--lavender"></span>Active</span>
+            <span class="pill"><span class="pill-dot pill-dot--sky"></span>Filter</span>
+            <span class="pill"><span class="pill-dot pill-dot--cyan"></span>Spatial</span>
+            <span class="pill"><span class="pill-dot pill-dot--blush"></span>Glass</span>
+          </div>
+          <div class="effect-caption">
+            <h4>Pill Components</h4>
+            <p>Full border-radius pills with glass tinting for tags, filters, and selection states.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== BUTTON SHOWCASE ===== -->
+    <section class="section">
+      <p class="section-eyebrow">Interactive Elements</p>
+      <h2 class="section-title">Spatial Buttons</h2>
+      <p class="section-desc">Generously sized, glass-backed interactive elements with spring-curve hover transitions and subtle light-edge highlights.</p>
+
+      <div class="button-showcase">
+        <a href="#" class="btn btn-primary">Primary Lavender</a>
+        <a href="#" class="btn btn-sky">Sky Accent</a>
+        <a href="#" class="btn btn-teal">Teal Confirm</a>
+        <a href="#" class="btn btn-ghost">Ghost Outline</a>
+      </div>
+    </section>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== QUOTE SECTION ===== -->
+    <section class="section">
+      <div class="quote-block">
+        <blockquote>
+          Spatial interfaces breathe. Every element has room to exist, every surface suggests physical materiality, and the interface invites interaction through subtle depth cues rather than aggressive visual contrast.
+        </blockquote>
+        <cite>&mdash; The Spatial UI Design Philosophy</cite>
+      </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <div class="cta-section">
+      <div class="cta-panel">
+        <h2>Design for Spatial</h2>
+        <p class="cta-sub">Glass, depth, ambient light</p>
+        <p>
+          Spatial UI translates the principles of spatial computing into two-dimensional interfaces &mdash; frosted glass panels, ambient depth layers, and interactions that feel tactile yet weightless. Start building interfaces that coexist with the user's environment.
+        </p>
+        <a href="#hero" class="btn btn-primary">Back to the Top</a>
+      </div>
+    </div>
+
+    <!-- ===== GRADIENT DIVIDER ===== -->
+    <div class="divider"></div>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+      <h3>Spatial<span>UI</span></h3>
+      <p class="footer-desc">
+        A design aesthetic reference for spatial computing interfaces &mdash; frosted glass, ambient depth, ethereal accents, and weightless interactions. All CSS, no images.
+      </p>
+      <div class="footer-links">
+        <a href="#hero">Overview</a>
+        <a href="#typography">Typography</a>
+        <a href="#palette">Colors</a>
+        <a href="#components">Components</a>
+        <a href="#effects">Effects</a>
+      </div>
+      <div class="footer-dots" aria-hidden="true">
+        <span class="footer-dot" style="background: var(--sp-lavender);"></span>
+        <span class="footer-dot" style="background: var(--sp-sky);"></span>
+        <span class="footer-dot" style="background: var(--sp-cyan);"></span>
+        <span class="footer-dot" style="background: var(--sp-blush);"></span>
+        <span class="footer-dot" style="background: var(--sp-teal);"></span>
+      </div>
+      <p class="footer-copy">Design Aesthetic Reference &bull; Spatial UI &bull; Glass, Depth, Light</p>
+    </footer>
+
+  </div><!-- /content-wrapper -->
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // --- Navigation scroll effect ---
+    const nav = document.getElementById('nav');
+    let lastScroll = 0;
+
+    window.addEventListener('scroll', () => {
+      const scrollY = window.scrollY;
+      if (scrollY > 60) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+      lastScroll = scrollY;
+    }, { passive: true });
+
+    // --- Mobile navigation toggle ---
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile nav on link click
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+      });
+    });
+
+    // --- Smooth scroll for anchor links ---
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          e.preventDefault();
+          const offset = 80;
+          const top = target.getBoundingClientRect().top + window.scrollY - offset;
+          window.scrollTo({ top, behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+
+</body>
+</html>
