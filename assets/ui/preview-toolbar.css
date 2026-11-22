@@ -1,9 +1,13 @@
 /* 预览工具栏组件：顶部元数据、设备选择、响应式悬浮菜单。 */
-.topbar{min-height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 18px;border-bottom:1px solid var(--line);background:var(--surface);flex:none}
+:root{--workbench-toolbar-height:56px}
+.topbar{height:var(--workbench-toolbar-height);min-height:var(--workbench-toolbar-height);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 18px;border-bottom:1px solid var(--line);background:var(--surface);flex:none}
 .topbar-project{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto}
 .project-identity{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .topbar-kind{display:none}
-.project-identity h1{font-size:clamp(16px,1.35vw,19px);font-weight:720;letter-spacing:-.03em;line-height:1.32;margin:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.project-identity h1{font-size:clamp(16px,1.35vw,19px);font-weight:720;letter-spacing:-.03em;line-height:1.32;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-embed-notice{display:flex;align-items:center;gap:5px;min-width:0;max-width:100%;font-size:10px;line-height:15px;color:var(--muted);white-space:nowrap}
+.topbar-embed-notice>.ui-icon{width:12px;height:12px;flex:none}
+.topbar-embed-notice>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .topbar-subtitle{display:none}
 .topbar-tools{display:flex;align-items:center;gap:11px;flex:none;min-width:0}
 .topbar-separator{height:24px;border-left:1px solid var(--line);flex:none}
