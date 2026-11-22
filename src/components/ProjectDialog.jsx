@@ -29,12 +29,22 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
     if(!root)return;
     if(open&&asset){
       savedFocus.current=document.activeElement;
-      if(!root.open)root.showModal();
+      if(!root.open){
+        root.showModal();
+        // 原生 dialog 的默认高度随隐藏 pane 的内容变化；在打开时锁定实际高度，避免标签切换导致整个弹窗跳动。
+        const height=root.getBoundingClientRect().height;
+        if(height>0){
+          root.style.height=Math.ceil(height)+'px';
+          root.dataset.stableHeight='true';
+        }
+      }
     }else if(root.open)root.close();
   },[root,open,asset?.id]);
   useEffect(()=>{
     if(!root)return;
     const close=()=>{
+      root.style.removeProperty('height');
+      delete root.dataset.stableHeight;
       onOpenChange(false);
       const target=savedFocus.current;
       if(target?.isConnected&&!target.disabled&&!target.closest?.('[inert]'))target.focus?.({preventScroll:true});
