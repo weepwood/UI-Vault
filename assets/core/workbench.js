@@ -60,9 +60,7 @@ export function projectPreviewMarkup(asset) {
   }
   if(asset.siteUrl) {
     return '<iframe class="live-frame" data-preview-frame="external" title="'+title+' 的外部网站"'+
-      ' src="'+safe(asset.siteUrl)+'" sandbox="allow-scripts allow-forms" referrerpolicy="no-referrer"></iframe>'+
-      '<div class="external-preview-hint">外部站点可能禁止嵌入或受沙箱限制。'+
-      '<a href="'+safe(asset.siteUrl)+'" target="_blank" rel="noopener noreferrer">在原站查看</a></div>';
+      ' src="'+safe(asset.siteUrl)+'" sandbox="allow-scripts allow-forms" referrerpolicy="no-referrer"></iframe>';
   }
   const href=asset.url||asset.originRepo;
   return '<div class="preview-placeholder">'+iconMarkup('git-branch')+
