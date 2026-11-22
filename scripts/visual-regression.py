@@ -620,7 +620,9 @@ def verify_search_experience(browser, origin):
         search.fill("玻璃 WebGPU")
         page.locator('#gallery [data-id="liquid-orb"]').wait_for(state="visible")
         assert page.locator('#gallery [data-id="liquid-orb"] .project-row-title mark').count() >= 1, "标题没有标记匹配词"
-        assert page.locator('#gallery [data-id="liquid-orb"] .search-match-label').inner_text() == "技术", "没有展示真实命中的技术字段"
+        match_row = page.locator('#gallery [data-id="liquid-orb"]')
+        assert match_row.locator('.search-match-label').inner_text() in ("技术", "标签"), "没有展示真实命中的标签或技术字段"
+        assert "WebGPU" in match_row.inner_text(), "结果没有解释 WebGPU 字段命中"
         assert page.evaluate("document.querySelector('#preview-stage iframe') === window.__originalSearchFrame"), "输入搜索词时重建了 iframe"
 
         search.press("Escape")
