@@ -28,6 +28,12 @@
 
 初期收录 **30 条**（其中 10 条设计网站），例如 AI for UI、Jakub Krehel、Vercel 指南、Mobbin、Recent、Landdding、60fps、Footer Design、Iconly 等。
 
+## 浏览器设置指南
+
+- `browser-flags-guide`：对应 Chrome / Edge 的 Flags 与正式设置；支持搜索、建议筛选、完整地址复制及详情说明。
+- [资料审核记录](BROWSER-FLAGS-AUDIT.md)：区分上游源码存在、正式设置和待实机确认的 Edge 入口；不承诺当前浏览器每项都可用。
+- 页面独立入口：`demos/experiments/browser-flags-guide/index.html`；UI-Vault 中可通过 `?asset=browser-flags-guide` 打开。
+
 ## 链接
 - [独立资源索引](https://weepwood.github.io/UI-Vault/?asset=design-resource-library)
 - [AI UI Skills 手册](https://weepwood.github.io/UI-Vault/?asset=design-skill-handbook)

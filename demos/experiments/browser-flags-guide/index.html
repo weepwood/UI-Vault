@@ -184,6 +184,9 @@ html{scroll-padding-top:22px}
  .sidebar-tool .svg{width:13px;height:13px}
 }
 
+.audit-note{margin:20px 0 0;border-top:1px solid var(--border);padding-top:14px;font-size:12px;color:var(--secondary);line-height:1.8}
+.audit-note a{color:var(--accent);text-underline-offset:3px;text-decoration:underline}
+.audit-note a:hover{opacity:.85}
 </style>
 </head>
 <body>
@@ -213,7 +216,7 @@ html{scroll-padding-top:22px}
     <div class="resultbar"><span id="result-count">正在载入…</span><button class="sort" type="button" id="reset">清除筛选</button></div>
     <div class="list" id="items"></div>
   </section>
-  <section id="help" class="section-anchor"><h2>使用说明</h2><p>页面包含实验 Flag 和正式浏览器设置，两类入口会分别标明。正式设置请优先使用浏览器的正常设置页面；实验 Flag 可能随版本变化或被移除。</p><p>Chrome 使用 <code>chrome://flags</code>，Edge 使用 <code>edge://flags</code>。点击某项的“前往设置”或“定位 Flag”，尝试打开对应页面。若浏览器阻止网页访问内部地址，地址已经复制：按 <strong>Ctrl / ⌘ + L</strong> 聚焦地址栏，再按 <strong>Ctrl / ⌘ + V</strong>、回车。</p><ul><li>更改前记录原值；每次修改一项并重启验证。</li><li>出现异常时，把改动的 Flag 设回 Default，必要时在 Flags 页面选择 Reset all。</li><li>部分功能已经迁移到正式设置，旧 Flag ID 可能已失效。</li><li>“我的清单”只记录你的计划，不会读取或修改浏览器真实的实验开关。</li><li>可选的本地浏览器扩展可实现真正一键打开内部页，无需更改浏览器安全策略。</li></ul></section>
+  <section id="help" class="section-anchor"><h2>使用说明</h2><p>页面包含实验 Flag 和正式浏览器设置，两类入口会分别标明。正式设置请优先使用浏览器的正常设置页面；实验 Flag 可能随版本变化或被移除；“源码中存在”也不等于你的版本一定支持。资料最近核对于 2026-11-23，具体以当前浏览器的设置界面为准。</p><p>Chrome 使用 <code>chrome://flags</code>，Edge 使用 <code>edge://flags</code>。点击某项的“前往设置”或“定位 Flag”，尝试打开对应页面。若浏览器阻止网页访问内部地址，地址已经复制：按 <strong>Ctrl / ⌘ + L</strong> 聚焦地址栏，再按 <strong>Ctrl / ⌘ + V</strong>、回车。</p><ul><li>更改前记录原值；每次修改一项并重启验证。</li><li>出现异常时，把改动的 Flag 设回 Default，必要时在 Flags 页面选择 Reset all。</li><li>部分功能已经迁移到正式设置，旧 Flag ID 可能已失效。</li><li>“我的清单”只记录你的计划，不会读取或修改浏览器真实的实验开关。</li><li>可选的本地浏览器扩展可实现真正一键打开内部页，无需更改浏览器安全策略。</li></ul></section>
 </main></div>
 
 <dialog class="dialog" id="saved-dialog" aria-labelledby="saved-title"><div class="dialoghead"><h2 id="saved-title">我的配置清单</h2><button class="circlebtn" id="saved-close" type="button" aria-label="关闭清单"></button></div><div class="dialogbody" id="saved-body"></div><div class="dialogfoot"><button class="btn" id="saved-clear" type="button">清空清单</button><button class="btn primary" id="saved-copy" type="button">复制清单</button></div></dialog>
@@ -231,202 +234,151 @@ const BROWSERS={chrome:{label:'Chrome',scheme:'chrome'},edge:{label:'Edge',schem
 
 const FLAGS=[
 /* ---------- 性能与渲染 ---------- */
-{id:'enable-gpu-rasterization',name:'GPU 光栅化',en:'GPU rasterization',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'Windows · macOS · Linux',def:'多数桌面平台已默认开启；显示 Default 即可',
- on:'把网页的绘制（光栅化）工作从 CPU 转交给 GPU。动画多、图片多、同时开很多标签时滚动更顺滑，CPU 占用更低。',
- off:'回到 CPU 软件绘制。在显卡驱动有问题的电脑上，关闭它能消除花屏、黑块、文字发虚等渲染异常。',
- rec:'enable',why:'对绝大多数现代设备是纯收益，也是被引用最多的“加速”flag；新版已默认开启，若你的版本显示 Default 无需再改。',
+{id:'enable-gpu-rasterization',name:'GPU 光栅化',en:'GPU rasterization',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'Windows · macOS · Linux',def:'由浏览器、显卡驱动及平台策略决定；Default 不等于关闭',
+ on:'允许浏览器使用 GPU 光栅化路径；实际行为仍受显卡、驱动和 Chromium 策略影响，不能保证提高性能。',
+ off:'尝试禁用对应 GPU 光栅化路径；出现图形异常时可用于排查，但可能降低绘制性能。',
+ rec:'optional',why:'现代设备通常已由浏览器自动决定适合的渲染路径，优先保持 Default；只有特定性能或兼容性问题才测试调整。',
  risk:'老旧显卡或驱动异常时可能出现花屏、闪烁甚至崩溃；核显设备功耗略增。',
  tip:'改完后打开 chrome://gpu（Edge 为 edge://gpu），看 Rasterization 一行是否为 Hardware accelerated。',kw:'gpu 渲染 加速 显卡 花屏'},
-{id:'smooth-scrolling',name:'平滑滚动',en:'Smooth scrolling',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'仅 Windows 与 Linux',def:'新版已默认开启',
+{id:'smooth-scrolling',name:'平滑滚动',en:'Smooth scrolling',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'桌面及支持该功能的 Chromium 平台（以实际版本为准）',def:'受操作系统、输入设备及浏览器策略影响；Default 不代表关闭',
  on:'鼠标滚轮滚动时加入短暂的动画过渡，页面滚动更连贯，不再一格一格地跳动。',
  off:'滚轮每滚动一下直接跳到目标位置，没有过渡动画。手感更“干脆”，也用于排查滚动卡顿。',
- rec:'enable',why:'改善日常滚动手感，几乎没有副作用。',
+ rec:'optional',why:'平滑滚动属于交互偏好而不是通用性能优化。默认状态适合大多数用户；如果手感不符合习惯再按需试验。',
  risk:'低端设备上动画可能带来轻微延迟感；使用触控板时几乎感受不到差异。',
- tip:'macOS 使用系统自带的平滑滚动，因此没有这个 flag。',kw:'scroll 滚动 滚轮'},
+ tip:'在 Chrome/Edge 的 Flags 页核对可用平台；macOS 及触控板体验还受系统滚动机制影响。',kw:'scroll 滚动 滚轮'},
 {id:'ignore-gpu-blocklist',name:'覆盖软件渲染列表',en:'Override software rendering list',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'Windows · macOS · Linux',def:'默认关闭（黑名单中的 GPU 使用软件渲染）',
  on:'即使你的显卡或驱动在 Chromium 的兼容性黑名单里，也强制启用硬件加速。适合 chrome://gpu 显示大量 Software only、导致页面卡顿的情况。',
  off:'黑名单中的 GPU 使用软件渲染。速度慢一些，但避开了已知的崩溃和花屏问题。',
- rec:'caution',why:'只有当硬件加速被“误判”禁用、且你确认显卡驱动已是最新时才值得开启。',
- risk:'进入黑名单通常意味着已知崩溃或渲染错误，强制开启可能导致浏览器崩溃、页面花屏或驱动重置。',
+ rec:'caution',why:'仅用于确认 GPU 驱动或兼容性判断是否导致功能被禁用，测试后建议恢复 Default。',
+ risk:'忽略 GPU 兼容性屏蔽可能导致崩溃、黑屏或驱动重置；不应当作常规加速方案。',
  tip:'先更新显卡驱动再试；出问题时设回 Default 并重启即可恢复。',kw:'gpu 黑名单 硬件加速 software rendering'},
-{id:'calculate-native-win-occlusion',name:'窗口遮挡计算',en:'Calculate window occlusion on Windows',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'仅 Windows',def:'默认开启',
- on:'被其他窗口完全遮住的浏览器窗口会被视为“不可见”，其中的页面暂停渲染和部分计时器，从而降低 CPU 与内存占用。',
- off:'被遮挡的窗口照常渲染。可解决窗口最小化后网页音频卡顿、计时器暂停、视频会议共享黑屏、后台上传中断等问题。',
- rec:'optional',why:'对电量与性能有益，建议保持开启；只有遇到“后台被冻结”类问题才关闭。',
- risk:'关闭后，同时开很多窗口时 CPU 占用和耗电会明显增加。',
- tip:'它与“性能 → 内存节省程序”是两回事：前者管被遮挡的窗口，后者管长时间不用的标签。',kw:'occlusion 后台 冻结 最小化 共享黑屏'},
-{id:'tab-strip-declutter',name:'标签栏自动整理',en:'Tab Strip Declutter',cat:'perf',browsers:['chrome'],type:'toggle',platform:'Windows · macOS · Linux（Chrome）',def:'默认关闭（实验功能）',
+{id:'tab-strip-declutter',name:'标签栏自动整理',en:'Tab Strip Declutter',cat:'perf',browsers:['chrome'],type:'toggle',platform:'Windows · macOS · Linux（Chrome）',def:'是否显示及默认行为取决于当前 Chromium 版本与发布策略',
  on:'当标签栏过于拥挤时，自动把长时间未使用的标签页收纳起来，让标签栏保持可读。',
  off:'标签栏保持原样，标签过多时靠缩窄或左右滚动显示。',
- rec:'optional',why:'对经常开几十个标签的人有帮助，但属于实验性 UI，行为会随版本调整。',
+ rec:'optional',why:'上游代码仍保留此实验条目，但不代表你的 Chrome 稳定版必然显示。建议使用前先核对当前版本。',
  risk:'自动移动标签可能打断使用习惯；功能可能改名或移除。',
- tip:'可与“标签页分组”配合使用；若找不到此 flag，说明它可能已进入正式设置或已被移除。',kw:'tab 标签 整理 收纳'},
-{id:'edge-efficiency-mode',name:'效率模式',en:'Efficiency mode',cat:'perf',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'笔记本上默认开启',
- on:'在电池电量低、长时间闲置或拔掉电源时，自动降低后台活动与渲染帧率，延长续航。',
- off:'浏览器始终保持完整性能，后台标签照常运行。',
- rec:'enable',why:'笔记本用户推荐开启，续航收益实在；台式机或需要后台持续高性能的任务可以关闭。',
- risk:'后台标签的动画和视频可能变卡顿；个别页面加载变慢。',
- tip:'与“睡眠标签页”配合效果更好，两者现在都能在“设置 → 性能”中调整。',kw:'efficiency 电池 省电 续航'},
+ tip:'若 Chrome Flags 页面找不到该功能，不要尝试用过期解锁开关恢复；可使用常规标签页管理功能。',kw:'tab 标签 整理 收纳'},
 /* ---------- 网络与下载 ---------- */
-{id:'enable-parallel-downloading',name:'并行下载',en:'Parallel downloading',cat:'network',browsers:['chrome','edge'],type:'toggle',platform:'Windows · macOS · Linux · Android',def:'默认关闭（Default = Disabled）',
- on:'把一个大文件拆成多段同时下载，最后在本地合并。对限制单连接速度的服务器，下载速度可提升数倍。',
- off:'每个文件只使用一条连接顺序下载，速度受服务器单连接限速影响。',
- rec:'enable',why:'几乎是免费的速度提升，没有已知副作用，是公认最值得开启的 flag。',
- risk:'服务器不支持分段下载时会自动回退为单连接；个别企业或校园网可能对多连接限速。',
+{id:'enable-parallel-downloading',name:'并行下载',en:'Parallel downloading',cat:'network',browsers:['chrome','edge'],type:'toggle',platform:'Windows · macOS · Linux · Android',def:'由版本及服务端条件决定；Default 不等于 Disabled',
+ on:'对符合条件的下载尝试启用多连接分段请求，是否提速依赖服务器 Range 支持、链路和资源大小。',
+ off:'不强制使用该实验下载策略，由浏览器正常处理下载，不等于所有下载仅有一个连接。',
+ rec:'optional',why:'对某些受到单连接限速的大文件可能有收益，但并不保证提速，也不适用于所有服务器。',
+ risk:'可能增加连接数、网络资源占用或触发服务器限速；代理和企业网络也可能产生兼容问题。',
  tip:'下载系统镜像、大型安装包时效果最明显；小文件几乎无感。',kw:'download 下载速度'},
-{id:'enable-quic',name:'实验性 QUIC 协议',en:'Experimental QUIC protocol',cat:'network',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'新版已默认开启（针对支持 QUIC 的服务器）',
- on:'优先用基于 UDP 的 HTTP/3（QUIC）连接支持它的网站，减少握手往返；弱网或 Wi-Fi 与流量切换时连接不中断。',
- off:'全部使用传统的 TCP + TLS，首次连接更慢，网络切换需要重建连接。',
- rec:'enable',why:'Google、Cloudflare 等大量网站已支持，开启后提速在后台静默发生。',
- risk:'个别企业网络屏蔽 UDP 443 端口，此时会自动回退 TCP，不影响使用。',
+{id:'enable-quic',name:'实验性 QUIC 协议',en:'Experimental QUIC protocol',cat:'network',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'浏览器会根据服务端与网络能力自动决定 QUIC/HTTP3 的使用；Default 不等于关闭',
+ on:'允许在服务器和网络均支持时使用 QUIC/HTTP3，不代表所有连接都会切换。',
+ off:'禁用 QUIC 时可能使用 HTTP/2 或 HTTP/1.1；具体回退方式取决于站点与网络。',
+ rec:'optional',why:'QUIC/HTTP3 已是常规网络能力。该入口主要用于协议诊断与兼容排错，通常保持 Default。',
+ risk:'受阻的 UDP 443、代理或企业策略可能影响连接；不要把开启 QUIC 当作无条件网络加速。',
  tip:'开发者工具 → Network → Protocol 列显示 h3 即表示 QUIC 已生效。',kw:'quic http3 udp 网络 延迟'},
-{id:'use-dns-https-svcb-alpn',name:'DNS 提前协商协议',en:'Use DNS-HTTPS SVCB / ALPN',cat:'network',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'新版已默认开启',
- on:'通过 DNS 的 HTTPS/SVCB 记录提前得知服务器支持的协议（h2/h3），省掉一次协商往返，首次连接更快。',
- off:'按传统方式在 TLS 握手中协商协议，多一次往返。',
- rec:'enable',why:'无感知的加速，没有已知副作用。',
- risk:'需要 DNS 解析器支持 HTTPS 记录，否则不生效——但也不会出错。',
- tip:'配合“设置 → 隐私和安全 → 安全 → 使用安全 DNS”效果更好。',kw:'dns svcb alpn http3'},
 /* ---------- 隐私与安全 ---------- */
-{id:'https-upgrades',name:'HTTPS 自动升级',en:'HTTPS Upgrades',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'新版已默认开启',
- on:'输入或点击 http:// 地址时，先自动尝试升级为 https://，成功就加载加密版本；失败再回退并提示。',
- off:'按原地址以 HTTP 明文加载，内容可被途中窥探或篡改。',
- rec:'enable',why:'提高安全性与隐私，而绝大多数网站都已支持 HTTPS。',
- risk:'极少数 HTTPS 证书配置错误的网站首次加载会多等几秒。',
- tip:'想要更严格的方式，可在设置中开启“始终使用安全连接”（HTTPS-First Mode），回退前会警告。',kw:'https http 安全 升级'},
-{id:'encrypted-client-hello',name:'加密客户端问候（ECH）',en:'Encrypted ClientHello',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'视版本与 DNS 而定，新版多数已默认开启',
- on:'把 TLS 握手中的明文域名（SNI）加密，运营商或中间网络无法再通过握手看出你访问了哪个网站。',
- off:'域名以明文出现在握手中，可被网络侧监听和记录。',
- rec:'enable',why:'显著的隐私提升，且不影响正常访问。',
- risk:'必须配合支持 HTTPS 记录的安全 DNS 才能生效；个别旧路由器或代理可能不兼容。',
- tip:'打开“使用安全 DNS”并选择支持 ECH 的解析器后，可在 Cloudflare 的 ECH 检测页验证。',kw:'ech tls sni 隐私 dns'},
-{id:'enable-strict-origin-isolation',name:'严格源隔离',en:'Strict origin isolation',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'默认关闭',
- on:'为所有网页启用完整的跨源隔离策略（进程级），提高安全性，并让页面可以使用 SharedArrayBuffer、多线程等高性能 API。',
- off:'使用默认的站点隔离策略，已能满足日常安全需求。',
- rec:'caution',why:'普通用户无需开启，桌面版 Chromium 已默认有站点隔离；只有开发者调试跨源隔离功能时才用。',
+{id:'strict-origin-isolation',name:'严格源隔离',en:'Strict origin isolation',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'默认关闭',
+ on:'让不同源的网页尝试采用更严格的进程隔离策略，可能增加内存开销；并不直接开启 SharedArrayBuffer，也不代替网站的 COOP/COEP 响应头。',
+ off:'按 Chromium 默认的站点隔离策略运行，不代表禁用所有跨站安全隔离。',
+ rec:'caution',why:'当前 Chromium 上游使用 strict-origin-isolation 标识。一般无需调整；进程隔离策略变化可能增加资源开销。',
  risk:'内存占用上升；依赖跨源共享资源的网站可能加载失败。',
- tip:'网页是否处于跨源隔离状态，可在控制台输入 self.crossOriginIsolated 查看。',kw:'origin isolation 跨源 安全 sharedarraybuffer'},
-{id:'enable-ip-protection',name:'IP 保护',en:'IP Protection',cat:'privacy',browsers:['chrome'],type:'toggle',platform:'Chrome（分阶段推出）',def:'默认关闭，处于灰度阶段',
- on:'第三方请求（广告、埋点、追踪器）经由隐私代理转发，网站拿不到你的真实 IP，削弱基于 IP 的追踪。',
- off:'所有请求直接携带真实 IP。',
- rec:'optional',why:'隐私收益明显，但仍处于灰度阶段，可能影响个别网站的定位与反爬检测。',
- risk:'部分网站可能出现验证码、地区内容错误，甚至暂时无法加载。',
- tip:'只在 Chrome 中提供；遇到网站异常时先设回 Default 排查。',kw:'ip privacy proxy 代理 追踪'},
+ tip:'跨源隔离 API 的 self.crossOriginIsolated 与此进程级 Flag 不是同一个开关；不要用它判断 Flag 是否生效。',kw:'origin isolation 跨源 安全 sharedarraybuffer'},
 /* ---------- 界面与体验 ---------- */
 {id:'enable-force-dark',name:'强制深色模式',en:'Auto Dark Mode for Web Contents',cat:'ui',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'默认关闭',
- on:'用算法把所有浅色网页反转为深色，夜间浏览更舒适，OLED 屏幕还能省电。',
+ on:'尝试通过算法修改原本不支持深色模式的网站配色；视觉效果因网页而异。',
  off:'网页按作者设计的配色显示。',
- rec:'optional',why:'非常受欢迎，但算法反转会误伤图片和品牌色，建议结合个人喜好决定。',
+ rec:'optional',why:'优先使用网站自带的深色模式；只有愿意接受色彩、图片和组件异常时才尝试强制深色。',
  risk:'部分图片颜色失真、图标对比度不足；Edge 可在设置里为特定站点关闭。',
- tip:'Edge 的“设置 → 外观 → 自动深色模式”提供同样功能并支持站点例外。',kw:'dark 深色 夜间'},
-{id:'windows11-mica-titlebar',name:'Windows 11 Mica 标题栏',en:'Windows 11 Mica Titlebar',cat:'ui',browsers:['chrome'],type:'toggle',platform:'仅 Windows 11 · Chrome 115+',def:'默认关闭',
- on:'标题栏使用 Windows 11 的 Mica 云母材质——半透明并随桌面壁纸色调变化，与系统风格统一。',
- off:'默认的实色标题栏。',
- rec:'enable',why:'纯视觉提升，没有功能风险，Win11 用户推荐开启。',
- risk:'Windows 10 及以下无效；个别远程桌面环境下可能不显示。',
- tip:'Edge 自身已经使用 Mica 材质，所以不需要这个 flag。',kw:'mica windows 11 标题栏 透明 aero'},
-{id:'edge-super-drag-drop',name:'超级拖放',en:'Microsoft Super Drag and Drop',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge 111+）',def:'Beta 通道默认关闭，Canary / Dev 默认开启',
+ tip:'此实验不等同于浏览器整体外观主题；部分平台的正式设置与此实验不同。',kw:'dark 深色 夜间'},
+{id:'edge-super-drag-drop',kind:'setting',settings:{edge:'settings/appearance'},reviewStatus:'pending',name:'超级拖放',en:'Microsoft Super Drag and Drop',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge 111+）',def:'新版 Edge 的位置及是否提供此设置尚需在实际版本中核验',
  on:'把链接或选中的文字向任意方向轻轻一拖，即可在新标签页打开链接，或用默认搜索引擎搜索这段文字。',
  off:'拖放保持浏览器默认行为（需要拖到标签栏或地址栏）。',
- rec:'enable',why:'熟练后效率提升明显，几乎没有副作用，是 Edge 最受欢迎的专属实验功能之一。',
- risk:'触屏设备体验有限；首次启用后还需在“设置 → 外观”中打开开关。',
- tip:'可在“设置 → 外观 → 启用超级拖放”中选择在前台还是后台打开新标签。',kw:'drag drop 拖放 拖拽'},
-{id:'edge-mini-menu',name:'划词迷你菜单',en:'Mini menu on text selection',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'默认开启',
+ rec:'optional',why:'优先在 Edge 外观设置中查找。旧版实验入口未经当前稳定版实机验证，故不再提供可能失效的 Flag URL。',
+ risk:'拖放行为可能与网页自身的拖放交互冲突。',
+ tip:'打开 Edge → 设置 → 外观后搜索超级拖放；未找到时以当前版本实际选项为准。',kw:'drag drop 拖放 拖拽'},
+{id:'edge-mini-menu',kind:'setting',settings:{edge:'settings/appearance'},reviewStatus:'pending',name:'划词迷你菜单',en:'Mini menu on text selection',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'取决于 Edge 的平台、版本与用户设置',
  on:'选中网页文字后弹出一个迷你菜单，提供搜索、复制等快捷操作。',
  off:'选中文字后不再弹出菜单，页面更清爽。',
- rec:'optional',why:'见仁见智：常用划词搜索的人会喜欢，觉得打扰的人可以直接关闭。',
+ rec:'optional',why:'是否显示划词快捷菜单属于界面偏好；使用 Edge 外观设置管理，旧 Flag 不作为当前入口。',
  risk:'没有功能性风险。',
- tip:'新版 Edge 也可以在“设置 → 外观 → 页面选择”中关闭。',kw:'mini menu 划词 选中文本 菜单'},
-{id:'edge-shopping-assistant',name:'购物助手',en:'Microsoft Edge Shopping Assistant',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'默认开启',
+ tip:'在 Edge 外观设置中查找划词迷你菜单；不同版本可能调整位置。',kw:'mini menu 划词 选中文本 菜单'},
+{id:'edge-shopping-assistant',kind:'setting',settings:{edge:'settings/privacy'},reviewStatus:'pending',name:'购物助手',en:'Microsoft Edge Shopping Assistant',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'由 Edge 版本、地区及用户偏好决定',
  on:'在电商网站显示优惠券、价格历史和比价提示，地址栏会出现购物图标。',
  off:'不显示任何购物提示和优惠券弹窗。',
- rec:'disable',why:'对多数用户属于干扰信息；需要比价时，专门的比价工具更可靠，因此推荐关闭。',
- risk:'没有风险，关闭后页面更干净；喜欢优惠券的人可以保留。',
- tip:'新版 Edge 可在“设置 → 隐私、搜索和服务 → 页面行为”中关闭“购物”。',kw:'shopping 购物 优惠券 比价 coupons'},
-{id:'edge-mouse-gesture',name:'鼠标手势',en:'Mouse Gesture',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'视版本而定',
+ rec:'optional',why:'购物提示是否有价值取决于需求；不再建议所有人强制关闭。应通过正式的购物设置自行选择。',
+ risk:'开启可能增加价格提示、优惠券或购物推荐；关闭后不再获得对应购物辅助。',
+ tip:'Edge 设置 → 隐私、搜索和服务 → 搜索和关联体验 → Shopping；具体条目取决于地区与版本。',kw:'shopping 购物 优惠券 比价 coupons'},
+{id:'edge-mouse-gesture',kind:'setting',settings:{edge:'settings/appearance'},reviewStatus:'pending',name:'鼠标手势',en:'Mouse Gesture',cat:'ui',browsers:['edge'],type:'toggle',platform:'Windows · macOS（Edge）',def:'取决于 Edge 的平台与版本，不保证所有平台都有该选项',
  on:'按住鼠标右键并拖出方向（左 / 右 / 上 / 下）即可后退、前进、刷新或打开新标签。',
  off:'不支持右键手势。',
- rec:'optional',why:'习惯后效率极高；不习惯右键手势的用户可以忽略。',
- risk:'可能与某些网页的右键拖拽操作冲突（如画板、白板类网页）。',
- tip:'新版 Edge 已把它放进“设置 → 外观 → 鼠标手势”，可在那里自定义动作。',kw:'mouse gesture 手势 右键'},
+ rec:'optional',why:'鼠标手势属于效率偏好；旧实验 ID 不保证在 Edge 当前版本存在，应以外观设置为准。',
+ risk:'可能与右键拖动、绘图或远程桌面交互冲突。',
+ tip:'在 Edge 设置 → 外观中查找鼠标手势；若不存在，不要使用历史 Flag 链接。',kw:'mouse gesture 手势 右键'},
 /* ---------- 媒体与播放 ---------- */
-{id:'autoplay-policy',name:'自动播放策略',en:'Autoplay policy',cat:'media',browsers:['chrome','edge'],type:'choice',platform:'Windows · macOS · Linux',def:'桌面默认为 Document user activation is required',
- options:[
-  {v:'0',label:'No user gesture is required',tone:'enabled',effect:'任何页面都可以自动播放（包括有声音的视频）。适合展示机、信息屏；普通用户不建议，会被有声广告打扰。'},
-  {v:'1',label:'User gesture is required for cross-origin iframes',tone:'choice',effect:'只有跨域嵌入的 iframe（如嵌入的他站视频）需要用户先交互才能自动播放，顶层页面不受限。'},
-  {v:'2',label:'User gesture is required',tone:'disabled',effect:'任何页面都要先有点击或按键才能自动播放，连静音视频也不会自动开始——最能防止视频偷跑流量。'},
-  {v:'3',label:'Document user activation is required',tone:'choice',effect:'当前桌面版的默认策略：有声音的视频需要用户与页面交互过才可自动播放，静音视频可以直接播放。'}
- ],
- rec:'optional',why:'默认策略已经挡住了有声自动播放；想彻底禁止（包括静音视频）或彻底放开时再改。',
- risk:'设为“需要手势”会让部分网站的背景视频、轮播失效；设为“无需手势”则会被有声广告打扰。',
- tip:'大多数情况下不用动这里——在“网站设置 → 声音”中按站点静音更精准。',kw:'autoplay 自动播放 视频 声音'},
-{id:'edge-video-super-resolution',name:'视频超分辨率',en:'Video Super Resolution',cat:'media',browsers:['edge'],type:'toggle',platform:'Windows（需要较新的独立显卡）',def:'默认关闭',
- on:'用显卡 AI 把低分辨率视频实时增强到更高清晰度（如 480p → 720p），并提升画面锐度。',
- off:'视频按原始分辨率显示，GPU 占用最低。',
- rec:'optional',why:'看老片或低码率视频时画质提升明显，但依赖较新的独立显卡（如 NVIDIA RTX、AMD RX 5000 系列以上）。',
+{id:'edge-video-super-resolution',kind:'setting',settings:{edge:'settings/system'},reviewStatus:'pending',name:'视频超分辨率',en:'Video Super Resolution',cat:'media',browsers:['edge'],type:'toggle',platform:'Edge · 具体硬件与支持平台以正式版本为准',def:'具体支持及默认状态取决于 Edge 版本、硬件和视频条件',
+ on:'在可用的硬件和视频上尝试增强画质；是否生效受显卡驱动、视频限制及电源策略约束。',
+ off:'按原始视频画质播放，减少额外处理。',
+ rec:'optional',why:'属于特定硬件和视频条件下的体验选项，而不是所有显卡上均可获得的通用画质增强。',
  risk:'增加 GPU 占用与耗电；不支持的显卡上开启无效或导致掉帧。',
- tip:'开启后可在视频的叠加菜单或“设置 → 系统和性能”中确认“视频超分辨率”已生效。',kw:'vsr video super resolution 视频 画质 ai'},
+ tip:'在 Edge 系统与性能设置中查找增强视频（Enhance videos）；旧 Video Super Resolution 实验入口不再优先展示。',kw:'vsr video super resolution 视频 画质 ai'},
 /* ---------- 开发者与实验 ---------- */
 {id:'enable-experimental-web-platform-features',name:'实验性 Web 平台功能',en:'Experimental Web Platform features',cat:'dev',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'默认关闭',
  on:'解锁尚未正式定稿的 CSS、JavaScript 与 Web API 草案，供开发者提前适配测试。',
  off:'仅使用已正式发布、稳定支持的 Web 标准。',
- rec:'optional',why:'对开发者很有价值；普通用户开启只会增加不确定性与耗电。',
- risk:'实验功能随时变更或移除，可能导致某些网页显示、行为异常。',
+ rec:'caution',why:'只适合需要验证尚未稳定的 Web API/CSS 特性的开发者，应在独立测试配置或测试版浏览器中使用。',
+ risk:'可能改变网页行为、兼容性及安全边界；不作为日常浏览器优化。',
  tip:'建议在 Chrome Beta / Canary 或 Edge Dev 中测试，不影响日常浏览器。',kw:'experimental web platform css 开发者'},
 {id:'enable-javascript-harmony',name:'实验性 JavaScript 功能',en:'Experimental JavaScript features',cat:'dev',browsers:['chrome','edge'],type:'toggle',platform:'全平台',def:'默认关闭',
- on:'开启仍在讨论中的新 JavaScript 语法与内置对象（Stage 3 提案等），开发者可以提前试用。',
+ on:'开启尚未作为稳定语言特性广泛提供的 V8/JavaScript 实验功能，其具体集合随版本变化。',
  off:'只支持已正式发布的 JavaScript 特性。',
- rec:'avoid',why:'只面向 JavaScript 开发者；普通用户开启没有任何好处。',
+ rec:'avoid',why:'仅供 JavaScript 开发者验证实验特性；日常浏览保持 Default。',
  risk:'极少数网站可能因语法解析差异报错；特性可能随时改名。',
  tip:'与“实验性 Web 平台功能”类似，推荐在开发版浏览器中使用。',kw:'javascript harmony harmony es next 开发者'},
 {id:'enable-unsafe-webgpu',name:'启用不安全的 WebGPU',en:'Enable unsafe WebGPU',cat:'dev',browsers:['chrome','edge'],type:'toggle',platform:'Windows · macOS · Linux',def:'默认关闭',
  on:'在操作系统或 GPU 不在 WebGPU 支持名单内时，也允许网页使用 WebGPU（浏览器中的 3D 渲染与 AI 推理）。',
  off:'只有在受支持的系统和显卡上，网页才能使用 WebGPU。',
- rec:'caution',why:'仅供开发者在不受支持的硬件上测试 WebGPU 应用；新版 Chromium 在受支持设备上已默认启用 WebGPU。',
+ rec:'avoid',why:'仅供开发者在明确了解兼容性风险后测试不受支持的 WebGPU 环境；普通用户不应修改。',
  risk:'“unsafe”意味着未经稳定性与安全性验证，可能崩溃、花屏甚至暴露驱动漏洞。',
- tip:'打开 chrome://gpu 可查看 WebGPU 当前状态。',kw:'webgpu unsafe gpu ai'},
-{id:'temporary-unexpire-flags-m130',name:'临时解锁已过期的 Flags',en:'Temporary unexpire flags',cat:'dev',browsers:['chrome'],type:'toggle',platform:'Chrome（编号随版本变化，如 m130、m131…）',def:'默认关闭',
- on:'让某个版本中“已过期”（被标记为到期、隐藏）的实验功能重新出现在列表中，方便继续测试。',
- off:'过期的 flag 保持隐藏。',
- rec:'avoid',why:'仅供开发者回归测试；普通用户开启只会让列表多出一批不再维护的选项。',
- risk:'这些功能大多已停止维护，可能存在 bug；编号随版本变化。',
- tip:'如果你在 flags 页面看到 mXXX 后缀的此类项，忽略即可。',kw:'unexpire expire 过期 m130'}
+ tip:'查看 chrome://gpu 或 edge://gpu 的 WebGPU 状态。此 Flag 不会自动修复驱动、系统或 GPU 的兼容问题。',kw:'webgpu unsafe gpu ai'},
 ];
 
 // 正式设置项：它们不是 flags，不附会 #flag-id 入口。
 // 仅使用可由官方帮助文档核对到的功能；具体开关位置仍随版本调整。
 FLAGS.push(
-{id:'setting-memory-saver',kind:'setting',name:'内存节省程序',en:'Memory Saver',cat:'perf',browsers:['chrome'],type:'toggle',platform:'Chrome · 桌面版',settings:{chrome:'settings/performance'},def:'依设备和浏览器版本而定',on:'自动释放长期未使用标签页占用的部分内存，重新访问时可能重新加载。',off:'闲置标签页更倾向于保持完整状态，但可能占用更多内存。',rec:'optional',why:'同时打开大量标签页时可以开启；经常运行网页应用、后台编辑器或实时页面时应按需添加例外。',risk:'切回休眠页面可能需要重新加载，未保存状态的页面可能受影响。',tip:'设置 → 性能 → 内存节省程序；可为不希望暂停的网站设置例外。',kw:'ram memory saver 内存 标签页 节省'},
+{id:'setting-memory-saver',kind:'setting',name:'内存节省程序',en:'Memory Saver',cat:'perf',browsers:['chrome'],type:'toggle',platform:'Chrome · 桌面版',settings:{chrome:'settings/performance'},def:'依设备和浏览器版本而定',on:'Chrome 可停用闲置标签页来节约内存，通常支持不同节省强度；返回标签页时可能需要重新加载。',off:'闲置标签页更倾向于保持完整状态，但可能占用更多内存。',rec:'optional',why:'同时打开大量标签页时可以开启；经常运行网页应用、后台编辑器或实时页面时应按需添加例外。',risk:'切回休眠页面可能需要重新加载，未保存状态的页面可能受影响。',tip:'在 Chrome 设置 → 性能中查看内存节省的强度选项和不参与停用的网站例外；具体级别以实际版本为准。',kw:'ram memory saver 内存 标签页 节省'},
 {id:'setting-energy-saver',kind:'setting',name:'节能模式',en:'Energy Saver',cat:'perf',browsers:['chrome'],type:'toggle',platform:'Chrome · 桌面版',settings:{chrome:'settings/performance'},def:'依设备、电量与版本而定',on:'在指定电量或断电条件下限制部分后台活动和视觉效果，以延长电池续航。',off:'不启用该项节能限制，视频、动画与后台工作可能更流畅但更耗电。',rec:'optional',why:'笔记本离电使用时值得开启，台式机或低延迟应用可以按需关闭。',risk:'游戏、视频和某些后台页面性能可能受到影响。',tip:'设置 → 性能 → 节能模式。',kw:'battery saver 省电 电池 续航'},
 {id:'setting-page-preload',kind:'setting',name:'网页预加载',en:'Preload pages',cat:'network',browsers:['chrome'],type:'toggle',platform:'Chrome · 桌面版',settings:{chrome:'settings/performance'},def:'预加载级别随浏览器版本和用户设置变化',on:'浏览器预测你可能访问的页面，提前请求部分资源以缩短打开等待。',off:'减少不必要的预加载请求及相关网络使用，点击后再正常加载页面。',rec:'optional',why:'网速快且关注响应速度时可开启标准预加载；注重流量或隐私时可关闭。',risk:'预加载会消耗一定网络流量，并可能向目标站点产生额外请求。',tip:'优先选择标准预加载，不必一律使用扩展预加载。',kw:'preload prefetch 网络 流量 预加载'},
-{id:'setting-edge-sleeping-tabs',kind:'setting',name:'睡眠标签页',en:'Sleeping tabs',cat:'perf',browsers:['edge'],type:'toggle',platform:'Edge · 桌面版',settings:{edge:'settings/system'},def:'可能默认开启；睡眠时间依设备和版本而异',on:'将一段时间未使用的标签页置于睡眠状态，释放部分 CPU 和内存资源。',off:'标签页保持更活跃，后台页面占用资源可能增多。',rec:'optional',why:'适合标签多的用户；实时仪表盘、消息后台等页面建议列入例外。',risk:'睡眠页面重新激活可能有短暂延迟。',tip:'设置 → 系统和性能 → 睡眠标签页，找到睡眠时间与例外列表。',kw:'sleeping tabs 休眠 标签 内存'},
+{id:'setting-edge-sleeping-tabs',kind:'setting',name:'睡眠标签页',en:'Sleeping tabs',cat:'perf',browsers:['edge'],type:'toggle',platform:'Edge · 桌面版',settings:{edge:'settings/system'},def:'不同 Edge 版本、内存压力与节能策略会影响睡眠阈值，不保证固定时间',on:'将一段时间未使用的标签页置于睡眠状态，释放部分 CPU 和内存资源。',off:'标签页保持更活跃，后台页面占用资源可能增多。',rec:'optional',why:'适合标签多的用户；实时仪表盘、消息后台等页面建议列入例外。',risk:'睡眠页面重新激活可能有短暂延迟。',tip:'在 Edge 设置 → 系统和性能中查看睡眠时间、自动休眠与例外站点；受策略管理时可能无法修改。',kw:'sleeping tabs 休眠 标签 内存'},
 {id:'setting-edge-energy-saver',kind:'setting',name:'Edge 节能模式',en:'Edge Energy Saver',cat:'perf',browsers:['edge'],type:'toggle',platform:'Edge · 桌面版',settings:{edge:'settings/system'},def:'依设备和版本而定',on:'通过降低部分前台与后台资源消耗延长设备续航，符合条件时还会加快让闲置标签进入睡眠。',off:'减少节能策略对页面性能的影响，但可能增加耗电。',rec:'optional',why:'移动办公和笔记本设备可考虑开启；需要长时间保持后台工作时按需调整。',risk:'高负载网页、视频及后台任务的表现可能发生变化。',tip:'设置 → 系统和性能 → 性能/节能模式。',kw:'edge efficiency energy saver 效率模式 电池 续航'},
 {id:'setting-graphics-accel',kind:'setting',name:'图形加速',en:'Graphics acceleration',cat:'perf',browsers:['chrome','edge'],type:'toggle',platform:'Chrome / Edge · 桌面版',settings:{chrome:'settings/system',edge:'settings/system'},def:'通常默认开启',on:'尽可能让兼容的图形绘制和视频处理工作使用 GPU 加速。',off:'对部分处理任务回退到软件路径，有时能绕过显卡驱动兼容问题。',rec:'optional',why:'无异常时保留默认；出现花屏、黑块或视频异常时可以暂时关闭排查。',risk:'关闭可能降低渲染性能；开启时某些老旧驱动可能存在兼容问题。',tip:'Chrome：设置 → 系统；Edge：设置 → 系统和性能。变更后一般需要重新启动浏览器。',kw:'GPU graphics acceleration 硬件加速 黑屏 花屏'},
 {id:'setting-secure-dns',kind:'setting',name:'安全 DNS',en:'Secure DNS',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'Chrome / Edge · 桌面版',settings:{chrome:'settings/security',edge:'settings/privacy'},def:'根据系统策略、网络与浏览器配置变化',on:'在支持的情况下使用加密 DNS 解析，减少 DNS 查询被沿途网络直接读取的可能。',off:'由系统或网络配置决定 DNS 查询方式，可能使用未加密解析。',rec:'optional',why:'有隐私需求时可以使用可靠的 DNS 提供商；企业、校园或内网环境应先确认兼容性。',risk:'选用的 DNS 提供商可能无法解析公司内网域名；加密 DNS 并不意味着完全隐藏访问的网站。',tip:'Chrome：隐私和安全 → 安全；Edge：隐私、搜索和服务 → 安全。',kw:'dns doh 加密域名 隐私 secure DNS'},
-{id:'setting-https-first',kind:'setting',name:'始终使用安全连接',en:'Always use secure connections / HTTPS-First',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'Chrome / Edge · 桌面版',settings:{chrome:'settings/security',edge:'settings/privacy'},def:'依浏览器版本与安全配置而定',on:'优先把网页连接升级为 HTTPS，对于无法使用安全连接的网站提供警告。',off:'依浏览器自身规则处理 HTTP/HTTPS，不再强制要求该模式的额外警告。',rec:'optional',why:'安全敏感场景建议开启，但需要访问旧版内网站点时应留意提示。',risk:'极少数仅提供 HTTP 的旧网站会出现警告或额外步骤。',tip:'Chrome：隐私和安全 → 安全；Edge：隐私、搜索和服务 → 安全。',kw:'https-first https 安全连接 加密'},
-{id:'setting-edge-startup-boost',kind:'setting',name:'启动增强',en:'Startup boost',cat:'perf',browsers:['edge'],type:'toggle',platform:'Edge · Windows（受设备条件限制）',settings:{edge:'settings/system/manageSystem'},def:'根据设备配置与浏览器使用情况自动决定',on:'保留少量 Edge 后台进程，提高下一次启动浏览器的速度。',off:'退出后通常减少常驻浏览器进程，有助于节省后台资源。',rec:'optional',why:'频繁打开 Edge 且资源充足时可考虑开启；重视后台占用时可以关闭。',risk:'启动增强可能让浏览器关闭后仍有部分后台进程。',tip:'设置 → 系统和性能 → 启动增强；该功能主要针对 Windows。',kw:'startup boost 加速启动 后台常驻'}
+{id:'setting-https-first',kind:'setting',name:'始终使用安全连接',en:'Always use secure connections / HTTPS-First',cat:'privacy',browsers:['chrome','edge'],type:'toggle',platform:'Chrome / Edge · 桌面版',settings:{chrome:'settings/security',edge:'settings/privacy'},def:'Chrome 新版本可能对公开 HTTP 网站默认显示安全警告；严格保护级别仍受设置和策略影响',on:'优先把网页连接升级为 HTTPS，对于无法使用安全连接的网站提供警告。',off:'依浏览器自身规则处理 HTTP/HTTPS，不再强制要求该模式的额外警告。',rec:'optional',why:'保留浏览器默认安全保护；如需更严格的 HTTPS 优先策略，可在正式设置中查看可选级别。不要将默认保护等同于必须强制启用实验 Flag。',risk:'极少数仅提供 HTTP 的旧网站会出现警告或额外步骤。',tip:'Chrome：隐私和安全 → 安全；Edge：隐私、搜索和服务 → 安全。HTTP 内网与本地地址可能适用不同策略。',kw:'https-first https 安全连接 加密'},
+{id:'setting-edge-startup-boost',kind:'setting',name:'启动增强',en:'Startup boost',cat:'perf',browsers:['edge'],type:'toggle',platform:'Edge · Windows（受设备条件限制）',settings:{edge:'settings/system'},def:'根据设备配置与浏览器使用情况自动决定',on:'保留少量 Edge 后台进程，提高下一次启动浏览器的速度。',off:'退出后通常减少常驻浏览器进程，有助于节省后台资源。',rec:'optional',why:'频繁打开 Edge 且资源充足时可考虑开启；重视后台占用时可以关闭。',risk:'启动增强可能让浏览器关闭后仍有部分后台进程。',tip:'设置 → 系统和性能 → 启动增强；该功能主要针对 Windows。',kw:'startup boost 加速启动 后台常驻'}
 );
 
-// 内容校订：原稿中的部分判断过于绝对，或功能已经进入正式设置。
-const OVERRIDES={
-'enable-gpu-rasterization':{rec:'optional',why:'现代设备通常已由浏览器自动选择合适的 GPU 路径，优先保持 Default；只有在排查性能问题时才手动修改。'},
-'enable-parallel-downloading':{rec:'optional',why:'可能改善受到单连接限速的大文件下载，但收益依赖服务端和网络条件，并不保证更快。'},
-'enable-quic':{rec:'optional',why:'HTTP/3 已是现代浏览器的正常能力，优先保持 Default；网络异常时才尝试改变。'},
-'use-dns-https-svcb-alpn':{rec:'optional',why:'优先让浏览器按版本默认配置协议协商，通常不必手动强制开启。'},
-'https-upgrades':{rec:'optional',why:'HTTPS 升级应优先通过浏览器正式安全设置管理；若已默认开启，无需强制修改。',settings:{chrome:'settings/security',edge:'settings/privacy'}},
-'encrypted-client-hello':{rec:'optional',on:'当浏览器、DNS 和站点均支持 ECH 时，可以加密 TLS ClientHello 中的敏感域名信息；但 DNS 查询、访问 IP 等仍可能暴露线索。',why:'隐私保护依赖浏览器默认实现和服务器支持，不建议把手动开启 Flag 当成完全隐藏访问域名的方案。'},
-'enable-strict-origin-isolation':{on:'尝试对不同源的网页使用更严格的进程隔离，可能增加内存占用。该 Flag 并不能替代站点配置 Cross-Origin-Opener-Policy / Cross-Origin-Embedder-Policy 响应头。'},
-'windows11-mica-titlebar':{rec:'optional',why:'旧版本用于测试 Windows 11 标题栏外观，较新版本中可能已经由正式设置或浏览器默认实现取代。',legacy:true},
-'edge-efficiency-mode':{rec:'optional',why:'应优先使用 Edge 设置中的性能与效率选项；实验入口可能已调整。',settings:{edge:'settings/system'},legacy:true},
-'edge-mini-menu':{settings:{edge:'settings/appearance'},legacy:true},
-'edge-shopping-assistant':{settings:{edge:'settings/privacy'},legacy:true},
-'edge-mouse-gesture':{settings:{edge:'settings/appearance'},legacy:true},
-'edge-super-drag-drop':{settings:{edge:'settings/appearance'},legacy:true},
-'edge-video-super-resolution':{settings:{edge:'settings/system'},legacy:true},
-'enable-force-dark':{rec:'optional',why:'仅适合有明确全站深色需求并接受网页颜色失真的用户；优先选择网站本身的深色模式。'},
-'autoplay-policy':{rec:'avoid',why:'该实验入口随 Chromium 版本变化，部分版本早已不再提供。优先使用网站权限设置。',legacy:true,settings:{chrome:'settings/content',edge:'settings/content'}},
-'temporary-unexpire-flags-m130':{rec:'avoid',why:'m130 是旧版本编号，不能作为当前版本的稳定设置入口；不建议尝试恢复过期功能。',legacy:true},
+
+// 审核元数据只描述资料证据，不代表浏览器实例已安装或启用该功能。
+const REVIEWED_AT='2026-11-23';
+const OFFICIAL_SOURCES={
+ chromium:'https://chromium.googlesource.com/chromium/src/+/HEAD/chrome/browser/about_flags.cc',
+ chromePerformance:'https://support.google.com/chrome/answer/12929150?hl=en',
+ chromeSecurity:'https://support.google.com/chrome/answer/10468685',
+ edgePerformance:'https://support.microsoft.com/en-us/edge/learn-about-performance-features-in-microsoft-edge',
+ edgeShopping:'https://support.microsoft.com/en-us/edge/changes-to-shopping-in-edge',
+ edgeAppearance:'https://support.microsoft.com/en-us/edge/visual-changes-to-microsoft-edge',
+ edgePolicies:'https://learn.microsoft.com/en-us/deployedge/microsoft-edge-policies'
 };
-FLAGS.forEach(f=>Object.assign(f,OVERRIDES[f.id]||{}));
+function evidenceFor(f){
+ if(f.kind!=='setting')return [{name:'Chromium Flag 源码',url:OFFICIAL_SOURCES.chromium}];
+ const result=[];
+ if(f.browsers.includes('chrome'))result.push({name:f.cat==='privacy'?'Chrome 安全帮助':'Chrome 性能帮助',url:f.cat==='privacy'?OFFICIAL_SOURCES.chromeSecurity:OFFICIAL_SOURCES.chromePerformance});
+ if(f.browsers.includes('edge'))result.push({name:f.cat==='perf'?'Edge 性能帮助':f.id==='edge-shopping-assistant'?'Edge Shopping 帮助':f.cat==='ui'?'Edge 外观帮助':'Edge 官方策略文档',url:f.cat==='perf'?OFFICIAL_SOURCES.edgePerformance:f.id==='edge-shopping-assistant'?OFFICIAL_SOURCES.edgeShopping:f.cat==='ui'?OFFICIAL_SOURCES.edgeAppearance:OFFICIAL_SOURCES.edgePolicies});
+ return result;
+}
+function reviewStateLabel(f){
+ if(f.reviewStatus==='pending')return 'Edge 具体设置入口待实机核对';
+ return f.kind==='setting'?'正式设置功能已查阅官方资料；具体位置按实际版本核对':'Chromium 上游源码存在该 Flag；本机是否显示仍待确认';
+}
+const LEGACY_ID_ALIASES={
+ 'enable-strict-origin-isolation':'strict-origin-isolation',
+ 'edge-efficiency-mode':'setting-edge-energy-saver',
+ 'https-upgrades':'setting-https-first'
+};
 const byId=Object.fromEntries(FLAGS.map(f=>[f.id,f]));
 function detectedBrowser(){
   const brands=navigator.userAgentData?.brands?.map(x=>x.brand.toLowerCase())||[];
@@ -442,6 +394,9 @@ const detected=detectedBrowser();
 let storedBrowser='';try{storedBrowser=localStorage.getItem('flags-guide-browser')||''}catch(e){}
 const state={browser:(storedBrowser in BROWSERS?storedBrowser:detected)||'chrome',cat:'all',rec:'all',q:''};
 let saved={};try{const obj=JSON.parse(localStorage.getItem('flags-guide-saved')||'{}');if(obj&&typeof obj==='object'&&!Array.isArray(obj))saved=obj}catch(e){}
+for(const [before,after] of Object.entries(LEGACY_ID_ALIASES)){if(saved[before]){saved[after]??=saved[before];delete saved[before];}}
+for(const id of Object.keys(saved))if(!byId[id])delete saved[id];
+try{localStorage.setItem('flags-guide-saved',JSON.stringify(saved))}catch(e){}
 // 对来自旧版页面的计划记录保持兼容，不自动导入，避免不同版配置误解。
 let extensionReady=false;let reqNo=0;const waiting=new Map();
 window.addEventListener('message',e=>{
@@ -478,11 +433,12 @@ function addressHTML(label,url){
 function detailHTML(f){
  const kv=(label,value)=>`<section class="detailfield"><h3 class="dlabel">${label}</h3><p class="dtext">${esc(value)}</p></section>`;
  const opts=f.options?f.options.map(o=>`${o.label}：${o.effect}`).join('；'):'';
- return `<div class="detailgrid">${kv('开启后',f.type==='choice'?opts:f.on)}${kv('关闭后',f.type==='choice'?'此选项提供多种策略，需根据当前版本的下拉菜单选择。':f.off)}${kv('建议与原因',f.why)}${kv('风险与注意事项',f.risk)}${kv('适用范围',f.platform)}${kv('原稿所述默认状态（版本相关）',f.def)}${kv('使用提示',f.tip)}</div><section class="detail-urlbox"><h3>对应地址</h3>${f.kind==='setting'?'':addressHTML('Flag',flagURL(f))}${settingURL(f)?addressHTML('设置',settingURL(f)):''}<p>内部地址可能无法从普通网页直接打开。点击复制后，在浏览器地址栏粘贴并按回车即可访问。若找不到该项，可能已被移除或迁入正式设置。</p></section>`;
+ const sources=evidenceFor(f).map(s=>`<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer">${esc(s.name)}</a>`).join(' · ');
+ return `<div class="detailgrid">${kv('开启后',f.type==='choice'?opts:f.on)}${kv('关闭后',f.type==='choice'?'此选项提供多种策略，需根据当前版本的下拉菜单选择。':f.off)}${kv('建议与原因',f.why)}${kv('风险与注意事项',f.risk)}${kv('适用范围',f.platform)}${kv('默认状态参考（随版本调整）',f.def)}${kv('使用提示',f.tip)}</div><p class="audit-note">资料状态：${esc(reviewStateLabel(f))} · 核对日期：${REVIEWED_AT} · ${sources}</p><section class="detail-urlbox"><h3>对应地址</h3>${f.kind==='setting'?'':addressHTML('Flag',flagURL(f))}${settingURL(f)?addressHTML('设置',settingURL(f)):''}<p>内部地址可能无法从普通网页直接打开。点击复制后，在浏览器地址栏粘贴并按回车即可访问。若找不到该项，可能已被移除或迁入正式设置。</p></section>`;
 }
 function itemHTML(f){
  const r=REC[f.rec],isSaved=!!saved[f.id];const url=navigateURL(f);const settings=!!settingURL(f);
- return `<article class="item" id="flag-${esc(f.id)}" data-flag-id="${esc(f.id)}"><div class="itemhead"><div class="itemmain"><div class="name-row"><h2>${esc(f.name)}</h2><span class="chip ${r.tone}">${r.label}</span>${f.kind==='setting'?'<span class="chip type-chip">正式设置</span>':''}${f.legacy?'<span class="chip">入口可能变动</span>':''}</div><p class="en" title="${esc(f.en)}">${esc(f.en)}</p><p class="summary">${esc(summaryFor(f))}</p><div class="itemlinks">${f.kind==='setting'?'':addressHTML('Flag',flagURL(f))}${settings?addressHTML('设置',settingURL(f)):''}</div></div><div class="itemactions"><button type="button" class="btn nav-action ${settings?'link-settings':'link-flag'}" data-internal="${esc(url)}" title="尝试打开；若受浏览器限制，请复制下方地址">${icon('external')}${settings?'前往设置':'定位 Flag'}</button><button type="button" class="btn" data-detail="${esc(f.id)}" aria-haspopup="dialog" aria-label="查看${esc(f.name)}的完整说明">${icon('info')}详情</button><button type="button" class="btn square" aria-label="${isSaved?'从清单移除':'加入清单'}：${esc(f.name)}" data-save="${esc(f.id)}" title="${isSaved?'移除清单':'加入清单'}">${icon(isSaved?'check':'list')}</button></div></div></article>`;
+ return `<article class="item" id="flag-${esc(f.id)}" data-flag-id="${esc(f.id)}"><div class="itemhead"><div class="itemmain"><div class="name-row"><h2>${esc(f.name)}</h2><span class="chip ${r.tone}">${r.label}</span>${f.kind==='setting'?'<span class="chip type-chip">正式设置</span>':''}${f.reviewStatus==='pending'?'<span class="chip">设置入口待核对</span>':''}</div><p class="en" title="${esc(f.en)}">${esc(f.en)}</p><p class="summary">${esc(summaryFor(f))}</p><div class="itemlinks">${f.kind==='setting'?'':addressHTML('Flag',flagURL(f))}${settings?addressHTML('设置',settingURL(f)):''}</div></div><div class="itemactions"><button type="button" class="btn nav-action ${settings?'link-settings':'link-flag'}" data-internal="${esc(url)}" title="尝试打开；若受浏览器限制，请复制下方地址">${icon('external')}${settings?'前往设置':'定位 Flag'}</button><button type="button" class="btn" data-detail="${esc(f.id)}" aria-haspopup="dialog" aria-label="查看${esc(f.name)}的完整说明">${icon('info')}详情</button><button type="button" class="btn square" aria-label="${isSaved?'从清单移除':'加入清单'}：${esc(f.name)}" data-save="${esc(f.id)}" title="${isSaved?'移除清单':'加入清单'}">${icon(isSaved?'check':'list')}</button></div></div></article>`;
 }
 function showDetail(id,updateHash=true){
  const f=byId[id];if(!f)return;
@@ -521,7 +477,7 @@ function saveState(){try{localStorage.setItem('flags-guide-saved',JSON.stringify
 function renderSaved(){const arr=Object.keys(saved).filter(id=>byId[id]);$('#saved-body').innerHTML=arr.length?arr.map(id=>{const f=byId[id];return `<div class="saved"><div><h3>${esc(f.name)}</h3><p>${esc(f.en)}</p></div><button class="btn" data-saved-remove="${esc(id)}" type="button">移除</button></div>`}).join(''):'<p class="muted">清单为空。点击功能右侧的清单按钮即可收藏。</p>';renderSavedCount()}
 function resetFilters(){state.cat='all';state.rec='all';state.q='';$('#search').value='';render()}
 
-function findHash(){const id=decodeURIComponent((location.hash||'').replace(/^#flag-/,''));if(!location.hash.startsWith('#flag-')||!byId[id])return;const f=byId[id];if(!f.browsers.includes(state.browser))state.browser=f.browsers[0];state.q='';state.cat='all';state.rec='all';render();showDetail(id,false);requestAnimationFrame(()=>document.getElementById('flag-'+id)?.scrollIntoView({block:'center',behavior:'instant'}))}
+function findHash(){const previousId=decodeURIComponent((location.hash||'').replace(/^#flag-/,''));const id=LEGACY_ID_ALIASES[previousId]||previousId;if(!location.hash.startsWith('#flag-')||!byId[id])return;const f=byId[id];if(!f.browsers.includes(state.browser))state.browser=f.browsers[0];state.q='';state.cat='all';state.rec='all';render();showDetail(id,false);requestAnimationFrame(()=>document.getElementById('flag-'+id)?.scrollIntoView({block:'center',behavior:'instant'}))}
 const recLabels={all:'全部建议',enable:'可考虑开启',disable:'可考虑关闭',optional:'按需使用',caution:'谨慎使用',avoid:'不建议修改'};
 function syncRecommendation(){
  $('#recommendation-value').textContent=recLabels[state.rec]||recLabels.all;
