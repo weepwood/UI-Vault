@@ -564,6 +564,35 @@ def verify_rare_interactions(browser, origin):
     print("Rare UI 启发交互精选通过：桌面、手机、八组组件、键盘和反馈交互。")
 
 
+
+def verify_topbar_alignment(browser, origin):
+    """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
+    for width in (1440, 1024, 820, 590, 390):
+        context = browser.new_context(
+            viewport={"width": width, "height": 844},
+            reduced_motion="reduce", locale="zh-CN",
+        )
+        try:
+            page = context.new_page()
+            page.goto(origin, wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached", timeout=30000)
+            aligned = """() => {
+                const left = document.querySelector('#project-panel .list-controls');
+                const right = document.querySelector('.topbar');
+                if (!left || !right) return false;
+                const a = left.getBoundingClientRect(), b = right.getBoundingClientRect();
+                return a.height > 0 && Math.abs(a.top - b.top) <= 1 &&
+                    Math.abs(a.bottom - b.bottom) <= 1;
+            }"""
+            page.wait_for_function(aligned, timeout=5000)
+            page.locator(".topbar").evaluate("(el) => el.style.minHeight = '108px'")
+            page.wait_for_function(aligned, timeout=5000)
+            page.locator(".topbar").evaluate("(el) => el.style.removeProperty('min-height')")
+            page.wait_for_function(aligned, timeout=5000)
+        finally:
+            context.close()
+    print("目录与 Topbar 对齐回归通过：五组视口、动态撑高与恢复。")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -606,6 +635,7 @@ def main():
                     raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
+                verify_topbar_alignment(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)
