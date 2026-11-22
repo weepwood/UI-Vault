@@ -1,4 +1,4 @@
-import {useCallback,useEffect,useLayoutEffect,useMemo,useReducer,useRef} from 'react';
+import {useCallback,useEffect,useLayoutEffect,useMemo,useReducer,useRef,useState} from 'react';
 import {filterAssets,popularTags} from '../assets/core/catalog.js';
 import {loadFavorites,saveFavorites} from '../assets/core/favorites.js';
 import {resolveAsset} from '../assets/core/render.js';
@@ -97,9 +97,13 @@ async function fetchJSON(path,signal){
 export function useWorkbench(){
   const [state,dispatch]=useReducer(workbenchReducer,undefined,initial);
   const [notice,setNotice]=useReducer((_old,next)=>next,'');
+  const [noticeRevision,setNoticeRevision]=useState(0);
   const previousSettings=useRef(state.preferences);
   const initialized=useRef(false);
-  const notify=useCallback(message=>setNotice(message),[]);
+  const notify=useCallback(message=>{
+    setNotice(message);
+    setNoticeRevision(revision=>revision+1);
+  },[]);
   useEffect(()=>{
     const controller=new AbortController();
     Promise.all([
@@ -204,7 +208,7 @@ export function useWorkbench(){
     }catch{notify('源码读取失败，请在 GitHub 打开对应文件');}
   },[state.assets,copyText,notify]);
 
-  return {state,filtered,tags,filteredActive,notice,notify,
+  return {state,filtered,tags,filteredActive,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,reset,
     favorite,changePreference,resetPreferences,changePreview,menu,copyText,copyLink,copySource};
 }
