@@ -56,7 +56,7 @@ jobs:
         run: python scripts/visual-regression.py
       - name: 上传视觉回归截图（成功或失败均保留）
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ui-vault-visual-${{ github.run_id }}
           path: visual-output/
@@ -75,7 +75,7 @@ jobs:
         run: node scripts/preview-health.mjs --live
       - name: 上传已验证的站点产物
         if: github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: ui-vault-static
           path: dist
