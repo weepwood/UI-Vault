@@ -50,12 +50,11 @@ test('React iframe 管理与独立 Demo 发布保持分离',()=>{
  assert.match(toolbar,/data-preview-size={item.mode}/);
 });
 
-test('Backdrop Studio 仅获下载与全屏权限，其余本地 Demo 继续受限',()=>{
+test('React iframe 权限从经过验证的资产元数据生成',()=>{
  const preview=read('src/components/PreviewFrame.jsx');
- assert.match(preview,/const backdropStudio=asset\?\.id==='aurora-field'/);
- assert.match(preview,/allow-downloads/);
- assert.match(preview,/const sandbox=backdropStudio\?'allow-scripts allow-downloads':'allow-scripts'/);
+ assert.match(preview,/getPreviewPolicy\(asset\)/);
+ assert.match(preview,/sandbox=\{sandbox\}/);
  assert.match(preview,/allow=\{permissions\}/);
- assert.match(preview,/allowFullScreen=\{backdropStudio\}/);
- assert.match(preview,/backdropStudio\?'fullscreen'/);
+ assert.match(preview,/allowFullScreen=\{allowFullScreen\}/);
+ assert.doesNotMatch(preview,/allow-same-origin/);
 });

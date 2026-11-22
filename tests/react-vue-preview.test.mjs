@@ -100,5 +100,5 @@ test('FileAtlas 内嵌在线文件分析工作台，允许报告下载但保留�
   assert.match(markup,/referrerpolicy="no-referrer"/);
   assert.match(projectRowSubtitle(item,{}),/在线预览/);
   const reactPreview=await read('src/components/PreviewFrame.jsx');
-  assert.match(reactPreview,/asset\?\.id==='fileatlas-browser-ui'/);
+  assert.match(reactPreview,/getPreviewPolicy\(asset\)/);
 });

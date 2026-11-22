@@ -48,10 +48,10 @@
 
 ## 快速开始
 
-需要 Node 22+；主站使用 React 19 和 esbuild，先运行 `npm install`。
+需要 Node 22+；主站使用 React 19 和 esbuild，先运行 `npm ci`。
 
 ```bash
-npm install
+npm ci
 npm run dev                  # http://localhost:4173
 npm run new:demo -- components magnetic-button 磁吸按钮
 npm run new:reference -- ui-demo https://github.com/example/repo 参考设计
@@ -122,26 +122,19 @@ npm run check           # 完整 CI 等价检查
 
 **独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站内嵌其 [GitHub Pages 页面](https://weepwood.github.io/Emboss-Lab/)，并保留源代码链接。详见 [图标规范](docs/ICONOGRAPHY.md)。
 
-## 常驻双栏预览（v0.6）
+## 当前工作台结构（2026-11）
 
-主站已从“卡片画廊 + 弹出详情侧栏”改成**左侧项目目录、右侧实时预览**的两栏工作台：
+- **三栏**：导航与设置 / 项目目录 / 常驻 iframe 预览；移动端按需展开目录。
+- **统一 React 运行态**：`src/useWorkbench.js` 是 UI 状态协调点，`src/components/` 负责交互组件，`assets/core/` 保存纯逻辑。
+- **独立 Demo**：HTML、Vue、React 等项目保持自身技术栈；跨仓项目以受限 iframe 预览，失败时保留原站链接。
+- **资产协议**：`catalog/assets/*.json` 是唯一事实来源；权限通过 `previewCapabilities` 显式声明，`copyable` 只用于自包含单文件 HTML。
+- **发布**：`npm run check` 包括目录校验、测试、对比度审计、构建、产物校验；CI 还执行 Chromium 视觉回归。
 
-- 左侧固定 330px 左右，放置搜索、手工精调／跨仓／收藏筛选、分类、标签、项目目录及排序。
-- 右侧占满余下宽高，点击项目时直接切换可交互网页。项目说明与源码收在下方可展开区域，不再遮挡预览。
-- 预览设备：自适应、390px 手机、768px 平板、1280px 桌面；通过宽度模拟与缩放实现，支持页面直接交互。
-- 外部仓库若有经核实的 `siteUrl`，尝试在右侧嵌入，保留原站链接以处理跨域嵌入限制；无可嵌入网页时展示真实的源码与仓库来源，不伪造效果图。
-- 收藏、分类与搜索不要求重建右侧 iframe；资源链接 `?asset=<id>` 继续有效；移动端通过目录按钮切换，无弹出式详情抽屉。
-- 仍为纯静态项目；手工精调 Demo 完全独立，入口 URL 与单文件复制逻辑不变。
+## 工程协作与维护
 
-[双栏工作台技术说明](docs/TWO-PANE-WORKBENCH.md)。
+- [当前架构](docs/ARCHITECTURE.md) · [扩展指南](docs/EXTENDING.md) · [添加 Demo](docs/ADDING-DEMO.md)
+- [贡献流程](CONTRIBUTING.md) · [安全政策](SECURITY.md) · [第三方来源与授权](THIRD_PARTY_NOTICES.md) · [变更记录](CHANGELOG.md)
+- [工程路线图](docs/ROADMAP.md) · [分支治理与发布设置](docs/REPOSITORY-GOVERNANCE.md)
+- `npm run link:check`：在联网环境中核查已登记的外部演示链接，结果写入 `link-report.json` 和 `link-report.md`；定期工作流仅报告，不阻止部署。
 
-
-### GitHub Pages 资源缓存与错配防护
-
-静态构建自动为主站 CSS、JS 入口生成一致的内容指纹，并为 JS 模块依赖附加相同版本；避免旧 HTML、新 CSS 和新 JavaScript 混用造成的初始化异常。运行时也会检查双栏工作台所需节点，发现旧版缓存时只触发一次受控恢复。详情见 [双栏工作台缓存兼容说明](docs/TWO-PANE-WORKBENCH.md)。
-
-
-**顶部工具栏精简（v0.7）**：项目信息和设备模式集中在同一个 Topbar；右侧画布下面不再显示项目说明或统计文字。项目说明与源码通过 Topbar 的按钮打开带“说明／源代码”标签的居中弹窗，预览本身始终常驻右侧。
-
-
-**三栏工作台（v0.8）**：导航菜单（236px）／独立项目列表（320px）／主预览画布（剩余宽度）。在宽屏上三栏常驻，在手机上左两栏一起展开；各资源仍可在中间选中后于右侧实时交互，不重写任何独立 Demo。
+根目录没有对所有第三方素材作统一开源授权；不同资产的使用范围应以原始许可与仓库说明为准。

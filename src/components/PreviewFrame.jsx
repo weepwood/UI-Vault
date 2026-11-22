@@ -1,6 +1,7 @@
 import React,{memo,useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {applyPreviewLayout} from '../../assets/core/preview.js';
 import {resolveAsset} from '../../assets/core/render.js';
+import {getPreviewPolicy} from '../../assets/core/preview-policy.js';
 import {Icon} from './WorkbenchSelect.jsx';
 
 function previewUrl(asset){
@@ -22,14 +23,7 @@ const LOAD_TIMEOUT_MS=12000;
 function PreviewContent({asset,mode,error,loading}){
   const frame=useRef(null);
   const backdropStudio=asset?.id==='aurora-field';
-  const externalSandbox=asset?.id==='emboss-poster-lab'||asset?.id==='fileatlas-browser-ui'
-    ?'allow-scripts allow-forms allow-downloads'
-    :asset?.id==='fluxnav-start-page'
-      ?'allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox'
-      :'allow-scripts allow-forms';
-  const sandbox=backdropStudio?'allow-scripts allow-downloads':'allow-scripts';
-  const permissions=asset?.id==='liquid-orb'||asset?.id==='liquid-orb-thinking-dialog'
-    ? 'webgpu' : backdropStudio?'fullscreen':undefined;
+  const {sandbox,allow:permissions,allowFullScreen}=getPreviewPolicy(asset);
   const src=!asset?null:asset.source==='local'?previewUrl(asset):asset.siteUrl||null;
   // 记录“已加载完成的页面”，与当前页面比较即可得出是否在加载，切换项目时无需额外重置。
   // 只比较 # 之前的部分：仅改动 hash 时 iframe 不会重新加载，也不会触发 load 事件。
@@ -89,14 +83,14 @@ function PreviewContent({asset,mode,error,loading}){
       onLoad={updateFrameLayout}
       sandbox={sandbox}
       allow={permissions}
-      allowFullScreen={backdropStudio}
+      allowFullScreen={allowFullScreen}
       referrerPolicy="no-referrer"/>{progress}</>;
   }
   if(asset.siteUrl){
     return <><iframe className="live-frame" data-preview-frame="external"
       data-external-link-bridge={asset.externalLinkBridge===true?'true':undefined}
       title={asset.title+' 的外部网站'} src={asset.siteUrl} onLoad={markLoaded}
-      sandbox={externalSandbox} referrerPolicy="no-referrer"/>{progress}</>;
+      sandbox={sandbox} referrerPolicy="no-referrer"/>{progress}</>;
   }
   const href=asset.url||asset.originRepo;
   return <div className="preview-placeholder">

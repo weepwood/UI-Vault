@@ -1,9 +1,12 @@
 import { readFile, readdir, realpath, stat, writeFile } from 'node:fs/promises';
+import {readFileSync} from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, extname, join, relative, resolve, sep } from 'node:path';
 import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
+import {PREVIEW_CAPABILITIES} from '../../assets/core/preview-policy.js';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
+const ASSET_FIELDS=new Set(Object.keys(JSON.parse(readFileSync(new URL('../../catalog/asset.schema.json',import.meta.url),'utf8')).properties));
 export const ENTRY_DIR = join(ROOT, 'catalog', 'assets');
 export const MANIFEST_PATH = join(ROOT, 'content', 'assets.json');
 export const CATEGORY_PATH = join(ROOT, 'content', 'categories.json');
@@ -31,6 +34,7 @@ export function checkEntry(entry, categories, fileName='') {
   const errors=[];
   const where = entry && isText(entry.id) ? entry.id : fileName || '未知资产';
   if(!entry || typeof entry !== 'object' || Array.isArray(entry)) return [where+': 资产必须为对象'];
+  for(const key of Object.keys(entry))if(!ASSET_FIELDS.has(key))errors.push(where+': 未知资产字段 '+key);
   if(!SLUG.test(entry.id ?? '')) errors.push(where+': id 必须为英文小写 slug');
   if(fileName && entry.id+'.json' !== fileName) errors.push(where+': 文件名必须与 id 一致');
   if(!isText(entry.title) || !isText(entry.description)) errors.push(where+': 标题与描述不可为空');
@@ -43,6 +47,24 @@ export function checkEntry(entry, categories, fileName='') {
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
+  if(entry.copyable===true&&(
+    entry.source!=='local'||entry.preview!==entry.code||!entry.code?.endsWith('.html')||
+    (entry.publish?.length||0)>0||(entry.sourceFiles?.length||0)>0))
+    errors.push(where+': copyable 只允许无需附加发布文件、预览与源码相同的单文件 HTML Demo');
+  if(entry.previewCapabilities!==undefined){
+    const value=entry.previewCapabilities;
+    if(!Array.isArray(value)||value.length>4||new Set(value).size!==value.length||
+      !value.every(cap=>PREVIEW_CAPABILITIES.includes(cap)))
+      errors.push(where+': previewCapabilities 只能使用不重复的受限权限枚举');
+    else{
+      if(value.includes('popups')&&entry.source==='external'&&!entry.siteUrl)
+        errors.push(where+': 外部站点 popups 权限需要 siteUrl');
+      if((value.includes('webgpu')||value.includes('fullscreen'))&&entry.source!=='local')
+        errors.push(where+': webgpu/fullscreen 只允许本地预览');
+      if(entry.source==='external'&&!entry.siteUrl)
+        errors.push(where+': 外部站点权限需要 siteUrl');
+    }
+  }
   if(entry.externalLinkBridge !== undefined && typeof entry.externalLinkBridge !== 'boolean')
     errors.push(where+': externalLinkBridge 应为布尔值');
   if(entry.externalLinkBridge===true && (entry.source!=='external'||!entry.siteUrl))

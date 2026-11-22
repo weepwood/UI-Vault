@@ -1,0 +1,33 @@
+name: 外部演示链接巡检
+on:
+  schedule:
+    - cron: '17 4 * * 1'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check-links:
+    name: 核查已登记的站点链接（非阻断）
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: 检查外部站点可达性
+        run: node scripts/check-links.mjs
+      - name: 汇总结果
+        if: always()
+        run: |
+          if [ -f link-report.md ]; then cat link-report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: 保存巡检报告
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-vault-link-health
+          path: |
+            link-report.md
+            link-report.json
+          if-no-files-found: warn
+          retention-days: 14

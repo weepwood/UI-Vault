@@ -1,0 +1,29 @@
+name: Bug 报告
+description: 报告 UI-Vault 工作台或某个 Demo 的可复现问题
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: input
+    id: asset
+    attributes:
+      label: 相关资产 ID 或页面链接
+      placeholder: 例如 liquid-orb / ?asset=liquid-orb
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 包含操作路径、输入、预期行为和实际行为
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: 浏览器与系统
+      placeholder: 例如 Windows 11 / Chrome 109
+  - type: textarea
+    id: details
+    attributes:
+      label: 截图、日志或其他信息
+      description: 不要提交密钥、私人文件或可利用漏洞细节

@@ -55,16 +55,17 @@ test('技能手册仅展示指令而不主动执行第三方脚本',async()=>{
 });
 
 
-test('本地设计资源 iframe 允许受控的外站新标签页',async()=>{
-  const workbench=await readFile(join(ROOT,'assets/core/workbench.js'),'utf8');
-  const legacy=await readFile(join(ROOT,'assets/core/render.js'),'utf8');
-  for(const source of [workbench,legacy]) {
-    assert.ok(source.includes("type==='resource'"));
-    assert.ok(source.includes('allow-popups allow-popups-to-escape-sandbox'));
-    assert.ok(!source.includes('allow-same-origin'));
+test('本地设计资源通过清单获得受控的新标签页权限',async()=>{
+  const {getPreviewPolicy}=await import('../assets/core/preview-policy.js');
+  const items=JSON.parse(await readFile(join(ROOT,'content/assets.json'),'utf8'));
+  for(const id of ['design-resource-library','design-skill-handbook','browser-flags-guide']){
+    const item=items.find(x=>x.id===id);
+    assert.ok(item);
+    const policy=getPreviewPolicy(item);
+    assert.equal(policy.sandbox,'allow-scripts allow-popups allow-popups-to-escape-sandbox');
+    assert.doesNotMatch(policy.sandbox,/allow-same-origin/);
   }
 });
-
 
 test('React 导航为设计资源提供 Lucide 图标',async()=>{
   const jsx=await readFile(join(ROOT,'src/components/CategoryNavigation.jsx'),'utf8');

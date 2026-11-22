@@ -1,3 +1,4 @@
+import {getPreviewPolicy} from './preview-policy.js';
 import { iconMarkup } from './icons.js';
 import { escapeHtml, resolveAsset } from './render.js';
 
@@ -59,17 +60,19 @@ export function projectInfoMarkup(asset,labels) {
 // 没有可嵌入的站点时展示来源说明，不使用虚构的网站截图。
 export function projectPreviewMarkup(asset) {
   const title=safe(asset.title);
+  const policy=getPreviewPolicy(asset);
+  const allow=policy.allow?' allow="'+safe(policy.allow)+'"':'';
   if(asset.source==='local') {
-    const gpuAllow=['liquid-orb','liquid-orb-thinking-dialog'].includes(asset.id)?' allow="webgpu"':'';
     return '<iframe class="live-frame" data-preview-frame="local" title="'+title+' 的可交互预览"'+
-      ' src="'+safe(resolveAsset(asset.preview))+'"'+gpuAllow+' sandbox="'+(asset.type==='resource'?'allow-scripts allow-popups allow-popups-to-escape-sandbox':'allow-scripts')+'" referrerpolicy="no-referrer"></iframe>';
+      ' src="'+safe(resolveAsset(asset.preview))+'"'+allow+
+      ' sandbox="'+policy.sandbox+'"'+(policy.allowFullScreen?' allowfullscreen':'')+
+      ' referrerpolicy="no-referrer"></iframe>';
   }
   if(asset.siteUrl) {
-    const sandbox=['emboss-poster-lab','fileatlas-browser-ui'].includes(asset.id)
-      ?'allow-scripts allow-forms allow-downloads':'allow-scripts allow-forms';
     return '<iframe class="live-frame" data-preview-frame="external" title="'+title+' 的外部网站"'+
       (asset.externalLinkBridge===true?' data-external-link-bridge="true"':'')+
-      ' src="'+safe(asset.siteUrl)+'" sandbox="'+sandbox+'" referrerpolicy="no-referrer"></iframe>';
+      ' src="'+safe(asset.siteUrl)+'"'+allow+' sandbox="'+policy.sandbox+
+      '" referrerpolicy="no-referrer"></iframe>';
   }
   const href=asset.url||asset.originRepo;
   return '<div class="preview-placeholder">'+iconMarkup('git-branch')+

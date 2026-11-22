@@ -1,52 +1,96 @@
-# UI Vault v0.2 架构
+# UI-Vault 当前架构
 
-## 目标
+更新：2026-11-23。本文描述当前主分支之后本轮工程治理 PR 中的实际设计；历史阶段说明保留在 Git 历史与 `DESIGN-HISTORY.md` 中。
 
-长期积累可运行 UI、组件、交互动效和设计参考，同时保留小 Demo 独立运行、大项目独立仓库的能力。
+## 项目定位
 
-## 分层目录
+UI-Vault 是公开的静态 UI 资产库、交互实验室与跨仓预览工作台。主站使用 React 19 + esbuild；本地 Demo 和外部链接保留各自框架。避免为每个 Demo 增加主工作台特例。
+
+## 运行时结构
 
 ```text
-UI-Vault/
-  catalog/assets/          每条资产独立 JSON（唯一事实来源）
-  content/assets.json      自动生成公开索引（兼容原访问地址）
-  content/categories.json  可扩展类别配置
-  content/tokens/          共享设计令牌
-  demos/                   独立 Demo 与静态构建产物
-  media/                   授权封面（可选）
-  assets/app.js            DOM 事件与页面装载
-  assets/core/             纯检索、渲染、收藏模块
-  scripts/lib/catalog.mjs  元数据与路径验证协议
-  scripts/new-demo.mjs     新建 Demo
-  scripts/new-reference.mjs 外部收藏
-  scripts/catalog.mjs      生成清单
-  scripts/build.mjs        白名单静态构建
-  scripts/check-dist.mjs   发布目录完整性检测
-  tests/                   Node 单元测试
+index.html  （三栏外壳、初始回退 DOM）
+  └─ assets/app.js  （加载/版本错配保护）
+       └─ assets/react-workbench.js  （esbuild 构建）
+            ├─ src/react-workbench.jsx   React 单根 + Portals
+            ├─ src/useWorkbench.js       useReducer + Effects
+            ├─ src/components/          目录、预览、菜单、设置和 Dialog
+            └─ assets/core/             可测试的纯函数
+                 ├─ catalog.js          搜索/排序/过滤
+                 ├─ workbench-state.js  状态转换
+                 ├─ workbench-router.js 浏览器深链接
+                 ├─ favorites.js        收藏持久化
+                 ├─ settings.js         偏好持久化
+                 ├─ preview-policy.js   iframe 权限白名单
+                 └─ source-files.js     源码清单和下载
 ```
 
-## 演进约束
+界面分成导航、项目目录、主预览三个区域。React 通过原有 DOM 锚点 Portal 挂载，保留现有 CSS、屏幕适配和 URL。主状态由 `useWorkbench` 管理，不应再把全局事件或业务状态写回 `assets/app.js`。
 
-- **增加新资产**：只需元数据 + Demo 源码，不修改主应用。
-- **增加分类**：编辑 categories.json，页面按配置生成导航。
-- **增加 UI 能力**：对应 core 模块 + 测试，避免 app.js 回到单体。
-- **保持兼容**：已发布 Demo URL、资产 ID、收藏存储不变。
-- **安全发布**：只将必要文件写入 dist，外部页面不绕过 iframe CSP。
-- **多文件**：仅发布编译后入口和依赖列表，源码从 GitHub 查看。
-- **后续重点**：截图自动生成、Token 编辑器、独立 Demo 打包适配器和 Agent DESIGN.md 导出。
+预览区保持 iframe 节点稳定：收藏、搜索、设置变化不应重载当前 Demo。外部页面不能被强行要求适配主站框架。
 
-完整参考：[EXTENDING.md](EXTENDING.md)。
+## 资产协议
 
+```text
+catalog/assets/*.json + content/categories.json
+               │
+               ▼
+scripts/lib/catalog.mjs  （校验 / 文件存在性 / 来源限制）
+               │
+               ▼
+scripts/catalog.mjs sync
+               │
+               ▼
+content/assets.json      （自动生成，按 id 排序）
+               │
+               ▼
+assets/core/catalog.js → React 工作台
+               │
+               ▼
+scripts/build.mjs        （白名单静态发布）
+               │
+               ▼
+dist/ → GitHub Pages
+```
 
-## v0.6：左侧项目目录 / 右侧常驻预览
+`catalog/asset.schema.json` 定义可接受字段；`scripts/lib/catalog.mjs` 执行运行时及跨字段验证。两个文件需要一起更新，严禁直接编辑生成的 `content/assets.json`。
 
-主站的 `index.html` 是常驻双栏结构；`assets/app.js` 管理目录筛选、焦点、历史状态和唯一的当前预览；`assets/core/workbench.js` 是项目行、资源信息与真实 iframe 的纯渲染模块。
+`source=local` 的资源由 `preview` 指向本地 Demo HTML；`source=external` 可登记真实存在的 `siteUrl`，在 iframe 加载失败或被 CSP 拦截时保留原站链接。
 
-- `aside#sidebar`：搜索、分类、收藏、手工精调和项目列表；项目列表内部滚动。
-- `main#main`：标题操作栏、固定视口选择、`section#preview-stage`、原位展开的源代码/来源说明。
-- 点击项目仅替换 `#preview-stage` 的内容并更改历史 URL；不会重新绘制整个主站。
-- 本仓 Demo 在 `iframe sandbox="allow-scripts"` 内直接运行，预览容器通过 ResizeObserver + CSS transform 调整模拟设备宽度。
-- 外部站点仅在可信资产清单含 `siteUrl` 时尝试沙箱 iframe，可能被对方拒绝；没有站点时展示原仓库引用，避免误导性缩略图。
-- `?asset=<id>` 深链接、收藏数据和各 Demo 路径保持兼容。手机通过菜单开启目录，但大面积预览始终在主页面。
+`previewCapabilities` 只允许受限的 `downloads`、`popups`、`fullscreen`、`webgpu`。所有默认 iframe 都使用 opaque origin，不得附加 `allow-same-origin`。需要高权限能力的完整应用，应在原站独立运行而不是扩权内嵌。
 
-所有新功能应以右侧交互预览为中心，不重新引入遮罩式详情抽屉。
+## 源码与设计基础
+
+- `assets/styles.css` 和 `assets/ui/*.css` 提供工作台样式；`DESIGN.md` 记录当前设计规则。
+- `subprojects/ui-foundation-kit/` 提供跨项目 Token 与样式基础，不应直接与业务型 Workbench 组件混同。
+- `demos/components/workbench-system/` 展示工作台真实 React 组件，避免生产组件和展示代码分叉。
+- 多文件 Demo 使用 `sourceFiles` 显式列出允许查看/下载的文件；`copyable:true` 仅用于真正自包含的单文件 HTML。
+- 外部网站、素材与组件来源必须保留链接和权利说明；相关登记见 `THIRD_PARTY_NOTICES.md`。
+
+## 测试与发布
+
+```text
+npm ci
+npm run check
+  ├─ 资产目录验证
+  ├─ Node 单元 / 协议回归
+  ├─ 设计对比度审计
+  ├─ React + 图鉴 + 字体构建
+  └─ dist 完整性检查
+
+.github/workflows/deploy.yml
+  ├─ 上述检查
+  ├─ Chromium 截图与浏览器交互回归
+  └─ main push 后发布 Pages
+
+.github/workflows/link-check.yml
+  └─ 每周报告外部 siteUrl 可达性（不阻断发布）
+```
+
+主站的 `dist/` 由白名单生成，不能直接发布整个仓库。旧 Demo URL、`?asset=` 深链接与本地偏好键应保持兼容。
+
+## 暂不引入的复杂度
+
+不统一迁移所有 HTML/Vue/React Demo，不建立账号系统，不要求数据库，不自动抓取私有仓库，不把第三方设计参考当作已授权可安装组件。
+
+进一步的组件行为测试、无障碍审计、性能预算和多技术栈安装支持见 `ROADMAP.md`。
