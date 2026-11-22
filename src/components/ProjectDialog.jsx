@@ -6,6 +6,7 @@ import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {getSourceFiles,downloadSourceText} from '../../assets/core/source-files.js';
 import {getRepositoryArchiveUrl,getStandaloneBundlePath} from '../../assets/core/project-delivery.js';
 import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
+import {DesignGuide} from './DesignGuide.jsx';
 
 function sourceLink(asset,file){
   if(!asset)return 'https://github.com/weepwood/UI-Vault';
@@ -151,11 +152,11 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   function tabKeys(event){
     if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
     event.preventDefault();
-    const tabs=['overview','source','page-info'];
+    const tabs=asset?.designGuideUrl?['overview','source','page-info','design-guide']:['overview','source','page-info'];
     const index=tabs.indexOf(tab);
     const next=event.key==='Home'?tabs[0]:event.key==='End'?tabs.at(-1):tabs[(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];
     setTab(next);
-    document.getElementById(next==='source'?'tab-source':next==='page-info'?'tab-page-info':'tab-overview')?.focus();
+    document.getElementById('tab-'+next)?.focus();
   }
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
@@ -193,6 +194,11 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
         tabIndex={tab==='page-info'?0:-1} onClick={()=>setTab('page-info')}>
         <Icon name="info"/><span>页面信息</span>
       </button>
+      {asset?.designGuideUrl&&<button id="tab-design-guide" type="button" role="tab" data-info-tab="design-guide"
+        aria-selected={String(tab==='design-guide')} aria-controls="dialog-design-guide"
+        tabIndex={tab==='design-guide'?0:-1} onClick={()=>setTab('design-guide')}>
+        <Icon name="file-text"/><span>Design.md</span>
+      </button>}
     </div>
     <section id="dialog-overview" className="dialog-pane" role="tabpanel"
       aria-labelledby="tab-overview" tabIndex={0} hidden={tab!=='overview'}>
@@ -258,5 +264,9 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
       <ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
+    {asset?.designGuideUrl&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"
+      aria-labelledby="tab-design-guide" tabIndex={0} hidden={tab!=='design-guide'}>
+      {tab==='design-guide'&&<DesignGuide asset={asset} onCopyText={onCopyText} notify={notify}/>}
+    </section>}
   </div>,root);
 }

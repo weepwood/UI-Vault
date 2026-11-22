@@ -118,3 +118,36 @@
 .project-health-action:hover,.project-health-action:focus-visible{text-decoration-color:currentColor}
 .project-health-footnote{margin:0;font-size:10px;line-height:1.65;color:var(--muted)}
 @media(max-width:480px){.project-health-facts{grid-template-columns:1fr}}
+
+
+/* Design.md：原文按需读取，在同一个项目弹窗中排版，不新增嵌套页面。 */
+.design-guide-pane{flex:1 1 auto;overflow:auto}
+.design-guide-view{display:flex;flex-direction:column;gap:18px;min-width:0}
+.design-guide-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-bottom:12px;border-bottom:1px solid var(--line)}
+.design-guide-toolbar-title{display:flex;flex-direction:column;gap:3px}
+.design-guide-toolbar-title strong{font:650 12px/1.5 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--ink)}
+.design-guide-toolbar-title span{color:var(--muted);font-size:11px}
+.design-guide-state{padding:28px 8px;color:var(--muted);font-size:13px;line-height:1.8}
+.design-guide-state strong{color:var(--ink)}
+.design-guide-state button{border:1px solid var(--line);border-radius:6px;padding:7px 12px;color:var(--accent);background:var(--surface)}
+.design-guide-markdown{max-width:700px;width:100%;margin:0 auto;color:var(--text);font-size:12px;line-height:1.9;overflow-wrap:anywhere}
+.design-guide-markdown h1,.design-guide-markdown h2,.design-guide-markdown h3,.design-guide-markdown h4{color:var(--ink);letter-spacing:-.02em;line-height:1.45}
+.design-guide-markdown h1{font-size:22px;margin:0 0 16px}
+.design-guide-markdown h2{font-size:17px;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line-soft)}
+.design-guide-markdown h3{font-size:14px;margin:22px 0 9px}
+.design-guide-markdown h4{font-size:12px;margin:17px 0 7px}
+.design-guide-markdown p{margin:9px 0 14px}
+.design-guide-markdown ul,.design-guide-markdown ol{padding-left:22px;margin:10px 0 16px}
+.design-guide-markdown li{padding-left:2px;margin:4px 0}
+.design-guide-markdown a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+.design-guide-markdown :not(pre)>code{font:11px/1.7 ui-monospace,SFMono-Regular,Consolas,monospace;padding:2px 4px;background:var(--canvas);border-radius:3px}
+.design-guide-markdown pre{white-space:pre;overflow:auto;padding:13px 15px;margin:13px 0 19px;border:1px solid var(--line);border-radius:7px;background:var(--canvas);color:var(--ink);font:11px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;tab-size:2}
+.design-guide-markdown pre code{font:inherit}
+.design-guide-markdown blockquote{border-left:2px solid var(--accent);padding:4px 0 4px 13px;margin:14px 0;color:var(--muted)}
+.design-guide-markdown hr{border:0;border-top:1px solid var(--line);margin:24px 0}
+.guide-table-scroll{width:100%;overflow-x:auto;margin:12px 0 20px;border:1px solid var(--line);border-radius:7px}
+.guide-table-scroll table{border-collapse:collapse;min-width:100%;font-size:11px;line-height:1.65}
+.guide-table-scroll th,.guide-table-scroll td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line-soft);vertical-align:top}
+.guide-table-scroll th{color:var(--ink);background:var(--canvas);font-weight:650}
+.guide-table-scroll tr:last-child td{border-bottom:0}
+@media(max-width:560px){.dialog-tabs{padding:0 10px;gap:0}.dialog-tabs button{padding:10px 8px;gap:4px;font-size:11px}.dialog-tabs .ui-icon{width:13px;height:13px}.design-guide-toolbar .source-buttons{width:auto}}
