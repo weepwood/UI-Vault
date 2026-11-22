@@ -3,6 +3,19 @@ import {applyPreviewLayout} from '../../assets/core/preview.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {Icon} from './WorkbenchSelect.jsx';
 
+function previewUrl(asset){
+  const orb = asset.id === 'liquid-orb' || asset.id === 'liquid-orb-thinking-dialog';
+  if(!orb) return resolveAsset(asset.preview);
+  // Use the lower-cost shader in the workbench. The standalone demo retains
+  // its independent quality setting, and the legacy dialog URL still redirects.
+  const path = asset.id === 'liquid-orb-thinking-dialog'
+    ? 'demos/components/liquid-orb/index.html' : asset.preview;
+  const url = new URL(resolveAsset(path),document.baseURI);
+  url.searchParams.set('quality','eco');
+  if(asset.id === 'liquid-orb-thinking-dialog') url.hash = 'dialog';
+  return url.href;
+}
+
 function PreviewContent({asset,mode,error}){
   const frame=useRef(null);
   useLayoutEffect(()=>{
@@ -26,7 +39,7 @@ function PreviewContent({asset,mode,error}){
   }
   if(asset.source==='local'){
     return <iframe ref={frame} className="live-frame" data-preview-frame="local"
-      title={asset.title+' 的可交互预览'} src={resolveAsset(asset.preview)}
+      title={asset.title+' 的可交互预览'} src={previewUrl(asset)}
       sandbox="allow-scripts"
       allow={asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog'?'webgpu':undefined}
       referrerPolicy="no-referrer"/>;
