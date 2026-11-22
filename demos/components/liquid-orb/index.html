@@ -186,7 +186,7 @@
     --surface-hover:#42304f;--surface-selected:#583f6b;--accent:#dbb7fa;
     --pill-a:#32243f;--pill-b:#160f24;--pill-border:#a384b981;--pill-ink:#fff3ff;
     --page-grid:#e1c1ff08;--modal-scrim:#12091dcf}
-  body[data-theme=paper]{--page-bg:#f3f2ed;--page-glow-a:#b7d2db70;--page-glow-b:#e5cdad70;
+  body[data-theme=paper]{color-scheme:light;--page-bg:#f3f2ed;--page-glow-a:#b7d2db70;--page-glow-b:#e5cdad70;
     --ink:#24303b;--muted:#647181;--border:#c4ced1;--surface:#ffffffd9;
     --surface-hover:#e5edf0;--surface-selected:#d9e6eb;--accent:#315a72;
     --pill-a:#f0f2f1;--pill-b:#dce4e8;--pill-border:#a8b9c2d9;--pill-ink:#243746;
@@ -200,6 +200,9 @@
   .page-heading{display:flex;flex-direction:column;gap:5px}
   .page-heading h1{font-size:21px;letter-spacing:-.045em}
   .sub{margin:0;color:var(--muted)}
+  .orb-loading,.orb-loading-label,.orb-progress-caption{color:var(--muted)}
+  .orb-track{background:var(--surface);border-color:var(--border)}
+  .size-backdrop:not([hidden]){background:var(--modal-scrim)}
   .header-tools{display:flex;align-items:center;gap:18px;margin-left:auto}
   #engine{color:var(--muted);font-variant-numeric:tabular-nums}
   .theme-control{display:flex;align-items:center;gap:10px}
@@ -429,11 +432,26 @@
     let underBudgetWindows = 0, overBudgetWindows = 0;
     let lastQualityChangeAt = performance.now();
     let highPipelineUnavailable = false;
+    let highPipelineReady = false;
     let ensureHighPipeline = () => {};
     const qualityLabels = { eco: "节能", balanced: "均衡", high: "高质量" };
     const qualitySelect = document.querySelector("#quality-mode");
     const qualityStatus = document.querySelector("#quality-status");
+    const qualityPicker = document.querySelector("#quality-picker");
+    const qualityTrigger = document.querySelector("#quality-trigger");
+    const qualityMenu = document.querySelector("#quality-menu");
+    const qualityBackdrop = document.querySelector("#quality-backdrop");
+    const qualityCurrent = document.querySelector("#quality-current");
+    const qualityItems = [...qualityMenu.querySelectorAll("[role=option]")];
     qualitySelect.value = qualityMode.current;
+    function syncQualityMenu(value) {
+      const option = qualitySelect.querySelector('option[value="' + value + '"]');
+      qualityCurrent.textContent = option?.textContent || value;
+      for (const item of qualityItems) {
+        item.setAttribute("aria-selected", String(item.dataset.quality === value));
+      }
+    }
+    syncQualityMenu(qualityMode.current);
     function renderDpr() {
       // Explicit "high" must match the initial WebGPU renderer's 1.5 DPR
       // output, without the later 900k-pixel budget or iframe display scaling.
@@ -452,7 +470,10 @@
     function updateQualityStatus() {
       const label = (qualityMode.current === "auto" ? "自动 · " : "") + qualityLabels[quality] +
         " · " + targetFps + " FPS / " + renderDpr().toFixed(2) + "×";
-      if (qualityStatus.textContent !== label) qualityStatus.textContent = label;
+      const highStatus = quality === "high"
+        ? highPipelineUnavailable ? " · 高清折射不可用" : !highPipelineReady ? " · 加载原始光学…" : " · 原始精度"
+        : "";
+      if (qualityStatus.textContent !== label + highStatus) qualityStatus.textContent = label + highStatus;
       qualityStatus.title = highPipelineUnavailable && quality === "high"
         ? "高质量折射不支持，已使用兼容的普通折射"
         : "当前档位、目标帧率和画布像素倍率（非实际 FPS）";
@@ -483,6 +504,7 @@
       if (chosen === "high") ensureHighPipeline();
       underBudgetWindows = overBudgetWindows = 0;
       qualitySelect.value = next;
+      syncQualityMenu(next);
       updateQualityStatus();
       requestDraw();
       try {
@@ -530,6 +552,31 @@
     let requestDraw = () => {};
     const embedded = new URLSearchParams(location.search).get("embed") === "1";
     if (embedded) document.body.classList.add("embed");
+    const themeNames = ["graphite", "ocean", "plum", "paper"];
+    const themeButtons = [...document.querySelectorAll("[data-theme-preset]")];
+    const themeKey = "ui-vault:liquid-orb-theme";
+    const urlTheme = new URLSearchParams(location.search).get("theme");
+    let savedTheme = null;
+    try { savedTheme = localStorage.getItem(themeKey); } catch { /* sandboxed iframe */ }
+    function applyTheme(name, persist = true) {
+      if (!themeNames.includes(name)) return;
+      document.body.dataset.theme = name;
+      for (const button of themeButtons) {
+        button.setAttribute("aria-pressed", String(button.dataset.themePreset === name));
+      }
+      if (!persist) return;
+      try { localStorage.setItem(themeKey, name); } catch { /* optional storage */ }
+      try {
+        const url = new URL(location.href);
+        url.searchParams.set("theme", name);
+        history.replaceState(null, "", url.pathname + url.search + url.hash);
+      } catch { /* opaque iframe origin */ }
+    }
+    applyTheme(themeNames.includes(urlTheme) ? urlTheme
+      : themeNames.includes(savedTheme) ? savedTheme : "graphite", false);
+    for (const button of themeButtons) {
+      button.addEventListener("click", () => applyTheme(button.dataset.themePreset));
+    }
     const loadingLabel = document.querySelector("#orb-loading-label");
     const loadingTrack = document.querySelector("#orb-progress");
     const loadingFill = document.querySelector("#orb-progress-fill");
@@ -759,6 +806,8 @@
             entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
           });
           highPipeline = compiled;
+          highPipelineReady = true;
+          updateQualityStatus();
           requestDraw();
         })().catch(error => {
           highPipelineUnavailable = true;
@@ -1081,6 +1130,7 @@
       if (isEmbedMode || (mode !== "orb" && mode !== "dialog")) return;
       document.body.classList.toggle("dialog-mode", mode === "dialog");
       closeSizeMenu();
+      closeQualityMenu();
       for (const tab of document.querySelectorAll("[data-showcase]")) {
         const selected = tab.dataset.showcase === mode;
         tab.setAttribute("aria-selected", String(selected));
@@ -1112,6 +1162,7 @@
       if (restoreFocus) sizeTrigger.focus({preventScroll:true});
     }
     function openSizeMenu(focus="selected") {
+      closeQualityMenu();
       const isMobile = matchMedia("(max-width:620px)").matches;
       sizePicker.classList.add("is-open");
       if (isMobile) {
@@ -1141,6 +1192,7 @@
       if (isEmbedMode || modal.open) return;
       changeShowcase("dialog");
       closeSizeMenu();
+      closeQualityMenu();
       modalSlot.appendChild(presentation);
       modal.showModal();
       modalClose.focus();
@@ -1160,6 +1212,67 @@
         document.querySelector('[data-showcase="'+next+'"]').focus();
       });
     });
+    function closeQualityMenu({restoreFocus=false}={}) {
+      qualityPicker.classList.remove("is-open");
+      qualityMenu.hidden = true;
+      qualityMenu.classList.remove("is-sheet");
+      qualityBackdrop.hidden = true;
+      if (qualityMenu.parentElement !== qualityPicker) qualityPicker.appendChild(qualityMenu);
+      qualityTrigger.setAttribute("aria-expanded", "false");
+      if (restoreFocus) qualityTrigger.focus({preventScroll:true});
+    }
+    function openQualityMenu(focus="selected") {
+      closeSizeMenu();
+      qualityPicker.classList.add("is-open");
+      if (matchMedia("(max-width:620px)").matches) {
+        qualityMenu.classList.add("is-sheet");
+        document.body.appendChild(qualityMenu);
+        qualityBackdrop.hidden = false;
+      }
+      qualityMenu.hidden = false;
+      qualityTrigger.setAttribute("aria-expanded", "true");
+      const active = qualityItems.findIndex(item => item.dataset.quality === qualitySelect.value);
+      const index = focus === "first" ? 0 : focus === "last" ? qualityItems.length - 1 : Math.max(active,0);
+      qualityItems[index]?.focus({preventScroll:true});
+    }
+    function setMenuQuality(value) {
+      chooseQualityMode(value);
+      closeQualityMenu({restoreFocus:true});
+    }
+    qualityTrigger.addEventListener("click", () => qualityMenu.hidden
+      ? openQualityMenu() : closeQualityMenu({restoreFocus:true}));
+    qualityTrigger.addEventListener("keydown", event => {
+      if (!["ArrowDown","ArrowUp","Home","End"].includes(event.key)) return;
+      event.preventDefault();
+      openQualityMenu(event.key === "ArrowUp" || event.key === "End" ? "last" : "first");
+    });
+    for (const item of qualityItems) {
+      item.addEventListener("click", () => setMenuQuality(item.dataset.quality));
+      item.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
+          event.preventDefault();event.stopPropagation();closeQualityMenu({restoreFocus:true});return;
+        }
+        if (event.key === "Tab") { closeQualityMenu();return; }
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();setMenuQuality(item.dataset.quality);return;
+        }
+        if (!["ArrowDown","ArrowUp","Home","End"].includes(event.key)) return;
+        event.preventDefault();
+        const current = qualityItems.indexOf(item);
+        const index = event.key === "Home" ? 0 : event.key === "End" ? qualityItems.length - 1
+          : (current + (event.key === "ArrowDown" ? 1 : -1) + qualityItems.length) % qualityItems.length;
+        qualityItems[index].focus({preventScroll:true});
+      });
+    }
+    document.addEventListener("pointerdown", event => {
+      if (!qualityPicker.contains(event.target) && !qualityMenu.contains(event.target)) closeQualityMenu();
+    });
+    document.addEventListener("focusin", event => {
+      if (!qualityPicker.contains(event.target) && !qualityMenu.contains(event.target)) closeQualityMenu();
+    });
+    qualityBackdrop.addEventListener("click", () => closeQualityMenu({restoreFocus:true}));
+    window.addEventListener("resize", () => { if (!qualityMenu.hidden) closeQualityMenu(); });
+
     nativeSize.addEventListener("change", event => setDialogSize(event.target.value));
     sizeTrigger.addEventListener("click", () => sizeMenu.hidden ? openSizeMenu() : closeSizeMenu({restoreFocus:true}));
     sizeTrigger.addEventListener("keydown", event => {
