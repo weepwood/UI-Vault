@@ -180,7 +180,7 @@
         ],
         "properties": {
           "path": {
-            "$ref": "#/$defs/demoPath"
+            "$ref": "#/$defs/sourcePath"
           },
           "label": {
             "type": "string",
@@ -267,6 +267,10 @@
     "demoPath": {
       "type": "string",
       "pattern": "^demos/[a-zA-Z0-9_./-]+$"
+    },
+    "sourcePath": {
+      "type": "string",
+      "pattern": "^(demos|subprojects)/[a-zA-Z0-9_./-]+$"
     }
   },
   "additionalProperties": true
