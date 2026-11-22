@@ -39,7 +39,7 @@ test('组件控制 API 与内联 JavaScript 语法', () => {
   for (const method of ['setState','setAudioBands','setPlaying','setGlass','setSpeed'])
     assert.ok(html.includes(method), method);
   assert.match(html, /playing = !reducedMotion.matches/);
-  assert.match(html, /1000 \/ 40/);
+  assert.match(html, /1000 \/ targetFps/);
   const script = html.match(/<script type="module">([\s\S]*?)<\/script>/);
   assert.ok(script);
   assert.doesNotThrow(() => new Script(script[1], { filename:'liquid-orb.js' }));

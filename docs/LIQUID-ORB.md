@@ -52,3 +52,21 @@
 UI-Vault 主站仅对这两个原有玻璃球资产的 iframe 配置 `allow="webgpu"`。仍然只使用 `sandbox="allow-scripts"`（不授予 `allow-same-origin`），独立 iframe 之间通过检查来源窗口的 `postMessage` 协作。单文件渲染器仍保留 `window.liquidOrb` 的原始命令接口。
 
 原始 WGSL 与两组 uniform 来自用户上传文件，未明确其第三方许可；不额外宣称开放授权。
+
+## WebGPU 性能优化（2026-11-22）
+
+- **默认均衡档**：直接打开统一演示使用 `quality=balanced`，目标 30 FPS，DPR 上限 1.0；如果没有提供参数，也默认此档。
+- **节能档**：`?quality=eco`，目标 20 FPS，DPR 上限 0.75。UI-Vault 工作台 iframe 和独立复用思考对话框默认使用它，以免拖慢整个工作台。
+- **高质量档**：`?quality=high`，目标 40 FPS、DPR 上限 1.5，并开启原版三通道折射采样；适合独立展示、GPU 余量充足时使用。
+- 普通与节能档将原来每像素三次完整流体求值改为一次主采样，并在边缘使用轻量色散近似；高质量档保留三通道玻璃折射。
+- 启动仅异步编译基础玻璃渲染管线；粒子丝带管线进入相应样式时才编译。粒子实例上限根据档位限制。
+- 每次渲染等待上一批 GPU 命令提交完成后再继续调度，不持续向繁忙 GPU 排队；采集 GPU 队列完成延迟并在持续超预算时自动降低 DPR，之后必要时将 FPS 降至 20/15。**该延迟不是 GPU timestamp-query 的精确耗时**。
+- Canvas 不在当前视口、浏览器标签页不可见或组件关闭时停止连续绘制。重新进入视口后恢复；`pagehide` 与渲染失败时释放资源并解绑可见性观察器。
+- 可通过 `window.liquidOrb.getPerformance()` 查看当前质量档、目标 FPS、实际使用的像素倍率、可见状态和 GPU 提交状态，用于 DevTools 排查。
+- 质量参数在初始化时确定，修改 URL 的 `quality` 需要重新加载。未改变 `setState`、`setPlaying`、`setGlass` 等既有复用接口。
+
+### 性能验收
+
+分别以 `?quality=eco#dialog`、`?quality=balanced#dialog` 和 `?quality=high#dialog` 打开单页，观察交互响应、帧率、GPU 使用与首帧时间。还要对比 UI-Vault 工作台内部预览，验证项目切换或隐藏预览后 GPU 活动停止。
+
+注意：自动降级是保守的排队完成延迟反馈策略；在设备上实际测得的 GPU 绘制耗时、浏览器硬件加速配置和多个 WebGPU 页面的资源竞争仍需用 Chrome DevTools 或其他工具验证，不能仅凭静态测试宣称达到某个 FPS。
