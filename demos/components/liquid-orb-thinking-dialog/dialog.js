@@ -3,7 +3,7 @@
  * <script src="./dialog.js"></script>  =>  window.createLiquidOrbDialog({...})
  */
 const CHANNEL = 'ui-vault/liquid-orb';
-const ORB_URL = new URL('../liquid-orb/index.html?embed=1&quality=eco', document.currentScript?.src || document.baseURI).href;
+const ORB_URL = new URL('../liquid-orb/index.html?embed=1&quality=auto', document.currentScript?.src || document.baseURI).href;
 const VALID_STATES = new Set(['idle', 'thinking']);
 
 function createLiquidOrbDialog({
