@@ -67,6 +67,14 @@ npm run new:reference -- example-ui https://github.com/example/repo 参考项目
 
 如果引用的第三方图像、字体或 UI 资源尚无明确再分发许可，保留外部参考链接、记录待核实状态，不应擅自将其打包成可下载组件。
 
+## 项目独立性与分发
+
+UI-Vault 优先作为项目索引，不强制所有 React/Vue/HTML 项目共享同一个工具链。源码弹窗对独立 GitHub 仓库提供整仓 ZIP 快照；子目录项目仍会下载整个仓库。
+
+本地多文件 Demo 如经人工确认可独立运行及素材可分发，可增加 `bundleFiles`（完整运行文件白名单），由构建器输出可离线保存的 `downloads/<id>.zip`。`sourceFiles` 仍只代表允许浏览的文件；二者不能混同。不要将需要 UI-Vault React 业务模块或跨 Demo 相对路径依赖的页面标记为独立 ZIP。
+
+详见 [多框架管理与独立交付规范](MULTI-FRAMEWORK.md)。
+
 ## 主站新功能应放在哪
 
 | 需求 | 代码位置 |

@@ -60,4 +60,8 @@ test('React 源码弹窗具有文件选择、按文件读取、复制和下载',
   assert.match(dialog,/source\.path===selectedFile\?\.path/);
   assert.match(dialog,/id="source-download"/);
   assert.match(dialog,/downloadSourceText\(source\.text,selectedFile\.name\)/);
+  assert.match(dialog,/getStandaloneBundlePath\(asset\)/);
+  assert.match(dialog,/getRepositoryArchiveUrl\(asset\)/);
+  assert.match(dialog,/id="source-bundle"/);
+  assert.match(dialog,/id="source-repo-archive"/);
 });

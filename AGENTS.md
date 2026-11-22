@@ -37,7 +37,7 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 ### Demo 与复制
 
 4. **独立 Demo**：每个 Demo 有自己的入口，尽量不依赖主站就能打开；内部资源一律用相对路径，兼容 `/UI-Vault/` 子路径。
-5. **复制规则**：只有完整自包含的单文件 Demo 可以标记 `copyable: true`。Vue/React 多文件构建产物、GPUI 桌面应用、引用多个依赖的展示页都不能当作单文件复制。
+5. **复制规则**：只有完整自包含的单文件 Demo 可以标记 `copyable: true`。多文件独立 ZIP 只能在人工核实可再分发的运行文件后登记 `bundleFiles`，必须使用同一个 Demo 目录、显式发布白名单；`sourceFiles` 仅表示源码浏览能力，不是完整工程。详见 `docs/MULTI-FRAMEWORK.md`。
 
 ### 来源与发布
 
@@ -51,7 +51,7 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 10. `assets/app.js` 只负责静态页面版本校验和 `mountWorkbench()`。**禁止**在这里恢复项目筛选、路由、设置或 iframe 的原生 DOM 控制逻辑。
 11. React 单根通过 Portals 挂载到 `index.html` 原有的三栏容器。保留旧 DOM 锚点和 CSS class；修改壳层结构时，必须同时更新快照和兼容测试。
 12. `PreviewFrame` 必须保持 iframe 节点稳定：收藏、筛选、调整字体、切换设置、改变窗口大小都不应触发重新加载。
-13. `demos/`、`subprojects/` 和页面镜像不需要使用 React，也不加入主站构建，继续按白名单发布各自的静态文件。iframe 新权限只能在资产 `previewCapabilities` 声明，并经 schema 和运行时白名单校验；不得引入 `allow-same-origin`。
+13. `demos/`、`subprojects/` 和页面镜像不需要使用 React，也不加入主站构建，继续按白名单发布各自的静态文件。不同 Demo 禁止运行时跨目录 import，独立跨仓项目不能依赖 UI-Vault 的业务 Bundle。iframe 新权限只能在资产 `previewCapabilities` 声明，并经 schema 和运行时白名单校验；不得引入 `allow-same-origin`。
 14. `assets/core/` 放可测试的纯函数（检索、状态、路由、存储协议、预览计算），继续被 React 层复用。
 
 ### 布局不变式
