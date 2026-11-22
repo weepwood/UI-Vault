@@ -2,14 +2,14 @@
 
 导入日期：2026-11-21。UI-Vault 是公开资料库，资源来源均为当时可公开读取的本人 GitHub 仓库。
 
-## 两个已转入的独立 Demo
+## 独立 Demo 与外部源仓
 
-| 资产 | 来源文件 | 本仓路径 | 复用边界 |
+| 资产 | 来源 | 本站整合方式 | 复用边界 |
 | --- | --- | --- | --- |
-| Emboss Lab · 浮雕海报 | [weepwood/Emboss-Lab/index.html](https://github.com/weepwood/Emboss-Lab/blob/main/index.html) + [grain.svg](https://github.com/weepwood/Emboss-Lab/blob/main/assets/grain.svg) | `demos/experiments/emboss-poster-lab/` | 两文件依赖，已完整保留相对路径，禁止声称 HTML 单文件自包含 |
+| Emboss Lab · 浮雕海报 | [weepwood/Emboss-Lab](https://github.com/weepwood/Emboss-Lab) · [入口源码](https://github.com/weepwood/Emboss-Lab/blob/main/index.html) | 外部源仓索引，不复制本地演示文件 | 代码与授权以原仓库为准；本站不发布本地副本 |
 | Frame Lab · UI 结构实验 | [style-atlas/public/frame-lab/index.html](https://github.com/weepwood/style-atlas/blob/main/public/frame-lab/index.html) | `demos/experiments/frame-design-lab/index.html` | 自包含 HTML，外部 Figma/Dribbble 网址仅为参考链接 |
 
-以上 Demo 直接迁自对应的公开个人仓库，未以源码形式迁入第三方组件库、商标、字体或原站截图。Emboss Lab 自述为参考视觉图重新绘制的演示，使用时请保留其来源说明；Frame Lab 中引用的 Figma、Dribbble 等资源不表示它们与此项目存在从属关系。
+Frame Lab 作为本地 Demo 保留独立视觉风格。Emboss Lab 继续在其个人源仓库维护，UI Vault 只保留项目索引和源码链接；其演示自述为参考视觉图重新绘制，具体授权边界以源仓库为准。Frame Lab 中引用的 Figma、Dribbble 等资源不表示它们与此项目存在从属关系。
 
 ## 其他仓库的整合策略
 
