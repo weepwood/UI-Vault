@@ -534,11 +534,7 @@
 
       const format = navigator.gpu.getPreferredCanvasFormat();
       context.configure({ device, format, alphaMode: "premultiplied" });
-      const optimizedShaderSource = shaderSource.replace(
-        "const GL_HIGH_DISPERSION: bool = false;",
-        "const GL_HIGH_DISPERSION: bool = " + String(quality === "high") + ";",
-      );
-      const shader = device.createShaderModule({ code: optimizedShaderSource });
+      const shader = device.createShaderModule({ code: shaderSource });
       const compilation = await shader.getCompilationInfo();
       const errors = compilation.messages.filter((message) => message.type === "error");
       if (errors.length) {
@@ -546,11 +542,11 @@
       }
       setLoading(70, "着色器编译完成");
 
-      const pipeline = await device.createRenderPipelineAsync({
+      const createMainPipeline = module => device.createRenderPipelineAsync({
         layout: "auto",
-        vertex: { module: shader, entryPoint: "vs_main" },
+        vertex: { module, entryPoint: "vs_main" },
         fragment: {
-          module: shader,
+          module,
           entryPoint: "fs_main",
           targets: [{
             format,
@@ -570,6 +566,7 @@
         },
         primitive: { topology: "triangle-list" },
       });
+      const pipeline = await createMainPipeline(shader);
       const values = new Float32Array(displayedUniforms);
       const uniformBuffer = device.createBuffer({
         size: values.byteLength,
@@ -579,6 +576,37 @@
         layout: pipeline.getBindGroupLayout(0),
         entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
       });
+      let highPipeline = null;
+      let highBindGroup = null;
+      let highCompiling = false;
+      ensureHighPipeline = () => {
+        if (highPipeline || highCompiling || highPipelineUnavailable || stopped) return;
+        highCompiling = true;
+        (async () => {
+          const highSource = shaderSource.replace(
+            "const GL_HIGH_DISPERSION: bool = false;",
+            "const GL_HIGH_DISPERSION: bool = true;",
+          );
+          const highShader = device.createShaderModule({ code: highSource });
+          const errors = (await highShader.getCompilationInfo()).messages
+            .filter(message => message.type === "error");
+          if (errors.length) throw new Error(errors.map(error => error.message).join("\n"));
+          const compiled = await createMainPipeline(highShader);
+          if (stopped) return;
+          highBindGroup = device.createBindGroup({
+            layout: compiled.getBindGroupLayout(0),
+            entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
+          });
+          highPipeline = compiled;
+          requestDraw();
+        })().catch(error => {
+          highPipelineUnavailable = true;
+          console.warn("[Liquid Orb] 高画质渲染不可用，退回普通折射", error);
+          if (qualityMode.current === "auto" && quality === "high") applyActiveQuality("balanced");
+          updateQualityStatus();
+        }).finally(() => { highCompiling = false; });
+      };
+      if (quality === "high") ensureHighPipeline();
       // Heavy ribbon pipelines are compiled only when the ribbon style is selected.
       let ribbonPipeline = null;
       let ribbonCompositePipeline = null;
@@ -744,8 +772,9 @@
             pass.setPipeline(ribbonCompositePipeline);
             pass.setBindGroup(0, ribbonCompositeBindGroup);
           } else {
-            pass.setPipeline(pipeline);
-            pass.setBindGroup(0, bindGroup);
+            const useHigh = quality === "high" && highPipeline && highBindGroup;
+            pass.setPipeline(useHigh ? highPipeline : pipeline);
+            pass.setBindGroup(0, useHigh ? highBindGroup : bindGroup);
           }
           pass.draw(3);
           pass.end();
