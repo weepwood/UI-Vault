@@ -26,6 +26,7 @@ export function checkCategories(categories) {
   }
   return errors;
 }
+const safeSourceFilePath=path=>safeRelativePath(path,'demos/')||safeRelativePath(path,'subprojects/');
 export function checkEntry(entry, categories, fileName='') {
   const errors=[];
   const where = entry && isText(entry.id) ? entry.id : fileName || '未知资产';
@@ -49,7 +50,7 @@ export function checkEntry(entry, categories, fileName='') {
       const seen=new Set();
       for(const file of entry.sourceFiles){
         if(!file||typeof file!=='object'||Array.isArray(file)||
-          !safeRelativePath(file.path,'demos/')||!SOURCE_EXTENSIONS.includes(extname(file.path).toLowerCase())){
+          !safeSourceFilePath(file.path)||!SOURCE_EXTENSIONS.includes(extname(file.path).toLowerCase())){
           errors.push(where+': sourceFiles 含无效路径或不支持的源码扩展名');
           continue;
         }
@@ -130,7 +131,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
         if(safeRelativePath(entry[key],'demos/') && !(await safeExistingFile(entry[key]))) errors.push(entry.id+': 缺少 '+key+' 源文件 '+entry[key]);
       }
       for(const file of entry.sourceFiles||[]){
-        if(safeRelativePath(file?.path,'demos/')&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
+        if(safeSourceFilePath(file?.path)&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
       }
     }
     if(entry.coverImage && safeRelativePath(entry.coverImage,'media/') && !(await safeExistingFile(entry.coverImage))) errors.push(entry.id+': 找不到封面图片 '+entry.coverImage);
