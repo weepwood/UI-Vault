@@ -543,6 +543,9 @@ body.client-content-first .demo .ca-appheading small {
   font-size: 11px;
   letter-spacing: .02em;
 }
+body.client-content-first .demo .ca-apple .ca-appheading small {
+  color: #566274;
+}
 body.client-content-first .demo .ca-appheading h3 {
   margin-top: 0;
   font-size: clamp(22px, 2vw, 28px);
@@ -826,3 +829,35 @@ body[data-reference-shell="client"] > main .notice {
     transition-duration: .001ms !important;
   }
 }
+
+/* Shared clipboard feedback keeps copy actions clear to sighted and assistive users. */
+#style-atlas-copy-status {
+  position: fixed;
+  inset: auto 16px 18px auto;
+  z-index: 1000;
+  max-width: min(360px, calc(100vw - 32px));
+  padding: 11px 15px;
+  border: 1px solid #39444c;
+  border-radius: 8px;
+  background: #20282e;
+  color: #fff;
+  box-shadow: 0 8px 24px #17202730;
+  font: 13px/1.45 system-ui, sans-serif;
+  opacity: 0;
+  transform: translateY(6px);
+  pointer-events: none;
+  transition: opacity .16s ease, transform .16s ease;
+}
+#style-atlas-copy-status[data-visible="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+#style-atlas-copy-status[data-state="error"] {
+  border-color: #9b3c35;
+  background: #702b27;
+}
+@media (prefers-reduced-motion: reduce) {
+  #style-atlas-copy-status { transition: none; }
+}
+/* Page notes are shown in the shared workbench dialog instead of demo headers. */
+details.reference-menu { display: none !important; }

@@ -159,6 +159,7 @@
     <div class="dialog-tabs" role="tablist" aria-label="项目资料类型">
       <button id="tab-overview" type="button" role="tab" data-info-tab="overview" aria-selected="true" aria-controls="dialog-overview" tabindex="0"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#book-open"></use></svg><span>项目说明</span></button>
       <button id="tab-source" type="button" role="tab" data-info-tab="source" aria-selected="false" aria-controls="dialog-source" tabindex="-1"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#code-xml"></use></svg><span>源代码</span></button>
+      <button id="tab-page-info" type="button" role="tab" data-info-tab="page-info" aria-selected="false" aria-controls="dialog-page-info" tabindex="-1"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#info"></use></svg><span>页面信息</span></button>
     </div>
     <section id="dialog-overview" class="dialog-pane" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
       <div id="project-info" class="project-info"></div>
@@ -170,6 +171,7 @@
       </div>
       <pre class="source-view"><code id="source-code">选择“源代码”查看项目实现。</code></pre>
     </section>
+    <section id="dialog-page-info" class="dialog-pane page-info-pane" role="tabpanel" aria-labelledby="tab-page-info" tabindex="0" hidden></section>
   </div>
 </dialog>
 <span class="sr-only" id="settings-status" role="status" aria-live="polite"></span>
