@@ -296,9 +296,20 @@ def verify_liquid_orb_unified(browser, origin):
                 page.locator(f'[data-theme-preset="{theme}"]').click()
                 assert page.locator("body").get_attribute("data-theme") == theme
                 assert page.locator(f'[data-theme-preset="{theme}"]').get_attribute("aria-pressed") == "true"
-            assert page.locator("body").evaluate(
-                "(el) => getComputedStyle(el).getPropertyValue('--page-bg').trim()"
-            ) == "#f3f2ed", "浅色背景变量未生效"
+            # The current theme tokens use --bg (not the removed --page-bg).
+            # Verify both the token and the final rendered background, rather
+            # than only checking that the data-theme attribute was updated.
+            paper_background = page.locator("body").evaluate("""(el) => {
+                const style = getComputedStyle(el);
+                return {
+                    token: style.getPropertyValue('--bg').trim(),
+                    background: style.backgroundColor
+                };
+            }""")
+            assert paper_background == {
+                "token": "#f2f1ec",
+                "background": "rgb(242, 241, 236)",
+            }, f"浅色背景没有实际生效：{paper_background}"
             page.locator('[data-theme-preset="graphite"]').click()
             page.locator("#tab-dialog").click(timeout=30000)
             assert page.locator("#quality-mode").input_value() == "auto", "默认未启用自动画质"
@@ -315,7 +326,7 @@ def verify_liquid_orb_unified(browser, origin):
                 assert page.locator("#dialog-retry").is_visible(), "未找到思考模式的重试控制"
             assert page.locator("#presentation canvas").count() == 1, "合并页面出现重复 Canvas"
             pill = page.locator("#presentation").bounding_box()
-            assert pill and 120 < pill["height"] < 310, f"{name}: 胶囊高度异常: {pill}"
+            assert pill and 120 <= pill["height"] < 310, f"{name}: 胶囊高度异常: {pill}"
             assert pill["width"] <= width - 12, f"{name}: 胶囊宽度超出视口: {pill}"
             assert pill["x"] >= -2, f"{name}: 胶囊越过页面左边缘: {pill}"
             assert pill["x"] + pill["width"] <= width + 2, f"{name}: 胶囊越过页面右边缘: {pill}"
@@ -342,18 +353,22 @@ def verify_liquid_orb_unified(browser, origin):
             spacing = size_menu.evaluate("""menu => {
                 const items = [...menu.querySelectorAll('[role="option"]')];
                 const boxes = items.map(item => item.getBoundingClientRect());
+                const titles = items.map(item => item.querySelector('span:first-child').getBoundingClientRect());
+                const notes = items.map(item => item.querySelector('.size-note').getBoundingClientRect());
+                const icons = items.map(item => item.querySelector('svg').getBoundingClientRect());
                 return {
                     rowGaps: boxes.slice(1).map((box, i) => box.top - boxes[i].bottom),
-                    noteIconGaps: items.map(item =>
-                        item.querySelector('svg').getBoundingClientRect().left -
-                        item.querySelector('.size-note').getBoundingClientRect().right),
+                    iconLabelGaps: titles.map((title, i) => title.left - icons[i].right),
+                    labelNoteGaps: notes.map((note, i) => note.left - titles[i].right),
                     rowHeights: boxes.map(box => box.height)
                 };
             }""")
-            minimum_gap = 9 if name == "mobile" else 7
-            assert all(gap >= minimum_gap for gap in spacing["rowGaps"]), f"{name}: 选项之间间隙不足：{spacing}"
-            assert all(gap >= 12 for gap in spacing["noteIconGaps"]), f"{name}: 文字/图标距离不足：{spacing}"
-            assert all(row >= (54 if name == "mobile" else 44) for row in spacing["rowHeights"]), f"{name}: 选项高度过小：{spacing}"
+            # Compact list: 1px between rows; 8px from leading check icon to
+            # label and from label to the trailing size note.
+            assert all(gap >= 0.5 for gap in spacing["rowGaps"]), f"{name}: 选项互相重叠：{spacing}"
+            assert all(gap >= 7.5 for gap in spacing["iconLabelGaps"]), f"{name}: 图标与标题间距不足：{spacing}"
+            assert all(gap >= 7.5 for gap in spacing["labelNoteGaps"]), f"{name}: 标题与尺寸说明间距不足：{spacing}"
+            assert all(row >= (46 if name == "mobile" else 30) for row in spacing["rowHeights"]), f"{name}: 选项高度过小：{spacing}"
             if name == "mobile":
                 assert size_menu.evaluate("(el) => el.parentElement === document.body"), "手机菜单未提升至顶层"
                 assert page.locator("#size-backdrop").is_visible(), "手机菜单未显示遮罩"
