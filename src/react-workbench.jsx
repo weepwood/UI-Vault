@@ -1,6 +1,7 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { projectEmoji } from '../assets/core/workbench.js';
+import {highlightSearchText,searchMatchDetail} from '../assets/core/catalog.js';
 
 // React 单根通过 Portals 接管所有交互区域；ProjectRow 与分类导航均为声明式组件。
 const stageLabels={draft:'待精调',refining:'精调中',stable:'已定稿'};
@@ -12,25 +13,32 @@ function Icon({name}){
   </svg>;
 }
 
-export function ProjectRow({asset,labels,selected,onSelect}){
+function SearchHighlight({value,query}){
+  return <>{highlightSearchText(value,query).map((part,i)=>
+    part.matched?<mark key={i} className="search-match">{part.text}</mark>:part.text)}</>;
+}
+export function ProjectRow({asset,labels,selected,onSelect,query=''}){
   const local=asset.source==='local';
   const kind=asset.curated?'手工精选 · '+(stageLabels[asset.curationStage]||'待精调')
     :labels[asset.type]||asset.type;
+  const match=query.trim()?searchMatchDetail(asset,query,labels):null;
   return <article className={'project-item'+(selected?' is-selected':'')} role="listitem" data-id={asset.id}>
     <button className="project-row" type="button" data-open={asset.id}
       aria-current={String(selected)} aria-label={'预览 '+asset.title} onClick={()=>onSelect(asset.id)}>
       <span className="project-row-icon project-row-emoji" aria-hidden="true">{projectEmoji(asset.id)}</span>
       <span className="project-row-copy">
-        <span className="project-row-title">{asset.title}</span>
-        <span className="project-row-subtitle">{kind+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')}</span>
+        <span className="project-row-title"><SearchHighlight value={asset.title} query={query}/></span>
+        <span className="project-row-subtitle">{match
+          ?<><span className="search-match-label">{match.label}</span> · <SearchHighlight value={match.text} query={query}/></>
+          :kind+' · '+(local?'可运行网页':asset.siteUrl?'在线预览':'外部项目')}</span>
       </span>
     </button>
   </article>;
 }
 
-export function ProjectList({items,labels,selectedId,onSelect}){
+export function ProjectList({items,labels,selectedId,onSelect,query=''}){
   return <>{items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
-    selected={asset.id===selectedId} onSelect={onSelect}/>)}</>;
+    selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}</>;
 }
 
 export function CategoryNavigation({categories,current,settingsActive,onChange}){
@@ -83,14 +91,25 @@ function QuickFilters({state,onFilter}){
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
   </button>)}</>;
 }
-function SearchField({value,onChange,searchRef}){
-  return <label className="search-field">
-    <UIIcon name="search"/>
+function SearchField({value,onChange,onSubmit,searchRef}){
+  return <div className="search-field">
+    <label htmlFor="search" className="search-icon" aria-hidden="true"><UIIcon name="search"/></label>
     <input id="search" ref={searchRef} type="search" value={value}
-      autoComplete="off" placeholder="搜索项目、标签、技术栈" aria-label="搜索项目"
-      aria-keyshortcuts="Control+K Meta+K"
+      autoComplete="off" maxLength={160} placeholder="搜索项目、标签、技术栈" aria-label="搜索项目"
+      aria-keyshortcuts="Control+K Meta+K" aria-controls="gallery"
+      onKeyDown={event=>{
+        if(event.key==='Escape'&&value){event.preventDefault();event.stopPropagation();onChange('');}
+        if(event.key==='Enter'&&value.trim()){
+          event.preventDefault();
+          onSubmit?.();
+        }
+      }}
       onChange={event=>onChange(event.target.value)}/>
-  </label>;
+    {value&&<button className="search-clear" type="button" aria-label="清除搜索内容"
+      title="清除搜索" onClick={()=>{onChange('');searchRef.current?.focus({preventScroll:true});}}>
+      <UIIcon name="x"/>
+    </button>}
+  </div>;
 }
 function ListControls({state,tags,onSort,onTag,count}){
   return <>
@@ -202,8 +221,12 @@ function WorkbenchPortals({nodes}){
     resetControl.hidden=!filteredActive;
     nodes.empty.hidden=filtered.length>0&&!state.error;
     nodes.emptyMessage.textContent=state.error||
-      (state.favoritesOnly&&!state.query.trim()&&!state.tag?'这里还没有收藏的项目。':'没有找到符合当前条件的项目。');
-    nodes.resultsStatus.textContent='当前显示 '+filtered.length+' 个项目';
+      (state.favoritesOnly&&!state.query.trim()&&!state.tag?'这里还没有收藏的项目。':
+        state.query.trim()?'没有找到与“'+state.query.trim().slice(0,36)+'”匹配的项目。请尝试减少关键词或清除筛选条件。':
+        '没有找到符合当前条件的项目。');
+    nodes.resultsStatus.textContent=state.query.trim()?
+      '搜索“'+state.query.trim().slice(0,36)+'”，找到 '+filtered.length+' 个项目':
+      '当前显示 '+filtered.length+' 个项目';
     return ()=>{
       resetControl.removeEventListener('click',handle);
       emptyReset.removeEventListener('click',handle);
@@ -249,14 +272,15 @@ function WorkbenchPortals({nodes}){
   },[nodes]);
 
   return <>
-    {createPortal(<SearchField value={state.query} onChange={changeSearch} searchRef={searchRef}/>,nodes.search)}
+    {createPortal(<SearchField value={state.query} onChange={changeSearch}
+      onSubmit={()=>filtered[0]&&onSelect(filtered[0].id)} searchRef={searchRef}/>,nodes.search)}
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
       settingsActive={settingsActive} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} tags={tags} onSort={changeSort}
       onTag={changeTag} count={filtered.length}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
-      selectedId={selected?.id} onSelect={onSelect}/>,nodes.gallery)}
+      selectedId={selected?.id} onSelect={onSelect} query={state.query}/>,nodes.gallery)}
     {createPortal(<PreviewToolbar asset={selected} labels={state.labels}
       previewMode={state.previewSize} onChangePreview={changePreview}
       liked={liked} onFavorite={()=>favorite(selected?.id)} onCopyLink={copyLink}
