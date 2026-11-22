@@ -19,7 +19,7 @@ npm run check
 
 - 新 Demo：`npm run new:demo -- components example-button 按钮演示`
 - 新外部参考：`npm run new:reference -- sample-ui https://github.com/example/sample 参考项目`
-- 编辑 `catalog/assets/<id>.json` 后执行 `npm run catalog:sync`；不要直接编辑 `content/assets.json`。
+- Project 维护于 `catalog/projects/<id>.json`，Asset 维护于 `catalog/assets/<id>.json`，每条资产需有 `projectId`。`npm run catalog:sync` 同时生成两个清单，禁止直接编辑生成文件。
 - 根据 `catalog/asset.schema.json` 维护字段，新增字段同步更新运行时验证与单测。
 - `copyable:true` 仅适用于无附加资源、`preview===code` 的自包含单文件 HTML。其他可使用 `sourceFiles` 公开经核实可分发的源文件。
 - 如需 iframe 额外权限，在 `previewCapabilities` 声明 `downloads` / `popups` / `fullscreen` / `webgpu`，并附上使用理由。禁止放宽 `allow-same-origin`。
