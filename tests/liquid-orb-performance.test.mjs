@@ -32,7 +32,7 @@ test('默认自动画质，保留三档手动模式及按需折射管线', () =>
   assert.match(inlineScript, /getPerformance: \(\) =>/);
   assert.match(shader, /const GL_HIGH_DISPERSION: bool = false/);
   assert.match(shader, /let centerSample = glsPresetFluid\(refractedP, s, t\)/);
-  assert.match(shader, /if \(GL_HIGH_DISPERSION && refractionProfile > 0\.06\)/);
+  assert.match(shader, /if \(GL_HIGH_DISPERSION\) \{/);
   assert.match(inlineScript, /const highSource = shaderSource\.replace/);
   assert.match(inlineScript, /const useHigh = quality === "high" && highPipeline && highBindGroup/);
   assert.match(inlineScript, /highPipelineUnavailable/);
@@ -51,10 +51,11 @@ test('设备信号只决定初始档位，低功耗/减少数据时保守起步'
 
 test('像素预算对大预览降分辨率，小尺寸玻璃球保留精细边缘', () => {
   const fn = extractFunction('function renderDpr() {', 'function updateQualityStatus() {');
-  const measure = ({ width, height, budget, dpr=2, maxDpr=2, scale=1 }) =>
+  const measure = ({ width, height, budget, dpr=2, maxDpr=2, scale=1, mode='auto' }) =>
     new Script(fn + '\nrenderDpr()').runInNewContext({
       window: { devicePixelRatio: dpr }, canvas: { clientWidth: width, clientHeight: height },
       profile: { pixelBudget: budget }, adaptiveDpr: maxDpr, displayScale: scale,
+      qualityMode: {current:mode},
     });
   assert.equal(measure({ width: 170, height: 170, budget: 900000 }), 2);
   const big = measure({ width: 1000, height: 800, budget: 500000, maxDpr: 1.5 });
@@ -62,6 +63,11 @@ test('像素预算对大预览降分辨率，小尺寸玻璃球保留精细边�
   const scaled = measure({ width: 1000, height: 800, budget: 500000, maxDpr: 1.5, scale: 0.5 });
   assert.ok(scaled < big, '缩小的 iframe 不应继续按原尺寸满分辨率绘制');
   assert.ok(1000 * 800 * scaled * scaled <= 500000);
+  // The initial renderer used min(devicePixelRatio, 1.5). Manual high
+  // explicitly restores that fidelity, ignoring pixel budgets and iframe CSS scale.
+  const restored = measure({width:1000,height:800,budget:900000,maxDpr:2,scale:0.5,mode:'high'});
+  assert.equal(restored,1.5,'手动高清必须恢复原版 DPR，不接受 90 万像素降采样');
+  assert.ok(restored > scaled,'高质量不能和节能预览一样被强制缩小');
 });
 
 test('Shader pipeline 异步编译，高质量和粒子模式按需开启', () => {
@@ -100,4 +106,37 @@ test('预览传入显示缩放、离屏暂停及独立对话框共用自动画�
   assert.match(inlineScript, /viewportObserver\?\.disconnect\(\)/);
   assert.equal((orb.match(/<canvas\b/g) || []).length, 1);
   assert.doesNotThrow(() => new Script(inlineScript));
+});
+
+test('画质选择器复用原有尺寸菜单的触发器、选项布局与移动端弹层',()=>{
+  for(const selector of ['quality-picker','quality-trigger','quality-menu','quality-backdrop','quality-current'])
+    assert.match(orb,new RegExp('id="'+selector+'"'));
+  assert.match(orb,/class="size-picker quality-picker"/);
+  assert.match(orb,/class="size-trigger" id="quality-trigger"/);
+  assert.match(orb,/class="size-menu" id="quality-menu" role="listbox"/);
+  for(const mode of ['auto','eco','balanced','high'])
+    assert.match(orb,new RegExp('data-quality="'+mode+'"'));
+  assert.match(inlineScript,/function openQualityMenu\(focus="selected"\)/);
+  assert.match(inlineScript,/function closeQualityMenu\(\{restoreFocus=false\}=\{\}\)/);
+  assert.match(inlineScript,/function syncQualityMenu\(value\)/);
+  assert.match(inlineScript,/qualityMenu.classList.add\("is-sheet"\)/);
+  assert.match(inlineScript,/qualityBackdrop.hidden = false/);
+  assert.match(inlineScript,/qualityTrigger.addEventListener\("keydown"/);
+  assert.match(inlineScript,/qualityItems\[index\].focus/);
+  assert.match(inlineScript,/syncQualityMenu\(next\)/);
+});
+
+test('背景主题支持四种静态配色、持久化、键盘访问与嵌入透明背景',()=>{
+  assert.match(orb,/<body data-theme="graphite">/);
+  for(const preset of ['graphite','ocean','plum','paper']){
+    assert.match(orb,new RegExp('data-theme-preset="'+preset+'"'));
+    assert.match(orb,new RegExp('body\\[data-theme='+preset+'\\]'));
+  }
+  assert.match(orb,/theme-control-label/);
+  assert.match(orb,/function applyTheme\(name, persist = true\)/);
+  assert.match(inlineScript,/localStorage.setItem\(themeKey, name\)/);
+  assert.match(inlineScript,/url.searchParams.set\("theme", name\)/);
+  assert.match(inlineScript,/button.setAttribute\("aria-pressed"/);
+  assert.match(orb,/body.embed\{background:transparent!important;background-image:none!important\}/);
+  assert.doesNotMatch(orb,/animation:.*gradient/);
 });
