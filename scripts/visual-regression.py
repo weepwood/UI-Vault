@@ -870,6 +870,54 @@ def verify_project_health_and_grouping(browser, origin):
         context.close()
     print("Project 分组与健康回归通过：33 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
 
+def verify_project_operations(browser, origin):
+    """独立状态管理页的真实筛选、资产跳转、移动导航与未知态回归。"""
+    context = browser.new_context(viewport={"width": 1440, "height": 900},
+                                  device_scale_factor=1, reduced_motion="reduce", locale="zh-CN")
+    page = context.new_page()
+    try:
+        page.goto(origin + "?view=operations&asset=atlas-academia", wait_until="domcontentloaded")
+        page.locator("#operations-title").wait_for(state="visible", timeout=30000)
+        page.locator(".ops-project").first.wait_for(state="visible")
+        assert page.locator(".ops-project").count() == 33, "状态页没有按 33 个来源项目展示"
+        assert "显示 33 / 33" in page.locator(".ops-result-header").inner_text()
+        assert "部署未核实" in page.locator(".ops-project").first.inner_text(), "离线构建不得伪造部署成功"
+        page.locator("#operations-query").fill("style atlas")
+        assert page.locator(".ops-project").count() == 1, "项目名搜索失败"
+        group = page.locator('[data-project-id="style-atlas"]')
+        assert group.count() == 1
+        group.locator("summary").click()
+        assert group.locator(".ops-assets li").count() == 57, "展开后未列出 57 条资产"
+        first = group.locator('a[href*="?asset=atlas-academia"]')
+        assert first.count() == 1, "资产深链接丢失"
+        page.locator(".ops-reset").click()
+        chooser = page.locator("#operations-code").locator("xpath=..")
+        chooser.locator(".select-trigger").click()
+        chooser.locator('[data-value="failure"]').click()
+        assert page.locator(".ops-project").count() == 0, "代码检查失败筛选未生效"
+        assert "显示 0 / 33" in page.locator(".ops-result-header").inner_text()
+        page.locator(".ops-empty button").click()
+        assert page.locator(".ops-project").count() == 33, "清除筛选未恢复完整项目清单"
+        page.locator("#settings-open").click()
+        page.locator("#settings-title").wait_for(state="visible")
+        page.go_back(wait_until="domcontentloaded")
+        page.locator("#operations-title").wait_for(state="visible")
+        assert "asset=atlas-academia" in page.url, "管理视图历史导航丢失资产深链接"
+    finally:
+        context.close()
+    mobile = browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=1)
+    page = mobile.new_page()
+    try:
+        page.goto(origin + "?view=operations", wait_until="domcontentloaded")
+        page.locator("#operations-title").wait_for(state="visible", timeout=30000)
+        page.locator("#operations-menu-toggle").click()
+        assert "is-open" in (page.locator("#library-rail").get_attribute("class") or ""), "状态页无法打开移动端导航"
+        page.keyboard.press("Escape")
+        assert "is-open" not in (page.locator("#library-rail").get_attribute("class") or ""), "状态页移动端导航无法关闭"
+    finally:
+        mobile.close()
+    print("项目状态管理回归通过：三轴筛选、33 项目/57 资产、路由历史、移动端与未知态。")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -913,6 +961,7 @@ def main():
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
                 verify_project_health_and_grouping(browser, local)
+                verify_project_operations(browser, local)
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
                 verify_liquid_orb_unified(browser, local)
