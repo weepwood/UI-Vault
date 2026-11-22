@@ -723,7 +723,9 @@ def verify_background_lab(browser, origin):
     """背景实验室：桌面/手机、静态与动态场景、对照内容及精确 CSS 导出。"""
     for name, width, height, reduced in (
         ("desktop", 1280, 850, "no-preference"),
+        ("tablet", 768, 600, "no-preference"),
         ("mobile", 390, 844, "reduce"),
+        ("compact-mobile", 360, 640, "reduce"),
     ):
         context = browser.new_context(
             viewport={"width": width, "height": height},
@@ -734,6 +736,22 @@ def verify_background_lab(browser, origin):
         page.on("pageerror", lambda error: errors.append(str(error)))
         try:
             page.goto(origin + "demos/effects/aurora-field/index.html", wait_until="domcontentloaded")
+            page.locator("#allBackgrounds").wait_for(state="visible")
+            assert page.locator("#backgroundDialog").is_hidden(), "选择弹窗初始应关闭"
+            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "页面高度不应滚动"
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面宽度不应滚动"
+            assert page.locator("#stage").is_visible(), "背景预览没有显示"
+            stage_height = page.locator("#stage").evaluate("(el)=>el.getBoundingClientRect().height")
+            assert stage_height >= 90, f"{name}: 画布高度异常 {stage_height}"
+            assert page.evaluate("""() => {
+                const ids=['allBackgrounds','stage','viewCode','reset'];
+                return ids.every(id=>{
+                    const el=document.getElementById(id),r=el.getBoundingClientRect();
+                    return r.width>0&&r.height>0&&r.top>=-2&&r.bottom<=innerHeight+2&&r.left>=-2&&r.right<=innerWidth+2;
+                });
+            }"""), f"{name}: 主要控件未完整显示在首屏"
+            page.locator("#allBackgrounds").click()
+            assert page.locator("#backgroundDialog").evaluate("(el)=>el.open"), "背景弹窗未打开"
             page.locator(".tile").first.wait_for(state="visible")
             assert page.locator(".tile").count() == 12, "背景条目数量错误"
             assert page.locator("#stage").get_attribute("data-style") == "aurora"
@@ -747,7 +765,9 @@ def verify_background_lab(browser, origin):
             else:
                 assert page.locator("#speed").is_enabled(), "动态背景的速度控制不可用"
             page.locator('.tile[data-id="paper"]').click()
+            assert page.locator("#backgroundDialog").is_hidden(), "选择背景后未关闭弹窗"
             assert page.locator("#stage").get_attribute("data-style") == "paper"
+            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "切换场景后页面出现滚动"
             assert page.locator("#speed").is_disabled(), "静态背景不应允许调节速度"
             page.locator("#overlayToggle").click()
             assert page.locator("#mockContent").is_visible(), "文字对照开关无效"
@@ -763,17 +783,27 @@ def verify_background_lab(browser, origin):
             assert "--pattern-opacity:" in code, "缺少纹理强度变量"
             page.locator("#closeCode").click()
             assert not page.locator("#codeDialog").evaluate("(el)=>el.open")
+            page.locator("#allBackgrounds").click()
             page.locator('[data-filter="gradient"]').click()
             assert page.locator(".tile").count() == 4, "渐变分类筛选数量异常"
             assert page.locator("#stage").get_attribute("data-style") == "paper", "筛选不应强制改变选中背景"
             page.locator('[data-filter="all"]').click()
             page.locator('.tile[data-id="aurora"]').click()
+            assert page.locator("#backgroundDialog").is_hidden(), "切换极光后仍显示背景选择弹窗"
+            page.locator("#allBackgrounds").click()
+            page.keyboard.press("Escape")
+            assert page.locator("#backgroundDialog").is_hidden(), "Escape 无法关闭选择弹窗"
+            page.locator("#allBackgrounds").click()
+            page.locator("#closeBackgrounds").click()
+            assert page.locator("#backgroundDialog").is_hidden(), "关闭按钮无效"
             page.locator("#viewCode").click()
             code = page.locator("#codeText").input_value()
             assert "@keyframes auroraFlow" in code
             assert "@keyframes starDrift" not in code, "CSS 导出包含无关动画"
             page.locator("#closeCode").click()
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面横向溢出"
+            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "页面纵向溢出"
+            assert page.locator("#viewCode").is_visible(), "代码按钮没有显示在首屏"
             assert not errors, name + ": 脚本错误：" + "; ".join(errors)
             OUTPUT.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(OUTPUT / ("background-lab-" + name + ".png")),
