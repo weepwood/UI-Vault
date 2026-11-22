@@ -1,5 +1,6 @@
 import React,{useEffect,useRef,useState} from 'react';
 import {Icon} from './WorkbenchSelect.jsx';
+import {githubSourceLink} from '../../assets/core/github-source-link.js';
 const sizes=[
   {mode:'fluid',icon:'scan',name:'自适应',hint:'自适应 · 适配可用宽度'},
   {mode:'mobile',icon:'smartphone',name:'手机',hint:'手机 · 390px'},
@@ -65,13 +66,14 @@ export function ViewportSwitcher({mode,onChange,visible}){
   </div>;
 }
 export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,onFavorite,
-  onCopyLink,onInfo,onMenu,menuOpen}){
+  onInfo,onMenu,menuOpen}){
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源'):'项目目录';
   const openUrl=asset&&(asset.source==='local'?
     new URL(asset.preview,document.baseURI).href:asset.siteUrl||asset.url||asset.originRepo);
+  const sourceUrl=githubSourceLink(asset);
   return <>
     <div className="topbar-project">
       <button id="menu-toggle" className="menu-toggle" type="button"
@@ -103,8 +105,12 @@ export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,o
           onClick={()=>{onFavorite();setFavoritePulse(count=>count+1);}}>
           <Icon key={favoritePulse} name="heart" className={favoritePulse?'ui-icon is-pulsing':'ui-icon'}/>
         </button>
-        <button type="button" id="preview-copy-link" className="square-action"
-          aria-label="复制当前项目链接" disabled={!asset} onClick={onCopyLink}><Icon name="copy"/></button>
+        <a id="preview-github" className="square-action" href={sourceUrl||undefined}
+          target="_blank" rel="noopener noreferrer" hidden={!sourceUrl}
+          aria-label={asset?.source==='local'?'在 GitHub 查看本仓库源码':'打开原始 GitHub 项目'}
+          title={asset?.source==='local'?'在 GitHub 查看源码':'打开原始 GitHub 项目'}>
+          <Icon name="github"/>
+        </a>
         <a id="preview-open" className="open-action" href={openUrl||'https://github.com/weepwood/UI-Vault'}
           target="_blank" rel="noopener noreferrer" hidden={!openUrl}
           aria-label={asset?.source==='local'?'单独打开 '+asset.title:'在原网站打开 '+(asset?.title||'项目')}

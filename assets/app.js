@@ -8,7 +8,7 @@ const SHELL_REQUIRED_IDS=[
   'imported-count','favorite-count','preview-kind','preview-title',
   'preview-subtitle','project-info','project-dialog','dialog-title','dialog-kind',
   'dialog-overview','dialog-source','dialog-close','preview-info','source-code','source-status',
-  'source-repo','source-copy','preview-open','preview-favorite','preview-copy-link',
+  'source-repo','source-copy','preview-open','preview-favorite','preview-github',
   'results-count','results-status','empty','empty-message','reset-filters','clear-filters',
   'sidebar-dismiss','settings-open','settings-view','settings-menu-toggle','settings-reset','settings-status'
 ];
