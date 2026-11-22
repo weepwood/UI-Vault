@@ -261,9 +261,9 @@
     const ribbonStyleIndex = 24;
     const ribbonInstanceCount = 221184;
     const qualityProfiles = Object.freeze({
-      eco: Object.freeze({ fps: 20, maxDpr: 0.75, minDpr: 0.6, particleCount: 73728 }),
-      balanced: Object.freeze({ fps: 30, maxDpr: 1, minDpr: 0.7, particleCount: 147456 }),
-      high: Object.freeze({ fps: 40, maxDpr: 1.5, minDpr: 1, particleCount: ribbonInstanceCount }),
+      eco: Object.freeze({ fps: 20, maxDpr: 1.25, minDpr: 0.6, pixelBudget: 180000, particleCount: 73728 }),
+      balanced: Object.freeze({ fps: 30, maxDpr: 1.5, minDpr: 0.7, pixelBudget: 500000, particleCount: 147456 }),
+      high: Object.freeze({ fps: 40, maxDpr: 2, minDpr: 1, pixelBudget: 900000, particleCount: ribbonInstanceCount }),
     });
     const requestedQuality = new URLSearchParams(location.search).get("quality");
     const qualityMode = { current: Object.hasOwn(qualityProfiles, requestedQuality) ? requestedQuality : "auto" };
@@ -288,7 +288,13 @@
     const qualityStatus = document.querySelector("#quality-status");
     qualitySelect.value = qualityMode.current;
     function renderDpr() {
-      return Math.min(window.devicePixelRatio || 1, adaptiveDpr) * Math.min(1, displayScale);
+      const scale = Math.min(1, displayScale);
+      const cssPixels = Math.max(1, canvas.clientWidth * canvas.clientHeight);
+      const budgetDpr = Math.sqrt(profile.pixelBudget / cssPixels);
+      // Actual rendered pixels stay within the profile budget, while a tiny
+      // thinking orb can use a higher DPR for sharp rim highlights.
+      return Math.max(0.2, Math.min(window.devicePixelRatio || 1, adaptiveDpr,
+        budgetDpr / scale) * scale);
     }
     function updateQualityStatus() {
       const label = (qualityMode.current === "auto" ? "自动 · " : "") + qualityLabels[quality] +
