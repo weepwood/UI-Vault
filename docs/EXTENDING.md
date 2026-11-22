@@ -136,3 +136,29 @@ UI-Vault 不需要把 NOEMA 的整份静态源码复制到本仓库；只需在 
 示例仅包含嵌入相关字段，实际 JSON 还需满足原有资源协议。更新后执行 `npm run catalog:sync` 与 `npm run check`。不需要安装 React/Vue 依赖或复制构建产物；主站通过带沙箱的 iframe 访问其他部署站点。若项目没有可靠的公开预览网址，则只保留 GitHub 仓库索引，不猜测 URL。
 
 为安全隔离，默认保留 `sandbox="allow-scripts allow-forms"`；不要为了本地存储或文件夹访问而直接追加 `allow-same-origin`。完整应用、特别是嵌套 iframe 的 Storybook 或浏览器本地文件类项目，可以使用顶部「单独打开」在原站使用。
+
+
+## 源代码文件管理与下载
+
+源码弹窗按文件提供**查看、复制、下载**。已有 `code` 字段的单文件 Demo（`copyable:true`）自动使用该文件，无需改旧资产。
+
+多文件项目在 `catalog/assets/<id>.json` 声明 `sourceFiles`，用户可以从源码文件下拉菜单中切换；每个文件都独立请求、复制、下载：
+
+```json
+{
+  "code": "demos/components/example/index.html",
+  "copyable": false,
+  "sourceFiles": [
+    { "path": "demos/components/example/index.html", "label": "index.html · 页面" },
+    { "path": "demos/components/example/style.css", "label": "style.css · 样式" },
+    { "path": "subprojects/example/src/App.tsx", "label": "App.tsx · 组件" },
+    { "path": "subprojects/example/src/shader.wgsl", "label": "shader.wgsl · 着色器" }
+  ]
+}
+```
+
+- `sourceFiles` 只接受 `demos/` 或 `subprojects/` 下真实存在的文件；支持 HTML、CSS、JavaScript、TS/TSX、JSX、Vue、Svelte、WGSL、GLSL、Rust、JSON、SVG、Markdown 等后缀。
+- 只发布清单中明确登记的源码文件，不自动扫描目录、不接受第三方或任意下载 URL。新增时需检查文件中是否包含敏感信息或未授权内容。
+- `copyable:false` 仍表示**不能将整个项目作为独立单文件复制**；但 `sourceFiles` 所列的每个文件都可单独查看与下载。下载不包含依赖、构建脚本及其他未列出的资源，完整项目请使用 GitHub。
+- `code` 继续提供旧版单文件兼容及 GitHub 链接用途。多文件项目若没有 `sourceFiles`，只显示 GitHub 入口。
+- 修改资产后运行 `npm run catalog:sync` 和 `npm run check`；不安全路径、重复文件、缺失文件及不允许的扩展名会导致校验失败。
