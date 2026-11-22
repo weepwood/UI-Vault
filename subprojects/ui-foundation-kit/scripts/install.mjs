@@ -50,6 +50,13 @@ fs.copyFileSync(path.join(root,'INTEGRATION.md'),path.join(dest,'INTEGRATION.md'
 
 const contents=[];
 function walk(directory){
+  if(fs.statSync(directory).isFile()){
+    contents.push({
+      path:path.relative(dest,directory).split(path.sep).join('/'),
+      sha256:createHash('sha256').update(fs.readFileSync(directory)).digest('hex')
+    });
+    return;
+  }
   for(const entry of fs.readdirSync(directory,{withFileTypes:true})){
     const full=path.join(directory,entry.name);
     if(entry.isSymbolicLink())throw Error('不允许将符号链接交付到独立项目: '+full);
