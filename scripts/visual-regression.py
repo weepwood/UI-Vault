@@ -249,6 +249,16 @@ def verify_react_interactions(browser, origin):
         page.locator("#project-dialog").wait_for(state="visible")
         assert page.locator("#source-repo").get_attribute("href") == "https://github.com/weepwood/Emboss-Lab/blob/main/index.html", "Emboss Lab 源码链接错误"
         page.keyboard.press("Escape")
+        # CI 中使用可重复的外站响应，避免第三方 GitHub Pages 内容或网络变化使主站发布失败。
+        # 仍在真正的 Chromium 中检查 iframe 导航、sandbox 与子页面渲染；真实外站可用性另行核验。
+        page.route(
+            "https://weepwood.github.io/gr8r-studio-ui/**",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="text/html; charset=utf-8",
+                body='<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Gr8r fixture</title></head><body><h1>Designed for focus</h1></body></html>',
+            ),
+        )
         page.goto(origin + "?asset=gr8r-studio-ui", wait_until="domcontentloaded")
         page.locator("#preview-title").filter(has_text="暖色扁平组件体系").wait_for(state="visible")
         gr8r_embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
