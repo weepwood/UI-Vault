@@ -26,7 +26,7 @@ export function workbenchReducer(current,action){
   const next={...current};
   switch(action.type){
     case 'catalog':{
-      setCatalogData(next,action.assets,action.categories);
+      setCatalogData(next,action.assets,action.categories,action.projects);
       next.loading=false;next.error=null;
       const preferred=action.routeAsset&&action.assets.find(a=>a.id===action.routeAsset)||
         action.assets.find(a=>a.source==='local'&&a.curated===true)||
@@ -108,10 +108,11 @@ export function useWorkbench(){
     const controller=new AbortController();
     Promise.all([
       fetchJSON('content/assets.json',controller.signal),
-      fetchJSON('content/categories.json',controller.signal)
-    ]).then(([assets,categories])=>{
-      if(!Array.isArray(assets)||!Array.isArray(categories))throw Error('资源清单格式不正确');
-      dispatch({type:'catalog',assets,categories,routeAsset:router.read().asset});
+      fetchJSON('content/categories.json',controller.signal),
+      fetchJSON('content/projects.json',controller.signal)
+    ]).then(([assets,categories,projects])=>{
+      if(!Array.isArray(assets)||!Array.isArray(categories)||!Array.isArray(projects))throw Error('资源清单格式不正确');
+      dispatch({type:'catalog',assets,categories,projects,routeAsset:router.read().asset});
     }).catch(error=>{
       if(error.name==='AbortError')return;
       console.error('UI-Vault React 工作台：',error);

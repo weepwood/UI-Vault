@@ -15,12 +15,13 @@ export const DEFAULT_FILTERS=Object.freeze({
   curatedOnly:false
 });
 export const FILTER_MODES=Object.freeze(['favoritesOnly','importedOnly','curatedOnly']);
-const SORT_MODES=new Set(['featured','newest','az']);
+const SORT_MODES=new Set(['featured','newest','az','project']);
 
 /** @returns {object} 会话状态对象，字段兼容 core/catalog.js 的筛选协议。 */
 export function createWorkbenchState(){
   return {
     assets:[],
+    projects:[],
     categories:[],
     labels:{all:'全部资源'},
     ...DEFAULT_FILTERS,
@@ -30,8 +31,9 @@ export function createWorkbenchState(){
 }
 
 /** 目录源数据只更新本地会话，不改变筛选、预览及收藏状态。 */
-export function setCatalogData(state,assets,categories){
+export function setCatalogData(state,assets,categories,projects=[]){
   state.assets=assets;
+  state.projects=projects;
   state.categories=categories;
   state.labels={all:'全部资源',...Object.fromEntries(categories.map(item=>[item.id,item.label]))};
   return state;

@@ -96,3 +96,11 @@
 .project-dialog[data-stable-height="true"] .dialog-shell{height:100%}
 .project-dialog[data-stable-height="true"] .dialog-pane{flex:1 1 auto;min-height:0}
 .project-dialog[data-stable-height="true"] .source-view{min-height:0}
+
+.project-source-card{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:12px 14px;border:1px solid var(--line-soft);border-radius:8px;background:var(--canvas);margin-bottom:12px}
+.project-source-card-title{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:11px}
+.project-source-card-title>span{color:var(--muted)}
+.project-source-card-title>strong{color:var(--ink);font-size:12px}
+.project-source-card>a{display:inline-flex;gap:5px;align-items:center;white-space:nowrap;font-size:11px;color:var(--accent)}
+.project-source-card>a .ui-icon{width:13px;height:13px}
+@media(max-width:480px){.project-source-card{align-items:flex-start;flex-direction:column}}

@@ -21,7 +21,8 @@ import {closeDropdowns} from '../assets/core/dropdown.js';
 import {getExternalLinkNotice} from '../assets/core/external-link-message.js';
 
 const sortOptions=[
-  {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'}
+  {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'},
+  {value:'project',label:'按项目分组'}
 ];
 function QuickFilters({state,onFilter}){
   const options=[
@@ -58,7 +59,7 @@ function ListControls({state,tags,onSort,onTag,count}){
     <div className="list-controls-filters">
       <WorkbenchSelect id="sort" label="项目排序" value={state.sort} onChange={onSort}
         options={sortOptions} icon="arrow-up-down"
-        icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}} className="select-field--sort"/>
+        icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down',project:'folder-tree'}} className="select-field--sort"/>
       <div className="tag-select-label">
         <span id="tag-filter-label" className="sr-only">标签</span>
         <WorkbenchSelect id="tag-filter" label="按标签筛选" value={state.tag} onChange={onTag}
@@ -230,6 +231,7 @@ function WorkbenchPortals({nodes}){
       onTag={changeTag} count={filtered.length}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
+      projects={state.projects} groupByProject={state.sort==='project'}
       loading={state.loading}/>,nodes.gallery)}
     {createPortal(<PreviewToolbar asset={selected} labels={state.labels}
       previewMode={state.previewSize} onChangePreview={changePreview}
@@ -254,6 +256,8 @@ function WorkbenchPortals({nodes}){
     </a>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
     <ProjectDialog root={nodes.dialog} asset={selected} labels={state.labels}
+      project={state.projects.find(p=>p.id===selected?.projectId)||null}
+      projectAssetCount={state.assets.filter(a=>a.projectId===selected?.projectId).length}
       open={dialogOpen} onOpenChange={onDialogChange} onCopySource={copySource}
       onCopyLink={copyLink} onCopyText={copyText} notify={notify}/>
   </>;

@@ -47,7 +47,7 @@ function PageInfoPanel({info,asset}){
  * ProjectDialog 的标签页、异步源码、焦点、Escape 和复制逻辑全由 React 管理。
  * 保留 <dialog id="project-dialog"> 原生顶层语义，状态切换不触碰 iframe。
  */
-export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
+export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
   const [source,setSource]=useState({id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});
@@ -195,6 +195,15 @@ export function ProjectDialog({root,asset,labels,open,onOpenChange,onCopySource,
     </div>
     <section id="dialog-overview" className="dialog-pane" role="tabpanel"
       aria-labelledby="tab-overview" tabIndex={0} hidden={tab!=='overview'}>
+      {project&&<section className="project-source-card" aria-label="所属来源项目">
+        <div className="project-source-card-title">
+          <span>所属项目</span>
+          <strong>{project.name}</strong>
+          <span>{projectAssetCount} 条资产</span>
+        </div>
+        <a href={project.repository} target="_blank" rel="noopener noreferrer"
+          title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
+      </section>}
       <div id="project-info" className="project-info" onClick={infoClick}
         dangerouslySetInnerHTML={{__html:asset?projectInfoMarkup(asset,labels):''}}/>
     </section>

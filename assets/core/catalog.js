@@ -1,6 +1,6 @@
 // 搜索只使用资产目录中可核实的元数据，不从 iframe 或第三方页面读取内容。
 const FIELD_WEIGHTS=Object.freeze({
-  title:120,id:100,tags:82,technologies:72,subtitle:43,
+  title:120,id:100,project:65,tags:82,technologies:72,subtitle:43,
   category:30,description:20,notes:13,source:7
 });
 const TERM_ALIASES=Object.freeze({
@@ -27,6 +27,7 @@ function searchFields(asset,labels={}){
   return [
     {key:'title',values:[asset.title]},
     {key:'id',values:[asset.id]},
+    {key:'project',values:[asset.projectId]},
     {key:'tags',values:asset.tags||[]},
     {key:'technologies',values:asset.technologies||[]},
     {key:'subtitle',values:[asset.subtitle]},
@@ -91,7 +92,8 @@ export function filterAssets(assets,{category='all',tag='',query='',favoritesOnl
     if(score<0)continue;
     matches.push({asset,score});
   }
-  matches.sort((a,b)=>sort==='az'?byTitle(a.asset,b.asset):
+  matches.sort((a,b)=>sort==='project'?(a.asset.projectId||'').localeCompare(b.asset.projectId||'','en')||byFeatured(a.asset,b.asset):
+    sort==='az'?byTitle(a.asset,b.asset):
     sort==='newest'?b.asset.created.localeCompare(a.asset.created)||byTitle(a.asset,b.asset):
     terms.length?b.score-a.score||byFeatured(a.asset,b.asset):byFeatured(a.asset,b.asset));
   return matches.map(item=>item.asset);
@@ -113,8 +115,8 @@ export function searchMatchDetail(asset,query,labels={}){
   if(!terms.length)return null;
   const fields=searchFields(asset,labels);
   const descriptions={tags:'标签',technologies:'技术',subtitle:'概述',
-    description:'简介',notes:'复用说明',category:'分类',source:'来源',id:'项目 ID'};
-  for(const key of ['tags','technologies','subtitle','description','notes','category','source','id']){
+    description:'简介',notes:'复用说明',category:'分类',source:'来源',id:'资产 ID',project:'所属项目'};
+  for(const key of ['tags','technologies','subtitle','description','notes','category','source','project','id']){
     const field=fields.find(item=>item.key===key);
     const values=field.values.filter(Boolean).filter(value=>terms.some(term=>matchQuality(value,term)>0));
     if(!values.length)continue;

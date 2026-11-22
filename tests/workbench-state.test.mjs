@@ -24,6 +24,8 @@ test('初始状态与现有 filterAssets 协议兼容',()=>{
 test('三个快捷筛选互斥，分类切换清空标签但保留搜索与排序',()=>{
   const state=createWorkbenchState();
   setCatalogQuery(state,'glow');
+  setCatalogSort(state,'project');
+  assert.equal(state.sort,'project');
   setCatalogSort(state,'az');
   setCatalogTag(state,'glass');
   changeCatalogFilter(state,'favoritesOnly');
