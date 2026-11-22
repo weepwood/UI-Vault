@@ -1,35 +1,61 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {existsSync, readFileSync} from 'node:fs';
+import {existsSync,readFileSync,readdirSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
-import {join, dirname} from 'node:path';
+import {join,dirname} from 'node:path';
 
 const root=join(dirname(fileURLToPath(import.meta.url)),'..');
-const entry=JSON.parse(readFileSync(join(root,'catalog/assets/website-designs-gallery.json'),'utf8'));
-const html=readFileSync(join(root,entry.preview),'utf8');
-const match=html.match(/<script id="design-data" type="application\/json">([^<]+)<\/script>/);
+const file=path=>readFileSync(join(root,path),'utf8');
+const oldIndex=file('demos/experiments/website-designs/index.html');
+const match=oldIndex.match(/<script id="design-data" type="application\/json">([^<]+)<\/script>/);
 const styles=match?JSON.parse(match[1]):[];
-test('网页风格图鉴：314 个唯一示例、完整发布白名单',()=>{
+const metaNames=readdirSync(join(root,'catalog/assets')).filter(name=>/^website-style-[a-z0-9-]+\.json$/.test(name));
+const assets=metaNames.map(name=>JSON.parse(file('catalog/assets/'+name)));
+const manifest=JSON.parse(file('content/assets.json'));
+const categories=JSON.parse(file('content/categories.json'));
+
+test('314 种设计风格直接列在主项目目录，废弃二级图鉴入口',()=>{
   assert.equal(styles.length,314);
   assert.equal(new Set(styles).size,314);
-  assert.equal(entry.source,'local');
-  assert.equal(entry.type,'style');
-  assert.equal(entry.copyable,false);
-  for(const slug of styles){
-    assert.match(slug,/^[A-Za-z0-9_.-]+$/);
-    const path='demos/experiments/website-designs/examples/'+slug+'.html';
-    assert.ok(existsSync(join(root,path)),slug+' HTML 不存在');
-    assert.ok(entry.publish.includes(path),slug+' 未加入静态发布白名单');
-  }
-  assert.equal(new Set(entry.publish).size,entry.publish.length);
-  assert.equal(entry.publish.length,315);
+  assert.equal(assets.length,314);
+  assert.equal(new Set(assets.map(a=>a.id)).size,314);
+  assert.ok(categories.some(c=>c.id==='design-style'&&c.label==='设计风格'));
+  assert.ok(!manifest.some(a=>a.id==='website-designs-gallery'));
+  assert.equal(manifest.filter(a=>a.type==='design-style').length,314);
+  assert.deepEqual(new Set(assets.map(a=>a.id)),new Set(manifest.filter(a=>a.type==='design-style').map(a=>a.id)));
 });
-test('网页风格图鉴：保留来源、授权和独立预览',()=>{
-  assert.ok(entry.originRepo.includes('chrislemke/website_designs'));
-  assert.ok(entry.publish.includes('demos/experiments/website-designs/LICENSE.txt'));
-  assert.ok(readFileSync(join(root,'demos/experiments/website-designs/LICENSE.txt'),'utf8').includes('Copyright (c) 2026 Chris Lemke'));
-  assert.ok(html.includes('sandbox="allow-scripts allow-forms allow-popups"'));
-  assert.ok(!html.includes('allow-same-origin'));
-  assert.ok(styles.includes('De_Stijl'));
-  assert.ok(styles.includes('Bauhaus'));
+
+test('每个风格都有独立 HTML 源码与对应 Markdown 指南',()=>{
+  const previews=new Set();
+  for(const a of assets){
+    assert.equal(a.source,'local');
+    assert.equal(a.type,'design-style');
+    assert.equal(a.copyable,false);
+    assert.equal(a.projectId,'ref-chrislemke-website-designs');
+    assert.equal(a.sourceFiles.length,1);
+    assert.equal(a.sourceFiles[0].path,a.preview);
+    assert.equal(a.code,a.preview);
+    assert.ok(existsSync(join(root,a.preview)),a.id+' HTML 不存在');
+    assert.ok(a.preview.startsWith('demos/experiments/website-designs/examples/'));
+    const name=a.preview.split('/').at(-1).slice(0,-5);
+    assert.ok(styles.includes(name),name+' 未登记在上游清单中');
+    assert.equal(a.designGuideUrl,'https://raw.githubusercontent.com/chrislemke/website_designs/main/designs/'+name+'.md');
+    assert.ok(a.originRepo.includes('chrislemke/website_designs'));
+    assert.ok(a.license.startsWith('MIT'));
+    previews.add(a.preview);
+  }
+  assert.equal(previews.size,314);
+  assert.ok(assets.some(asset=>asset.publish?.includes('demos/experiments/website-designs/LICENSE.txt')),'发布白名单必须包含 MIT 许可证');
+  assert.ok(file('demos/experiments/website-designs/LICENSE.txt').includes('Copyright (c) 2026 Chris Lemke'));
+});
+
+test('项目资料弹窗包含按需加载的 Design.md、复制和下载',()=>{
+  const dialog=file('src/components/ProjectDialog.jsx');
+  const reader=file('src/components/DesignGuide.jsx');
+  assert.ok(dialog.includes('Design.md'));
+  assert.ok(dialog.includes('design-guide'));
+  assert.ok(reader.includes('downloadSourceText'));
+  assert.ok(reader.includes('onCopyText'));
+  assert.ok(reader.includes('AbortController'));
+  assert.ok(reader.includes('fetch(url'));
 });

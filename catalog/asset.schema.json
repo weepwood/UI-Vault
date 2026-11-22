@@ -223,6 +223,12 @@
       "type": "string",
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
       "description": "登记的 Project ID；与资产 ID 相互独立，旧链接与收藏不变"
+    },
+    "designGuideUrl": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://",
+      "description": "当前资产对应的 Markdown 设计指南，按需读取以供预览、复制与下载"
     }
   },
   "allOf": [

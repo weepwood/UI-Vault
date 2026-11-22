@@ -101,7 +101,7 @@ export function checkEntry(entry, categories, fileName='') {
       }
     }
   }
-  for(const key of ['originRepo','originDemoUrl','sourceUrl','siteUrl']){
+  for(const key of ['originRepo','originDemoUrl','sourceUrl','siteUrl','designGuideUrl']){
     if(entry[key]===undefined)continue;
     try{const parsed=new URL(entry[key]);if(parsed.protocol!=='https:'||!parsed.hostname)throw Error();}
     catch{errors.push(where+': '+key+' 必须为有效 HTTPS 地址');}
