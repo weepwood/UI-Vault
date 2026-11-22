@@ -98,6 +98,7 @@ export function useWorkbench(){
   const [state,dispatch]=useReducer(workbenchReducer,undefined,initial);
   const [notice,setNotice]=useReducer((_old,next)=>next,'');
   const [noticeRevision,setNoticeRevision]=useState(0);
+  const [projectHealthSnapshot,setProjectHealthSnapshot]=useState(null);
   const previousSettings=useRef(state.preferences);
   const initialized=useRef(false);
   const notify=useCallback(message=>{
@@ -118,6 +119,14 @@ export function useWorkbench(){
       console.error('UI-Vault React 工作台：',error);
       dispatch({type:'error',message:'项目加载失败，请检查网络连接和静态站点构建。'});
     });
+    return ()=>controller.abort();
+  },[]);
+  // 项目健康信息可选加载，与主目录生命周期隔离：失败时不阻断搜索和 iframe。
+  useEffect(()=>{
+    const controller=new AbortController();
+    fetchJSON('content/project-health.json',controller.signal)
+      .then(data=>{if(data?.version===1&&data.projects&&typeof data.projects==='object')setProjectHealthSnapshot(data);})
+      .catch(()=>{}); // 网络失败保留“未核实”，不是“没有项目”
     return ()=>controller.abort();
   },[]);
   useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route})),[]);
@@ -209,7 +218,7 @@ export function useWorkbench(){
     }catch{notify('源码读取失败，请在 GitHub 打开对应文件');}
   },[state.assets,copyText,notify]);
 
-  return {state,filtered,tags,filteredActive,notice,noticeRevision,notify,
+  return {state,filtered,tags,filteredActive,projectHealthSnapshot,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,reset,
     favorite,changePreference,resetPreferences,changePreview,menu,copyText,copyLink,copySource};
 }

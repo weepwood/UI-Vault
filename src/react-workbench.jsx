@@ -71,7 +71,7 @@ function ListControls({state,tags,onSort,onTag,count}){
 }
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
-  const {state,filtered,tags,filteredActive,notice,noticeRevision,notify,dispatch,openView,
+  const {state,filtered,tags,filteredActive,projectHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
     selectAsset,filter,changeSearch,changeSort,changeTag,reset,
     favorite,changePreference,resetPreferences,changePreview,menu,
     copyText,copyLink,copySource}=app;
@@ -258,6 +258,7 @@ function WorkbenchPortals({nodes}){
     <ProjectDialog root={nodes.dialog} asset={selected} labels={state.labels}
       project={state.projects.find(p=>p.id===selected?.projectId)||null}
       projectAssetCount={state.assets.filter(a=>a.projectId===selected?.projectId).length}
+      projectHealthSnapshot={projectHealthSnapshot}
       open={dialogOpen} onOpenChange={onDialogChange} onCopySource={copySource}
       onCopyLink={copyLink} onCopyText={copyText} notify={notify}/>
   </>;

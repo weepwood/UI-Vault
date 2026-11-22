@@ -5,6 +5,7 @@ import {resolveAsset} from '../../assets/core/render.js';
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {getSourceFiles,downloadSourceText} from '../../assets/core/source-files.js';
 import {getRepositoryArchiveUrl,getStandaloneBundlePath} from '../../assets/core/project-delivery.js';
+import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
 
 function sourceLink(asset,file){
   if(!asset)return 'https://github.com/weepwood/UI-Vault';
@@ -47,7 +48,7 @@ function PageInfoPanel({info,asset}){
  * ProjectDialog 的标签页、异步源码、焦点、Escape 和复制逻辑全由 React 管理。
  * 保留 <dialog id="project-dialog"> 原生顶层语义，状态切换不触碰 iframe。
  */
-export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
+export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
   const [source,setSource]=useState({id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});
@@ -254,6 +255,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
         <a href={project.repository} target="_blank" rel="noopener noreferrer"
           title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
       </section>}
+      <ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
   </div>,root);
