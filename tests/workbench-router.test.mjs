@@ -64,3 +64,14 @@ test('设置视图导航保留项目 ID，并支持返回和取消订阅',()=>{
   host.backTo('https://example.test/UI-Vault/');
   assert.equal(events.length,1);
 });
+
+test('项目状态管理是独立可分享视图，旧资源深链接保留',()=>{
+ const host=createHost('https://example.test/UI-Vault/?asset=demo&view=operations');
+ const router=createWorkbenchRouter(host);
+ assert.deepEqual(router.read(),{asset:'demo',view:'operations'});
+ router.setView('library','push');
+ assert.equal(router.read().view,'library');
+ assert.equal(router.read().asset,'demo');
+ router.setView('operations','push');
+ assert.equal(new URL(host.location.href).searchParams.get('view'),'operations');
+});

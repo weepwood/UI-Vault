@@ -6,7 +6,7 @@ export function createWorkbenchRouter(host=window){
   if(!host?.location||!host?.history)throw new TypeError('路由需要 location 与 history');
   const read=()=>{
     const url=new URL(host.location.href);
-    return {asset:url.searchParams.get('asset'),view:url.searchParams.get('view')==='settings'?'settings':'library'};
+    return {asset:url.searchParams.get('asset'),view:['settings','operations'].includes(url.searchParams.get('view'))?url.searchParams.get('view'):'library'};
   };
   const assetURL=id=>{
     const url=new URL(host.location.href);
@@ -17,7 +17,7 @@ export function createWorkbenchRouter(host=window){
   };
   const viewURL=mode=>{
     const url=new URL(host.location.href);
-    if(mode==='settings')url.searchParams.set('view','settings');
+    if(mode==='settings'||mode==='operations')url.searchParams.set('view',mode);
     else url.searchParams.delete('view');
     return url;
   };
@@ -32,7 +32,7 @@ export function createWorkbenchRouter(host=window){
     return navigate(assetURL(id),historyMode,{asset:id});
   }
   function setView(mode,historyMode=null){
-    if(mode!=='settings'&&mode!=='library')throw new RangeError('未知视图');
+    if(!['settings','operations','library'].includes(mode))throw new RangeError('未知视图');
     return navigate(viewURL(mode),historyMode,{view:mode});
   }
   function subscribe(listener){
