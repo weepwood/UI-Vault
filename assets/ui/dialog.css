@@ -56,3 +56,8 @@
   .source-file-controls .select-field{flex:1 1 100%;max-width:none}
   .source-buttons{width:100%;flex-wrap:wrap}
 }
+
+/* 打开时锁定 dialog 的原始高度；切换“项目说明 / 源代码”只替换可滚动内容，不重排外框。 */
+.project-dialog[data-stable-height="true"] .dialog-shell{height:100%}
+.project-dialog[data-stable-height="true"] .dialog-pane{flex:1 1 auto;min-height:0}
+.project-dialog[data-stable-height="true"] .source-view{min-height:0}
