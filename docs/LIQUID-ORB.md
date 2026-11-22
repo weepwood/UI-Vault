@@ -125,3 +125,15 @@ CI 增加设备提示规则、DPR 像素预算、高质量材质按需编译、�
 - 自动模式在大画布和宿主缩小预览时仍降低像素数。
 - 画质与尺寸菜单共享布局语言，桌面及移动端选择、键盘操作和关闭行为一致。
 - 4 套主题均可切换，浅色模式的文字与控件对比度可读；关闭对话框、返回玻璃球页后主题状态不丢失。
+
+## WGSL 渲染保留约束（2026-11-22）
+
+**设计原则：保留 LerSent001/orb 的 WebGPU/WGSL 计算路径，不使用 CSS 毛玻璃、Canvas 2D 或静态图作为等价替代。**
+
+- **渲染核心**：单文件 Demo 的内联 `shaderSource` 仍是 WGSL；`navigator.gpu`、`createShaderModule` 与 WebGPU Render Pipeline 负责最终绘制。原项目的流场、轮廓法线、折射和玻璃光照函数必须保留。
+- **高质量模式**：手动选择 `high` 时启用完整三通道色散管线与原始 1.5× DPR 上限；无法编译时必须显示“高清折射不可用”，不得把降级效果标作原始画质。
+- **自动与节能模式**：允许为了性能降低帧率、DPR、采样复杂度，并暂停不可见 Canvas；不应更改高质量模式的原始光学计算。
+- **组件集成**：玻璃球与 Thinking 对话框共享一个 Canvas 和 WebGPU 设备。外层 React 工作台只负责参数控制、布局及嵌入权限，避免创建第二套渲染器。
+- **来源差异**：UI-Vault 使用从上游 WGSL 改编的内联着色器，包含质量分档和集成调整；**不能宣称当前 `shaderSource` 与上游 `effect.wgsl` 字节级一致**。需要做原版像素一致性比较时，应以 [上游 effect.wgsl](https://github.com/LerSent001/orb/blob/main/effect.wgsl) 及其 WebGPU 管线为基准，进行相同参数和分辨率下的实机截图对照。
+
+回归保护：`tests/liquid-orb-wgsl-regression.test.mjs` 锁定 WebGPU/WGSL 渲染入口、核心光学函数、高质量色散路径与单 Canvas 架构；现有 `liquid-orb-performance.test.mjs` 检查自适应性能与画质策略。静态检查不能替代在不同 GPU / 浏览器上的视觉和性能验证。
