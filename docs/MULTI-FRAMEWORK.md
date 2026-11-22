@@ -22,6 +22,7 @@ UI-Vault 是**登记、搜索、预览、分发入口**，不是其他项目必�
 按变化频率、抽象稳定性和下载独立性决定：
 
 - **值得共享**：颜色/排版/间距/圆角/动效语义 Token，通用类型定义、确定性纯逻辑、成熟且许可证明确的图标资源。
+- **推荐交付方式**：UI Foundation Kit 现有安装脚本将 Token/CSS 复制到项目自己的 `ui-foundation/`，生成含版本与 SHA-256 的 `INSTALL-MANIFEST.json`。这属于 *vendored snapshot*，复制后项目不需要 UI-Vault 在线提供资源。
 - **按框架独立实现**：React/Vue 的 Button、Dialog、Popover、Select、命令菜单；优先遵循对应框架的生态和可访问性约定。
 - **不共享**：主工作台业务状态、UI-Vault 专属 ProjectRow、跨仓 iframe 的生命周期、各 Demo 的特定 Shader 或业务代码。
 - **例外**：成熟组件经过测试和真正跨项目复用需求时，可发布成有版本号的 npm 包 / shadcn Registry；桌面 GPUI 通过共享 Token 文件或生成规则，而不是依赖 React。

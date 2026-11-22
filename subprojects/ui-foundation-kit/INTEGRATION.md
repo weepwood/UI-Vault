@@ -11,6 +11,16 @@ node scripts/install.mjs /absolute/path/to/my-project
 
 生成：`my-project/ui-foundation/`，其中包含 `dist/`、`tokens/`、`styles/`。
 
+该目录是**一次性复制的快照**，不是工作区依赖或 Git 子模块。安装后目标工程自行持有一份 Token/CSS，可以独立开发和部署；不会因 UI-Vault 的版本升级自动变化。
+
+安装器同时生成 `INSTALL-MANIFEST.json`：包含 Kit 版本、来源和每个交付文件的 SHA-256，便于人工比较升级前后的差异。需要预览受影响文件时：
+
+```bash
+node scripts/install.mjs /absolute/path/to/my-project --dry-run
+```
+
+安装前先执行 `npm run build`；脚本需要 `dist/` 已生成。
+
 在应用入口全局导入，顺序不要颠倒：
 
 ```css
@@ -40,7 +50,7 @@ node scripts/build-tokens.mjs
 node scripts/check.mjs
 ```
 
-再运行 `node scripts/install.mjs /absolute/path/to/my-project --force` 更新基础文件。它只覆盖 `ui-foundation` 下工具生成和附带的文件，不动项目其他文件。修改目标项目之前应检查自定义覆盖，避免影响原有组件。
+再运行 `node scripts/install.mjs /absolute/path/to/my-project --force` 更新基础快照。它只覆盖 `ui-foundation` 下工具拥有的文件，并生成新的 `INSTALL-MANIFEST.json`；不会修改目标项目的 package.json、lockfile 或运行时依赖。先审查差异；如果目标项目自定义修改了快照内容，强制更新会覆盖该目录内的修改。
 
 ## 版本治理
 
