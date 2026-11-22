@@ -880,3 +880,7 @@ html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--ta
   .topbar-tools { gap:4px; }
   .topbar-actions { gap:2px; }
 }
+
+/* 旧版窄屏媒体规则曾把 Topbar 的 min-height 重置为 0。
+ * 保持两栏共用 56px 基线，让 ResizeObserver 只负责真实内容撑高部分。 */
+.main > .topbar { min-height:var(--workbench-toolbar-height); }
