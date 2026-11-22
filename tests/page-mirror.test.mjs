@@ -22,7 +22,7 @@ test('23 个页面镜像及总览已独立登记，并与公开索引同步',asy
   assert.notEqual(entry.copyable,true);
  }
 });
-test('镜像子路径与隔离 iframe、安全回退入口及项目列表展示一致',async()=>{
+test('镜像子路径、隔离 iframe 与项目列表展示一致',async()=>{
  const assets=JSON.parse(await read('content/assets.json'));
  for(const slug of slugs){
   const a=assets.find(x=>x.id==='mirror-'+slug);
@@ -32,7 +32,7 @@ test('镜像子路径与隔离 iframe、安全回退入口及项目列表展示�
   assert.ok(markup.includes('src="'+a.siteUrl+'"'));
   assert.match(markup,/sandbox="allow-scripts allow-forms"/);
   assert.match(markup,/referrerpolicy="no-referrer"/);
-  assert.match(markup,/在原站查看/);
+  assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
   assert.match(projectRowMarkup(a,new Set(),{}),/在线预览/);
  }
 });
