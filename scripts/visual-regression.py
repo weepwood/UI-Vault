@@ -423,6 +423,26 @@ def verify_liquid_orb_unified(browser, origin):
         assert preview.locator("#dialog-size-menu").is_visible(), "沙箱预览内下拉菜单无法展开"
         preview.locator('#dialog-size-menu [data-size="compact"]').click()
         assert preview.locator("#dialog-size").input_value() == "compact", "沙箱预览内尺寸无法选择"
+        assert preview.locator(".source-credit").count() == 0, "来源说明不应继续显示在受限 iframe 中"
+        # 来源链接由主站 React Dialog 渲染，不依赖 iframe 的 allow-popups 权限。
+        frame_sandbox = page.locator('iframe[data-preview-frame="local"]').get_attribute("sandbox")
+        assert frame_sandbox == "allow-scripts", "不能为外链放宽 WebGPU 预览沙箱"
+        page.locator("#preview-info").click()
+        info = page.locator("#project-info")
+        credit = info.locator(".project-credit")
+        credit.wait_for(state="visible")
+        links = credit.locator("a")
+        assert links.count() == 2, "项目说明应提供原版仓库与原版编辑器两个链接"
+        assert links.nth(0).get_attribute("href") == "https://github.com/LerSent001/orb"
+        assert links.nth(1).get_attribute("href") == "https://lersent001.github.io/orb/"
+        assert links.nth(0).get_attribute("target") == "_blank"
+        assert "noopener" in links.nth(0).get_attribute("rel")
+        with page.expect_popup(timeout=12000) as popup_event:
+            links.nth(0).click()
+        popup = popup_event.value
+        assert popup, "主站来源链接没有打开新标签页"
+        popup.close()
+        page.locator("#dialog-close").click()
         assert not embedded_errors, "主站沙箱错误：" + "; ".join(embedded_errors)
     finally:
         context.close()
