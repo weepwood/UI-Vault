@@ -33,6 +33,10 @@
   .option[aria-pressed=false]{color:#9da7bd}
   .option:hover{background:#242c40}
   .hint{margin-left:auto;font-size:11px;color:#8791a6}
+  .quality-control{display:flex;align-items:center;gap:8px;font-size:12px;color:#b9c3d7}
+  .quality-control select{height:34px;max-width:130px;padding:0 8px;border:1px solid #363d53;border-radius:7px;background:#171d2b;color:#e0e5f3;font:inherit;cursor:pointer}
+  #quality-status{font-size:11px;line-height:1.5;color:#97a5bd;white-space:nowrap;font-variant-numeric:tabular-nums}
+  @media(max-width:700px){#quality-status{width:100%}}
   @media(max-width:700px){header{padding-top:15px}.controls{gap:8px;padding:9px 0 12px}.hint{width:100%;margin-left:0}}
   @media(max-height:445px){.shell{min-height:0}header{padding-top:8px}.sub{display:none}.stage{min-height:90px}.controls{padding:7px 0}}
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:0s!important;animation-duration:0s!important}}
@@ -196,7 +200,15 @@
       </label>
       <button class="option" type="button" id="glass-toggle" aria-pressed="true">玻璃外壳：开</button>
       <button class="option" type="button" id="motion-toggle" aria-pressed="false">暂停动画</button>
-      <span class="hint">WebGPU 不可用时显示加载错误与重试</span>
+      <label class="quality-control" for="quality-mode">画质
+        <select id="quality-mode" aria-label="液态玻璃渲染画质">
+          <option value="auto" selected>自动 · 推荐</option>
+          <option value="eco">节能</option>
+          <option value="balanced">均衡</option>
+          <option value="high">高质量</option>
+        </select>
+      </label>
+      <output id="quality-status" for="quality-mode" aria-live="off">正在检测性能…</output>
     </div>
     <div class="dialog-settings" id="dialog-settings">
       <label class="dialog-field" for="dialog-text">对话框文字
@@ -248,16 +260,93 @@
     const stateSeeds = {"idle":[1,1,0,0.2460000067949295,0.7200000286102295,0.3384000062942505,1.6640000343322754,0.23999999463558197,1.9800000190734863,0.11999999731779099,0.2800000011920929,0.23999999463558197,0.18000000715255737,0.18000000715255737,1.3600000143051147,9,0.004999999888241291,0,0,1,0.4399999976158142,0,2,0.41999998688697815,0.7699999809265137,0.23000000417232513,65,0,0,1,0.2199999988079071,0.25,0.7200000286102295,5,0.41999998688697815,1.25,0.550000011920929,0.30000001192092896,1.2000000476837158,0.699999988079071,0.7098039388656616,0.6509804129600525,0.45490196347236633,1,0.3686274588108063,0.529411792755127,0.5803921818733215,1,0.6039215922355652,0.3921568691730499,0.5411764979362488,1,0.38823530077934265,0.35686275362968445,0.5411764979362488,1,0.7137255072593689,0.7686274647712708,0.8235294222831726,1,1,1,1,1,0.6078431606292725,0.95686274766922,1,1,0.772549033164978,0.6627451181411743,1,1,0.9176470637321472,0.95686274766922,1,1,0.8627451062202454,0.9176470637321472,1,1,0.0117647061124444,0.01568627543747425,0.03529411926865578,1,0.42352941632270813,0.40784314274787903,0.5607843399047852,1,0.9686274528503418,0.9843137264251709,1,1,0.9372549057006836,0.9647058844566345,0.9921568632125854,1,0.8784313797950745,0.9333333373069763,0.9764705896377563,1,0.8313725590705872,0.9019607901573181,0.9686274528503418,1,0.7333333492279053,0.8352941274642944,0.9529411792755127,1,0.6509804129600525,0.7803921699523926,0.9411764740943909,1,0.529411792755127,0.6901960968971252,0.9215686321258545,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1],"thinking":[1,1,0,0.8199999928474426,0.7200000286102295,0.36000001430511475,3.200000047683716,0.5,2.200000047683716,0.11999999731779099,0.2800000011920929,0.23999999463558197,0.18000000715255737,0.18000000715255737,2,9,0.004999999888241291,0,0,1,0.4399999976158142,0,2,0.41999998688697815,0.7699999809265137,0.23000000417232513,65,0,0,1,0.2199999988079071,0.25,0.7200000286102295,5,0.41999998688697815,1.25,0.550000011920929,0.30000001192092896,1.2000000476837158,0.699999988079071,1,0.8470588326454163,0.41960784792900085,1,0.5098039507865906,0.95686274766922,1,1,1,0.48235294222831726,0.8352941274642944,1,0.5568627715110779,0.42352941632270813,1,1,1,1,1,1,1,1,1,1,0.6078431606292725,0.95686274766922,1,1,0.772549033164978,0.6627451181411743,1,1,0.9176470637321472,0.95686274766922,1,1,0.8627451062202454,0.9176470637321472,1,1,0.0117647061124444,0.01568627543747425,0.03529411926865578,1,0.5843137502670288,0.42352941632270813,1,1,0.9686274528503418,0.9843137264251709,1,1,0.9372549057006836,0.9647058844566345,0.9921568632125854,1,0.8784313797950745,0.9333333373069763,0.9764705896377563,1,0.8313725590705872,0.9019607901573181,0.9686274528503418,1,0.7333333492279053,0.8352941274642944,0.9529411792755127,1,0.6509804129600525,0.7803921699523926,0.9411764740943909,1,0.529411792755127,0.6901960968971252,0.9215686321258545,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1,0.43529412150382996,0.6196078658103943,0.9098039269447327,1]};
     const ribbonStyleIndex = 24;
     const ribbonInstanceCount = 221184;
-    // The preview defaults to balanced mode. High quality is opt-in via
-    // ?quality=high; embed previews can use ?quality=eco.
     const qualityProfiles = Object.freeze({
-      eco: Object.freeze({ fps: 20, maxDpr: 0.75, minDpr: 0.6, particleCount: 73728 }),
-      balanced: Object.freeze({ fps: 30, maxDpr: 1, minDpr: 0.7, particleCount: 147456 }),
-      high: Object.freeze({ fps: 40, maxDpr: 1.5, minDpr: 1, particleCount: ribbonInstanceCount }),
+      eco: Object.freeze({ fps: 20, maxDpr: 1.25, minDpr: 0.6, pixelBudget: 180000, particleCount: 73728 }),
+      balanced: Object.freeze({ fps: 30, maxDpr: 1.5, minDpr: 0.7, pixelBudget: 500000, particleCount: 147456 }),
+      high: Object.freeze({ fps: 40, maxDpr: 2, minDpr: 1, pixelBudget: 900000, particleCount: ribbonInstanceCount }),
     });
     const requestedQuality = new URLSearchParams(location.search).get("quality");
-    const quality = Object.hasOwn(qualityProfiles, requestedQuality) ? requestedQuality : "balanced";
-    const profile = qualityProfiles[quality];
+    const qualityMode = { current: Object.hasOwn(qualityProfiles, requestedQuality) ? requestedQuality : "auto" };
+    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const saveData = connection?.saveData === true;
+    const cpu = Number(navigator.hardwareConcurrency) || 0;
+    const memory = Number(navigator.deviceMemory) || 0;
+    function initialAutoQuality() {
+      return saveData || (cpu && cpu <= 4) || (memory && memory <= 4) ? "eco" : "balanced";
+    }
+    let quality = qualityMode.current === "auto" ? initialAutoQuality() : qualityMode.current;
+    let profile = qualityProfiles[quality];
+    let displayScale = 1;
+    let lastLatencyMs = 0;
+    let underBudgetWindows = 0, overBudgetWindows = 0;
+    let lastQualityChangeAt = performance.now();
+    let highPipelineUnavailable = false;
+    let ensureHighPipeline = () => {};
+    const qualityLabels = { eco: "节能", balanced: "均衡", high: "高质量" };
+    const qualitySelect = document.querySelector("#quality-mode");
+    const qualityStatus = document.querySelector("#quality-status");
+    qualitySelect.value = qualityMode.current;
+    function renderDpr() {
+      const scale = Math.min(1, displayScale);
+      const cssPixels = Math.max(1, canvas.clientWidth * canvas.clientHeight);
+      const budgetDpr = Math.sqrt(profile.pixelBudget / cssPixels);
+      // Actual rendered pixels stay within the profile budget, while a tiny
+      // thinking orb can use a higher DPR for sharp rim highlights.
+      return Math.max(0.2, Math.min(window.devicePixelRatio || 1, adaptiveDpr,
+        budgetDpr / scale) * scale);
+    }
+    function updateQualityStatus() {
+      const label = (qualityMode.current === "auto" ? "自动 · " : "") + qualityLabels[quality] +
+        " · " + targetFps + " FPS / " + renderDpr().toFixed(2) + "×";
+      if (qualityStatus.textContent !== label) qualityStatus.textContent = label;
+      qualityStatus.title = highPipelineUnavailable && quality === "high"
+        ? "高质量折射不支持，已使用兼容的普通折射"
+        : "当前档位、目标帧率和画布像素倍率（非实际 FPS）";
+    }
+    function applyActiveQuality(next) {
+      if (quality === next) return;
+      quality = next;
+      profile = qualityProfiles[next];
+      adaptiveDpr = profile.maxDpr;
+      targetFps = profile.fps;
+      underBudgetWindows = overBudgetWindows = 0;
+      lastQualityChangeAt = performance.now();
+      if (next === "high") ensureHighPipeline();
+      updateQualityStatus();
+      requestDraw();
+    }
+    function chooseQualityMode(next) {
+      if (next !== "auto" && !Object.hasOwn(qualityProfiles, next)) return;
+      qualityMode.current = next;
+      const chosen = next === "auto" ? initialAutoQuality() : next;
+      if (chosen !== quality) applyActiveQuality(chosen);
+      else {
+        profile = qualityProfiles[chosen];
+        adaptiveDpr = profile.maxDpr;
+        targetFps = profile.fps;
+        lastQualityChangeAt = performance.now();
+      }
+      if (chosen === "high") ensureHighPipeline();
+      underBudgetWindows = overBudgetWindows = 0;
+      qualitySelect.value = next;
+      updateQualityStatus();
+      requestDraw();
+      try {
+        const url = new URL(location.href);
+        if (next === "auto") url.searchParams.delete("quality");
+        else url.searchParams.set("quality", next);
+        history.replaceState(null, "", url.pathname + url.search + url.hash);
+      } catch { /* 沙箱中可能无法更改 History API */ }
+    }
+    function setDisplayScale(value) {
+      if (!Number.isFinite(value)) return;
+      const next = Math.max(0.2, Math.min(2, value));
+      if (Math.abs(next - displayScale) < 0.01) return;
+      displayScale = next;
+      updateQualityStatus();
+      requestDraw();
+    }
     const activationDurationMs = 160;
     const settleDurationMs = 1000;
     const canvas = document.querySelector("#orb");
@@ -284,7 +373,6 @@
     let activeTransitionDuration = 0;
     let lastFrameAt = null;
     let motionPhase = 0;
-    const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)");
     let playing = !reducedMotion.matches, glassEnabled = true, speedFactor = 1;
     let requestDraw = () => {};
     const embedded = new URLSearchParams(location.search).get("embed") === "1";
@@ -416,9 +504,10 @@
         setGlass,
         setSpeed,
         getPerformance: () => ({
-          quality, targetFps, renderDpr: Math.min(window.devicePixelRatio || 1, adaptiveDpr),
-          inViewport, gpuPending,
+          quality, mode: qualityMode.current, targetFps, renderDpr: renderDpr(),
+          displayScale, lastLatencyMs, inViewport, gpuPending, playing,
         }),
+        setQuality: chooseQualityMode,
       }),
     });
 
@@ -453,11 +542,7 @@
 
       const format = navigator.gpu.getPreferredCanvasFormat();
       context.configure({ device, format, alphaMode: "premultiplied" });
-      const optimizedShaderSource = shaderSource.replace(
-        "const GL_HIGH_DISPERSION: bool = false;",
-        "const GL_HIGH_DISPERSION: bool = " + String(quality === "high") + ";",
-      );
-      const shader = device.createShaderModule({ code: optimizedShaderSource });
+      const shader = device.createShaderModule({ code: shaderSource });
       const compilation = await shader.getCompilationInfo();
       const errors = compilation.messages.filter((message) => message.type === "error");
       if (errors.length) {
@@ -465,11 +550,11 @@
       }
       setLoading(70, "着色器编译完成");
 
-      const pipeline = await device.createRenderPipelineAsync({
+      const createMainPipeline = module => device.createRenderPipelineAsync({
         layout: "auto",
-        vertex: { module: shader, entryPoint: "vs_main" },
+        vertex: { module, entryPoint: "vs_main" },
         fragment: {
-          module: shader,
+          module,
           entryPoint: "fs_main",
           targets: [{
             format,
@@ -489,6 +574,7 @@
         },
         primitive: { topology: "triangle-list" },
       });
+      const pipeline = await createMainPipeline(shader);
       const values = new Float32Array(displayedUniforms);
       const uniformBuffer = device.createBuffer({
         size: values.byteLength,
@@ -498,6 +584,37 @@
         layout: pipeline.getBindGroupLayout(0),
         entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
       });
+      let highPipeline = null;
+      let highBindGroup = null;
+      let highCompiling = false;
+      ensureHighPipeline = () => {
+        if (highPipeline || highCompiling || highPipelineUnavailable || stopped) return;
+        highCompiling = true;
+        (async () => {
+          const highSource = shaderSource.replace(
+            "const GL_HIGH_DISPERSION: bool = false;",
+            "const GL_HIGH_DISPERSION: bool = true;",
+          );
+          const highShader = device.createShaderModule({ code: highSource });
+          const errors = (await highShader.getCompilationInfo()).messages
+            .filter(message => message.type === "error");
+          if (errors.length) throw new Error(errors.map(error => error.message).join("\n"));
+          const compiled = await createMainPipeline(highShader);
+          if (stopped) return;
+          highBindGroup = device.createBindGroup({
+            layout: compiled.getBindGroupLayout(0),
+            entries: [{ binding: 0, resource: { buffer: uniformBuffer } }],
+          });
+          highPipeline = compiled;
+          requestDraw();
+        })().catch(error => {
+          highPipelineUnavailable = true;
+          console.warn("[Liquid Orb] 高画质渲染不可用，退回普通折射", error);
+          if (qualityMode.current === "auto" && quality === "high") applyActiveQuality("balanced");
+          updateQualityStatus();
+        }).finally(() => { highCompiling = false; });
+      };
+      if (quality === "high") ensureHighPipeline();
       // Heavy ribbon pipelines are compiled only when the ribbon style is selected.
       let ribbonPipeline = null;
       let ribbonCompositePipeline = null;
@@ -588,7 +705,7 @@
         }
         lastDrawAt = now;
         try {
-          const dpr = Math.min(window.devicePixelRatio || 1, adaptiveDpr);
+          const dpr = renderDpr();
           const width = Math.max(1, Math.floor(canvas.clientWidth * dpr));
           const height = Math.max(1, Math.floor(canvas.clientHeight * dpr));
           if (canvas.width !== width || canvas.height !== height) {
@@ -663,8 +780,9 @@
             pass.setPipeline(ribbonCompositePipeline);
             pass.setBindGroup(0, ribbonCompositeBindGroup);
           } else {
-            pass.setPipeline(pipeline);
-            pass.setBindGroup(0, bindGroup);
+            const useHigh = quality === "high" && highPipeline && highBindGroup;
+            pass.setPipeline(useHigh ? highPipeline : pipeline);
+            pass.setBindGroup(0, useHigh ? highBindGroup : bindGroup);
           }
           pass.draw(3);
           pass.end();
@@ -681,22 +799,42 @@
               gpuLatencyTotal += performance.now() - submittedAt;
               gpuLatencySamples += 1;
               const sampledAt = performance.now();
-              if (gpuLatencySamples >= 12 && sampledAt - qualityAdjustedAt >= 3000) {
-                // Completion latency includes queue/scheduling, not only GPU time.
-                // Use it conservatively as an overload signal, not as a GPU timer.
+              if (gpuLatencySamples >= 18 && sampledAt - qualityAdjustedAt >= 4000) {
+                // Completion latency includes queue/scheduling, not exact GPU time.
+                // Hysteresis prevents oscillation when the browser briefly stalls.
                 const meanLatency = gpuLatencyTotal / gpuLatencySamples;
-                if (meanLatency > (1000 / targetFps) * 1.2) {
-                  if (adaptiveDpr > profile.minDpr + 0.01) {
-                    adaptiveDpr = Math.max(profile.minDpr, Math.round((adaptiveDpr - 0.15) * 100) / 100);
-                  } else if (targetFps > 20) {
-                    targetFps = 20;
-                  } else if (targetFps > 15) {
-                    targetFps = 15;
-                  }
-                }
+                lastLatencyMs = Math.round(meanLatency * 10) / 10;
                 gpuLatencyTotal = 0;
                 gpuLatencySamples = 0;
                 qualityAdjustedAt = sampledAt;
+                if (qualityMode.current === "auto" && !reducedMotion.matches) {
+                  const budgetMs = 1000 / targetFps;
+                  overBudgetWindows = meanLatency > budgetMs * 0.9 ? overBudgetWindows + 1 : 0;
+                  underBudgetWindows = meanLatency < budgetMs * 0.42 ? underBudgetWindows + 1 : 0;
+                  if (overBudgetWindows >= 2 && sampledAt - lastQualityChangeAt >= 4000) {
+                    overBudgetWindows = underBudgetWindows = 0;
+                    if (quality === "high") applyActiveQuality("balanced");
+                    else if (adaptiveDpr > profile.minDpr + 0.02) {
+                      adaptiveDpr = Math.max(profile.minDpr, Math.round((adaptiveDpr - 0.15) * 100) / 100);
+                    } else if (targetFps > 20) targetFps = 20;
+                    else if (quality === "balanced") applyActiveQuality("eco");
+                    else targetFps = 15;
+                    lastQualityChangeAt = sampledAt;
+                  } else if (underBudgetWindows >= 3 && sampledAt - lastQualityChangeAt >= 12000) {
+                    underBudgetWindows = overBudgetWindows = 0;
+                    if (targetFps < profile.fps) targetFps = profile.fps;
+                    else if (adaptiveDpr + 0.02 < profile.maxDpr) {
+                      adaptiveDpr = Math.min(profile.maxDpr, Math.round((adaptiveDpr + 0.1) * 100) / 100);
+                    } else if (quality === "eco" && !saveData) {
+                      applyActiveQuality("balanced");
+                    } else if (quality === "balanced" && !highPipelineUnavailable &&
+                      !saveData && canvas.clientWidth * canvas.clientHeight <= 230000) {
+                      applyActiveQuality("high");
+                    }
+                    lastQualityChangeAt = sampledAt;
+                  }
+                }
+                updateQualityStatus();
               }
             }
             if (!firstFrameReady) {
@@ -744,13 +882,16 @@
       device?.destroy();
     }, { once: true });
     window.addEventListener("message", event => {
-      if (!embedded || event.source !== window.parent) return;
+      if (event.source !== window.parent || window.parent === window) return;
       const data = event.data;
       if (!data || data.channel !== "ui-vault/liquid-orb" || data.event !== "command") return;
+      if (data.action === "setDisplayScale") { setDisplayScale(data.value); return; }
+      if (!embedded) return;
       if (data.action === "setState" && Object.hasOwn(stateSeeds, data.value)) setState(data.value);
       else if (data.action === "setPlaying" && typeof data.value === "boolean") setPlaying(data.value);
       else if (data.action === "setGlass" && typeof data.value === "boolean") setGlass(data.value);
       else if (data.action === "setSpeed" && Number.isFinite(data.value)) setSpeed(data.value);
+      else if (data.action === "setQuality" && typeof data.value === "string") chooseQualityMode(data.value);
     });
     document.querySelector("#orb-retry").addEventListener("click", () => location.reload());
     document.querySelectorAll("[data-state]").forEach(button =>
@@ -758,11 +899,17 @@
     document.querySelector("#motion-toggle").addEventListener("click", () => setPlaying(!playing));
     document.querySelector("#glass-toggle").addEventListener("click", () => setGlass(!glassEnabled));
     document.querySelector("#speed").addEventListener("input", event => setSpeed(event.target.value));
+    qualitySelect.addEventListener("change", event => chooseQualityMode(event.target.value));
+    updateQualityStatus();
     document.addEventListener("visibilitychange", () => {
       if (document.hidden) {
         cancelAnimationFrame(animationFrame);
         animationFrame = 0;
-      } else requestDraw();
+      } else {
+        gpuLatencySamples = gpuLatencyTotal = 0;
+        qualityAdjustedAt = performance.now();
+        requestDraw();
+      }
     });
     window.addEventListener("resize", () => requestDraw());
     reducedMotion.addEventListener?.("change", event => { if (event.matches) setPlaying(false); });

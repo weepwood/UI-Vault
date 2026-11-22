@@ -252,6 +252,13 @@ def verify_liquid_orb_unified(browser, origin):
         try:
             page.goto(origin + "demos/components/liquid-orb/index.html", wait_until="domcontentloaded")
             page.locator("#tab-dialog").click(timeout=30000)
+            assert page.locator("#quality-mode").input_value() == "auto", "默认未启用自动画质"
+            page.locator("#quality-mode").select_option("high")
+            assert page.locator("#quality-mode").input_value() == "high", "高质量手动设置失败"
+            assert page.evaluate("window.liquidOrb.getPerformance().mode") == "high"
+            page.locator("#quality-mode").select_option("auto")
+            assert page.evaluate("window.liquidOrb.getPerformance().mode") == "auto", "无法恢复自动画质"
+            assert "自动" in page.locator("#quality-status").inner_text(), "画质状态未更新"
             assert page.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')")
             if page.locator("body").evaluate("(el) => el.classList.contains('fallback')"):
                 assert not page.locator("#status").is_visible(), "错误提示挤进胶囊"
@@ -374,6 +381,9 @@ def verify_liquid_orb_unified(browser, origin):
         page.goto(origin + "?asset=liquid-orb", wait_until="domcontentloaded")
         preview = page.frame_locator('iframe[data-preview-frame="local"]')
         preview.locator("#tab-dialog").click(timeout=30000)
+        assert preview.locator("#quality-mode").input_value() == "auto", "工作台预览应使用自动画质"
+        scale = preview.locator("#orb").evaluate("(el) => el.ownerDocument.defaultView.liquidOrb.getPerformance().displayScale")
+        assert 0.2 <= scale <= 2, "预览缩放参数不合法"
         assert preview.locator("body").evaluate("(el) => el.classList.contains('dialog-mode')"), "主站沙箱中标签切换无效"
         preview.locator("#dialog-size-trigger").click()
         assert preview.locator("#dialog-size-menu").is_visible(), "沙箱预览内下拉菜单无法展开"
