@@ -18,6 +18,12 @@
 
 具体约束和后续优化见 [React 工作台架构说明](docs/REACT-MIGRATION.md)。[共享组件 CSS 与视觉回归](docs/CSS-MODULES-VISUAL.md)。
 
+## 背景效果实验室
+
+- [在 UI Vault 中打开](https://weepwood.github.io/UI-Vault/?asset=aurora-field)：将旧版极光背景升级为 12 种背景的统一展示，提供现场预览、分类、配色、强度、速度和代码复制。
+- [设计参考与维护说明](docs/BACKGROUND-LAB.md) · [可独立打开的单文件 Demo](demos/effects/aurora-field/index.html)。
+- 缩略图不播放动画，只有当前主预览运行；尊重系统减少动画设置和页面可见性。
+
 ## Workbench UI 组件展厅
 
 - [在 UI-Vault 中打开组件展厅](https://weepwood.github.io/UI-Vault/?asset=workbench-components)：直接预览、点击并检查工作台原有组件。
