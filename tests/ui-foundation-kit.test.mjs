@@ -40,6 +40,7 @@ test('UI Foundation Kit: 复制快照独立于 UI-Vault，并记录可核验的�
       const sha=createHash('sha256').update(readFileSync(resolve(target,'ui-foundation',item.path))).digest('hex');
       assert.equal(sha,item.sha256,item.path);
     }
+    execFileSync(process.execPath,['scripts/install.mjs',target,'--dry-run'],{cwd:root,stdio:'pipe'});
     assert.throws(()=>execFileSync(process.execPath,['scripts/install.mjs',target],{cwd:root,stdio:'pipe'}));
     execFileSync(process.execPath,['scripts/install.mjs',target,'--force'],{cwd:root,stdio:'pipe'});
   }finally{rmSync(target,{recursive:true,force:true});}

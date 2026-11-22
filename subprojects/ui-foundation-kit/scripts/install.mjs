@@ -30,7 +30,7 @@ for(const item of owned){
     process.exit(2);
   }
 }
-if(fs.existsSync(dest)&&!flags.includes('--force')){
+if(fs.existsSync(dest)&&!flags.includes('--force')&&!flags.includes('--dry-run')){
   console.error('目标已存在，使用 --force 更新工具所属文件: '+dest);
   process.exit(1);
 }
