@@ -77,6 +77,10 @@ export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,o
       <div className="project-identity">
         <span className="topbar-kind" id="preview-kind">{asset?kind:'选择项目'}</span>
         <h1 id="preview-title" tabIndex={-1}>{asset?.title||'没有匹配的项目'}</h1>
+        {asset?.siteUrl&&<span className="topbar-embed-notice"
+          title="外部站点可能禁止嵌入或受沙箱限制。">
+          <Icon name="info"/><span>外部站点可能禁止嵌入或受沙箱限制。</span>
+        </span>}
         <span className="topbar-subtitle" id="preview-subtitle">
           {asset?(asset.subtitle||asset.description):'清除筛选条件以继续浏览。'}
         </span>
@@ -99,8 +103,9 @@ export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,o
           aria-label="复制当前项目链接" disabled={!asset} onClick={onCopyLink}><Icon name="copy"/></button>
         <a id="preview-open" className="open-action" href={openUrl||'https://github.com/weepwood/UI-Vault'}
           target="_blank" rel="noopener noreferrer" hidden={!openUrl}
-          aria-label={asset?.source==='local'?'单独打开 '+asset.title:'在原网站打开 '+(asset?.title||'项目')}>
-          <Icon name="external-link"/><span>单独打开</span>
+          aria-label={asset?.source==='local'?'单独打开 '+asset.title:'在原网站打开 '+(asset?.title||'项目')}
+          title={asset?.siteUrl?'在原站查看':'单独打开'}>
+          <Icon name="external-link"/><span>{asset?.siteUrl?'在原站查看':'单独打开'}</span>
         </a>
       </div>
     </div>
