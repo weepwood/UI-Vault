@@ -195,14 +195,29 @@ def verify_react_interactions(browser, origin):
         dialog = page.locator("#project-dialog")
         dialog.wait_for(state="visible")
         assert dialog.evaluate("(node) => node.open"), "React Dialog 未打开"
+        # 弹窗切换不改变高度，也不会在再次进入源码时闪出加载占位内容。
+        before_height = dialog.bounding_box()["height"]
         page.locator("#tab-source").click()
         assert page.locator("#dialog-source").is_visible(), "源码标签页未显示"
+        assert abs(dialog.bounding_box()["height"] - before_height) <= 2, "项目说明与源码切换时弹窗高度跳动"
+        page.locator("#source-status").wait_for(state="visible")
+        for _ in range(3):
+            page.locator("#tab-overview").click()
+            assert abs(dialog.bounding_box()["height"] - before_height) <= 2, "返回项目说明时弹窗高度改变"
+            page.locator("#tab-source").click()
+            assert abs(dialog.bounding_box()["height"] - before_height) <= 2, "再次打开源码时弹窗高度改变"
         page.keyboard.press("Escape")
         assert not dialog.evaluate("(node) => node.open"), "Escape 无法关闭 Dialog"
 
         page.locator("#settings-open").click()
         page.locator("#settings-view").wait_for(state="visible")
         assert "view=settings" in page.url, "设置路由未写入地址"
+        page.evaluate("() => { window.__settingsScroll = document.querySelector('.settings-scroll'); }")
+        for section in ("interface", "typography", "about", "appearance"):
+            page.locator(f'[data-settings-section="{section}"]').click()
+            assert page.locator(f'#settings-view #{section}').is_visible(), f"设置分类 {section} 未显示"
+            assert page.evaluate("document.querySelector('.settings-scroll') === window.__settingsScroll"), "设置切换卸载了滚动容器"
+        assert page.evaluate("document.querySelector('#preview-stage iframe') === window.__reactIframe"), "切换设置分类重建了预览"
         select = page.locator("#settings-theme").locator("xpath=..")
         select.locator(".select-trigger").click()
         select.locator('[data-value="dark"]').click()
@@ -718,6 +733,101 @@ def verify_search_experience(browser, origin):
         mobile.close()
     print("搜索回归通过：桌面/手机焦点、混合关键词、命中字段、清除、Enter 与 iframe 保持。")
 
+
+def verify_background_lab(browser, origin):
+    """背景实验室：桌面/手机、静态与动态场景、对照内容及精确 CSS 导出。"""
+    for name, width, height, reduced in (
+        ("desktop", 1280, 850, "no-preference"),
+        ("tablet", 768, 600, "no-preference"),
+        ("mobile", 390, 844, "reduce"),
+        ("compact-mobile", 360, 640, "reduce"),
+    ):
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            reduced_motion=reduced, locale="zh-CN",
+        )
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        try:
+            page.goto(origin + "demos/effects/aurora-field/index.html", wait_until="domcontentloaded")
+            page.locator("#allBackgrounds").wait_for(state="visible")
+            assert page.locator("#backgroundDialog").is_hidden(), "选择弹窗初始应关闭"
+            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "页面高度不应滚动"
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面宽度不应滚动"
+            assert page.locator("#stage").is_visible(), "背景预览没有显示"
+            stage_height = page.locator("#stage").evaluate("(el)=>el.getBoundingClientRect().height")
+            assert stage_height >= 90, f"{name}: 画布高度异常 {stage_height}"
+            assert page.evaluate("""() => {
+                const ids=['allBackgrounds','stage','viewCode','reset'];
+                return ids.every(id=>{
+                    const el=document.getElementById(id),r=el.getBoundingClientRect();
+                    return r.width>0&&r.height>0&&r.top>=-2&&r.bottom<=innerHeight+2&&r.left>=-2&&r.right<=innerWidth+2;
+                });
+            }"""), f"{name}: 主要控件未完整显示在首屏"
+            page.locator("#allBackgrounds").click()
+            assert page.locator("#backgroundDialog").evaluate("(el)=>el.open"), "背景弹窗未打开"
+            page.locator(".tile").first.wait_for(state="visible")
+            assert page.locator(".tile").count() == 12, "背景条目数量错误"
+            assert page.locator("#stage").get_attribute("data-style") == "aurora"
+            assert page.locator("#mockContent").is_hidden(), "默认应优先展示纯背景"
+            assert page.locator(".palette").count() == 6, "调色板数量错误"
+            assert page.locator(".tile .scene").first.evaluate(
+                "(el) => getComputedStyle(el, '::before').animationName === 'none'"
+            ), "缩略图不能播放动画"
+            if reduced == "reduce":
+                assert page.locator("#speed").is_disabled(), "减少动画模式下速度控制未禁用"
+            else:
+                assert page.locator("#speed").is_enabled(), "动态背景的速度控制不可用"
+            page.locator('.tile[data-id="paper"]').click()
+            assert page.locator("#backgroundDialog").is_hidden(), "选择背景后未关闭弹窗"
+            assert page.locator("#stage").get_attribute("data-style") == "paper"
+            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "切换场景后页面出现滚动"
+            assert page.locator("#speed").is_disabled(), "静态背景不应允许调节速度"
+            page.locator("#overlayToggle").click()
+            assert page.locator("#mockContent").is_visible(), "文字对照开关无效"
+            page.locator("#intensity").evaluate(
+                "(el) => { el.value='65'; el.dispatchEvent(new Event('input', {bubbles: true})); }"
+            )
+            assert page.locator("#intensityValue").inner_text() == "65%"
+            page.locator("#viewCode").click()
+            assert page.locator("#codeDialog").evaluate("(el)=>el.open"), "CSS 弹窗未打开"
+            code = page.locator("#codeText").input_value()
+            assert 'data-style="paper"' in code
+            assert 'data-style="aurora"' not in code, "导出混入了其他背景"
+            assert "--pattern-opacity:" in code, "缺少纹理强度变量"
+            page.locator("#closeCode").click()
+            assert not page.locator("#codeDialog").evaluate("(el)=>el.open")
+            page.locator("#allBackgrounds").click()
+            page.locator('[data-filter="gradient"]').click()
+            assert page.locator(".tile").count() == 4, "渐变分类筛选数量异常"
+            assert page.locator("#stage").get_attribute("data-style") == "paper", "筛选不应强制改变选中背景"
+            page.locator('[data-filter="all"]').click()
+            page.locator('.tile[data-id="aurora"]').click()
+            assert page.locator("#backgroundDialog").is_hidden(), "切换极光后仍显示背景选择弹窗"
+            page.locator("#allBackgrounds").click()
+            page.keyboard.press("Escape")
+            assert page.locator("#backgroundDialog").is_hidden(), "Escape 无法关闭选择弹窗"
+            page.locator("#allBackgrounds").click()
+            page.locator("#closeBackgrounds").click()
+            assert page.locator("#backgroundDialog").is_hidden(), "关闭按钮无效"
+            page.locator("#viewCode").click()
+            code = page.locator("#codeText").input_value()
+            assert "@keyframes auroraFlow" in code
+            assert "@keyframes starDrift" not in code, "CSS 导出包含无关动画"
+            page.locator("#closeCode").click()
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面横向溢出"
+            assert page.evaluate("document.documentElement.scrollHeight <= innerHeight + 2"), "页面纵向溢出"
+            assert page.locator("#viewCode").is_visible(), "代码按钮没有显示在首屏"
+            assert not errors, name + ": 脚本错误：" + "; ".join(errors)
+            OUTPUT.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(OUTPUT / ("background-lab-" + name + ".png")),
+                            full_page=True, animations="disabled")
+        finally:
+            context.close()
+    print("背景实验室回归通过：12 场景、缩略图静态、参数状态、CSS 导出、移动端与截图。")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -765,6 +875,7 @@ def main():
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)
+                verify_background_lab(browser, local)
             finally:
                 browser.close()
     finally:

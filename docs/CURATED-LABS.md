@@ -45,6 +45,15 @@ UI-Vault 的**手工精选**与外部项目索引是两种不同资产：
 - 授权边界：参考的是交互设计方向，**没有复制、移植或重新分发 Rare UI 组件源码**；页面内保留原项目显著署名。Rare UI 限制组件本身的再分发，参见其 [LICENSE](https://github.com/swamimalode07/rare-ui/blob/main/LICENSE)。
 - 目前仅完成静态语法及资产检查，不将这些结果称为浏览器视觉验收。
 
+## 5. [命令面板](../demos/curated/command-palette/index.html)
+
+- 来源：[codedvisuals · Command Palette](https://codedvisuals.com/visuals/search/command-palette) 的视觉结构与交互方式。
+- 文件：`demos/curated/command-palette/index.html`，HTML、CSS 与 JavaScript 全在单文件内，图标为内联 Lucide 路径，无外部字体与网络请求。
+- 已实现：输入即时过滤（空格分词，中文别名可命中）；前缀 / 词首 / 包含 / 子序列四级评分排序，命中字符逐字高亮；高亮块在行间滑动（160ms）而非逐行淡入；键盘与指针模式分离，避免滚动时误触发悬停；↑↓/PgUp·PgDn/Ctrl+N·P 走位、回车派发 `palette:select`、Esc 先清空再失焦；⌘/Ctrl+K 聚焦、⌘/Ctrl+⇧+字母 直接执行；sessionStorage 记录最近使用；选中回执、空结果占位、深浅主题与减少动效。
+- 优先精调：四级评分的排序手感、滑动高亮块与列表滚动的配合、列表 229px 定高在空结果时的留白、336px 面板与三级圆角的比例、深色下键帽与命中高亮的对比度。
+- 授权边界：仅复现视觉结构与交互方式，**没有复制或移植原站源码**；原站为构建后的 React 打包产物，未引用其代码或素材。
+- 目前仅完成元数据、语法与本地 Chromium 实际渲染检查，不将这些结果称为长期视觉验收。
+
 ## 精调顺序
 
 1. 选一个资产，在 UI-Vault 详情直接打开预览。

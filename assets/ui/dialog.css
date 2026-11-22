@@ -69,3 +69,20 @@
 .page-info-empty{padding:20px;border:1px dashed var(--line);border-radius:8px}
 .page-info-empty strong{display:block;margin-bottom:6px;font-size:13px}
 @media(max-width:620px){.page-info-groups{grid-template-columns:1fr}}
+
+/* 源码文件选择：复用工作台下拉组件，不改变弹窗或预览画布尺寸。 */
+.source-file-controls{display:flex;align-items:center;gap:9px;flex:1 1 220px;min-width:0}
+.source-file-controls .select-field{flex:0 1 220px;max-width:220px;min-width:120px}
+.source-file-label{font:600 11px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+#source-status{overflow-wrap:anywhere}
+.source-buttons button:disabled{opacity:.45;cursor:not-allowed;background:var(--surface);color:var(--muted)}
+@media(max-width:560px){
+  .source-file-controls{flex-basis:100%;flex-wrap:wrap}
+  .source-file-controls .select-field{flex:1 1 100%;max-width:none}
+  .source-buttons{width:100%;flex-wrap:wrap}
+}
+
+/* 打开时锁定 dialog 的原始高度；切换资料标签只替换可滚动内容，不重排外框。 */
+.project-dialog[data-stable-height="true"] .dialog-shell{height:100%}
+.project-dialog[data-stable-height="true"] .dialog-pane{flex:1 1 auto;min-height:0}
+.project-dialog[data-stable-height="true"] .source-view{min-height:0}

@@ -2136,6 +2136,54 @@
     ]
   },
   {
+    "id": "command-palette",
+    "title": "命令面板 · 可搜索操作台",
+    "subtitle": "模糊匹配、键盘走位、选中即回执的可搜索命令面板",
+    "description": "参考 codedvisuals 的 Command Palette 设计，独立实现一个可直接使用的命令面板：输入即时过滤，前缀、词首、包含与子序列四级评分排序，命中字符逐字高亮，中文别名可命中；高亮块在行间滑动而非逐行淡入，键盘与指针两种模式分离，↑↓/PgUp·PgDn/Ctrl+N·P 走位、回车派发 palette:select、Esc 先清空再失焦；另有 ⌘/Ctrl+K 聚焦、⌘/Ctrl+⇧+字母 直接执行、sessionStorage 记录最近使用、执行回执与空结果占位；支持深浅主题、减少动效与窄屏收缩。",
+    "type": "component",
+    "source": "local",
+    "tags": [
+      "命令面板",
+      "搜索过滤",
+      "键盘导航",
+      "界面组件",
+      "codedvisuals 参考",
+      "可精调"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript",
+      "SVG"
+    ],
+    "preview": "demos/curated/command-palette/index.html",
+    "code": "demos/curated/command-palette/index.html",
+    "license": "UI-Vault 手工实现的原创代码，未复制或移植 codedvisuals 源码；设计参考 codedvisuals Command Palette；图标路径来自 Lucide（ISC 许可）。",
+    "cover": "native",
+    "featured": false,
+    "created": "2026-11-22",
+    "copyable": true,
+    "curated": true,
+    "curationStage": "draft",
+    "tuningGuide": "docs/CURATED-LABS.md",
+    "tuningPoints": [
+      "面板 336px 固定宽与 22/18/8 三级圆角的比例关系",
+      "四级匹配评分（前缀 100 / 词首 80 / 包含 60 / 子序列 40-跨度）的排序手感",
+      "滑动高亮块 160ms 位移曲线，与列表滚动、组标题留白的配合",
+      "空结果时列表维持 229px 定高，面板不因过滤而跳动",
+      "深浅主题下计数徽章、键帽、命中高亮与别名标注的对比度"
+    ],
+    "sourceUrl": "https://codedvisuals.com/visuals/search/command-palette",
+    "reuseNotes": [
+      "单文件自包含：无外部字体、图标包或网络请求，可直接整份复制进项目。",
+      "命令数据集中在 COMMANDS 数组：label 显示用，keywords 只参与匹配（可写中文别名），key 为 ⌘/Ctrl+⇧ 全局快捷键字母，可省略。",
+      "选中时派发 palette:select 事件（detail 含 item/index/label/group/query），也可定义 window.onPaletteSelect(cmd)。",
+      "最近使用记录写在 sessionStorage 的 pal:recent（最多 5 条），关掉标签页即清空；不需要可删掉 store 与 rank。",
+      "主题跟随系统 prefers-color-scheme 并实时响应；给 html 加 class=\"dark\" 可强制深色。",
+      "设计参考 codedvisuals 的 Command Palette，仅复现视觉结构与交互方式，未使用原站源码或资源。"
+    ]
+  },
+  {
     "type": "resource",
     "source": "local",
     "technologies": [
@@ -4199,6 +4247,20 @@
       "下拉菜单调用 enhanceSelect()，项目条目调用 projectRowMarkup()，设备模式复用 applyPreviewLayout()",
       "多文件演示禁止一键复制为单文件组件；应按文档引入需要的 CSS 与 JS",
       "组件分级、无障碍规范及后续抽取计划参见 docs/COMPONENT-SYSTEM.md"
+    ],
+    "sourceFiles": [
+      {
+        "path": "demos/components/workbench-system/index.html",
+        "label": "index.html · 页面"
+      },
+      {
+        "path": "demos/components/workbench-system/demo.css",
+        "label": "demo.css · 样式"
+      },
+      {
+        "path": "demos/components/workbench-system/demo.js",
+        "label": "demo.js · 交互"
+      }
     ]
   }
 ]
