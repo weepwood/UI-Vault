@@ -6,13 +6,23 @@ import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
-const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/showcase/workbench-system.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/projects.json','content/categories.json'];
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/showcase/workbench-system.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/projects.json','content/project-health.json','content/categories.json'];
 for(const a of items){
   if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);if(a.sourceFiles)paths.push(...a.sourceFiles.map(file=>file.path));}
   if(a.coverImage)paths.push(a.coverImage);
 }
 for(const p of new Set(paths))assert.ok((await stat(join(out,p))).isFile(),'缺失发布文件：'+p);
 
+const publishedHealth=JSON.parse(await readFile(join(out,'content/project-health.json'),'utf8'));
+const registeredProjects=JSON.parse(await readFile(join(out,'content/projects.json'),'utf8'));
+assert.equal(publishedHealth.version,1,'项目健康快照协议版本不正确');
+assert.equal(publishedHealth.checkedAt,null,'普通静态构建不得伪造实时检查状态');
+assert.deepEqual(Object.keys(publishedHealth.projects).sort(),registeredProjects.map(p=>p.id).sort(),
+  '项目健康快照未覆盖所有已登记 Project');
+for(const row of Object.values(publishedHealth.projects)){
+  assert.equal(row.repositoryStatus,'unverified','离线构建不应声称仓库可访问');
+  assert.equal(row.actionsStatus,'unknown','离线构建不应声称 Actions 已成功');
+}
 const publishedHTML=await readFile(join(out,'index.html'),'utf8');
 const cssFingerprint=publishedHTML.match(/href="\.\/assets\/styles\.([a-f0-9]{16})\.css"/)?.[1];
 const jsFingerprint=publishedHTML.match(/src="\.\/assets\/app\.([a-f0-9]{16})\.js"/)?.[1];

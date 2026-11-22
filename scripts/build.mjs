@@ -104,3 +104,5 @@ for(const relative of versionedAssets.filter(path=>/\.(?:js|mjs)$/.test(path))){
 console.log('静态入口已同步版本化：'+assetRevision+'（HTML / CSS / JS 模块）');
 // 仅对显式审查通过的本地 Demo 生成独立 ZIP，不打包整个仓库或外部依赖。
 execFileSync('python3',['scripts/build-bundles.py','--build'],{cwd:ROOT,stdio:'inherit'});
+// 离线构建时生成未核实状态占位，不伪造远端成功。
+execFileSync(process.execPath,['scripts/project-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});
