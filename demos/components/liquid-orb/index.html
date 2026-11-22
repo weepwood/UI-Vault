@@ -98,9 +98,15 @@
   .showcase-tab{padding:9px 16px;font-size:12px;color:#94a0b8;border:0;border-radius:7px;background:none}
   .showcase-tab[aria-selected=true]{background:#2c364d;color:#f3f5fb;box-shadow:0 1px 5px #0005}
   .showcase-tab:hover{color:#f3f5fb}
-  .demo-viewport{display:grid;place-items:center;flex:1;min-height:190px;overflow:hidden;position:relative;width:100%;padding:16px 18px}
+  .demo-viewport{display:grid;place-items:center;flex:1;min-height:190px;overflow:hidden;position:relative;width:100%;padding:16px 18px;container-type:size}
   .presentation{width:100%;height:100%;min-height:0;display:flex;align-items:center;justify-content:center;position:relative}
-  .presentation .stage{flex:1;height:100%;min-width:0}
+   .presentation .stage{flex:1;height:100%;min-width:0}
+  /* Keep the standalone orb's visible raster square. The shared WebGPU
+     surface previously expanded into a wide stage after leaving the dialog,
+     stretching its last square frame before the next GPU draw could finish. */
+  body:not(.dialog-mode):not(.embed) .presentation .stage{
+    flex:none;width:min(100%,100cqh);height:auto;aspect-ratio:1;min-width:0;min-height:0
+  }
   .dialog-caption{display:none;color:#91929a;font-size:var(--pill-text,clamp(30px,4vw,59px));font-weight:620;letter-spacing:-.05em;line-height:1.1;white-space:nowrap;min-width:0;text-overflow:ellipsis;overflow:hidden}
   /* Geometry: the orb viewport is a square inscribed into the pill's left cap.
      Both centres share x = pill-height/2; never independently size the circle. */
@@ -561,6 +567,7 @@
     let animationFrame = 0;
     let inViewport = true;
     let viewportObserver = null;
+    let stageResizeObserver = null;
     let gpuPending = false;
     let needsRedraw = false;
     let adaptiveDpr = profile.maxDpr;
@@ -748,6 +755,7 @@
       stopped = true;
       cancelAnimationFrame(animationFrame);
       viewportObserver?.disconnect();
+      stageResizeObserver?.disconnect();
       ribbonTarget?.destroy();
       device?.destroy();
       document.body.classList.add("fallback");
@@ -1105,6 +1113,12 @@
         }, { threshold: 0 });
         viewportObserver.observe(canvas);
       }
+      // Changes to the shared stage (tabs, dialog reparenting or window size)
+      // must request a new GPU frame, even with reduced motion / paused playback.
+      if (typeof ResizeObserver !== "undefined") {
+        stageResizeObserver = new ResizeObserver(() => requestDraw());
+        stageResizeObserver.observe(canvas.parentElement);
+      }
       requestDraw();
     }
 
@@ -1112,6 +1126,7 @@
       stopped = true;
       cancelAnimationFrame(animationFrame);
       viewportObserver?.disconnect();
+      stageResizeObserver?.disconnect();
       ribbonTarget?.destroy();
       device?.destroy();
     }, { once: true });
