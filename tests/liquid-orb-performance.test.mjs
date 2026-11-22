@@ -32,7 +32,7 @@ test('默认自动画质，保留三档手动模式及按需折射管线', () =>
   assert.match(inlineScript, /getPerformance: \(\) =>/);
   assert.match(shader, /const GL_HIGH_DISPERSION: bool = false/);
   assert.match(shader, /let centerSample = glsPresetFluid\(refractedP, s, t\)/);
-  assert.match(shader, /if \(GL_HIGH_DISPERSION && refractionProfile > 0\.06\)/);
+  assert.match(shader, /if \(GL_HIGH_DISPERSION\) \{/);
   assert.match(inlineScript, /const highSource = shaderSource\.replace/);
   assert.match(inlineScript, /const useHigh = quality === "high" && highPipeline && highBindGroup/);
   assert.match(inlineScript, /highPipelineUnavailable/);
