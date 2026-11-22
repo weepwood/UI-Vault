@@ -91,7 +91,7 @@ function QuickFilters({state,onFilter}){
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
   </button>)}</>;
 }
-function SearchField({value,onChange,searchRef}){
+function SearchField({value,onChange,onSubmit,searchRef}){
   return <div className="search-field">
     <label htmlFor="search" className="search-icon" aria-hidden="true"><UIIcon name="search"/></label>
     <input id="search" ref={searchRef} type="search" value={value}
@@ -99,6 +99,10 @@ function SearchField({value,onChange,searchRef}){
       aria-keyshortcuts="Control+K Meta+K" aria-controls="gallery"
       onKeyDown={event=>{
         if(event.key==='Escape'&&value){event.preventDefault();event.stopPropagation();onChange('');}
+        if(event.key==='Enter'&&value.trim()){
+          event.preventDefault();
+          onSubmit?.();
+        }
       }}
       onChange={event=>onChange(event.target.value)}/>
     {value&&<button className="search-clear" type="button" aria-label="清除搜索内容"
@@ -268,7 +272,8 @@ function WorkbenchPortals({nodes}){
   },[nodes]);
 
   return <>
-    {createPortal(<SearchField value={state.query} onChange={changeSearch} searchRef={searchRef}/>,nodes.search)}
+    {createPortal(<SearchField value={state.query} onChange={changeSearch}
+      onSubmit={()=>filtered[0]&&onSelect(filtered[0].id)} searchRef={searchRef}/>,nodes.search)}
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
       settingsActive={settingsActive} onChange={id=>filter('category',id)}/>,nodes.categories)}
