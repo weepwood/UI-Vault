@@ -9,7 +9,7 @@ const LANGUAGES={
   wgsl:'WGSL',glsl:'GLSL',vert:'GLSL',frag:'GLSL',rs:'Rust',md:'Markdown',svg:'SVG',txt:'Text'
 };
 function safeSourcePath(path){
-  return typeof path==='string'&&path.startsWith('demos/')&&!/[\\?#]/.test(path)&&
+  return typeof path==='string'&&(path.startsWith('demos/')||path.startsWith('subprojects/'))&&!/[\\?#]/.test(path)&&
     path.split('/').every(part=>part&&!part.startsWith('.')&&/^[a-zA-Z0-9_.-]+$/.test(part));
 }
 export function getSourceFiles(asset){
