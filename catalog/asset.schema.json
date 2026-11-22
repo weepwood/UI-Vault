@@ -190,6 +190,24 @@
         },
         "additionalProperties": false
       }
+    },
+    "previewCapabilities": {
+      "type": "array",
+      "maxItems": 4,
+      "uniqueItems": true,
+      "description": "经资产验证的 iframe 权限白名单（不允许 same-origin）",
+      "items": {
+        "enum": [
+          "downloads",
+          "popups",
+          "fullscreen",
+          "webgpu"
+        ]
+      }
+    },
+    "externalLinkBridge": {
+      "type": "boolean",
+      "description": "仅对启用站点内受限外链桥接的外部预览使用"
     }
   },
   "allOf": [
@@ -273,5 +291,5 @@
       "pattern": "^(demos|subprojects)/[a-zA-Z0-9_./-]+$"
     }
   },
-  "additionalProperties": true
+  "additionalProperties": false
 }

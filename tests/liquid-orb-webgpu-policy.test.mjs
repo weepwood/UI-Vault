@@ -11,9 +11,9 @@ test('仅玻璃球预览请求 WebGPU；原始沙箱隔离不放宽', async () =
   globalThis.document = { baseURI: 'https://example.test/UI-Vault/' };
   try {
   const react = await readFile(join(ROOT,'src/components/PreviewFrame.jsx'),'utf8');
-  const orb = {id:'liquid-orb',source:'local',type:'component',title:'玻璃球',preview:'demos/components/liquid-orb/index.html'};
+  const orb = {id:'liquid-orb',source:'local',type:'component',title:'玻璃球',preview:'demos/components/liquid-orb/index.html',previewCapabilities:['webgpu']};
   const dialog = {...orb,id:'liquid-orb-thinking-dialog'};
-  const normal = {...orb,id:'glass-panel'};
+  const normal = {...orb,id:'glass-panel',previewCapabilities:[]};
   for (const asset of [orb,dialog]) {
     const result=projectPreviewMarkup(asset);
     assert.match(result,/allow="webgpu"/);
