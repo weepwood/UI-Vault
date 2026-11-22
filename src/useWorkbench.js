@@ -99,6 +99,7 @@ export function useWorkbench(){
   const [notice,setNotice]=useReducer((_old,next)=>next,'');
   const [noticeRevision,setNoticeRevision]=useState(0);
   const [projectHealthSnapshot,setProjectHealthSnapshot]=useState(null);
+  const [previewHealthSnapshot,setPreviewHealthSnapshot]=useState(null);
   const previousSettings=useRef(state.preferences);
   const initialized=useRef(false);
   const notify=useCallback(message=>{
@@ -127,6 +128,14 @@ export function useWorkbench(){
     fetchJSON('content/project-health.json',controller.signal)
       .then(data=>{if(data?.version===1&&data.projects&&typeof data.projects==='object')setProjectHealthSnapshot(data);})
       .catch(()=>{}); // 网络失败保留“未核实”，不是“没有项目”
+    return ()=>controller.abort();
+  },[]);
+  // 预览响应头与 Project 代码/部署状态独立采样；失败不阻断工作台运行。
+  useEffect(()=>{
+    const controller=new AbortController();
+    fetchJSON('content/preview-health.json',controller.signal)
+      .then(data=>{if(data?.version===1&&data.assets&&typeof data.assets==='object')setPreviewHealthSnapshot(data);})
+      .catch(()=>{});
     return ()=>controller.abort();
   },[]);
   useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route})),[]);
@@ -218,7 +227,7 @@ export function useWorkbench(){
     }catch{notify('源码读取失败，请在 GitHub 打开对应文件');}
   },[state.assets,copyText,notify]);
 
-  return {state,filtered,tags,filteredActive,projectHealthSnapshot,notice,noticeRevision,notify,
+  return {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,reset,
     favorite,changePreference,resetPreferences,changePreview,menu,copyText,copyLink,copySource};
 }

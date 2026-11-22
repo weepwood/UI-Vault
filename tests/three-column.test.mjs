@@ -53,8 +53,8 @@ test('移动端两栏由 React 同步 inert、遮罩及导航焦点',async()=>{
  assert.match(css,/[.]library-rail[.]is-open/);
  assert.match(css,/@media\(max-width:480px\)/);
  assert.match(css,/grid-template-rows:\s*minmax\(0, auto\) minmax\(0,1fr\)/);
- for(const part of ['nodes.rail.inert=mobile&&!menuOpen','nodes.main.inert=menuOpen||settingsActive',
-  'nodes.rail.classList.toggle(\'is-open\',menuOpen)','searchRef.current?.focus']){
+ for(const part of ['nodes.rail.inert=mobile&&!menuOpen','nodes.main.inert=menuOpen||notLibrary',
+  'nodes.operations.inert=menuOpen||!operationsActive','nodes.rail.classList.toggle(\'is-open\',menuOpen)','searchRef.current?.focus']){
   assert.ok(react.includes(part),'React 移动导航缺少：'+part);
  }
 });
