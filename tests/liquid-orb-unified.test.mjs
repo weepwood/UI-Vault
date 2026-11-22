@@ -17,6 +17,7 @@ test('玻璃球和思考对话框合并为一个可运行页面', () => {
   assert.match(source,/id="dialog-text"/);
   assert.match(source,/id="dialog-size"/);
   assert.match(source,/id="dialog-open"/);
+  assert.match(source,/data-palette="siri"/);
   assert.match(source,/changeShowcase\(mode/);
   assert.match(source,/changeShowcase\(location\.hash === "#dialog"/);
   assert.equal((source.match(/<canvas\b/g)||[]).length,1,'两种展示共用唯一 WebGPU Canvas');
@@ -38,13 +39,13 @@ test('三个尺寸档位响应容器宽度，默认不是巨型对话框', () =>
   assert.match(source,/--pill-width:750px/);
   assert.match(source,/--pill-height:248px/);
   assert.match(source,/@media\(max-width:620px\)/);
-  assert.match(source,/@media\(max-width:390px\)/);
+  assert.match(source,/--pill-mobile-height:clamp\(120px/);
   assert.match(source,/white-space:nowrap/);
   assert.match(source,/text-overflow:ellipsis;overflow:hidden/);
 });
 test('嵌入渲染模式保持可用，旧对话框资产深链接不丢失', () => {
   assert.match(source,/get\("embed"\) === "1"/);
-  assert.match(source,/\.embed \.showcase-nav/);
+  assert.match(source,/\.embed \.sidebar/);
   assert.match(source,/sendHost\("ready", \{ state \}\)/);
   const legacy=assets.find(a=>a.id==='liquid-orb-thinking-dialog');
   assert.ok(legacy);
@@ -73,8 +74,8 @@ test('下拉菜单提供独立定位、ARIA 状态、完整键盘与外部点击
   assert.match(source,/data-size="compact"/);
   assert.match(source,/data-size="standard"/);
   assert.match(source,/data-size="large"/);
-  assert.match(source,/bottom:calc\(100% \+ 9px\)/);
-  assert.match(source,/\.size-menu\[hidden\]\{display:none!important\}/);
+  assert.match(source,/top:calc\(100% \+ 4px\)/);
+  assert.match(source,/\[hidden\]\{display:none!important\}/);
   assert.match(source,/sizePicker\.classList\.add\("is-open"\)/);
   assert.match(source,/sizePicker\.classList\.remove\("is-open"\)/);
   assert.match(source,/event\.key === "Escape"/);
@@ -92,10 +93,10 @@ test('下拉菜单提供独立定位、ARIA 状态、完整键盘与外部点击
 });
 
 test('尺寸面板的每行及说明与勾选图标有明确留白',()=>{
-  assert.match(source,/\.size-menu\{[^}]*display:flex;flex-direction:column;gap:8px/);
-  assert.match(source,/\.size-menu \[role=option\]\{[^}]*gap:12px;[^}]*min-height:44px/);
-  assert.match(source,/\.size-menu \.size-note\{[^}]*margin-left:14px/);
-  assert.match(source,/\.size-menu svg\{[^}]*margin-left:4px/);
-  assert.match(source,/\.size-menu\.is-sheet\{[^}]*gap:10px;padding:13px/);
-  assert.match(source,/\.size-menu\.is-sheet \[role=option\]\{[^}]*min-height:54px/);
+  assert.match(source,/\.size-menu\{[^}]*display:flex;flex-direction:column;gap:1px/);
+  assert.match(source,/\.size-menu \[role=option\]\{[^}]*gap:8px;[^}]*min-height:30px/);
+  assert.match(source,/\.size-menu \.size-note\{[^}]*flex:1/);
+  assert.match(source,/\.size-menu svg\{[^}]*order:-1/);
+  assert.match(source,/\.size-menu\.is-sheet\{[^}]*width:min\(380px,calc\(100vw - 24px\)\);padding:8px/);
+  assert.match(source,/\.size-menu\.is-sheet \[role=option\]\{[^}]*min-height:46px/);
 });

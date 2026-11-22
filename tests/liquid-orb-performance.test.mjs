@@ -126,17 +126,17 @@ test('画质选择器复用原有尺寸菜单的触发器、选项布局与移�
   assert.match(inlineScript,/syncQualityMenu\(next\)/);
 });
 
-test('背景主题支持四种静态配色、持久化、键盘访问与嵌入透明背景',()=>{
-  assert.match(orb,/<body data-theme="graphite">/);
+test('背景主题支持多种配色、持久化、键盘访问与嵌入透明背景',()=>{
+  assert.match(orb,/<body data-theme="graphite"/);
   for(const preset of ['graphite','ocean','plum','paper']){
     assert.match(orb,new RegExp('data-theme-preset="'+preset+'"'));
     assert.match(orb,new RegExp('body\\[data-theme='+preset+'\\]'));
   }
-  assert.match(orb,/theme-control-label/);
+  assert.match(orb,/class="theme-swatches" role="group" aria-label="主题"/);
   assert.match(orb,/function applyTheme\(name, persist = true\)/);
   assert.match(inlineScript,/localStorage.setItem\(themeKey, name\)/);
   assert.match(inlineScript,/url.searchParams.set\("theme", name\)/);
   assert.match(inlineScript,/button.setAttribute\("aria-pressed"/);
-  assert.match(orb,/body.embed\{background:transparent!important;background-image:none!important\}/);
+  assert.match(orb,/body\.embed\{background:transparent!important\}/);
   assert.doesNotMatch(orb,/animation:.*gradient/);
 });
