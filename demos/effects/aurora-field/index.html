@@ -131,22 +131,22 @@ dialog::backdrop{background:#131f2a8c;backdrop-filter:blur(4px)}
 .scene[data-style="mist"]::after{inset:0;background:linear-gradient(180deg,#ffffff1a,transparent 55%,#00000016)}
 .scene[data-style="glow"]::before{inset:-10%;background:radial-gradient(ellipse at 50% 50%,var(--a),transparent 39%),radial-gradient(ellipse at 50% 48%,var(--b),transparent 58%);filter:blur(36px);animation:breathe var(--duration,22s) ease-in-out infinite alternate}
 .scene[data-style="glow"]::after{inset:0;background:radial-gradient(ellipse at 50% 50%,transparent 1%,var(--base) 75%)}
-.scene[data-style="topo"]::before{inset:-25%;background:repeating-radial-gradient(ellipse at 42% 46%,transparent 0px 15px,var(--a) 16px 17px,transparent 18px 30px);opacity:.4!important;transform:rotate(-14deg)}
+.scene[data-style="topo"]::before{inset:-25%;background:repeating-radial-gradient(ellipse at 42% 46%,transparent 0px 15px,var(--a) 16px 17px,transparent 18px 30px);opacity:var(--pattern-opacity,.4)!important;transform:rotate(-14deg)}
 .scene[data-style="topo"]::after{inset:0;background:radial-gradient(ellipse at 55% 50%,var(--b),transparent 65%);opacity:.23}
 .scene[data-style="grid"]{background:linear-gradient(90deg,transparent 0%,var(--a) 130%),var(--base)}
-.scene[data-style="grid"]::before{inset:0;background-image:linear-gradient(var(--b) 1px,transparent 1px),linear-gradient(90deg,var(--b) 1px,transparent 1px);background-size:32px 32px;opacity:.20!important;mask-image:radial-gradient(ellipse at 50% 50%,#000 8%,transparent 83%)}
+.scene[data-style="grid"]::before{inset:0;background-image:linear-gradient(var(--b) 1px,transparent 1px),linear-gradient(90deg,var(--b) 1px,transparent 1px);background-size:32px 32px;opacity:var(--pattern-opacity,.2)!important;mask-image:radial-gradient(ellipse at 50% 50%,#000 8%,transparent 83%)}
 .scene[data-style="grid"]::after{inset:0;background:radial-gradient(ellipse at 75% 22%,var(--c),transparent 50%);opacity:.22}
-.scene[data-style="dots"]::before{inset:0;background-image:radial-gradient(circle,var(--a) 1.4px,transparent 1.6px);background-size:20px 20px;mask-image:radial-gradient(ellipse at 50% 50%,#000 7%,transparent 80%);opacity:.48!important}
+.scene[data-style="dots"]::before{inset:0;background-image:radial-gradient(circle,var(--a) 1.4px,transparent 1.6px);background-size:20px 20px;mask-image:radial-gradient(ellipse at 50% 50%,#000 7%,transparent 80%);opacity:var(--pattern-opacity,.48)!important}
 .scene[data-style="dots"]::after{inset:0;background:radial-gradient(ellipse at 30% 40%,var(--b),transparent 65%);opacity:.22}
 .scene[data-style="paper"]{background:linear-gradient(110deg,var(--base),var(--a) 170%)}
-.scene[data-style="paper"]::before{inset:0;background:repeating-linear-gradient(0deg,transparent 0px 3px,var(--b) 4px 5px,transparent 6px 9px),repeating-linear-gradient(90deg,transparent 0px 5px,var(--c) 6px 7px,transparent 8px 12px);opacity:.06!important}
+.scene[data-style="paper"]::before{inset:0;background:repeating-linear-gradient(0deg,transparent 0px 3px,var(--b) 4px 5px,transparent 6px 9px),repeating-linear-gradient(90deg,transparent 0px 5px,var(--c) 6px 7px,transparent 8px 12px);opacity:var(--pattern-opacity,.06)!important}
 .scene[data-style="paper"]::after{inset:0;background:radial-gradient(ellipse at 60% 28%,#ffffff66,transparent 58%)}
 .scene[data-style="stars"]::before{inset:-15%;background:radial-gradient(1px 1px at 12% 22%,#fff 90%,transparent),radial-gradient(2px 2px at 36% 65%,#fff 90%,transparent),radial-gradient(1px 1px at 61% 15%,#fff 90%,transparent),radial-gradient(2px 2px at 79% 45%,#fff 90%,transparent),radial-gradient(1px 1px at 91% 72%,#fff 90%,transparent),radial-gradient(1px 1px at 44% 30%,#fff 90%,transparent),radial-gradient(1px 1px at 68% 84%,#fff 90%,transparent),radial-gradient(1px 1px at 20% 82%,#fff 90%,transparent);background-size:140px 140px;animation:stardrift var(--duration,22s) linear infinite}
 .scene[data-style="stars"]::after{inset:0;background:radial-gradient(ellipse at 66% 65%,var(--a),transparent 55%),radial-gradient(ellipse at 32% 38%,var(--b),transparent 60%);opacity:.32}
 @keyframes drift{from{transform:translate3d(-4%,2%,0) rotate(-7deg)}to{transform:translate3d(5%,-5%,0) rotate(12deg) scale(1.13)}}
 @keyframes float{from{transform:translate3d(-3%,-2%,0) scale(1)}to{transform:translate3d(3%,4%,0) scale(1.1)}}
 @keyframes rotate{to{transform:rotate(360deg)}}
-@keyframes breathe{from{transform:scale(.88);opacity:.6}to{transform:scale(1.13);opacity:1}}
+@keyframes breathe{from{transform:scale(.88)}to{transform:scale(1.13)}}
 @keyframes sway{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
 @keyframes stardrift{to{transform:translate3d(35px,24px,0)}}
 @media(prefers-reduced-motion:reduce){.scene::before,.scene::after{animation:none!important}}
@@ -236,6 +236,7 @@ const palettes=[
 ];
 const $=id=>document.getElementById(id);
 const state={selected:'aurora',palette:0,intensity:90,speed:10,overlay:true,paused:false,filter:'all'};
+const patternOpacity={topo:.4,grid:.2,dots:.48,paper:.06};
 const prefersReduced=window.matchMedia('(prefers-reduced-motion: reduce)');
 function current(){return styles.find(item=>item.id===state.selected)||styles[0]}
 function applyPalette(node,index){
@@ -257,6 +258,7 @@ function update(){
   stage.dataset.style=item.id;
   applyPalette(stage,state.palette);
   stage.style.setProperty('--intensity',String(state.intensity/100));
+  stage.style.setProperty('--pattern-opacity',String((state.intensity/100)*(patternOpacity[item.id]??1)));
   stage.style.setProperty('--duration',String(Math.round(220/state.speed))+'s');
   $('effectTitle').textContent=item.name;
   $('effectDesc').textContent=item.desc;
@@ -283,7 +285,7 @@ function renderGallery(){
     const button=document.createElement('button');
     button.className='tile';button.type='button';button.dataset.id=item.id;
     button.setAttribute('aria-label','预览 '+item.cn+'背景');
-    const scene=document.createElement('div');scene.className='scene';scene.dataset.style=item.id;scene.setAttribute('aria-hidden','true');applyPalette(scene,item.palette??0);scene.style.setProperty('--intensity','.9');
+    const scene=document.createElement('div');scene.className='scene';scene.dataset.style=item.id;scene.setAttribute('aria-hidden','true');applyPalette(scene,item.palette??0);scene.style.setProperty('--intensity','.9');scene.style.setProperty('--pattern-opacity',String(.9*(patternOpacity[item.id]??1)));
     const body=document.createElement('div');body.className='tile-body';
     const name=document.createElement('div');name.className='tile-name';name.textContent=item.cn;
     const sub=document.createElement('span');sub.className='tile-sub';sub.textContent=item.name;name.append(sub);
@@ -330,7 +332,7 @@ function selectedCode(){
     return selector.includes('.scene')&&(!selector.includes('data-style')||selector.includes('data-style="'+id+'"'));
   }).map(rule=>rule.cssText).join('\n\n');
   return '<!-- 背景容器 -->\n<div class="scene" data-style="'+id+'"></div>\n\n<style>\n'+
-    '.scene {position:relative;isolation:isolate;display:block;overflow:hidden;width:100%;min-height:320px;background:var(--base);color:var(--ink);--base:'+p.base+';--a:'+p.a+';--b:'+p.b+';--c:'+p.c+';--ink:'+p.ink+';--intensity:'+(state.intensity/100)+';--duration:'+Math.round(220/state.speed)+'s;}\n'+
+    '.scene {position:relative;isolation:isolate;display:block;overflow:hidden;width:100%;min-height:320px;background:var(--base);color:var(--ink);--base:'+p.base+';--a:'+p.a+';--b:'+p.b+';--c:'+p.c+';--ink:'+p.ink+';--intensity:'+(state.intensity/100)+';--pattern-opacity:'+((state.intensity/100)*(patternOpacity[id]??1))+';--duration:'+Math.round(220/state.speed)+'s;}\n'+
     '.scene::before,.scene::after{content:"";position:absolute;pointer-events:none}.scene::before{opacity:var(--intensity);z-index:0;transform-origin:50% 50%}.scene::after{z-index:1}\n'+
     relevant+'\n</style>';
 }
