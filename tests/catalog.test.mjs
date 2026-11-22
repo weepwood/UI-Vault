@@ -18,6 +18,13 @@ test('本地和外部资产元数据协议',()=>{
   assert.ok(checkEntry({...ext,url:'javascript:alert(1)'},cats).length);
   assert.ok(checkEntry({...base,source:'external',url:'https://example.org'},cats).length);
 });
+test('外部链接桥接必须显式启用且仅用于在线外部站点',()=>{
+  const bridge={...base,source:'external',type:'reference',url:'https://github.com/example/demo',siteUrl:'https://example.org/',externalLinkBridge:true};
+  delete bridge.preview;delete bridge.code;delete bridge.copyable;
+  assert.deepEqual(checkEntry(bridge,cats),[]);
+  assert.ok(checkEntry({...bridge,externalLinkBridge:'yes'},cats).some(x=>x.includes('externalLinkBridge')));
+  assert.ok(checkEntry({...bridge,siteUrl:undefined},cats).some(x=>x.includes('externalLinkBridge')));
+});
 test('禁止路径穿越或外部协议',()=>{
   assert.equal(safeRelativePath('demos/components/a/index.html','demos/'),true);
   for(const path of ['demos/../content/private.txt','demos/x/../../.env','demos\\x','https://example.com','/demos/x','demos//x','demos/x?key=abc'])

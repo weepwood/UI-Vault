@@ -91,6 +91,7 @@ function PreviewContent({asset,mode,error,loading}){
   }
   if(asset.siteUrl){
     return <><iframe className="live-frame" data-preview-frame="external"
+      data-external-link-bridge={asset.externalLinkBridge===true?'true':undefined}
       title={asset.title+' 的外部网站'} src={asset.siteUrl} onLoad={markLoaded}
       sandbox={externalSandbox} referrerPolicy="no-referrer"/>{progress}</>;
   }

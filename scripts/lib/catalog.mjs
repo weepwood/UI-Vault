@@ -43,6 +43,10 @@ export function checkEntry(entry, categories, fileName='') {
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
+  if(entry.externalLinkBridge !== undefined && typeof entry.externalLinkBridge !== 'boolean')
+    errors.push(where+': externalLinkBridge 应为布尔值');
+  if(entry.externalLinkBridge===true && (entry.source!=='external'||!entry.siteUrl))
+    errors.push(where+': externalLinkBridge 仅适用于有 siteUrl 的外部站点');
   if(entry.sourceFiles!==undefined){
     if(entry.source!=='local'||!Array.isArray(entry.sourceFiles)||!entry.sourceFiles.length||entry.sourceFiles.length>50){
       errors.push(where+': sourceFiles 仅供本地资产使用，必须包含 1–50 个源码文件');

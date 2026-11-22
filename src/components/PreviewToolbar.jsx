@@ -81,8 +81,8 @@ export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,o
         <span className="topbar-kind" id="preview-kind">{asset?kind:'选择项目'}</span>
         <h1 id="preview-title" tabIndex={-1}>{asset?.title||'没有匹配的项目'}</h1>
         {asset?.siteUrl&&<span className="topbar-embed-notice"
-          title="外部站点可能禁止嵌入或受沙箱限制。">
-          <Icon name="info"/><span>外部站点可能禁止嵌入或受沙箱限制。</span>
+          title="沙箱会拦截嵌入页的外链跳转，请使用“在原站查看”。">
+          <Icon name="info"/><span>沙箱会拦截嵌入页的外链跳转，请使用“在原站查看”。</span>
         </span>}
         <span className="topbar-subtitle" id="preview-subtitle">
           {asset?(asset.subtitle||asset.description):'清除筛选条件以继续浏览。'}

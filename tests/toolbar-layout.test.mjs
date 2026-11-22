@@ -10,7 +10,7 @@ test('外站提示和原站入口位于 React Topbar，预览区不再叠加提�
   const legacy=read('assets/core/workbench.js');
   const css=read('assets/styles.css');
   assert.match(toolbar,/className="topbar-embed-notice"/);
-  assert.match(toolbar,/外部站点可能禁止嵌入或受沙箱限制。/);
+  assert.match(toolbar,/沙箱会拦截嵌入页的外链跳转，请使用“在原站查看”。/);
   assert.match(toolbar,/asset\?\.siteUrl\?'在原站查看':'单独打开'/);
   assert.match(toolbar,/title=\{asset\?\.siteUrl\?'在原站查看':'单独打开'\}/);
   assert.doesNotMatch(frame,/external-preview-hint/);

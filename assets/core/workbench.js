@@ -68,6 +68,7 @@ export function projectPreviewMarkup(asset) {
     const sandbox=asset.id==='emboss-poster-lab'
       ?'allow-scripts allow-forms allow-downloads':'allow-scripts allow-forms';
     return '<iframe class="live-frame" data-preview-frame="external" title="'+title+' 的外部网站"'+
+      (asset.externalLinkBridge===true?' data-external-link-bridge="true"':'')+
       ' src="'+safe(asset.siteUrl)+'" sandbox="'+sandbox+'" referrerpolicy="no-referrer"></iframe>';
   }
   const href=asset.url||asset.originRepo;
