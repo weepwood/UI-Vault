@@ -45,3 +45,20 @@ test('保留原资源 ID、预览路径，并同步聚合索引',async()=>{
   assert.equal(asset.copyable,true);
   assert.deepEqual(manifest.find(item=>item.id===asset.id),asset);
 });
+
+
+test('材质档案馆默认纯背景，弱化模板装饰并支持六组配色',async()=>{
+  const html=await read('demos/effects/aurora-field/index.html');
+  assert.match(html, /const state=\{selected:'aurora',palette:2,intensity:90,speed:10,overlay:false/);
+  assert.match(html, /background-effects/);
+  assert.match(html, /视觉材料档案/);
+  assert.match(html, /const palettes=\[/);
+  for(const name of ['暮蓝','落日陶土','北境苔绿','亚麻','雾蓝','石墨金']){
+    assert.ok(html.includes(name),name);
+  }
+  for(const generic of ['Space to think.','Explore the collection','font-family:Inter']){
+    assert.ok(!html.includes(generic),'不应保留模板文案或默认字体：'+generic);
+  }
+  assert.match(html, /const animationFor=/);
+  assert.match(html, /rule.name===animationFor\[id\]/);
+});

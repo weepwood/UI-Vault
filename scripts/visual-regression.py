@@ -718,6 +718,71 @@ def verify_search_experience(browser, origin):
         mobile.close()
     print("搜索回归通过：桌面/手机焦点、混合关键词、命中字段、清除、Enter 与 iframe 保持。")
 
+
+def verify_background_lab(browser, origin):
+    """背景实验室：桌面/手机、静态与动态场景、对照内容及精确 CSS 导出。"""
+    for name, width, height, reduced in (
+        ("desktop", 1280, 850, "no-preference"),
+        ("mobile", 390, 844, "reduce"),
+    ):
+        context = browser.new_context(
+            viewport={"width": width, "height": height},
+            reduced_motion=reduced, locale="zh-CN",
+        )
+        page = context.new_page()
+        errors = []
+        page.on("pageerror", lambda error: errors.append(str(error)))
+        try:
+            page.goto(origin + "demos/effects/aurora-field/index.html", wait_until="domcontentloaded")
+            page.locator(".tile").first.wait_for(state="visible")
+            assert page.locator(".tile").count() == 12, "背景条目数量错误"
+            assert page.locator("#stage").get_attribute("data-style") == "aurora"
+            assert page.locator("#mockContent").is_hidden(), "默认应优先展示纯背景"
+            assert page.locator(".palette").count() == 6, "调色板数量错误"
+            assert page.locator(".tile .scene").first.evaluate(
+                "(el) => getComputedStyle(el, '::before').animationName === 'none'"
+            ), "缩略图不能播放动画"
+            if reduced == "reduce":
+                assert page.locator("#speed").is_disabled(), "减少动画模式下速度控制未禁用"
+            else:
+                assert page.locator("#speed").is_enabled(), "动态背景的速度控制不可用"
+            page.locator('.tile[data-id="paper"]').click()
+            assert page.locator("#stage").get_attribute("data-style") == "paper"
+            assert page.locator("#speed").is_disabled(), "静态背景不应允许调节速度"
+            page.locator("#overlayToggle").click()
+            assert page.locator("#mockContent").is_visible(), "文字对照开关无效"
+            page.locator("#intensity").evaluate(
+                "(el) => { el.value='65'; el.dispatchEvent(new Event('input', {bubbles: true})); }"
+            )
+            assert page.locator("#intensityValue").inner_text() == "65%"
+            page.locator("#viewCode").click()
+            assert page.locator("#codeDialog").evaluate("(el)=>el.open"), "CSS 弹窗未打开"
+            code = page.locator("#codeText").input_value()
+            assert 'data-style="paper"' in code
+            assert 'data-style="aurora"' not in code, "导出混入了其他背景"
+            assert "--pattern-opacity:" in code, "缺少纹理强度变量"
+            page.locator("#closeCode").click()
+            assert not page.locator("#codeDialog").evaluate("(el)=>el.open")
+            page.locator('[data-filter="gradient"]').click()
+            assert page.locator(".tile").count() == 4, "渐变分类筛选数量异常"
+            assert page.locator("#stage").get_attribute("data-style") == "paper", "筛选不应强制改变选中背景"
+            page.locator('[data-filter="all"]').click()
+            page.locator('.tile[data-id="aurora"]').click()
+            page.locator("#viewCode").click()
+            code = page.locator("#codeText").input_value()
+            assert "@keyframes auroraFlow" in code
+            assert "@keyframes starDrift" not in code, "CSS 导出包含无关动画"
+            page.locator("#closeCode").click()
+            assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), "页面横向溢出"
+            assert not errors, name + ": 脚本错误：" + "; ".join(errors)
+            OUTPUT.mkdir(parents=True, exist_ok=True)
+            page.screenshot(path=str(OUTPUT / ("background-lab-" + name + ".png")),
+                            full_page=True, animations="disabled")
+        finally:
+            context.close()
+    print("背景实验室回归通过：12 场景、缩略图静态、参数状态、CSS 导出、移动端与截图。")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -765,6 +830,7 @@ def main():
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)
+                verify_background_lab(browser, local)
             finally:
                 browser.close()
     finally:
