@@ -1,0 +1,828 @@
+/* Presentation shells for the local style references.
+   Each shell clarifies the reference content while preserving its own specimen. */
+body[data-reference-shell] > header {
+  background: transparent;
+  border-bottom-color: color-mix(in srgb, currentColor 14%, transparent);
+}
+body[data-reference-shell] > main {
+  width: min(calc(100% - 48px), 1240px);
+  max-width: none;
+  margin-inline: auto;
+  padding: clamp(20px, 4vw, 48px) 0 76px;
+}
+body[data-reference-shell] h1 {
+  max-width: 22ch;
+  text-wrap: balance;
+}
+body[data-reference-shell] .summary {
+  max-width: 70ch;
+  font-size: 13px;
+  line-height: 1.8;
+}
+body[data-reference-shell] :is(a, button):focus-visible {
+  outline-width: 3px;
+  outline-offset: 3px;
+}
+
+/* Atlas: treat each page as a visual case study, led by the actual specimen. */
+body[data-reference-shell="atlas"] > main > .layout {
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+  gap: clamp(26px, 4.5vw, 56px);
+  margin-top: clamp(26px, 4vw, 42px);
+  align-items: start;
+}
+body[data-reference-shell="atlas"] > main > .layout > div {
+  display: grid;
+  align-content: start;
+  gap: 28px;
+  min-width: 0;
+}
+body[data-reference-shell="atlas"] > main .panel {
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body[data-reference-shell="atlas"] > main .panel + .panel {
+  margin-top: 0 !important;
+}
+body[data-reference-shell="atlas"] > main .panel-header {
+  min-height: 36px;
+  padding: 0 0 10px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+}
+body[data-reference-shell="atlas"] > main .panel-header h2 {
+  font-size: 13px;
+  letter-spacing: .01em;
+}
+body[data-reference-shell="atlas"] > main .preview-viewport {
+  padding: clamp(12px, 2.5vw, 28px);
+  background: #eceeed;
+}
+body[data-reference-shell="atlas"] > main .style-preview {
+  width: 100%;
+  max-width: 740px;
+  height: clamp(340px, 37vw, 460px);
+}
+body[data-reference-shell="atlas"] > main .detail {
+  padding: 16px 0 4px;
+}
+body[data-reference-shell="atlas"] > main .panel + .panel .detail {
+  padding-top: 18px;
+}
+body[data-reference-shell="atlas"] > main .swatches {
+  gap: 9px;
+}
+body[data-reference-shell="atlas"] > main .swatch span {
+  height: 48px;
+}
+body[data-reference-shell="atlas"] > main .tag-list {
+  gap: 7px;
+}
+body[data-reference-shell="atlas"] > main th,
+body[data-reference-shell="atlas"] > main td {
+  padding-block: 10px;
+}
+
+/* Frame Lab: let the live comparison frame carry the visual weight. */
+body[data-reference-shell="frame"] > main > .frame {
+  margin-top: clamp(24px, 3.5vw, 38px);
+  padding: clamp(10px, 2.5vw, 28px);
+  border: 0;
+  border-radius: 4px;
+  background: #e9ecee;
+}
+body[data-reference-shell="frame"] > main > .frame .mock {
+  box-shadow: 0 10px 28px #18252d12;
+}
+body.content-first-page {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  min-height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+body.content-first-page > header {
+  flex: 0 0 auto;
+}
+body.content-first-page > main.content-first {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  padding: 0;
+}
+body.content-first-page > main.content-first > .frame {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+body.content-first-page > main.content-first > .frame .mock {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+  min-height: 365px;
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body.content-first-page .mock-main {
+  display: flex;
+  flex-direction: column;
+}
+body.content-first-page .activity {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 220px;
+}
+body.content-first-page .activity > div {
+  flex: 1 1 0;
+  align-items: center;
+  padding-inline: 16px;
+}
+/* Keep each Frame Lab direction recognizable at the larger presentation size. */
+body.content-first-page .mock[data-variant="data"] .mock-main {
+  justify-content: flex-start;
+}
+body.content-first-page .mock[data-variant="data"] .activity {
+  flex: 0 1 auto;
+  min-height: 0;
+  padding: 4px 14px;
+  border: 1px solid color-mix(in srgb, var(--fi) 14%, transparent);
+}
+body.content-first-page .mock[data-variant="data"] .activity > div {
+  flex: 0 0 auto;
+  min-height: 46px;
+  padding-inline: 4px;
+  font-size: 13px;
+}
+body.content-first-page .mock[data-variant="data"] .metric {
+  border-bottom: 2px solid var(--fa);
+}
+body.content-first-page .mock[data-variant="minimal"] .activity {
+  flex: 0 1 auto;
+  min-height: 0;
+  background: transparent;
+}
+body.content-first-page .mock[data-variant="minimal"] .activity > div {
+  flex: 0 0 auto;
+  min-height: 54px;
+}
+body.content-first-page .mock[data-variant="brutal"] .mock-top,
+body.content-first-page .mock[data-variant="retro"] .mock-top {
+  padding-bottom: 12px;
+  border-bottom: 2px solid currentColor;
+}
+body.content-first-page .mock[data-variant="retro"] .metric,
+body.content-first-page .mock[data-variant="retro"] .activity {
+  border: 1px solid currentColor;
+}
+body.content-first-page .mock[data-variant="swiss"] .mock-main {
+  padding-top: clamp(28px, 5vh, 60px);
+}
+body.content-first-page .mock[data-variant="swiss"] .metric {
+  border-top: 2px solid var(--fa);
+}
+body.content-first-page .mock[data-variant="mono"] .metric,
+body.content-first-page .mock[data-variant="mono"] .activity {
+  border-radius: 0;
+  box-shadow: none;
+}
+body[data-reference-shell="frame"] > main > .grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, .9fr);
+  gap: clamp(24px, 4vw, 50px);
+  margin-top: 34px;
+  border-top: 1px solid #dfe4e6;
+}
+body[data-reference-shell="frame"] > main > .grid > .card {
+  min-width: 0;
+  padding: 22px 0 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+body[data-reference-shell="frame"] > main > .grid > .card h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e4e8e9;
+}
+body[data-reference-shell="frame"] > header {
+  position: relative;
+  z-index: 10;
+}
+body[data-reference-shell="frame"] > header .reference-menu {
+  position: relative;
+}
+body[data-reference-shell="frame"] > header .reference-menu > summary {
+  padding: 7px 12px;
+  border: 1px solid #d8dee1;
+  border-radius: 5px;
+  background: #fff;
+  color: #354047;
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+}
+body[data-reference-shell="frame"] > header .reference-menu > summary::-webkit-details-marker {
+  display: none;
+}
+body[data-reference-shell="frame"] > header .reference-menu > summary:focus-visible {
+  outline: 3px solid #407ea7;
+  outline-offset: 3px;
+}
+body[data-reference-shell="frame"] > header .reference-menu > summary::after {
+  content: "＋";
+  margin-left: 10px;
+  color: #6564df;
+}
+body[data-reference-shell="frame"] > header .reference-menu[open] > summary::after {
+  content: "−";
+}
+body[data-reference-shell="frame"] .reference-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  width: min(560px, calc(100vw - 32px));
+  padding: 22px;
+  border: 1px solid #dfe4e6;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 12px 32px #18252d18;
+}
+body[data-reference-shell="frame"] .reference-kind {
+  margin: 0 0 18px;
+  color: #69767b;
+  font-size: 12px;
+}
+body[data-reference-shell="frame"] .reference-details {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  gap: 18px 26px;
+}
+body[data-reference-shell="frame"] .reference-details > * {
+  min-width: 0;
+}
+body[data-reference-shell="frame"] .reference-details h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e4e8e9;
+}
+body[data-reference-shell="frame"] .reference-details .palette {
+  gap: 10px;
+  margin-top: 0;
+  padding: 0;
+  border-top: 0;
+}
+body[data-reference-shell="frame"] .reference-details .source-list {
+  gap: 14px;
+  margin-top: 18px;
+}
+body[data-reference-shell="frame"] .reference-details .notice {
+  margin-top: 14px;
+}
+body[data-reference-shell="frame"] main.content-first > h1 {
+  margin-bottom: 0;
+}
+body[data-reference-shell="frame"] main.content-first .mock-top {
+  justify-content: flex-end;
+}
+body[data-reference-shell="frame"] > main > .palette {
+  gap: 10px;
+  padding: 20px 0 0;
+  border-top: 1px solid #dfe4e6;
+}
+body[data-reference-shell="frame"] > main > .palette button {
+  padding: 5px;
+  background: transparent;
+  border-color: transparent;
+}
+body[data-reference-shell="frame"] > main > .palette button span {
+  width: clamp(62px, 8vw, 88px);
+  height: 30px;
+}
+body[data-reference-shell="frame"] > main > .source-list a {
+  padding: 5px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+}
+
+/* Unified content-first shell for every local Style Atlas specimen. */
+body[data-reference-shell="atlas"] > header,
+body[data-reference-shell="client"] > header {
+  position: relative;
+  z-index: 10;
+}
+body[data-reference-shell="atlas"] > header .reference-menu,
+body[data-reference-shell="client"] > header .reference-menu {
+  position: relative;
+}
+body[data-reference-shell="atlas"] > header .reference-menu > summary,
+body[data-reference-shell="client"] > header .reference-menu > summary {
+  padding: 7px 12px;
+  border: 1px solid #d8dee1;
+  border-radius: 5px;
+  background: #fff;
+  color: #354047;
+  cursor: pointer;
+  font-size: 12px;
+  list-style: none;
+}
+body[data-reference-shell="atlas"] > header .reference-menu > summary::-webkit-details-marker,
+body[data-reference-shell="client"] > header .reference-menu > summary::-webkit-details-marker {
+  display: none;
+}
+body[data-reference-shell="atlas"] > header .reference-menu > summary::after,
+body[data-reference-shell="client"] > header .reference-menu > summary::after {
+  content: "＋";
+  margin-left: 10px;
+  color: #6564df;
+}
+body[data-reference-shell="atlas"] > header .reference-menu[open] > summary::after,
+body[data-reference-shell="client"] > header .reference-menu[open] > summary::after {
+  content: "−";
+}
+body[data-reference-shell="atlas"] > header .reference-menu > summary:focus-visible,
+body[data-reference-shell="client"] > header .reference-menu > summary:focus-visible {
+  outline: 3px solid #407ea7;
+  outline-offset: 3px;
+}
+body[data-reference-shell="atlas"] .reference-panel,
+body[data-reference-shell="client"] .reference-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 20;
+  width: min(720px, calc(100vw - 32px));
+  max-height: calc(100svh - 86px);
+  overflow: auto;
+  padding: 22px;
+  border: 1px solid #dfe4e6;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 12px 32px #18252d18;
+}
+body[data-reference-shell="atlas"] .reference-content {
+  display: grid;
+  grid-template-columns: minmax(0, .95fr) minmax(0, 1.05fr);
+  gap: 18px 26px;
+}
+body[data-reference-shell="atlas"] .reference-content > .panel:first-child {
+  grid-row: span 2;
+}
+body[data-reference-shell="atlas"] .reference-content .panel {
+  min-width: 0;
+  margin: 0 !important;
+  overflow: visible;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body[data-reference-shell="atlas"] .reference-content .panel-header {
+  min-height: 32px;
+  padding: 0 0 8px;
+  border-bottom: 1px solid #e4e8e9;
+}
+body[data-reference-shell="client"] .reference-panel .grid {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 8px;
+  margin: 0;
+  border: 0;
+}
+body[data-reference-shell="client"] .reference-panel .grid > .card,
+body[data-reference-shell="frame"] .reference-panel .grid > .card {
+  padding: 14px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body[data-reference-shell="client"] .reference-panel .notice,
+body[data-reference-shell="frame"] .reference-panel .notice {
+  margin-top: 14px;
+}
+body[data-reference-shell="client"] .reference-kind,
+body[data-reference-shell="frame"] .reference-kind {
+  margin: 0 0 18px;
+  color: #69767b;
+  font-size: 12px;
+}
+
+body.atlas-content-first,
+body.content-first-page,
+body.client-content-first {
+  display: flex;
+  flex-direction: column;
+  height: 100svh;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+body.atlas-content-first > header,
+body.content-first-page > header,
+body.client-content-first > header {
+  flex: 0 0 auto;
+}
+body.atlas-content-first > main.atlas-content,
+body.content-first-page > main.content-first,
+body.client-content-first > main.client-content {
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  padding: 0;
+}
+body.client-content-first > main.client-content {
+  flex-direction: column;
+}
+body.atlas-content-first > main.atlas-content > .atlas-stage {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 365px;
+  width: 100%;
+}
+body.atlas-content-first .atlas-stage > .panel {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 365px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body.atlas-content-first .atlas-stage .preview-viewport {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  justify-content: stretch;
+  min-height: 0;
+  padding: clamp(10px, 2vw, 28px);
+}
+body.atlas-content-first .atlas-stage .style-preview {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  min-height: 340px;
+  container-type: size;
+  --specimen-scale: clamp(.86, calc(100cqw / 460px), 1.8);
+}
+body.atlas-content-first .atlas-stage .style-preview > .mini-window {
+  width: 100%;
+  height: 100%;
+  zoom: var(--specimen-scale);
+}
+body.atlas-content-first .atlas-stage .panel-header {
+  display: none;
+}
+body.client-content-first > main.client-content > .demo {
+  flex-direction: column;
+  display: flex;
+  flex: 1 1 auto;
+  width: 100%;
+  min-height: 365px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body.client-content-first .demo .ca-mock {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: none;
+  min-height: 365px;
+  height: 100%;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+body.client-content-first .demo .ca-appbody {
+  flex: 1 1 auto;
+  height: auto;
+  min-height: 386px;
+}
+body.client-content-first .demo .ca-appnav small,
+body.client-content-first .demo .ca-mockfooter {
+  display: none;
+}
+body.client-content-first .demo .ca-windowdots {
+  display: none;
+}
+body.client-content-first .demo .ca-windowbar {
+  justify-content: space-between;
+  padding-inline: 18px;
+}
+body.client-content-first .demo .ca-windowbar > span:nth-child(2) {
+  margin-right: auto;
+  font-size: 12px;
+  font-weight: 650;
+  letter-spacing: -.01em;
+}
+body.client-content-first .demo .ca-appheading small {
+  display: block;
+  margin-bottom: 4px;
+  color: color-mix(in srgb, var(--ca-text) 58%, transparent);
+  font-size: 11px;
+  letter-spacing: .02em;
+}
+body.client-content-first .demo .ca-appheading h3 {
+  margin-top: 0;
+  font-size: clamp(22px, 2vw, 28px);
+  letter-spacing: -.035em;
+}
+body.client-content-first .demo .ca-editor:not(.ca-figma-editor) {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+}
+body.client-content-first .demo .ca-editor:not(.ca-figma-editor) .ca-code {
+  min-height: 0;
+  overflow: auto;
+  align-content: start;
+}
+body.client-content-first .demo :is(.ca-vscode, .ca-figma) .ca-appmain {
+  display: flex;
+  flex-direction: column;
+}
+body.client-content-first .demo .ca-spotify .ca-cover {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  font-size: 0;
+}
+body.client-content-first .demo .ca-spotify .ca-cover::before,
+body.client-content-first .demo .ca-spotify .ca-cover::after {
+  position: absolute;
+  z-index: -1;
+  content: "";
+}
+body.client-content-first .demo .ca-spotify .ca-media-tiles button:nth-child(1) .ca-cover {
+  background: radial-gradient(circle at 72% 27%, #e9c39b 0 10%, transparent 10.5%), linear-gradient(138deg, #202a3a 0 42%, #536c67 42% 100%);
+}
+body.client-content-first .demo .ca-spotify .ca-media-tiles button:nth-child(1) .ca-cover::before {
+  inset: 54% 0 0;
+  background: repeating-linear-gradient(90deg, #131c2b 0 12px, #e7a26d 12px 15px, #1a2532 15px 27px);
+  clip-path: polygon(0 28%, 100% 0, 100% 100%, 0 100%);
+}
+body.client-content-first .demo .ca-spotify .ca-media-tiles button:nth-child(2) .ca-cover {
+  background: radial-gradient(circle at 50% 50%, transparent 0 18%, #edc07b 18.5% 19.5%, transparent 20% 32%, #edc07b 32.5% 33.5%, transparent 34%), linear-gradient(145deg, #202336, #753f55 64%, #c97c54);
+}
+body.client-content-first .demo .ca-spotify .ca-media-tiles button:nth-child(2) .ca-cover::before {
+  width: 38%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f2c577;
+  opacity: .75;
+}
+body.client-content-first .demo .ca-spotify .ca-media-tiles button:nth-child(3) .ca-cover {
+  background: linear-gradient(90deg, transparent 0 48%, #d4d5c8 48% 52%, transparent 52%), linear-gradient(0deg, transparent 0 48%, #d4d5c8 48% 52%, transparent 52%), #72847b;
+}
+body.client-content-first .demo .ca-spotify .ca-media-tiles button:nth-child(3) .ca-cover::before {
+  inset: 15%;
+  border: 1px solid #e8e4d7;
+  transform: rotate(45deg);
+  box-shadow: 0 0 0 13px #72847b, 0 0 0 14px #e8e4d7;
+}
+body.client-content-first .demo .ca-figma-editor {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-height: 320px;
+  height: auto;
+  border-color: color-mix(in srgb, var(--ca-text) 12%, transparent);
+  background: #e9e9ec;
+}
+body.client-content-first .demo .ca-figma-editor .ca-tabs {
+  flex: 0 0 auto;
+  justify-content: space-between;
+  border-bottom: 1px solid color-mix(in srgb, var(--ca-text) 10%, transparent);
+}
+body.client-content-first .demo .ca-figma-canvas {
+  display: grid;
+  flex: 1 1 auto;
+  min-height: 0;
+  grid-template-columns: minmax(130px, .72fr) minmax(240px, 1.55fr) minmax(130px, .72fr);
+}
+body.client-content-first .demo .ca-figma-layers,
+body.client-content-first .demo .ca-figma-inspector {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 8px;
+  padding: 13px 10px;
+  background: #f8f8fa;
+  color: #30323b;
+  font-size: 11px;
+}
+body.client-content-first .demo .ca-figma-layers {
+  border-right: 1px solid #dedee3;
+}
+body.client-content-first .demo .ca-figma-inspector {
+  border-left: 1px solid #dedee3;
+}
+body.client-content-first .demo .ca-figma-layers button {
+  overflow: hidden;
+  padding: 6px 5px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+body.client-content-first .demo .ca-figma-layers button.active {
+  background: #e7ddff;
+  color: #5941a5;
+}
+body.client-content-first .demo .ca-figma-stage {
+  display: grid;
+  min-width: 0;
+  min-height: 0;
+  place-items: center;
+  overflow: auto;
+  padding: 18px;
+  background-color: #e9e9ec;
+  background-image: radial-gradient(#a8a8b344 .7px, transparent .7px);
+  background-size: 14px 14px;
+}
+body.client-content-first .demo .ca-figma-artboard {
+  width: min(100%, 360px);
+  min-height: 260px;
+  padding: 25px;
+  background: #fff;
+  box-shadow: 0 8px 24px #25243b18;
+  color: #252631;
+}
+body.client-content-first .demo .ca-figma-artboard small {
+  color: #7465ad;
+  font-size: 9px;
+  letter-spacing: .08em;
+}
+body.client-content-first .demo .ca-figma-artboard h4 {
+  margin: 18px 0 5px;
+  font-size: 22px;
+}
+body.client-content-first .demo .ca-figma-artboard p {
+  margin: 0 0 22px;
+  color: #72727c;
+  font-size: 11px;
+}
+body.client-content-first .demo .ca-figma-artboard button {
+  display: block;
+  margin: 9px 0 12px;
+  padding: 8px 13px;
+  border: 0;
+  border-radius: 6px;
+  background: #625bff;
+  color: white;
+}
+body.client-content-first .demo .ca-figma-input {
+  padding: 8px 10px;
+  border: 1px solid #d7d7dc;
+  border-radius: 5px;
+  color: #96969f;
+  font-size: 11px;
+}
+body.client-content-first .demo .ca-figma-inspector span {
+  padding: 6px 0;
+  border-bottom: 1px solid #e8e8eb;
+  font-size: 10px;
+}
+
+/* Client references: simplify the stage around each brand-specific prototype. */
+body[data-reference-shell="client"] > main > .demo {
+  margin-top: 30px;
+  padding: clamp(12px, 2.6vw, 28px);
+  border: 0;
+  border-radius: 4px;
+  background: #eceeef;
+  box-shadow: none;
+}
+body[data-reference-shell="client"] > main > .demo .ca-mock {
+  box-shadow: 0 12px 30px #14222c17;
+}
+body[data-reference-shell="client"] > main > .grid {
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, .9fr);
+  gap: clamp(24px, 4vw, 50px);
+  margin-top: 34px;
+  border-top: 1px solid #dfe4e6;
+}
+body[data-reference-shell="client"] > main > .grid > .card {
+  min-width: 0;
+  padding: 22px 0 18px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+body[data-reference-shell="client"] > main > .grid > .card h2 {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e4e8e9;
+}
+body[data-reference-shell="client"] > main > .source-list a {
+  padding: 5px 0;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  border-radius: 0;
+  background: transparent;
+}
+body[data-reference-shell="client"] > main .notice {
+  max-width: 78ch;
+  line-height: 1.7;
+}
+
+@media (max-width: 800px) {
+  body[data-reference-shell="atlas"] .reference-content {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+  }
+  body[data-reference-shell="atlas"] .reference-content > .panel:first-child {
+    grid-row: auto;
+  }
+  body[data-reference-shell="atlas"] > main > .layout,
+  body[data-reference-shell="frame"] > main > .grid,
+  body[data-reference-shell="frame"] .reference-panel .reference-details,
+  body[data-reference-shell="client"] > main > .grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  body[data-reference-shell="atlas"] > main > .layout {
+    gap: 24px;
+  }
+  body[data-reference-shell="atlas"] > main .style-preview {
+    height: clamp(280px, 72vw, 380px);
+  }
+}
+
+@media (max-width: 480px) {
+  body[data-reference-shell="atlas"] .reference-panel,
+  body[data-reference-shell="client"] .reference-panel {
+    padding: 16px;
+  }
+  body[data-reference-shell] > main {
+    width: min(calc(100% - 32px), 1240px);
+  }
+  body[data-reference-shell="frame"] > main > .frame,
+  body[data-reference-shell="client"] > main > .demo {
+    padding: 9px;
+  }
+  body[data-reference-shell="frame"] .reference-panel {
+    padding: 16px;
+  }
+  body[data-reference-shell="frame"] .reference-panel .reference-details {
+    gap: 14px;
+  }
+  body[data-reference-shell="frame"] > main > .grid,
+  body[data-reference-shell="client"] > main > .grid {
+    gap: 8px;
+  }
+}
+
+@media (max-width: 570px) {
+  body.client-content-first .demo .ca-appbody {
+    min-height: 400px;
+  }
+  body.client-content-first .demo .ca-figma-canvas {
+    grid-template-columns: 90px minmax(180px, 1fr);
+  }
+  body.client-content-first .demo .ca-figma-inspector {
+    display: none;
+  }
+  body.client-content-first .demo .ca-figma-stage {
+    padding: 10px;
+  }
+  body.client-content-first .demo .ca-figma-artboard {
+    min-height: 240px;
+    padding: 15px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body[data-reference-shell] *,
+  body[data-reference-shell] *::before,
+  body[data-reference-shell] *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .001ms !important;
+    transition-duration: .001ms !important;
+  }
+}
