@@ -46,12 +46,25 @@ test('每个精选交互实验的图标不会退化成旧的操作字符',async(
  assert.match(desktop,/lucideIcons\[icon\]/);
 });
 test('已有自带独立图形或纯背景的实验不被强制替换',async()=>{
- const [frame,emboss,aurora]=await Promise.all([
+ const [frame,aurora]=await Promise.all([
   source('demos/experiments/frame-design-lab/index.html'),
-  source('demos/experiments/emboss-poster-lab/index.html'),
   source('demos/effects/aurora-field/index.html')
  ]);
  assert.match(frame,/id="ic-/);
- assert.match(emboss,/<svg/);
  assert.doesNotMatch(aurora,/lucide-demo-icon/);
+});
+
+test('Emboss Lab 保留资源 ID 并直达原仓库，不再发布本地副本',async()=>{
+ const entry=JSON.parse(await source('catalog/assets/emboss-poster-lab.json'));
+ assert.equal(entry.id,'emboss-poster-lab');
+ assert.equal(entry.source,'external');
+ assert.equal(entry.url,'https://github.com/weepwood/Emboss-Lab');
+ assert.equal(entry.originRepo,entry.url);
+ assert.equal(entry.sourceUrl,'https://github.com/weepwood/Emboss-Lab/blob/main/index.html');
+ assert.equal(entry.preview,undefined);
+ assert.equal(entry.code,undefined);
+ assert.equal(entry.publish,undefined);
+ assert.notEqual(entry.copyable,true);
+ await assert.rejects(source('demos/experiments/emboss-poster-lab/index.html'),{code:'ENOENT'});
+ await assert.rejects(source('demos/experiments/emboss-poster-lab/assets/grain.svg'),{code:'ENOENT'});
 });
