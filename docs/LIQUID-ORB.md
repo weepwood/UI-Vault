@@ -14,6 +14,9 @@
 
 如需原版全部编辑功能或研究其 WGSL/SwiftUI 输出实现，请直接访问上游项目。UI-Vault 不代表原作者发布的官方版本。
 
+**在 UI-Vault 中查看原版来源**：选择「液态玻璃组件演示」或「液态玻璃思考对话框」，点击右上角「项目说明 / 源码」，即可在「项目说明」中看到「基于 LerSent001 / Liquid Orb Editor 改编 · MIT · 原版编辑器」及两个可点击链接。链接由主工作台渲染，在新标签页打开，不再放入受限的 WebGPU iframe 中。由于工作台预览仍采用 `sandbox="allow-scripts"`，不会为了这些外链增加 `allow-popups` 权限。独立 Demo 源代码仍包含原作者的完整 MIT 版权声明。
+
+
 ## 演示入口
 
 - **统一页面**：`demos/components/liquid-orb/index.html`，默认「玻璃球」；在顶部切换「思考对话框」，或使用 `#dialog` 深链接直接进入该模式。
