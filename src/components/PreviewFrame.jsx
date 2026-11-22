@@ -11,18 +11,30 @@ function previewUrl(asset){
   const path = asset.id === 'liquid-orb-thinking-dialog'
     ? 'demos/components/liquid-orb/index.html' : asset.preview;
   const url = new URL(resolveAsset(path),document.baseURI);
-  url.searchParams.set('quality','eco');
+  url.searchParams.set('quality','auto');
   if(asset.id === 'liquid-orb-thinking-dialog') url.hash = 'dialog';
   return url.href;
 }
 
 function PreviewContent({asset,mode,error}){
   const frame=useRef(null);
+  const updateFrameLayout=()=>{
+    if(!asset||asset.source!=='local'||!frame.current)return;
+    const stage=frame.current.parentElement;
+    if(!stage)return;
+    stage.dataset.size=mode;
+    const result=applyPreviewLayout(stage,frame.current,mode);
+    if((asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog')&&result){
+      frame.current.contentWindow?.postMessage({
+        channel:'ui-vault/liquid-orb',event:'command',
+        action:'setDisplayScale',value:result.scale
+      },'*');
+    }
+  };
   useLayoutEffect(()=>{
     if(!asset||asset.source!=='local'||!frame.current)return;
     const stage=frame.current.parentElement;
-    stage.dataset.size=mode;
-    const resize=()=>applyPreviewLayout(stage,frame.current,mode);
+    const resize=()=>updateFrameLayout();
     resize();
     if(typeof ResizeObserver==='undefined'){
       window.addEventListener('resize',resize);
@@ -40,6 +52,7 @@ function PreviewContent({asset,mode,error}){
   if(asset.source==='local'){
     return <iframe ref={frame} className="live-frame" data-preview-frame="local"
       title={asset.title+' 的可交互预览'} src={previewUrl(asset)}
+      onLoad={updateFrameLayout}
       sandbox="allow-scripts"
       allow={asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog'?'webgpu':undefined}
       referrerPolicy="no-referrer"/>;
