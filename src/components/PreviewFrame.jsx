@@ -45,15 +45,9 @@ function PreviewContent({asset,mode,error}){
       referrerPolicy="no-referrer"/>;
   }
   if(asset.siteUrl){
-    return <>
-      <iframe className="live-frame" data-preview-frame="external"
-        title={asset.title+' 的外部网站'} src={asset.siteUrl}
-        sandbox="allow-scripts allow-forms" referrerPolicy="no-referrer"/>
-      <div className="external-preview-hint">
-        外部站点可能禁止嵌入或受沙箱限制。
-        <a href={asset.siteUrl} target="_blank" rel="noopener noreferrer">在原站查看</a>
-      </div>
-    </>;
+    return <iframe className="live-frame" data-preview-frame="external"
+      title={asset.title+' 的外部网站'} src={asset.siteUrl}
+      sandbox="allow-scripts allow-forms" referrerPolicy="no-referrer"/>;
   }
   const href=asset.url||asset.originRepo;
   return <div className="preview-placeholder">

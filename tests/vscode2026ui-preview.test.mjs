@@ -23,5 +23,5 @@ test('VS Code 2026 条目使用新仓库及独立的 Pages 在线预览',async()
   assert.ok(markup.includes('src="'+item.siteUrl+'"'));
   assert.match(markup,/data-preview-frame="external"/);
   assert.match(markup,/sandbox="allow-scripts allow-forms"/);
-  assert.match(markup,/在原站查看/);
+  assert.doesNotMatch(markup,/external-preview-hint|在原站查看/);
 });

@@ -98,15 +98,17 @@ function ListControls({state,tags,onSort,onTag,count}){
       <span className="project-controls-label">项目目录
         <span className="result-count" id="results-count" aria-label="当前项目数量">{state.loading?'—':count}</span>
       </span>
+    </div>
+    <div className="list-controls-filters">
       <WorkbenchSelect id="sort" label="项目排序" value={state.sort} onChange={onSort}
         options={sortOptions} icon="arrow-up-down"
         icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}} className="select-field--sort"/>
-    </div>
-    <div className="tag-select-label">
-      <span id="tag-filter-label">标签</span>
-      <WorkbenchSelect id="tag-filter" label="按标签筛选" value={state.tag} onChange={onTag}
-        options={[{value:'',label:'全部标签'},...tags.map(tag=>({value:tag,label:tag}))]}
-        icon="bookmark" className="select-field--tag"/>
+      <div className="tag-select-label">
+        <span id="tag-filter-label" className="sr-only">标签</span>
+        <WorkbenchSelect id="tag-filter" label="按标签筛选" value={state.tag} onChange={onTag}
+          options={[{value:'',label:'全部标签'},...tags.map(tag=>({value:tag,label:tag}))]}
+          icon="bookmark" className="select-field--tag"/>
+      </div>
     </div>
   </>;
 }
