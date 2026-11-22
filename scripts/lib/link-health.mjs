@@ -9,6 +9,16 @@ export function collectSiteUrls(items){
   }
   return [...byUrl].map(([url,ids])=>({url,ids}));
 }
+export function collectProjectUrls(projects){
+  const byUrl=new Map();
+  for(const project of projects){
+    if(!project?.repository)continue;
+    const ids=byUrl.get(project.repository)||[];
+    ids.push(project.id);
+    byUrl.set(project.repository,ids);
+  }
+  return [...byUrl].map(([url,ids])=>({url,ids}));
+}
 export function classifyHttpStatus(code){
   if(code>=200&&code<400)return 'ok';
   if(code===404||code===410)return 'broken';

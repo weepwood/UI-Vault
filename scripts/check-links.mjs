@@ -1,10 +1,13 @@
-import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {readFile,writeFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {ROOT} from './lib/catalog.mjs';
-import {collectSiteUrls,classifyHttpStatus,isPublicHttpsUrl} from './lib/link-health.mjs';
+import {collectSiteUrls,collectProjectUrls,classifyHttpStatus,isPublicHttpsUrl} from './lib/link-health.mjs';
 
 const assets=JSON.parse(await readFile(join(ROOT,'content/assets.json'),'utf8'));
-const urls=collectSiteUrls(assets);
+const projects=JSON.parse(await readFile(join(ROOT,'content/projects.json'),'utf8'));
+const assetUrls=collectSiteUrls(assets).map(item=>({...item,scope:'asset-site'}));
+const projectUrls=collectProjectUrls(projects).map(item=>({...item,scope:'project-repo'}));
+const urls=[...assetUrls,...projectUrls];
 const strict=process.argv.includes('--strict');
 const limit=6;
 const results=new Array(urls.length);
