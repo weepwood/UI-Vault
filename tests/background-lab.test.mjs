@@ -64,3 +64,16 @@ test('材质档案馆默认纯背景，弱化模板装饰并支持六组配色',
   assert.match(html, /const animationFor=/);
   assert.match(html, /rule.name===animationFor\[id\]/);
 });
+
+
+test('背景列表位于选择弹窗，主页面在单视口内呈现',async()=>{
+  const html=await read('demos/effects/aurora-field/index.html');
+  assert.match(html, /id="allBackgrounds"[^>]+aria-haspopup="dialog"/);
+  assert.match(html, /<dialog id="backgroundDialog"/);
+  assert.match(html, /class="library" aria-labelledby="galleryTitle"/);
+  assert.match(html, /closeBackgroundPicker\(\)/);
+  assert.match(html, /height:100dvh/);
+  assert.match(html, /overflow:hidden;overscroll-behavior:none/);
+  assert.match(html, /grid-template-rows:minmax\(0,49fr\) minmax\(0,51fr\)/);
+  assert.doesNotMatch(html, /<footer class="sources">/);
+});
