@@ -2,6 +2,18 @@
 
 同一个页面展示 WebGPU 液态玻璃球和深色 Thinking 胶囊对话框，且两种视图共享同一个真实 Canvas / GPU 设备。
 
+## 原版来源与授权说明
+
+本演示所使用的液态玻璃球渲染效果，原版项目为 **[Liquid Orb Editor（LerSent001/orb）](https://github.com/LerSent001/orb)**，作者 **LerSent001**。
+
+- **原版编辑器在线体验**：[lersent001.github.io/orb](https://lersent001.github.io/orb/)
+- **原版技术方案**：React + WebGPU/WGSL + Toolcraft UI；提供预设、参数编辑、场景预览和 Web / SwiftUI 导出等功能。
+- **原版代码许可证**：**MIT License，Copyright (c) 2026 LerSent001**。许可原文见 [原版 LICENSE](https://github.com/LerSent001/orb/blob/main/LICENSE)，本仓库保留的许可证见 [UPSTREAM_LICENSE](../demos/components/liquid-orb/UPSTREAM_LICENSE)。
+- **UI-Vault 中的实现**：基于原版玻璃球渲染技术及用户提供的相关代码，制作了独立的 HTML/WebGPU 组件演示，并额外增加 Thinking 胶囊对话框、交互控制、主题切换、性能档位和自适应调度等集成功能。**这是改编的组件演示，不等同于原版完整的 React 编辑器**。
+- **第三方组件说明**：原项目 README 指明其 `src/toolcraft` 代码另附 Toolcraft MIT 版权声明；原始条款见 [TOOLCRAFT_LICENSE.md](https://github.com/LerSent001/orb/blob/main/TOOLCRAFT_LICENSE.md)。UI-Vault 本页使用自身构建的控制界面，未将原版完整 Toolcraft 编辑器界面移入此单页。
+
+如需原版全部编辑功能或研究其 WGSL/SwiftUI 输出实现，请直接访问上游项目。UI-Vault 不代表原作者发布的官方版本。
+
 ## 演示入口
 
 - **统一页面**：`demos/components/liquid-orb/index.html`，默认「玻璃球」；在顶部切换「思考对话框」，或使用 `#dialog` 深链接直接进入该模式。
@@ -51,7 +63,7 @@
 
 UI-Vault 主站仅对这两个原有玻璃球资产的 iframe 配置 `allow="webgpu"`。仍然只使用 `sandbox="allow-scripts"`（不授予 `allow-same-origin`），独立 iframe 之间通过检查来源窗口的 `postMessage` 协作。单文件渲染器仍保留 `window.liquidOrb` 的原始命令接口。
 
-原始 WGSL 与两组 uniform 来自用户上传文件，未明确其第三方许可；不额外宣称开放授权。
+原始 WGSL 与两组 uniform 由用户提供，已根据原版项目来源信息补充上游署名及 MIT 许可证。保留原版 MIT 版权与许可声明，不将 UI-Vault 的改编展示误认为上游原作者的官方版本。
 
 ## 自动适应画质（2026-11-22）
 
