@@ -1,0 +1,23 @@
+name: 功能建议
+description: 提议新增或改进资产库、实验工作台、组件复用能力
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 要解决的实际问题
+      description: 说明当前工作流的障碍，而非仅描述视觉样式
+    validations:
+      required: true
+  - type: textarea
+    id: proposed
+    attributes:
+      label: 期望交互与验收标准
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 参考实现与替代方案
+      description: 若提供第三方参考，请补充原站及授权信息
