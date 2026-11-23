@@ -27,6 +27,7 @@ export function ViewportSwitcher({
   const selectedWidth=mode==='custom'?customWidth:PREVIEW_WIDTHS[mode];
 
   useEffect(()=>{setDraft(String(customWidth));setAttempted(false);},[customWidth,expanded]);
+  useEffect(()=>{if(!visible)setExpanded(false);},[visible]);
   useEffect(()=>{
     if(!expanded)return;
     const outside=event=>{if(!root.current?.contains(event.target))setExpanded(false);};
