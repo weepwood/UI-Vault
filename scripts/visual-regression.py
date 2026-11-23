@@ -1018,7 +1018,7 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             assert page.locator('#compact-search-input').is_focused(), 'Ctrl+K 未聚焦窄栏搜索面板'
             assert toggle.get_attribute('aria-expanded') == 'false', 'Ctrl+K 不应自动展开完整侧栏'
             page.keyboard.press('Escape')
-            page.locator('#compact-search-dialog').wait_for(state='hidden'
+            page.locator('#compact-search-dialog').wait_for(state='hidden')
         finally:
             context.close()
     print('侧栏动态展开回归通过：非减弱动画、两档桌面宽度、无竖排文字、渐显与快捷键焦点。')
