@@ -1,5 +1,6 @@
 import React,{useState} from 'react';
 import {ViewportSwitcher} from './ViewportSwitcher.jsx';
+export {ViewportSwitcher}; // 兼容工作台组件展厅既有导入路径
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {githubSourceLink} from '../../assets/core/github-source-link.js';
 export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,customWidth,onChangePreview,onCustomWidth,stageElement,versionId='original',onChangeVersion,liked,onFavorite,

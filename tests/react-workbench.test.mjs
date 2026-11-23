@@ -47,7 +47,8 @@ test('React iframe 管理与独立 Demo 发布保持分离',()=>{
  assert.match(build,/included\.add\(a.preview\)/);
  assert.match(preview,/memo\(PreviewContent/);
  assert.match(preview,/applyPreviewLayout\(/);
- assert.match(toolbar,/data-preview-size={item.mode}/);
+ assert.match(toolbar,/export \{ViewportSwitcher\}/);
+ assert.match(read('src/components/ViewportSwitcher.jsx'),/data-preview-size=\{item.mode\}/);
 });
 
 test('React iframe 权限从经过验证的资产元数据生成',()=>{

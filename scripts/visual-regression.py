@@ -121,11 +121,11 @@ def capture(page, mode, theme):
         assert options.locator("[data-preview-size]").count() == 4, "设备切换菜单内容缺失"
         rect = current.bounding_box()
         vp = page.viewport_size
-        x = max(0, rect["x"] - 30)
+        x = max(0, rect["x"] - 150)
         y = max(0, rect["y"] - 8)
         return page.screenshot(
             animations="disabled",
-            clip={"x": x, "y": y, "width": min(230, vp["width"] - x), "height": min(216, vp["height"] - y)},
+            clip={"x": x, "y": y, "width": min(280, vp["width"] - x), "height": min(460, vp["height"] - y)},
             mask=[page.locator("iframe.live-frame")],
         )
     raise ValueError(f"未知截图场景：{mode}")
