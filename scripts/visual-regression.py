@@ -949,7 +949,7 @@ def verify_sidebar_collapse(browser, origin):
         popover.wait_for(state='visible')
         assert toggle.get_attribute('aria-expanded') == 'false', '图标栏搜索不应自动展开导航'
         assert page.locator('#nav-expand-search').get_attribute('aria-expanded') == 'true'
-        assert page.locator('#compact-search-input').is_focused(), '搜索面板未自动聚焦'
+        assert page.locator('#compact-search-input').evaluate("(el) => el===document.activeElement"), '搜索面板未自动聚焦'
         page.keyboard.press('Escape')
         popover.wait_for(state='hidden')
         assert toggle.get_attribute('aria-expanded') == 'false', '关闭搜索不应改变侧栏状态'
@@ -1015,7 +1015,7 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
             page.keyboard.press('Control+k')
             page.locator('#compact-search-dialog').wait_for(state='visible')
-            assert page.locator('#compact-search-input').is_focused(), 'Ctrl+K 未聚焦窄栏搜索面板'
+            assert page.locator('#compact-search-input').evaluate("(el) => el===document.activeElement"), 'Ctrl+K 未聚焦窄栏搜索面板'
             assert toggle.get_attribute('aria-expanded') == 'false', 'Ctrl+K 不应自动展开完整侧栏'
             page.keyboard.press('Escape')
             page.locator('#compact-search-dialog').wait_for(state='hidden')
@@ -1060,7 +1060,7 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             popup.wait_for(state='visible')
             assert toggle.get_attribute('aria-expanded')=='false'
             field=page.locator('#compact-search-input')
-            assert field.is_focused()
+            assert field.evaluate("(el) => el===document.activeElement")
             field.fill('atlas-academia')
             page.locator('.compact-search-result').first.wait_for(state='visible')
             assert page.locator('.compact-search-result').count() >= 1
@@ -1071,12 +1071,12 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             assert toggle.get_attribute('aria-expanded')=='false'
             page.locator('#nav-expand-search').click()
             popup.wait_for(state='visible')
-            page.locator('#main').click(position={'x':250,'y':220})
+            page.locator('.topbar').click(position={'x':250,'y':20})
             popup.wait_for(state='hidden')
             assert toggle.get_attribute('aria-expanded')=='false'
             page.keyboard.press('/')
             popup.wait_for(state='visible')
-            assert field.is_focused()
+            assert field.evaluate("(el) => el===document.activeElement")
             page.keyboard.press('Escape')
             popup.wait_for(state='hidden')
         finally:context.close()
