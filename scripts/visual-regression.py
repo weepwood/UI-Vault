@@ -681,7 +681,9 @@ def verify_search_experience(browser, origin):
             before=page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")
             page.evaluate("() => window.__paletteFrame=document.querySelector('#preview-stage iframe')")
             if width < 761:
-                page.locator("#menu-toggle").click()  # 移动端先关闭目录，顶栏才可操作
+                # 移动抽屉覆盖了预览顶栏；用 Escape 关闭，不点击被遮挡的 menu-toggle。
+                page.keyboard.press("Escape")
+                assert not page.locator("#library-rail").evaluate("(el)=>el.classList.contains('is-open')")
             page.locator("#preview-search").click()
             # 入口位于设备控制组之后、项目说明之前；不随标题长度变更位置。
             viewport=page.locator("#viewport-controls").bounding_box()
