@@ -194,10 +194,12 @@ export function useWorkbench(){
   },[]);
   const leaveSettings=useCallback(()=>{if(state.view!=='library')openView('library');},[openView,state.view]);
   const selectAsset=useCallback((id,options={})=>{
-    router.setAsset(id,options.historyMode||'push');
+    // 重复选择当前风格时保留 V2/V3，切换到其它风格才回到原版 V1。
+    const version=id===state.active?.id?state.versionId:'original';
+    router.setAsset(id,options.historyMode||'push',version);
     dispatch({type:'select',id});
     dispatch({type:'menu',value:false});
-  },[]);
+  },[state.active?.id,state.versionId]);
   const filter=useCallback((kind,value)=>{
     leaveSettings();
     dispatch({type:'filter',kind,value});
