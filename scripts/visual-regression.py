@@ -843,7 +843,8 @@ def verify_project_health_and_grouping(browser, origin):
         sorting = page.locator("#sort").locator("xpath=..")
         sorting.locator(".select-trigger").click()
         sorting.locator('[data-value="project"]').click()
-        assert page.locator(".asset-project-group").count() == 34, "项目归组数量不正确"
+        expected_groups = len(json.loads((ROOT / "content/projects.json").read_text(encoding="utf-8")))
+        assert page.locator(".asset-project-group").count() == expected_groups, "项目归组数量不正确"
         group = page.locator(".asset-project-group").filter(has_text="Style Atlas")
         assert group.count() == 1, "Style Atlas 分组未找到"
         assert group.locator(".project-row").count() == 57, "Style Atlas 的 57 条资产没有正确归组"
@@ -868,7 +869,7 @@ def verify_project_health_and_grouping(browser, origin):
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__groupIframe"), "查看仓库状态重建 iframe"
     finally:
         context.close()
-    print("Project 分组与健康回归通过：34 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
+    print(f"Project 分组与健康回归通过：{expected_groups} 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
 
 def verify_project_operations(browser, origin):
     """独立状态管理页的真实筛选、资产跳转、移动导航与未知态回归。"""
@@ -1082,6 +1083,44 @@ def verify_compact_search_and_fixed_icons(browser, origin):
         finally:context.close()
     print('图标与窄栏搜索回归通过：两档桌面宽度 SVG 尺寸稳定、浮层筛选、关闭和 iframe 保持。')
 
+
+def verify_landfolio_version_switch(browser, origin):
+    """同风格 V1/V2 仅切换实现，不污染资产 ID、收藏或弹窗资料。"""
+    context = browser.new_context(viewport={"width": 1440, "height": 900},
+                                  device_scale_factor=1, reduced_motion="reduce", locale="zh-CN")
+    page = context.new_page()
+    try:
+        page.goto(origin + "?asset=website-style-bauhaus&variant=landfolio-bauhaus",
+                  wait_until="domcontentloaded")
+        page.locator('.select-field--version .select-trigger').wait_for(state="visible", timeout=30000)
+        frame = page.locator('#preview-stage iframe[data-preview-frame="local"]')
+        assert 'landfolio/themes/bauhaus.html' in frame.get_attribute('src'), "版本深链接未加载 V2"
+        page.evaluate("() => { window.__variantIframe=document.querySelector('#preview-stage iframe'); }")
+        assert 'landfolio/themes/bauhaus.html' in page.locator('#preview-open').get_attribute('href'), "单独打开没有使用当前版本"
+        page.locator('#preview-info').click()
+        page.locator('#tab-design-guide').click()
+        guide = page.locator('.design-guide-markdown')
+        guide.wait_for(state="visible", timeout=15000)
+        assert 'Landfolio' in guide.inner_text(), "V2 文档未从 UI-Vault 本地资源加载"
+        page.locator('#tab-source').click()
+        page.wait_for_function("document.querySelector('#source-code')?.textContent?.includes('<!DOCTYPE html>')", timeout=15000)
+        page.locator('#dialog-close').click()
+        selector = page.locator('.select-field--version')
+        selector.locator('.select-trigger').click()
+        selector.locator('[data-value="original"]').click()
+        assert 'website-designs/examples/' in frame.get_attribute('src'), "切回 V1 未恢复原版"
+        assert 'variant=' not in page.url, "V1 应当清除版本参数"
+        selector.locator('.select-trigger').click()
+        selector.locator('[data-value="landfolio-bauhaus"]').click()
+        assert 'landfolio/themes/bauhaus.html' in frame.get_attribute('src'), "再次切 V2 失败"
+        assert 'variant=landfolio-bauhaus' in page.url, "切换 V2 未更新可分享链接"
+        page.go_back(wait_until="domcontentloaded")
+        assert 'website-designs/examples/' in frame.get_attribute('src'), "浏览器后退未恢复 V1"
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__variantIframe"), "版本切换错误替换 iframe 节点"
+    finally:
+        context.close()
+    print("Landfolio 版本回归通过：V1/V2 预览、源码、Design.md、链接、历史返回和 iframe 稳定。")
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -1125,6 +1164,7 @@ def main():
                 print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
                 verify_project_health_and_grouping(browser, local)
+                verify_landfolio_version_switch(browser, local)
                 verify_project_operations(browser, local)
                 verify_sidebar_collapse(browser, local)
                 verify_sidebar_transition_no_reflow(browser, local)
