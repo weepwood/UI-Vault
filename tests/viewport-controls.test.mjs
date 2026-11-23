@@ -17,13 +17,13 @@ test('设备预览默认仅显示当前模式，悬浮菜单包含四种设备',
   for(const width of [390,768,1280])assert.ok(view.includes(String(width)+'px'));
 });
 
-test('悬浮选项不改变工具栏占用宽度，并支持窄屏和深色主题',()=>{
+test('设备选择弹层不占用工具栏宽度，并适配小屏与深色主题',()=>{
   const css=read('assets/ui/preview-toolbar.css');
   const layout=read('assets/styles.css');
   assert.match(css,/[.]main \{ container-name: preview-toolbar;container-type:inline-size; \}/);
-  assert.match(css,/[.]viewport-controls [.]viewport-options \{[\s\S]*?position:absolute/);
-  assert.match(css,/[.]viewport-controls [.]viewport-options\[hidden\] \{ display:none!important; \}/);
-  assert.match(css,/[.]viewport-controls [.]viewport-options button\[aria-pressed="true"\]/);
+  assert.match(css,/[.]viewport-controls [.]viewport-options\{[\s\S]*?position:absolute/);
+  assert.match(css,/[.]viewport-controls [.]viewport-options\[hidden\]\{display:none!important\}/);
+  assert.match(css,/[.]viewport-controls [.]viewport-preset-list [.]viewport-preset\[aria-pressed="true"\]/);
   assert.match(layout,/@container preview-toolbar \(max-width:520px\)/);
   assert.match(css,/@container preview-toolbar \(max-width:375px\)/);
   assert.match(css,/html\[data-theme="dark"\] [.]viewport-controls/);
