@@ -88,6 +88,7 @@ export function workbenchReducer(current,action){
       return changePreviewMode(next,action.value)?next:current;
     case 'previewWidth':
       if(next.active?.source!=='local')return current;
+      if(next.previewSize==='custom'&&next.customWidth===Number(action.value))return current;
       setCustomPreviewWidth(next,action.value);
       return next;
     case 'view':return {...next,view:action.value,menuOpen:false};
@@ -195,11 +196,14 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),[state]);
+  const catalogDeps=[state.assets,state.labels,state.category,state.tag,state.query,state.sort,
+    state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites];
+  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),catalogDeps);
   // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
   const tags=useMemo(()=>popularTags(
     filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag
-  ),[state]);
+  ),[state.assets,state.labels,state.category,state.query,state.sort,state.tag,
+    state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites]);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
     router.setView(view,historyMode);
