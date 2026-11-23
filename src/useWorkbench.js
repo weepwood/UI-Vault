@@ -235,7 +235,7 @@ export function useWorkbench(){
   },[notify]);
   const copyLink=useCallback(()=>{
     if(state.active)void copyText(router.assetURL(state.active.id,state.versionId).href,'项目链接已复制');
-  },[state.active,copyText]);
+  },[state.active,state.versionId,copyText]);
   const copySource=useCallback(async(id)=>{
     const asset=state.assets.find(a=>a.id===id&&a.source==='local'&&a.copyable!==false);
     if(!asset)return;
