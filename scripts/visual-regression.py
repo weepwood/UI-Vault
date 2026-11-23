@@ -231,8 +231,18 @@ def verify_react_interactions(browser, origin):
         page.go_back(wait_until="domcontentloaded")
         page.locator("#preview-stage").wait_for(state="visible")
         visible_before = page.locator("#gallery .project-row").count()
-        page.locator("#nav-expand-search").click()
-        page.locator("#compact-search-dialog").wait_for(state="visible")
+        page.locator("#preview-search").click()
+        search_panel = page.locator("#compact-search-dialog")
+        search_panel.wait_for(state="visible")
+        assert search_panel.bounding_box()["width"] >= 680, "搜索面板桌面宽度未扩大"
+        assert search_panel.evaluate("(el) => getComputedStyle(el).backdropFilter.includes('blur(28px)')"), "搜索面板没有使用背景模糊"
+        page.locator("#compact-search-input").fill("atlas-academia")
+        search_result = page.locator("#compact-search-results .compact-search-result").first
+        search_result.wait_for(state="visible")
+        result_title = search_result.locator(".command-palette-item-label").inner_text()
+        catalog_row = page.locator("#gallery .project-row").filter(has_text=result_title).first
+        if catalog_row.count():
+            assert search_result.locator(".command-palette-item-icon").inner_text() == catalog_row.locator(".project-row-emoji").inner_text(), "搜索结果 Emoji 与项目目录不一致"
         page.locator("#compact-search-input").fill("xyz-unique-never-match")
         assert page.locator(".compact-search-result").count() == 0, "全局搜索未显示无结果状态"
         assert page.locator("#gallery .project-row").count() == visible_before, "全局搜索改变了第二栏目录"
@@ -670,7 +680,22 @@ def verify_search_experience(browser, origin):
             assert page.locator("#search").count()==0, "侧栏不应再存在独立搜索输入框"
             before=page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")
             page.evaluate("() => window.__paletteFrame=document.querySelector('#preview-stage iframe')")
-            page.locator("#nav-expand-search").click()
+            if width < 761:
+                # 移动抽屉覆盖了预览顶栏；用 Escape 关闭，不点击被遮挡的 menu-toggle。
+                page.keyboard.press("Escape")
+                assert not page.locator("#library-rail").evaluate("(el)=>el.classList.contains('is-open')")
+            page.locator("#preview-search").click()
+            # 入口位于设备控制组之后、项目说明之前；不随标题长度变更位置。
+            viewport=page.locator("#viewport-controls").bounding_box()
+            search_button=page.locator("#preview-search").bounding_box()
+            separator=page.locator(".topbar-separator")
+            info_button=page.locator("#preview-info").bounding_box()
+            assert search_button["x"] > viewport["x"] + viewport["width"] - 1, "搜索按钮没有放在自适应选择器右侧"
+            assert search_button["x"] + search_button["width"] < info_button["x"], "搜索按钮没有放在项目说明左侧"
+            assert abs(search_button["y"] + search_button["height"]/2 - (viewport["y"] + viewport["height"]/2)) < 3, "搜索按钮与设备选择器未垂直居中"
+            if separator.is_visible():
+                line=separator.bounding_box()
+                assert search_button["x"] + search_button["width"] < line["x"], "搜索按钮没有在竖向分隔线左侧"
             dialog=page.locator("#compact-search-dialog")
             dialog.wait_for(state="visible")
             field=page.locator("#compact-search-input")
@@ -945,11 +970,11 @@ def verify_sidebar_collapse(browser, origin):
         assert page.locator('.nav-button').first.is_visible(), '收缩后仍须保留分类图标'
         assert page.locator('#settings-open').is_visible(), '收缩后不能丢失设置入口'
         assert page.evaluate("() => document.querySelector('#preview-stage iframe')===window.__originalFrame"), '收缩不应重新创建 iframe'
-        page.locator('#nav-expand-search').click()
+        page.locator('#preview-search').click()
         popover = page.locator('#compact-search-dialog')
         popover.wait_for(state='visible')
         assert toggle.get_attribute('aria-expanded') == 'false', '图标栏搜索不应自动展开导航'
-        assert page.locator('#nav-expand-search').get_attribute('aria-expanded') == 'true'
+        assert page.locator('#preview-search').get_attribute('aria-expanded') == 'true'
         assert page.locator('#compact-search-input').evaluate("(el) => el===document.activeElement"), '搜索面板未自动聚焦'
         page.keyboard.press('Escape')
         popover.wait_for(state='hidden')
@@ -1037,7 +1062,7 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             page.locator('#preview-stage iframe').wait_for(state='attached')
             page.evaluate("() => window.__initialIframe=document.querySelector('#preview-stage iframe')")
             js="""() => {
-               const selectors=['#nav-expand-search .ui-icon',
+               const selectors=['#preview-search .ui-icon',
                  '.quick-filters .filter-button .ui-icon',
                  '.category-nav .nav-index .ui-icon','.sidebar-footer .sidebar-settings .ui-icon'];
                return selectors.map(selector=>{const el=document.querySelector(selector);
@@ -1056,11 +1081,12 @@ def verify_compact_search_and_fixed_icons(browser, origin):
                     assert abs(a['width']-b['width']) < .25 and abs(a['height']-b['height']) < .25, f'{width}px {phase} 图标尺寸不一致：{a} / {b}'
                     if a['selector'] != '.sidebar-footer .sidebar-settings .ui-icon':
                         assert abs(a['y']-b['y']) < 1, f'{width}px {phase} 图标上下位移：{a} / {b}'
-                        assert abs(a['x']-b['x']) < 1, f'{width}px {phase} 图标左右位移：{a} / {b}'
+                    if a['selector'] not in ('#preview-search .ui-icon', '.sidebar-footer .sidebar-settings .ui-icon'):
+                        assert abs(a['x']-b['x']) < 1, f'{width}px {phase} 侧栏图标左右位移：{a} / {b}'
             assert page.evaluate("() => window.__initialIframe===document.querySelector('#preview-stage iframe')"), '切换侧栏不应重载当前 iframe'
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
-            page.locator('#nav-expand-search').click()
+            page.locator('#preview-search').click()
             popup=page.locator('#compact-search-dialog')
             popup.wait_for(state='visible')
             assert toggle.get_attribute('aria-expanded')=='false'
@@ -1074,7 +1100,7 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             popup.wait_for(state='hidden')
             assert 'asset=atlas-academia' in page.url
             assert toggle.get_attribute('aria-expanded')=='false'
-            page.locator('#nav-expand-search').click()
+            page.locator('#preview-search').click()
             popup.wait_for(state='visible')
             page.locator('.command-palette-overlay').click(position={'x':10,'y':10})
             popup.wait_for(state='hidden')

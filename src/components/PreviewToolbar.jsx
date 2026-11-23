@@ -66,7 +66,7 @@ export function ViewportSwitcher({mode,onChange,visible}){
   </div>;
 }
 export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,onChangePreview,versionId='original',onChangeVersion,liked,onFavorite,
-  onInfo,onMenu,menuOpen}){
+  onInfo,onMenu,menuOpen,onSearch,searchOpen=false}){
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
@@ -97,6 +97,10 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,on
       <ViewportSwitcher mode={previewMode} onChange={onChangePreview} visible={asset?.source==='local'}/>
       {versions.length>0&&<WorkbenchSelect id="asset-version" label="切换设计版本" value={versionId}
         onChange={onChangeVersion} options={versionOptions} icon="layers" className="select-field--version"/>}
+      <button id="preview-search" className="topbar-search-action" type="button"
+        aria-label="打开全局搜索" title="搜索项目 · Ctrl/⌘ K"
+        aria-controls="compact-search-dialog" aria-haspopup="dialog" aria-expanded={String(searchOpen)}
+        onClick={onSearch}><Icon name="search"/></button>
       <span className="topbar-separator" aria-hidden="true"/>
       <div className="topbar-actions">
         <button type="button" id="preview-info" className="info-action" aria-haspopup="dialog"

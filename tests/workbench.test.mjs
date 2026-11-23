@@ -21,7 +21,7 @@ function withBaseURI(callback){
 }
 test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',async()=>{
   const [html,css,app]=await Promise.all(['index.html','assets/styles.css','assets/app.js'].map(read));
-  for(const id of ['sidebar','category-nav','gallery','nav-expand-search','preview-stage','project-dialog','preview-info','viewport-controls']){
+  for(const id of ['sidebar','category-nav','gallery','preview-search','preview-stage','project-dialog','preview-info','viewport-controls']){
     assert.ok(html.includes('id="'+id+'"'),'缺少 '+id);
   }
   assert.doesNotMatch(html,/id="detail-drawer"|id="drawer-overlay"/);

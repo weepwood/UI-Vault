@@ -3,7 +3,7 @@ import {mountWorkbench} from './react-workbench.js';
 // 原生入口只负责首屏结构校验和 React 应用启动。
 // 目录筛选、收藏、路由、设置、Dialog、设备切换和 iframe 生命周期全部在 React 中管理。
 const SHELL_REQUIRED_IDS=[
-  'sidebar','library-rail','project-panel','mobile-shade','gallery','nav-expand-search','sort','tag-filter','preview-stage',
+  'sidebar','library-rail','project-panel','mobile-shade','gallery','preview-search','sort','tag-filter','preview-stage',
   'toast','menu-toggle','viewport-controls','category-nav','total-count','curated-count',
   'imported-count','favorite-count','preview-kind','preview-title',
   'preview-subtitle','project-info','project-dialog','dialog-title','dialog-kind',
