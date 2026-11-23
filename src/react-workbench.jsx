@@ -82,6 +82,18 @@ function WorkbenchPortals({nodes}){
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const searchRef=useRef(null);
+  // 图标栏进入完整宽度前不展示长文字，避免网格动画中汉字被压成竖排。
+  const previousNav=useRef({collapsed:navCollapsed,mobile});
+  const pendingSearch=useRef(null);
+  const finishSearch=useCallback(()=>{
+    const intent=pendingSearch.current;
+    pendingSearch.current=null;
+    if(!intent)return;
+    requestAnimationFrame(()=>{
+      searchRef.current?.focus({preventScroll:true});
+      if(intent==='select')searchRef.current?.select();
+    });
+  },[]);
   const menuOpen=mobile&&state.menuOpen;
   const selected=state.active;
   const settingsActive=state.view==='settings';
@@ -95,14 +107,48 @@ function WorkbenchPortals({nodes}){
     if(mobile)requestAnimationFrame(()=>document.getElementById('preview-title')?.focus({preventScroll:true}));
   },[selectAsset,mobile]);
 
-  // 同一个 Logo 控制导航宽度；非移动端生效，保持 preview iframe 挂载。
+  // 两阶段展开：宽度动画期间文字保持透明且不换行，布局完成后再淡入。
+  // 只监听主 grid 的 transitionend；减少动画设置或取消中断时直接恢复内容。
   useLayoutEffect(()=>{
+    const wasCollapsed=previousNav.current.collapsed;
+    previousNav.current={collapsed:navCollapsed,mobile};
+    const opening=!mobile&&wasCollapsed&&!navCollapsed;
+    nodes.shell.classList.toggle('is-nav-revealing',opening);
     nodes.shell.classList.toggle('is-nav-collapsed',!mobile&&navCollapsed);
     nodes.collapseToggle.setAttribute('aria-expanded',String(mobile||!navCollapsed));
     const label=navCollapsed&&!mobile?'展开侧边栏':'收起侧边栏';
     nodes.collapseToggle.setAttribute('aria-label',label);
     nodes.collapseToggle.title=label;
-  },[nodes,navCollapsed,mobile]);
+    if(!opening){
+      if(!navCollapsed)finishSearch();
+      return ()=>nodes.shell.classList.remove('is-nav-revealing');
+    }
+    let done=false;
+    const finish=()=>{
+      if(done)return;
+      done=true;
+      nodes.shell.classList.remove('is-nav-revealing');
+      finishSearch();
+    };
+    const onEnd=event=>{
+      if(event.target===nodes.shell&&event.propertyName==='grid-template-columns')finish();
+    };
+    const toMs=value=>value.trim().endsWith('ms')?parseFloat(value):parseFloat(value)*1000;
+    const css=getComputedStyle(nodes.shell);
+    const times=css.transitionDuration.split(',').map(toMs);
+    const delays=css.transitionDelay.split(',').map(toMs);
+    const wait=Math.max(...times.map((time,i)=>time+(delays[i%delays.length]||0)),0);
+    if(wait<=20){finish();return;}
+    nodes.shell.addEventListener('transitionend',onEnd);
+    nodes.shell.addEventListener('transitioncancel',onEnd);
+    const fallback=window.setTimeout(finish,wait+100);
+    return ()=>{
+      window.clearTimeout(fallback);
+      nodes.shell.removeEventListener('transitionend',onEnd);
+      nodes.shell.removeEventListener('transitioncancel',onEnd);
+      nodes.shell.classList.remove('is-nav-revealing');
+    };
+  },[nodes,navCollapsed,mobile,finishSearch]);
   useEffect(()=>{
     const onToggle=()=>{
       if(mobile){menu(false);return;}
@@ -113,9 +159,11 @@ function WorkbenchPortals({nodes}){
       });
     };
     const onSearch=()=>{
-      setNavCollapsed(false);
-      saveNavCollapsed(false);
-      requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
+      pendingSearch.current='focus';
+      if(navCollapsed){
+        setNavCollapsed(false);
+        saveNavCollapsed(false);
+      }else finishSearch();
     };
     const onStorage=event=>{
       if(event.key===NAV_COLLAPSED_KEY)setNavCollapsed(event.newValue==='true');
@@ -128,7 +176,7 @@ function WorkbenchPortals({nodes}){
       nodes.expandSearch.removeEventListener('click',onSearch);
       window.removeEventListener('storage',onStorage);
     };
-  },[nodes,mobile,menu]);
+  },[nodes,mobile,menu,navCollapsed,finishSearch]);
   useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
     const query=window.matchMedia('(max-width:760px)');
@@ -179,7 +227,11 @@ function WorkbenchPortals({nodes}){
         event.preventDefault();
         if(mobile)menu(true);
         else if(notLibrary)openView('library');
-        requestAnimationFrame(()=>{
+        if(!mobile&&navCollapsed){
+          pendingSearch.current='select';
+          setNavCollapsed(false);
+          saveNavCollapsed(false);
+        }else requestAnimationFrame(()=>{
           searchRef.current?.focus({preventScroll:true});
           searchRef.current?.select();
         });
@@ -187,12 +239,16 @@ function WorkbenchPortals({nodes}){
         event.preventDefault();
         if(mobile)menu(true);
         else if(notLibrary)openView('library');
-        requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
+        if(!mobile&&navCollapsed){
+          pendingSearch.current='focus';
+          setNavCollapsed(false);
+          saveNavCollapsed(false);
+        }else requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
       }
     };
     document.addEventListener('keydown',onKey);
     return ()=>document.removeEventListener('keydown',onKey);
-  },[mobile,menuOpen,menu,settingsActive,operationsActive,notLibrary,openView]);
+  },[mobile,menuOpen,menu,settingsActive,operationsActive,notLibrary,openView,navCollapsed]);
   useEffect(()=>{
     const resetControl=nodes.reset;
     const emptyReset=nodes.emptyReset;

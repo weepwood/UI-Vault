@@ -1090,3 +1090,40 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
 @media(prefers-reduced-motion:reduce) {
   .app-shell,.library-rail {transition:none!important}
 }
+
+
+/* 收缩导航展开：先过渡列宽，随后让文字淡入。绝不在窄列中折行或竖排。
+   布局约束只覆盖桌面，移动端的整块抽屉保持原样。 */
+@media(min-width:761px){
+  .library-rail .brand-type,
+  .library-rail .brand-type strong,
+  .library-rail .brand-type small,
+  .library-rail .quick-filters .filter-button > span,
+  .library-rail .category-nav .nav-button > span:not(.nav-index),
+  .library-rail .category-section > .section-row,
+  .library-rail .sidebar-footer .sidebar-settings > span {
+    white-space:nowrap;
+  }
+  .library-rail .brand-type,
+  .library-rail .quick-filters .filter-button > span,
+  .library-rail .category-nav .nav-button > span:not(.nav-index),
+  .library-rail .category-section > .section-row,
+  .library-rail .sidebar-footer .sidebar-settings > span,
+  .library-rail .library-search {
+    transition:opacity 125ms var(--ease-out);
+  }
+  .library-rail .category-nav .nav-button > span:not(.nav-index),
+  .library-rail .quick-filters .filter-button > span {
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .app-shell.is-nav-revealing .library-rail .brand-type,
+  .app-shell.is-nav-revealing .library-rail .library-search,
+  .app-shell.is-nav-revealing .library-rail .quick-filters .filter-button > span,
+  .app-shell.is-nav-revealing .library-rail .category-nav .nav-button > span:not(.nav-index),
+  .app-shell.is-nav-revealing .library-rail .category-section > .section-row,
+  .app-shell.is-nav-revealing .library-rail .sidebar-footer .sidebar-settings > span {
+    opacity:0;
+    pointer-events:none;
+  }
+}
