@@ -1115,7 +1115,16 @@ def verify_landfolio_version_switch(browser, origin):
         assert 'landfolio/themes/bauhaus.html' in frame.get_attribute('src'), "再次切 V2 失败"
         assert 'variant=landfolio-bauhaus' in page.url, "切换 V2 未更新可分享链接"
         # pushState 对应同文档历史；不要等待新的 DOMContentLoaded（不会触发）。
+        print("Landfolio history before back:", page.evaluate(
+            "() => ({url:location.href, length:history.length, state:history.state, "
+            "src:document.querySelector('#preview-stage iframe')?.getAttribute('src')})"
+        ), flush=True)
         page.evaluate("() => history.back()")
+        page.wait_for_timeout(850)
+        print("Landfolio history after back:", page.evaluate(
+            "() => ({url:location.href, length:history.length, state:history.state, "
+            "src:document.querySelector('#preview-stage iframe')?.getAttribute('src')})"
+        ), flush=True)
         # pushState/popstate 是同文档导航，不等待页面 load；检查地址栏状态和 React 预览分别恢复。
         page.wait_for_function(
             "() => new URLSearchParams(window.location.search).get('asset') === 'website-style-bauhaus' "
