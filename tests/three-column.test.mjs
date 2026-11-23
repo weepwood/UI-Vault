@@ -17,7 +17,7 @@ test('资源导航、项目列表、真实预览在独立三栏',async()=>{
  const left=root.slice(nav,navEnd);
  const middle=root.slice(panel,panelEnd);
  const right=root.slice(main);
- for(const id of ['search','category-nav','total-count','curated-count','favorite-count','imported-count'])
+ for(const id of ['nav-expand-search','category-nav','total-count','curated-count','favorite-count','imported-count'])
   assert.ok(left.includes('id="'+id+'"'),'导航栏缺少 '+id);
  for(const id of ['gallery','sort','tag-filter','results-status','empty'])
   assert.ok(middle.includes('id="'+id+'"'),'项目栏缺少 '+id);
@@ -54,7 +54,7 @@ test('移动端两栏由 React 同步 inert、遮罩及导航焦点',async()=>{
  assert.match(css,/@media\(max-width:480px\)/);
  assert.match(css,/grid-template-rows:\s*minmax\(0, auto\) minmax\(0,1fr\)/);
  for(const part of ['nodes.rail.inert=mobile&&!menuOpen','nodes.main.inert=menuOpen||notLibrary',
-  'nodes.operations.inert=menuOpen||!operationsActive','nodes.rail.classList.toggle(\'is-open\',menuOpen)','searchRef.current?.focus']){
+  'nodes.operations.inert=menuOpen||!operationsActive','nodes.rail.classList.toggle(\'is-open\',menuOpen)','if(mobile)menu(false)']){
   assert.ok(react.includes(part),'React 移动导航缺少：'+part);
  }
 });

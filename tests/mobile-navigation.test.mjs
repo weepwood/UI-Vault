@@ -22,13 +22,14 @@ test('移动菜单打开、关闭和设置视图切换会同步 inert、遮罩�
   has(toolbar,'aria-expanded={String(menuOpen)}','菜单按钮未同步 aria-expanded');
   // 收起菜单后焦点回到当前视图的菜单按钮。
   has(react,"document.getElementById(settingsActive?'settings-menu-toggle':operationsActive?'operations-menu-toggle':'menu-toggle')",'收起菜单未恢复焦点');
-  // 打开目录后聚焦搜索框。
-  assert.match(react,/if\(menuOpen\)searchRef\.current\?\.focus\(\{preventScroll:true\}\)/);
+  // 移动抽屉内也保留全局入口，点击后关闭抽屉并聚焦中央命令面板。
+  has(react,'if(mobile)menu(false)','移动端打开全局搜索前应关闭抽屉');
+  has(react,'setCompactSearchOpen(true)','未提供全局搜索入口');
 });
 
 test('搜索快捷键与 Escape 由同一个 keydown 监听处理，并在卸载时注销',()=>{
   has(react,"(event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'",'缺少 ⌘/Ctrl+K');
-  has(react,'searchRef.current?.select()','⌘/Ctrl+K 应全选已有关键词');
+  has(react,'compactSearchInputRef.current?.select()','⌘/Ctrl+K 应全选已有关键词');
   has(react,"event.key==='Escape'&&menuOpen",'Escape 应先关闭移动目录');
   has(react,"document.addEventListener('keydown',onKey)",'缺少全局快捷键监听');
   has(react,"document.removeEventListener('keydown',onKey)",'快捷键监听未在卸载时注销');

@@ -80,7 +80,7 @@ test('主站与展厅共用同一组件文件，展厅 bundle 独立构建',asyn
   ].map(read));
   assert.match(react,/import \{ProjectRow,ProjectList\} from '[.]\/components\/ProjectList[.]jsx'/);
   assert.match(react,/import \{CategoryNavigation\} from '[.]\/components\/CategoryNavigation[.]jsx'/);
-  assert.match(react,/import \{SearchField\} from '[.]\/components\/SearchField[.]jsx'/);
+  assert.match(react,/import \{CompactSearchPanel\} from '[.]\/components\/CompactSearchPanel[.]jsx'/);
   assert.doesNotMatch(react,/function (ProjectRow|ProjectList|CategoryNavigation|SearchField|Icon)\(/,
     '组件定义应只存在于 src/components/');
   assert.match(toolbar,/export function ViewportSwitcher\(/);

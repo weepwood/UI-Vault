@@ -8,7 +8,7 @@ const iconByType={
 const MAX_RESULTS=36;
 
 // 按参考 Command Palette 的设计独立实现：中央面板、渐变光晕、固定高度结果、键盘高亮。
-// 刻意不接受目录的 changeSearch：输入不会修改第二栏 ProjectList。
+// 搜索状态由弹窗局部参数提供，输入不会修改第二栏 ProjectList。
 export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=[],onChoose,onClose}){
   const [active,setActive]=useState(0);
   const [keyboardMode,setKeyboardMode]=useState(true);
