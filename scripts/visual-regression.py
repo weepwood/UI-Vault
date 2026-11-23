@@ -1114,7 +1114,10 @@ def verify_landfolio_version_switch(browser, origin):
         selector.locator('[data-value="landfolio-bauhaus"]').click()
         assert 'landfolio/themes/bauhaus.html' in frame.get_attribute('src'), "再次切 V2 失败"
         assert 'variant=landfolio-bauhaus' in page.url, "切换 V2 未更新可分享链接"
-        page.go_back(wait_until="domcontentloaded")
+        # pushState 对应同文档历史；不要等待新的 DOMContentLoaded（不会触发）。
+        page.evaluate("() => history.back()")
+        page.wait_for_url("**/\u003fasset=website-style-bauhaus")
+        page.wait_for_function("() => document.querySelector('#preview-stage iframe')?.getAttribute('src')?.includes('website-designs/examples/')", timeout=15000)
         assert 'website-designs/examples/' in frame.get_attribute('src'), "浏览器后退未恢复 V1"
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__variantIframe"), "版本切换错误替换 iframe 节点"
     finally:
