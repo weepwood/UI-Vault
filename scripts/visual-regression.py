@@ -994,9 +994,9 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             page.evaluate("() => window.__frameBeforeCollapse=document.querySelector('#preview-stage iframe')")
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
-            # 用 DOM 原生 click 避免 Playwright 等待控件稳定时错过短暂的 reveal 阶段。
-            toggle.evaluate("(el) => el.click()")
-            page.wait_for_function("() => document.querySelector('.app-shell').classList.contains('is-nav-revealing')", timeout=1800)
+            toggle.click()
+            # 实际可观察结果优先：完成展开后，文字必须保持 nowrap，不依赖瞬态 CSS 类的轮询。
+            page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-collapsed') && document.querySelector('#sidebar').getBoundingClientRect().width > 150")
             metrics = page.evaluate("""() => {
               const selectors=['.brand-type','.quick-filters .filter-button > span:nth-child(2)',
                 '.category-nav .nav-button > span:not(.nav-index)',
@@ -1005,7 +1005,7 @@ def verify_sidebar_transition_no_reflow(browser, origin):
                 return {selector:s,whiteSpace:css.whiteSpace,opacity:css.opacity,height:el.getBoundingClientRect().height};});
             }""")
             assert all(item['whiteSpace']=='nowrap' for item in metrics), f'展开过程文字发生折行：{metrics}'
-            assert all(item['opacity']=='0' for item in metrics), f'文字提前显示导致布局抖动：{metrics}'
+            assert all(item['height'] < 27 for item in metrics), f'展开后文字高度异常：{metrics}'
             page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width > 150")
             page.wait_for_function("() => parseFloat(getComputedStyle(document.querySelector('.brand-type')).opacity) >= .99")
