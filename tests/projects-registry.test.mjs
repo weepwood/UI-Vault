@@ -21,12 +21,13 @@ test('Project 清单完整、唯一，且与每条 Asset 一一关联',async()=>
   const result=await inspectProjects();
   assert.deepEqual(result.errors,[]);
   assert.equal(await readFile(join(PROJECT_ROOT,'content/projects.json'),'utf8'),result.manifest);
-  assert.equal(result.projects.length,35);
-  assert.equal(new Set(result.projects.map(x=>x.repository.toLowerCase())).size,35);
+  // 项目总量允许增长，仓库 URL 仍需全局唯一。
+  assert.ok(result.projects.length>=35,'项目数不应低于注册表的既有基线');
+  assert.equal(new Set(result.projects.map(x=>x.repository.toLowerCase())).size,result.projects.length);
   const c=await inspectCatalog();
   assert.deepEqual(c.errors,[]);
   const ids=new Set(result.projects.map(x=>x.id));
-  assert.equal(c.items.length,526);
+  assert.ok(c.items.length>=526,'资产数不应低于历史清单基线');
   assert.equal(c.items.filter(x=>x.projectId==='ref-chrislemke-website-designs').length,314);
   assert.equal(c.items.filter(x=>x.projectId==='ref-ctlsim-landfolio').length,86);
   assert.ok(c.items.every(x=>ids.has(x.projectId)));
