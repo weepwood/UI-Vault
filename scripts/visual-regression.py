@@ -1055,6 +1055,7 @@ def verify_compact_search_and_fixed_icons(browser, origin):
                     assert abs(a['width']-b['width']) < .25 and abs(a['height']-b['height']) < .25, f'{width}px {phase} 图标尺寸不一致：{a} / {b}'
                     if a['selector'] != '.sidebar-footer .sidebar-settings .ui-icon':
                         assert abs(a['y']-b['y']) < 1, f'{width}px {phase} 图标上下位移：{a} / {b}'
+                        assert abs(a['x']-b['x']) < 1, f'{width}px {phase} 图标左右位移：{a} / {b}'
             assert page.evaluate("() => window.__initialIframe===document.querySelector('#preview-stage iframe')"), '切换侧栏不应重载当前 iframe'
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")

@@ -1398,3 +1398,17 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
     height:36px;min-height:36px;flex:0 0 36px;
   }
 }
+
+
+/* 窄导航不能清空展开态的分组 padding / margin，否则分组图标会左移 3px、上移 6px。 */
+@media(min-width:761px){
+  .app-shell.is-nav-collapsed .library-rail .quick-filters{
+    padding:0 3px;
+  }
+  .app-shell.is-nav-collapsed .library-rail .category-section{
+    padding:0 3px;
+  }
+  .app-shell.is-nav-collapsed .library-rail .category-nav{
+    margin-top:6px;
+  }
+}
