@@ -192,7 +192,11 @@ def verify_react_interactions(browser, origin):
         page.locator("#viewport-custom-input").fill("640")
         page.locator(".viewport-custom-apply").click()
         assert page.locator("#preview-stage").get_attribute("data-size") == "custom"
-        assert abs(page.locator("#preview-stage iframe").evaluate("(el)=>el.getBoundingClientRect().width")-640) < 3, "自定义宽度未作用到 iframe"
+        actual_css_width = page.locator("#preview-stage iframe").evaluate("(el)=>parseFloat(el.style.width)")
+        stage_width = page.locator("#preview-stage").evaluate("(el)=>el.clientWidth")
+        visual_width = page.locator("#preview-stage iframe").evaluate("(el)=>el.getBoundingClientRect().width")
+        assert abs(actual_css_width-640)<1, f"自定义视口 CSS 宽度应为 640px，实际 {actual_css_width}"
+        assert abs(visual_width-min(640,stage_width))<3, f"iframe 可见宽度未随实际容器缩放：{visual_width} / {stage_width}"
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "自定义宽度意外重建 iframe"
         resize=page.locator(".preview-resize-handle")
         resize.wait_for(state="visible")
