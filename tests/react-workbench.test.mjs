@@ -69,6 +69,6 @@ test('再次选择同一风格不会丢弃当前版本，切换其它风格回�
 
 test('分享按钮跟随同一资产的版本切换更新闭包',()=>{
  const hooks=read('src/useWorkbench.js');
- assert.match(hooks,/router\\.assetURL\\(state\\.active\\.id,state\\.versionId\\)/);
- assert.match(hooks,/\\},\\[state\\.active,state\\.versionId,copyText\\]\\)/);
+ assert.ok(hooks.includes('router.assetURL(state.active.id,state.versionId)'));
+ assert.ok(hooks.includes('},[state.active,state.versionId,copyText])'));
 });
