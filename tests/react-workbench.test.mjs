@@ -58,3 +58,25 @@ test('React iframe 权限从经过验证的资产元数据生成',()=>{
  assert.match(preview,/allowFullScreen=\{allowFullScreen\}/);
  assert.doesNotMatch(preview,/allow-same-origin/);
 });
+
+
+test('再次选择同一风格不会丢弃当前版本，切换其它风格回归 V1',()=>{
+ const hook=read('src/useWorkbench.js');
+ assert.match(hook,/const version=id===state\.active\?\.id\?state\.versionId:'original'/);
+ assert.match(hook,/router\.setAsset\(id,options\.historyMode\|\|'push',version\)/);
+});
+
+
+test('分享按钮跟随同一资产的版本切换更新闭包',()=>{
+ const hooks=read('src/useWorkbench.js');
+ assert.ok(hooks.includes('router.assetURL(state.active.id,state.versionId)'));
+ assert.ok(hooks.includes('},[state.active,state.versionId,copyText])'));
+});
+
+
+test('风格版本切换使用 iframe replace 导航，避免污染浏览器历史',()=>{
+ const preview=read('src/components/PreviewFrame.jsx');
+ assert.ok(preview.includes('contentWindow.location.replace(src)'));
+ assert.ok(preview.includes('useMemo(()=>src,[asset?.id,asset?.source])'));
+ assert.ok(preview.includes('data-preview-url={src}'));
+});

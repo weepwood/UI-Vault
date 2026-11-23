@@ -1,4 +1,4 @@
-import React,{memo,useEffect,useLayoutEffect,useRef,useState} from 'react';
+import React,{memo,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {applyPreviewLayout} from '../../assets/core/preview.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {getPreviewPolicy} from '../../assets/core/preview-policy.js';
@@ -25,6 +25,24 @@ function PreviewContent({asset,mode,error,loading}){
   const backdropStudio=asset?.id==='aurora-field';
   const {sandbox,allow:permissions,allowFullScreen}=getPreviewPolicy(asset);
   const src=!asset?null:asset.source==='local'?previewUrl(asset):asset.siteUrl||null;
+  // 同一资产的多版本共享一个 iframe：初始 src 保持固定，后续版本使用子框架
+  // location.replace，避免 iframe 自身向顶层联合历史记录追加条目。
+  const iframeEntrySrc=useMemo(()=>src,[asset?.id,asset?.source]);
+  const lastFrameNavigation=useRef({assetId:null,src:null});
+  useLayoutEffect(()=>{
+    if(!asset||asset.source!=='local'||!frame.current)return;
+    const previous=lastFrameNavigation.current;
+    if(previous.assetId===asset.id&&previous.src!==src){
+      try{
+        // sandbox iframe 使用 opaque origin；跨域仅允许导航，不读取子文档。
+        frame.current.contentWindow.location.replace(src);
+      }catch(error){
+        console.warn('UI-Vault iframe 替换式导航失败，回退为普通导航:',error);
+        frame.current.src=src;
+      }
+    }
+    lastFrameNavigation.current={assetId:asset.id,src};
+  },[asset?.id,asset?.source,src]);
   // 记录“已加载完成的页面”，与当前页面比较即可得出是否在加载，切换项目时无需额外重置。
   // 只比较 # 之前的部分：仅改动 hash 时 iframe 不会重新加载，也不会触发 load 事件。
   const page=src?src.split('#')[0]:null;
@@ -65,7 +83,7 @@ function PreviewContent({asset,mode,error,loading}){
     const observer=new ResizeObserver(resize);
     observer.observe(stage);
     return ()=>observer.disconnect();
-  },[asset?.id,asset?.source,mode]);
+  },[asset?.id,asset?.preview,asset?.source,mode]);
   if(!asset&&loading){
     return <div className="preview-placeholder" aria-busy="true">
       <div className="preview-progress" role="progressbar" aria-label="正在加载项目目录"/>
@@ -79,7 +97,7 @@ function PreviewContent({asset,mode,error,loading}){
   }
   if(asset.source==='local'){
     return <><iframe ref={frame} className="live-frame" data-preview-frame="local"
-      title={asset.title+' 的可交互预览'} src={src}
+      title={asset.title+' 的可交互预览'} src={iframeEntrySrc} data-preview-url={src}
       onLoad={updateFrameLayout}
       sandbox={sandbox}
       allow={permissions}
@@ -105,5 +123,6 @@ function PreviewContent({asset,mode,error,loading}){
 }
 // React.memo 配合稳定 iframe 元素确保收藏、设置、筛选、通知都不会产生页面重载。
 export const PreviewFrame=memo(PreviewContent,(before,after)=>
-  before.asset?.id===after.asset?.id&&before.mode===after.mode&&before.error===after.error&&
+  before.asset?.id===after.asset?.id&&before.asset?.preview===after.asset?.preview&&
+  before.asset?.siteUrl===after.asset?.siteUrl&&before.mode===after.mode&&before.error===after.error&&
   before.loading===after.loading);

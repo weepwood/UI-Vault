@@ -54,6 +54,9 @@ for(const a of items) {
     included.add(a.preview);
     if(a.copyable!==false)included.add(a.code);
     if(a.designGuidePath)included.add(a.designGuidePath);
+    for(const version of a.versions||[]){
+      included.add(version.preview);included.add(version.code);included.add(version.designGuidePath);
+    }
     for(const source of a.sourceFiles||[]){included.add(source.path);sourceFilePaths.add(source.path);}
     if(a.publish!==undefined){
       if(!Array.isArray(a.publish)||!a.publish.every(p=>safeRelativePath(p,'demos/')))throw new Error(a.id+' 的 publish 列表无效');

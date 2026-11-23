@@ -2,6 +2,7 @@ import {useCallback,useEffect,useLayoutEffect,useMemo,useReducer,useRef,useState
 import {filterAssets,popularTags} from '../assets/core/catalog.js';
 import {loadFavorites,saveFavorites} from '../assets/core/favorites.js';
 import {resolveAsset} from '../assets/core/render.js';
+import {resolveVersionId} from '../assets/core/asset-versions.js';
 import {createWorkbenchRouter} from '../assets/core/workbench-router.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
   setCatalogQuery,setCatalogSort,setCatalogTag,activateAsset,deactivateAsset,
@@ -12,14 +13,16 @@ const router=createWorkbenchRouter(window);
 function initial(){
   const session=createWorkbenchState();
   return {...session,favorites:loadFavorites(),preferences:loadSettings(),
-    view:router.read().view,menuOpen:false,loading:true,error:null};
+    view:router.read().view,versionId:'original',menuOpen:false,loading:true,error:null};
 }
 function chooseVisible(next,preferred=null){
+  const previousId=next.active?.id;
   const visible=filterAssets(next.assets,next,next.favorites);
-  if(!visible.length){deactivateAsset(next);return next;}
+  if(!visible.length){deactivateAsset(next);next.versionId='original';return next;}
   const desired=(preferred&&visible.find(item=>item.id===preferred))||
     (next.active&&visible.find(item=>item.id===next.active.id))||visible[0];
   activateAsset(next,desired,next.preferences.preview);
+  if(previousId!==next.active?.id)next.versionId='original';
   return next;
 }
 export function workbenchReducer(current,action){
@@ -32,7 +35,9 @@ export function workbenchReducer(current,action){
         action.assets.find(a=>a.source==='local'&&a.curated===true)||
         action.assets.find(a=>a.source==='local')||action.assets[0];
       if(preferred)activateAsset(next,preferred,next.preferences.preview);
-      return chooseVisible(next);
+      chooseVisible(next);
+      next.versionId=resolveVersionId(next.active,action.routeVariant);
+      return next;
     }
     case 'error':return {...next,loading:false,error:action.message};
     case 'filter':changeCatalogFilter(next,action.kind,action.value);return chooseVisible(next);
@@ -44,9 +49,14 @@ export function workbenchReducer(current,action){
     case 'tag':setCatalogTag(next,action.value);return chooseVisible(next);
     case 'select':{
       const asset=next.assets.find(a=>a.id===action.id);
-      if(asset)activateAsset(next,asset,next.preferences.preview);
+      if(asset){
+        const oldId=next.active?.id;
+        activateAsset(next,asset,next.preferences.preview);
+        if(oldId!==next.active?.id)next.versionId='original';
+      }
       return next;
     }
+    case 'version':next.versionId=resolveVersionId(next.active,action.id);return next;
     case 'favorite':{
       const favorites=new Set(current.favorites);
       if(favorites.has(action.id))favorites.delete(action.id);else favorites.add(action.id);
@@ -79,6 +89,7 @@ export function workbenchReducer(current,action){
       next.menuOpen=false;
       const asset=next.assets.find(a=>a.id===action.asset);
       if(asset)activateAsset(next,asset,next.preferences.preview);
+      next.versionId=resolveVersionId(next.active,action.variant);
       return next;
     }
     default:return current;
@@ -114,7 +125,7 @@ export function useWorkbench(){
       fetchJSON('content/projects.json',controller.signal)
     ]).then(([assets,categories,projects])=>{
       if(!Array.isArray(assets)||!Array.isArray(categories)||!Array.isArray(projects))throw Error('资源清单格式不正确');
-      dispatch({type:'catalog',assets,categories,projects,routeAsset:router.read().asset});
+      dispatch({type:'catalog',assets,categories,projects,routeAsset:router.read().asset,routeVariant:router.read().variant});
     }).catch(error=>{
       if(error.name==='AbortError')return;
       console.error('UI-Vault React 工作台：',error);
@@ -140,7 +151,7 @@ export function useWorkbench(){
   },[]);
   useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route})),[]);
   useEffect(()=>{
-    if(!state.loading)router.setAsset(state.active?.id||null,'replace');
+    if(!state.loading)router.setAsset(state.active?.id||null,'replace',state.versionId);
   },[state.active?.id,state.loading]);
   useEffect(()=>{
     if(!initialized.current){initialized.current=true;return;}
@@ -183,10 +194,12 @@ export function useWorkbench(){
   },[]);
   const leaveSettings=useCallback(()=>{if(state.view!=='library')openView('library');},[openView,state.view]);
   const selectAsset=useCallback((id,options={})=>{
-    router.setAsset(id,options.historyMode||'push');
+    // 重复选择当前风格时保留 V2/V3，切换到其它风格才回到原版 V1。
+    const version=id===state.active?.id?state.versionId:'original';
+    router.setAsset(id,options.historyMode||'push',version);
     dispatch({type:'select',id});
     dispatch({type:'menu',value:false});
-  },[]);
+  },[state.active?.id,state.versionId]);
   const filter=useCallback((kind,value)=>{
     leaveSettings();
     dispatch({type:'filter',kind,value});
@@ -209,14 +222,20 @@ export function useWorkbench(){
     notify('已恢复默认设置');
   },[notify]);
   const changePreview=useCallback(value=>dispatch({type:'previewMode',value}),[]);
+  const changeVersion=useCallback(id=>{
+    const next=resolveVersionId(state.active,id);
+    if(next===state.versionId)return;
+    router.setVariant(next,'push');
+    dispatch({type:'version',id:next});
+  },[state.active,state.versionId]);
   const menu=useCallback(value=>dispatch({type:'menu',value}),[]);
   const copyText=useCallback(async(text,message)=>{
     try{await navigator.clipboard.writeText(text);notify(message);}
     catch{notify('复制失败，请检查浏览器剪贴板权限');}
   },[notify]);
   const copyLink=useCallback(()=>{
-    if(state.active)void copyText(router.assetURL(state.active.id).href,'项目链接已复制');
-  },[state.active,copyText]);
+    if(state.active)void copyText(router.assetURL(state.active.id,state.versionId).href,'项目链接已复制');
+  },[state.active,state.versionId,copyText]);
   const copySource=useCallback(async(id)=>{
     const asset=state.assets.find(a=>a.id===id&&a.source==='local'&&a.copyable!==false);
     if(!asset)return;
@@ -229,5 +248,5 @@ export function useWorkbench(){
 
   return {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,reset,
-    favorite,changePreference,resetPreferences,changePreview,menu,copyText,copyLink,copySource};
+    favorite,changePreference,resetPreferences,changePreview,changeVersion,menu,copyText,copyLink,copySource};
 }

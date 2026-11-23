@@ -1,5 +1,5 @@
 import React,{useEffect,useRef,useState} from 'react';
-import {Icon} from './WorkbenchSelect.jsx';
+import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {githubSourceLink} from '../../assets/core/github-source-link.js';
 const sizes=[
   {mode:'fluid',icon:'scan',name:'自适应',hint:'自适应 · 适配可用宽度'},
@@ -65,15 +65,17 @@ export function ViewportSwitcher({mode,onChange,visible}){
     </div>
   </div>;
 }
-export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,onFavorite,
+export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,onChangePreview,versionId='original',onChangeVersion,liked,onFavorite,
   onInfo,onMenu,menuOpen}){
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源'):'项目目录';
-  const openUrl=asset&&(asset.source==='local'?
-    new URL(asset.preview,document.baseURI).href:asset.siteUrl||asset.url||asset.originRepo);
-  const sourceUrl=githubSourceLink(asset);
+  const openUrl=effectiveAsset&&(effectiveAsset.source==='local'?
+    new URL(effectiveAsset.preview,document.baseURI).href:effectiveAsset.siteUrl||effectiveAsset.url||effectiveAsset.originRepo);
+  const sourceUrl=githubSourceLink(effectiveAsset);
+  const versions=Array.isArray(asset?.versions)?asset.versions:[];
+  const versionOptions=[{value:'original',label:'V1 · 原版'},...versions.map((v,i)=>({value:v.id,label:'V'+(i+2)+' · '+v.label}))];
   return <>
     <div className="topbar-project">
       <button id="menu-toggle" className="menu-toggle" type="button"
@@ -93,6 +95,8 @@ export function PreviewToolbar({asset,labels,previewMode,onChangePreview,liked,o
     </div>
     <div className="topbar-tools">
       <ViewportSwitcher mode={previewMode} onChange={onChangePreview} visible={asset?.source==='local'}/>
+      {versions.length>0&&<WorkbenchSelect id="asset-version" label="切换设计版本" value={versionId}
+        onChange={onChangeVersion} options={versionOptions} icon="layers" className="select-field--version"/>}
       <span className="topbar-separator" aria-hidden="true"/>
       <div className="topbar-actions">
         <button type="button" id="preview-info" className="info-action" aria-haspopup="dialog"

@@ -12,6 +12,7 @@ export {ProjectRow,ProjectList,CategoryNavigation};
 import {useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {useWorkbench} from './useWorkbench.js';
+import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
@@ -77,7 +78,7 @@ function WorkbenchPortals({nodes}){
   const app=useWorkbench();
   const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
     selectAsset,filter,changeSearch,changeSort,changeTag,reset,
-    favorite,changePreference,resetPreferences,changePreview,menu,
+    favorite,changePreference,resetPreferences,changePreview,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [dialogOpen,setDialogOpen]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
@@ -96,6 +97,7 @@ function WorkbenchPortals({nodes}){
   const previousNav=useRef({collapsed:navCollapsed,mobile});
   const menuOpen=mobile&&state.menuOpen;
   const selected=state.active;
+  const effectiveAsset=useMemo(()=>selectAssetVersion(selected,state.versionId),[selected,state.versionId]);
   const settingsActive=state.view==='settings';
   const operationsActive=state.view==='operations';
   const notLibrary=settingsActive||operationsActive;
@@ -345,12 +347,13 @@ function WorkbenchPortals({nodes}){
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
       projects={state.projects} groupByProject={state.sort==='project'}
       loading={state.loading}/>,nodes.gallery)}
-    {createPortal(<PreviewToolbar asset={selected} labels={state.labels}
+    {createPortal(<PreviewToolbar asset={selected} effectiveAsset={effectiveAsset} labels={state.labels}
       previewMode={state.previewSize} onChangePreview={changePreview}
+      versionId={state.versionId} onChangeVersion={changeVersion}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>selected&&setDialogOpen(true)}
       onMenu={onMenuToggle} menuOpen={menuOpen}/>,nodes.topbar)}
-    {createPortal(<PreviewFrame asset={selected} mode={state.previewSize}
+    {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize}
       error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
       health={projectHealthSnapshot} preview={previewHealthSnapshot}
@@ -378,9 +381,9 @@ function WorkbenchPortals({nodes}){
       <UIIcon name="settings"/><span>设置</span>
     </a></>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
-    <ProjectDialog root={nodes.dialog} asset={selected} labels={state.labels}
-      project={state.projects.find(p=>p.id===selected?.projectId)||null}
-      projectAssetCount={state.assets.filter(a=>a.projectId===selected?.projectId).length}
+    <ProjectDialog root={nodes.dialog} asset={effectiveAsset} labels={state.labels}
+      project={state.projects.find(p=>p.id===effectiveAsset?.projectId)||null}
+      projectAssetCount={state.assets.filter(a=>a.projectId===effectiveAsset?.projectId).length}
       projectHealthSnapshot={projectHealthSnapshot}
       open={dialogOpen} onOpenChange={onDialogChange} onCopySource={copySource}
       onCopyLink={copyLink} onCopyText={copyText} notify={notify}/>

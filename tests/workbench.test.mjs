@@ -38,7 +38,7 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(app,/mountWorkbench\(\)/);
   assert.match(react,/<ProjectList items={filtered}/);
   assert.match(react,/<CategoryNavigation categories={state.categories}/);
-  assert.match(react,/<PreviewFrame asset={selected}/);
+  assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
   assert.doesNotMatch(app,/drawer\.classList|overlay\.classList|openDetail\(/);
 });
 test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',async()=>{
@@ -100,7 +100,7 @@ test('设备模式、历史路由与收藏在 React Hook 中同步，iframe 不�
  assert.match(hooks,/case 'previewMode'/);
  assert.match(hooks,/changePreviewMode\(next,action.value\)/);
  assert.match(preview,/applyPreviewLayout\(stage,frame.current,mode\)/);
- assert.match(hooks,/router.setAsset\(id,options.historyMode\|\|'push'\)/);
+ assert.match(hooks,/router.setAsset\(id,options.historyMode\|\|'push',version\)/);
  assert.match(hooks,/router.subscribe\(/);
  assert.ok(router.includes("host.history[historyMode+'State']"));
  assert.ok(router.includes("host.addEventListener('popstate'"));
