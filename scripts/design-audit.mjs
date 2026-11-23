@@ -14,7 +14,7 @@ for(const row of auditContrast(css)){
 const obligations=[
   [html.includes('class="skip-link"'),'缺少跳转主内容链接'],
   [html.includes('id="results-status"')&&html.includes('aria-live="polite"'),'缺少结果数无障碍播报'],
-  [html.includes('id="search"'),'缺少搜索入口'],
+  [html.includes('id="nav-expand-search"')&&reactSource.includes('CompactSearchPanel')&&reactSource.includes('openPalette'),'缺少全局命令搜索入口'],
   [html.includes('id="category-nav"'),'缺少资产分类导航'],
   [css.includes('prefers-reduced-motion'),'缺少减少动画支持'],
   [css.includes('focus-visible'),'缺少可见键盘焦点'],
