@@ -945,9 +945,14 @@ def verify_sidebar_collapse(browser, origin):
         assert page.locator('#settings-open').is_visible(), '收缩后不能丢失设置入口'
         assert page.evaluate("() => document.querySelector('#preview-stage iframe')===window.__originalFrame"), '收缩不应重新创建 iframe'
         page.locator('#nav-expand-search').click()
-        assert toggle.get_attribute('aria-expanded') == 'true', '搜索按钮没有展开导航栏'
-        assert page.evaluate("() => document.activeElement?.id==='search'"), '展开后搜索框未获得焦点'
-        toggle.click()
+        popover = page.locator('#compact-search-dialog')
+        popover.wait_for(state='visible')
+        assert toggle.get_attribute('aria-expanded') == 'false', '图标栏搜索不应自动展开导航'
+        assert page.locator('#nav-expand-search').get_attribute('aria-expanded') == 'true'
+        assert page.locator('#compact-search-input').evaluate("(el) => el===document.activeElement"), '搜索面板未自动聚焦'
+        page.keyboard.press('Escape')
+        popover.wait_for(state='hidden')
+        assert toggle.get_attribute('aria-expanded') == 'false', '关闭搜索不应改变侧栏状态'
         page.reload(wait_until='domcontentloaded')
         assert page.locator('#nav-collapse-toggle').get_attribute('aria-expanded') == 'false', '侧栏收缩状态未持久化'
         assert 'is-nav-collapsed' in (page.locator('.app-shell').get_attribute('class') or '')
@@ -990,7 +995,8 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
             toggle.click()
-            page.wait_for_function("() => document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
+            # 实际可观察结果优先：完成展开后，文字必须保持 nowrap，不依赖瞬态 CSS 类的轮询。
+            page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-collapsed') && document.querySelector('#sidebar').getBoundingClientRect().width > 150")
             metrics = page.evaluate("""() => {
               const selectors=['.brand-type','.quick-filters .filter-button > span:nth-child(2)',
                 '.category-nav .nav-button > span:not(.nav-index)',
@@ -999,7 +1005,7 @@ def verify_sidebar_transition_no_reflow(browser, origin):
                 return {selector:s,whiteSpace:css.whiteSpace,opacity:css.opacity,height:el.getBoundingClientRect().height};});
             }""")
             assert all(item['whiteSpace']=='nowrap' for item in metrics), f'展开过程文字发生折行：{metrics}'
-            assert all(item['opacity']=='0' for item in metrics), f'文字提前显示导致布局抖动：{metrics}'
+            assert all(item['height'] < (44 if item['selector']=='.brand-type' else 27) for item in metrics), f'展开后文字高度异常：{metrics}'
             page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width > 150")
             page.wait_for_function("() => parseFloat(getComputedStyle(document.querySelector('.brand-type')).opacity) >= .99")
@@ -1008,11 +1014,73 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
             page.keyboard.press('Control+k')
-            page.wait_for_function("() => document.activeElement?.id==='search' && !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
-            assert toggle.get_attribute('aria-expanded') == 'true', '快捷键未展开图标栏'
+            page.locator('#compact-search-dialog').wait_for(state='visible')
+            assert page.locator('#compact-search-input').evaluate("(el) => el===document.activeElement"), 'Ctrl+K 未聚焦窄栏搜索面板'
+            assert toggle.get_attribute('aria-expanded') == 'false', 'Ctrl+K 不应自动展开完整侧栏'
+            page.keyboard.press('Escape')
+            page.locator('#compact-search-dialog').wait_for(state='hidden')
         finally:
             context.close()
     print('侧栏动态展开回归通过：非减弱动画、两档桌面宽度、无竖排文字、渐显与快捷键焦点。')
+
+def verify_compact_search_and_fixed_icons(browser, origin):
+    """窄侧栏搜索面板与 SVG 尺寸在展开/收缩动画期间保持稳定。"""
+    for width in (1440,820):
+        context = browser.new_context(viewport={'width':width,'height':900},
+                                      device_scale_factor=1,reduced_motion='no-preference',locale='zh-CN')
+        page=context.new_page()
+        try:
+            page.goto(origin+'?asset=atlas-academia',wait_until='domcontentloaded')
+            toggle=page.locator('#nav-collapse-toggle')
+            toggle.wait_for(state='visible',timeout=30000)
+            page.locator('#preview-stage iframe').wait_for(state='attached')
+            page.evaluate("() => window.__initialIframe=document.querySelector('#preview-stage iframe')")
+            js="""() => {
+               const selectors=['.quick-filters .filter-button .ui-icon',
+                 '.category-nav .nav-index .ui-icon','.sidebar-footer .sidebar-settings .ui-icon'];
+               return selectors.map(selector=>{const el=document.querySelector(selector);
+                 const r=el.getBoundingClientRect();return {selector,width:r.width,height:r.height};});
+            }"""
+            before=page.evaluate(js)
+            toggle.click()
+            page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
+            compact=page.evaluate(js)
+            toggle.click()
+            during=page.evaluate(js)
+            page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
+            expanded=page.evaluate(js)
+            for phase,sizes in [('compact',compact),('during',during),('expanded',expanded)]:
+                for a,b in zip(before,sizes):
+                    assert abs(a['width']-b['width']) < .25 and abs(a['height']-b['height']) < .25, f'{width}px {phase} 图标尺寸不一致：{a} / {b}'
+            assert page.evaluate("() => window.__initialIframe===document.querySelector('#preview-stage iframe')"), '切换侧栏不应重载当前 iframe'
+            toggle.click()
+            page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
+            page.locator('#nav-expand-search').click()
+            popup=page.locator('#compact-search-dialog')
+            popup.wait_for(state='visible')
+            assert toggle.get_attribute('aria-expanded')=='false'
+            field=page.locator('#compact-search-input')
+            assert field.evaluate("(el) => el===document.activeElement")
+            field.fill('atlas-academia')
+            page.locator('.compact-search-result').first.wait_for(state='visible')
+            assert page.locator('.compact-search-result').count() >= 1
+            assert toggle.get_attribute('aria-expanded')=='false', '输入搜索不得使侧栏展开'
+            page.locator('.compact-search-result').first.click()
+            popup.wait_for(state='hidden')
+            assert 'asset=atlas-academia' in page.url
+            assert toggle.get_attribute('aria-expanded')=='false'
+            page.locator('#nav-expand-search').click()
+            popup.wait_for(state='visible')
+            page.locator('.topbar').click(position={'x':250,'y':20})
+            popup.wait_for(state='hidden')
+            assert toggle.get_attribute('aria-expanded')=='false'
+            page.keyboard.press('/')
+            popup.wait_for(state='visible')
+            assert field.evaluate("(el) => el===document.activeElement")
+            page.keyboard.press('Escape')
+            popup.wait_for(state='hidden')
+        finally:context.close()
+    print('图标与窄栏搜索回归通过：两档桌面宽度 SVG 尺寸稳定、浮层筛选、关闭和 iframe 保持。')
 
 def main():
     parser = argparse.ArgumentParser()
@@ -1060,6 +1128,7 @@ def main():
                 verify_project_operations(browser, local)
                 verify_sidebar_collapse(browser, local)
                 verify_sidebar_transition_no_reflow(browser, local)
+                verify_compact_search_and_fixed_icons(browser, local)
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
                 verify_liquid_orb_unified(browser, local)

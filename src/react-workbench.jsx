@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client';
 import {ProjectRow,ProjectList} from './components/ProjectList.jsx';
 import {CategoryNavigation} from './components/CategoryNavigation.jsx';
 import {SearchField} from './components/SearchField.jsx';
+import {CompactSearchPanel} from './components/CompactSearchPanel.jsx';
 
 // React 单根通过 Portals 接管所有交互区域。
 // ProjectRow、ProjectList、CategoryNavigation、SearchField 拆到 src/components/，
@@ -81,19 +82,12 @@ function WorkbenchPortals({nodes}){
   const [dialogOpen,setDialogOpen]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
+  const [compactSearchOpen,setCompactSearchOpen]=useState(false);
+  const compactSearchInputRef=useRef(null);
+  const compactSelectOnOpen=useRef(false);
   const searchRef=useRef(null);
   // 图标栏进入完整宽度前不展示长文字，避免网格动画中汉字被压成竖排。
   const previousNav=useRef({collapsed:navCollapsed,mobile});
-  const pendingSearch=useRef(null);
-  const finishSearch=useCallback(()=>{
-    const intent=pendingSearch.current;
-    pendingSearch.current=null;
-    if(!intent)return;
-    requestAnimationFrame(()=>{
-      searchRef.current?.focus({preventScroll:true});
-      if(intent==='select')searchRef.current?.select();
-    });
-  },[]);
   const menuOpen=mobile&&state.menuOpen;
   const selected=state.active;
   const settingsActive=state.view==='settings';
@@ -120,7 +114,6 @@ function WorkbenchPortals({nodes}){
     nodes.collapseToggle.setAttribute('aria-label',label);
     nodes.collapseToggle.title=label;
     if(!opening){
-      if(!navCollapsed)finishSearch();
       return ()=>nodes.shell.classList.remove('is-nav-revealing');
     }
     let done=false;
@@ -128,7 +121,6 @@ function WorkbenchPortals({nodes}){
       if(done)return;
       done=true;
       nodes.shell.classList.remove('is-nav-revealing');
-      finishSearch();
     };
     const onEnd=event=>{
       if(event.target===nodes.shell&&event.propertyName==='grid-template-columns')finish();
@@ -148,9 +140,10 @@ function WorkbenchPortals({nodes}){
       nodes.shell.removeEventListener('transitioncancel',onEnd);
       nodes.shell.classList.remove('is-nav-revealing');
     };
-  },[nodes,navCollapsed,mobile,finishSearch]);
+  },[nodes,navCollapsed,mobile]);
   useEffect(()=>{
     const onToggle=()=>{
+      setCompactSearchOpen(false);
       if(mobile){menu(false);return;}
       setNavCollapsed(value=>{
         const next=!value;
@@ -159,11 +152,12 @@ function WorkbenchPortals({nodes}){
       });
     };
     const onSearch=()=>{
-      pendingSearch.current='focus';
-      if(navCollapsed){
-        setNavCollapsed(false);
-        saveNavCollapsed(false);
-      }else finishSearch();
+      // 窄导航搜索直接弹出悬浮面板，绝不展开侧栏。
+      if(!mobile&&navCollapsed){
+        setCompactSearchOpen(value=>!value);
+      }else{
+        requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
+      }
     };
     const onStorage=event=>{
       if(event.key===NAV_COLLAPSED_KEY)setNavCollapsed(event.newValue==='true');
@@ -176,7 +170,32 @@ function WorkbenchPortals({nodes}){
       nodes.expandSearch.removeEventListener('click',onSearch);
       window.removeEventListener('storage',onStorage);
     };
-  },[nodes,mobile,menu,navCollapsed,finishSearch]);
+  },[nodes,mobile,menu,navCollapsed]);
+
+  const closeCompactSearch=useCallback((restoreFocus=false)=>{
+    setCompactSearchOpen(false);
+    if(restoreFocus)requestAnimationFrame(()=>nodes.expandSearch.focus({preventScroll:true}));
+  },[nodes]);
+  useEffect(()=>{
+    nodes.expandSearch.setAttribute('aria-expanded',String(compactSearchOpen&&!mobile&&navCollapsed));
+    if(!compactSearchOpen)return;
+    if(!navCollapsed||mobile){setCompactSearchOpen(false);return;}
+    const raf=requestAnimationFrame(()=>{
+      compactSearchInputRef.current?.focus({preventScroll:true});
+      if(compactSelectOnOpen.current)compactSearchInputRef.current?.select();
+      compactSelectOnOpen.current=false;
+    });
+    const onPointerDown=event=>{
+      const panel=document.getElementById('compact-search-dialog');
+      if(!panel?.contains(event.target)&&!nodes.expandSearch.contains(event.target))setCompactSearchOpen(false);
+    };
+    document.addEventListener('pointerdown',onPointerDown,true);
+    return ()=>{
+      cancelAnimationFrame(raf);
+      document.removeEventListener('pointerdown',onPointerDown,true);
+      nodes.expandSearch.setAttribute('aria-expanded','false');
+    };
+  },[nodes,compactSearchOpen,navCollapsed,mobile]);
   useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
     const query=window.matchMedia('(max-width:760px)');
@@ -216,6 +235,12 @@ function WorkbenchPortals({nodes}){
   },[menuOpen]);
   useEffect(()=>{
     const onKey=event=>{
+      if(event.key==='Escape'&&compactSearchOpen){
+        event.preventDefault();
+        setCompactSearchOpen(false);
+        nodes.expandSearch.focus({preventScroll:true});
+        return;
+      }
       if(event.key==='Escape'&&menuOpen){
         event.preventDefault();
         menu(false);
@@ -228,9 +253,13 @@ function WorkbenchPortals({nodes}){
         if(mobile)menu(true);
         else if(notLibrary)openView('library');
         if(!mobile&&navCollapsed){
-          pendingSearch.current='select';
-          setNavCollapsed(false);
-          saveNavCollapsed(false);
+          if(compactSearchOpen){
+            compactSearchInputRef.current?.focus({preventScroll:true});
+            compactSearchInputRef.current?.select();
+          }else{
+            compactSelectOnOpen.current=true;
+            setCompactSearchOpen(true);
+          }
         }else requestAnimationFrame(()=>{
           searchRef.current?.focus({preventScroll:true});
           searchRef.current?.select();
@@ -240,15 +269,14 @@ function WorkbenchPortals({nodes}){
         if(mobile)menu(true);
         else if(notLibrary)openView('library');
         if(!mobile&&navCollapsed){
-          pendingSearch.current='focus';
-          setNavCollapsed(false);
-          saveNavCollapsed(false);
+          if(compactSearchOpen)compactSearchInputRef.current?.focus({preventScroll:true});
+          else setCompactSearchOpen(true);
         }else requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
       }
     };
     document.addEventListener('keydown',onKey);
     return ()=>document.removeEventListener('keydown',onKey);
-  },[mobile,menuOpen,menu,settingsActive,operationsActive,notLibrary,openView,navCollapsed]);
+  },[mobile,menuOpen,menu,settingsActive,operationsActive,notLibrary,openView,navCollapsed,compactSearchOpen,nodes]);
   useEffect(()=>{
     const resetControl=nodes.reset;
     const emptyReset=nodes.emptyReset;
@@ -321,6 +349,14 @@ function WorkbenchPortals({nodes}){
   },[nodes]);
 
   return <>
+    {compactSearchOpen&&!mobile&&navCollapsed&&createPortal(
+      <CompactSearchPanel anchor={nodes.expandSearch} inputRef={compactSearchInputRef}
+        value={state.query} onChange={changeSearch} items={filtered} loading={state.loading}
+        onClose={closeCompactSearch} onChoose={id=>{
+          closeCompactSearch(false);
+          if(state.view!=='library')openView('library');
+          onSelect(id);
+        }}/>,document.body)}
     {createPortal(<SearchField value={state.query} onChange={changeSearch}
       onSubmit={()=>filtered[0]&&onSelect(filtered[0].id)} searchRef={searchRef}/>,nodes.search)}
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
