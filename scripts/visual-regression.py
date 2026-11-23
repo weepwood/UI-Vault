@@ -919,6 +919,62 @@ def verify_project_operations(browser, origin):
         mobile.close()
     print(f"项目状态管理回归通过：三轴筛选、{expected} 项目/57 Atlas 资产、路由历史、移动端与未知态。")
 
+def verify_sidebar_collapse(browser, origin):
+    """Logo 悬停替换图标、桌面收缩与恢复、持久化、移动端不退化。"""
+    context = browser.new_context(viewport={"width": 1440, "height": 900},
+                                  device_scale_factor=1, reduced_motion="reduce", locale="zh-CN")
+    page = context.new_page()
+    try:
+        page.goto(origin + "?asset=atlas-academia", wait_until="domcontentloaded")
+        toggle = page.locator('#nav-collapse-toggle')
+        toggle.wait_for(state='visible', timeout=30000)
+        page.locator('#preview-stage iframe').wait_for(state='attached')
+        page.evaluate("() => window.__originalFrame=document.querySelector('#preview-stage iframe')")
+        assert toggle.get_attribute('aria-expanded') == 'true'
+        assert page.locator('.brand-logo-icon').is_visible(), 'Logo 默认显示应为四宫格'
+        toggle.hover()
+        assert page.locator('.brand-toggle-close').is_visible(), '悬停 Logo 应切换到收起图标'
+        before = page.locator('#sidebar').bounding_box()
+        toggle.click()
+        assert toggle.get_attribute('aria-expanded') == 'false', '按钮展开属性未更新'
+        assert 'is-nav-collapsed' in (page.locator('.app-shell').get_attribute('class') or '')
+        after = page.locator('#sidebar').bounding_box()
+        assert after['width'] < before['width'] / 2, '导航侧栏未真正缩窄'
+        assert page.locator('.brand-toggle-open').is_visible(), '收缩后的 Logo 悬停应显示展开图标'
+        assert page.locator('.nav-button').first.is_visible(), '收缩后仍须保留分类图标'
+        assert page.locator('#settings-open').is_visible(), '收缩后不能丢失设置入口'
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe')===window.__originalFrame"), '收缩不应重新创建 iframe'
+        page.locator('#nav-expand-search').click()
+        assert toggle.get_attribute('aria-expanded') == 'true', '搜索按钮没有展开导航栏'
+        assert page.evaluate("() => document.activeElement?.id==='search'"), '展开后搜索框未获得焦点'
+        toggle.click()
+        page.reload(wait_until='domcontentloaded')
+        assert page.locator('#nav-collapse-toggle').get_attribute('aria-expanded') == 'false', '侧栏收缩状态未持久化'
+        assert 'is-nav-collapsed' in (page.locator('.app-shell').get_attribute('class') or '')
+        page.locator('#nav-collapse-toggle').click()
+        assert page.locator('#nav-collapse-toggle').get_attribute('aria-expanded') == 'true', '展开操作失败'
+        assert page.locator('.brand-type').is_visible(), '展开后品牌文字没有恢复'
+        page.locator('#settings-open').click()
+        page.locator('#settings-title').wait_for(state='visible')
+        page.locator('#nav-collapse-toggle').click()
+        assert 'is-nav-collapsed' in (page.locator('.app-shell').get_attribute('class') or ''), '设置页切换后不能收缩'
+        page.locator('#nav-collapse-toggle').click()
+    finally:
+        context.close()
+    mobile = browser.new_context(viewport={"width": 390, "height": 844}, device_scale_factor=1)
+    page = mobile.new_page()
+    try:
+        page.goto(origin + '?asset=atlas-academia', wait_until='domcontentloaded')
+        page.locator('#menu-toggle').wait_for(state='visible', timeout=30000)
+        assert page.locator('#nav-collapse-toggle').is_hidden(), '移动端应保留原始抽屉导航，不使用窄图标栏'
+        page.locator('#menu-toggle').click()
+        assert page.locator('.brand-mobile-mark').is_visible(), '移动端 Logo 应保留主页入口'
+        page.keyboard.press('Escape')
+        assert 'is-open' not in (page.locator('#library-rail').get_attribute('class') or ''), '原移动菜单关闭失效'
+    finally:
+        mobile.close()
+    print('Logo 收缩交互回归通过：悬停图标、缩窄、持久化、搜索焦点、iframe 稳定与移动端。')
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -963,6 +1019,7 @@ def main():
                 verify_react_interactions(browser, local)
                 verify_project_health_and_grouping(browser, local)
                 verify_project_operations(browser, local)
+                verify_sidebar_collapse(browser, local)
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
                 verify_liquid_orb_unified(browser, local)

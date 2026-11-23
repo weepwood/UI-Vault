@@ -20,6 +20,7 @@ import {SettingsPanel} from './components/SettingsPanel.jsx';
 import {ProjectOperationsPanel} from './components/ProjectOperationsPanel.jsx';
 import {closeDropdowns} from '../assets/core/dropdown.js';
 import {getExternalLinkNotice} from '../assets/core/external-link-message.js';
+import {readNavCollapsed,saveNavCollapsed,NAV_COLLAPSED_KEY} from '../assets/core/sidebar-collapse.js';
 
 const sortOptions=[
   {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'},
@@ -45,6 +46,7 @@ function QuickFilters({state,onFilter}){
     className={'filter-button'+(state.view==='library'&&item.selected?' is-active':'')}
     {...dataAttrs[item.key]}
     aria-pressed={String(state.view==='library'&&item.selected)}
+    aria-label={item.label} title={item.label}
     onClick={()=>onFilter(item.key,item.value)}>
     <UIIcon name={item.icon}/><span>{item.label}</span>
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
@@ -78,6 +80,7 @@ function WorkbenchPortals({nodes}){
     copyText,copyLink,copySource}=app;
   const [dialogOpen,setDialogOpen]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
+  const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const searchRef=useRef(null);
   const menuOpen=mobile&&state.menuOpen;
   const selected=state.active;
@@ -92,6 +95,40 @@ function WorkbenchPortals({nodes}){
     if(mobile)requestAnimationFrame(()=>document.getElementById('preview-title')?.focus({preventScroll:true}));
   },[selectAsset,mobile]);
 
+  // 同一个 Logo 控制导航宽度；非移动端生效，保持 preview iframe 挂载。
+  useLayoutEffect(()=>{
+    nodes.shell.classList.toggle('is-nav-collapsed',!mobile&&navCollapsed);
+    nodes.collapseToggle.setAttribute('aria-expanded',String(mobile||!navCollapsed));
+    const label=navCollapsed&&!mobile?'展开侧边栏':'收起侧边栏';
+    nodes.collapseToggle.setAttribute('aria-label',label);
+    nodes.collapseToggle.title=label;
+  },[nodes,navCollapsed,mobile]);
+  useEffect(()=>{
+    const onToggle=()=>{
+      if(mobile){menu(false);return;}
+      setNavCollapsed(value=>{
+        const next=!value;
+        saveNavCollapsed(next);
+        return next;
+      });
+    };
+    const onSearch=()=>{
+      setNavCollapsed(false);
+      saveNavCollapsed(false);
+      requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
+    };
+    const onStorage=event=>{
+      if(event.key===NAV_COLLAPSED_KEY)setNavCollapsed(event.newValue==='true');
+    };
+    nodes.collapseToggle.addEventListener('click',onToggle);
+    nodes.expandSearch.addEventListener('click',onSearch);
+    window.addEventListener('storage',onStorage);
+    return ()=>{
+      nodes.collapseToggle.removeEventListener('click',onToggle);
+      nodes.expandSearch.removeEventListener('click',onSearch);
+      window.removeEventListener('storage',onStorage);
+    };
+  },[nodes,mobile,menu]);
   useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
     const query=window.matchMedia('(max-width:760px)');
@@ -292,7 +329,8 @@ export function mountWorkbench(){
     search:$('.library-search'),quickFilters:$('.quick-filters'),categories:$('#category-nav'),
     listControls:$('.list-controls'),gallery:$('#gallery'),
     topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
-    settingsLink:$('.sidebar-footer'),dialog:$('#project-dialog'),
+    settingsLink:$('.sidebar-footer'),collapseToggle:$('#nav-collapse-toggle'),
+    expandSearch:$('#nav-expand-search'),dialog:$('#project-dialog'),
     toast:$('#toast'),reset:$('#reset-filters'),empty:$('#empty'),
     emptyReset:$('#clear-filters'),emptyMessage:$('#empty-message'),
     resultsStatus:$('#results-status'),settingsStatus:$('#settings-status'),dismiss:$('#sidebar-dismiss')

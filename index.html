@@ -16,9 +16,18 @@
   <div class="library-rail" id="library-rail">
   <aside class="sidebar" id="sidebar" aria-label="导航与分类">
     <div class="sidebar-heading">
-      <a class="brand" href="./" aria-label="UI Vault 首页"><span class="brand-mark"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg></span><span class="brand-type"><strong>UI Vault</strong><small>设计资料库</small></span></a>
+      <div class="brand">
+  <button type="button" id="nav-collapse-toggle" class="brand-mark nav-collapse-toggle" aria-label="收起侧边栏" aria-controls="sidebar" aria-expanded="true" title="收起侧边栏">
+    <svg class="ui-icon brand-logo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg>
+    <svg class="ui-icon brand-toggle-icon brand-toggle-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#panel-left-close"></use></svg>
+    <svg class="ui-icon brand-toggle-icon brand-toggle-open" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#panel-left-open"></use></svg>
+  </button>
+  <a class="brand-mark brand-mobile-mark" href="./" aria-label="UI Vault 首页"><svg class="ui-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#layout-grid"></use></svg></a>
+  <a class="brand-type" href="./" aria-label="UI Vault 首页"><strong>UI Vault</strong><small>设计资料库</small></a>
+</div>
       <button class="sidebar-dismiss" id="sidebar-dismiss" type="button" aria-label="关闭项目目录"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#x"></use></svg></button>
     </div>
+    <button type="button" id="nav-expand-search" class="nav-search-compact" aria-label="展开侧边栏并搜索" title="搜索项目"><svg class="ui-icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#search"></use></svg></button>
     <div class="library-search">
       <label class="search-field"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#search"></use></svg><input id="search" type="search" autocomplete="off" placeholder="搜索项目、标签、技术栈" aria-label="搜索项目" aria-keyshortcuts="Control+K Meta+K"></label>
     </div>
