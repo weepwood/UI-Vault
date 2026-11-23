@@ -100,7 +100,7 @@ test('设备模式、历史路由与收藏在 React Hook 中同步，iframe 不�
  assert.match(hooks,/case 'previewMode'/);
  assert.match(hooks,/changePreviewMode\(next,action.value\)/);
  assert.match(preview,/applyPreviewLayout\(stage,frame.current,mode\)/);
- assert.match(hooks,/router.setAsset\(id,options.historyMode\|\|'push'\)/);
+ assert.match(hooks,/router.setAsset\(id,options.historyMode\|\|'push',version\)/);
  assert.match(hooks,/router.subscribe\(/);
  assert.ok(router.includes("host.history[historyMode+'State']"));
  assert.ok(router.includes("host.addEventListener('popstate'"));
