@@ -65,7 +65,7 @@ function PreviewContent({asset,mode,error,loading}){
     const observer=new ResizeObserver(resize);
     observer.observe(stage);
     return ()=>observer.disconnect();
-  },[asset?.id,asset?.source,mode]);
+  },[asset?.id,asset?.preview,asset?.source,mode]);
   if(!asset&&loading){
     return <div className="preview-placeholder" aria-busy="true">
       <div className="preview-progress" role="progressbar" aria-label="正在加载项目目录"/>
@@ -105,5 +105,6 @@ function PreviewContent({asset,mode,error,loading}){
 }
 // React.memo 配合稳定 iframe 元素确保收藏、设置、筛选、通知都不会产生页面重载。
 export const PreviewFrame=memo(PreviewContent,(before,after)=>
-  before.asset?.id===after.asset?.id&&before.mode===after.mode&&before.error===after.error&&
+  before.asset?.id===after.asset?.id&&before.asset?.preview===after.asset?.preview&&
+  before.asset?.siteUrl===after.asset?.siteUrl&&before.mode===after.mode&&before.error===after.error&&
   before.loading===after.loading);

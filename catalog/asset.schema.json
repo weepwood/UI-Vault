@@ -228,6 +228,70 @@
       "type": "string",
       "pattern": "^demos/[a-zA-Z0-9_./-]+\\.md$",
       "description": "本仓库归档的 Markdown 设计指南，作为独立静态文件发布，由 UI-Vault 同源按需加载"
+    },
+    "versions": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 20,
+      "description": "同一种设计风格的额外展示版本；原有 preview/code 隐式作为 V1，附加版本按数组顺序显示 V2、V3。严禁复制成多条主目录资产。",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "preview",
+          "code",
+          "designGuidePath",
+          "description",
+          "originRepo",
+          "sourceUrl",
+          "license",
+          "projectId"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "preview": {
+            "$ref": "#/$defs/demoPath"
+          },
+          "code": {
+            "$ref": "#/$defs/demoPath"
+          },
+          "designGuidePath": {
+            "type": "string",
+            "pattern": "^demos/[a-zA-Z0-9_./-]+\\.md$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          },
+          "originRepo": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "pattern": "^https://"
+          },
+          "license": {
+            "type": "string",
+            "minLength": 1
+          },
+          "projectId": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "additionalProperties": false
+      }
     }
   },
   "allOf": [

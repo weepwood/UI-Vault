@@ -6,13 +6,21 @@ export function createWorkbenchRouter(host=window){
   if(!host?.location||!host?.history)throw new TypeError('路由需要 location 与 history');
   const read=()=>{
     const url=new URL(host.location.href);
-    return {asset:url.searchParams.get('asset'),view:['settings','operations'].includes(url.searchParams.get('view'))?url.searchParams.get('view'):'library'};
+    return {asset:url.searchParams.get('asset'),variant:url.searchParams.get('variant')||'original',view:['settings','operations'].includes(url.searchParams.get('view'))?url.searchParams.get('view'):'library'};
   };
-  const assetURL=id=>{
+  const assetURL=(id,variant='original')=>{
     const url=new URL(host.location.href);
     if(id)url.searchParams.set('asset',id);
     else url.searchParams.delete('asset');
+    if(id&&variant&&variant!=='original')url.searchParams.set('variant',variant);
+    else url.searchParams.delete('variant');
     url.hash='';
+    return url;
+  };
+  const variantURL=id=>{
+    const url=new URL(host.location.href);
+    if(id&&id!=='original')url.searchParams.set('variant',id);
+    else url.searchParams.delete('variant');
     return url;
   };
   const viewURL=mode=>{
@@ -28,8 +36,11 @@ export function createWorkbenchRouter(host=window){
     host.history[historyMode+'State']({...host.history.state,...state},'',url);
     return true;
   }
-  function setAsset(id,historyMode=null){
-    return navigate(assetURL(id),historyMode,{asset:id});
+  function setAsset(id,historyMode=null,variant='original'){
+    return navigate(assetURL(id,variant),historyMode,{asset:id,variant});
+  }
+  function setVariant(id,historyMode=null){
+    return navigate(variantURL(id),historyMode,{variant:id});
   }
   function setView(mode,historyMode=null){
     if(!['settings','operations','library'].includes(mode))throw new RangeError('未知视图');
@@ -41,5 +52,5 @@ export function createWorkbenchRouter(host=window){
     host.addEventListener('popstate',handle);
     return ()=>host.removeEventListener('popstate',handle);
   }
-  return {read,assetURL,viewURL,setAsset,setView,subscribe};
+  return {read,assetURL,viewURL,setAsset,setVariant,setView,subscribe};
 }

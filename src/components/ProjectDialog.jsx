@@ -58,7 +58,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   const selectedFile=files.find(file=>file.path===filePath)||files[0];
   const savedFocus=useRef(null);
   const sourceTab=useRef(null);
-  useEffect(()=>{setTab('overview');setFilePath('');setSource({id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});setPageInfo({id:null,info:null});},[asset?.id]);
+  useEffect(()=>{setTab('overview');setFilePath('');setSource({id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});setPageInfo({id:null,info:null});},[asset?.id,asset?.preview]);
   useEffect(()=>{
     if(!root)return;
     if(open&&asset){

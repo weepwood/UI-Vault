@@ -94,3 +94,12 @@ html[data-theme="dark"] .viewport-controls .viewport-options { border-color:var(
   .viewport-controls .viewport-current-chevron { transition:none; }
   .viewport-controls .viewport-options { animation:none; }
 }
+
+/* 设计风格有多个版本时才展示，保持与设备选择器同高。 */
+.topbar .select-field--version{flex:0 1 174px;width:174px;min-width:116px;max-width:174px;z-index:18}
+.topbar .select-field--version .select-trigger{height:34px;border-radius:9px;background:var(--canvas)}
+.topbar .select-field--version .select-popover{width:max(230px,100%);z-index:30}
+@container preview-toolbar (max-width:650px){.topbar .select-field--version{flex:0 0 108px;width:108px;min-width:108px}}
+@container preview-toolbar (max-width:430px){.topbar .select-field--version{flex:0 0 40px;width:40px;min-width:40px}
+.topbar .select-field--version .select-trigger{justify-content:center;padding:0 9px}
+.topbar .select-field--version .select-value,.topbar .select-field--version .select-chevron{display:none}}

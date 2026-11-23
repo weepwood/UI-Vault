@@ -48,6 +48,35 @@ export function checkEntry(entry, categories, fileName='') {
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
   if(entry.designGuidePath!==undefined && (entry.source!=='local'||!safeRelativePath(entry.designGuidePath,'demos/')||!entry.designGuidePath.endsWith('.md'))) errors.push(where+': designGuidePath 必须是 demos/ 下的本地 Markdown 文件');
+  if(entry.versions!==undefined){
+    if(entry.source!=='local'||entry.type!=='design-style'||!Array.isArray(entry.versions)||entry.versions.length<1||entry.versions.length>20)
+      errors.push(where+': versions 只允许 1–20 个本地设计风格版本');
+    else{
+      const seenIds=new Set(),seenFiles=new Set([entry.preview]);
+      for(const version of entry.versions){
+        if(!version||typeof version!=='object'||Array.isArray(version)){
+          errors.push(where+': versions 包含无效版本');continue;
+        }
+        const keys=['id','label','preview','code','designGuidePath','description','originRepo','sourceUrl','license','projectId'];
+        if(Object.keys(version).some(key=>!keys.includes(key))||keys.some(key=>!Object.hasOwn(version,key)))
+          errors.push(where+': 版本字段不完整或包含未登记字段');
+        if(!SLUG.test(version.id??'')||seenIds.has(version.id))errors.push(where+': 重复或无效版本 ID '+version.id);
+        seenIds.add(version.id);
+        if(!isText(version.label)||version.label.length>100||!isText(version.description)||version.description.length>500)
+          errors.push(where+': 版本标签或说明无效');
+        if(!safeRelativePath(version.preview,'demos/')||!version.preview.endsWith('.html')||version.code!==version.preview||seenFiles.has(version.preview))
+          errors.push(where+': 版本必须登记独立的本地 HTML');
+        seenFiles.add(version.preview);
+        if(!safeRelativePath(version.designGuidePath,'demos/')||!version.designGuidePath.endsWith('.md'))
+          errors.push(where+': 版本必须登记本地 Markdown');
+        for(const key of ['originRepo','sourceUrl']){
+          try{const u=new URL(version[key]);if(u.protocol!=='https:'||!u.hostname)throw Error();}
+          catch{errors.push(where+': 版本的 '+key+' 必须为有效 HTTPS 链接');}
+        }
+        if(!isText(version.license)||!SLUG.test(version.projectId??''))errors.push(where+': 版本缺少许可或来源项目 ID');
+      }
+    }
+  }
   if(entry.projectId!==undefined&&(!isText(entry.projectId)||!SLUG.test(entry.projectId)))errors.push(where+': projectId 必须为注册项目的 ID');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
   if(entry.copyable===true&&(
@@ -164,7 +193,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
   const projectsResult=await inspectProjects({checkGenerated});
   errors.push(...projectsResult.errors);
   const projectsById=new Map(projectsResult.projects.map(p=>[p.id,p]));
-  const ids=new Set(),items=[];
+  const ids=new Set(),items=[],publishedVariantPaths=new Set();
   for(const {fileName,entry} of source.entries) {
     errors.push(...checkEntry(entry,source.categories,fileName));
     if(!entry.projectId||!projectsById.has(entry.projectId))errors.push(entry.id+': projectId 必须指向已注册 Project');
@@ -180,6 +209,18 @@ export async function inspectCatalog({checkGenerated=true}={}) {
     ids.add(entry.id);
     items.push(entry);
     if(entry.source==='local') {
+      for(const v of entry.versions||[]){
+        if(v?.projectId&&!projectsById.has(v.projectId))errors.push(entry.id+': 版本 projectId 未登记 '+v.projectId);
+        else if(v?.projectId&&canonicalGitHubRepository(v.originRepo)?.toLowerCase()!==projectsById.get(v.projectId).repository.toLowerCase())
+          errors.push(entry.id+': 版本来源仓库和 projectId 不一致');
+        if(v?.preview&&safeRelativePath(v.preview,'demos/')){
+          if(!(await safeExistingFile(v.preview)))errors.push(entry.id+': 缺少版本 HTML '+v.preview);
+          if(publishedVariantPaths.has(v.preview))errors.push(entry.id+': 版本 HTML 被重复引用 '+v.preview);
+          publishedVariantPaths.add(v.preview);
+        }
+        if(v?.designGuidePath&&safeRelativePath(v.designGuidePath,'demos/')&&!(await safeExistingFile(v.designGuidePath)))
+          errors.push(entry.id+': 缺少版本设计指南 '+v.designGuidePath);
+      }
       for(const key of ['preview','code']) {
         if(safeRelativePath(entry[key],'demos/') && !(await safeExistingFile(entry[key]))) errors.push(entry.id+': 缺少 '+key+' 源文件 '+entry[key]);
       }

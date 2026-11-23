@@ -31,3 +31,9 @@ npm run check
 ```
 
 发布验证包括：314 条数据完整、314 个本地 Markdown 存在、无外部 `designGuideUrl`、静态产物包含对应 Markdown。
+
+## 多来源风格版本
+
+来自 `ctlsim/landfolio` 的 201 个 HTML 主题通过独立对照表 `catalog/imports/landfolio.json` 合并：其中 103 个实现匹配本项目原有设计风格、12 个是新导入风格内部的同主题追加实现、86 个新增独立条目。原有 website_designs 314 份 HTML 与完整 Design.md 不变。Landfolio 另有 201 份本地简要 Markdown 索引（不是其上游的完整设计指南），与同名 HTML 配对保存。
+
+UI-Vault 的主目录按风格而非实现计数。单条资产 `preview/code` 是原版 V1，`versions[]` 为附加 V2/V3；在 Topbar 切换，保留项目 ID、收藏与分享链接。设计风格总数 400；实现版本共 515（314 原有 + 201 Landfolio）。来源见 [LANDFOLIO-INTEGRATION.md](LANDFOLIO-INTEGRATION.md)。

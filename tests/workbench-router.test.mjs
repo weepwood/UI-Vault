@@ -24,9 +24,9 @@ function createHost(initial='https://example.test/UI-Vault/?asset=alpha&view=set
 test('路由同时读取设置视图和项目深链接，忽略未识别的视图值',()=>{
   const host=createHost();
   const router=createWorkbenchRouter(host);
-  assert.deepEqual(router.read(),{asset:'alpha',view:'settings'});
+  assert.deepEqual(router.read(),{asset:'alpha',view:'settings',variant:'original'});
   host.location.href='https://example.test/UI-Vault/?asset=demo&view=unknown';
-  assert.deepEqual(router.read(),{asset:'demo',view:'library'});
+  assert.deepEqual(router.read(),{asset:'demo',view:'library',variant:'original'});
   assert.throws(()=>router.setView('unknown','push'),RangeError);
 });
 
@@ -59,7 +59,7 @@ test('设置视图导航保留项目 ID，并支持返回和取消订阅',()=>{
   router.setView('library','push');
   assert.equal(new URL(host.location.href).searchParams.has('view'),false);
   host.backTo('https://example.test/UI-Vault/?view=settings&asset=demo');
-  assert.deepEqual(events,[{asset:'demo',view:'settings'}]);
+  assert.deepEqual(events,[{asset:'demo',view:'settings',variant:'original'}]);
   unsubscribe();
   host.backTo('https://example.test/UI-Vault/');
   assert.equal(events.length,1);
@@ -68,10 +68,25 @@ test('设置视图导航保留项目 ID，并支持返回和取消订阅',()=>{
 test('项目状态管理是独立可分享视图，旧资源深链接保留',()=>{
  const host=createHost('https://example.test/UI-Vault/?asset=demo&view=operations');
  const router=createWorkbenchRouter(host);
- assert.deepEqual(router.read(),{asset:'demo',view:'operations'});
+ assert.deepEqual(router.read(),{asset:'demo',view:'operations',variant:'original'});
  router.setView('library','push');
  assert.equal(router.read().view,'library');
  assert.equal(router.read().asset,'demo');
  router.setView('operations','push');
  assert.equal(new URL(host.location.href).searchParams.get('view'),'operations');
+});
+
+
+test('版本深链接可分享，切换资源时清理旧版本，浏览器后退恢复版本',()=>{
+  const host=createHost('https://example.test/UI-Vault/?asset=website-style-bauhaus');
+  const router=createWorkbenchRouter(host);
+  const events=[];const unsubscribe=router.subscribe(route=>events.push(route));
+  router.setVariant('landfolio-bauhaus','push');
+  assert.equal(router.read().variant,'landfolio-bauhaus');
+  assert.equal(router.assetURL('website-style-bauhaus','landfolio-bauhaus').searchParams.get('variant'),'landfolio-bauhaus');
+  router.setAsset('website-style-cyberpunk','push');
+  assert.equal(router.read().variant,'original');
+  host.backTo('https://example.test/UI-Vault/?asset=website-style-bauhaus&variant=landfolio-bauhaus');
+  assert.equal(events.at(-1).variant,'landfolio-bauhaus');
+  unsubscribe();
 });
