@@ -663,9 +663,10 @@ def verify_search_experience(browser, origin):
         page.on("pageerror",lambda error:errors.append(str(error)))
         try:
             page.goto(origin+"?asset=atlas-academia",wait_until="domcontentloaded")
-            page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+            page.locator(".project-row").first.wait_for(state="attached",timeout=30000)
             if width < 761:
                 page.locator("#menu-toggle").click()
+            page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
             assert page.locator("#search").count()==0, "侧栏不应再存在独立搜索输入框"
             before=page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")
             page.evaluate("() => window.__paletteFrame=document.querySelector('#preview-stage iframe')")
