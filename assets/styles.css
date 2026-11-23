@@ -1412,3 +1412,15 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
     margin-top:6px;
   }
 }
+
+
+/* 761–1250px 原响应式栏 padding 为 9px、图标按钮为 7px：收缩态同步相同坐标。 */
+@media(min-width:761px) and (max-width:1250px){
+  .app-shell.is-nav-collapsed .library-rail .sidebar {
+    padding:17px 9px 0;
+  }
+  .app-shell.is-nav-collapsed .library-rail .quick-filters .filter-button,
+  .app-shell.is-nav-collapsed .library-rail .category-nav .nav-button {
+    padding:7px 7px;
+  }
+}
