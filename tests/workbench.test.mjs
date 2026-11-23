@@ -38,7 +38,7 @@ test('主站为常驻左侧目录和右侧网页画布，不使用弹出抽屉',
   assert.match(app,/mountWorkbench\(\)/);
   assert.match(react,/<ProjectList items={filtered}/);
   assert.match(react,/<CategoryNavigation categories={state.categories}/);
-  assert.match(react,/<PreviewFrame asset={selected}/);
+  assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
   assert.doesNotMatch(app,/drawer\.classList|overlay\.classList|openDetail\(/);
 });
 test('左侧目录条目使用稳定 emoji 并保留无障碍选中状态，不再显示爱心',async()=>{
