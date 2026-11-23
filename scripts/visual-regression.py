@@ -992,7 +992,7 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             toggle.click()
             page.wait_for_function("() => document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
             metrics = page.evaluate("""() => {
-              const selectors=['.brand-type strong','.quick-filters .filter-button > span:nth-child(2)',
+              const selectors=['.brand-type','.quick-filters .filter-button > span:nth-child(2)',
                 '.category-nav .nav-button > span:not(.nav-index)',
                 '.sidebar-footer .sidebar-settings > span'];
               return selectors.map(s=>{const el=document.querySelector(s);const css=getComputedStyle(el);
