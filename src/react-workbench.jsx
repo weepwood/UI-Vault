@@ -2,7 +2,6 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import {ProjectRow,ProjectList} from './components/ProjectList.jsx';
 import {CategoryNavigation} from './components/CategoryNavigation.jsx';
-import {SearchField} from './components/SearchField.jsx';
 import {CompactSearchPanel} from './components/CompactSearchPanel.jsx';
 
 // React 单根通过 Portals 接管所有交互区域。
@@ -22,6 +21,7 @@ import {ProjectOperationsPanel} from './components/ProjectOperationsPanel.jsx';
 import {closeDropdowns} from '../assets/core/dropdown.js';
 import {getExternalLinkNotice} from '../assets/core/external-link-message.js';
 import {readNavCollapsed,saveNavCollapsed,NAV_COLLAPSED_KEY} from '../assets/core/sidebar-collapse.js';
+import {searchCommandAssets,readCommandRecent,addCommandRecent} from '../assets/core/global-search.js';
 
 const sortOptions=[
   {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'},
@@ -83,9 +83,15 @@ function WorkbenchPortals({nodes}){
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const [compactSearchOpen,setCompactSearchOpen]=useState(false);
+  const [paletteQuery,setPaletteQuery]=useState('');
+  const [commandRecent,setCommandRecent]=useState(()=>readCommandRecent());
   const compactSearchInputRef=useRef(null);
-  const compactSelectOnOpen=useRef(false);
-  const searchRef=useRef(null);
+  const searchReturnFocus=useRef(null);
+  // 与 state.query / filtered 完全隔离；不会引发第二栏重新筛选。
+  const paletteItems=useMemo(
+    ()=>searchCommandAssets(state.assets,paletteQuery,state.labels),
+    [state.assets,paletteQuery,state.labels]
+  );
   // 图标栏进入完整宽度前不展示长文字，避免网格动画中汉字被压成竖排。
   const previousNav=useRef({collapsed:navCollapsed,mobile});
   const menuOpen=mobile&&state.menuOpen;
@@ -141,6 +147,21 @@ function WorkbenchPortals({nodes}){
       nodes.shell.classList.remove('is-nav-revealing');
     };
   },[nodes,navCollapsed,mobile]);
+  const openPalette=useCallback(()=>{
+    searchReturnFocus.current=document.activeElement;
+    setPaletteQuery('');
+    setCompactSearchOpen(true);
+    if(mobile)menu(false);
+  },[mobile,menu]);
+  const closePalette=useCallback((restoreFocus=false)=>{
+    setCompactSearchOpen(false);
+    if(restoreFocus)requestAnimationFrame(()=>{
+      const previous=searchReturnFocus.current;
+      const fallback=document.getElementById(mobile?'menu-toggle':'nav-expand-search');
+      const target=previous?.isConnected&&previous.getClientRects().length?previous:fallback;
+      target?.focus({preventScroll:true});
+    });
+  },[mobile]);
   useEffect(()=>{
     const onToggle=()=>{
       setCompactSearchOpen(false);
@@ -151,14 +172,7 @@ function WorkbenchPortals({nodes}){
         return next;
       });
     };
-    const onSearch=()=>{
-      // 窄导航搜索直接弹出悬浮面板，绝不展开侧栏。
-      if(!mobile&&navCollapsed){
-        setCompactSearchOpen(value=>!value);
-      }else{
-        requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
-      }
-    };
+    const onSearch=()=>compactSearchOpen?closePalette(true):openPalette();
     const onStorage=event=>{
       if(event.key===NAV_COLLAPSED_KEY)setNavCollapsed(event.newValue==='true');
     };
@@ -170,32 +184,11 @@ function WorkbenchPortals({nodes}){
       nodes.expandSearch.removeEventListener('click',onSearch);
       window.removeEventListener('storage',onStorage);
     };
-  },[nodes,mobile,menu,navCollapsed]);
-
-  const closeCompactSearch=useCallback((restoreFocus=false)=>{
-    setCompactSearchOpen(false);
-    if(restoreFocus)requestAnimationFrame(()=>nodes.expandSearch.focus({preventScroll:true}));
-  },[nodes]);
+  },[nodes,mobile,menu,compactSearchOpen,closePalette,openPalette]);
   useEffect(()=>{
-    nodes.expandSearch.setAttribute('aria-expanded',String(compactSearchOpen&&!mobile&&navCollapsed));
-    if(!compactSearchOpen)return;
-    if(!navCollapsed||mobile){setCompactSearchOpen(false);return;}
-    const raf=requestAnimationFrame(()=>{
-      compactSearchInputRef.current?.focus({preventScroll:true});
-      if(compactSelectOnOpen.current)compactSearchInputRef.current?.select();
-      compactSelectOnOpen.current=false;
-    });
-    const onPointerDown=event=>{
-      const panel=document.getElementById('compact-search-dialog');
-      if(!panel?.contains(event.target)&&!nodes.expandSearch.contains(event.target))setCompactSearchOpen(false);
-    };
-    document.addEventListener('pointerdown',onPointerDown,true);
-    return ()=>{
-      cancelAnimationFrame(raf);
-      document.removeEventListener('pointerdown',onPointerDown,true);
-      nodes.expandSearch.setAttribute('aria-expanded','false');
-    };
-  },[nodes,compactSearchOpen,navCollapsed,mobile]);
+    nodes.expandSearch.setAttribute('aria-expanded',String(compactSearchOpen));
+  },[nodes,compactSearchOpen]);
+
   useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
     const query=window.matchMedia('(max-width:760px)');
@@ -231,14 +224,11 @@ function WorkbenchPortals({nodes}){
     };
   },[nodes,menu,settingsActive,operationsActive]);
   useEffect(()=>{
-    if(menuOpen)searchRef.current?.focus({preventScroll:true});
-  },[menuOpen]);
-  useEffect(()=>{
     const onKey=event=>{
       if(event.key==='Escape'&&compactSearchOpen){
+        if(event.target.closest?.('#compact-search-dialog'))return; // 弹窗内部：先清空，再退出。
         event.preventDefault();
-        setCompactSearchOpen(false);
-        nodes.expandSearch.focus({preventScroll:true});
+        closePalette(true);
         return;
       }
       if(event.key==='Escape'&&menuOpen){
@@ -250,33 +240,20 @@ function WorkbenchPortals({nodes}){
       const editable=Boolean(event.target?.closest?.('input,textarea,select,[contenteditable="true"]'));
       if((event.metaKey||event.ctrlKey)&&event.key.toLowerCase()==='k'){
         event.preventDefault();
-        if(mobile)menu(true);
-        else if(notLibrary)openView('library');
-        if(!mobile&&navCollapsed){
-          if(compactSearchOpen){
-            compactSearchInputRef.current?.focus({preventScroll:true});
-            compactSearchInputRef.current?.select();
-          }else{
-            compactSelectOnOpen.current=true;
-            setCompactSearchOpen(true);
-          }
-        }else requestAnimationFrame(()=>{
-          searchRef.current?.focus({preventScroll:true});
-          searchRef.current?.select();
-        });
+        if(compactSearchOpen){
+          compactSearchInputRef.current?.focus({preventScroll:true});
+          compactSearchInputRef.current?.select();
+        }else openPalette();
       }else if(!editable&&event.key==='/'&&!event.metaKey&&!event.ctrlKey&&!event.altKey){
         event.preventDefault();
-        if(mobile)menu(true);
-        else if(notLibrary)openView('library');
-        if(!mobile&&navCollapsed){
-          if(compactSearchOpen)compactSearchInputRef.current?.focus({preventScroll:true});
-          else setCompactSearchOpen(true);
-        }else requestAnimationFrame(()=>searchRef.current?.focus({preventScroll:true}));
+        if(compactSearchOpen)compactSearchInputRef.current?.focus({preventScroll:true});
+        else openPalette();
       }
     };
     document.addEventListener('keydown',onKey);
     return ()=>document.removeEventListener('keydown',onKey);
-  },[mobile,menuOpen,menu,settingsActive,operationsActive,notLibrary,openView,navCollapsed,compactSearchOpen,nodes]);
+  },[menuOpen,menu,settingsActive,operationsActive,compactSearchOpen,closePalette,openPalette]);
+
   useEffect(()=>{
     const resetControl=nodes.reset;
     const emptyReset=nodes.emptyReset;
@@ -349,16 +326,16 @@ function WorkbenchPortals({nodes}){
   },[nodes]);
 
   return <>
-    {compactSearchOpen&&!mobile&&navCollapsed&&createPortal(
-      <CompactSearchPanel anchor={nodes.expandSearch} inputRef={compactSearchInputRef}
-        value={state.query} onChange={changeSearch} items={filtered} loading={state.loading}
-        onClose={closeCompactSearch} onChoose={id=>{
-          closeCompactSearch(false);
+    {compactSearchOpen&&createPortal(
+      <CompactSearchPanel inputRef={compactSearchInputRef}
+        value={paletteQuery} onChange={setPaletteQuery}
+        items={paletteItems} loading={state.loading} recentIds={commandRecent}
+        onClose={closePalette} onChoose={id=>{
+          setCommandRecent(ids=>addCommandRecent(id,ids));
+          closePalette(false);
           if(state.view!=='library')openView('library');
           onSelect(id);
         }}/>,document.body)}
-    {createPortal(<SearchField value={state.query} onChange={changeSearch}
-      onSubmit={()=>filtered[0]&&onSelect(filtered[0].id)} searchRef={searchRef}/>,nodes.search)}
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
@@ -418,7 +395,7 @@ export function mountWorkbench(){
   const nodes={
     shell:$('.app-shell'),rail:$('#library-rail'),main:$('#main'),
     projectPanel:$('#project-panel'),shade:$('#mobile-shade'),
-    search:$('.library-search'),quickFilters:$('.quick-filters'),categories:$('#category-nav'),
+    quickFilters:$('.quick-filters'),categories:$('#category-nav'),
     listControls:$('.list-controls'),gallery:$('#gallery'),
     topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
     settingsLink:$('.sidebar-footer'),collapseToggle:$('#nav-collapse-toggle'),
@@ -429,7 +406,7 @@ export function mountWorkbench(){
   };
   const missing=Object.entries(nodes).filter(([_,el])=>!el).map(([key])=>key);
   if(missing.length)throw Error('React 工作台缺少挂载节点：'+missing.join(', '));
-  for(const key of ['search','quickFilters','categories','listControls','gallery',
+  for(const key of ['quickFilters','categories','listControls','gallery',
     'topbar','stage','settings','operations','settingsLink','dialog','toast']){
     nodes[key].replaceChildren();
   }

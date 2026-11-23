@@ -115,7 +115,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
                   <span className="command-palette-item-icon"><Icon name={iconByType[item.type]||'layout-grid'}/></span>
                   <span className="command-palette-item-label">{item.title}</span>
                   <span className="command-palette-item-meta">{item.projectId||'UI-Vault'}</span>
-                  <span className="command-palette-item-enter"><Icon name="corner-down-left"/></span>
+                  <span className="command-palette-item-enter"><Icon name="check"/></span>
                 </button>;
               })}
             </div>)}
