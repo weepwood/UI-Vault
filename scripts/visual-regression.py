@@ -1107,32 +1107,29 @@ def verify_landfolio_version_switch(browser, origin):
         page.locator('#dialog-close').click()
         selector = page.locator('.select-field--version')
         selector.locator('.select-trigger').click()
-        selector.locator('[data-value="original"]').click()
-        assert 'website-designs/examples/' in frame.get_attribute('src'), "切回 V1 未恢复原版"
+        with page.expect_event("framenavigated", predicate=lambda f: "website-designs/examples/" in f.url,
+                               timeout=15000):
+            selector.locator('[data-value="original"]').click()
+        assert 'website-designs/examples/' in frame.get_attribute('data-preview-url'), "切回 V1 未恢复预览目标"
+        assert 'website-designs/examples/' in frame.element_handle().content_frame().url, "切回 V1 未真正导航子页面"
         assert 'variant=' not in page.url, "V1 应当清除版本参数"
         selector.locator('.select-trigger').click()
-        selector.locator('[data-value="landfolio-bauhaus"]').click()
-        assert 'landfolio/themes/bauhaus.html' in frame.get_attribute('src'), "再次切 V2 失败"
+        with page.expect_event("framenavigated", predicate=lambda f: "landfolio/themes/bauhaus.html" in f.url,
+                               timeout=15000):
+            selector.locator('[data-value="landfolio-bauhaus"]').click()
+        assert 'landfolio/themes/bauhaus.html' in frame.get_attribute('data-preview-url'), "再次切 V2 失败"
+        assert 'landfolio/themes/bauhaus.html' in frame.element_handle().content_frame().url, "再次切 V2 未真正导航子页面"
         assert 'variant=landfolio-bauhaus' in page.url, "切换 V2 未更新可分享链接"
-        # pushState 对应同文档历史；不要等待新的 DOMContentLoaded（不会触发）。
-        print("Landfolio history before back:", page.evaluate(
-            "() => ({url:location.href, length:history.length, state:history.state, "
-            "src:document.querySelector('#preview-stage iframe')?.getAttribute('src')})"
-        ), flush=True)
-        page.evaluate("() => history.back()")
-        page.wait_for_timeout(850)
-        print("Landfolio history after back:", page.evaluate(
-            "() => ({url:location.href, length:history.length, state:history.state, "
-            "src:document.querySelector('#preview-stage iframe')?.getAttribute('src')})"
-        ), flush=True)
-        # pushState/popstate 是同文档导航，不等待页面 load；检查地址栏状态和 React 预览分别恢复。
+        # 主页面历史应直接恢复 V1，不应先退到 iframe 的内部导航记录。
+        with page.expect_event("framenavigated", predicate=lambda f: "website-designs/examples/" in f.url,
+                               timeout=15000):
+            page.evaluate("() => history.back()")
         page.wait_for_function(
             "() => new URLSearchParams(window.location.search).get('asset') === 'website-style-bauhaus' "
             "&& !new URLSearchParams(window.location.search).has('variant')",
             timeout=15000
         )
-        page.wait_for_function("() => document.querySelector('#preview-stage iframe')?.getAttribute('src')?.includes('website-designs/examples/')", timeout=15000)
-        assert 'website-designs/examples/' in frame.get_attribute('src'), "浏览器后退未恢复 V1"
+        assert 'website-designs/examples/' in frame.element_handle().content_frame().url, "浏览器后退未恢复 V1 页面"
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__variantIframe"), "版本切换错误替换 iframe 节点"
     finally:
         context.close()

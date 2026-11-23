@@ -72,3 +72,11 @@ test('分享按钮跟随同一资产的版本切换更新闭包',()=>{
  assert.ok(hooks.includes('router.assetURL(state.active.id,state.versionId)'));
  assert.ok(hooks.includes('},[state.active,state.versionId,copyText])'));
 });
+
+
+test('风格版本切换使用 iframe replace 导航，避免污染浏览器历史',()=>{
+ const preview=read('src/components/PreviewFrame.jsx');
+ assert.ok(preview.includes('contentWindow.location.replace(src)'));
+ assert.ok(preview.includes('useMemo(()=>src,[asset?.id,asset?.source])'));
+ assert.ok(preview.includes('data-preview-url={src}'));
+});
