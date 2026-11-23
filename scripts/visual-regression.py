@@ -738,6 +738,9 @@ def verify_search_experience(browser, origin):
             assert gaps["selected"] == "true", "首项没有获得键盘导航选中态"
             assert gaps["background"] != "rgba(0, 0, 0, 0)", "选中项没有可见背景"
             assert page.locator(".command-palette-item-enter").count() == 0, "选中项仍出现多余勾号"
+            result.hover()
+            hover_background=result.evaluate("(el)=>getComputedStyle(el).backgroundColor")
+            assert hover_background != gaps["background"], "鼠标悬停与键盘选中背景没有视觉差异"
             assert "liquid" in result.inner_text().lower() or "液态" in result.inner_text(), "搜索没有匹配到液态玻璃项目"
             assert page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")==before, "输入时改变了第二栏排序或列表"
             assert page.evaluate("() => window.__paletteFrame===document.querySelector('#preview-stage iframe')"), "输入时 iframe 被重建"
