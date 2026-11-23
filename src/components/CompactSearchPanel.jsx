@@ -1,51 +1,131 @@
-import React,{useLayoutEffect,useRef} from 'react';
-import {SearchField} from './SearchField.jsx';
+import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import {Icon} from './Icon.jsx';
 
-// 独立悬浮层：父级 sidebar overflow:hidden 不会裁剪它；不改动侧栏宽度。
-export function CompactSearchPanel({anchor,inputRef,value,onChange,items,loading,onChoose,onClose}){
-  const panelRef=useRef(null);
+const iconByType={
+  'design-style':'layers',style:'palette',component:'component',effect:'zap',
+  layout:'panels-top-left',demo:'play',resource:'book-open',reference:'bookmark'
+};
+const MAX_RESULTS=36;
+
+// 按参考 Command Palette 的设计独立实现：中央面板、渐变光晕、固定高度结果、键盘高亮。
+// 刻意不接受目录的 changeSearch：输入不会修改第二栏 ProjectList。
+export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=[],onChoose,onClose}){
+  const [active,setActive]=useState(0);
+  const [keyboardMode,setKeyboardMode]=useState(true);
+  const listRef=useRef(null);
+  const highlightRef=useRef(null);
+  const groups=useMemo(()=>{
+    if(value.trim())return [{label:'搜索结果',items:items.slice(0,MAX_RESULTS)}];
+    const recent=new Set(recentIds);
+    const recentItems=recentIds.map(id=>items.find(item=>item.id===id)).filter(Boolean);
+    const recommendations=items.filter(item=>!recent.has(item.id)).slice(0,12);
+    return [
+      ...(recentItems.length?[{label:'最近打开',items:recentItems}]:[]),
+      {label:'推荐项目',items:recommendations}
+    ];
+  },[items,value,recentIds]);
+  const flat=useMemo(()=>groups.flatMap(group=>group.items),[groups]);
+  useEffect(()=>setActive(0),[value]);
   useLayoutEffect(()=>{
-    const update=()=>{
-      const bounds=anchor?.getBoundingClientRect();
-      const panel=panelRef.current;
-      if(!bounds||!panel)return;
-      const width=Math.min(380,window.innerWidth-24);
-      const left=Math.max(12,Math.min(bounds.right+10,window.innerWidth-width-12));
-      const top=Math.max(12,Math.min(bounds.top-10,window.innerHeight-170));
-      panel.style.left=left+'px';
-      panel.style.top=top+'px';
-    };
-    update();
-    window.addEventListener('resize',update);
-    window.addEventListener('scroll',update,true);
-    return ()=>{window.removeEventListener('resize',update);window.removeEventListener('scroll',update,true);};
-  },[anchor]);
-  return <section className="compact-search-popover" ref={panelRef} role="dialog"
-      id="compact-search-dialog" aria-label="快速搜索项目" onKeyDown={event=>{
-        if(event.key==='Escape'){event.preventDefault();event.stopPropagation();onClose(true);}
-      }}>
-    <div className="compact-search-head">
-      <strong>搜索项目</strong>
-      <button type="button" className="compact-search-close" onClick={()=>onClose(true)} aria-label="关闭搜索">
-        <svg className="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-          strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><use href="./assets/icons/lucide.svg#x"/></svg>
-      </button>
-    </div>
-    <SearchField value={value} onChange={onChange} onSubmit={()=>items[0]&&onChoose(items[0].id)}
-      searchRef={inputRef} id="compact-search-input" controls="compact-search-results"
-      label="快速搜索项目" placeholder="搜索项目、标签、技术栈" shortcuts="Control+K Meta+K"
-      onEscape={()=>onClose(true)}/>
-    <div className="compact-search-results" id="compact-search-results" role="list" aria-label="搜索匹配项目">
-      {loading?<p className="compact-search-empty">项目正在加载…</p>:
-        items.length?items.slice(0,9).map(item=><button type="button" className="compact-search-result"
-          key={item.id} role="listitem" onClick={()=>onChoose(item.id)}>
-          <span className="compact-search-result-title">{item.title}</span>
-          <span className="compact-search-result-desc">{(item.technologies||[]).slice(0,2).join(' · ')||item.projectId||'项目预览'}</span>
-        </button>):<p className="compact-search-empty">没有找到匹配的项目</p>}
-    </div>
-    <div className="compact-search-footer">
-      <span>{loading?'正在加载':value.trim()?('找到 '+items.length+' 项'):'输入关键词搜索'}</span>
-      <span><kbd>Enter</kbd> 打开　<kbd>Esc</kbd> 关闭</span>
-    </div>
-  </section>;
+    inputRef.current?.focus({preventScroll:true});
+    inputRef.current?.select();
+  },[inputRef]);
+  useLayoutEffect(()=>{
+    const scroller=listRef.current;
+    const indicator=highlightRef.current;
+    const row=scroller?.querySelector('[data-command-index="'+active+'"]');
+    if(!row||!indicator){if(indicator)indicator.style.opacity='0';return;}
+    const outer=scroller.getBoundingClientRect();
+    const rect=row.getBoundingClientRect();
+    indicator.style.transform='translateY('+(rect.top-outer.top+scroller.scrollTop)+'px)';
+    indicator.style.height=rect.height+'px';
+    indicator.style.opacity='1';
+  },[active,flat]);
+  const move=(offset)=>{
+    if(!flat.length)return;
+    setKeyboardMode(true);
+    setActive(index=>{
+      const next=(index+offset%flat.length+flat.length)%flat.length;
+      const row=listRef.current?.querySelector('[data-command-index="'+next+'"]');
+      row?.scrollIntoView({block:'nearest'});
+      return next;
+    });
+  };
+  const choose=(index)=>{
+    const item=flat[index];
+    if(item)onChoose(item.id);
+  };
+  const handleKeyDown=(event)=>{
+    if(event.isComposing||event.keyCode===229)return;
+    if(event.key==='Escape'){
+      event.preventDefault();event.stopPropagation();
+      if(value)onChange('');
+      else onClose(true);
+      return;
+    }
+    if(event.key==='ArrowDown'||event.key==='ArrowUp'){
+      event.preventDefault();move(event.key==='ArrowDown'?1:-1);
+    }else if(event.key==='PageDown'||event.key==='PageUp'){
+      event.preventDefault();move(event.key==='PageDown'?5:-5);
+    }else if(event.key==='Enter'){
+      event.preventDefault();choose(active);
+    }else if(event.key==='Tab'&&flat.length){
+      event.preventDefault();move(event.shiftKey?-1:1);
+    }
+  };
+  let rowIndex=-1;
+  const shownCount=flat.length;
+  return <div className="command-palette-overlay" onMouseDown={event=>{
+      if(event.target===event.currentTarget)onClose(true);
+    }}>
+    <section id="compact-search-dialog" className="command-palette-panel" role="dialog"
+      aria-modal="true" aria-label="搜索 UI Vault 项目" onKeyDown={handleKeyDown}>
+      <div className="command-palette-field">
+        <Icon name="search"/>
+        <input id="compact-search-input" ref={inputRef} type="text" role="combobox"
+          autoComplete="off" autoCorrect="off" spellCheck="false"
+          aria-expanded="true" aria-autocomplete="list" aria-controls="compact-search-results"
+          aria-activedescendant={shownCount?'command-result-'+active:undefined}
+          aria-label="全局搜索项目" aria-keyshortcuts="Control+K Meta+K"
+          placeholder="搜索项目、设计风格或技术栈…" value={value} maxLength={160}
+          onChange={event=>{onChange(event.target.value);setKeyboardMode(true);}}/>
+        {value&&<button className="command-palette-clear" type="button" aria-label="清空搜索"
+          onClick={()=>{onChange('');inputRef.current?.focus();}}><Icon name="x"/></button>}
+        <span className="command-palette-count" aria-label={'匹配 '+items.length+' 项'}>{loading?'…':items.length}</span>
+      </div>
+      <div className="command-palette-body">
+        <div className="command-palette-glow" aria-hidden="true"/>
+        <div className="command-palette-veil" aria-hidden="true"/>
+        <div className="command-palette-listcard">
+          <div className="command-palette-list" ref={listRef} id="compact-search-results"
+            role="listbox" aria-label="匹配的项目" onScroll={()=>{if(highlightRef.current)highlightRef.current.style.opacity='0';}}>
+            <div ref={highlightRef} className={'command-palette-highlight'+(!keyboardMode?' pointer-mode':'')} aria-hidden="true"/>
+            {loading?<div className="command-palette-empty">正在加载项目…</div>:
+            !shownCount?<div className="command-palette-empty" role="status">没有找到与“{value}”匹配的项目</div>:
+            groups.map(group=><div className="command-palette-group" key={group.label} role="group"
+              aria-label={group.label}>
+              <div className="command-palette-group-label">{group.label}</div>
+              {group.items.map(item=>{
+                const index=++rowIndex;
+                return <button type="button" key={item.id} id={'command-result-'+index}
+                  className={'command-palette-item compact-search-result'+(active===index?' is-active':'')}
+                  data-command-index={index} role="option" aria-selected={active===index}
+                  onPointerMove={()=>{if(active!==index){setKeyboardMode(false);setActive(index);}}}
+                  onMouseDown={event=>event.preventDefault()} onClick={()=>choose(index)}>
+                  <span className="command-palette-item-icon"><Icon name={iconByType[item.type]||'layout-grid'}/></span>
+                  <span className="command-palette-item-label">{item.title}</span>
+                  <span className="command-palette-item-meta">{item.projectId||'UI-Vault'}</span>
+                  <span className="command-palette-item-enter"><Icon name="corner-down-left"/></span>
+                </button>;
+              })}
+            </div>)}
+          </div>
+          <div className="command-palette-footer">
+            <span><kbd>↑</kbd><kbd>↓</kbd> 导航　<kbd>↵</kbd> 选择</span>
+            <span><kbd>Esc</kbd> {value?'清空':'关闭'}　<kbd>⌘/Ctrl K</kbd></span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>;
 }
