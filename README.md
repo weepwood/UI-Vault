@@ -124,7 +124,7 @@ npm run check           # 完整 CI 等价检查
 
 **独立 Demo 的 Lucide 图标补充**：任务工作台、Desktop Shell、消息动效、编辑器布局、暖色工作台与旧版玻璃卡片 Demo 使用内嵌官方 Lucide SVG；UI Vault 当前的玻璃材质入口链接至独立维护的 [Glass Lab](https://github.com/weepwood/glass-lab)。Frame Lab 和极光背景保留在本站独立运行；[Emboss Lab](https://github.com/weepwood/Emboss-Lab) 由源仓维护，本站内嵌其 [GitHub Pages 页面](https://weepwood.github.io/Emboss-Lab/)，并保留源代码链接。详见 [图标规范](docs/ICONOGRAPHY.md)。
 
-**侧边栏收缩：** 桌面浏览器鼠标悬停左上角 UI Vault 图标，会看到侧栏收起按钮；单击可将导航缩成窄图标栏，再次单击展开。收缩状态保存在本地浏览器。窄栏中的搜索按钮可展开导航并聚焦搜索；移动端继续使用已有的抽屉菜单。
+**侧边栏收缩（无抖动过渡）：** 桌面浏览器鼠标悬停左上角 UI Vault 图标，会看到侧栏收起按钮；单击可将导航缩成窄图标栏，再次单击展开。收缩状态保存在本地浏览器。窄栏中的搜索按钮可展开导航并聚焦搜索；移动端继续使用已有的抽屉菜单。
 
 ## 项目状态 · 统一管理视图
 

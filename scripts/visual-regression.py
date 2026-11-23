@@ -975,6 +975,45 @@ def verify_sidebar_collapse(browser, origin):
         mobile.close()
     print('Logo 收缩交互回归通过：悬停图标、缩窄、持久化、搜索焦点、iframe 稳定与移动端。')
 
+def verify_sidebar_transition_no_reflow(browser, origin):
+    """在真正的 220ms 展开动画中验证：文字不竖排、宽度连续、iframe 不重建。"""
+    for width in (1440, 820):
+        context = browser.new_context(viewport={"width": width, "height": 900},
+                                      device_scale_factor=1, reduced_motion="no-preference", locale="zh-CN")
+        page = context.new_page()
+        try:
+            page.goto(origin + "?asset=atlas-academia", wait_until="domcontentloaded")
+            toggle = page.locator('#nav-collapse-toggle')
+            toggle.wait_for(state='visible', timeout=30000)
+            page.locator('#preview-stage iframe').wait_for(state='attached')
+            page.evaluate("() => window.__frameBeforeCollapse=document.querySelector('#preview-stage iframe')")
+            toggle.click()
+            page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
+            toggle.click()
+            page.wait_for_function("() => document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
+            metrics = page.evaluate("""() => {
+              const selectors=['.brand-type','.quick-filters .filter-button > span:nth-child(2)',
+                '.category-nav .nav-button > span:not(.nav-index)',
+                '.sidebar-footer .sidebar-settings > span'];
+              return selectors.map(s=>{const el=document.querySelector(s);const css=getComputedStyle(el);
+                return {selector:s,whiteSpace:css.whiteSpace,opacity:css.opacity,height:el.getBoundingClientRect().height};});
+            }""")
+            assert all(item['whiteSpace']=='nowrap' for item in metrics), f'展开过程文字发生折行：{metrics}'
+            assert all(item['opacity']=='0' for item in metrics), f'文字提前显示导致布局抖动：{metrics}'
+            page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
+            page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width > 150")
+            page.wait_for_function("() => parseFloat(getComputedStyle(document.querySelector('.brand-type')).opacity) >= .99")
+            assert toggle.get_attribute('aria-expanded') == 'true'
+            assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__frameBeforeCollapse"), '动画触发了 iframe 重建'
+            toggle.click()
+            page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
+            page.keyboard.press('Control+k')
+            page.wait_for_function("() => document.activeElement?.id==='search' && !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
+            assert toggle.get_attribute('aria-expanded') == 'true', '快捷键未展开图标栏'
+        finally:
+            context.close()
+    print('侧栏动态展开回归通过：非减弱动画、两档桌面宽度、无竖排文字、渐显与快捷键焦点。')
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -1020,6 +1059,7 @@ def main():
                 verify_project_health_and_grouping(browser, local)
                 verify_project_operations(browser, local)
                 verify_sidebar_collapse(browser, local)
+                verify_sidebar_transition_no_reflow(browser, local)
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
                 verify_liquid_orb_unified(browser, local)

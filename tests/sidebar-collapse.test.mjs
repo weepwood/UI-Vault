@@ -42,3 +42,16 @@ test('收缩后的分类和快捷筛选仍有无障碍名称与标题说明',()=
  assert.match(workbench,/aria-label=\{item\.label\} title=\{item\.label\}/);
  assert.match(workbench,/nodes\.expandSearch\.addEventListener\('click',onSearch\)/);
 });
+
+test('侧栏展开先完成列宽过渡，再显示不折行的品牌和导航文字',()=>{
+ const css=read('assets/styles.css');
+ const react=read('src/react-workbench.jsx');
+ assert.match(css,/\.app-shell\.is-nav-revealing/);
+ assert.match(css,/white-space:nowrap/);
+ assert.match(css,/opacity:0/);
+ assert.match(react,/event\.propertyName==='grid-template-columns'/);
+ assert.match(react,/nodes\.shell\.addEventListener\('transitionend',onEnd\)/);
+ assert.match(react,/if\(wait<=20\)\{finish\(\);return;\}/);
+ assert.match(react,/window\.clearTimeout\(fallback\)/);
+ assert.match(react,/pendingSearch\.current='select'/);
+});
