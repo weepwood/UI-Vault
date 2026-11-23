@@ -52,3 +52,9 @@ test('顶栏命令搜索与目录共享稳定 Emoji，结果包含命中信息',
  assert.match(css,/backdrop-filter:blur\(28px\) saturate\(155%\)/);
  assert.match(css,/html\[data-theme="dark"\] \.command-palette-panel/);
 });
+
+test('首屏壳节点校验应使用顶栏搜索入口，不阻止 React 挂载',()=>{
+ const startup=read('assets/app.js');
+ assert.match(startup,/'preview-search'/);
+ assert.doesNotMatch(startup,/'nav-expand-search'/);
+});
