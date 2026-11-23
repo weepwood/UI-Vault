@@ -53,5 +53,19 @@ test('侧栏展开先完成列宽过渡，再显示不折行的品牌和导航�
  assert.match(react,/nodes\.shell\.addEventListener\('transitionend',onEnd\)/);
  assert.match(react,/if\(wait<=20\)\{finish\(\);return;\}/);
  assert.match(react,/window\.clearTimeout\(fallback\)/);
- assert.match(react,/pendingSearch\.current='select'/);
+ assert.match(react,/compactSelectOnOpen\.current=true/);
+});
+
+test('窄栏搜索为浮层，不会触发侧栏扩展或改写本地折叠状态',()=>{
+ const html=read('index.html'),jsx=read('src/react-workbench.jsx');
+ const panel=read('src/components/CompactSearchPanel.jsx');
+ const css=read('assets/styles.css');
+ assert.match(html,/id="nav-expand-search"[^>]*aria-label="打开快速搜索面板"/);
+ assert.match(jsx,/setCompactSearchOpen\(value=>!value\)/);
+ assert.match(jsx,/createPortal\(\s*<CompactSearchPanel/);
+ assert.match(panel,/id="compact-search-dialog"/);
+ assert.match(panel,/id="compact-search-input"/);
+ assert.match(css,/\.compact-search-popover/);
+ assert.match(css,/\.quick-filters \.filter-button>\.ui-icon/);
+ assert.match(css,/\.nav-index>\.ui-icon/);
 });
