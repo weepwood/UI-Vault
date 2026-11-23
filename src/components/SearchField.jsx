@@ -4,7 +4,7 @@ import {Icon} from './Icon.jsx';
 // 搜索输入：Esc 清空、Enter 提交、清除按钮回焦。
 // 默认值与主站目录搜索一致；组件展厅通过 props 改用自己的 id 和说明文字。
 export function SearchField({value,onChange,onSubmit,searchRef,id='search',controls='gallery',
-  placeholder='搜索项目、标签、技术栈',label='搜索项目',shortcuts='Control+K Meta+K'}){
+  placeholder='搜索项目、标签、技术栈',label='搜索项目',shortcuts='Control+K Meta+K',onEscape}){
   const ownRef=useRef(null);
   const inputRef=searchRef||ownRef;
   return <div className="search-field">
@@ -13,6 +13,7 @@ export function SearchField({value,onChange,onSubmit,searchRef,id='search',contr
       autoComplete="off" maxLength={160} placeholder={placeholder} aria-label={label}
       aria-keyshortcuts={shortcuts||undefined} aria-controls={controls}
       onKeyDown={event=>{
+        if(event.key==='Escape'&&onEscape){event.preventDefault();event.stopPropagation();onEscape();return;}
         if(event.key==='Escape'&&value){event.preventDefault();event.stopPropagation();onChange('');}
         if(event.key==='Enter'&&value.trim()){
           event.preventDefault();
