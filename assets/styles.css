@@ -1191,3 +1191,185 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
 .compact-search-footer{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line-soft);padding-top:9px;color:var(--muted);font-size:10px}
 .compact-search-footer kbd{font:inherit;border:1px solid var(--line);padding:1px 4px;border-radius:4px;background:var(--canvas)}
 @media(prefers-reduced-motion:reduce){.compact-search-popover{animation:none}}
+
+
+/* 全局命令面板：参考已提供的 Command Palette 示例，面板居中、结果区固定高度。
+   搜索入口属于导航图标栏，不再占用可变宽度的侧栏表单槽位。 */
+.nav-search-compact {
+  display:grid;
+  place-items:center;
+  width:40px;
+  height:34px;
+  min-height:34px;
+  flex:0 0 34px;
+  padding:7px 10px;
+  margin:0 0 18px 3px;
+  align-self:flex-start;
+  background:transparent;
+  border:1px solid transparent;
+  color:var(--muted);
+  border-radius:7px;
+  transition:background-color var(--motion-fast) ease,color var(--motion-fast) ease;
+}
+.nav-search-compact:hover,.nav-search-compact[aria-expanded="true"] {
+  background:var(--hover);color:var(--ink);
+}
+.nav-search-compact .ui-icon {
+  display:block;width:17px;height:17px;min-width:17px;min-height:17px;
+  flex:0 0 17px;transform:none;transition:none;
+}
+@media(min-width:761px){
+  .app-shell.is-nav-collapsed .nav-search-compact {
+    display:grid;place-items:center;width:40px;height:34px;min-height:34px;
+    padding:7px 10px;margin:0 0 18px 3px;
+    background:transparent;border:1px solid transparent;
+    align-self:flex-start;flex:0 0 34px;
+  }
+  .app-shell.is-nav-collapsed .nav-search-compact:hover,
+  .app-shell.is-nav-collapsed .nav-search-compact[aria-expanded="true"] {
+    background:var(--hover);
+  }
+}
+@media(max-width:760px){
+  .nav-search-compact {display:grid}
+}
+.command-palette-overlay{
+  position:fixed;inset:0;z-index:110;
+  display:flex;align-items:center;justify-content:center;
+  padding:20px;
+  background:rgba(12,18,24,.34);
+  -webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+  animation:command-palette-backdrop-in 130ms ease-out both;
+}
+.command-palette-panel{
+  position:relative;isolation:isolate;display:flex;flex-direction:column;gap:6px;
+  width:min(376px,calc(100vw - 32px));max-height:calc(100dvh - 40px);
+  padding:6px;border-radius:22px;
+  border:1px solid var(--line);
+  background:var(--canvas);color:var(--ink);
+  box-shadow:0 14px 46px rgba(10,21,28,.21),0 1px 3px rgba(10,21,28,.08);
+  animation:command-palette-panel-in 170ms var(--ease-out) both;
+}
+.command-palette-field {
+  display:flex;align-items:center;gap:8px;flex:none;min-height:42px;
+  padding:11px 12px;
+  border:1px solid var(--line);border-radius:16px;
+  background:var(--surface);
+  box-shadow:0 1px 2px rgba(10,20,28,.04);
+  transition:border-color 150ms ease,box-shadow 150ms ease;
+}
+.command-palette-field:focus-within {
+  border-color:var(--accent-line);
+  box-shadow:0 1px 2px rgba(10,20,28,.04),0 0 0 3px var(--accent-soft);
+}
+.command-palette-field>.ui-icon{width:14px;height:14px;color:var(--muted);flex:none}
+.command-palette-field input{
+  min-width:0;width:100%;flex:1;
+  border:0;outline:0!important;box-shadow:none!important;
+  background:transparent;color:var(--ink);font:500 12px/16px inherit;
+  font-family:inherit;font-size:12px;line-height:16px;font-weight:500;
+  padding:0;margin:0;
+}
+.command-palette-field input::placeholder{color:var(--muted);opacity:1}
+.command-palette-clear{
+  display:grid;place-items:center;width:18px;height:18px;flex:none;
+  border:0;border-radius:50%;padding:0;background:var(--hover);color:var(--muted);
+}
+.command-palette-clear:hover{color:var(--ink)}
+.command-palette-clear .ui-icon{width:12px;height:12px}
+.command-palette-count{
+  min-width:17px;height:17px;padding:0 5px;display:grid;place-items:center;flex:none;
+  border-radius:999px;font-size:9px;font-weight:650;font-variant-numeric:tabular-nums;
+  background:var(--hover);color:var(--ink);
+}
+.command-palette-body{position:relative;min-height:0}
+.command-palette-glow{
+  position:absolute;left:0;right:0;bottom:-4px;height:74px;
+  border-radius:999px 999px 12px 12px;
+  background:linear-gradient(90deg,#ef6363,#efaf4e,#ead96a,#65bd84,#598ee5,#a47feb,#ef6363);
+  background-size:200% 100%;
+  filter:blur(5px);opacity:.32;
+  animation:command-palette-hue 8s linear infinite;
+}
+.command-palette-veil{
+  position:absolute;left:0;right:0;bottom:-5px;height:64px;pointer-events:none;
+  border-radius:0 0 20px 20px;
+  background:linear-gradient(to top,var(--canvas),transparent);
+  opacity:.75;
+}
+.command-palette-listcard{
+  position:relative;display:flex;flex-direction:column;
+  overflow:hidden;border:1px solid var(--line);border-radius:16px;
+  background:var(--surface);box-shadow:0 1px 2px rgba(10,20,28,.04);
+}
+.command-palette-list{
+  position:relative;display:flex;flex-direction:column;
+  height:229px;max-height:calc(100dvh - 152px);min-height:0;overflow:auto;
+  padding:4px 0 6px;scrollbar-width:thin;overscroll-behavior:contain;
+}
+.command-palette-highlight{
+  position:absolute;top:0;left:6px;right:6px;height:0;z-index:0;pointer-events:none;
+  border-radius:8px;opacity:0;
+  background:var(--hover);box-shadow:inset 0 0 0 1px var(--line-soft);
+  transition:transform 160ms var(--ease-out),height 160ms var(--ease-out),opacity 120ms ease;
+}
+.command-palette-group{position:relative;z-index:1;display:flex;flex-direction:column}
+.command-palette-group-label{
+  padding:8px 14px 5px;font-size:9px;line-height:1.5;font-weight:650;
+  letter-spacing:.045em;color:var(--muted);
+}
+.command-palette-item{
+  position:relative;display:flex;align-items:center;gap:10px;
+  min-width:0;margin:0 6px;padding:6px 8px;
+  border:0;border-radius:8px;background:transparent;
+  color:var(--ink);text-align:left;transition:transform 100ms ease;
+}
+.command-palette-item:active{transform:scale(.989)}
+.command-palette-item:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.command-palette-item-icon{
+  display:grid;place-items:center;
+  width:22px;height:22px;flex:0 0 22px;border:1px solid var(--line);
+  border-radius:6px;color:var(--muted);background:var(--surface);
+}
+.command-palette-item-icon .ui-icon{width:12px;height:12px}
+.command-palette-item-label{
+  min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;font-size:11px;line-height:16px;font-weight:550;
+}
+.command-palette-item-meta{
+  min-width:0;max-width:100px;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap;font-size:10px;color:var(--muted);
+}
+.command-palette-item-enter{opacity:0;transform:translateX(-3px);transition:opacity 120ms,transform 160ms;flex:none;color:var(--ink)}
+.command-palette-item-enter .ui-icon{width:12px;height:12px}
+.command-palette-item.is-active .command-palette-item-enter{opacity:1;transform:none}
+.command-palette-empty{
+  display:flex;align-items:center;justify-content:center;flex:1;min-height:140px;
+  color:var(--muted);text-align:center;font-size:11px;padding:16px;
+}
+.command-palette-footer{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:9px 12px;border-top:1px solid var(--line);
+  font-size:10px;color:var(--muted);background:var(--canvas);
+}
+.command-palette-footer>span{display:flex;align-items:center;gap:4px;white-space:nowrap}
+.command-palette-footer kbd{
+  display:inline-grid;place-items:center;
+  height:18px;min-width:18px;padding:0 4px;
+  font:500 9px/1 inherit;font-family:inherit;font-size:9px;
+  border:1px solid var(--line);border-bottom-width:2px;border-radius:5px;
+  color:var(--muted);background:var(--surface);
+}
+@keyframes command-palette-hue{to{background-position:-200% 0}}
+@keyframes command-palette-backdrop-in{from{opacity:0}to{opacity:1}}
+@keyframes command-palette-panel-in{from{opacity:0;transform:translateY(8px) scale(.985)}to{opacity:1;transform:none}}
+@media(max-width:480px){
+  .command-palette-overlay{padding:12px;align-items:center}
+  .command-palette-panel{width:min(376px,calc(100vw - 24px))}
+  .command-palette-footer{padding:8px;font-size:9px}
+  .command-palette-item-meta{max-width:72px}
+}
+@media(prefers-reduced-motion:reduce){
+  .command-palette-overlay,.command-palette-panel,.command-palette-glow{animation:none}
+  .command-palette-highlight,.command-palette-item{transition:none}
+}
