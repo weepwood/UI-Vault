@@ -45,6 +45,7 @@ function QuickFilters({state,onFilter}){
     className={'filter-button'+(state.view==='library'&&item.selected?' is-active':'')}
     {...dataAttrs[item.key]}
     aria-pressed={String(state.view==='library'&&item.selected)}
+    aria-label={item.label} title={item.label}
     onClick={()=>onFilter(item.key,item.value)}>
     <UIIcon name={item.icon}/><span>{item.label}</span>
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>

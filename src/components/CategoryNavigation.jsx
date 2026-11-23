@@ -8,6 +8,7 @@ export function CategoryNavigation({categories,current,settingsActive,onChange})
   return <>{categories.map(category=><button key={category.id} type="button"
     className={'nav-button'+(!settingsActive&&current===category.id?' is-active':'')}
     data-category={category.id} aria-pressed={String(!settingsActive&&current===category.id)}
+    aria-label={category.label} title={category.label}
     onClick={()=>onChange(category.id)}>
     <span className="nav-index" aria-hidden="true">
       <Icon name={categoryIcons[category.id]||'layout-grid'}/>
