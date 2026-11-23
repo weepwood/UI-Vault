@@ -4,14 +4,15 @@ import {readFileSync} from 'node:fs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
-test('侧栏仅保留固定大小的全局搜索图标，快捷键打开中央面板',()=>{
+test('预览顶栏最左侧保留全局搜索图标，快捷键打开中央面板',()=>{
   const html=read('index.html');
   const react=read('src/react-workbench.jsx');
-  const css=read('assets/styles.css');
-  assert.match(html,/id="nav-expand-search"[^>]*aria-controls="compact-search-dialog"/);
-  assert.doesNotMatch(html,/<div class="library-search">/);
-  assert.match(css,/\.nav-search-compact\s*\{/);
-  assert.match(css,/width:40px/);
+  const toolbar=read('assets/ui/preview-toolbar.css');
+  assert.match(html,/id="preview-search"[^>]*aria-controls="compact-search-dialog"/);
+  assert.ok(html.indexOf('id="preview-search"')<html.indexOf('id="menu-toggle"'));
+  assert.doesNotMatch(html,/<div class="library-search">|id="nav-expand-search"/);
+  assert.match(toolbar,/\.topbar-search-action/);
+  assert.match(toolbar,/width:34px;height:34px/);
   assert.match(react,/event[.]metaKey\|\|event[.]ctrlKey/);
   assert.match(react,/openPalette\(\)/);
 });

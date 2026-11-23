@@ -17,11 +17,11 @@ test('资源导航、项目列表、真实预览在独立三栏',async()=>{
  const left=root.slice(nav,navEnd);
  const middle=root.slice(panel,panelEnd);
  const right=root.slice(main);
- for(const id of ['nav-expand-search','category-nav','total-count','curated-count','favorite-count','imported-count'])
+ for(const id of ['category-nav','total-count','curated-count','favorite-count','imported-count'])
   assert.ok(left.includes('id="'+id+'"'),'导航栏缺少 '+id);
  for(const id of ['gallery','sort','tag-filter','results-status','empty'])
   assert.ok(middle.includes('id="'+id+'"'),'项目栏缺少 '+id);
- for(const id of ['preview-stage','preview-title','viewport-controls'])
+ for(const id of ['preview-search','preview-stage','preview-title','viewport-controls'])
   assert.ok(right.includes('id="'+id+'"'),'预览栏缺少 '+id);
  assert.doesNotMatch(left,/id="gallery"|id="tag-filter"/);
  assert.doesNotMatch(middle,/id="category-nav"|id="search"/);
