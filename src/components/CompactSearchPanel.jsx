@@ -112,7 +112,6 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
                     <span className="command-palette-item-detail">{detail}</span>
                   </span>
                   <span className="command-palette-item-meta">{item.projectId||'UI-Vault'}</span>
-                  <span className="command-palette-item-enter"><Icon name="check"/></span>
                 </button>;
               })}
             </div>)}
