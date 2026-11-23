@@ -1389,3 +1389,12 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
     height:34px;min-height:34px;
   }
 }
+
+
+/* 品牌标题行高度不得因 UI Vault 字样显隐而缩小并推挤下方搜索 / 分类图标。 */
+@media(min-width:761px){
+  .library-rail .sidebar-heading,
+  .app-shell.is-nav-collapsed .library-rail .sidebar-heading{
+    height:36px;min-height:36px;flex:0 0 36px;
+  }
+}
