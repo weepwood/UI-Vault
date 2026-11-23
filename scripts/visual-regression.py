@@ -994,8 +994,9 @@ def verify_sidebar_transition_no_reflow(browser, origin):
             page.evaluate("() => window.__frameBeforeCollapse=document.querySelector('#preview-stage iframe')")
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")
-            toggle.click()
-            page.wait_for_function("() => document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
+            # 用 DOM 原生 click 避免 Playwright 等待控件稳定时错过短暂的 reveal 阶段。
+            toggle.evaluate("(el) => el.click()")
+            page.wait_for_function("() => document.querySelector('.app-shell').classList.contains('is-nav-revealing')", timeout=1800)
             metrics = page.evaluate("""() => {
               const selectors=['.brand-type','.quick-filters .filter-button > span:nth-child(2)',
                 '.category-nav .nav-button > span:not(.nav-index)',
