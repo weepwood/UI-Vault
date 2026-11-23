@@ -6,13 +6,17 @@ import {resolveVersionId} from '../assets/core/asset-versions.js';
 import {createWorkbenchRouter} from '../assets/core/workbench-router.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
   setCatalogQuery,setCatalogSort,setCatalogTag,activateAsset,deactivateAsset,
-  changePreviewMode,hasActiveCatalogFilters} from '../assets/core/workbench-state.js';
+  changePreviewMode,setCustomPreviewWidth,hasActiveCatalogFilters} from '../assets/core/workbench-state.js';
+import {readViewportSession,saveViewportSession} from '../assets/core/viewport-session.js';
 import {loadSettings,applySettings,SETTINGS_KEY,DEFAULT_SETTINGS} from '../assets/core/settings.js';
 
 const router=createWorkbenchRouter(window);
 function initial(){
   const session=createWorkbenchState();
-  return {...session,favorites:loadFavorites(),preferences:loadSettings(),
+  const preferences=loadSettings();
+  const viewport=readViewportSession();
+  return {...session,favorites:loadFavorites(),preferences,
+    previewSize:viewport?.mode||preferences.preview,customWidth:viewport?.width||session.customWidth,
     view:router.read().view,versionId:'original',menuOpen:false,loading:true,error:null};
 }
 function chooseVisible(next,preferred=null){
@@ -21,7 +25,7 @@ function chooseVisible(next,preferred=null){
   if(!visible.length){deactivateAsset(next);next.versionId='original';return next;}
   const desired=(preferred&&visible.find(item=>item.id===preferred))||
     (next.active&&visible.find(item=>item.id===next.active.id))||visible[0];
-  activateAsset(next,desired,next.preferences.preview);
+  activateAsset(next,desired,next.previewSize);
   if(previousId!==next.active?.id)next.versionId='original';
   return next;
 }
@@ -34,7 +38,7 @@ export function workbenchReducer(current,action){
       const preferred=action.routeAsset&&action.assets.find(a=>a.id===action.routeAsset)||
         action.assets.find(a=>a.source==='local'&&a.curated===true)||
         action.assets.find(a=>a.source==='local')||action.assets[0];
-      if(preferred)activateAsset(next,preferred,next.preferences.preview);
+      if(preferred)activateAsset(next,preferred,next.previewSize);
       chooseVisible(next);
       next.versionId=resolveVersionId(next.active,action.routeVariant);
       return next;
@@ -51,7 +55,7 @@ export function workbenchReducer(current,action){
       const asset=next.assets.find(a=>a.id===action.id);
       if(asset){
         const oldId=next.active?.id;
-        activateAsset(next,asset,next.preferences.preview);
+        activateAsset(next,asset,next.previewSize);
         if(oldId!==next.active?.id)next.versionId='original';
       }
       return next;
@@ -82,13 +86,18 @@ export function workbenchReducer(current,action){
     case 'previewMode':
       if(next.active?.source!=='local')return current;
       return changePreviewMode(next,action.value)?next:current;
+    case 'previewWidth':
+      if(next.active?.source!=='local')return current;
+      if(next.previewSize==='custom'&&next.customWidth===Number(action.value))return current;
+      setCustomPreviewWidth(next,action.value);
+      return next;
     case 'view':return {...next,view:action.value,menuOpen:false};
     case 'menu':return {...next,menuOpen:Boolean(action.value)};
     case 'navigate':{
       next.view=action.view;
       next.menuOpen=false;
       const asset=next.assets.find(a=>a.id===action.asset);
-      if(asset)activateAsset(next,asset,next.preferences.preview);
+      if(asset)activateAsset(next,asset,next.previewSize);
       next.versionId=resolveVersionId(next.active,action.variant);
       return next;
     }
@@ -158,6 +167,11 @@ export function useWorkbench(){
     if(!saveFavorites(state.favorites))notify('无法持久保存收藏，本次会话仍可使用');
   },[state.favorites,notify]);
   useLayoutEffect(()=>{applySettings(state.preferences);},[state.preferences]);
+  // 在固定与自定义视口之间切换时记住上次选择；不污染设置面板的默认预设。
+  useEffect(()=>{
+    if(state.loading||state.active?.source!=='local')return;
+    saveViewportSession({mode:state.previewSize,width:state.customWidth});
+  },[state.loading,state.active?.source,state.previewSize,state.customWidth]);
   useEffect(()=>{
     if(previousSettings.current===state.preferences)return;
     previousSettings.current=state.preferences;
@@ -182,11 +196,14 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),[state]);
+  const catalogDeps=[state.assets,state.labels,state.category,state.tag,state.query,state.sort,
+    state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites];
+  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),catalogDeps);
   // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
   const tags=useMemo(()=>popularTags(
     filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag
-  ),[state]);
+  ),[state.assets,state.labels,state.category,state.query,state.sort,state.tag,
+    state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites]);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
     router.setView(view,historyMode);
@@ -222,6 +239,7 @@ export function useWorkbench(){
     notify('已恢复默认设置');
   },[notify]);
   const changePreview=useCallback(value=>dispatch({type:'previewMode',value}),[]);
+  const changeCustomWidth=useCallback(value=>dispatch({type:'previewWidth',value}),[]);
   const changeVersion=useCallback(id=>{
     const next=resolveVersionId(state.active,id);
     if(next===state.versionId)return;
@@ -248,5 +266,5 @@ export function useWorkbench(){
 
   return {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,reset,
-    favorite,changePreference,resetPreferences,changePreview,changeVersion,menu,copyText,copyLink,copySource};
+    favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
 }

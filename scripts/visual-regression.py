@@ -115,19 +115,12 @@ def capture(page, mode, theme):
     if mode == "toolbar-open":
         current = page.locator("#viewport-current")
         assert current.is_visible(), "当前选中设备按钮隐藏"
-        current.hover()
+        current.click()
         options = page.locator("#viewport-options")
         options.wait_for(state="visible")
         assert options.locator("[data-preview-size]").count() == 4, "设备切换菜单内容缺失"
-        rect = current.bounding_box()
-        vp = page.viewport_size
-        x = max(0, rect["x"] - 30)
-        y = max(0, rect["y"] - 8)
-        return page.screenshot(
-            animations="disabled",
-            clip={"x": x, "y": y, "width": min(230, vp["width"] - x), "height": min(216, vp["height"] - y)},
-            mask=[page.locator("iframe.live-frame")],
-        )
+        assert options.locator("#viewport-custom-input").count() == 1, "未显示自定义尺寸输入"
+        return options.screenshot(animations="disabled")
     raise ValueError(f"未知截图场景：{mode}")
 
 
@@ -178,18 +171,44 @@ def verify_react_interactions(browser, origin):
         trigger = page.locator("#viewport-current")
         controls = page.locator("#viewport-controls")
         base_width = controls.evaluate("(el) => el.getBoundingClientRect().width")
-        assert 95 <= base_width <= 100, f"自适应选择器闭合宽度应接近 98px，实际 {base_width}"
+        assert 110 <= base_width <= 114, f"自适应选择器闭合宽度应接近 112px，实际 {base_width}"
         assert trigger.locator("#viewport-current-icon use").get_attribute("href").endswith("#scan"), "自适应图标不是 Lucide Scan"
         trigger.hover()
+        assert not page.locator("#viewport-options").is_visible(), "悬停不应自动展开设备菜单"
+        trigger.click()
         options = page.locator("#viewport-options")
         options.wait_for(state="visible")
         popover_width = options.evaluate("(el) => el.getBoundingClientRect().width")
-        assert 145 <= popover_width <= 152, f"展开菜单应接近 150px，实际 {popover_width}"
+        assert 235 <= popover_width <= 241, f"展开菜单应接近 238px，实际 {popover_width}"
+        assert options.locator(".viewport-preset").count() == 4, "设备预设数量异常"
         assert abs(controls.evaluate("(el) => el.getBoundingClientRect().width") - base_width) < 1, "菜单展开不应撑宽顶栏"
         page.locator("#viewport-options [data-preview-size='mobile']").click()
         assert trigger.locator("#viewport-current-icon use").get_attribute("href").endswith("#smartphone"), "手机预览图标未同步切换"
         assert page.locator("#preview-stage").get_attribute("data-size") == "mobile", "手机设备模式未应用"
         assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "改变设备模式意外重建 iframe"
+        # 自定义宽度实际影响 iframe；同时保留 iframe 节点与本地会话选择。
+        trigger.click()
+        options.wait_for(state="visible")
+        page.locator("#viewport-custom-input").fill("640")
+        page.locator(".viewport-custom-apply").click()
+        assert page.locator("#preview-stage").get_attribute("data-size") == "custom"
+        actual_css_width = page.locator("#preview-stage iframe").evaluate("(el)=>parseFloat(el.style.width)")
+        stage_width = page.locator("#preview-stage").evaluate("(el)=>el.clientWidth")
+        visual_width = page.locator("#preview-stage iframe").evaluate("(el)=>el.getBoundingClientRect().width")
+        assert abs(actual_css_width-640)<1, f"自定义视口 CSS 宽度应为 640px，实际 {actual_css_width}"
+        assert abs(visual_width-min(640,stage_width))<3, f"iframe 可见宽度未随实际容器缩放：{visual_width} / {stage_width}"
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__reactIframe"), "自定义宽度意外重建 iframe"
+        resize=page.locator(".preview-resize-handle")
+        resize.wait_for(state="visible")
+        before_resize=int(resize.get_attribute("aria-valuenow"))
+        resize.focus()
+        page.keyboard.press("ArrowRight")
+        assert int(resize.get_attribute("aria-valuenow"))==before_resize+20, "方向键没有调整自定义宽度"
+        trigger.click()
+        options.wait_for(state="visible")
+        assert "缩放" in page.locator(".viewport-menu-footer").inner_text(), "菜单没有提供缩放信息"
+        page.keyboard.press("Escape")
+        options.wait_for(state="hidden")
 
         page.locator("#preview-info").click()
         dialog = page.locator("#project-dialog")

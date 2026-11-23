@@ -1,5 +1,5 @@
 import React,{memo,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
-import {applyPreviewLayout} from '../../assets/core/preview.js';
+import {applyPreviewLayout,calculatePreviewLayout,normalizeCustomWidth,PREVIEW_WIDTHS,MIN_CUSTOM_WIDTH,MAX_CUSTOM_WIDTH} from '../../assets/core/preview.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {getPreviewPolicy} from '../../assets/core/preview-policy.js';
 import {Icon} from './WorkbenchSelect.jsx';
@@ -20,8 +20,10 @@ function previewUrl(asset){
 // 少数站点不会触发 load（或被浏览器拦截后不回报），超时后也收起进度条，不让它一直转。
 const LOAD_TIMEOUT_MS=12000;
 
-function PreviewContent({asset,mode,error,loading}){
+function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}){
   const frame=useRef(null);
+  const resizeHandle=useRef(null);
+  const resizeDrag=useRef(null);
   const backdropStudio=asset?.id==='aurora-field';
   const {sandbox,allow:permissions,allowFullScreen}=getPreviewPolicy(asset);
   const src=!asset?null:asset.source==='local'?previewUrl(asset):asset.siteUrl||null;
@@ -61,7 +63,14 @@ function PreviewContent({asset,mode,error,loading}){
     const stage=frame.current.parentElement;
     if(!stage)return;
     stage.dataset.size=mode;
-    const result=applyPreviewLayout(stage,frame.current,mode);
+    const result=applyPreviewLayout(stage,frame.current,mode,customWidth);
+    if(resizeHandle.current&&result){
+      const visualWidth=result.width*result.scale;
+      // 仅当画面有可拖动的外边缘时展示手柄。大尺寸缩小至满宽时由输入框调节。
+      const canResize=mode!=='fluid'&&visualWidth<stage.clientWidth-18;
+      resizeHandle.current.style.display=(canResize||resizeDrag.current)?'grid':'none';
+      resizeHandle.current.style.left=Math.max(0,Math.min(stage.clientWidth-14,result.left+visualWidth-7))+'px';
+    }
     if((asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog')&&result){
       frame.current.contentWindow?.postMessage({
         channel:'ui-vault/liquid-orb',event:'command',
@@ -83,7 +92,36 @@ function PreviewContent({asset,mode,error,loading}){
     const observer=new ResizeObserver(resize);
     observer.observe(stage);
     return ()=>observer.disconnect();
-  },[asset?.id,asset?.preview,asset?.source,mode]);
+  },[asset?.id,asset?.preview,asset?.source,mode,customWidth]);
+  function dragWidth(event){
+    if(event.button!==0||!frame.current)return;
+    const stage=frame.current.parentElement;
+    const layout=calculatePreviewLayout(stage.clientWidth,stage.clientHeight,mode,customWidth);
+    if(!layout)return;
+    event.preventDefault();
+    resizeDrag.current={startX:event.clientX,width:layout.width,scale:layout.scale};
+    event.currentTarget.setPointerCapture(event.pointerId);
+  }
+  function moveWidth(event){
+    if(!resizeDrag.current)return;
+    const {startX,width,scale}=resizeDrag.current;
+    const delta=(event.clientX-startX)*2/scale;
+    onCustomWidth?.(normalizeCustomWidth(Math.round((width+delta)/10)*10));
+  }
+  function stopWidth(event){
+    if(!resizeDrag.current)return;
+    resizeDrag.current=null;
+    if(event.currentTarget.hasPointerCapture?.(event.pointerId))event.currentTarget.releasePointerCapture(event.pointerId);
+  }
+  function resizeWithKeyboard(event){
+    if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
+    event.preventDefault();event.stopPropagation();
+    const width=mode==='custom'?customWidth:PREVIEW_WIDTHS[mode]||800;
+    const step=event.shiftKey?100:20;
+    const next=event.key==='Home'?MIN_CUSTOM_WIDTH:event.key==='End'?MAX_CUSTOM_WIDTH:
+      width+(event.key==='ArrowRight'?step:-step);
+    onCustomWidth?.(normalizeCustomWidth(next));
+  }
   if(!asset&&loading){
     return <div className="preview-placeholder" aria-busy="true">
       <div className="preview-progress" role="progressbar" aria-label="正在加载项目目录"/>
@@ -102,7 +140,17 @@ function PreviewContent({asset,mode,error,loading}){
       sandbox={sandbox}
       allow={permissions}
       allowFullScreen={allowFullScreen}
-      referrerPolicy="no-referrer"/>{progress}</>;
+      referrerPolicy="no-referrer"/>
+      {mode!=='fluid'&&<div ref={resizeHandle} className="preview-resize-handle"
+        role="slider" tabIndex={0} aria-label="拖动调整预览宽度"
+        aria-valuemin={MIN_CUSTOM_WIDTH} aria-valuemax={MAX_CUSTOM_WIDTH}
+        aria-valuenow={mode==='custom'?customWidth:PREVIEW_WIDTHS[mode]}
+        aria-valuetext={(mode==='custom'?customWidth:PREVIEW_WIDTHS[mode])+' 像素'}
+        title="拖动改变预览宽度 · 方向键微调"
+        onPointerDown={dragWidth} onPointerMove={moveWidth}
+        onPointerUp={stopWidth} onPointerCancel={stopWidth}
+        onKeyDown={resizeWithKeyboard}><span aria-hidden="true"/></div>}
+      {progress}</>;
   }
   if(asset.siteUrl){
     return <><iframe className="live-frame" data-preview-frame="external"
@@ -125,4 +173,5 @@ function PreviewContent({asset,mode,error,loading}){
 export const PreviewFrame=memo(PreviewContent,(before,after)=>
   before.asset?.id===after.asset?.id&&before.asset?.preview===after.asset?.preview&&
   before.asset?.siteUrl===after.asset?.siteUrl&&before.mode===after.mode&&before.error===after.error&&
-  before.loading===after.loading);
+  before.loading===after.loading&&before.customWidth===after.customWidth&&
+  before.onCustomWidth===after.onCustomWidth);

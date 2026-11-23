@@ -78,7 +78,7 @@ function WorkbenchPortals({nodes}){
   const app=useWorkbench();
   const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
     selectAsset,filter,changeSearch,changeSort,changeTag,reset,
-    favorite,changePreference,resetPreferences,changePreview,changeVersion,menu,
+    favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [dialogOpen,setDialogOpen]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
@@ -342,14 +342,15 @@ function WorkbenchPortals({nodes}){
       projects={state.projects} groupByProject={state.sort==='project'}
       loading={state.loading}/>,nodes.gallery)}
     {createPortal(<PreviewToolbar asset={selected} effectiveAsset={effectiveAsset} labels={state.labels}
-      previewMode={state.previewSize} onChangePreview={changePreview}
+      previewMode={state.previewSize} customWidth={state.customWidth}
+      onChangePreview={changePreview} onCustomWidth={changeCustomWidth} stageElement={nodes.stage}
       versionId={state.versionId} onChangeVersion={changeVersion}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>selected&&setDialogOpen(true)}
       onMenu={onMenuToggle} menuOpen={menuOpen}
       onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
-    {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize}
-      error={state.error} loading={state.loading}/>,nodes.stage)}
+    {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
+      onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
       health={projectHealthSnapshot} preview={previewHealthSnapshot}
       onMenuToggle={onMenuToggle} menuOpen={menuOpen}/>,nodes.operations)}

@@ -43,6 +43,7 @@ function Showcase({nodes}){
   const [category,setCategory]=useState('all');
   const [selectedId,setSelectedId]=useState(SAMPLES[0].id);
   const [mode,setMode]=useState('fluid');
+  const [customWidth,setCustomWidth]=useState(800);
   // 与主站相同的检索、过滤与排序逻辑。
   const items=useMemo(()=>filterAssets(SAMPLES,{category,tag,query,sort,labels:LABELS}),
     [category,tag,query,sort]);
@@ -52,7 +53,7 @@ function Showcase({nodes}){
     const {deviceStage:stage,deviceFrame:frame}=nodes;
     // 面板隐藏时容器尺寸为 0，applyPreviewLayout 会直接跳过；
     // 切换到「设备预览」后尺寸变化会触发 ResizeObserver 重新计算。
-    const update=()=>applyPreviewLayout(stage,frame,mode);
+    const update=()=>applyPreviewLayout(stage,frame,mode,customWidth);
     update();
     if(typeof ResizeObserver==='undefined'){
       window.addEventListener('resize',update);
@@ -61,12 +62,12 @@ function Showcase({nodes}){
     const observer=new ResizeObserver(update);
     observer.observe(stage);
     return ()=>observer.disconnect();
-  },[nodes,mode]);
+  },[nodes,mode,customWidth]);
 
   const listStatus=items.length
     ?'显示 '+items.length+' 条演示数据'+(selected?'，已选中：'+selected.title:'')
     :'没有匹配的演示项目，请修改搜索、分类或标签。';
-  const width=PREVIEW_WIDTHS[mode];
+  const width=mode==='custom'?customWidth:PREVIEW_WIDTHS[mode];
   const deviceStatus=width?'模拟宽度：'+width+'px · 内容按比例适配容器':'自适应 · 使用可用宽度';
 
   return <>
@@ -85,7 +86,9 @@ function Showcase({nodes}){
     {createPortal(<ProjectList items={items} labels={LABELS} selectedId={selectedId}
       onSelect={setSelectedId} query={query}/>,nodes.list)}
     {createPortal(listStatus,nodes.listStatus)}
-    {createPortal(<ViewportSwitcher mode={mode} onChange={setMode} visible/>,nodes.viewport)}
+    {createPortal(<ViewportSwitcher mode={mode} customWidth={customWidth} onChange={setMode}
+      onCustomWidth={width=>{setCustomWidth(width);setMode('custom');}}
+      stageElement={nodes.deviceStage} visible/>,nodes.viewport)}
     {createPortal(deviceStatus,nodes.deviceStatus)}
   </>;
 }

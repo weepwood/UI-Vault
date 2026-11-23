@@ -63,7 +63,7 @@ test('组件展示直接渲染主站 React 组件，而不是重写实现',async
   assert.match(js,/<ProjectList items=\{items\}/);
   assert.match(js,/<ViewportSwitcher mode=\{mode\}/);
   assert.match(js,/filterAssets\(SAMPLES,/);
-  assert.match(js,/applyPreviewLayout\(stage,frame,mode\)/);
+  assert.match(js,/applyPreviewLayout\(stage,frame,mode,customWidth\)/);
   assert.match(js,/new ResizeObserver\(update\)/);
   assert.match(js,/dialog[.]showModal\(\)/);
   assert.match(js,/dialog[.]close\(\)/);
@@ -83,7 +83,8 @@ test('主站与展厅共用同一组件文件，展厅 bundle 独立构建',asyn
   assert.match(react,/import \{CompactSearchPanel\} from '[.]\/components\/CompactSearchPanel[.]jsx'/);
   assert.doesNotMatch(react,/function (ProjectRow|ProjectList|CategoryNavigation|SearchField|Icon)\(/,
     '组件定义应只存在于 src/components/');
-  assert.match(toolbar,/export function ViewportSwitcher\(/);
+  assert.match(toolbar,/export \{ViewportSwitcher\}/);
+  assert.match(await read('src/components/ViewportSwitcher.jsx'),/export function ViewportSwitcher\(/);
   assert.match(select,/import \{Icon\} from '[.]\/Icon[.]jsx'/);
   assert.doesNotMatch(select,/function Icon\(/,'Icon 只能定义一次');
   assert.match(builder,/demos\/components\/workbench-system\/demo[.]jsx/);

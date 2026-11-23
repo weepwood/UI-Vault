@@ -103,7 +103,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .menu-toggle .ui-icon{width:19px;height:19px}
 .menu-toggle:hover{background:var(--canvas)}
 .preview-stage{position:relative;isolation:isolate;flex:1 1 0;min-height:0;overflow:hidden;background:#edf0f1}
-.preview-stage[data-size="mobile"],.preview-stage[data-size="tablet"],.preview-stage[data-size="desktop"]{background:#e9edef}
+.preview-stage[data-size="mobile"],.preview-stage[data-size="tablet"],.preview-stage[data-size="desktop"],.preview-stage[data-size="custom"]{background:#e9edef}
 .live-frame{display:block;position:absolute;top:0;left:0;width:100%;height:100%;border:0;background:#fff;transform-origin:0 0;box-shadow:0 0 0 1px #d5dede}
 .preview-placeholder{position:absolute;inset:0;display:grid;place-content:center;justify-items:center;gap:12px;text-align:center;padding:20px;color:var(--muted)}
 .preview-placeholder>.ui-icon{width:35px;height:35px;opacity:.55}
@@ -116,7 +116,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 .mobile-shade{display:none}
 @media(max-width:1320px){
   .viewport-controls button{padding:8px 7px}
-  .viewport-controls button span{display:none}
+  /* 图文设备预设在紧凑工具栏中仍保持可读。 */
   .topbar-tools{gap:8px}
   .info-action span{display:none}
   .info-action{width:34px;padding:0}
@@ -943,10 +943,10 @@ html[data-motion="reduced"] .preview-progress::after { animation:none;width:100%
 .preview-placeholder[aria-busy="true"] p { color:var(--muted); }
 
 /* 固定设备宽度预览时给画面加一层浅投影，区分“网页”和背景。 */
-.preview-stage:is([data-size="mobile"],[data-size="tablet"],[data-size="desktop"]) .live-frame {
+.preview-stage:is([data-size="mobile"],[data-size="tablet"],[data-size="desktop"],[data-size="custom"]) .live-frame {
   box-shadow:0 0 0 1px var(--line),0 10px 30px #14232b14;
 }
-html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="tablet"],[data-size="desktop"]) .live-frame {
+html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="tablet"],[data-size="desktop"],[data-size="custom"]) .live-frame {
   box-shadow:0 0 0 1px var(--line),0 10px 30px #00000059;
 }
 
@@ -1379,4 +1379,22 @@ html[data-motion="reduced"] .command-palette-item-enter{transition:none}
   .app-shell.is-nav-collapsed .library-rail .category-nav .nav-button {
     padding:7px 7px;
   }
+}
+
+
+/* 预览区可拖拽边缘：不修改 iframe DOM，低侵入地调整自定义视口宽度。 */
+.preview-resize-handle{
+ position:absolute;top:50%;display:none;place-items:center;z-index:4;
+ width:14px;height:66px;transform:translateY(-50%);
+ border:1px solid var(--line);border-radius:8px;
+ background:var(--surface);box-shadow:0 2px 10px #14232b24;
+ cursor:ew-resize;touch-action:none;user-select:none;
+}
+.preview-resize-handle>span{
+ width:3px;height:23px;border-radius:2px;
+ background:repeating-linear-gradient(to bottom,var(--muted) 0 2px,transparent 2px 5px);
+}
+.preview-resize-handle:hover,.preview-resize-handle:focus-visible{
+ outline:2px solid var(--focus);outline-offset:2px;
+ background:var(--accent-soft);
 }
