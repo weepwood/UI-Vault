@@ -1,5 +1,6 @@
 import React,{useEffect,useState} from 'react';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {resolveAsset} from '../../assets/core/render.js';
 import {Icon} from './Icon.jsx';
 
 // 仅缓存用户实际打开的设计指南，不预加载数百篇长文档。
@@ -79,7 +80,8 @@ export function MarkdownGuide({text}){
   return <article className="design-guide-markdown">{content}</article>;
 }
 export function DesignGuide({asset,onCopyText,notify}){
-  const url=asset?.designGuideUrl;
+  const path=asset?.designGuidePath;
+  const url=path?resolveAsset(path):null;
   const [retry,setRetry]=useState(0);
   const [guide,setGuide]=useState({url:null,status:'idle',text:'',error:''});
   useEffect(()=>{
@@ -109,8 +111,8 @@ export function DesignGuide({asset,onCopyText,notify}){
   const status=guide.url===url?guide.status:'loading';
   function download(){
     if(!ready)return;
-    try{downloadSourceText(guide.text,asset.id+'-Design.md');notify('设计指南已下载');}
-    catch{notify('下载失败，请在原始文档中保存');}
+    try{downloadSourceText(guide.text,path.split('/').at(-1));notify('设计指南已下载');}
+    catch{notify('下载失败，请在 UI-Vault 仓库中保存文件');}
   }
   return <div className="design-guide-view">
     <div className="design-guide-toolbar">
@@ -124,14 +126,14 @@ export function DesignGuide({asset,onCopyText,notify}){
         <button type="button" disabled={!ready} onClick={download}>
           <Icon name="download"/>下载
         </button>
-        <a href={url} target="_blank" rel="noopener noreferrer"><Icon name="external-link"/>原始文档</a>
+        <a href={url} target="_blank" rel="noopener noreferrer"><Icon name="external-link"/>查看归档文件</a>
       </div>
     </div>
     {ready?<MarkdownGuide text={guide.text}/>:status==='error'
       ?<div className="design-guide-state" role="alert"><strong>暂时无法读取设计指南</strong>
-        <p>可能是网络限制、跨域限制或上游文件暂不可用。{guide.error}</p>
+        <p>可能是网络中断或 UI-Vault 尚未发布此文件。{guide.error}</p>
         <button type="button" onClick={()=>setRetry(n=>n+1)}>重试加载</button>
       </div>
-      :<div className="design-guide-state" role="status">正在从原始仓库读取 Markdown…</div>}
+      :<div className="design-guide-state" role="status">正在从 UI-Vault 加载 Markdown…</div>}
   </div>;
 }

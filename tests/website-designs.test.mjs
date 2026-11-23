@@ -26,7 +26,7 @@ test('314 种设计风格直接列在主项目目录，废弃二级图鉴入口'
 });
 
 test('每个风格都有独立 HTML 源码与对应 Markdown 指南',()=>{
-  const previews=new Set();
+  const previews=new Set(),guides=new Set();
   for(const a of assets){
     assert.equal(a.source,'local');
     assert.equal(a.type,'design-style');
@@ -39,12 +39,18 @@ test('每个风格都有独立 HTML 源码与对应 Markdown 指南',()=>{
     assert.ok(a.preview.startsWith('demos/experiments/website-designs/examples/'));
     const name=a.preview.split('/').at(-1).slice(0,-5);
     assert.ok(styles.includes(name),name+' 未登记在上游清单中');
-    assert.equal(a.designGuideUrl,'https://raw.githubusercontent.com/chrislemke/website_designs/main/designs/'+name+'.md');
+    assert.equal(a.designGuidePath,'demos/experiments/website-designs/designs/'+name+'.md');
+    assert.ok(!a.designGuideUrl,'不再允许运行时从第三方仓库加载指南');
+    assert.ok(existsSync(join(root,a.designGuidePath)),a.id+' 归档指南不存在');
+    assert.ok(file(a.designGuidePath).trim().startsWith('#'),a.id+' 归档指南为空或缺少标题');
+    guides.add(a.designGuidePath);
     assert.ok(a.originRepo.includes('chrislemke/website_designs'));
     assert.ok(a.license.startsWith('MIT'));
     previews.add(a.preview);
   }
   assert.equal(previews.size,314);
+  assert.equal(guides.size,314);
+  assert.ok(manifest.filter(x=>x.type==='design-style').every(x=>x.designGuidePath && !x.designGuideUrl));
   assert.ok(assets.some(asset=>asset.publish?.includes('demos/experiments/website-designs/LICENSE.txt')),'发布白名单必须包含 MIT 许可证');
   assert.ok(file('demos/experiments/website-designs/LICENSE.txt').includes('Copyright (c) 2026 Chris Lemke'));
 });
@@ -58,4 +64,6 @@ test('项目资料弹窗包含按需加载的 Design.md、复制和下载',()=>{
   assert.ok(reader.includes('onCopyText'));
   assert.ok(reader.includes('AbortController'));
   assert.ok(reader.includes('fetch(url'));
+  assert.ok(reader.includes('resolveAsset(path)'));
+  assert.ok(!reader.includes('designGuideUrl'));
 });

@@ -47,6 +47,7 @@ export function checkEntry(entry, categories, fileName='') {
     Number.isNaN(Date.parse(entry.created)) || new Date(entry.created).toISOString().slice(0,10)!==entry.created) errors.push(where+': 无效创建日期');
   if(entry.cover !== undefined && !COVERS.has(entry.cover)) errors.push(where+': 未知的预设封面 '+entry.cover);
   if(entry.coverImage !== undefined && !safeRelativePath(entry.coverImage,'media/')) errors.push(where+': coverImage 必须是 media/ 下的安全相对路径');
+  if(entry.designGuidePath!==undefined && (entry.source!=='local'||!safeRelativePath(entry.designGuidePath,'demos/')||!entry.designGuidePath.endsWith('.md'))) errors.push(where+': designGuidePath 必须是 demos/ 下的本地 Markdown 文件');
   if(entry.projectId!==undefined&&(!isText(entry.projectId)||!SLUG.test(entry.projectId)))errors.push(where+': projectId 必须为注册项目的 ID');
   if(entry.copyable !== undefined && typeof entry.copyable !== 'boolean') errors.push(where+': copyable 应为布尔值');
   if(entry.copyable===true&&(
@@ -101,7 +102,7 @@ export function checkEntry(entry, categories, fileName='') {
       }
     }
   }
-  for(const key of ['originRepo','originDemoUrl','sourceUrl','siteUrl','designGuideUrl']){
+  for(const key of ['originRepo','originDemoUrl','sourceUrl','siteUrl']){
     if(entry[key]===undefined)continue;
     try{const parsed=new URL(entry[key]);if(parsed.protocol!=='https:'||!parsed.hostname)throw Error();}
     catch{errors.push(where+': '+key+' 必须为有效 HTTPS 地址');}
@@ -182,6 +183,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
       for(const key of ['preview','code']) {
         if(safeRelativePath(entry[key],'demos/') && !(await safeExistingFile(entry[key]))) errors.push(entry.id+': 缺少 '+key+' 源文件 '+entry[key]);
       }
+      if(entry.designGuidePath&&safeRelativePath(entry.designGuidePath,'demos/')&&!(await safeExistingFile(entry.designGuidePath)))errors.push(entry.id+': 缺少设计指南 '+entry.designGuidePath);
       for(const file of entry.sourceFiles||[]){
         if(safeSourceFilePath(file?.path)&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
       }

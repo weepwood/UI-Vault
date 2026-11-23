@@ -1,32 +1,33 @@
 # 网页设计风格 · website_designs
 
-## 目录扁平化
+## 本仓库归档
 
-314 个独立的 HTML 风格示例直接作为 UI-Vault 工作台的一级资产显示，统一归入「设计风格」分类，不再需要经过「网页风格图鉴」中转。每个资产保留独立的 ID、预览地址、源码入口及 Markdown 指南地址，可按名称搜索、收藏或单独打开。
+314 个独立 HTML 设计风格直接显示在 UI-Vault 的「设计风格」分类，无二级图鉴入口。每个风格有原始 HTML 示例及对应完整 Markdown 设计指南，分别独立保存于：
 
-- 源 HTML 位于 `demos/experiments/website-designs/examples/*.html`，未修改原作者页面。
-- 目录元数据位于 `catalog/assets/website-style-*.json`，`content/assets.json` 由 catalog 同步生成。
-- 每条目在「项目说明 / 源代码 / 页面信息 / Design.md」中展示源文件和对应的设计指南，支持复制及下载。
-- 设计指南来自上游 `designs/<相同文件名>.md`，在访问 Design.md 标签时通过 GitHub Raw 按需加载。指南仍由原作者在线维护；离线、被拦截或上游删除时会显示错误及原始文档链接。
-- 旧聚合页 `demos/experiments/website-designs/index.html` 仅保留于仓库作为导入记录，不再作为主站条目或默认发布入口。
+- `demos/experiments/website-designs/examples/<风格名>.html`
+- `demos/experiments/website-designs/designs/<风格名>.md`
 
-## 来源与许可
+所有 314 份指南均保存到 UI-Vault Git 仓库，**运行时不从上游仓库请求 Markdown**。资源元数据使用 `designGuidePath` 登记本地文件位置；静态构建将已登记的指南发布到 GitHub Pages，Design.md 标签按需使用 `resolveAsset` 从本站读取。复制和下载取自本站已加载的文档内容；不批量预加载 314 份指南，避免额外流量和渲染负载。
 
-- 上游仓库：https://github.com/chrislemke/website_designs
+`catalog/assets/website-style-*.json` 是独立元数据源；`content/assets.json` 由 catalog 同步生成，禁止直接手动维护。原有 `demos/experiments/website-designs/index.html` 仅作历史导入记录，不作为主目录入口。
+
+## 来源与完整性
+
+- 上游项目：https://github.com/chrislemke/website_designs
 - 作者：Chris Lemke
-- 授权：MIT（`demos/experiments/website-designs/LICENSE.txt`）
-- 上游案例：`examples/*.html`
-- 上游指南：`designs/*.md`
+- 授权：MIT，见 `demos/experiments/website-designs/LICENSE.txt`
+- 本次归档所依据的固定上游提交：`d533b7e2788d3928d5590c062e1a246d902f4365`
+- 归档时将 314 份 Markdown 与上述提交逐一核对 Git Blob SHA，结果完全一致（314/314）。
 
-原始 HTML 可能引入第三方在线字体与图片，不保证离线完整可用。独立展示不代表 UI-Vault 获得第三方素材的重新授权。
+保留来源链接、原作者署名和许可证。上游链接仅作归属/溯源，不影响 UI-Vault 中已有指南的展示。原始 HTML 可能引用第三方在线字体或图片，不保证 HTML 离线资源完整。
 
-## 维护流程
+## 更新指南
 
-新增或更新风格时，先核查 HTML、对应指南、MIT 授权与素材引用，再登记或调整 `catalog/assets/website-style-*.json`。新增分类只修改 `content/categories.json`。
+后续上游更新时，不进行启动时自动抓取或覆盖。人工审核变更、许可证和依赖后，将对应 `.md` 直接更新到本仓库，再修改资产元数据（如需）并运行：
 
 ```bash
 npm run catalog:sync
 npm run check
 ```
 
-不要在客户端启动时批量请求 314 份 Markdown；仅打开某个资源的 Design.md 标签时加载对应文件。
+发布验证包括：314 条数据完整、314 个本地 Markdown 存在、无外部 `designGuideUrl`、静态产物包含对应 Markdown。
