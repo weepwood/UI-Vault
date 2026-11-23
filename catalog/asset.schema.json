@@ -224,11 +224,10 @@
       "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
       "description": "登记的 Project ID；与资产 ID 相互独立，旧链接与收藏不变"
     },
-    "designGuideUrl": {
+    "designGuidePath": {
       "type": "string",
-      "format": "uri",
-      "pattern": "^https://",
-      "description": "当前资产对应的 Markdown 设计指南，按需读取以供预览、复制与下载"
+      "pattern": "^demos/[a-zA-Z0-9_./-]+\\.md$",
+      "description": "本仓库归档的 Markdown 设计指南，作为独立静态文件发布，由 UI-Vault 同源按需加载"
     }
   },
   "allOf": [

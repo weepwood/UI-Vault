@@ -152,7 +152,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   function tabKeys(event){
     if(!['ArrowLeft','ArrowRight','Home','End'].includes(event.key))return;
     event.preventDefault();
-    const tabs=asset?.designGuideUrl?['overview','source','page-info','design-guide']:['overview','source','page-info'];
+    const tabs=asset?.designGuidePath?['overview','source','page-info','design-guide']:['overview','source','page-info'];
     const index=tabs.indexOf(tab);
     const next=event.key==='Home'?tabs[0]:event.key==='End'?tabs.at(-1):tabs[(index+(event.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];
     setTab(next);
@@ -194,7 +194,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
         tabIndex={tab==='page-info'?0:-1} onClick={()=>setTab('page-info')}>
         <Icon name="info"/><span>页面信息</span>
       </button>
-      {asset?.designGuideUrl&&<button id="tab-design-guide" type="button" role="tab" data-info-tab="design-guide"
+      {asset?.designGuidePath&&<button id="tab-design-guide" type="button" role="tab" data-info-tab="design-guide"
         aria-selected={String(tab==='design-guide')} aria-controls="dialog-design-guide"
         tabIndex={tab==='design-guide'?0:-1} onClick={()=>setTab('design-guide')}>
         <Icon name="file-text"/><span>Design.md</span>
@@ -264,7 +264,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
       <ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
-    {asset?.designGuideUrl&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"
+    {asset?.designGuidePath&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"
       aria-labelledby="tab-design-guide" tabIndex={0} hidden={tab!=='design-guide'}>
       {tab==='design-guide'&&<DesignGuide asset={asset} onCopyText={onCopyText} notify={notify}/>}
     </section>}

@@ -8,7 +8,7 @@ import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';
 const {errors,items}=await inspectCatalog();
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
 const out=resolve(ROOT,'dist');
-const allowed=new Set(['.html','.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.woff','.ttf','.otf','.wasm','.webm','.mp4','.txt']);
+const allowed=new Set(['.html','.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.woff','.ttf','.otf','.wasm','.webm','.mp4','.txt','.md']);
 const webAssets=new Set(['.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.wasm','.txt']);
 const tokenAssets=new Set(['.json','.css']);
 const versionedAssets=[];
@@ -53,6 +53,7 @@ for(const a of items) {
   if(a.source==='local'){
     included.add(a.preview);
     if(a.copyable!==false)included.add(a.code);
+    if(a.designGuidePath)included.add(a.designGuidePath);
     for(const source of a.sourceFiles||[]){included.add(source.path);sourceFilePaths.add(source.path);}
     if(a.publish!==undefined){
       if(!Array.isArray(a.publish)||!a.publish.every(p=>safeRelativePath(p,'demos/')))throw new Error(a.id+' 的 publish 列表无效');
