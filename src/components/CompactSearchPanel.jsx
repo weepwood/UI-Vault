@@ -1,19 +1,20 @@
 import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './Icon.jsx';
+import {projectEmoji} from '../../assets/core/workbench.js';
+import {highlightSearchText,searchMatchDetail} from '../../assets/core/catalog.js';
 
-const iconByType={
-  'design-style':'layers',style:'palette',component:'component',effect:'zap',
-  layout:'panels-top-left',demo:'play',resource:'book-open',reference:'bookmark'
-};
-const MAX_RESULTS=36;
+const MAX_RESULTS=60;
+function MatchTitle({title,query}){
+  return <>{highlightSearchText(title,query).map((part,index)=>part.matched
+    ?<mark key={index} className="command-palette-match">{part.text}</mark>
+    :<React.Fragment key={index}>{part.text}</React.Fragment>)}</>;
+}
 
 // 按参考 Command Palette 的设计独立实现：中央面板、渐变光晕、固定高度结果、键盘高亮。
 // 搜索状态由弹窗局部参数提供，输入不会修改第二栏 ProjectList。
 export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=[],onChoose,onClose}){
   const [active,setActive]=useState(0);
-  const [keyboardMode,setKeyboardMode]=useState(true);
   const listRef=useRef(null);
-  const highlightRef=useRef(null);
   const groups=useMemo(()=>{
     if(value.trim())return [{label:'搜索结果',items:items.slice(0,MAX_RESULTS)}];
     const recent=new Set(recentIds);
@@ -30,20 +31,8 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
     inputRef.current?.focus({preventScroll:true});
     inputRef.current?.select();
   },[inputRef]);
-  useLayoutEffect(()=>{
-    const scroller=listRef.current;
-    const indicator=highlightRef.current;
-    const row=scroller?.querySelector('[data-command-index="'+active+'"]');
-    if(!row||!indicator){if(indicator)indicator.style.opacity='0';return;}
-    const outer=scroller.getBoundingClientRect();
-    const rect=row.getBoundingClientRect();
-    indicator.style.transform='translateY('+(rect.top-outer.top+scroller.scrollTop)+'px)';
-    indicator.style.height=rect.height+'px';
-    indicator.style.opacity='1';
-  },[active,flat]);
   const move=(offset)=>{
     if(!flat.length)return;
-    setKeyboardMode(true);
     setActive(index=>{
       const next=(index+offset%flat.length+flat.length)%flat.length;
       const row=listRef.current?.querySelector('[data-command-index="'+next+'"]');
@@ -69,8 +58,13 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
       event.preventDefault();move(event.key==='PageDown'?5:-5);
     }else if(event.key==='Enter'){
       event.preventDefault();choose(active);
-    }else if(event.key==='Tab'&&flat.length){
-      event.preventDefault();move(event.shiftKey?-1:1);
+    }else if(event.key==='Tab'){
+      const focusables=Array.from(event.currentTarget.querySelectorAll(
+        'input:not([disabled]),button:not([disabled]):not([tabindex="-1"])'
+      ));
+      const first=focusables[0],last=focusables[focusables.length-1];
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last?.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first?.focus();}
     }
   };
   let rowIndex=-1;
@@ -88,18 +82,15 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
           aria-activedescendant={shownCount?'command-result-'+active:undefined}
           aria-label="全局搜索项目" aria-keyshortcuts="Control+K Meta+K"
           placeholder="搜索项目、设计风格或技术栈…" value={value} maxLength={160}
-          onChange={event=>{onChange(event.target.value);setKeyboardMode(true);}}/>
+          onChange={event=>onChange(event.target.value)}/>
         {value&&<button className="command-palette-clear" type="button" aria-label="清空搜索"
           onClick={()=>{onChange('');inputRef.current?.focus();}}><Icon name="x"/></button>}
         <span className="command-palette-count" aria-label={'匹配 '+items.length+' 项'}>{loading?'…':items.length}</span>
       </div>
       <div className="command-palette-body">
-        <div className="command-palette-glow" aria-hidden="true"/>
-        <div className="command-palette-veil" aria-hidden="true"/>
         <div className="command-palette-listcard">
           <div className="command-palette-list" ref={listRef} id="compact-search-results"
-            role="listbox" aria-label="匹配的项目" onScroll={()=>{if(highlightRef.current)highlightRef.current.style.opacity='0';}}>
-            <div ref={highlightRef} className={'command-palette-highlight'+(!keyboardMode?' pointer-mode':'')} aria-hidden="true"/>
+            role="listbox" aria-label="匹配的项目">
             {loading?<div className="command-palette-empty">正在加载项目…</div>:
             !shownCount?<div className="command-palette-empty" role="status">没有找到与“{value}”匹配的项目</div>:
             groups.map(group=><div className="command-palette-group" key={group.label} role="group"
@@ -107,13 +98,19 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
               <div className="command-palette-group-label">{group.label}</div>
               {group.items.map(item=>{
                 const index=++rowIndex;
+                const matched=value.trim()?searchMatchDetail(item,value):null;
+                const detail=matched?(matched.label+' · '+matched.text):
+                  (item.subtitle||item.description||item.projectId||'UI Vault');
                 return <button type="button" key={item.id} id={'command-result-'+index}
                   className={'command-palette-item compact-search-result'+(active===index?' is-active':'')}
-                  data-command-index={index} role="option" aria-selected={active===index}
-                  onPointerMove={()=>{if(active!==index){setKeyboardMode(false);setActive(index);}}}
+                  data-command-index={index} role="option" aria-selected={active===index} tabIndex={-1}
+                  onPointerMove={()=>{if(active!==index)setActive(index);}}
                   onMouseDown={event=>event.preventDefault()} onClick={()=>choose(index)}>
-                  <span className="command-palette-item-icon"><Icon name={iconByType[item.type]||'layout-grid'}/></span>
-                  <span className="command-palette-item-label">{item.title}</span>
+                  <span className="command-palette-item-icon project-row-emoji" aria-hidden="true">{projectEmoji(item.id)}</span>
+                  <span className="command-palette-item-copy">
+                    <span className="command-palette-item-label"><MatchTitle title={item.title} query={value}/></span>
+                    <span className="command-palette-item-detail">{detail}</span>
+                  </span>
                   <span className="command-palette-item-meta">{item.projectId||'UI-Vault'}</span>
                   <span className="command-palette-item-enter"><Icon name="check"/></span>
                 </button>;

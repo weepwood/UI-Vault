@@ -36,3 +36,19 @@ test('搜索组件独立于中栏过滤状态，不调用目录变更函数',()=
  assert.match(panel,/onKeyDown=\{handleKeyDown\}/);
  assert.match(panel,/recentIds/);
 });
+
+test('顶栏命令搜索与目录共享稳定 Emoji，结果包含命中信息',()=>{
+ const panel=read('src/components/CompactSearchPanel.jsx');
+ const toolbar=read('src/components/PreviewToolbar.jsx');
+ const row=read('src/components/ProjectList.jsx');
+ const css=read('assets/styles.css');
+ assert.match(panel,/projectEmoji\(item.id\)/);
+ assert.match(row,/projectEmoji\(asset.id\)/);
+ assert.doesNotMatch(panel,/iconByType/);
+ assert.match(panel,/searchMatchDetail\(item,value\)/);
+ assert.match(panel,/MatchTitle title=\{item.title\} query=\{value\}/);
+ assert.match(toolbar,/id="preview-search"/);
+ assert.match(css,/width:min\(720px,calc\(100vw - 32px\)\)/);
+ assert.match(css,/backdrop-filter:blur\(28px\) saturate\(155%\)/);
+ assert.match(css,/html\[data-theme="dark"\] \.command-palette-panel/);
+});

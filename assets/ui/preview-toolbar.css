@@ -2,6 +2,21 @@
 :root{--workbench-toolbar-height:56px}
 .topbar{height:auto;min-height:var(--workbench-toolbar-height);display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 18px;border-bottom:1px solid var(--line);background:var(--surface);flex:none}
 .topbar-project{display:flex;align-items:center;gap:10px;min-width:0;flex:1 1 auto}
+.topbar-search-action{
+ display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;min-width:34px;
+ padding:0;border:1px solid var(--line);border-radius:9px;
+ background:var(--canvas);color:var(--muted);cursor:pointer;
+ transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out);
+}
+.topbar-search-action>.ui-icon{display:block;width:17px;height:17px;flex:none}
+.topbar-search-action:hover,.topbar-search-action[aria-expanded="true"]{
+ background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line);
+}
+.topbar-search-action:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.topbar-search-action:active{transform:scale(.96)}
+@media(prefers-reduced-motion:reduce){.topbar-search-action{transition:none}}
+html[data-motion="reduced"] .topbar-search-action{transition:none}
+
 .project-identity{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .topbar-kind{display:none}
 .project-identity h1{font-size:clamp(16px,1.35vw,19px);font-weight:720;letter-spacing:-.03em;line-height:1.32;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

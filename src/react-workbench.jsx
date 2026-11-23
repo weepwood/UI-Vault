@@ -159,7 +159,7 @@ function WorkbenchPortals({nodes}){
     setCompactSearchOpen(false);
     if(restoreFocus)requestAnimationFrame(()=>{
       const previous=searchReturnFocus.current;
-      const fallback=document.getElementById(mobile?'menu-toggle':'nav-expand-search');
+      const fallback=document.getElementById('preview-search');
       const target=previous?.isConnected&&previous.getClientRects().length?previous:fallback;
       target?.focus({preventScroll:true});
     });
@@ -174,22 +174,16 @@ function WorkbenchPortals({nodes}){
         return next;
       });
     };
-    const onSearch=()=>compactSearchOpen?closePalette(true):openPalette();
     const onStorage=event=>{
       if(event.key===NAV_COLLAPSED_KEY)setNavCollapsed(event.newValue==='true');
     };
     nodes.collapseToggle.addEventListener('click',onToggle);
-    nodes.expandSearch.addEventListener('click',onSearch);
     window.addEventListener('storage',onStorage);
     return ()=>{
       nodes.collapseToggle.removeEventListener('click',onToggle);
-      nodes.expandSearch.removeEventListener('click',onSearch);
       window.removeEventListener('storage',onStorage);
     };
-  },[nodes,mobile,menu,compactSearchOpen,closePalette,openPalette]);
-  useEffect(()=>{
-    nodes.expandSearch.setAttribute('aria-expanded',String(compactSearchOpen));
-  },[nodes,compactSearchOpen]);
+  },[nodes,mobile,menu]);
 
   useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
@@ -352,7 +346,8 @@ function WorkbenchPortals({nodes}){
       versionId={state.versionId} onChangeVersion={changeVersion}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>selected&&setDialogOpen(true)}
-      onMenu={onMenuToggle} menuOpen={menuOpen}/>,nodes.topbar)}
+      onMenu={onMenuToggle} menuOpen={menuOpen}
+      onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize}
       error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
@@ -402,7 +397,7 @@ export function mountWorkbench(){
     listControls:$('.list-controls'),gallery:$('#gallery'),
     topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
     settingsLink:$('.sidebar-footer'),collapseToggle:$('#nav-collapse-toggle'),
-    expandSearch:$('#nav-expand-search'),dialog:$('#project-dialog'),
+    dialog:$('#project-dialog'),
     toast:$('#toast'),reset:$('#reset-filters'),empty:$('#empty'),
     emptyReset:$('#clear-filters'),emptyMessage:$('#empty-message'),
     resultsStatus:$('#results-status'),settingsStatus:$('#settings-status'),dismiss:$('#sidebar-dismiss')

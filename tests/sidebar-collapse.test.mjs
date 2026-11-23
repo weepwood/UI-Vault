@@ -33,14 +33,14 @@ test('左上 Logo 为支持 hover 与键盘的原生 button，并保留移动端
  assert.match(css,/\.app-shell\.is-nav-collapsed \{ --navigation-width:62px; \}/);
  assert.match(react,/nodes\.shell\.classList\.toggle\('is-nav-collapsed'/);
  assert.match(react,/saveNavCollapsed\(next\)/);
- assert.match(react,/nav-expand-search/);
+ assert.match(react,/onSearch=\{openPalette\}/);
 });
 test('收缩后的分类和快捷筛选仍有无障碍名称与标题说明',()=>{
  const nav=read('src/components/CategoryNavigation.jsx');
  const workbench=read('src/react-workbench.jsx');
  assert.match(nav,/aria-label=\{category\.label\} title=\{category\.label\}/);
  assert.match(workbench,/aria-label=\{item\.label\} title=\{item\.label\}/);
- assert.match(workbench,/nodes\.expandSearch\.addEventListener\('click',onSearch\)/);
+ assert.match(workbench,/onSearch=\{openPalette\}/);
 });
 
 test('侧栏展开先完成列宽过渡，再显示不折行的品牌和导航文字',()=>{
@@ -56,11 +56,14 @@ test('侧栏展开先完成列宽过渡，再显示不折行的品牌和导航�
  assert.match(react,/searchCommandAssets\(state\.assets,paletteQuery,state\.labels\)/);
 });
 
-test('全局搜索为居中对话框，窄栏与展开状态使用同一入口',()=>{
+test('全局搜索为居中对话框，入口位于预览顶栏最左侧',()=>{
  const html=read('index.html'),jsx=read('src/react-workbench.jsx');
  const panel=read('src/components/CompactSearchPanel.jsx');
  const css=read('assets/styles.css');
- assert.match(html,/id="nav-expand-search"[^>]*aria-label="打开全局搜索"/);
+ assert.match(html,/id="preview-search"[^>]*aria-label="打开全局搜索"/);
+ assert.doesNotMatch(html,/id="nav-expand-search"/);
+ assert.ok(html.indexOf('id="preview-search"') < html.indexOf('id="menu-toggle"'));
+ assert.match(jsx,/onSearch=\{openPalette\} searchOpen=\{compactSearchOpen\}/);
  assert.doesNotMatch(html,/class="library-search"/);
  assert.match(jsx,/const \[paletteQuery,setPaletteQuery\]=useState\(''\)/);
  assert.match(jsx,/value=\{paletteQuery\} onChange=\{setPaletteQuery\}/);
@@ -73,11 +76,11 @@ test('全局搜索为居中对话框，窄栏与展开状态使用同一入口',
  assert.match(css,/\.nav-index>\.ui-icon/);
 });
 
-test('侧栏两种宽度下分类标题保留等高槽位，搜索按钮尺寸固定',()=>{
+test('侧栏两种宽度下分类标题保留等高槽位，顶栏搜索按钮尺寸固定',()=>{
  const css=read('assets/styles.css');
  assert.match(css,/\.app-shell\.is-nav-collapsed \.library-rail \.category-section>\.section-row/);
  assert.match(css,/display:flex;visibility:hidden;opacity:0;pointer-events:none/);
- assert.match(css,/\.nav-search-compact[^{]*\{/);
- assert.match(css,/width:40px/);
- assert.match(css,/height:34px/);
+ const toolbar=read('assets/ui/preview-toolbar.css');
+ assert.match(toolbar,/\.topbar-search-action/);
+ assert.match(toolbar,/flex:0 0 34px;width:34px;height:34px/);
 });
