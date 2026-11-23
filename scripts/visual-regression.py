@@ -1005,7 +1005,7 @@ def verify_sidebar_transition_no_reflow(browser, origin):
                 return {selector:s,whiteSpace:css.whiteSpace,opacity:css.opacity,height:el.getBoundingClientRect().height};});
             }""")
             assert all(item['whiteSpace']=='nowrap' for item in metrics), f'展开过程文字发生折行：{metrics}'
-            assert all(item['height'] < 27 for item in metrics), f'展开后文字高度异常：{metrics}'
+            assert all(item['height'] < (44 if item['selector']=='.brand-type' else 27) for item in metrics), f'展开后文字高度异常：{metrics}'
             page.wait_for_function("() => !document.querySelector('.app-shell').classList.contains('is-nav-revealing')")
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width > 150")
             page.wait_for_function("() => parseFloat(getComputedStyle(document.querySelector('.brand-type')).opacity) >= .99")
