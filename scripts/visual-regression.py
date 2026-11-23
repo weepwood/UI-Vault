@@ -953,7 +953,6 @@ def verify_sidebar_collapse(browser, origin):
         page.keyboard.press('Escape')
         popover.wait_for(state='hidden')
         assert toggle.get_attribute('aria-expanded') == 'false', '关闭搜索不应改变侧栏状态'
-        toggle.click()
         page.reload(wait_until='domcontentloaded')
         assert page.locator('#nav-collapse-toggle').get_attribute('aria-expanded') == 'false', '侧栏收缩状态未持久化'
         assert 'is-nav-collapsed' in (page.locator('.app-shell').get_attribute('class') or '')
