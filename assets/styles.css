@@ -1253,13 +1253,18 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
 .command-palette-group-label{padding:11px 20px 7px;font-size:11px;line-height:16px;font-weight:650;color:var(--muted)}
 .command-palette-item{
  position:relative;display:flex;align-items:center;gap:14px;
- min-width:0;min-height:56px;margin:1px 8px;padding:9px 12px;
+ /* 覆盖旧 .compact-search-result 的 width:100%，让背景与滚动容器保持内边距。 */
+ align-self:stretch;width:auto;min-width:0;min-height:56px;margin:3px 12px;padding:9px 12px;
  border:1px solid transparent;border-radius:9px;background:transparent;
  color:var(--ink);text-align:left;cursor:pointer;
  transition:background-color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease;
 }
-.command-palette-item.is-active,.command-palette-item:hover{background:var(--hover);border-color:var(--line-soft)}
-.command-palette-item:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+.command-palette-item:hover{background:var(--hover);border-color:var(--line-soft)}
+.command-palette-item.is-active{background:var(--accent-soft);border-color:var(--accent-line)}
+.command-palette-item.is-active:hover{border-color:var(--accent-line-strong)}
+.command-palette-item:focus-visible{
+ background:var(--accent-soft);outline:2px solid var(--focus);outline-offset:-2px;
+}
 .command-palette-item-icon{
  display:grid;place-items:center;flex:0 0 34px;width:34px;height:34px;
  border:1px solid var(--line);border-radius:9px;background:var(--surface);
@@ -1280,12 +1285,6 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
  min-width:0;max-width:125px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
  color:var(--muted);font-size:10px;
 }
-.command-palette-item-enter{
- opacity:0;transform:translateX(-3px);flex:none;color:var(--muted);
- transition:opacity var(--motion-fast,120ms),transform var(--motion-base,160ms);
-}
-.command-palette-item-enter .ui-icon{width:15px;height:15px}
-.command-palette-item.is-active .command-palette-item-enter{opacity:1;transform:none}
 .command-palette-empty{
  display:flex;align-items:center;justify-content:center;flex:1;min-height:180px;
  padding:24px;color:var(--muted);text-align:center;font-size:13px;
@@ -1316,7 +1315,7 @@ html[data-theme="dark"] .command-palette-footer{background:rgba(18,24,29,.38)}
  .command-palette-overlay{padding:12px}
  .command-palette-panel{width:100%;max-height:calc(100dvh - 24px);padding:7px;border-radius:16px}
  .command-palette-list{height:min(440px,calc(100dvh - 178px))}
- .command-palette-item{gap:10px;margin-inline:5px;padding-inline:9px}
+ .command-palette-item{gap:10px;margin-inline:8px;padding-inline:9px}
  .command-palette-item-meta{display:none}
  .command-palette-footer{padding:10px;gap:6px;font-size:10px}
  .command-palette-footer kbd{min-width:17px;height:18px;font-size:9px}
@@ -1324,12 +1323,11 @@ html[data-theme="dark"] .command-palette-footer{background:rgba(18,24,29,.38)}
 @media(max-width:360px){.command-palette-footer>span:last-child{display:none}}
 @media(prefers-reduced-motion:reduce){
  .command-palette-overlay,.command-palette-panel{animation:none}
- .command-palette-item,.command-palette-item-enter{transition:none}
+ .command-palette-item{transition:none}
 }
 html[data-motion="reduced"] .command-palette-overlay,
 html[data-motion="reduced"] .command-palette-panel{animation:none}
-html[data-motion="reduced"] .command-palette-item,
-html[data-motion="reduced"] .command-palette-item-enter{transition:none}
+html[data-motion="reduced"] .command-palette-item{transition:none}
 
 /* 导航纵向节奏保持恒定：分类标签在窄栏仅不可见，仍占据 27px 布局槽。 */
 @media(min-width:761px){

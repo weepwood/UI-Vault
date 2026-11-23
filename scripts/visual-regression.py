@@ -726,6 +726,18 @@ def verify_search_experience(browser, origin):
             field.fill("liquid-orb")
             result=page.locator('#compact-search-results [data-command-index]').first
             result.wait_for(state="visible")
+            # 搜索结果的选中高亮不能贴住滚动区域左右边界，也不再绘制勾号。
+            gaps=result.evaluate("""el => {
+                const row=el.getBoundingClientRect();
+                const list=el.closest('.command-palette-list').getBoundingClientRect();
+                return {left:row.left-list.left,right:list.right-row.right,
+                        selected:el.getAttribute('aria-selected'),
+                        background:getComputedStyle(el).backgroundColor};
+            }""")
+            assert gaps["left"] >= 7 and gaps["right"] >= 7, "搜索结果选中背景没有保留左右间距"
+            assert gaps["selected"] == "true", "首项没有获得键盘导航选中态"
+            assert gaps["background"] != "rgba(0, 0, 0, 0)", "选中项没有可见背景"
+            assert page.locator(".command-palette-item-enter").count() == 0, "选中项仍出现多余勾号"
             assert "liquid" in result.inner_text().lower() or "液态" in result.inner_text(), "搜索没有匹配到液态玻璃项目"
             assert page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")==before, "输入时改变了第二栏排序或列表"
             assert page.evaluate("() => window.__paletteFrame===document.querySelector('#preview-stage iframe')"), "输入时 iframe 被重建"
