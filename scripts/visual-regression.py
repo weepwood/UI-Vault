@@ -230,10 +230,15 @@ def verify_react_interactions(browser, origin):
         assert page.evaluate("JSON.parse(localStorage.getItem('ui-vault:preferences:v1')).theme") == "system", "重置未恢复主题默认值"
         page.go_back(wait_until="domcontentloaded")
         page.locator("#preview-stage").wait_for(state="visible")
-        page.locator("#search").fill("xyz-unique-never-match")
-        assert page.locator(".project-row").count() == 0, "空搜索结果没有生效"
-        page.locator("#search").fill("")
-        page.locator(".project-row").first.wait_for(state="visible")
+        visible_before = page.locator("#gallery .project-row").count()
+        page.locator("#nav-expand-search").click()
+        page.locator("#compact-search-dialog").wait_for(state="visible")
+        page.locator("#compact-search-input").fill("xyz-unique-never-match")
+        assert page.locator(".compact-search-result").count() == 0, "全局搜索未显示无结果状态"
+        assert page.locator("#gallery .project-row").count() == visible_before, "全局搜索改变了第二栏目录"
+        page.locator("#compact-search-input").press("Escape")
+        page.locator("#compact-search-input").press("Escape")
+        page.locator("#compact-search-dialog").wait_for(state="hidden")
         page.goto(origin + "?asset=emboss-poster-lab", wait_until="domcontentloaded")
         page.locator("#preview-title").filter(has_text="Emboss Lab · 浮雕海报交互").wait_for(state="visible")
         embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
@@ -649,70 +654,64 @@ def verify_topbar_alignment(browser, origin):
 
 
 def verify_search_experience(browser, origin):
-    """真实浏览器验证焦点外观、混合关键词、结果解释与输入期间 iframe 保留。"""
-    context = browser.new_context(
-        viewport={"width": 1440, "height": 900},
-        reduced_motion="reduce", locale="zh-CN"
-    )
-    try:
-        page = context.new_page()
-        errors = []
-        page.on("pageerror", lambda error: errors.append(str(error)))
-        page.goto(origin, wait_until="domcontentloaded")
-        page.locator(".project-row").first.wait_for(state="visible", timeout=30000)
-        search = page.locator("#search")
-        search.focus()
-        assert search.evaluate("(el) => getComputedStyle(el).outlineStyle") == "none", "搜索内层出现焦点描边"
-        assert search.evaluate("(el) => getComputedStyle(el.parentElement).boxShadow") != "none", "搜索外层丢失可见聚焦效果"
-        page.evaluate("window.__originalSearchFrame = document.querySelector('#preview-stage iframe')")
-        assert page.evaluate("Boolean(window.__originalSearchFrame)"), "未加载用于预览稳定性回归的 iframe"
-
-        search.fill("玻璃 WebGPU")
-        page.locator('#gallery [data-id="liquid-orb"]').wait_for(state="visible")
-        assert page.locator('#gallery [data-id="liquid-orb"] .project-row-title mark').count() >= 1, "标题没有标记匹配词"
-        match_row = page.locator('#gallery [data-id="liquid-orb"]')
-        assert match_row.locator('.search-match-label').inner_text() in ("技术", "标签"), "没有展示真实命中的标签或技术字段"
-        assert "WebGPU" in match_row.inner_text(), "结果没有解释 WebGPU 字段命中"
-        assert page.evaluate("document.querySelector('#preview-stage iframe') === window.__originalSearchFrame"), "输入搜索词时重建了 iframe"
-
-        search.press("Escape")
-        assert search.input_value() == "", "Esc 未清空输入"
-        search.fill("Vue3")
-        page.locator('#gallery [data-id="weepwood-ui"]').wait_for(state="visible")
-        assert page.evaluate("document.querySelector('#preview-stage iframe') === window.__originalSearchFrame"), "搜索切换时重建了 iframe"
-
-        search.fill("React")
-        page.locator(".search-clear").click()
-        assert search.input_value() == "", "搜索清除按钮失效"
-        assert page.evaluate("document.activeElement?.id === 'search'"), "清空后没有恢复输入焦点"
-
-        search.fill("MRR Admin")
-        page.locator('#gallery [data-id="mrr-admin"]').wait_for(state="visible")
-        search.press("Enter")
-        page.wait_for_function("document.querySelector('#preview-title')?.textContent.includes('MRR Admin')")
-        search.fill("missing-project-xyz-2026")
-        assert page.locator("#gallery .project-row").count() == 0, "未命中的搜索仍显示无关项目"
-        assert "没有找到" in page.locator("#empty-message").inner_text(), "缺少明确的无结果反馈"
-        assert not errors, "搜索页面脚本错误：" + "; ".join(errors)
-    finally:
-        context.close()
-
-    mobile = browser.new_context(viewport={"width": 390, "height": 844},
-                                 reduced_motion="reduce", locale="zh-CN")
-    try:
-        page = mobile.new_page()
-        page.goto(origin, wait_until="domcontentloaded")
-        page.locator(".project-row").first.wait_for(state="attached")
-        page.locator("#menu-toggle").click()
-        search = page.locator("#search")
-        search.focus()
-        assert search.evaluate("(el) => getComputedStyle(el).outlineStyle") == "none", "移动端搜索有内层焦点边框"
-        search.fill("液态 玻璃")
-        page.locator('#gallery [data-id="liquid-orb"]').wait_for(state="visible")
-        assert page.evaluate("document.documentElement.scrollWidth <= window.innerWidth + 2"), "搜索引起手机横向滚动"
-    finally:
-        mobile.close()
-    print("搜索回归通过：桌面/手机焦点、混合关键词、命中字段、清除、Enter 与 iframe 保持。")
+    """Command Palette 全局搜索：居中、结果过滤、键盘导航、第二栏及 iframe 不变。"""
+    for width,height in ((1440,900),(390,844)):
+        context=browser.new_context(viewport={"width":width,"height":height},
+                                    reduced_motion="reduce",locale="zh-CN")
+        page=context.new_page()
+        errors=[]
+        page.on("pageerror",lambda error:errors.append(str(error)))
+        try:
+            page.goto(origin+"?asset=atlas-academia",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+            if width < 761:
+                page.locator("#menu-toggle").click()
+            assert page.locator("#search").count()==0, "侧栏不应再存在独立搜索输入框"
+            before=page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")
+            page.evaluate("() => window.__paletteFrame=document.querySelector('#preview-stage iframe')")
+            page.locator("#nav-expand-search").click()
+            dialog=page.locator("#compact-search-dialog")
+            dialog.wait_for(state="visible")
+            field=page.locator("#compact-search-input")
+            assert field.evaluate("(el)=>document.activeElement===el"), "全局搜索没有获得焦点"
+            bounds=dialog.bounding_box()
+            assert abs(bounds["x"]+bounds["width"]/2-width/2)<3, "搜索面板没有水平居中"
+            assert abs(bounds["y"]+bounds["height"]/2-height/2)<3, "搜索面板没有垂直居中"
+            assert field.evaluate("(el)=>getComputedStyle(el).outlineStyle")=="none", "全局搜索内层出现黑色焦点框"
+            field.fill("liquid-orb")
+            result=page.locator('#compact-search-results [data-command-index]').first
+            result.wait_for(state="visible")
+            assert "liquid" in result.inner_text().lower() or "液态" in result.inner_text(), "搜索没有匹配到液态玻璃项目"
+            assert page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")==before, "输入时改变了第二栏排序或列表"
+            assert page.evaluate("() => window.__paletteFrame===document.querySelector('#preview-stage iframe')"), "输入时 iframe 被重建"
+            field.press("ArrowDown")
+            assert field.get_attribute("aria-activedescendant").startswith("command-result-")
+            field.press("Escape")
+            assert field.input_value()=="", "首次 Esc 应清除查询"
+            assert dialog.is_visible(), "首次 Esc 不应立即关闭面板"
+            field.fill("missing-project-xyz-2026")
+            assert page.locator(".compact-search-result").count()==0, "无结果状态仍显示项目"
+            assert "没有找到" in page.locator(".command-palette-empty").inner_text()
+            assert page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")==before, "无结果查询清空了第二栏"
+            page.locator(".command-palette-clear").click()
+            assert field.input_value()=="", "清除搜索按钮失效"
+            assert field.evaluate("(el)=>document.activeElement===el"), "清除后没有返回焦点"
+            field.fill("mrr-admin")
+            page.locator(".compact-search-result").first.wait_for(state="visible")
+            field.press("Enter")
+            dialog.wait_for(state="hidden")
+            page.wait_for_function("() => document.querySelector('#preview-title')?.textContent?.toLowerCase().includes('mrr admin')")
+            assert page.locator("#gallery .project-row").evaluate_all("(els)=>els.map(el=>el.dataset.id)")==before, "选择结果时错误重置了第二栏目录"
+            page.keyboard.press("Control+k")
+            dialog.wait_for(state="visible")
+            assert page.locator("#compact-search-input").evaluate("(el)=>el===document.activeElement"), "快捷键未聚焦全局搜索"
+            page.keyboard.press("Escape")
+            dialog.wait_for(state="hidden")
+            assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+2"), "中央面板引起横向滚动"
+            assert not errors, "全局搜索脚本异常："+ "; ".join(errors)
+        finally:
+            context.close()
+    print("全局搜索回归通过：桌面/手机居中、搜索结果、键盘操作、清空与第二栏及 iframe 独立。")
 
 
 def verify_background_lab(browser, origin):
@@ -1071,7 +1070,7 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             assert toggle.get_attribute('aria-expanded')=='false'
             page.locator('#nav-expand-search').click()
             popup.wait_for(state='visible')
-            page.locator('.topbar').click(position={'x':250,'y':20})
+            page.locator('.command-palette-overlay').click(position={'x':10,'y':10})
             popup.wait_for(state='hidden')
             assert toggle.get_attribute('aria-expanded')=='false'
             page.keyboard.press('/')
