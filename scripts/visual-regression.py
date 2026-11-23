@@ -683,6 +683,17 @@ def verify_search_experience(browser, origin):
             if width < 761:
                 page.locator("#menu-toggle").click()  # 移动端先关闭目录，顶栏才可操作
             page.locator("#preview-search").click()
+            # 入口位于设备控制组之后、项目说明之前；不随标题长度变更位置。
+            viewport=page.locator("#viewport-controls").bounding_box()
+            search_button=page.locator("#preview-search").bounding_box()
+            separator=page.locator(".topbar-separator")
+            info_button=page.locator("#preview-info").bounding_box()
+            assert search_button["x"] > viewport["x"] + viewport["width"] - 1, "搜索按钮没有放在自适应选择器右侧"
+            assert search_button["x"] + search_button["width"] < info_button["x"], "搜索按钮没有放在项目说明左侧"
+            assert abs(search_button["y"] + search_button["height"]/2 - (viewport["y"] + viewport["height"]/2)) < 3, "搜索按钮与设备选择器未垂直居中"
+            if separator.is_visible():
+                line=separator.bounding_box()
+                assert search_button["x"] + search_button["width"] < line["x"], "搜索按钮没有在竖向分隔线左侧"
             dialog=page.locator("#compact-search-dialog")
             dialog.wait_for(state="visible")
             field=page.locator("#compact-search-input")

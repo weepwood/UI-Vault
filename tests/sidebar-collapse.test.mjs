@@ -56,13 +56,15 @@ test('侧栏展开先完成列宽过渡，再显示不折行的品牌和导航�
  assert.match(react,/searchCommandAssets\(state\.assets,paletteQuery,state\.labels\)/);
 });
 
-test('全局搜索为居中对话框，入口位于预览顶栏最左侧',()=>{
+test('全局搜索为居中对话框，入口位于设备选择器和说明按钮之间',()=>{
  const html=read('index.html'),jsx=read('src/react-workbench.jsx');
  const panel=read('src/components/CompactSearchPanel.jsx');
  const css=read('assets/styles.css');
  assert.match(html,/id="preview-search"[^>]*aria-label="打开全局搜索"/);
  assert.doesNotMatch(html,/id="nav-expand-search"/);
- assert.ok(html.indexOf('id="preview-search"') < html.indexOf('id="menu-toggle"'));
+ assert.ok(html.indexOf('id="viewport-controls"') < html.indexOf('id="preview-search"'));
+ assert.ok(html.indexOf('id="preview-search"') < html.indexOf('class="topbar-separator"'));
+ assert.ok(html.indexOf('class="topbar-separator"') < html.indexOf('id="preview-info"'));
  assert.match(jsx,/onSearch=\{openPalette\} searchOpen=\{compactSearchOpen\}/);
  assert.doesNotMatch(html,/class="library-search"/);
  assert.match(jsx,/const \[paletteQuery,setPaletteQuery\]=useState\(''\)/);

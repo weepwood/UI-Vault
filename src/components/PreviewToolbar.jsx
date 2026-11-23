@@ -78,10 +78,6 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,on
   const versionOptions=[{value:'original',label:'V1 · 原版'},...versions.map((v,i)=>({value:v.id,label:'V'+(i+2)+' · '+v.label}))];
   return <>
     <div className="topbar-project">
-      <button id="preview-search" className="topbar-search-action" type="button"
-        aria-label="打开全局搜索" title="搜索项目 · Ctrl/⌘ K"
-        aria-controls="compact-search-dialog" aria-haspopup="dialog" aria-expanded={String(searchOpen)}
-        onClick={onSearch}><Icon name="search"/></button>
       <button id="menu-toggle" className="menu-toggle" type="button"
         aria-label={menuOpen?'关闭项目目录':'打开项目目录'} aria-expanded={String(menuOpen)}
         aria-controls="library-rail" onClick={onMenu}><Icon name="menu"/></button>
@@ -101,6 +97,10 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,on
       <ViewportSwitcher mode={previewMode} onChange={onChangePreview} visible={asset?.source==='local'}/>
       {versions.length>0&&<WorkbenchSelect id="asset-version" label="切换设计版本" value={versionId}
         onChange={onChangeVersion} options={versionOptions} icon="layers" className="select-field--version"/>}
+      <button id="preview-search" className="topbar-search-action" type="button"
+        aria-label="打开全局搜索" title="搜索项目 · Ctrl/⌘ K"
+        aria-controls="compact-search-dialog" aria-haspopup="dialog" aria-expanded={String(searchOpen)}
+        onClick={onSearch}><Icon name="search"/></button>
       <span className="topbar-separator" aria-hidden="true"/>
       <div className="topbar-actions">
         <button type="button" id="preview-info" className="info-action" aria-haspopup="dialog"

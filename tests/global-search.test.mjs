@@ -48,6 +48,11 @@ test('顶栏命令搜索与目录共享稳定 Emoji，结果包含命中信息',
  assert.match(panel,/searchMatchDetail\(item,value\)/);
  assert.match(panel,/MatchTitle title=\{item.title\} query=\{value\}/);
  assert.match(toolbar,/id="preview-search"/);
+ assert.ok(toolbar.indexOf('<ViewportSwitcher ') < toolbar.indexOf('id="preview-search"'));
+ assert.ok(toolbar.indexOf('id="preview-search"') < toolbar.indexOf('className="topbar-separator"'));
+ assert.ok(toolbar.indexOf('className="topbar-separator"') < toolbar.indexOf('id="preview-info"'));
+ assert.ok(toolbar.indexOf('id="preview-search"') > toolbar.indexOf('className="topbar-tools"'));
+ assert.ok(toolbar.indexOf('id="preview-search"') > toolbar.indexOf('id="menu-toggle"'));
  assert.match(css,/width:min\(720px,calc\(100vw - 32px\)\)/);
  assert.match(css,/backdrop-filter:blur\(28px\) saturate\(155%\)/);
  assert.match(css,/html\[data-theme="dark"\] \.command-palette-panel/);

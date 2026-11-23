@@ -4,12 +4,14 @@ import {readFileSync} from 'node:fs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
-test('预览顶栏最左侧保留全局搜索图标，快捷键打开中央面板',()=>{
+test('设备选择器与说明按钮之间放置搜索图标，快捷键打开中央面板',()=>{
   const html=read('index.html');
   const react=read('src/react-workbench.jsx');
   const toolbar=read('assets/ui/preview-toolbar.css');
   assert.match(html,/id="preview-search"[^>]*aria-controls="compact-search-dialog"/);
-  assert.ok(html.indexOf('id="preview-search"')<html.indexOf('id="menu-toggle"'));
+  assert.ok(html.indexOf('id="viewport-controls"')<html.indexOf('id="preview-search"'));
+  assert.ok(html.indexOf('id="preview-search"')<html.indexOf('class="topbar-separator"'));
+  assert.ok(html.indexOf('class="topbar-separator"')<html.indexOf('id="preview-info"'));
   assert.doesNotMatch(html,/<div class="library-search">|id="nav-expand-search"/);
   assert.match(toolbar,/\.topbar-search-action/);
   assert.match(toolbar,/width:34px;height:34px/);
