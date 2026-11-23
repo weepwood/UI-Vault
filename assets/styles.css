@@ -1373,3 +1373,19 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
   .command-palette-overlay,.command-palette-panel,.command-palette-glow{animation:none}
   .command-palette-highlight,.command-palette-item{transition:none}
 }
+
+
+/* 导航纵向节奏保持恒定：分类标签在窄栏仅不可见，仍占据 27px 布局槽。 */
+@media(min-width:761px){
+  .app-shell.is-nav-collapsed .library-rail .category-section>.section-row{
+    display:flex;visibility:hidden;opacity:0;pointer-events:none;
+  }
+  .library-rail .quick-filters .filter-button,
+  .library-rail .category-nav .nav-button{
+    height:34px;min-height:34px;
+  }
+  .app-shell.is-nav-collapsed .library-rail .quick-filters .filter-button,
+  .app-shell.is-nav-collapsed .library-rail .category-nav .nav-button{
+    height:34px;min-height:34px;
+  }
+}

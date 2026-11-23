@@ -1036,10 +1036,11 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             page.locator('#preview-stage iframe').wait_for(state='attached')
             page.evaluate("() => window.__initialIframe=document.querySelector('#preview-stage iframe')")
             js="""() => {
-               const selectors=['.quick-filters .filter-button .ui-icon',
+               const selectors=['#nav-expand-search .ui-icon',
+                 '.quick-filters .filter-button .ui-icon',
                  '.category-nav .nav-index .ui-icon','.sidebar-footer .sidebar-settings .ui-icon'];
                return selectors.map(selector=>{const el=document.querySelector(selector);
-                 const r=el.getBoundingClientRect();return {selector,width:r.width,height:r.height};});
+                 const r=el.getBoundingClientRect();return {selector,width:r.width,height:r.height,x:r.x,y:r.y};});
             }"""
             before=page.evaluate(js)
             toggle.click()
@@ -1052,6 +1053,8 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             for phase,sizes in [('compact',compact),('during',during),('expanded',expanded)]:
                 for a,b in zip(before,sizes):
                     assert abs(a['width']-b['width']) < .25 and abs(a['height']-b['height']) < .25, f'{width}px {phase} 图标尺寸不一致：{a} / {b}'
+                    if a['selector'] != '.sidebar-footer .sidebar-settings .ui-icon':
+                        assert abs(a['y']-b['y']) < 1, f'{width}px {phase} 图标上下位移：{a} / {b}'
             assert page.evaluate("() => window.__initialIframe===document.querySelector('#preview-stage iframe')"), '切换侧栏不应重载当前 iframe'
             toggle.click()
             page.wait_for_function("() => document.querySelector('#sidebar').getBoundingClientRect().width < 65")

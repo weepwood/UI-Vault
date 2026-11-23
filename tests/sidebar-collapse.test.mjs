@@ -72,3 +72,12 @@ test('全局搜索为居中对话框，窄栏与展开状态使用同一入口',
  assert.match(css,/\.quick-filters \.filter-button>\.ui-icon/);
  assert.match(css,/\.nav-index>\.ui-icon/);
 });
+
+test('侧栏两种宽度下分类标题保留等高槽位，搜索按钮尺寸固定',()=>{
+ const css=read('assets/styles.css');
+ assert.match(css,/\.app-shell\.is-nav-collapsed \.library-rail \.category-section>\.section-row/);
+ assert.match(css,/display:flex;visibility:hidden;opacity:0;pointer-events:none/);
+ assert.match(css,/\.nav-search-compact[^{]*\{/);
+ assert.match(css,/width:40px/);
+ assert.match(css,/height:34px/);
+});
