@@ -4,15 +4,16 @@ import {readFileSync} from 'node:fs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
-test('搜索框不显示快捷键标识，但仍可通过原快捷键聚焦',()=>{
+test('侧栏仅保留固定大小的全局搜索图标，快捷键打开中央面板',()=>{
   const html=read('index.html');
   const react=read('src/react-workbench.jsx');
-  const search=html.slice(html.indexOf('<div class="library-search">'),html.indexOf('</div>',html.indexOf('<div class="library-search">')));
-  assert.match(search,/id="search"/);
-  assert.match(search,/aria-keyshortcuts="Control[+]K Meta[+]K"/);
-  assert.doesNotMatch(search,/<kbd|⌘ K/);
+  const css=read('assets/styles.css');
+  assert.match(html,/id="nav-expand-search"[^>]*aria-controls="compact-search-dialog"/);
+  assert.doesNotMatch(html,/<div class="library-search">/);
+  assert.match(css,/\.nav-search-compact\s*\{/);
+  assert.match(css,/width:40px/);
   assert.match(react,/event[.]metaKey\|\|event[.]ctrlKey/);
-  assert.match(react,/searchRef[.]current\?[.]focus\(/);
+  assert.match(react,/openPalette\(\)/);
 });
 
 test('项目目录、结果数量、排序和标签筛选结构完整',()=>{

@@ -8,7 +8,7 @@ const source=p=>readFile(join(ROOT,p),'utf8');
 
 test('资料库首屏提供跳过导航、搜索与资产入口',async()=>{
   const s=await source('index.html');
-  for(const key of ['class="skip-link" href="#main"','id="main"','id="search"','id="category-nav"','id="gallery"','id="preview-stage"','id="project-dialog"','id="preview-info"'])assert.ok(s.includes(key),key);
+  for(const key of ['class="skip-link" href="#main"','id="main"','id="nav-expand-search"','id="category-nav"','id="gallery"','id="preview-stage"','id="project-dialog"','id="preview-info"'])assert.ok(s.includes(key),key);
 });
 test('主站不再使用模板化 Hero 和装饰元素',async()=>{
   const s=await source('index.html');
