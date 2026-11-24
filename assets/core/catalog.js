@@ -65,7 +65,14 @@ const TERM_ALIASES=Object.freeze({
   '立体主义':['cubism'],'cubism':['立体主义'],
   '赛博极简':['cyberminimalism'],'cyberminimalism':['赛博极简'],
   '达达主义':['dadaism'],'dadaism':['达达主义'],
-  '丹麦粉彩':['danish pastel'],'danish pastel':['丹麦粉彩']
+  '丹麦粉彩':['danish pastel'],'danish pastel':['丹麦粉彩'],
+  '暗黑学院':['dark academia'],'dark academia':['暗黑学院'],
+  '暗黑植物':['dark botanical'],'dark botanical':['暗黑植物'],
+  '风格派':['de stijl'],'de stijl':['风格派'],
+  '解构主义':['deconstructivism'],'deconstructivism':['解构主义'],
+  '柴油朋克':['dieselpunk'],'dieselpunk':['柴油朋克'],
+  '数字拼贴':['digital collage'],'digital collage':['数字拼贴'],
+  '数字花园':['digital garden'],'digital garden':['数字花园']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
