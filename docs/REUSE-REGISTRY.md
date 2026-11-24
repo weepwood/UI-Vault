@@ -31,3 +31,5 @@
 #99 独立 React/Vue Button 验收 45406085215 成功；新增 Input/Switch 原生适配器待独立运行检查。复杂 Tabs/Dialog 优先采用 Radix/Reka，尚未引入未锁定依赖。
 
 安装 CLI（在仓库根目录，先完成构建）：`node scripts/install-registry.mjs dist/registry /path/to/project foundation-react-input foundation-react-switch`。源目录必须是用户信任的本地 Registry；哈希检测内容一致性，不证明远端身份。目标目录排他创建，生成 REGISTRY-LOCK.json 固定版本、请求模块与文件哈希。Vue 对应 foundation-vue-input、foundation-vue-switch；框架依赖由目标工程安装，仍需通过独立验收。
+
+复杂原语候选：foundation-react-primitives / foundation-vue-primitives，各包含 Tabs、Dialog、Select、Popover，分别声明 radix-ui@1.4.3 与 reka-ui@2.10.1，保留共享 Token/CSS 与各自许可证。独立 CI 安装固定直接版本并保留传递依赖锁文件；目标工程需自行安装依赖，CLI 不执行 npm install。尚待运行验收。

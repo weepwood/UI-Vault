@@ -39,7 +39,19 @@ const TERM_ALIASES=Object.freeze({
   '亲生物设计':['biophilic design'],'biophilic design':['亲生物设计'],
   '生物形态':['biomorphic'],'biomorphic':['生物形态'],
   '三维沉浸':['3d immersive'],'3d immersive':['三维沉浸'],
-  '蓝图设计':['blueprint technical'],'blueprint technical':['蓝图设计']
+  '蓝图设计':['blueprint technical'],'blueprint technical':['蓝图设计'],
+  '酸性设计':['acid design'],'acid design':['酸性设计'],
+  '非洲未来主义':['afrofuturism'],'afrofuturism':['非洲未来主义'],
+  '反设计':['anti design'],'anti design':['反设计'],
+  '工艺美术':['arts and crafts'],'arts and crafts':['工艺美术'],
+  '原子时代':['atomic age'],'atomic age':['原子时代'],
+  '芭蕾风':['balletcore'],'balletcore':['芭蕾风'],
+  '芭比风':['barbiecore'],'barbiecore':['芭比风'],
+  '巴洛克':['baroque'],'baroque':['巴洛克'],
+  '卡片式':['card based design'],'card based design':['卡片式'],
+  '天体风':['celestialcore'],'celestialcore':['天体风'],
+  '混沌设计':['chaos design'],'chaos design':['混沌设计'],
+  '中国风装饰':['chinoiserie'],'chinoiserie':['中国风装饰']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

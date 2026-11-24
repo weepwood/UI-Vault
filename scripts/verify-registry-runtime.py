@@ -5,7 +5,7 @@ import threading
 from functools import partial
 from pathlib import Path
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 def main():
     directory = Path(sys.argv[1]).resolve() / "runtime-site"
@@ -48,6 +48,32 @@ def main():
                 page.keyboard.press("Space")
                 assert switch.is_checked()
                 assert page.locator("#form-state").inner_text()=="示例|true"
+                first=page.get_by_role("tab",name="第一项")
+                first.focus()
+                page.keyboard.press("ArrowRight")
+                page.get_by_role("tabpanel",name="第二项").wait_for()
+                trigger=page.get_by_role("button",name="打开对话框")
+                trigger.click()
+                page.get_by_role("dialog",name="示例对话框").wait_for()
+                page.keyboard.press("Escape")
+                page.get_by_role("dialog",name="示例对话框").wait_for(state="hidden")
+                # Radix/Reka close autofocus runs after the dialog unmount; wait for the actual focus.
+                expect(trigger).to_be_focused(timeout=5000)
+                select=page.get_by_role("combobox",name="选择选项")
+                select.click()
+                expect(page.get_by_role("option",name="不可选")).to_have_attribute("aria-disabled","true")
+                page.get_by_role("option",name="乙").click()
+                expect(page.get_by_test_id("selected-value")).to_have_text("b")
+                expect(select).to_contain_text("乙")
+                popover=page.get_by_role("button",name="打开浮层")
+                popover.click()
+                expect(popover).to_have_attribute("aria-expanded","true")
+                expect(page.get_by_test_id("popover-content")).to_be_visible()
+                expect(page.get_by_test_id("popover-content")).to_have_text("浮层内容")
+                page.keyboard.press("Escape")
+                expect(page.get_by_test_id("popover-content")).to_be_hidden()
+                expect(popover).to_have_attribute("aria-expanded","false")
+                expect(popover).to_be_focused()
                 assert not errors, errors
                 assert not external, external
                 page.close()
