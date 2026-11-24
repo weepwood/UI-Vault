@@ -1046,6 +1046,24 @@ def verify_warm_layout_parameters(browser, origin):
         panel.get_by_role("spinbutton",name="第二个中色标位置",exact=True).fill("75")
         panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).fill("15")
         panel.get_by_role("spinbutton",name="第二层阴影横向偏移",exact=True).fill("-4")
+        stop=panel.locator("[data-gradient-stop='gradientMidPosition']")
+        stop.scroll_into_view_if_needed()
+        stop.focus()
+        page.keyboard.press("ArrowRight")
+        assert panel.get_by_role("spinbutton",name="中间色标位置",exact=True).input_value()=="36"
+        box=stop.bounding_box()
+        page.mouse.move(box["x"]+box["width"]/2,box["y"]+box["height"]/2)
+        page.mouse.down()
+        page.mouse.move(box["x"]+box["width"]/2+20,box["y"]+box["height"]/2,steps=5)
+        page.mouse.up()
+        assert int(panel.get_by_role("spinbutton",name="中间色标位置",exact=True).input_value())>36
+        panel.get_by_role("spinbutton",name="中间色标位置",exact=True).fill("35")
+        panel.get_by_role("button",name="第二层阴影 · 启用",exact=True).click()
+        assert panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).input_value()=="0"
+        panel.get_by_role("button",name="第二层阴影 · 关闭",exact=True).click()
+        panel.get_by_role("button",name="线性",exact=True).click()
+        assert panel.get_by_role("spinbutton",name="控制点 X1",exact=True).input_value()=="0"
+        panel.get_by_role("button",name="柔和",exact=True).click()
         handle=panel.locator("[data-curve-handle='1']")
         handle.scroll_into_view_if_needed()
         point=handle.bounding_box()

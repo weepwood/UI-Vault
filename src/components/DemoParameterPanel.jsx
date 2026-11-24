@@ -2,6 +2,7 @@ import {Fragment,useEffect,useRef,useState} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID,warmLayoutCssValues} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
+import {GradientStopEditor,MaterialActions} from './MaterialActions.jsx';
 import {BezierEditor} from './BezierEditor.jsx';
 import {createParameterTransport} from '../../assets/core/parameter-transport.js';
 import {readParameterPresets,saveParameterPresets,putParameterPreset,exportParameterPresets,importParameterPresets} from '../../assets/core/parameter-presets.js';
@@ -80,6 +81,10 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     setStatus('参数已编辑 · 尚未应用');
     if(!invalidFields.some(f=>f.key!==xKey&&f.key!==yKey))scheduleLive(next);else transportRef.current?.cancelQueued();
   }
+  function applyMaterialPatch(patch){
+    if(blocking||invalid||!values)return;
+    try{replaceValues(normalizeParameters(fields,{...values,...patch},{complete:true}),true);}catch{setStatus('参数不合法');}
+  }
   function undo(){if(!history.length)return;revision.current++;const next=history.at(-1);if(values)setFuture(previous=>[...previous.slice(-29),values]);setHistory(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已撤销 · 尚未应用');scheduleLive(next);}
   function redo(){if(!future.length)return;revision.current++;const next=future.at(-1);if(values)setHistory(previous=>[...previous.slice(-29),values]);setFuture(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已重做 · 尚未应用');scheduleLive(next);}
   async function loadPresets(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;try{if(file.size>65536)throw Error('预设文件过大');const result=importParameterPresets(asset,await file.text(),presets);setPresets(result.items);const saved=saveParameterPresets(asset,result.items);setStatus('导入 '+result.added+' 项，跳过 '+result.skipped+' 项'+(saved?'':'；仅本次会话'));}catch{setStatus('预设导入失败：格式、资产或参数不匹配');}}
@@ -101,7 +106,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   if(!fields)return null;
   const advanced=asset.id==='warm-workbench'&&values?warmLayoutCssValues(values):null;
   return <section className="demo-parameter-panel" aria-label="Demo 参数配置" aria-busy={busy}>
-    <h3>Demo 参数配置</h3><p>{liveEditing?'读取参数后可直接调整并观察预览；实时应用不会重载页面。':'仅支持已登记的本地 Demo；应用后关闭说明弹窗即可查看效果，不会重载预览。'}</p>
+    <h3>Demo 参数配置</h3><p className="parameter-intro">{liveEditing?'读取参数后可直接调整并观察预览；实时应用不会重载页面。':'仅支持已登记的本地 Demo；应用后关闭说明弹窗即可查看效果，不会重载预览。'}</p>
     <div className="demo-parameter-actions">
       <button type="button" disabled={busy} onClick={()=>request('read')}>读取当前参数</button>
       <button type="button" className="parameter-primary" disabled={busy||!values||invalid} onClick={()=>request('apply')}>应用参数</button>
@@ -112,7 +117,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       <label className="parameter-preset-import">导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
     <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
-    {values&&<>{advanced&&<div className="parameter-material-preview" aria-label="当前编辑材质与曲线示意"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient'],boxShadow:advanced['--warm-card-shadow']}}><strong>表面预览</strong><small>{values.gradient?(2+Number(values.gradientMid)+Number(values.gradientMid2))+' 色标渐变':'纯色'}</small></div><BezierEditor values={values} disabled={blocking} onStart={()=>{curveGesture.current={recorded:false};}} onMove={editCurve} onEnd={()=>{curveGesture.current=null;}}/><code>{advanced['--warm-motion-curve']}</code></div>}<div className="demo-parameter-fields">{fields.map((field,index)=><Fragment key={field.key}>{field.group&&field.group!==fields[index-1]?.group&&<h4 className="parameter-group-title">{field.group}</h4>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
+    {values&&<>{advanced&&<><div className="parameter-material-preview" aria-label="当前编辑材质与曲线示意"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient'],boxShadow:advanced['--warm-card-shadow']}}><strong>表面预览</strong><small>{values.gradient?(2+Number(values.gradientMid)+Number(values.gradientMid2))+' 色标渐变':'纯色'}</small></div><BezierEditor values={values} disabled={blocking} onStart={()=>{curveGesture.current={recorded:false};}} onMove={editCurve} onEnd={()=>{curveGesture.current=null;}}/><code>{advanced['--warm-motion-curve']}</code></div><GradientStopEditor values={values} disabled={blocking||invalid} onStart={key=>{sliderGesture.current={key,recorded:false};}} onMove={(key,value)=>{const field=fields.find(f=>f.key===key);setDrafts(previous=>({...previous,[key]:String(value)}));edit(field,value);}} onEnd={()=>{sliderGesture.current=null;}}/><MaterialActions values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch}/></>}<div className="demo-parameter-fields">{fields.map((field,index)=><Fragment key={field.key}>{field.group&&field.group!==fields[index-1]?.group&&<h4 className="parameter-group-title">{field.group}</h4>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={blocking} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
       :field.type==='boolean'?<input aria-label={field.label} type="checkbox" disabled={blocking} checked={values[field.key]} onChange={event=>edit(field,event.target.checked)}/>
