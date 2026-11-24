@@ -9,7 +9,7 @@
 ```bash
 npm ci
 npm run dev
-npm run check
+npm run check:fast
 ```
 
 浏览器视觉回归需额外安装 `scripts/requirements-visual.txt` 并使用 `npm run visual:test`。
@@ -29,7 +29,7 @@ npm run check
 
 一项 PR 聚焦一类问题，提交信息使用中文。PR 描述包含：目标、变更范围、运行结果、影响的资产 ID、UI 截图（若涉及视觉改动）、第三方许可说明。
 
-`npm run check` 是本地基线；PR CI 额外执行 Chromium 视觉/交互回归。浏览器断言不能仅靠正则搜索源码替代。
+日常 PR 使用 `npm run check:fast`；高风险变更由 `scripts/ci-plan.mjs` 触发构建、Chromium 或 Windows 专项，正式发布使用手动 `full` 或版本 tag 执行全量校验。main 推送仅重复必要的资产协议、构建和 dist 校验。浏览器断言不能仅靠正则搜索源码替代。
 
 修改共享组件需在真实工作台与 Workbench 组件展厅中同时确认；修改独立 Demo 应验证手机宽度、键盘导航和 `prefers-reduced-motion`。
 

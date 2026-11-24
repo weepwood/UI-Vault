@@ -79,9 +79,10 @@ npm run check
   └─ dist 完整性检查
 
 .github/workflows/deploy.yml
-  ├─ 上述检查
-  ├─ Chromium 截图与浏览器交互回归
-  └─ main push 后发布 Pages
+  ├─ 普通 PR：快速资产校验、单测、lint、设计审计
+  ├─ 高风险 PR：按变更路径触发构建、Chromium 或 Windows 专项
+  ├─ 手动 full / v* tag：完整验收
+  └─ main push：资产校验、构建、dist 检查后发布 Pages
 
 .github/workflows/link-check.yml
   └─ 每周报告外部 siteUrl 可达性（不阻断发布）
