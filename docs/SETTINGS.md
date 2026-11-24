@@ -25,8 +25,8 @@
 ## 技术结构
 
 - `index.html`：在工作台内嵌入设置视图和 GitHub 相关入口。
-- `assets/app.js`：设置与项目浏览间的视图切换、浏览器历史记录和移动端目录状态。
-- `assets/core/settings.js`：共享默认值、存取、校验、应用主题及选择器初始化；首页不再依赖设置弹窗 DOM。
+- `assets/app.js`：静态壳版本校验和 React 启动；视图切换、路由与持久化由 `src/useWorkbench.js` 和 `src/react-workbench.jsx` 协调。
+- `assets/core/settings.js`：共享默认值、读取、校验与应用主题；选择器由 React 实现。
 - `assets/styles.css`：页面布局与原有设计 Token；适配窄屏。
 - `scripts/build.mjs`：发布单一工作台入口的带指纹脚本；`settings.html` 作为兼容重定向页面保留。
 - `scripts/check-dist.mjs`、`tests/settings*.test.mjs`：验证工作台内视图、图标、数据字段、静态发布和样式。
@@ -38,3 +38,7 @@
 ## 后续扩展
 
 可增加 JSON 配置导入/导出、按项目保存设备预览模式、更多键盘快捷键、可拖拽导航宽度。添加设置项时需同步更新 `DEFAULT_SETTINGS`、`OPTIONS`、`settings.html` 和回归测试，避免出现仅展示 UI 而不实际保存的假设置。
+
+## 浏览器存储降级（2026-11-24）
+
+收藏、最近搜索、设备预览与导航折叠在浏览器禁止访问存储对象（包括属性 getter 抛出 SecurityError）、存储缺失或读写失败时使用会话内状态或默认值，不阻断工作台启动。收藏、设备预览和导航折叠的写入失败返回 false；最近搜索仍返回本次会话的更新列表。保留全部既有存储键和数据格式，不进行清空或迁移。回归测试覆盖 getter 拒绝、方法拒绝、显式缺失及正常读写；真实浏览器验收以 CI 为准。
