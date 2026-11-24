@@ -1,7 +1,7 @@
 import { readFile, readdir, realpath, stat, writeFile } from 'node:fs/promises';
 import {readFileSync} from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, extname, join, relative, resolve, sep } from 'node:path';
+import { dirname, extname, join, resolve, sep } from 'node:path';
 import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
 import {PREVIEW_CAPABILITIES} from '../../assets/core/preview-policy.js';
 import {inspectProjects,canonicalGitHubRepository} from './projects.mjs';

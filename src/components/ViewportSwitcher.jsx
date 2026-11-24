@@ -1,4 +1,4 @@
-import React,{useEffect,useLayoutEffect,useRef,useState} from 'react';
+import {useEffect,useLayoutEffect,useRef,useState} from 'react';
 import {Icon} from './Icon.jsx';
 import {
   PREVIEW_WIDTHS,DEFAULT_CUSTOM_WIDTH,MIN_CUSTOM_WIDTH,MAX_CUSTOM_WIDTH,

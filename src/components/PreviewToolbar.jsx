@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import {useState} from 'react';
 import {ViewportSwitcher} from './ViewportSwitcher.jsx';
 export {ViewportSwitcher}; // 兼容工作台组件展厅既有导入路径
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';

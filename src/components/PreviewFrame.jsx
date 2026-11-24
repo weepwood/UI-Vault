@@ -1,4 +1,4 @@
-import React,{memo,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import {memo,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {applyPreviewLayout,calculatePreviewLayout,normalizeCustomWidth,PREVIEW_WIDTHS,MIN_CUSTOM_WIDTH,MAX_CUSTOM_WIDTH} from '../../assets/core/preview.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {getPreviewPolicy} from '../../assets/core/preview-policy.js';
@@ -24,7 +24,6 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   const frame=useRef(null);
   const resizeHandle=useRef(null);
   const resizeDrag=useRef(null);
-  const backdropStudio=asset?.id==='aurora-field';
   const {sandbox,allow:permissions,allowFullScreen}=getPreviewPolicy(asset);
   const src=!asset?null:asset.source==='local'?previewUrl(asset):asset.siteUrl||null;
   // 同一资产的多版本共享一个 iframe：初始 src 保持固定，后续版本使用子框架

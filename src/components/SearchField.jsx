@@ -1,4 +1,4 @@
-import React,{useRef} from 'react';
+import {useRef} from 'react';
 import {Icon} from './Icon.jsx';
 
 // 搜索输入：Esc 清空、Enter 提交、清除按钮回焦。

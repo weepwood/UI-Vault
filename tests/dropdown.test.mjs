@@ -10,7 +10,7 @@ import * as dropdownModule from '../assets/core/dropdown.js';
 const read=path=>readFile(join(ROOT,path),'utf8');
 
 test('排序与标签筛选保留原生 select 回退，并统一由 dropdown 增强',async()=>{
-  const [html,app]=await Promise.all(['index.html','assets/app.js'].map(read));
+  const [html]=await Promise.all(['index.html','assets/app.js'].map(read));
   assert.match(html,/class="select-field select-field--sort"><select id="sort"/);
   assert.match(html,/class="select-field select-field--tag"><select id="tag-filter"/);
   assert.match(html,/<option value="featured">精选优先<\/option>/);

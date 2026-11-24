@@ -3,7 +3,7 @@
  * 纯数据与纯状态转换放在这里；DOM、历史记录和 iframe 生命周期仍由 app.js 负责。
  * 保持现有扁平字段协议，与 filterAssets() 及浏览器收藏数据兼容。
  */
-import { PREVIEW_WIDTHS, isPreviewMode, normalizeCustomWidth, DEFAULT_CUSTOM_WIDTH } from './preview.js';
+import { isPreviewMode, normalizeCustomWidth, DEFAULT_CUSTOM_WIDTH } from './preview.js';
 import { REUSE_LEVELS } from './catalog.js';
 
 const REUSE_IDS=new Set(REUSE_LEVELS.map(level=>level.id));

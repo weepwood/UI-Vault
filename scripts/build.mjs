@@ -1,7 +1,7 @@
 import { copyFile, lstat, mkdir, readFile, readdir, realpath, rm, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import {execFileSync} from 'node:child_process';
-import { join, dirname, resolve, sep, extname } from 'node:path';
+import { dirname, resolve, sep, extname } from 'node:path';
 import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
 import {runPython} from './lib/python.mjs';
 import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';

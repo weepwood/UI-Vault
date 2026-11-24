@@ -60,7 +60,8 @@ npm run dev                  # http://localhost:4173
 npm run new:demo -- components magnetic-button 磁吸按钮
 npm run new:reference -- ui-demo https://github.com/example/repo 参考设计
 npm run catalog:sync
-npm run check
+npm run check:fast            # 校验 + 测试 + 设计审计 + lint（本地迭代）
+npm run check                 # 提交前完整检查（额外含构建与发布目录检查）
 ```
 
 ## 架构原则

@@ -1,4 +1,3 @@
-import React from 'react';
 import {getProjectHealth,actionsStatusLabel,dateUTC} from '../../assets/core/project-health.js';
 
 // 仅陈述 GitHub 公共 API 能证实的事实；“Actions 成功”不是站点发布或 iframe 正常的证明。

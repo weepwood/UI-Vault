@@ -70,10 +70,10 @@ export async function collectPublicProjectHealth(projects,{fetcher=fetch,token='
       row.archived=typeof data.archived==='boolean'?data.archived:null;
       row.pushedAt=isoOrNull(data.pushed_at);
       const branch=data.default_branch;
-      if(typeof branch==='string'&&branch.length<=120&&/^[A-Za-z0-9._/\-]+$/.test(branch)&&!branch.includes('..'))
+      if(typeof branch==='string'&&branch.length<=120&&/^[A-Za-z0-9._/-]+$/.test(branch)&&!branch.includes('..'))
         row.defaultBranch=branch;
       const spdx=data.license?.spdx_id;
-      if(typeof spdx==='string'&&spdx!=='NOASSERTION'&&/^[A-Za-z0-9.+\-]+$/.test(spdx))
+      if(typeof spdx==='string'&&spdx!=='NOASSERTION'&&/^[A-Za-z0-9.+-]+$/.test(spdx))
         row.licenseSpdx=spdx;
       if(!row.defaultBranch)continue;
       const runs=await request(base+'/actions/runs?branch='+encodeURIComponent(row.defaultBranch)+'&per_page=1');

@@ -14,7 +14,7 @@ test('Topbar 包含项目名称、分类、设备模式与全部操作，预览�
  assert.doesNotMatch(header,/id="preview-copy-link"|复制当前项目链接/);
  assert.match(header,/id="preview-github"[\s\S]*lucide\.svg#github/);
  assert.match(header,/target="_blank" rel="noopener noreferrer"/);
- assert.match(html,/\<\/header\>\s*\<section id="preview-stage"/);
+ assert.match(html,/<\/header>\s*<section id="preview-stage"/);
  assert.doesNotMatch(html,/class="selection-head"|class="preview-toolbar"|class="workbench-footer"|id="project-notes"|id="preview-status"|id="workbench-count"/);
  assert.doesNotMatch(html,/本地 Demo · 可以直接操作网页|9 个本地 Demo \/ 35 个项目/);
 });

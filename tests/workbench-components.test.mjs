@@ -25,7 +25,7 @@ test('组件展厅登记在界面组件目录，且多文件发布清单完整',
 
 test('组件展示分组可操作，并为主站组件预留挂载点',async()=>{
   const html=await read(base+'index.html');
-  assert.match(html,/<base href="[.][.][\/][.][.][\/][.][.][\/]">/);
+  assert.match(html,/<base href="[.][.][/][.][.][/][.][.][/]">/);
   assert.match(html,/href="[.]\/assets\/styles[.]css"/);
   assert.match(html,/<script defer src="[.]\/assets\/showcase\/workbench-system[.]js"><\/script>/);
   assert.doesNotMatch(html,/type="module"/,'展厅在 sandbox iframe 中运行，不能依赖 ES module');

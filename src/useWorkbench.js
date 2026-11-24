@@ -197,9 +197,9 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  const catalogDeps=[state.assets,state.labels,state.category,state.tag,state.reuse,state.query,state.sort,
-    state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites];
-  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),catalogDeps);
+  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),
+    [state.assets,state.labels,state.category,state.tag,state.reuse,state.query,state.sort,
+      state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites]);
   // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
   const tags=useMemo(()=>popularTags(
     filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag

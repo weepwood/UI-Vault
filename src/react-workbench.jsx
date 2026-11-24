@@ -1,4 +1,3 @@
-import React from 'react';
 import { createRoot } from 'react-dom/client';
 import {ProjectRow,ProjectList} from './components/ProjectList.jsx';
 import {CategoryNavigation} from './components/CategoryNavigation.jsx';
@@ -83,8 +82,8 @@ function ListControls({state,tags,onSort,onTag,onReuse,reuseLevels,count}){
 }
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
-  const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
-    selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,reset,
+  const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,openView,
+    selectAsset,filter,changeSort,changeTag,changeReuse,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [dialogOpen,setDialogOpen]=useState(false);
@@ -411,7 +410,7 @@ export function mountWorkbench(){
     emptyReset:$('#clear-filters'),emptyMessage:$('#empty-message'),
     resultsStatus:$('#results-status'),settingsStatus:$('#settings-status'),dismiss:$('#sidebar-dismiss')
   };
-  const missing=Object.entries(nodes).filter(([_,el])=>!el).map(([key])=>key);
+  const missing=Object.entries(nodes).filter(([,el])=>!el).map(([key])=>key);
   if(missing.length)throw Error('React 工作台缺少挂载节点：'+missing.join(', '));
   for(const key of ['quickFilters','categories','listControls','gallery',
     'topbar','stage','settings','operations','settingsLink','dialog','toast']){

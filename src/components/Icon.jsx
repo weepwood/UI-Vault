@@ -1,4 +1,3 @@
-import React from 'react';
 
 // 主站与组件展厅共用的 Lucide 图标。href 相对文档 <base> 解析，
 // 因此在主站根目录和 demos/ 下（<base href="../../../">）都指向同一份 sprite。

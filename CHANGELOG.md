@@ -4,6 +4,9 @@
 
 ## Unreleased
 
+- 引入 ESLint 10 与 React Hooks 检查（eslint-plugin-react-hooks 7）：JSX 解析、浏览器/Node 全局按目录划分，空 catch 与全角文案排版为显式豁免；清理全量 dead import 与无效转义，rules-of-hooks 为 error，Compiler 语义规则先降为 warn 并列入路线图。
+- 新增 React 组件行为测试基架（esbuild JSX 钩子 + happy-dom + act），10 组核心用例覆盖目录行、分组、下拉选择/键盘流、搜索清除；node --test 全量经 jsx-register 钩子运行，CI 同步。
+- npm run check 分层：新增 check:fast（validate + 测试 + 设计审计 + lint，本地迭代用），check 保持完整链并接入 lint。
 - 标签治理：新增受控词表（内容类型 + 风格视觉两 facet），372 个历史标签归并为 97 词；机器组标签删除，技术标签迁入 technologies，validate 对词表外标签硬性拦截；新增可选执行的历史迁移脚本与覆盖率测试。
 - 新增复用程度目录筛选（已验证 / 可安装 / 可复制 / 本地实现 / 外部项目），从既有元数据派生，不增加 schema 字段；目录状态协议新增 `reuse` 筛选维度并随重置清除。
 - 视觉基线重生成入口：CI workflow_dispatch 支持在 Linux 基线环境 `--bootstrap` 并以产物上传，需人工审核后提交。

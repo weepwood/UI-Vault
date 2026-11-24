@@ -1,0 +1,154 @@
+// React 组件行为测试（ROADMAP P1：把最核心的正则断言升级为真实渲染行为断言）。
+// 依赖：tests/helpers/jsx-register.mjs（esbuild JSX 钩子）与 react-harness（happy-dom + act）。
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { render, fire } from './helpers/react-harness.mjs';
+import { Icon } from '../src/components/Icon.jsx';
+import { WorkbenchSelect } from '../src/components/WorkbenchSelect.jsx';
+import { ProjectList, ProjectRow } from '../src/components/ProjectList.jsx';
+import { SearchField } from '../src/components/SearchField.jsx';
+
+const labels = { component: '组件', style: '风格', reference: '参考', all: '全部资源' };
+const asset = {
+  id: 'sample-button', title: '示例按钮', subtitle: 'Button sample', type: 'component',
+  description: '按钮示例', source: 'local', tags: ['组件'], technologies: ['HTML'],
+  featured: false, created: '2026-11-21', projectId: 'ui-vault',
+};
+const projects = [
+  { id: 'ui-vault', name: 'UI Vault', repository: 'https://github.com/weepwood/UI-Vault' },
+  { id: 'style-atlas', name: 'Style Atlas', repository: 'https://github.com/weepwood/style-atlas' },
+];
+
+const $ = (root, selector) => root.querySelector(selector);
+const $$ = (root, selector) => [...root.querySelectorAll(selector)];
+
+test('Icon 渲染 Lucide sprite 引用并对辅助技术隐藏', () => {
+  const { container, unmount } = render(<Icon name="copy" />);
+  const svg = $(container, 'svg.ui-icon');
+  assert.ok(svg, '应渲染 svg.ui-icon');
+  assert.equal(svg.getAttribute('aria-hidden'), 'true');
+  assert.ok(svg.querySelector('use')?.getAttribute('href').endsWith('assets/icons/lucide.svg#copy'));
+  unmount();
+});
+
+test('ProjectRow 点击委托资产 ID，选中态落在条目 class 上', () => {
+  let picked = null;
+  const { container, unmount } = render(
+    <ProjectRow asset={asset} labels={labels} selected={false} onSelect={id => { picked = id; }}/>);
+  const row = $(container, 'button.project-row');
+  assert.ok(row);
+  assert.ok(!row.closest('.project-item').className.includes('is-selected'));
+  fire(row, 'click');
+  assert.equal(picked, 'sample-button');
+  unmount();
+});
+
+test('ProjectRow 命中搜索词时高亮匹配片段，选中态可由父级叠加', () => {
+  const { container, rerender, unmount } = render(
+    <ProjectRow asset={asset} labels={labels} selected={false} onSelect={() => {}} query="按钮"/>);
+  const title = $(container, '.project-row-title');
+  // 标题行内只包住命中的“按钮”两个字；详情行中的命中片段独立出现。
+  assert.equal($$(title, 'mark.search-match').length, 1);
+  assert.equal($(title, 'mark.search-match').textContent, '按钮');
+  assert.ok(title.textContent.startsWith('示例'));
+  rerender(<ProjectRow asset={asset} labels={labels} selected={true} onSelect={() => {}}/>);
+  assert.ok($(container, '.project-item.is-selected'), '选中行必须带 is-selected');
+  unmount();
+});
+
+test('ProjectList 首屏 loading 只渲染骨架占位行且不进可访问性树', () => {
+  const { container, unmount } = render(
+    <ProjectList items={[]} labels={labels} selectedId="" onSelect={() => {}} loading/>);
+  const skeleton = $$(container, '.project-skeleton');
+  assert.equal(skeleton.length, 7);
+  assert.ok(skeleton.every(row => row.getAttribute('aria-hidden') === 'true'));
+  assert.equal($$(container, '.project-row').length, 0, 'loading 时不得渲染真实条目');
+  unmount();
+});
+
+test('ProjectList 平铺模式逐行渲染目录条目', () => {
+  const { container, unmount } = render(
+    <ProjectList items={[asset]} labels={labels} selectedId="sample-button" onSelect={() => {}}/>);
+  assert.equal($$(container, 'article.project-item').length, 1);
+  assert.ok($(container, '.project-row-subtitle').textContent.includes('可运行网页'));
+  unmount();
+});
+
+test('ProjectList 按项目分组时渲染 summary 计数并保持行级选择', () => {
+  const ps = projects.map(project => ({ ...project }));
+  const { container, unmount } = render(
+    <ProjectList items={[asset]} labels={labels} selectedId="sample-button" onSelect={() => {}}
+      projects={ps} groupByProject/>);
+  const summary = $(container, 'summary');
+  assert.ok(summary.textContent.includes('UI Vault'), '分组名来自项目注册表');
+  assert.ok(summary.textContent.includes('1'), 'summary 显示资源计数');
+  assert.ok($(container, 'details.asset-project-group[open]'), '分组默认展开');
+  assert.equal($$(container, 'article[data-id="sample-button"]').length, 1);
+  unmount();
+});
+
+test('WorkbenchSelect 保留隐藏原生 select 回退并展示当前标签值', () => {
+  const { container, unmount } = render(
+    <WorkbenchSelect id="reuse-filter" label="按复用程度筛选" value="copyable"
+      options={[{ value: '', label: '全部复用度' }, { value: 'copyable', label: '可复制' }]}
+      onChange={() => {}}/>);
+  const native = $(container, 'select#reuse-filter');
+  assert.ok(native, '保留原生 select 协议（浏览器回退与数据钩子）');
+  assert.equal(native.value, 'copyable');
+  assert.ok($(container, 'button.select-trigger').textContent.includes('可复制'));
+  unmount();
+});
+
+test('WorkbenchSelect 点击展开 listbox，选择选项触发 onChange 并收起', () => {
+  let picked = null;
+  const options = [
+    { value: '', label: '全部标签' },
+    { value: '组件', label: '组件' },
+    { value: '动效', label: '动效' },
+  ];
+  const { container, unmount } = render(
+    <WorkbenchSelect id="tag-filter" label="按标签筛选" value="" options={options}
+      onChange={value => { picked = value; }}/>);
+  const trigger = $(container, 'button.select-trigger');
+  fire(trigger, 'click');
+  assert.equal(trigger.getAttribute('aria-expanded'), 'true');
+  const listbox = $(container, 'div[role="listbox"]');
+  assert.ok(listbox && !listbox.hidden, 'listbox 展开');
+  fire($$(listbox, 'div[role="option"]')[1], 'click');
+  assert.equal(picked, '组件');
+  assert.equal(trigger.getAttribute('aria-expanded'), 'false', '选择后菜单收起');
+  unmount();
+});
+
+test('WorkbenchSelect 支持键盘流：Enter 直接选中聚焦选项', () => {
+  let picked = null;
+  const options = [{ value: 'featured', label: '推荐' }, { value: 'newest', label: '最新' }, { value: 'az', label: '按名称' }];
+  const { container, unmount } = render(
+    <WorkbenchSelect id="sort" label="项目排序" value="featured" options={options}
+      onChange={value => { picked = value; }}/>);
+  const trigger = $(container, 'button.select-trigger');
+  fire(trigger, 'keydown', { key: 'ArrowDown' });
+  const option = $(container, 'div[role="option"][data-value="newest"]');
+  fire(option, 'keydown', { key: 'Enter' });
+  assert.equal(picked, 'newest');
+  assert.equal(trigger.getAttribute('aria-expanded'), 'false');
+  unmount();
+});
+
+test('SearchField 有值时出现清除按钮，点击清空并回调 onChange', () => {
+  // 说明：happy-dom 下 React 对文本 input 的 keydown/input 委托不生效（div 与按钮均正常），
+  // Enter/Esc 的真实键盘行为由 CI 的 Chromium 交互脚本 verify_search_experience 覆盖。
+  const changes = [];
+  const { container, rerender, unmount } = render(
+    <SearchField value="玻璃" onChange={value => changes.push(value)} onSubmit={() => {}}/>);
+  const input = $(container, 'input#search');
+  assert.equal(input.getAttribute('aria-label'), '搜索项目');
+  assert.equal(input.getAttribute('aria-controls'), 'gallery');
+  const clear = $(container, 'button.search-clear');
+  assert.ok(clear, '有值时出现清除按钮');
+  fire(clear, 'click');
+  assert.deepEqual(changes, [''], '清除按钮回调空值');
+  rerender(<SearchField value="" onChange={value => changes.push(value)} onSubmit={() => {}}/>);
+  assert.ok(!$(container, 'button.search-clear'), '无值时清除按钮消失');
+  unmount();
+});

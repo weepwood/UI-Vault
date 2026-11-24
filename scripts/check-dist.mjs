@@ -1,5 +1,4 @@
 import assert from 'node:assert/strict';
-import {execFileSync} from 'node:child_process';
 import {readFile,stat} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {ROOT,inspectCatalog} from './lib/catalog.mjs';

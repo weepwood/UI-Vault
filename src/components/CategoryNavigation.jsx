@@ -1,4 +1,3 @@
-import React from 'react';
 import {Icon} from './Icon.jsx';
 
 // 资源分类导航：主站侧栏与组件展厅共用同一实现。

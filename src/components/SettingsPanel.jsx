@@ -43,7 +43,7 @@ function Section({id,active,children}){
     {children}
   </section>;
 }
-export function SettingsPanel({settings,onChange,onReset,onMenuToggle,menuOpen,visible}){
+export function SettingsPanel({settings,onChange,onReset,onMenuToggle,menuOpen}){
   const [section,setSection]=useState('appearance');
   const scrollRef=useRef(null);
   const active=pages.find(page=>page.id===section)||pages[0];
@@ -57,7 +57,7 @@ export function SettingsPanel({settings,onChange,onReset,onMenuToggle,menuOpen,v
         <strong>工作台设置</strong>
       </div>
       <nav className="settings-category-nav" aria-label="设置项目">
-        {pages.map((page,index)=><React.Fragment key={page.id}>
+        {pages.map(page=><React.Fragment key={page.id}>
           {page.id==='about'&&<div className="settings-category-divider" aria-hidden="true"/>}
           <button type="button" className={'settings-category-link'+(section===page.id?' is-active':'')}
             data-settings-section={page.id} aria-current={section===page.id?'page':undefined}
