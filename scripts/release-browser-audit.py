@@ -34,10 +34,10 @@ def scan(page,name):
 def ready(page,origin):
     page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
     page.frame_locator(SELECTOR).locator("#token-editor").wait_for(state="attached",timeout=30000)
-    page.locator("#preview-info").wait_for(state="visible")
+    page.get_by_role("button",name="项目说明 / 源码",exact=True).wait_for(state="visible")
 
 def open_parameters(page):
-    page.locator("#preview-info").click()
+    page.get_by_role("button",name="项目说明 / 源码",exact=True).click()
     page.locator("#tab-page-info").click()
     panel=page.locator(".demo-parameter-panel")
     panel.get_by_role("button",name="读取当前参数",exact=True).click()

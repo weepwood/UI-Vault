@@ -34,3 +34,13 @@ test('发布验收收集全部 Chromium 场景结果，失败仍阻断发布',()
  assert.match(workflow,/!cancelled\(\) && steps\.release_browser_environment\.outcome == 'success'/);
  assert.match(workflow,/needs\.validate\.result == 'success'/);
 });
+
+test('项目说明按钮在首屏 HTML 与 React 中具有独立于响应式文字的可访问名称',()=>{
+ for(const path of ['index.html','src/components/PreviewToolbar.jsx']){
+  const button=read(path).match(/<button\b[^>]*\bid="preview-info"[^>]*>/)?.[0];
+  assert.ok(button,path);
+  assert.match(button,/aria-label="项目说明 \/ 源码"/);
+  assert.match(button,/aria-haspopup="dialog"/);
+ }
+ assert.match(read('scripts/release-browser-audit.py'),/get_by_role\("button",name="项目说明 \/ 源码",exact=True\)/);
+});
