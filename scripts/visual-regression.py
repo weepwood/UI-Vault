@@ -17,6 +17,7 @@ import shutil
 import tempfile
 import zipfile
 import time
+import traceback
 import zlib
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from functools import partial
@@ -227,6 +228,14 @@ def verify_react_interactions(browser, origin):
         page.locator("#viewport-custom-input").fill("640")
         page.locator(".viewport-custom-apply").click()
         assert page.locator("#preview-stage").get_attribute("data-size") == "custom"
+        # 等待实际几何结果，保留原 3px 容差；持续错误仍然失败。
+        page.wait_for_function("""() => {
+            const stage=document.querySelector('#preview-stage');
+            const frame=stage?.querySelector('iframe');
+            return stage?.dataset.size==='custom' && frame &&
+                Math.abs(parseFloat(frame.style.width)-640)<1 &&
+                Math.abs(frame.getBoundingClientRect().width-Math.min(640,stage.clientWidth))<3;
+        }""",timeout=5000)
         actual_css_width = page.locator("#preview-stage iframe").evaluate("(el)=>parseFloat(el.style.width)")
         stage_width = page.locator("#preview-stage").evaluate("(el)=>el.clientWidth")
         visual_width = page.locator("#preview-stage iframe").evaluate("(el)=>el.getBoundingClientRect().width")
@@ -1593,6 +1602,8 @@ def main():
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
             try:
+                failures = []
+                results = []
                 if args.capture_current:
                     # 已审核的 UI 变更：只采集当前构建并输出新基线，不做与线上站点的对比；
                     # 仍需人工查看 visual-output/current/ 后提交 tests/visual-baselines.json。
@@ -1611,7 +1622,6 @@ def main():
                             raise AssertionError("视觉基线格式不兼容")
                         expected = data["cases"]
                     current = capture_all(browser, local, OUTPUT / "current")
-                    failures = []
                     for name, *_ in CASES:
                         try:
                             print(compare(name, current[name], expected[name]))
@@ -1621,28 +1631,52 @@ def main():
                         # 初始化仅用于人工审核并输出固定的测试基线，不自动改写仓库。
                         print("VISUAL_BASELINE_JSON=" + json.dumps(write_baseline(current), ensure_ascii=False, separators=(",", ":")), flush=True)
                     if failures:
-                        raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
-                    print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
-                verify_react_interactions(browser, local)
-                verify_project_health_and_grouping(browser, local)
-                verify_landfolio_version_switch(browser, local)
-                verify_project_operations(browser, local)
-                verify_sidebar_collapse(browser, local)
-                verify_sidebar_transition_no_reflow(browser, local)
-                verify_compact_search_and_fixed_icons(browser, local)
-                verify_search_experience(browser, local)
-                verify_topbar_alignment(browser, local)
-                verify_directory_facets(browser, local)
-                verify_directory_workspace(browser, local)
-                verify_large_directory_groups(browser, local)
-                verify_foundation_parameters(browser, local)
-                verify_effect_parameters(browser, local)
-                verify_standalone_delivery(browser)
-                verify_release_keyboard_and_performance(browser, local)
-                verify_liquid_orb_unified(browser, local)
-                verify_glass_materials(browser, local)
-                verify_rare_interactions(browser, local)
-                verify_background_lab(browser, local)
+                        print("Chromium 截图回归失败：\n"+"\n".join(failures),flush=True)
+                    else:
+                        print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。",flush=True)
+                # 每项场景使用独立上下文；收集全部故障，避免一个失败遮蔽其他发布风险。
+                checks = (
+                    verify_react_interactions,
+                    verify_project_health_and_grouping,
+                    verify_landfolio_version_switch,
+                    verify_project_operations,
+                    verify_sidebar_collapse,
+                    verify_sidebar_transition_no_reflow,
+                    verify_compact_search_and_fixed_icons,
+                    verify_search_experience,
+                    verify_topbar_alignment,
+                    verify_directory_facets,
+                    verify_directory_workspace,
+                    verify_large_directory_groups,
+                    verify_foundation_parameters,
+                    verify_effect_parameters,
+                    verify_standalone_delivery,
+                    verify_release_keyboard_and_performance,
+                    verify_liquid_orb_unified,
+                    verify_glass_materials,
+                    verify_rare_interactions,
+                    verify_background_lab,
+                )
+                for check in checks:
+                    name=check.__name__
+                    print("BEGIN "+name,flush=True)
+                    try:
+                        if check is verify_standalone_delivery:
+                            check(browser)
+                        else:
+                            check(browser,local)
+                    except Exception as exc:
+                        failures.append(name+": "+str(exc))
+                        results.append({"name":name,"passed":False,"error":str(exc)})
+                        traceback.print_exc()
+                    else:
+                        results.append({"name":name,"passed":True})
+                        print("PASS "+name,flush=True)
+                (OUTPUT/"chromium-interaction-results.json").write_text(
+                    json.dumps({"checks":results,"failures":failures},ensure_ascii=False,indent=2),encoding="utf-8")
+                if failures:
+                    raise AssertionError("Chromium 完整验收失败：\n"+"\n".join(failures))
+                print(f"Chromium 交互验收通过：{len(results)} 个场景。",flush=True)
             finally:
                 browser.close()
     finally:

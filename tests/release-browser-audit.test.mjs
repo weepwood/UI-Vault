@@ -22,3 +22,15 @@ test('独立运行网络隔离使用 context.route 而非重复页面夹具',()=
  assert.equal((script.match(/page\.route\(/g)||[]).length,1);
  assert.match(script,/assert not external/);
 });
+
+test('发布验收收集全部 Chromium 场景结果，失败仍阻断发布',()=>{
+ const script=read('scripts/visual-regression.py'),workflow=read('.github/workflows/deploy.yml');
+ assert.match(script,/Math\.abs\(frame\.getBoundingClientRect\(\)\.width-Math\.min\(640,stage\.clientWidth\)\)<3/);
+ assert.match(script,/for check in checks:/);
+ assert.match(script,/except Exception as exc:/);
+ assert.match(script,/chromium-interaction-results\.json/);
+ assert.match(script,/if failures:\s*raise AssertionError\("Chromium 完整验收失败/);
+ assert.match(workflow,/!cancelled\(\) && steps\.chromium_environment\.outcome == 'success'/);
+ assert.match(workflow,/!cancelled\(\) && steps\.release_browser_environment\.outcome == 'success'/);
+ assert.match(workflow,/needs\.validate\.result == 'success'/);
+});
