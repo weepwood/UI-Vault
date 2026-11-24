@@ -13,3 +13,5 @@
 初次 #99 CI 45405500268 单元测试通过；React Hooks immutability 拒绝对 DOM prop 直接赋值，改用原有 scrollTo DOM 方法，不降低检查门槛。#98 已完整 CI 通过并合并；真实 Chromium 5000 项 / 100 组挂载 13 行，325/325 单元测试、21 个交互场景通过。v0.5.0 正式工作流 45405533300 尚在执行。
 
 独立框架验收新增 registry-runtime.yml：从实际 Registry 安装到临时目录，固定 Vue 3.5.24/编译器版本，编译已有 Vue SFC 与 React JSX，Chromium 在禁用外部网络条件下验证点击、Enter、禁用、加载态；临时 Vue 传递依赖锁文件作为 CI 产物保留，未修改主站依赖。该 CI 尚未完成，完整框架工程/锁文件交付仍待推进。
+
+2026-11-24：v0.5.0 正式 CI 45405533300 全部通过并创建 Release，生产四个哈希一致；#99 完整 CI 45406085097 及 Registry 45406085215 通过并合并。328/328 单测，22 个 Chromium 场景，5000 项 / 100 组 90 帧采样 P50 16.6ms / P95 16.9ms、挂载 21 行，预览超时重试和六个独立 Demo 通过。后续见 docs/GUIDE-CLASSIFICATION-NEXT.md。

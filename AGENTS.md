@@ -145,3 +145,5 @@ Frame Lab 的 12 项资产依赖主站共享 reference-shell CSS/JS，不得标�
 预览 ready 不等于全面功能验收；仅明确登记的本地 Foundation 接入 challenge/response，校验当前 iframe、opaque origin、资产 ID、协议及一次性 nonce。外部 HTTP/响应头证据不得提升为已交互；不得放宽 sandbox。
 
 Registry 框架适配器改动必须通过独立 registry-runtime 工作流（真实复制、编译、Chromium 交互），不能以源码存在或 React 单测替代 Vue 验收。
+
+见 [docs/GUIDE-CLASSIFICATION-NEXT.md](docs/GUIDE-CLASSIFICATION-NEXT.md)：分类按原始指南逐条记录；跨刷新锚点只在当前标签页、匹配资产 ID 时恢复；参数导入只接受白名单 JSON 且不得自动执行或应用；Registry 原生表单保留浏览器行为。

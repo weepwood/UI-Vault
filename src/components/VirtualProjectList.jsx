@@ -1,8 +1,9 @@
 import {useLayoutEffect,useRef,useState} from 'react';
 import {virtualWindow,virtualScrollAnchor,restoreVirtualScroll} from '../../assets/core/virtual-window.js';
+import {readDirectoryAnchor,saveDirectoryAnchor} from '../../assets/core/directory-session.js';
 
 // 只挂载可视区域及缓冲行。分组模式/小目录由 ProjectList 使用完整列表。
-export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow,grouped=false}){
+export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow,grouped=false,sessionKey=''}){
   const rowHeight=density==='compact'?48:60;
   const host=useRef(null),pendingFocus=useRef(null);
   const savedAnchor=useRef(null),previousLayout=useRef(null);
@@ -15,17 +16,18 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
   if(focusedIndex>=0&&!indices.includes(focusedIndex))indices.push(focusedIndex);
   indices.sort((a,b)=>a-b);
   useLayoutEffect(()=>{
-    let frame=0;
+    let frame=0,saveTimer=0;
+    function persist(){if(sessionKey&&savedAnchor.current)saveDirectoryAnchor(sessionKey,savedAnchor.current);}
     function sync(){
       if(!host.current)return;
       const rootRect=scrollRoot.getBoundingClientRect(),listRect=host.current.getBoundingClientRect();
       const viewportTop=rootRect.top+scrollRoot.clientTop,viewportBottom=viewportTop+scrollRoot.clientHeight;
       const visible=grouped?Math.max(0,Math.min(viewportBottom,listRect.bottom)-Math.max(viewportTop,listRect.top)):scrollRoot.clientHeight;
       const next={top:Math.max(0,viewportTop-listRect.top),height:visible};
-      savedAnchor.current=virtualScrollAnchor(items,next.top,rowHeight);
+      if(visible>0)savedAnchor.current=virtualScrollAnchor(items,next.top,rowHeight);
       setMetrics(previous=>previous.top===next.top&&previous.height===next.height?previous:next);
     }
-    function schedule(){cancelAnimationFrame(frame);frame=requestAnimationFrame(sync);}
+    function schedule(){cancelAnimationFrame(frame);frame=requestAnimationFrame(sync);clearTimeout(saveTimer);saveTimer=setTimeout(persist,200);}
     scrollRoot.addEventListener('scroll',schedule,{passive:true});
     const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(schedule);
     observer?.observe(scrollRoot);
@@ -35,6 +37,14 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     // 在同一个统一窗口中重排、折叠、密度切换时恢复首个可视资产/组标题。
     // 分组内嵌小窗口不控制共享滚动容器，避免多个窗口竞争。
     const previous=previousLayout.current;
+    if(!previous&&sessionKey&&!grouped&&host.current){
+      const anchor=readDirectoryAnchor(sessionKey);
+      if(anchor&&items.some(item=>item.id===anchor.id)){
+        const offset=host.current.getBoundingClientRect().top-scrollRoot.getBoundingClientRect().top-scrollRoot.clientTop+scrollRoot.scrollTop;
+        scrollRoot.scrollTo({top:offset+restoreVirtualScroll(items,anchor,rowHeight)});
+      }
+    }
+    window.addEventListener('pagehide',persist);
     if(!grouped&&previous&&savedAnchor.current&&(previous.items!==items||previous.rowHeight!==rowHeight)&&host.current){
       const offset=host.current.getBoundingClientRect().top-scrollRoot.getBoundingClientRect().top-scrollRoot.clientTop+scrollRoot.scrollTop;
       scrollRoot.scrollTo({top:offset+restoreVirtualScroll(items,savedAnchor.current,rowHeight)});
@@ -42,8 +52,8 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     previousLayout.current={items,rowHeight};
     // 初次布局直接采样，后续滚动与 ResizeObserver 使用 rAF 合并。
     sync();
-    return ()=>{cancelAnimationFrame(frame);observer?.disconnect();scrollRoot.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
-  },[scrollRoot,items,rowHeight,grouped]);
+    return ()=>{cancelAnimationFrame(frame);clearTimeout(saveTimer);persist();observer?.disconnect();scrollRoot.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);window.removeEventListener('pagehide',persist);};
+  },[scrollRoot,items,rowHeight,grouped,sessionKey]);
   useLayoutEffect(()=>{
     const id=pendingFocus.current;
     if(id===null)return;

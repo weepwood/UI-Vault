@@ -13,7 +13,7 @@ test('Foundation Registry 只包含固定文件、确定性内容哈希及有效
   execFileSync(process.execPath,[join(root,'scripts/build-tokens.mjs')]);
   const first=await buildRegistry(root);
   assert.deepEqual(await buildRegistry(root),first);
-  assert.deepEqual(first.index.items.map(item=>item.id),['foundation-tokens','foundation-base','foundation-components','foundation-react-button','foundation-vue-button']);
+  assert.deepEqual(first.index.items.map(item=>item.id),['foundation-tokens','foundation-base','foundation-components','foundation-react-button','foundation-vue-button','foundation-react-input','foundation-react-switch','foundation-vue-input','foundation-vue-switch']);
   assert.deepEqual(first.items[2].dependencies,['foundation-base']);
   for(const item of first.items.slice(3)){
     assert.deepEqual(item.dependencies,['foundation-components']);

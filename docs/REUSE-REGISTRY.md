@@ -27,3 +27,5 @@
 第二轮：`scripts/lib/registry-install.mjs` 提供依赖闭包、循环检查、文件哈希、路径冲突与排他安装；测试复制 React/Vue 文件并独立打包 React 适配器（React 运行时仍由目标项目提供）。Vue 编译及真实交互仍待验证。
 
 独立运行验收入口：`.github/workflows/registry-runtime.yml`。仅相关文件变更触发，使用临时安装目录真实编译 React JSX 和 Vue SFC，随后 Chromium 检查原生按钮行为；不将测试站点发布为正式资产。Vue 直接依赖固定版本，传递依赖锁文件由本次运行产物留存。
+
+#99 独立 React/Vue Button 验收 45406085215 成功；新增 Input/Switch 原生适配器待独立运行检查。复杂 Tabs/Dialog 优先采用 Radix/Reka，尚未引入未锁定依赖。
