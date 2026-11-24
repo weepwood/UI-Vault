@@ -97,6 +97,7 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
   }
   function batch(type){
     if(!selected.length)return;
+    if(selected.length>LIBRARY_LIMITS.items){setStatus('单次批量操作最多 5000 项，请缩小范围');return;}
     if(type==='folder-add'&&!library.folders.some(item=>item.id===target))return;
     if(type==='folder-remove'&&!folder)return;
     if(type==='favorite'||type==='unfavorite'){
@@ -155,7 +156,7 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
             onChange={event=>{setQuery(event.target.value);setPage(0);setSelection([]);}}/>
           <div className="personal-summary"><span>{items.length} 项 · 已选 {selected.length} 项</span>
             <label><input type="checkbox" checked={visible.length>0&&visible.every(asset=>chosen.has(asset.id))} onChange={event=>togglePage(event.target.checked)}/> 选择本页</label>
-            <button type="button" disabled={!items.length} onClick={()=>setSelection(items.map(item=>item.id))}>选择全部匹配</button>
+            <button type="button" disabled={!items.length} onClick={()=>{if(items.length>LIBRARY_LIMITS.items){setStatus('匹配项超过 5000，请先缩小范围');return;}setSelection(items.map(item=>item.id));}}>选择全部匹配</button>
             <button type="button" disabled={!selection.length} onClick={()=>setSelection([])}>取消选择</button>
           </div>
           <div className="personal-batch">

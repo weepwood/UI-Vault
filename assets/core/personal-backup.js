@@ -21,10 +21,11 @@ export function parsePersonalBackup(text){
   const smart=personal.smartFolders??[];
   for(const [values,limit,label] of [[personal.folders,LIBRARY_LIMITS.folders,'收藏夹'],[smart,LIBRARY_LIMITS.smartFolders,'智能收藏夹'],[personal.notes,LIBRARY_LIMITS.notes,'备注'],[personal.recent,LIBRARY_LIMITS.recent,'浏览记录'],[raw.favorites,LIBRARY_LIMITS.items,'收藏'],[raw.presets,MAX_FILTER_PRESETS,'筛选方案']])checkLimit(values,limit,label);
   for(const folder of personal.folders){
-    if(!isObject(folder))throw new TypeError('收藏夹记录错误');
+    if(!isObject(folder)||typeof folder.name!=='string'||folder.name.trim().length>LIBRARY_LIMITS.nameLength)throw new TypeError('收藏夹记录错误');
     checkLimit(folder.ids,LIBRARY_LIMITS.items,'收藏夹资产');
     if(!folder.ids.every(validId))throw new TypeError('资产 ID 格式错误');
   }
+  if(smart.some(folder=>!isObject(folder)||typeof folder.name!=='string'||folder.name.trim().length>LIBRARY_LIMITS.nameLength))throw new TypeError('智能收藏夹记录错误');
   if(!raw.favorites.every(validId)||personal.notes.some(note=>typeof note?.text!=='string'||note.text.length>LIBRARY_LIMITS.noteLength))throw new TypeError('收藏或备注记录错误');
   const normalized=normalizePersonalLibrary(personal);
   if(normalized.folders.length!==personal.folders.length||normalized.smartFolders.length!==smart.length||normalized.notes.length!==personal.notes.length||normalized.recent.length!==personal.recent.length)throw new TypeError('备份存在无效或重复记录');

@@ -849,6 +849,48 @@ def verify_personal_library(browser, origin):
     print("个人资产管理通过：收藏夹、批量收藏、备注、最近浏览、刷新恢复与 Escape。")
 
 
+def verify_personal_backup_and_smart_folders(browser, origin):
+    """智能规则快照、统一备份文件读取/确认与实时恢复。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN",accept_downloads=True)
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator("#source-filter").select_option("local")
+        expected=int(page.locator("#results-count").inner_text())
+        page.locator(".directory-personal-open").click()
+        dialog=page.locator("#personal-library-dialog")
+        dialog.wait_for(state="visible")
+        dialog.locator("#personal-folder-name").fill("本地资源智能夹")
+        dialog.get_by_role("button",name="新建智能收藏夹",exact=True).click()
+        assert str(expected)+" 项" in dialog.locator(".personal-summary").inner_text()
+        assert dialog.locator(".personal-smart-hint").count()==1
+        dialog.locator(".personal-backup summary").click()
+        with page.expect_download() as download:
+            dialog.get_by_role("button",name="导出全部个人数据",exact=True).click()
+        path=download.value.path()
+        assert path is not None
+        dialog.get_by_role("button",name="删除智能收藏夹",exact=True).click()
+        dialog.get_by_role("button",name="确认删除智能收藏夹",exact=True).click()
+        dialog.locator('.personal-backup input[type="file"]').set_input_files(path)
+        dialog.get_by_role("button",name="确认合并备份",exact=True).wait_for(state="visible")
+        dialog.get_by_role("button",name="确认合并备份",exact=True).click()
+        dialog.locator(".personal-navigation button").filter(has_text="本地资源智能夹").click()
+        assert str(expected)+" 项" in dialog.locator(".personal-summary").inner_text()
+        page.keyboard.press("Escape")
+        dialog.wait_for(state="detached")
+        page.reload(wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-personal-open").click()
+        dialog.locator(".personal-navigation button").filter(has_text="本地资源智能夹").click()
+        assert str(expected)+" 项" in dialog.locator(".personal-summary").inner_text()
+    finally:
+        context.close()
+    print("智能收藏夹、统一备份下载及导入、刷新恢复通过。")
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -1469,6 +1511,7 @@ def main():
                 verify_directory_workspace(browser, local)
                 verify_large_directory_groups(browser, local)
                 verify_personal_library(browser, local)
+                verify_personal_backup_and_smart_folders(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

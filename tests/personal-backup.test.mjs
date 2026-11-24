@@ -1,0 +1,72 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {emptyPersonalLibrary,normalizePersonalLibrary,changePersonalLibrary,smartFolderItems,personalAssetItems,hasSmartRules,LIBRARY_LIMITS} from '../assets/core/personal-library.js';
+import {exportPersonalBackup,parsePersonalBackup,mergePersonalBackup,backupCounts,MAX_BACKUP_BYTES} from '../assets/core/personal-backup.js';
+import {DEFAULT_SETTINGS} from '../assets/core/settings.js';
+import {putFilterPreset} from '../assets/core/filter-presets.js';
+
+const asset=(id,style,technology)=>({id,title:id,type:'component',tags:[style],technologies:[technology],source:'local',featured:false,created:'2026-11-24'});
+const assets=[asset('a','极简','Vue'),asset('b','玻璃材质','React'),asset('c','粗野','Vue')];
+const fixture=()=>({personal:emptyPersonalLibrary(),favorites:new Set(),presets:[],preferences:{...DEFAULT_SETTINGS}});
+const add=(data,action)=>({...data,personal:changePersonalLibrary(data.personal,action)});
+
+test('智能收藏夹由独立规则驱动，新增资产、收藏变化实时生效，旧协议兼容',()=>{
+  const raw={version:1,folders:[],notes:[],recent:[]};
+  assert.deepEqual(normalizePersonalLibrary(raw).smartFolders,[]);
+  const rules={style:['极简','玻璃材质'],technology:['Vue','React'],favoritesOnly:true};
+  let library=changePersonalLibrary(emptyPersonalLibrary(),{type:'smart-create',id:'s',name:'前端参考',rules});
+  rules.style.push('粗野');
+  assert.deepEqual(library.smartFolders[0].rules.style,['极简','玻璃材质']);
+  assert.deepEqual(smartFolderItems(assets,library.smartFolders[0],new Set(['a','c'])).map(item=>item.id),['a']);
+  const extended=[...assets,asset('d','极简','React')];
+  assert.deepEqual(personalAssetItems(extended,library,new Set(['a','d']),'smart:s').map(item=>item.id),['a','d']);
+  assert.equal(hasSmartRules({sort:'az',groupBy:'style'}),false);
+  assert.throws(()=>changePersonalLibrary(library,{type:'smart-create',id:'x',name:'空规则',rules:{sort:'az'}}),RangeError);
+  library=changePersonalLibrary(library,{type:'smart-update',id:'s',name:'改名',rules:{technology:'Vue'}});
+  assert.equal(smartFolderItems(assets,library.smartFolders[0],new Set()).length,2);
+  assert.deepEqual(changePersonalLibrary(library,{type:'smart-delete',id:'s'}).smartFolders,[]);
+});
+test('统一备份往返包含原收藏、手工夹、智能夹、备注、历史、方案与设置',()=>{
+  let data=add(fixture(),{type:'folder-create',id:'f',name:'手工夹'});
+  data=add(data,{type:'folder-add',id:'f',ids:['a','future']});
+  data=add(data,{type:'smart-create',id:'s',name:'智能夹',rules:{style:['极简','玻璃材质']}});
+  data=add(data,{type:'note',id:'a',text:'示例'});
+  data.personal.recent=[{id:'a',at:100}];
+  data.favorites.add('b');data.presets=putFilterPreset([],'筛选',{technology:'Vue'});data.preferences.theme='dark';
+  const imported=parsePersonalBackup(exportPersonalBackup(data));
+  assert.deepEqual(imported,data);
+  assert.deepEqual(backupCounts(imported),{favorites:1,folders:1,smartFolders:1,notes:1,recent:1,presets:1});
+});
+test('非覆盖合并保留本地同名/同 ID、收藏并集、最新历史与可选设置',()=>{
+  let local=add(fixture(),{type:'folder-create',id:'local',name:'同名'});
+  local=add(local,{type:'note',id:'a',text:'本地备注'});
+  local.favorites.add('a');local.personal.recent=[{id:'a',at:20}];local.presets=putFilterPreset([],'同名',{style:'极简'});
+  let remote=add(fixture(),{type:'folder-create',id:'remote',name:'同名'});
+  remote=add(remote,{type:'folder-create',id:'local',name:'不同名'});
+  remote=add(remote,{type:'folder-create',id:'new',name:'新增'});
+  remote=add(remote,{type:'note',id:'a',text:'远端备注'});
+  remote=add(remote,{type:'note',id:'b',text:'新增备注'});
+  remote.favorites.add('b');remote.personal.recent=[{id:'a',at:10},{id:'b',at:30}];remote.preferences.theme='dark';
+  remote.presets=putFilterPreset([],'同名',{style:'玻璃材质'});
+  const parsed=parsePersonalBackup(exportPersonalBackup(remote));
+  const merged=mergePersonalBackup(local,parsed);
+  assert.deepEqual(merged.personal.folders.map(item=>item.id),['local','new']);
+  assert.deepEqual(merged.personal.notes,[{id:'a',text:'本地备注'},{id:'b',text:'新增备注'}]);
+  assert.deepEqual([...merged.favorites],['a','b']);
+  assert.deepEqual(merged.personal.recent,[{id:'b',at:30},{id:'a',at:20}]);
+  assert.deepEqual(merged.presets,local.presets);assert.equal(merged.preferences.theme,'system');
+  assert.equal(mergePersonalBackup(local,parsed,{restorePreferences:true}).preferences.theme,'dark');
+  assert.equal(local.personal.folders.length,1);
+});
+test('损坏、未知版本、重复记录及超限备份不会修改本地数据',()=>{
+  const local=fixture();
+  assert.throws(()=>parsePersonalBackup('{bad'),SyntaxError);
+  assert.throws(()=>parsePersonalBackup('{"version":2}'),TypeError);
+  assert.throws(()=>parsePersonalBackup('x'.repeat(MAX_BACKUP_BYTES+1)),RangeError);
+  const raw=JSON.parse(exportPersonalBackup(local));raw.personal.notes=[{id:'a',text:'a'},{id:'a',text:'b'}];
+  assert.throws(()=>parsePersonalBackup(JSON.stringify(raw)),TypeError);
+  const full=fixture();full.personal.folders=Array.from({length:LIBRARY_LIMITS.folders},(_,i)=>({id:'f'+i,name:'夹'+i,ids:[]}));
+  const remote=add(fixture(),{type:'folder-create',id:'new',name:'新增'});
+  assert.throws(()=>mergePersonalBackup(full,remote),RangeError);
+  assert.equal(full.personal.folders.length,LIBRARY_LIMITS.folders);
+});

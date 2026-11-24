@@ -194,7 +194,7 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
           <span className="directory-preset-hint" role="status">{presetStatus}</span>
         </div>
         <button type="button" className="directory-personal-open" onClick={()=>onPersonalLibrary('all')}><UIIcon name="bookmark"/> 个人资产管理</button>
-        {state.active&&<button type="button" className="directory-personal-open" onClick={()=>onPersonalLibrary('current')}>管理当前资产</button>}
+        {state.active&&<button type="button" className="directory-personal-current" onClick={()=>onPersonalLibrary('current')}>管理当前资产</button>}
         <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label>
       </div>
     </>,toolsRoot)}
