@@ -4,8 +4,8 @@ import {planCI} from '../scripts/ci-plan.mjs';
 const pr=paths=>planCI({event:'pull_request',paths});
 const fast={fast:true,build:false,visual:false,windows:false,full:false};
 const full={fast:true,build:true,visual:true,windows:true,full:true};
-test('普通资产、独立 Demo、局部 CSS 与文档 PR 不启动重型检查',()=>{
-  assert.deepEqual(pr(['catalog/assets/demo.json','content/assets.json','demos/components/demo/index.html','assets/ui/controls.css','README.md']),fast);
+test('普通资产、独立 Demo 与文档 PR 不启动重型检查',()=>{
+  assert.deepEqual(pr(['catalog/assets/demo.json','content/assets.json','demos/components/demo/index.html','README.md']),fast);
 });
 test('核心预览与权限改动仅升级 Linux 构建和浏览器验证',()=>{
   assert.deepEqual(pr(['src/components/PreviewFrame.jsx']),{...fast,build:true,visual:true});
@@ -25,4 +25,12 @@ test('main push 和定期刷新仅构建部署，手动 quick 可额外验证',(
   assert.deepEqual(planCI({event:'push',ref:'refs/heads/main'}),build);
   assert.deepEqual(planCI({event:'schedule',ref:'refs/heads/main'}),build);
   assert.deepEqual(planCI({event:'workflow_dispatch',mode:'quick'}),{...fast,build:true});
+});
+
+test('主站共享 CSS、目录和参数控件变更触发 Chromium 验收',()=>{
+  for(const path of ['assets/styles.css','assets/ui/controls.css','assets/ui/dialog.css','src/components/ProjectList.jsx','src/components/VirtualProjectList.jsx','src/components/DemoParameterPanel.jsx','assets/core/demo-parameters.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
+});
+
+test('发布浏览器审计代码变更触发完整验收',()=>{
+ assert.deepEqual(pr(['scripts/release-browser-audit.py']),{fast:true,build:true,visual:true,windows:true,full:true});
 });
