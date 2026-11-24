@@ -65,9 +65,13 @@ def main():
                 assert "乙" in select.inner_text()
                 popover=page.get_by_role("button",name="打开浮层")
                 popover.click()
-                page.get_by_text("浮层内容",exact=True).wait_for()
+                expect(popover).to_have_attribute("aria-expanded","true")
+                expect(page.get_by_test_id("popover-content")).to_be_visible()
+                expect(page.get_by_test_id("popover-content")).to_have_text("浮层内容")
                 page.keyboard.press("Escape")
-                page.get_by_text("浮层内容",exact=True).wait_for(state="hidden")
+                expect(page.get_by_test_id("popover-content")).to_be_hidden()
+                expect(popover).to_have_attribute("aria-expanded","false")
+                expect(popover).to_be_focused()
                 assert not errors, errors
                 assert not external, external
                 page.close()
