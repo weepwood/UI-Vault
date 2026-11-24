@@ -175,3 +175,5 @@ Registry 正式化候选：--plan 只读预检、模块版本及运行时依赖�
 源码高亮 UI 默认关闭，支持 HTML/SVG/CSS/JavaScript（其他语言保留纯文本）；48k 字符、6000 片段、2 秒 Worker 上限，切换文件/关闭即终止，验证字符完整性后才渲染 React span；新增单测和实际浏览器复制文本一致性检查。未验收。
 
 高级参数候选只在 warm-workbench 注册 13 项安全字段，CSS 由受控数据生成；旧七项存储预设迁移到默认高级值，协议消息仍严格完整。尊重 reduced-motion；不得将任意 CSS、动画脚本通过消息发送。四份单文件内嵌核心保持一致，新增实际浏览器渐变/阴影/重置测试及截图；待 CI。
+
+高级参数分支追加逐篇审查 Generative Pattern、Geo-Boho、GeoCities、Geometric Modernism、Glitch Art、Global Village Coffeehouse 六项原始指南，累计 106 项审计记录、剩余 184 项无显式标签；保留受控词表和原始许可。
