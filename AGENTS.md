@@ -147,3 +147,5 @@ Frame Lab 的 12 项资产依赖主站共享 reference-shell CSS/JS，不得标�
 Registry 框架适配器改动必须通过独立 registry-runtime 工作流（真实复制、编译、Chromium 交互），不能以源码存在或 React 单测替代 Vue 验收。
 
 见 [docs/GUIDE-CLASSIFICATION-NEXT.md](docs/GUIDE-CLASSIFICATION-NEXT.md)：分类按原始指南逐条记录；跨刷新锚点只在当前标签页、匹配资产 ID 时恢复；参数导入只接受白名单 JSON 且不得自动执行或应用；Registry 原生表单保留浏览器行为。
+
+暖色布局参数：固定白名单 CSS 变量、默认视觉等价、响应式断点保留，独立 HTML 内嵌协议核心必须与主站完全一致；新增参数必须实测应用和重置，不能把快照当完整代码。

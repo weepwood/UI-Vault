@@ -1016,6 +1016,32 @@ def verify_effect_parameters(browser, origin):
         context.close()
 
 
+def verify_warm_layout_parameters(browser, origin):
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+        frame=page.frame_locator('#preview-stage iframe[data-preview-frame="local"]')
+        frame.locator(".stats").wait_for()
+        page.evaluate("() => window.__layoutFrame=document.querySelector('#preview-stage iframe')")
+        page.locator("#preview-info").click()
+        page.locator("#tab-page-info").click()
+        panel=page.locator(".demo-parameter-panel")
+        panel.get_by_role("button",name="读取当前参数").click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        panel.get_by_role("spinbutton",name="卡片圆角").fill("24")
+        panel.get_by_role("button",name="应用参数",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
+        assert page.evaluate("() => window.__layoutFrame===document.querySelector('#preview-stage iframe')")
+        panel.get_by_role("button",name="恢复默认",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
+        print("暖色布局参数应用、重置及 iframe 稳定性通过",flush=True)
+    finally:
+        context.close()
+
+
 def verify_standalone_delivery(browser):
     """在不含主站文件的临时 HTTP 根目录运行真实发布文件与 ZIP。"""
     assets=json.loads((DIST/"content/assets.json").read_text(encoding="utf-8"))
@@ -1770,6 +1796,7 @@ def main():
                     verify_preview_timeout_ready,
                     verify_foundation_parameters,
                     verify_effect_parameters,
+                    verify_warm_layout_parameters,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,
                     verify_liquid_orb_unified,
