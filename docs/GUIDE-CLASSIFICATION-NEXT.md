@@ -96,3 +96,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 #113 已合并 917f3fa，审计 142、未标记 148。下一候选逐篇审查 Liminal Space、Liquid Fluid Design、Liquid Metal、Live Laugh Love、Low Poly、Lush Velvet、Luxury Minimalism、Mallsoft，累计 150，未标记 140；所有资产缺显式风格标签 210（不同指标）。待 CI。
 
 #114 已合并 616fde4，审计 150、未标记 140。下一候选审查 Manguebeat、Material Design、Maximalism、Medievalcore、Mediterranean、Memphis Design、Memphis Lite、Metalheart，累计 158、未标记 132、无显式视觉风格 202。待 CI。
+
+本轮新增六项原始指南审计（Metro Design 至 Mob Wife），累计 164 项，剩余 126 项无标签，196 项无显式风格词表标签；两种缺口分别统计。

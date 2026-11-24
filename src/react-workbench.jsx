@@ -21,6 +21,7 @@ import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
 import {DemoParameterPanel} from './components/DemoParameterPanel.jsx';
+import {ParameterDockResize} from './components/ParameterDockResize.jsx';
 import {parameterSchemaFor} from '../assets/core/demo-parameters.js';
 import {SettingsPanel} from './components/SettingsPanel.jsx';
 import {ProjectOperationsPanel} from './components/ProjectOperationsPanel.jsx';
@@ -508,7 +509,7 @@ function WorkbenchPortals({nodes}){
     {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(dockOpen&&<div className="parameter-dock-inner">
-      <div className="parameter-dock-header"><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();(document.getElementById('preview-parameters')||document.getElementById('preview-info'))?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>
+      <div className="parameter-dock-header"><ParameterDockResize dock={nodes.parameterDock}/><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();(document.getElementById('preview-parameters')||document.getElementById('preview-info'))?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>
       <DemoParameterPanel key={dockKey} asset={effectiveAsset} notify={notify} liveEditing/>
     </div>,nodes.parameterDock)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
