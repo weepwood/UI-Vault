@@ -1327,6 +1327,14 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.get_by_label("当前色标颜色",exact=True).fill("#aabbcc")
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.get_by_label("中间色标颜色",exact=True).input_value()=="#aabbcc"
+            hex_input=dock.get_by_label("当前色标 HEX",exact=True)
+            hex_input.fill("#123456")
+            hex_input.press("Enter")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert dock.get_by_label("中间色标颜色",exact=True).input_value()=="#123456"
+            hex_input.fill("#bad")
+            hex_input.press("Escape")
+            assert hex_input.input_value().lower()=="#123456"
             page.screenshot(path=str(OUTPUT/f"parameter-selected-stop-{width}.png"))
             dock.get_by_role("button",name="阴影",exact=True).click()
             dock.get_by_role("button",name="复位阴影",exact=True).click()
