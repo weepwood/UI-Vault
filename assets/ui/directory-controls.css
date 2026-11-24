@@ -68,3 +68,8 @@
 .project-panel .directory-facet-field select{height:34px;min-height:34px;text-overflow:ellipsis}
 .project-panel .directory-facets{gap:8px}
 @media(max-width:480px){.project-panel .directory-facet-field{grid-template-columns:minmax(0,1fr)}.project-panel .directory-facet-field .directory-preset-hint{grid-column:1}}
+
+/* 原生分面选择保留键盘及系统选择器能力，与公共下拉触发器共享反馈。 */
+.project-panel .directory-facet-field select:focus-visible,.project-panel .directory-preset-quick select:focus-visible{outline:2px solid var(--focus);outline-offset:1px;border-color:var(--accent-line-strong)}
+.project-panel .directory-facet-field select:disabled{opacity:.5;cursor:not-allowed}
+.project-panel .directory-management summary:hover{color:var(--ink)}

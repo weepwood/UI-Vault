@@ -619,6 +619,16 @@ def verify_glass_materials(browser, origin):
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), name + ": 主站横向溢出"
             OUTPUT.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(OUTPUT / ("glass-lab-embed-" + name + ".png")), full_page=True, animations="disabled")
+            external_height=page.locator('.topbar').bounding_box()['height']
+            assert page.locator('.topbar-embed-notice').count()==0
+            page.goto(origin + "?asset=warm-workbench", wait_until="domcontentloaded")
+            page.locator('#preview-title').filter(has_text="暖色工作台").wait_for(state="visible")
+            page.evaluate("() => document.fonts.ready")
+            page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
+            local_height=page.locator('.topbar').bounding_box()['height']
+            assert abs(local_height-external_height)<=1, f"{name}: 顶栏切换高度变化 {external_height} → {local_height}"
+            assert page.locator('.topbar-embed-notice').count()==0
+
         finally:
             context.close()
     print("Glass Lab 回归通过：旧资产深链接、在线 iframe、材质内容及桌面/移动端预览。")

@@ -181,7 +181,20 @@ const TERM_ALIASES=Object.freeze({
   "粉彩哥特风":["pastel goth"],"pastel goth":["粉彩哥特风"],
   "像素风":["pc 98"],"pc 98":["pc 98 像素风"],
   "奢华拼贴风":["pen and pixel"],"pen and pixel":["奢华拼贴风"],
-  "物体海报风":["plakatstil"],"plakatstil":["物体海报风"]
+  "物体海报风":["plakatstil"],"plakatstil":["物体海报风"],
+  "点彩派":["pointillism"],"pointillism":["点彩派"],
+  "波兰海报学派":["polish poster school"],"polish poster school":["波兰海报学派"],
+  "多色流体风":["polychrome"],"polychrome":["多色流体风"],
+  "波普艺术":["pop art"],"pop art":["波普艺术"],
+  "波普超现实主义":["pop surrealism"],"pop surrealism":["波普超现实主义"],
+  "治愈可爱风":["positivity kawaii"],"positivity kawaii":["治愈可爱风"],
+  "后数字设计":["post digital"],"post digital":["后数字设计"],
+  "同人海报少女风":["poster gal"],"poster gal":["同人海报少女风"],
+  "迷幻设计":["psychedelic"],"psychedelic":["迷幻设计"],
+  "幼犬可爱风":["puppycore"],"puppycore":["幼犬可爱风"],
+  "静奢风":["quiet luxury"],"quiet luxury":["静奢风"],
+  "激进设计":["radical design"],"radical design":["激进设计"],
+  "原始工业风":["raw industrial"],"raw industrial":["原始工业风"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
