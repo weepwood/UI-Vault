@@ -1217,6 +1217,14 @@ def verify_expanded_workbench_screenshots(browser, origin):
                 assert page.locator(".source-view").evaluate("(el)=>getComputedStyle(el).whiteSpace")=="pre-wrap"
                 assert page.locator("#source-copy").is_enabled()
                 page.screenshot(path=str(OUTPUT/"source-file-browser-desktop.png"))
+                raw=page.locator("#source-code").text_content()
+                page.get_by_role("checkbox",name="语法高亮").check()
+                page.locator("#source-code[data-highlight-state=ready] span[class^=syntax-]").first.wait_for()
+                assert page.locator("#source-code").text_content()==raw
+                assert page.locator("#source-copy").is_enabled()
+                page.screenshot(path=str(OUTPUT/"source-highlight-desktop.png"))
+                page.get_by_role("checkbox",name="语法高亮").uncheck()
+                assert page.locator("#source-code span").count()==0
         finally:
             context.close()
 

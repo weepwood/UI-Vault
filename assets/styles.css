@@ -1449,3 +1449,16 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 #parameter-dock .parameter-value-hint span{font-family:monospace}
 #parameter-dock .parameter-unit-hint{grid-column:1/-1;text-align:right;color:var(--muted);font-size:10px;line-height:1}
 @media(max-width:760px){.source-file-browser li button small{display:none}.source-reader-tools{gap:6px}.source-current-path{font-size:10px}}
+
+/* 高亮仅改变文本颜色；复制、换行、源码 DOM 仍保持原始字符。 */
+.source-reader-tools{flex-wrap:wrap;column-gap:10px;row-gap:4px}.source-current-path{flex:1 1 140px}
+.source-view .syntax-comment,.source-view .syntax-prolog,.source-view .syntax-doctype,.source-view .syntax-cdata{color:#5f7162}
+.source-view :is(.syntax-keyword,.syntax-atrule,.syntax-important,.syntax-tag){color:#813c8d}
+.source-view :is(.syntax-string,.syntax-char,.syntax-attr-value,.syntax-inserted){color:#297245}
+.source-view :is(.syntax-function,.syntax-class-name,.syntax-selector,.syntax-builtin){color:#245e9a}
+.source-view :is(.syntax-number,.syntax-boolean,.syntax-constant,.syntax-property,.syntax-attr-name){color:#975419}
+html[data-theme="dark"] .source-view :is(.syntax-comment,.syntax-prolog,.syntax-doctype,.syntax-cdata){color:#a5b7a4}
+html[data-theme="dark"] .source-view :is(.syntax-keyword,.syntax-atrule,.syntax-important,.syntax-tag){color:#d9a2e8}
+html[data-theme="dark"] .source-view :is(.syntax-string,.syntax-char,.syntax-attr-value,.syntax-inserted){color:#a4d4a8}
+html[data-theme="dark"] .source-view :is(.syntax-function,.syntax-class-name,.syntax-selector,.syntax-builtin){color:#a2cbff}
+html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-constant,.syntax-property,.syntax-attr-name){color:#f1bf88}
