@@ -121,7 +121,13 @@ const TERM_ALIASES=Object.freeze({
   '独立派对风':['indie sleaze'],'indie sleaze':['独立派对风'],
   '工业哥特风':['industrial gothic'],'industrial gothic':['工业哥特风'],
   '水墨画风':['ink wash'],'ink wash':['水墨画风'],
-  '国际主义排版':['international typographic style'],'international typographic style':['国际主义排版']
+  '国际主义排版':['international typographic style'],'international typographic style':['国际主义排版'],
+  '虹彩材质':['iridescent'],'iridescent':['虹彩材质'],
+  '等距投影设计':['isometric design'],'isometric design':['等距投影设计'],
+  '意大利迪斯科风':['italo disco'],'italo disco':['意大利迪斯科风'],
+  '日式北欧融合风':['japandi'],'japandi':['日式北欧融合风'],
+  '闪亮西装时代风':['jiggy era'],'jiggy era':['闪亮西装时代风'],
+  '儿童科学风':['kid science'],'kid science':['儿童科学风']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
