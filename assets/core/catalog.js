@@ -97,7 +97,13 @@ const TERM_ALIASES=Object.freeze({
   '早期个人网页风':['geocities'],'geocities':['早期个人网页风'],
   '几何现代主义':['geometric modernism'],'geometric modernism':['几何现代主义'],
   '故障艺术':['glitch art'],'glitch art':['故障艺术'],
-  '地球村咖啡馆':['global village coffeehouse'],'global village coffeehouse':['地球村咖啡馆']
+  '地球村咖啡馆':['global village coffeehouse'],'global village coffeehouse':['地球村咖啡馆'],
+  '地精自然风':['goblincore'],'goblincore':['地精自然风'],
+  '古吉风格':['googie'],'googie':['古吉风格'],
+  '户外机能风':['gorpcore'],'gorpcore':['户外机能风'],
+  '哥特风格':['gothic'],'gothic':['哥特风格'],
+  '涂鸦波普':['graffiti pop'],'graffiti pop':['涂鸦波普'],
+  '颗粒粗粝风':['grain and grit'],'grain and grit':['颗粒粗粝风']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
