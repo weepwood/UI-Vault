@@ -1276,6 +1276,34 @@ def verify_expanded_workbench_screenshots(browser, origin):
             assert dock.get_by_role("heading",name="阴影",exact=True).evaluate("(el)=>el===document.activeElement")
             dock.locator('.parameter-section-nav button[data-selected="true"]').filter(has_text="阴影").wait_for()
             page.screenshot(path=str(OUTPUT/f"parameter-shadow-group-{width}.png"))
+            toolbar=dock.locator(".parameter-fixed-controls")
+            assert toolbar.bounding_box()["y"]>=header.bounding_box()["y"]+header.bounding_box()["height"]-2
+            assert dock.get_by_role("heading",name="阴影",exact=True).bounding_box()["y"]>=toolbar.bounding_box()["y"]+toolbar.bounding_box()["height"]-2
+            dock.get_by_role("button",name="布局基础",exact=True).click()
+            dock.get_by_role("button",name="双层柔光",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            dock.get_by_role("button",name="表面渐变",exact=True).click()
+            dock.get_by_role("button",name="第一中色标 48%",exact=True).click()
+            dock.get_by_label("当前色标颜色",exact=True).fill("#aabbcc")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert dock.get_by_label("中间色标颜色",exact=True).input_value()=="#aabbcc"
+            page.screenshot(path=str(OUTPUT/f"parameter-selected-stop-{width}.png"))
+            dock.get_by_role("button",name="阴影",exact=True).click()
+            dock.get_by_role("button",name="复位阴影",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert dock.get_by_role("spinbutton",name="阴影不透明度",exact=True).input_value()=="0"
+            assert dock.get_by_role("checkbox",name="启用表面渐变",exact=True).is_checked()
+            dock.get_by_role("button",name="撤销",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert dock.get_by_role("spinbutton",name="阴影不透明度",exact=True).input_value()=="10"
+            dock.get_by_role("button",name="表面渐变",exact=True).click()
+            dock.get_by_role("button",name="关闭渐变",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            dock.get_by_role("button",name="快速启用渐变",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert dock.get_by_role("checkbox",name="启用表面渐变",exact=True).is_checked()
+
+
 
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
