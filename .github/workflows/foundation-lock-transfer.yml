@@ -1,0 +1,31 @@
+name: Foundation 锁文件原始字节校验
+on:
+  pull_request:
+    paths:
+      - '.github/workflows/foundation-lock-transfer.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    if: github.event.pull_request.number == 111 && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: foundation-vue-lock-45426165318
+          run-id: 45426165318
+          github-token: ${{ github.token }}
+          path: ${{ runner.temp }}/foundation-lock
+      - name: 校验已下载审查的公开锁文件并输出可核对字节
+        run: |
+          python - <<'PY'
+          import os, pathlib, hashlib, base64
+          path = pathlib.Path(os.environ['RUNNER_TEMP']) / 'foundation-lock' / 'foundation-vue-package-lock.json'
+          data = path.read_bytes()
+          assert hashlib.sha256(data).hexdigest() == 'e834886e4a3f197ca3d2471c7f12ec6701b6945615f0540d4994feabdbf9097c'
+          assert hashlib.sha1(b'blob '+str(len(data)).encode()+b'\0'+data).hexdigest() == '23ddb57c50d1517b2e1edcd4d724877c19b36a46'
+          encoded = base64.b64encode(data).decode()
+          for offset in range(0,len(encoded),1000):
+              print(f'FOUNDATION_LOCK_BYTES {offset:06d} {encoded[offset:offset+1000]}')
+          PY
