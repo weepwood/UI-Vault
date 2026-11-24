@@ -1523,3 +1523,19 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 .project-panel .project-row-subtitle{line-height:1.4}
 .project-panel .project-controls-label{letter-spacing:.015em}
 .project-panel .result-count{border-radius:4px;font-variant-numeric:tabular-nums}
+
+/* #111 真实截图显示材质预览占满停靠首屏：布局数值优先，图形编辑器归入各自分组。 */
+.parameter-section-nav{display:flex;flex-wrap:wrap;gap:4px;min-width:0;padding:4px 0 6px;border-bottom:1px solid var(--line-soft)}
+.parameter-section-nav button{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:6px;min-height:28px;padding:4px 9px;font:inherit;font-size:11px}
+.parameter-section-nav button:hover{background:var(--hover)}
+.parameter-section-nav button:focus-visible,.parameter-group-title:focus-visible,.parameter-presets-heading:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.parameter-group-title,.parameter-presets-heading{scroll-margin-top:48px}
+.parameter-group-visual{grid-column:1/-1;display:grid;grid-template-columns:minmax(110px,1fr) minmax(0,2fr);gap:10px;align-items:center;padding:8px;border:1px solid var(--line-soft);border-radius:8px;background:var(--canvas);min-width:0}
+.parameter-group-visual .parameter-material-swatch{min-height:68px}
+.parameter-group-visual .material-stop-editor{background:var(--surface)}
+.material-stop-actions{margin-top:8px}
+.parameter-shadow-sample{min-height:54px;margin:8px;padding:8px;border-radius:8px;color:#37312b;font-size:11px;border:1px solid var(--line-soft);display:grid;place-items:center}
+.parameter-curve-preview{grid-template-columns:minmax(88px,144px) minmax(0,1fr)}
+.parameter-curve-preview .bezier-editor{width:100%;height:92px;color:var(--accent);overflow:visible}
+.parameter-curve-preview code{display:block;overflow-wrap:anywhere;font-size:10px;color:var(--muted);margin-bottom:8px}
+@media(max-width:760px){.parameter-group-visual{grid-template-columns:minmax(0,1fr);gap:6px}.parameter-curve-preview{grid-template-columns:minmax(84px,100px) minmax(0,1fr)}.parameter-section-nav button{padding-inline:7px}}

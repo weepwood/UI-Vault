@@ -1044,10 +1044,21 @@ def verify_warm_layout_parameters(browser, origin):
         panel.get_by_role("spinbutton",name="中间色标位置",exact=True).fill("35")
         panel.get_by_role("checkbox",name="启用第二个中色标",exact=True).check()
         panel.get_by_role("spinbutton",name="第二个中色标位置",exact=True).fill("75")
-        panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).fill("15")
+        panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).fill("23")
         panel.get_by_role("spinbutton",name="第二层阴影横向偏移",exact=True).fill("-4")
+        panel.get_by_role("button",name="表面渐变",exact=True).click()
+        assert panel.get_by_role("heading",name="表面渐变",exact=True).evaluate("(el)=>el===document.activeElement")
+        panel.get_by_role("button",name="移除 第二中色标",exact=True).click()
+        assert panel.locator("[data-gradient-stop='gradientMid2Position']").count()==0
+        panel.get_by_role("button",name="添加 第二中色标",exact=True).click()
         stop=panel.locator("[data-gradient-stop='gradientMidPosition']")
         stop.scroll_into_view_if_needed()
+        stop.focus()
+        page.keyboard.press("Home")
+        assert panel.get_by_role("spinbutton",name="中间色标位置",exact=True).input_value()=="0"
+        page.keyboard.press("End")
+        assert panel.get_by_role("spinbutton",name="中间色标位置",exact=True).input_value()=="100"
+        panel.get_by_role("spinbutton",name="中间色标位置",exact=True).fill("35")
         stop.focus()
         page.keyboard.press("ArrowRight")
         assert panel.get_by_role("spinbutton",name="中间色标位置",exact=True).input_value()=="36"
@@ -1061,6 +1072,7 @@ def verify_warm_layout_parameters(browser, origin):
         panel.get_by_role("button",name="第二层阴影 · 启用",exact=True).click()
         assert panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).input_value()=="0"
         panel.get_by_role("button",name="第二层阴影 · 关闭",exact=True).click()
+        assert panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).input_value()=="23"
         panel.get_by_role("button",name="线性",exact=True).click()
         assert panel.get_by_role("spinbutton",name="控制点 X1",exact=True).input_value()=="0"
         panel.get_by_role("button",name="柔和",exact=True).click()
@@ -1241,6 +1253,9 @@ def verify_expanded_workbench_screenshots(browser, origin):
             assert page.locator("#preview-stage").bounding_box()["height"]>0
             assert dock.locator(".demo-parameter-fields").bounding_box()["y"] < dock.locator(".parameter-presets").bounding_box()["y"]
             page.screenshot(path=str(OUTPUT/f"expanded-parameters-{width}.png"))
+            dock.get_by_role("button",name="表面渐变",exact=True).click()
+            assert dock.get_by_role("heading",name="表面渐变",exact=True).evaluate("(el)=>el===document.activeElement")
+            page.screenshot(path=str(OUTPUT/f"parameter-gradient-group-{width}.png"))
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
             page.locator(".directory-filter-toggle").click()
