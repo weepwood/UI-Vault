@@ -139,3 +139,9 @@ Frame Lab 的 12 项资产依赖主站共享 reference-shell CSS/JS，不得标�
 见 [docs/NEXT-ITERATION.md](docs/NEXT-ITERATION.md)。大型多组窗口不得改变真实资产 ID、筛选语义或常规原生分组；不将 iframe load/timeout 视为外站可交互证明；Registry 框架源码快照不是安装包。5000 项测试必须使用隔离的合成夹具，不污染真实目录。
 
 正式发布：仅提高根 package.json / package-lock.json 的正式版本并提交对应 docs/releases/vX.Y.Z.md 后，main push 才触发完整验收及 Release；生产文件哈希不匹配、CI 失败、同名不同提交标签均不得发布或覆盖。见 scripts/release-plan.mjs 与 scripts/verify-release.py。
+
+下一轮交接见 [docs/CATALOG-QUALITY-NEXT.md](docs/CATALOG-QUALITY-NEXT.md)：只对明确命名/来源可证实的风格添加标签；虚拟滚动恢复使用首行 ID；Registry 安装必须校验依赖、哈希与路径且禁止覆盖；新增单文件 ZIP 必须保留 HTML 复制入口、许可证及隔离运行测试。
+
+预览 ready 不等于全面功能验收；仅明确登记的本地 Foundation 接入 challenge/response，校验当前 iframe、opaque origin、资产 ID、协议及一次性 nonce。外部 HTTP/响应头证据不得提升为已交互；不得放宽 sandbox。
+
+Registry 框架适配器改动必须通过独立 registry-runtime 工作流（真实复制、编译、Chromium 交互），不能以源码存在或 React 单测替代 Vue 验收。

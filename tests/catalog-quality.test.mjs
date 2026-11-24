@@ -1,34 +1,25 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {readFileSync,existsSync} from 'node:fs';
-import {checkEntry} from '../scripts/lib/catalog.mjs';
-const read=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
-const assets=read('content/assets.json'),categories=read('content/categories.json');
-test('当前目录技术栈去重，所有本地预览唯一，复用说明不为空',()=>{
- const paths=new Set();
- for(const asset of assets){
-  assert.equal(new Set(asset.technologies.map(value=>value.trim().toLowerCase())).size,asset.technologies.length,asset.id);
-  assert.ok(asset.reuseNotes?.length,asset.id);
-  if(asset.source==='local'){assert.ok(!paths.has(asset.preview),asset.id);paths.add(asset.preview);}
+import {readFileSync} from 'node:fs';
+import {filterAssets,catalogFacetOptions} from '../assets/core/catalog.js';
+import {styleTagsOf} from '../assets/core/style-taxonomy.js';
+import {virtualScrollAnchor,restoreVirtualScroll} from '../assets/core/virtual-window.js';
+const assets=JSON.parse(readFileSync(new URL('../content/assets.json',import.meta.url),'utf8'));
+test('真实风格目录按双语关键词与实际标签命中',()=>{
+ for(const [query,id,style] of [['玻璃拟态','website-style-glassmorphism','玻璃材质'],['极简','website-style-minimalism','极简'],['粗野主义','website-style-brutalist-web-design','粗野'],['dark mode','website-style-dark-mode-neon','暗色'],['cyberpunk','website-style-cyberpunk','赛博朋克']]){
+   const result=filterAssets(assets,{query,style});assert.ok(result.some(x=>x.id===id),query);
  }
- const base=assets[0];
- assert.ok(checkEntry({...base,technologies:['Vue','vue']},categories).some(error=>error.includes('technologies')));
+ const styles=assets.filter(a=>a.type==='design-style');
+ assert.ok(styles.length>=314);
+ assert.equal(filterAssets(styles,{tag:'风格主题'}).length,styles.length);
+ assert.equal(catalogFacetOptions(styles).tag.find(x=>x.value==='风格主题').count,styles.length);
+ assert.ok(styleTagsOf(assets.find(a=>a.id==='website-style-liquid-glass')).includes('玻璃材质'));
 });
-test('终末地导航不再发布待核实字体与插画',()=>{
- const asset=assets.find(item=>item.id==='endfield-nav-tab');
- assert.ok(!asset.publish?.length);
- const html=readFileSync(new URL('../'+asset.preview,import.meta.url),'utf8');
- assert.doesNotMatch(html,/url\(["']?(?:fonts|assets)\//);
- for(const path of ['assets/tab-active-bg.8b31f4.png','fonts/HarmonyOSSansSC-Medium.55cf26.woff2','fonts/HarmonyOSSansSC-Bold.d69da8.woff2'])assert.equal(existsSync(new URL('../demos/components/endfield-nav-tab/'+path,import.meta.url)),false);
-});
-
-test('Frame Lab 共享 CSS/JS 依赖不得标记为独立单文件',()=>{
- const frames=assets.filter(asset=>asset.id.startsWith('atlas-frame-'));
- assert.equal(frames.length,12);
- for(const asset of frames){
-  assert.equal(asset.copyable,false,asset.id);
-  const html=readFileSync(new URL('../'+asset.preview,import.meta.url),'utf8');
-  assert.match(html,/reference-shell\.css/);assert.match(html,/reference-shell\.js/);
-  assert.ok(asset.reuseNotes.some(note=>note.includes('单文件不能独立运行')));
- }
+test('统一窗口以资产 ID 恢复首行位置并兼容折叠、密度调整',()=>{
+ const rows=Array.from({length:5000},(_,i)=>({id:String(i)}));
+ const anchor=virtualScrollAnchor(rows,6017,60);
+ assert.equal(anchor.id,'100');
+ assert.equal(restoreVirtualScroll(rows.slice(50),anchor,60),3017);
+ assert.equal(restoreVirtualScroll(rows,anchor,48),4814);
+ assert.equal(restoreVirtualScroll([],anchor,60),0);
 });

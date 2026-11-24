@@ -3,6 +3,7 @@ import {applyPreviewLayout,calculatePreviewLayout,normalizeCustomWidth,PREVIEW_W
 import {resolveAsset} from '../../assets/core/render.js';
 import {getPreviewPolicy} from '../../assets/core/preview-policy.js';
 import {Icon} from './WorkbenchSelect.jsx';
+import {supportsPreviewReady,readyRequest,isReadyReply} from '../../assets/core/preview-ready.js';
 
 function previewUrl(asset){
   const orb = asset.id === 'liquid-orb' || asset.id === 'liquid-orb-thinking-dialog';
@@ -24,6 +25,9 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   const frame=useRef(null);
   const resizeHandle=useRef(null);
   const resizeDrag=useRef(null);
+  const challenge=useRef(null);
+  const [readyProof,setReadyProof]=useState(null);
+  const readySupported=supportsPreviewReady(asset);
   const {sandbox,allow:permissions,allowFullScreen}=getPreviewPolicy(asset);
   const assetId=asset?.id,assetSource=asset?.source,assetPreview=asset?.preview;
   // 玻璃球预览需要跟随布局比例：只有这两个 Demo 接收 setDisplayScale 消息。
@@ -58,7 +62,28 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   const attempt=navigation.page===page?navigation.attempt:0;
   const status=navigation.page===page?navigation.status:'pending';
   const framePending=Boolean(page)&&status==='pending';
-  const markLoaded=()=>setNavigation(previous=>previous.page===page&&previous.attempt===attempt?{...previous,status:'loaded'}:previous);
+  const verified=readySupported&&readyProof?.page===page&&readyProof?.attempt===attempt&&status==='loaded';
+  useEffect(()=>{
+    if(!readySupported)return;
+    function receive(event){
+      const expected=challenge.current;
+      if(expected?.page===page&&expected.attempt===attempt&&isReadyReply(event,frame.current,expected)){
+        challenge.current=null;
+        setReadyProof({page,attempt});
+      }
+    }
+    window.addEventListener('message',receive);
+    return ()=>{challenge.current=null;window.removeEventListener('message',receive);};
+  },[readySupported,page,attempt]);
+  const markLoaded=()=>{
+    setNavigation(previous=>previous.page===page&&previous.attempt===attempt?{...previous,status:'loaded'}:previous);
+    if(readySupported&&frame.current?.contentWindow){
+      const nonce=Array.from(crypto.getRandomValues(new Uint8Array(16)),n=>n.toString(16).padStart(2,'0')).join('');
+      challenge.current={nonce,assetId,page,attempt};
+      setReadyProof(null);
+      frame.current.contentWindow.postMessage(readyRequest(nonce,assetId),'*');
+    }
+  };
   const markError=()=>setNavigation(previous=>previous.page===page&&previous.attempt===attempt?{...previous,status:'error'}:previous);
   useEffect(()=>{
     if(!page)return;
@@ -67,9 +92,14 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   },[page,attempt]);
   function retry(){
     if(!src||!frame.current)return;
+    challenge.current=null;setReadyProof(null);
     setNavigation(previous=>({page,attempt:previous.attempt+1,status:'pending'}));
-    try{frame.current.contentWindow.location.replace(src);}
-    catch{frame.current.src=src;}
+    // 失败重试需要实际新导航；同 URL 的 replace 可能仅更新 hash。
+    // 显式重试导航当前节点，普通资产切换/设备调整保持现有节点语义。
+    const url=new URL(src,document.baseURI);
+    url.searchParams.set('ui-vault-retry',String(attempt+1));
+    try{frame.current.contentWindow.location.replace(url.href);}
+    catch{frame.current.src=url.href;}
   }
   const progress=framePending&&<div className="preview-progress" role="progressbar" aria-label="正在加载预览"/>;
   const recovery=page&&(status==='timeout'||status==='error')&&<div className="preview-recovery" role="status">
@@ -156,6 +186,7 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   if(asset.source==='local'){
     return <><iframe ref={frame} className="live-frame" data-preview-frame="local"
       title={asset.title+' 的可交互预览'} src={iframeEntrySrc} data-preview-url={src}
+      data-preview-status={status} data-preview-ready={verified?'verified':readySupported?'unverified':undefined}
       onLoad={updateFrameLayout} onError={markError}
       sandbox={sandbox}
       allow={permissions}
@@ -175,7 +206,7 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   if(asset.siteUrl){
     return <><iframe ref={frame} className="live-frame" data-preview-frame="external"
       data-external-link-bridge={asset.externalLinkBridge===true?'true':undefined}
-      title={asset.title+' 的外部网站'} src={asset.siteUrl} onLoad={markLoaded} onError={markError}
+      title={asset.title+' 的外部网站'} src={asset.siteUrl} data-preview-status={status} onLoad={markLoaded} onError={markError}
       sandbox={sandbox} referrerPolicy="no-referrer"/>{progress}{recovery}</>;
   }
   const href=asset.url||asset.originRepo;

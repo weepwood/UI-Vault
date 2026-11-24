@@ -839,8 +839,64 @@ def verify_synthetic_grouped_directory(browser, origin):
         page.keyboard.press("Enter")
         page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5100'")
         assert window.get_attribute("data-total")=="5100"
-        print(f"5000 项 / 100 组浏览器压力：DOM {page.locator('#gallery .project-row').count()} 行，折叠与 Home/End 通过",flush=True)
+        # 首个组标题保持焦点挂载；滚动到后续组，再折叠上方组，验证同一资产锚点。
+        page.locator('[data-virtual-group]').first.focus()
+        page.evaluate("() => document.querySelector('.project-scroll').scrollTo({top:7200})")
+        page.wait_for_function("() => document.querySelector('[data-virtual-index=\"120\"]') !== null")
+        before=page.evaluate("() => document.querySelector('.project-scroll').scrollTop")
+        page.locator('[data-virtual-group]').first.evaluate("(button)=>button.click()")
+        page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5050'")
+        page.wait_for_function("(before)=>Math.abs(document.querySelector('.project-scroll').scrollTop-(before-3000))<3",arg=before)
+        print("上方分组折叠后恢复首行滚动锚点通过",flush=True)
+        # 记录实际连续滚动 rAF 间隔，不把 CI 机器帧率外推至用户设备。
+        frames=page.evaluate("""async()=>{
+          const root=document.querySelector('.project-scroll'),intervals=[];let last=performance.now();
+          for(let i=0;i<90;i++){await new Promise(requestAnimationFrame);const now=performance.now();intervals.push(now-last);last=now;root.scrollTop+=240;}
+          return intervals.sort((a,b)=>a-b);
+        }""")
+        report={"assets":5000,"groups":100,"mountedRows":page.locator("#gallery .project-row").count(),"frameP50Ms":round(frames[44],2),"frameP95Ms":round(frames[85],2),"samples":len(frames)}
+        assert report["mountedRows"]<60
+        (OUTPUT/"grouped-directory-performance.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
+        print("GROUPED_DIRECTORY_PERFORMANCE="+json.dumps(report),flush=True)
     finally:
+        context.close()
+
+
+def verify_preview_timeout_ready(browser, origin):
+    """真实浏览器阻塞首次 iframe 请求，确认超时、重试、初始化握手与节点不被普通操作重建。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    held=[]
+    try:
+        def defer_first(route):
+            if "ui-vault-retry=" in route.request.url:
+                route.continue_()
+            else:
+                held.append(route)
+        context.route("**/demos/experiments/ui-foundation-kit/index.html*",defer_first)
+        page=context.new_page()
+        page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+        frame=page.locator('#preview-stage iframe[data-preview-frame="local"]')
+        frame.wait_for(state="attached",timeout=30000)
+        page.locator(".preview-recovery").wait_for(state="visible",timeout=20000)
+        assert frame.get_attribute("data-preview-status")=="timeout"
+        assert frame.get_attribute("data-preview-ready")=="unverified"
+        # 伪造非当前 iframe 的消息不能被接受。
+        page.evaluate("() => window.postMessage({channel:'ui-vault:preview-ready',version:1,action:'ready',assetId:'ui-foundation-kit',nonce:'0'.repeat(32)},'*')")
+        assert frame.get_attribute("data-preview-ready")=="unverified"
+        page.locator(".preview-recovery button").click()
+        page.wait_for_function("() => document.querySelector('#preview-stage iframe')?.dataset.previewReady === 'verified'",timeout=30000)
+        assert frame.get_attribute("data-preview-status")=="loaded"
+        assert page.locator(".preview-recovery").count()==0
+        page.evaluate("() => window.__readyFrame=document.querySelector('#preview-stage iframe')")
+        page.locator("#preview-favorite").click()
+        assert page.evaluate("() => window.__readyFrame===document.querySelector('#preview-stage iframe')")
+        print("预览超时、真实重试、合作 Demo ready 与伪造消息拒绝通过",flush=True)
+    finally:
+        for route in held:
+            try:
+                route.abort()
+            except Exception:
+                pass
         context.close()
 
 
@@ -941,19 +997,21 @@ def verify_standalone_delivery(browser):
     with tempfile.TemporaryDirectory(prefix="ui-vault-delivery-") as temp:
         root=Path(temp)
         ids=("ui-foundation-kit","aurora-field","liquid-orb","editor-shell","warm-workbench")
-        for identifier in ids:
+        for identifier in (*ids,"notion-design-demo"):
             entry=by_id[identifier]
             target=root/identifier
             target.mkdir()
-            shutil.copyfile(DIST/entry["code"],target/"index.html")
-        package=root/"notion-design-demo"
-        package.mkdir()
-        with zipfile.ZipFile(DIST/"downloads/notion-design-demo.zip") as archive:
-            for member in archive.infolist():
-                path=package/member.filename
-                assert path.resolve().is_relative_to(package.resolve()), "ZIP 越界路径"
-                path.parent.mkdir(parents=True,exist_ok=True)
-                path.write_bytes(archive.read(member))
+            if entry.get("bundleFiles"):
+                with zipfile.ZipFile(DIST/"downloads"/(identifier+".zip")) as archive:
+                    manifest=json.loads(archive.read("MANIFEST.json"))
+                    assert manifest["assetId"]==identifier
+                    for member in archive.infolist():
+                        path=target/member.filename
+                        assert path.resolve().is_relative_to(target.resolve()), "ZIP 越界路径"
+                        path.parent.mkdir(parents=True,exist_ok=True)
+                        path.write_bytes(archive.read(member))
+            else:
+                shutil.copyfile(DIST/entry["code"],target/"index.html")
         server=ThreadingHTTPServer(("127.0.0.1",0),partial(QuietHandler,directory=str(root)))
         thread=threading.Thread(target=server.serve_forever,daemon=True)
         thread.start()
@@ -1682,6 +1740,7 @@ def main():
                     verify_directory_workspace,
                     verify_large_directory_groups,
                     verify_synthetic_grouped_directory,
+                    verify_preview_timeout_ready,
                     verify_foundation_parameters,
                     verify_effect_parameters,
                     verify_standalone_delivery,

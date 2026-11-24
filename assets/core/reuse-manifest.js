@@ -15,7 +15,7 @@ export function assetReuseManifest(asset){
     reuseLevel:reuseLevelOf(asset),mode,
     preview:local?localPath(asset.preview):https(asset.siteUrl),
     sourceFiles:getSourceFiles(asset).map(({path,name,language})=>({path,name,language})),
-    singleFile:mode==='single-html'?localPath(asset.code):null,
+    singleFile:local&&asset.copyable===true?localPath(asset.code):null,
     standaloneZip:bundle,repository:local?https(asset.sourceUrl):https(asset.originRepo||asset.url),
     repositoryArchive:getRepositoryArchiveUrl(asset),
     notes:Array.isArray(asset.reuseNotes)?[...asset.reuseNotes]:[],

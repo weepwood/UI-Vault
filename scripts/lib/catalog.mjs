@@ -112,7 +112,8 @@ export function checkEntry(entry, categories, fileName='') {
     const paths=entry.bundleFiles;
     const directory=typeof entry.preview==='string'?entry.preview.slice(0,entry.preview.lastIndexOf('/')+1):'';
     const published=new Set(entry.publish||[]);
-    if(entry.source!=='local'||entry.copyable===true||!Array.isArray(paths)||paths.length<2||paths.length>50||
+    if(entry.source!=='local'||!Array.isArray(paths)||paths.length<1||paths.length>50||
+      (entry.copyable===true?paths.length!==1:paths.length<2)||
       new Set(paths).size!==paths.length||!paths.includes(entry.preview)||
       !paths.every(path=>safeRelativePath(path,'demos/')&&path.startsWith(directory)&&
         path!==directory&&['.html','.css','.js','.mjs','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.woff','.woff2','.txt']

@@ -1,0 +1,51 @@
+name: Registry 独立框架验收
+on:
+  pull_request:
+    paths:
+      - 'subprojects/ui-foundation-kit/**'
+      - 'scripts/lib/reuse-registry.mjs'
+      - 'scripts/lib/registry-install.mjs'
+      - 'scripts/verify-registry-frameworks.mjs'
+      - 'scripts/verify-registry-runtime.py'
+      - '.github/workflows/registry-runtime.yml'
+      - 'package-lock.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: registry-runtime-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  framework-runtime:
+    name: React 与 Vue 安装、构建和隔离运行
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --no-audit --no-fund
+      - name: 安装隔离 Vue 验收工具链（不修改主站依赖）
+        run: |
+          mkdir -p "$RUNNER_TEMP/registry-runtime"
+          printf '%s\n' '{"private":true,"type":"module"}' > "$RUNNER_TEMP/registry-runtime/package.json"
+          npm install --prefix "$RUNNER_TEMP/registry-runtime" --save-exact --ignore-scripts --no-audit --no-fund vue@3.5.24 @vue/compiler-sfc@3.5.24
+      - name: 从 Registry 安装并独立构建
+        run: node scripts/verify-registry-frameworks.mjs "$RUNNER_TEMP/registry-runtime"
+      - name: 安装浏览器验收环境
+        run: |
+          python -m pip install -r scripts/requirements-visual.txt
+          python -m playwright install chromium --with-deps
+      - name: 独立运行与真实组件操作
+        run: python scripts/verify-registry-runtime.py "$RUNNER_TEMP/registry-runtime"
+      - name: 保存实际 Vue 测试依赖锁文件
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: registry-runtime-lock-${{ github.run_id }}
+          path: ${{ runner.temp }}/registry-runtime/package-lock.json
+          if-no-files-found: ignore
