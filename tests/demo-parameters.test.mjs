@@ -74,7 +74,7 @@ test('暖色高级参数安全生成 CSS，旧七项快照迁移但消息仍严�
  assert.throws(()=>normalizeStoredParameters(asset,{...legacy,gradient:true}));
  const css=warmLayoutCssValues(defaults);assert.equal(css['--warm-card-gradient'],'none');assert.equal(css['--warm-card-shadow'],'none');assert.equal(css['--warm-motion-lift'],'0px');
  const edited={...defaults,gradient:true,gradientAngle:90,shadowOpacity:25,motionDuration:200,motionLift:3};
- const result=warmLayoutCssValues(edited);assert.match(result['--warm-card-gradient'],/^linear-gradient\\(90deg,/);assert.match(result['--warm-card-shadow'],/0.25\\)$/);assert.equal(result['--warm-motion-lift'],'-3px');assert.match(result['--warm-motion-curve'],/^cubic-bezier/);
+ const result=warmLayoutCssValues(edited);assert.ok(result['--warm-card-gradient'].startsWith('linear-gradient(90deg,'));assert.ok(result['--warm-card-shadow'].endsWith('0.25)'));assert.equal(result['--warm-motion-lift'],'-3px');assert.ok(result['--warm-motion-curve'].startsWith('cubic-bezier('));
  assert.throws(()=>warmLayoutCssValues({...edited,gradientEnd:'url(https://example.com)'}));assert.throws(()=>warmLayoutCssValues({...edited,curveX1:101}));
  assert.match(exportLayoutCss(asset,edited),/--warm-card-gradient: linear-gradient/);
 });

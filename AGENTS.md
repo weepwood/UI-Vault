@@ -177,3 +177,5 @@ Registry 正式化候选：--plan 只读预检、模块版本及运行时依赖�
 高级参数候选只在 warm-workbench 注册 13 项安全字段，CSS 由受控数据生成；旧七项存储预设迁移到默认高级值，协议消息仍严格完整。尊重 reduced-motion；不得将任意 CSS、动画脚本通过消息发送。四份单文件内嵌核心保持一致，新增实际浏览器渐变/阴影/重置测试及截图；待 CI。
 
 高级参数分支追加逐篇审查 Generative Pattern、Geo-Boho、GeoCities、Geometric Modernism、Glitch Art、Global Village Coffeehouse 六项原始指南，累计 106 项审计记录、剩余 184 项无显式标签；保留受控词表和原始许可。
+
+#107 已合并 de35249；#108 复验两套 CI 通过后合并 1b4a19f，树与候选一致。#109 CI 45422897553 Linux/Windows 均在 tests/demo-parameters.test.mjs:77 双重转义正则语法错误失败（333/334，未进入 Chromium）；改用字面字符串前缀/后缀断言，保留语义校验，不降低门槛。同步已合并 #108 树，待新 CI。
