@@ -93,3 +93,15 @@ test('四个色标按位置排序、两层阴影独立生成并迁移完整旧�
  assert.throws(()=>warmLayoutCssValues({...defaults,gradientMidPosition:101}));
  assert.throws(()=>warmLayoutCssValues({...defaults,shadow2Color:'url(https://example.com)'}));
 });
+
+ test('阴影排序保持所有独立值，旧三十二字段快照迁移且消息严格',()=>{
+ const asset={id:'warm-workbench',source:'local',preview:'demos/layouts/warm-workbench/index.html'};
+ const values=Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default]));
+ const {shadowReversed,...legacy}=values;assert.equal(shadowReversed,false);assert.equal(Object.keys(legacy).length,32);
+ assert.deepEqual(normalizeStoredParameters(asset,legacy),values);
+ assert.throws(()=>normalizeParameters(WARM_LAYOUT_FIELDS,legacy,{complete:true}));
+ assert.throws(()=>normalizeStoredParameters(asset,{...legacy,shadowReversed:'true'}));
+ const edited={...values,shadowOpacity:10,shadow2Opacity:20,shadow2X:-4,shadow2Spread:-2};
+ assert.equal(warmLayoutCssValues({...edited,shadowReversed:true})['--warm-card-shadow'],'-4px 2px 8px -2px rgba(73, 58, 50, 0.2), 0 6px 16px rgba(73, 58, 50, 0.1)');
+ assert.equal(warmLayoutCssValues({...edited,shadowReversed:true,shadowOpacity:0})['--warm-card-shadow'],warmLayoutCssValues({...edited,shadowOpacity:0})['--warm-card-shadow']);
+ });

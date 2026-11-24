@@ -1541,3 +1541,16 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 @media(max-width:760px){.parameter-group-visual{grid-template-columns:minmax(0,1fr);gap:6px}.parameter-curve-preview{grid-template-columns:minmax(84px,100px) minmax(0,1fr)}.parameter-section-nav button{padding-inline:7px}}
 
 .parameter-shadow-sample span{padding:2px 5px;background:#fdfbf8;color:#37312b;border-radius:3px}
+
+/* #112 真实截图：跳转后分组导航消失。保持停靠区分组入口可见，标题不被遮挡。 */
+#parameter-dock{--parameter-header-height:44px}
+#parameter-dock .parameter-dock-header{z-index:4;box-sizing:border-box;height:var(--parameter-header-height)}
+#parameter-dock .parameter-section-nav{position:sticky;top:var(--parameter-header-height);z-index:3;background:var(--surface);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;align-self:start}
+#parameter-dock .parameter-section-nav button{flex:none;white-space:nowrap}
+.parameter-section-nav button[data-selected=true]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:88px}
+.material-shadow-controls{display:grid;gap:7px;min-width:0}
+#parameter-dock :is(.demo-parameter-actions button,.parameter-section-nav button,.material-action-row button,.parameter-presets button){border-radius:6px;min-height:30px}
+#parameter-dock input[type=checkbox]{accent-color:var(--accent)}
+#parameter-dock .parameter-field:focus-within{border-color:var(--accent-line)}
+@media(max-width:760px){#parameter-dock{--parameter-header-height:38px}#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:78px}}

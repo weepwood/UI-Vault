@@ -172,6 +172,7 @@ const WARM_LAYOUT_FIELDS=Object.freeze([
   {key:'shadow2X',label:'第二层阴影横向偏移',type:'number',group:'阴影',min:-24,max:24,unit:'px',default:0,extension:2},
   {key:'shadow2Y',label:'第二层阴影纵向偏移',type:'number',group:'阴影',min:-24,max:24,unit:'px',default:2,extension:2},
   {key:'shadow2Spread',label:'第二层阴影扩展',type:'number',group:'阴影',min:-12,max:12,unit:'px',default:0,extension:2},
+  {key:'shadowReversed',label:'反转阴影层顺序',type:'boolean',group:'阴影',default:false,extension:3},
   {key:'curveX1',label:'控制点 X1',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:20},
   {key:'curveY1',label:'控制点 Y1',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:80},
   {key:'curveX2',label:'控制点 X2',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:20},
@@ -214,13 +215,17 @@ function normalizeStoredParameters(asset,values){
   if(!fields)throw TypeError('未登记的 Demo');
   const checked=normalizeParameters(fields,values);
   if(asset.id==='warm-workbench'){
-    const legacy=fields.filter(f=>!f.group),advanced=fields.filter(f=>f.group&&!f.extension),extension=fields.filter(f=>f.extension===2);
+    const legacy=fields.filter(f=>!f.group),advanced=fields.filter(f=>f.group&&!f.extension),extension=fields.filter(f=>f.extension===2),ordering=fields.filter(f=>f.extension===3);
     const hasAll=items=>items.every(f=>Object.hasOwn(checked,f.key));
     const hasNone=items=>items.every(f=>!Object.hasOwn(checked,f.key));
-    if(hasAll(legacy)&&hasNone(advanced)&&hasNone(extension)){
-      for(const field of [...advanced,...extension])checked[field.key]=field.default;
-    }else if(hasAll(legacy)&&hasAll(advanced)&&hasNone(extension)){
-      for(const field of extension)checked[field.key]=field.default;
+    if(hasNone(ordering)){
+      if(hasAll(legacy)&&hasNone(advanced)&&hasNone(extension)){
+        for(const field of [...advanced,...extension,...ordering])checked[field.key]=field.default;
+      }else if(hasAll(legacy)&&hasAll(advanced)&&hasNone(extension)){
+        for(const field of [...extension,...ordering])checked[field.key]=field.default;
+      }else if(hasAll(legacy)&&hasAll(advanced)&&hasAll(extension)){
+        for(const field of ordering)checked[field.key]=field.default;
+      }
     }
   }
   return normalizeParameters(fields,checked,{complete:true});
@@ -238,6 +243,7 @@ function warmLayoutCssValues(values){
   const shadows=[];
   if(v.shadowOpacity)shadows.push('0 '+v.shadowY+'px '+v.shadowBlur+'px '+rgba(v.shadowColor,v.shadowOpacity));
   if(v.shadow2Opacity)shadows.push(v.shadow2X+'px '+v.shadow2Y+'px '+v.shadow2Blur+'px '+v.shadow2Spread+'px '+rgba(v.shadow2Color,v.shadow2Opacity));
+  if(v.shadowReversed)shadows.reverse();
   css['--warm-card-shadow']=shadows.join(', ')||'none';
   css['--warm-motion-curve']='cubic-bezier('+[v.curveX1,v.curveY1,v.curveX2,v.curveY2].map(x=>x/100).join(', ')+')';
   css['--warm-motion-duration']=v.motionDuration+'ms';

@@ -1094,6 +1094,17 @@ def verify_warm_layout_parameters(browser, origin):
         assert "linear-gradient(90deg" in gradient and "35%" in gradient and "75%" in gradient,gradient
         shadow=card.evaluate("(el)=>getComputedStyle(el).boxShadow")
         assert shadow.count("rgba(")==2,shadow
+        panel.get_by_role("button",name="交换阴影层顺序",exact=True).click()
+        assert panel.get_by_role("spinbutton",name="第二层阴影横向偏移",exact=True).input_value()=="-4"
+        panel.get_by_role("button",name="应用参数",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        reversed_shadow=card.evaluate("(el)=>getComputedStyle(el).boxShadow")
+        assert reversed_shadow.startswith("rgba(73, 58, 50, 0.23)"),reversed_shadow
+        panel.get_by_role("button",name="撤销",exact=True).click()
+        panel.get_by_role("button",name="应用参数",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert card.evaluate("(el)=>getComputedStyle(el).boxShadow")==shadow
+
         assert card.evaluate("(el)=>getComputedStyle(el).transitionDuration")=="0s", "减少动画必须禁用悬停动画"
         assert page.evaluate("() => window.__layoutFrame===document.querySelector('#preview-stage iframe')")
         page.screenshot(path=str(OUTPUT/"advanced-parameter-dialog.png"))
@@ -1255,7 +1266,17 @@ def verify_expanded_workbench_screenshots(browser, origin):
             page.screenshot(path=str(OUTPUT/f"expanded-parameters-{width}.png"))
             dock.get_by_role("button",name="表面渐变",exact=True).click()
             assert dock.get_by_role("heading",name="表面渐变",exact=True).evaluate("(el)=>el===document.activeElement")
+            dock.locator('.parameter-section-nav button[data-selected="true"]').filter(has_text="表面渐变").wait_for()
             page.screenshot(path=str(OUTPUT/f"parameter-gradient-group-{width}.png"))
+            nav=dock.locator(".parameter-section-nav")
+            header=dock.locator(".parameter-dock-header")
+            assert nav.bounding_box()["y"]>=header.bounding_box()["y"]+header.bounding_box()["height"]-2
+            assert nav.bounding_box()["y"]+nav.bounding_box()["height"]<=height
+            dock.get_by_role("button",name="阴影",exact=True).click()
+            assert dock.get_by_role("heading",name="阴影",exact=True).evaluate("(el)=>el===document.activeElement")
+            dock.locator('.parameter-section-nav button[data-selected="true"]').filter(has_text="阴影").wait_for()
+            page.screenshot(path=str(OUTPUT/f"parameter-shadow-group-{width}.png"))
+
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
             page.locator(".directory-filter-toggle").click()
