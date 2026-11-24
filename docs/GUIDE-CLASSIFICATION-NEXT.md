@@ -94,3 +94,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 #112 a0fffa1 已通过 CI 45429115346 并合并 6eaccec；正式主分支审计累计 136，未标记 154。下一候选审查 Kidcore、Kinfolk、Laser Grid、Light Academia、Light Skeuomorphism、Ligne Claire，累计 142、未标记 148（待 CI）。保留原始指南、许可及精选状态。
 
 #113 已合并 917f3fa，审计 142、未标记 148。下一候选逐篇审查 Liminal Space、Liquid Fluid Design、Liquid Metal、Live Laugh Love、Low Poly、Lush Velvet、Luxury Minimalism、Mallsoft，累计 150，未标记 140；所有资产缺显式风格标签 210（不同指标）。待 CI。
+
+#114 已合并 616fde4，审计 150、未标记 140。下一候选审查 Manguebeat、Material Design、Maximalism、Medievalcore、Mediterranean、Memphis Design、Memphis Lite、Metalheart，累计 158、未标记 132、无显式视觉风格 202。待 CI。
