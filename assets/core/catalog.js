@@ -1,3 +1,4 @@
+import {isStyleTag,styleTagsOf} from './style-taxonomy.js';
 // 搜索只使用资产目录中可核实的元数据，不从 iframe 或第三方页面读取内容。
 const FIELD_WEIGHTS=Object.freeze({
   title:120,id:100,project:65,tags:82,technologies:72,subtitle:43,
@@ -117,9 +118,10 @@ export function reuseLevelOf(asset){
   return 'reference';
 }
 // 目录分面：不同维度取交集，同维度候选计数忽略自身当前选项。
-export const FACET_KEYS=Object.freeze(['tag','technology','source','projectId']);
+export const FACET_KEYS=Object.freeze(['tag','style','technology','source','projectId']);
 function facetValues(asset,key){
-  if(key==='tag')return asset.tags||[];
+  if(key==='tag')return asset.tags||[]; // 保留旧 API 对所有标签的直接查询
+  if(key==='style')return styleTagsOf(asset);
   if(key==='technology')return asset.technologies||[];
   return asset[key]?[asset[key]]:[];
 }
@@ -132,7 +134,10 @@ export function catalogFacetOptions(assets,filters={}){
     const counts=new Map();
     for(const asset of assets){
       if(!matchesCatalogFacets(asset,filters,key))continue;
-      for(const value of new Set(facetValues(asset,key)))counts.set(value,(counts.get(value)||0)+1);
+      for(const value of new Set(facetValues(asset,key))){
+        if(key==='tag'&&isStyleTag(value)&&value!==filters.tag)continue;
+        counts.set(value,(counts.get(value)||0)+1);
+      }
     }
     if(filters[key]&&!counts.has(filters[key]))counts.set(filters[key],0);
     result[key]=[...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'zh-CN'))
@@ -140,7 +145,7 @@ export function catalogFacetOptions(assets,filters={}){
   }
   return result;
 }
-export function filterAssets(assets,{category='all',tag='',technology='',source='',projectId='',reuse='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
+export function filterAssets(assets,{category='all',tag='',style='',technology='',source='',projectId='',reuse='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
   const terms=tokenizeSearch(query);
   const phrase=terms.join(' ');
   const compactPhrase=phrase.replace(/\s/g,'');
@@ -151,7 +156,7 @@ export function filterAssets(assets,{category='all',tag='',technology='',source=
       (importedOnly&&!asset.originRepo)||
       (curatedOnly&&asset.curated!==true)||
       (reuse&&reuseLevelOf(asset)!==reuse)||
-      !matchesCatalogFacets(asset,{tag,technology,source,projectId}))continue;
+      !matchesCatalogFacets(asset,{tag,style,technology,source,projectId}))continue;
     const score=terms.length?assetRelevance(asset,terms,labels,phrase,compactPhrase):0;
     if(score<0)continue;
     matches.push({asset,score});
