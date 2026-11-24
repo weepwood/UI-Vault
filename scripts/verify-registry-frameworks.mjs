@@ -15,21 +15,32 @@ const {parse,compileScript}=require('@vue/compiler-sfc');
 const foundation=resolve(REGISTRY_ROOT);
 execFileSync(process.execPath,[join(foundation,'scripts/build-tokens.mjs')]);
 const registry=await buildRegistry(foundation);
-const installation=await installRegistrySnapshot(registry,['foundation-react-button','foundation-vue-button'],target);
-const button=await readFile(join(installation.target,'adapters/vue/src/components/UiButton.vue'),'utf8');
-const parsed=parse(button,{filename:'UiButton.vue'});
-if(parsed.errors.length)throw Error(JSON.stringify(parsed.errors));
-const compiled=compileScript(parsed.descriptor,{id:'ui-vault-registry-button',inlineTemplate:true});
-await writeFile(join(target,'VueButton.ts'),compiled.content);
+const requested=['react','vue'].flatMap(framework=>['button','input','switch'].map(name=>'foundation-'+framework+'-'+name));
+const installation=await installRegistrySnapshot(registry,requested,target);
+for(const name of ['Button','Input','Switch']){
+ const filename='Ui'+name+'.vue';
+ const source=await readFile(join(installation.target,'adapters/vue/src/components',filename),'utf8');
+ const parsed=parse(source,{filename});
+ if(parsed.errors.length)throw Error(JSON.stringify(parsed.errors));
+ const compiled=compileScript(parsed.descriptor,{id:'ui-vault-registry-'+name,inlineTemplate:true});
+ await writeFile(join(target,'Vue'+name+'.ts'),compiled.content);
+}
 const css="import './ui-foundation/dist/theme.css';\nimport './ui-foundation/styles/base.css';\nimport './ui-foundation/styles/components.css';\n";
 await writeFile(join(target,'react-entry.jsx'),css+`import {useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {UiButton} from './ui-foundation/adapters/react/UiButton.jsx';
-function App(){const [count,setCount]=useState(0);return <main><UiButton variant="outline" size="sm" onClick={()=>setCount(x=>x+1)}>增加</UiButton><UiButton disabled>禁用</UiButton><UiButton loading>加载</UiButton><output>{count}</output></main>}
+import {UiInput} from './ui-foundation/adapters/react/UiInput.jsx';
+import {UiSwitch} from './ui-foundation/adapters/react/UiSwitch.jsx';
+function App(){const [count,setCount]=useState(0),[name,setName]=useState(''),[enabled,setEnabled]=useState(false);return <main><label>名称<UiInput value={name} onChange={e=>setName(e.target.value)}/></label><label>通知<UiSwitch checked={enabled} onChange={e=>setEnabled(e.target.checked)}/></label><span id="form-state">{name+'|'+enabled}</span><UiButton variant="outline" size="sm" onClick={()=>setCount(x=>x+1)}>增加</UiButton><UiButton disabled>禁用</UiButton><UiButton loading>加载</UiButton><output>{count}</output></main>}
 createRoot(document.getElementById('app')).render(<App/>);`);
 await writeFile(join(target,'vue-entry.mjs'),css+`import {createApp,h,ref} from 'vue';
 import UiButton from './VueButton.ts';
-createApp({setup(){const count=ref(0);return ()=>h('main',[
+import UiInput from './VueInput.ts';
+import UiSwitch from './VueSwitch.ts';
+createApp({setup(){const count=ref(0),name=ref(''),enabled=ref(false);return ()=>h('main',[
+h('label',['名称',h(UiInput,{modelValue:name.value,'onUpdate:modelValue':v=>name.value=v})]),
+h('label',['通知',h(UiSwitch,{modelValue:enabled.value,'onUpdate:modelValue':v=>enabled.value=v})]),
+h('span',{id:'form-state'},name.value+'|'+enabled.value),
 h(UiButton,{variant:'outline',size:'sm',onClick:()=>count.value++},{default:()=> '增加'}),
 h(UiButton,{disabled:true},{default:()=> '禁用'}),
 h(UiButton,{loading:true},{default:()=> '加载'}),

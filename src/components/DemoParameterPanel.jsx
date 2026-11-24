@@ -1,6 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {importParameterSnapshot} from '../../assets/core/parameter-snapshot.js';
 
 export function DemoParameterPanel({asset,notify}){
   const fields=parameterSchemaFor(asset);
@@ -47,6 +48,10 @@ export function DemoParameterPanel({asset,notify}){
     setDrafts(previous=>({...previous,[field.key]:raw}));
     if(raw.trim())edit(field,Number(raw));
   }
+  async function loadSnapshot(event){
+    const file=event.target.files?.[0];event.target.value='';if(!file)return;
+    try{if(file.size>65536)throw Error('文件过大');setValues(importParameterSnapshot(asset,await file.text()));setDrafts({});setStatus('已导入快照 · 尚未应用');}catch{setStatus('快照无效或与当前 Demo 不匹配');}
+  }
   function download(format){
     if(invalid)return;
     try{downloadSourceText(asset.id===FOUNDATION_ID?tokenExport(values,format):exportDemoParameters(asset,values),asset.id+'-parameters.'+format);notify('参数快照已下载');}
@@ -59,6 +64,7 @@ export function DemoParameterPanel({asset,notify}){
       <button type="button" disabled={busy} onClick={()=>request('read')}>读取当前参数</button>
       <button type="button" className="parameter-primary" disabled={busy||!values||invalid} onClick={()=>request('apply')}>应用参数</button>
       <button type="button" disabled={busy} onClick={()=>request('reset')}>恢复默认</button>
+      <label>导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
     <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
     {values&&<><div className="demo-parameter-fields">{fields.map(field=><label key={field.key} className={'parameter-field parameter-'+field.type}><span>{field.label}</span>

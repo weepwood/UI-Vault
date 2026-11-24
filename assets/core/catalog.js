@@ -31,7 +31,15 @@ const TERM_ALIASES=Object.freeze({
   '复古':['retro','vintage'],'retro':['复古'],'vintage':['复古'],
   '霓虹':['neon'],'neon':['霓虹'],
   '渐变':['gradient'],'gradient':['渐变'],
-  '排版':['typography','版式'],'typography':['排版','版式'],'版式':['typography','排版']
+  '排版':['typography','版式'],'typography':['排版','版式'],'版式':['typography','排版'],
+  '包豪斯':['bauhaus'],'bauhaus':['包豪斯'],
+  '便当网格':['bento grid'],'bento grid':['便当网格'],
+  '装饰艺术':['art deco'],'art deco':['装饰艺术'],
+  '新艺术':['art nouveau'],'art nouveau':['新艺术'],
+  '亲生物设计':['biophilic design'],'biophilic design':['亲生物设计'],
+  '生物形态':['biomorphic'],'biomorphic':['生物形态'],
+  '三维沉浸':['3d immersive'],'3d immersive':['三维沉浸'],
+  '蓝图设计':['blueprint technical'],'blueprint technical':['蓝图设计']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

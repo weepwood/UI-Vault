@@ -14,7 +14,7 @@ export function resolveRegistryFiles(registry,requested){
     if(!item||item.version!==registry.index.version||item.format!==registry.index.format||item.protocolVersion!==1||item.license!=='MIT'||!Array.isArray(item.dependencies)||!Array.isArray(item.files))throw Error('缺失或不兼容的模块：'+id);
     visiting.add(id);for(const dependency of item.dependencies)visit(dependency);
     for(const file of item.files){
-      if(!safePath(file.path)||typeof file.content!=='string'||hash(file.content)!==file.sha256)throw Error('文件路径或哈希不合法');
+      if(!safePath(file.path)||file.path.toLowerCase()==='registry-lock.json'||typeof file.content!=='string'||hash(file.content)!==file.sha256)throw Error('文件路径或哈希不合法');
       const key=file.path.toLowerCase(),previous=files.get(key);
       if(previous&&(previous.path!==file.path||previous.sha256!==file.sha256))throw Error('文件冲突：'+file.path);
       files.set(key,file);
@@ -38,6 +38,7 @@ export async function installRegistrySnapshot(registry,requested,parent,name='ui
       await mkdir(dirname(path),{recursive:true});
       await writeFile(path,file.content,{encoding:'utf8',flag:'wx'});
     }
+    await writeFile(resolve(target,'REGISTRY-LOCK.json'),JSON.stringify({format:'ui-vault-registry-lock',version:1,registryVersion:registry.index.version,requested:[...new Set(requested)],files:files.map(({path,sha256})=>({path,sha256}))},null,2)+'\n',{flag:'wx'});
   }catch(error){await rm(target,{recursive:true,force:true});throw error;}
   return {target,files:files.map(({path,sha256})=>({path,sha256}))};
 }

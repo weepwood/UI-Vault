@@ -50,10 +50,10 @@ function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,vi
   </details>;
 }
 // 单个窗口处理超大多分组目录；小目录沿用原生 details 和已有视觉基线。
-function GroupedWindow({groups,labels,selectedId,onSelect,query,scrollRoot,density}){
+function GroupedWindow({groups,labels,selectedId,onSelect,query,scrollRoot,density,grouping}){
   const [collapsed,setCollapsed]=React.useState(()=>new Set());
   const rows=React.useMemo(()=>groupedVirtualRows(groups,collapsed),[groups,collapsed]);
-  return <VirtualProjectList items={rows} selectedId={'asset:'+selectedId} scrollRoot={scrollRoot} density={density}
+  return <VirtualProjectList items={rows} selectedId={'asset:'+selectedId} scrollRoot={scrollRoot} density={density} sessionKey={query?'':'group-'+grouping}
     renderRow={row=>row.kind==='group'
       ?<div role="listitem" className="virtual-group-heading"><button type="button" className="asset-project-summary"
           aria-expanded={!collapsed.has(row.group.id)} aria-label={(row.group.name||row.group.project?.name||'未归组')+'，'+row.group.items.length+' 条资源'}
@@ -76,14 +76,14 @@ export function ProjectList({items,labels,selectedId,onSelect,query='',loading=f
     <span className="project-skeleton-lines"><span/><span/></span>
   </div>)}</>;
   if(grouping!=='none'){
-    if(virtualize&&scrollRoot&&items.length>=1000&&groups.length>=8)return <GroupedWindow key={grouping} groups={groups} labels={labels} selectedId={selectedId} onSelect={onSelect} query={query} scrollRoot={scrollRoot} density={density}/>;
+    if(virtualize&&scrollRoot&&items.length>=1000&&groups.length>=8)return <GroupedWindow key={grouping} grouping={grouping} groups={groups} labels={labels} selectedId={selectedId} onSelect={onSelect} query={query} scrollRoot={scrollRoot} density={density}/>;
     return <>{groups.map(group=>
       <AssetProjectGroup key={grouping+':'+group.id} group={group} labels={labels}
         selectedId={selectedId} onSelect={onSelect} query={query}
         scrollRoot={scrollRoot} virtualize={virtualize} density={density}/>)}</>;
   }
   if(virtualize&&scrollRoot&&items.length>120)return <VirtualProjectList
-    items={items} selectedId={selectedId} scrollRoot={scrollRoot} density={density}
+    items={items} selectedId={selectedId} scrollRoot={scrollRoot} density={density} sessionKey={query?'':'flat'}
     renderRow={(asset,index)=><MemoProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
       onSelect={onSelect} query={query} position={index+1} setSize={items.length}/>}/>;
   return <>{items.map(asset=><MemoProjectRow key={asset.id} asset={asset} labels={labels}

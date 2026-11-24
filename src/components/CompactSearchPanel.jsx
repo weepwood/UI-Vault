@@ -17,9 +17,12 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
   const [selection,setSelection]=useState({query:value,index:0});
   if(selection.query!==value)setSelection({query:value,index:0});
   const setActive=index=>setSelection({query:value,index});
+  const [limitState,setLimitState]=useState({query:value,limit:MAX_RESULTS});
+  const limit=limitState.query===value?limitState.limit:MAX_RESULTS;
+  if(limitState.query!==value)setLimitState({query:value,limit:MAX_RESULTS});
   const listRef=useRef(null);
   const groups=useMemo(()=>{
-    if(value.trim())return [{label:'搜索结果',items:items.slice(0,MAX_RESULTS)}];
+    if(value.trim())return [{label:'搜索结果',items:items.slice(0,limit)}];
     const recent=new Set(recentIds);
     const recentItems=recentIds.map(id=>items.find(item=>item.id===id)).filter(Boolean);
     const recommendations=items.filter(item=>!recent.has(item.id)).slice(0,12);
@@ -27,7 +30,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
       ...(recentItems.length?[{label:'最近打开',items:recentItems}]:[]),
       {label:'推荐项目',items:recommendations}
     ];
-  },[items,value,recentIds]);
+  },[items,value,recentIds,limit]);
   const flat=useMemo(()=>groups.flatMap(group=>group.items),[groups]);
   // 异步目录更新导致结果缩短时也不能留下越界的 aria-activedescendant。
   const active=selection.query===value&&selection.index<flat.length?selection.index:0;
@@ -54,6 +57,8 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
       else onClose(true);
       return;
     }
+    // 按钮保持原生 Enter/Space；列表键盘导航仅由输入框处理。
+    if(event.key!=='Tab'&&event.target.closest?.('button:not([tabindex="-1"])'))return;
     if(event.key==='ArrowDown'||event.key==='ArrowUp'){
       event.preventDefault();move(event.key==='ArrowDown'?1:-1);
     }else if(event.key==='PageDown'||event.key==='PageUp'){
@@ -118,6 +123,10 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
               })}
             </div>)}
           </div>
+          {value.trim()&&items.length>shownCount&&<div className="command-palette-footer" role="status">
+            <span>显示 {shownCount} / {items.length} 项</span>
+            {limit<240?<button type="button" className="command-palette-clear" style={{width:'auto',padding:'0 8px'}} onClick={()=>setLimitState({query:value,limit:Math.min(240,limit+MAX_RESULTS)})}>显示更多</button>:<span>请缩小关键词范围</span>}
+          </div>}
           <div className="command-palette-footer">
             <span><kbd>↑</kbd><kbd>↓</kbd> 导航　<kbd>↵</kbd> 选择</span>
             <span><kbd>Esc</kbd> {value?'清空':'关闭'}　<kbd>⌘/Ctrl K</kbd></span>
