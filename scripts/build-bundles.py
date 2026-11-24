@@ -2,6 +2,7 @@
 """基于显式元数据打包独立静态 Demo，绝不扫描仓库、下载外站或读取私有文件。"""
 from __future__ import annotations
 import json
+import hashlib
 import sys
 import zipfile
 import re
@@ -34,7 +35,7 @@ def plans():
             if member.is_absolute() or ".." in member.parts or "." in member.parts or not member.is_relative_to(root):
                 raise ValueError(f"{identifier}: 跨项目或不安全的路径 {path}")
             local = member.relative_to(root).as_posix()
-            if local in seen or local in ("README.txt", ""):
+            if local in seen or local in ("README.txt", "MANIFEST.json", ""):
                 raise ValueError(f"{identifier}: 重复或保留的文件 {local}")
             seen.add(local)
             entries.append((path, local))
@@ -125,6 +126,13 @@ def contents(asset, entries):
         result.append((name, data))
     verify_static_deps(asset, result)
     result.append(("README.txt", readme(asset)))
+    # 发布文件闭包和 README 的真实内容哈希；不将本清单自身纳入递归哈希。
+    manifest = {"format": "ui-vault-standalone-bundle", "version": 1,
+                "assetId": asset["id"], "entry": PurePosixPath(asset["preview"]).name,
+                "licenseNotice": asset["license"], "delivery": "static-html",
+                "files": [{"path": name, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()}
+                          for name, data in result]}
+    result.append(("MANIFEST.json", (json.dumps(manifest, ensure_ascii=False, indent=2) + "\n").encode("utf-8")))
     return result
 
 

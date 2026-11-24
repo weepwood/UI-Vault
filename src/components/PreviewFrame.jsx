@@ -52,15 +52,31 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   // 记录“已加载完成的页面”，与当前页面比较即可得出是否在加载，切换项目时无需额外重置。
   // 只比较 # 之前的部分：仅改动 hash 时 iframe 不会重新加载，也不会触发 load 事件。
   const page=src?src.split('#')[0]:null;
-  const [loadedPage,setLoadedPage]=useState(null);
-  const framePending=Boolean(page)&&loadedPage!==page;
-  const markLoaded=()=>setLoadedPage(page);
+  const [navigation,setNavigation]=useState({page,attempt:0,status:'pending'});
+  // 渲染期按页面身份重置，避免 A→B→A 时继承 A 的旧加载结果。
+  if(navigation.page!==page)setNavigation({page,attempt:0,status:'pending'});
+  const attempt=navigation.page===page?navigation.attempt:0;
+  const status=navigation.page===page?navigation.status:'pending';
+  const framePending=Boolean(page)&&status==='pending';
+  const markLoaded=()=>setNavigation(previous=>previous.page===page&&previous.attempt===attempt?{...previous,status:'loaded'}:previous);
+  const markError=()=>setNavigation(previous=>previous.page===page&&previous.attempt===attempt?{...previous,status:'error'}:previous);
   useEffect(()=>{
     if(!page)return;
-    const timer=setTimeout(()=>setLoadedPage(page),LOAD_TIMEOUT_MS);
+    const timer=setTimeout(()=>setNavigation(previous=>previous.page===page&&previous.attempt===attempt&&previous.status==='pending'?{...previous,status:'timeout'}:previous),LOAD_TIMEOUT_MS);
     return ()=>clearTimeout(timer);
-  },[page]);
+  },[page,attempt]);
+  function retry(){
+    if(!src||!frame.current)return;
+    setNavigation(previous=>({page,attempt:previous.attempt+1,status:'pending'}));
+    try{frame.current.contentWindow.location.replace(src);}
+    catch{frame.current.src=src;}
+  }
   const progress=framePending&&<div className="preview-progress" role="progressbar" aria-label="正在加载预览"/>;
+  const recovery=page&&(status==='timeout'||status==='error')&&<div className="preview-recovery" role="status">
+    <span>{status==='timeout'?'暂未收到加载事件；无法确认页面是否可交互。':'预览报告加载异常。'}</span>
+    <button type="button" onClick={retry}>重试预览</button>
+    <a href={src} target="_blank" rel="noopener noreferrer">单独打开</a>
+  </div>;
   // 尺寸计算只在挂载、模式切换和容器尺寸变化时运行（见下方 ResizeObserver）。
   const applyFrameLayout=useCallback(()=>{
     if(!assetId||assetSource!=='local'||!frame.current)return;
@@ -140,7 +156,7 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   if(asset.source==='local'){
     return <><iframe ref={frame} className="live-frame" data-preview-frame="local"
       title={asset.title+' 的可交互预览'} src={iframeEntrySrc} data-preview-url={src}
-      onLoad={updateFrameLayout}
+      onLoad={updateFrameLayout} onError={markError}
       sandbox={sandbox}
       allow={permissions}
       allowFullScreen={allowFullScreen}
@@ -154,13 +170,13 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
         onPointerDown={dragWidth} onPointerMove={moveWidth}
         onPointerUp={stopWidth} onPointerCancel={stopWidth}
         onKeyDown={resizeWithKeyboard}><span aria-hidden="true"/></div>}
-      {progress}</>;
+      {progress}{recovery}</>;
   }
   if(asset.siteUrl){
-    return <><iframe className="live-frame" data-preview-frame="external"
+    return <><iframe ref={frame} className="live-frame" data-preview-frame="external"
       data-external-link-bridge={asset.externalLinkBridge===true?'true':undefined}
-      title={asset.title+' 的外部网站'} src={asset.siteUrl} onLoad={markLoaded}
-      sandbox={sandbox} referrerPolicy="no-referrer"/>{progress}</>;
+      title={asset.title+' 的外部网站'} src={asset.siteUrl} onLoad={markLoaded} onError={markError}
+      sandbox={sandbox} referrerPolicy="no-referrer"/>{progress}{recovery}</>;
   }
   const href=asset.url||asset.originRepo;
   return <div className="preview-placeholder">

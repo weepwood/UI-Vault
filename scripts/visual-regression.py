@@ -811,6 +811,39 @@ def verify_large_directory_groups(browser, origin):
         context.close()
 
 
+def verify_synthetic_grouped_directory(browser, origin):
+    """5000 个合成目录条目只用于测试，不写入真实资产或发布内容。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        source=json.loads((ROOT/"content/assets.json").read_text(encoding="utf-8"))
+        sample=next(item for item in source if item["id"]=="ui-foundation-kit")
+        assets=[dict(sample,id=f"stress-{i}",title=f"Stress {i:04d}",technologies=[f"Tech {i//50:03d}"]) for i in range(5000)]
+        page=context.new_page()
+        context.route("**/content/assets.json*",lambda route:route.fulfill(json=assets))
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".directory-virtual-list").wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator("#directory-group").select_option("technology")
+        window=page.locator(".directory-virtual-list")
+        page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5100'")
+        assert page.locator("#gallery .project-row").count()<60
+        first=page.locator("[data-virtual-group]").first
+        first.focus()
+        page.keyboard.press("Enter")
+        page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5050'")
+        assert first.get_attribute("aria-expanded")=="false"
+        page.keyboard.press("End")
+        page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === '5049'")
+        page.keyboard.press("Home")
+        page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === '0'")
+        page.keyboard.press("Enter")
+        page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5100'")
+        assert window.get_attribute("data-total")=="5100"
+        print(f"5000 项 / 100 组浏览器压力：DOM {page.locator('#gallery .project-row').count()} 行，折叠与 Home/End 通过",flush=True)
+    finally:
+        context.close()
+
+
 def verify_foundation_parameters(browser, origin):
     """实际 opaque sandbox：读取、应用、重置、不重建 iframe；独立 Demo 编辑和导出。"""
     context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
@@ -1648,6 +1681,7 @@ def main():
                     verify_directory_facets,
                     verify_directory_workspace,
                     verify_large_directory_groups,
+                    verify_synthetic_grouped_directory,
                     verify_foundation_parameters,
                     verify_effect_parameters,
                     verify_standalone_delivery,

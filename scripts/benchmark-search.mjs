@@ -6,7 +6,7 @@ import {filterAssets,catalogFacetOptions,createCatalogFacetMatcher} from '../ass
 const source=JSON.parse(readFileSync(new URL('../content/assets.json',import.meta.url),'utf8'));
 const categories=JSON.parse(readFileSync(new URL('../content/categories.json',import.meta.url),'utf8'));
 const labels=Object.fromEntries(categories.map(item=>[item.id,item.label]));
-const queries=['glass','液态','react webgpu','组件','layout','vue3','unknown-xyz',''];
+const queries=['glass','液态','react webgpu','组件','layout','vue3','command palette','dark mode','minimalism','unknown-xyz',''];
 function measure(assets){
   const timings=[],facetTimings=[];
   const started=performance.now();

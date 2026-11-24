@@ -13,8 +13,13 @@ test('Foundation Registry 只包含固定文件、确定性内容哈希及有效
   execFileSync(process.execPath,[join(root,'scripts/build-tokens.mjs')]);
   const first=await buildRegistry(root);
   assert.deepEqual(await buildRegistry(root),first);
-  assert.deepEqual(first.index.items.map(item=>item.id),['foundation-tokens','foundation-base','foundation-components']);
+  assert.deepEqual(first.index.items.map(item=>item.id),['foundation-tokens','foundation-base','foundation-components','foundation-react-button','foundation-vue-button']);
   assert.deepEqual(first.items[2].dependencies,['foundation-base']);
+  for(const item of first.items.slice(3)){
+    assert.deepEqual(item.dependencies,['foundation-components']);
+    assert.ok(item.runtime[item.framework]);
+    assert.equal(item.delivery,'vendored-snapshot');
+  }
   assert.ok(first.items[0].files.some(file=>file.path==='LICENSE'));
   for(const item of first.items)for(const file of item.files)assert.equal(file.sha256,createHash('sha256').update(file.content).digest('hex'));
   const out=await mkdtemp(join(tmpdir(),'ui-vault-registry-'));

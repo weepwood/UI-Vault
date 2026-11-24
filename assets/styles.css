@@ -1368,3 +1368,9 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 .directory-backup-actions button:disabled {opacity:.5;}
 .directory-import-label input {position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;}
 .directory-import-label:focus-within {outline:2px solid var(--focus);outline-offset:1px;}
+
+/* 只在未收到 load 或异常时显示恢复操作；load 本身不证明外站可交互。 */
+.preview-recovery{position:absolute;z-index:4;top:8px;left:8px;right:8px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 10px;background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:7px;font-size:12px}
+.preview-recovery span{flex:1 1 160px;min-width:0}
+.preview-recovery button,.preview-recovery a{padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--accent);font:inherit;text-decoration:none;white-space:nowrap}
+.preview-recovery button:hover,.preview-recovery a:hover{background:var(--hover)}
