@@ -20,7 +20,7 @@ test('外站提示和原站入口位于 React Topbar，预览区不再叠加提�
   assert.match(frame,/sandbox=\{sandbox\}/);
 });
 
-test('目录工具栏与 Topbar 使用同一高度变量，排序和标签保持单行',()=>{
+test('目录标题与 Topbar 保持对齐，筛选与分组位于独立工具行',()=>{
   const html=read('index.html');
   const react=read('src/react-workbench.jsx');
   const css=read('assets/styles.css');
@@ -33,7 +33,10 @@ test('目录工具栏与 Topbar 使用同一高度变量，排序和标签保持
   assert.match(html,/id="sort"/);
   assert.match(html,/id="tag-filter"/);
   assert.match(react,/id="sort"/);
-  assert.match(react,/id="tag-filter"/);
+  assert.match(react,/id:'tag-filter'/);
+  assert.match(html,/id="directory-tools"/);
+  assert.match(react,/toolsRoot=\{nodes.directoryTools\}/);
+  assert.match(css,/grid-template-columns:minmax\(0,1fr\) auto/);
   assert.match(css,/@container preview-toolbar \(max-width:520px\) \{\s*\.topbar \{ flex-wrap:nowrap/);
 });
 

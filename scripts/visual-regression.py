@@ -672,6 +672,48 @@ def verify_rare_interactions(browser, origin):
 
 
 
+def verify_directory_facets(browser, origin):
+    """目录标题不拥挤、组合筛选可操作，分面切换不影响全局搜索入口。"""
+    for width in (1440, 820, 390):
+        context = browser.new_context(viewport={"width": width, "height": 844},
+                                      reduced_motion="reduce", locale="zh-CN")
+        try:
+            page = context.new_page()
+            page.goto(origin, wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached", timeout=30000)
+            if width < 761:
+                page.locator("#menu-toggle").click()
+            toggle = page.locator(".directory-filter-toggle")
+            toggle.wait_for(state="visible")
+            assert page.evaluate("""() => {
+                const root=document.querySelector('#project-panel');
+                const header=root.querySelector('.list-controls');
+                const tools=root.querySelector('.directory-tools');
+                const button=tools.querySelector('.directory-filter-toggle');
+                return header.getBoundingClientRect().bottom <= tools.getBoundingClientRect().top+1
+                  && button.getBoundingClientRect().right <= root.getBoundingClientRect().right+1;
+            }"""), "目录工具栏越界或覆盖标题"
+            before = int(page.locator("#results-count").inner_text())
+            toggle.click()
+            source = page.locator("#source-filter")
+            source.select_option("local")
+            local_count = int(page.locator("#results-count").inner_text())
+            assert 0 < local_count < before, "资源形式筛选未缩小目录"
+            tech = page.locator("#technology-filter")
+            value = tech.locator("option").nth(1).get_attribute("value")
+            tech.select_option(value)
+            assert 0 < int(page.locator("#results-count").inner_text()) <= local_count
+            assert page.locator(".directory-active-filters button").count() == 3
+            page.locator(".directory-reset").click()
+            assert int(page.locator("#results-count").inner_text()) == before
+            source.focus()
+            source.press("Escape")
+            assert toggle.get_attribute("aria-expanded") == "false"
+        finally:
+            context.close()
+    print("目录组合筛选通过：桌面、窄屏、手机、计数、组合清除与 Escape。")
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -1288,6 +1330,7 @@ def main():
                 verify_compact_search_and_fixed_icons(browser, local)
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
+                verify_directory_facets(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

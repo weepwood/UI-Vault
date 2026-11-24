@@ -315,7 +315,7 @@ function WorkbenchPortals({nodes}){
     // 目录还在加载时不显示空状态，否则首屏会先闪出“没有找到项目”。
     nodes.empty.hidden=state.loading||(filtered.length>0&&!state.error);
     nodes.emptyMessage.textContent=state.error||
-      (state.favoritesOnly&&!state.query.trim()&&!state.tag?'这里还没有收藏的项目。':
+      (state.favoritesOnly&&state.favorites.size===0?'这里还没有收藏的项目。':
         state.query.trim()?'没有找到与“'+state.query.trim().slice(0,36)+'”匹配的项目。请尝试减少关键词或清除筛选条件。':
         '没有找到符合当前条件的项目。');
     nodes.resultsStatus.textContent=state.loading?'正在加载项目目录…':state.query.trim()?
@@ -325,7 +325,7 @@ function WorkbenchPortals({nodes}){
       resetControl.removeEventListener('click',handle);
       emptyReset.removeEventListener('click',handle);
     };
-  },[nodes,reset,filteredActive,filtered.length,state.loading,state.error,state.favoritesOnly,state.query,state.tag]);
+  },[nodes,reset,filteredActive,filtered.length,state.loading,state.error,state.favoritesOnly,state.favorites.size,state.query]);
   useEffect(()=>{
     if(!notice)return;
     nodes.toast.classList.add('show');
