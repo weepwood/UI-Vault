@@ -724,6 +724,7 @@ def verify_directory_workspace(browser, origin):
         virtual.wait_for(state="visible",timeout=30000)
         total=int(virtual.get_attribute("data-total"))
         assert total>120 and page.locator("#gallery .project-row").count()<60
+        print(f"目录性能采样：资产总量 {total}，首屏 DOM 行 {page.locator('#gallery .project-row').count()}",flush=True)
         page.locator("#gallery .project-row").first.focus()
         page.keyboard.press("End")
         page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === String(Number(document.querySelector('.directory-virtual-list').dataset.total)-1)")
@@ -732,11 +733,19 @@ def verify_directory_workspace(browser, origin):
         page.locator(".directory-filter-toggle").click()
         page.locator(".directory-full-list input").check()
         assert page.locator("#gallery .project-row").count()==total
+        print(f"目录性能采样：完整模式 DOM 行 {page.locator('#gallery .project-row').count()}",flush=True)
         page.locator(".directory-full-list input").uncheck()
         page.locator("#style-filter").select_option(index=1)
         style=page.locator("#style-filter").input_value()
         assert style
-        assert int(page.locator("#results-count").inner_text())>0
+        first_count=int(page.locator("#results-count").inner_text())
+        assert first_count>0
+        page.locator("#style-filter").select_option(index=2)
+        assert page.locator(".directory-active-filters button").count()==3
+        assert int(page.locator("#results-count").inner_text())>=first_count
+        page.locator(".directory-active-filters button").nth(1).click()
+        assert page.locator(".directory-active-filters button").count()==2
+        assert int(page.locator("#results-count").inner_text())==first_count
         page.locator("#directory-group").select_option("technology")
         assert page.locator(".asset-project-group").count()>0
         assert page.locator("#sort").input_value()=="featured"
@@ -752,6 +761,34 @@ def verify_directory_workspace(browser, origin):
     finally:
         context.close()
     print("目录工作台回归通过：风格、独立分组、预设恢复、虚拟列表键盘与完整列表回退。")
+
+
+def verify_large_directory_groups(browser, origin):
+    """使用真实目录按资源形式分组，验证超大分组窗口化与折叠卸载。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".directory-virtual-list").wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator("#directory-group").select_option("source")
+        page.locator(".directory-filter-toggle").click()
+        group=page.locator(".asset-project-group").filter(has=page.locator(".directory-virtual-list")).first
+        group.wait_for(state="attached")
+        window=group.locator(".directory-virtual-list")
+        total=int(window.get_attribute("data-total"))
+        assert total>120
+        assert group.locator(".project-row").count()<60
+        group.locator("summary").click()
+        assert group.locator(".project-row").count()==0
+        group.locator("summary").click()
+        window.wait_for(state="visible")
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-full-list input").check()
+        assert page.locator(".directory-virtual-list").count()==0
+        print(f"大型分组性能采样：组资产 {total}，折叠 DOM 0，完整模式 {page.locator('#gallery .project-row').count()}",flush=True)
+    finally:
+        context.close()
 
 
 def verify_topbar_alignment(browser, origin):
@@ -1372,6 +1409,7 @@ def main():
                 verify_topbar_alignment(browser, local)
                 verify_directory_facets(browser, local)
                 verify_directory_workspace(browser, local)
+                verify_large_directory_groups(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

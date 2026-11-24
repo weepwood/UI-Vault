@@ -19,7 +19,7 @@ test('排序使用共享下拉，分面使用受控原生 select',async()=>{
   const component=await read('src/components/WorkbenchSelect.jsx');
   assert.match(react,/<WorkbenchSelect id="sort"/);
   assert.match(react,/id:'tag-filter'/);
-  assert.match(react,/<select id=\{field.id\} value=\{state\[field.key\]\|\|''\}/);
+  assert.match(react,/<select id=\{field.id\} value=\{facetSelection\(state\[field.key\]\)\[0\]\|\|''\}/);
   assert.match(component,/<select id={id}/);
   assert.match(component,/role="listbox"/);
   assert.match(component,/onChange={event=>onChange\(event.target.value\)}/);

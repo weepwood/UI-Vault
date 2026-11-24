@@ -1,11 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {STYLE_TAGS} from '../assets/core/style-taxonomy.js';
-import {filterAssets,catalogFacetOptions} from '../assets/core/catalog.js';
+import {STYLE_TAGS,STYLE_GROUPS,groupStyleOptions} from '../assets/core/style-taxonomy.js';
+import {filterAssets,catalogFacetOptions,facetSelection,normalizeFacetSelection} from '../assets/core/catalog.js';
 import {groupCatalogAssets} from '../assets/core/projects.js';
 import {createWorkbenchState,setCatalogGroup,setCatalogSort} from '../assets/core/workbench-state.js';
-import {snapshotFilters,putFilterPreset,readFilterPresets,writeFilterPresets,MAX_FILTER_PRESETS} from '../assets/core/filter-presets.js';
+import {snapshotFilters,putFilterPreset,readFilterPresets,writeFilterPresets,MAX_FILTER_PRESETS,exportFilterPresets,importFilterPresets} from '../assets/core/filter-presets.js';
 import {virtualWindow} from '../assets/core/virtual-window.js';
 
 const items=[
@@ -55,4 +55,33 @@ test('虚拟窗口覆盖首尾、空列表和大目录，渲染范围有界',()=
   assert.deepEqual(virtualWindow(5000,60000,720,60),{start:994,end:1018});
   assert.deepEqual(virtualWindow(5000,999999,720,60),{start:4993,end:5000});
   assert.ok(virtualWindow(5000,60000,720,60).end-virtualWindow(5000,60000,720,60).start<30);
+});
+
+test('二级风格分类覆盖受控词表，候选数量与选中项不丢失',()=>{
+  const all=STYLE_GROUPS.flatMap(group=>group.tags);
+  assert.equal(new Set(all).size,all.length);
+  assert.deepEqual([...all].sort(),[...STYLE_TAGS].sort());
+  const options=[{value:'玻璃材质',count:5},{value:'极简',count:3},{value:'旧风格',count:0}];
+  assert.deepEqual(groupStyleOptions(options).flatMap(group=>group.items),options);
+});
+test('同维度多选为并集，跨维度交集，零结果选项保留',()=>{
+  assert.deepEqual(filterAssets(items,{style:['玻璃材质','极简'],technology:['Vue','React']}).map(item=>item.id),['a','b']);
+  assert.deepEqual(filterAssets(items,{style:['玻璃材质','极简'],technology:['Vue','React'],source:'local'}).map(item=>item.id),['a']);
+  assert.deepEqual(normalizeFacetSelection(['Vue','Vue','React']),['Vue','React']);
+  assert.equal(normalizeFacetSelection(['Vue']),'Vue');
+  assert.deepEqual(facetSelection(''),[]);
+  assert.ok(catalogFacetOptions(items,{style:['极简','缺失风格']}).style.some(option=>option.value==='缺失风格'&&option.count===0));
+});
+test('筛选方案备份版本、保留同名、本地旧格式和多选往返兼容',()=>{
+  const local=putFilterPreset([],'同名',{style:'极简'});
+  const incoming=putFilterPreset(putFilterPreset([],'同名',{style:'玻璃材质'}),'另一组',{style:['极简','玻璃材质'],technology:['Vue','React']});
+  const restored=importFilterPresets(exportFilterPresets(incoming),local);
+  assert.equal(restored.added,1);assert.equal(restored.skipped,1);
+  assert.deepEqual(restored.presets[0],local[0]);
+  assert.deepEqual(restored.presets[1].filters.style,['极简','玻璃材质']);
+  assert.deepEqual(importFilterPresets(exportFilterPresets(restored.presets),[]).presets,restored.presets);
+  assert.throws(()=>importFilterPresets('{"version":2}',local),TypeError);
+  assert.throws(()=>importFilterPresets('x'.repeat(256*1024+1),local),RangeError);
+  assert.throws(()=>importFilterPresets(exportFilterPresets(incoming),Array.from({length:20},(_,i)=>({name:'本地'+i,filters:{}}))),RangeError);
+  assert.equal(local.length,1);
 });
