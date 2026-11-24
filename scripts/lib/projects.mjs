@@ -2,6 +2,7 @@ import {readFile,readdir,writeFile} from 'node:fs/promises';
 import {readFileSync} from 'node:fs';
 import {fileURLToPath} from 'node:url';
 import {resolve,dirname,join} from 'node:path';
+import {normalizeEol} from './text.mjs';
 
 export const PROJECT_ROOT=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
 export const PROJECT_ENTRY_DIR=join(PROJECT_ROOT,'catalog/projects');
@@ -76,7 +77,7 @@ export async function inspectProjects({checkGenerated=true}={}){
   const manifest=formatProjectManifest(projects);
   if(checkGenerated){
     try{
-      const current=await readFile(PROJECT_MANIFEST_PATH,'utf8');
+      const current=normalizeEol(await readFile(PROJECT_MANIFEST_PATH,'utf8'));
       if(current!==manifest)errors.push('content/projects.json 未同步：请运行 npm run catalog:sync');
     }catch{errors.push('content/projects.json 缺失：请运行 npm run catalog:sync');}
   }

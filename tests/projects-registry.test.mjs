@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {PROJECT_ROOT,checkProject,inspectProjects,canonicalGitHubRepository,formatProjectManifest} from '../scripts/lib/projects.mjs';
-import {inspectCatalog} from '../scripts/lib/catalog.mjs';
+import {inspectCatalog,normalizeEol} from '../scripts/lib/catalog.mjs';
 
 test('Project 源码仓库以标准根 URL 登记，拒绝树路径和假 GitHub 主机',()=>{
   assert.equal(canonicalGitHubRepository('https://github.com/weepwood/page-mirror/tree/main/sites/test'),'https://github.com/weepwood/page-mirror');
@@ -20,7 +20,7 @@ test('Project 源码仓库以标准根 URL 登记，拒绝树路径和假 GitHub
 test('Project 清单完整、唯一，且与每条 Asset 一一关联',async()=>{
   const result=await inspectProjects();
   assert.deepEqual(result.errors,[]);
-  assert.equal(await readFile(join(PROJECT_ROOT,'content/projects.json'),'utf8'),result.manifest);
+  assert.equal(normalizeEol(await readFile(join(PROJECT_ROOT,'content/projects.json'),'utf8')),result.manifest);
   // 项目总量允许增长，仓库 URL 仍需全局唯一。
   assert.ok(result.projects.length>=35,'项目数不应低于注册表的既有基线');
   assert.equal(new Set(result.projects.map(x=>x.repository.toLowerCase())).size,result.projects.length);

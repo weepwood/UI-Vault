@@ -5,6 +5,7 @@ import { dirname, extname, join, relative, resolve, sep } from 'node:path';
 import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
 import {PREVIEW_CAPABILITIES} from '../../assets/core/preview-policy.js';
 import {inspectProjects,canonicalGitHubRepository} from './projects.mjs';
+import {normalizeEol} from './text.mjs';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const ASSET_FIELDS=new Set(Object.keys(JSON.parse(readFileSync(new URL('../../catalog/asset.schema.json',import.meta.url),'utf8')).properties));
@@ -16,6 +17,7 @@ export const COVERS = new Set(['warm','glass','aurora','editor','style','mosaic'
 
 const isText = value => typeof value === 'string' && value.trim().length > 0;
 const isStrings = value => Array.isArray(value) && value.length > 0 && value.every(isText);
+export {normalizeEol};
 export const formatManifest = items => JSON.stringify([...items].sort((a,b)=>a.id.localeCompare(b.id,'en')),null,2)+'\n';
 
 export function checkCategories(categories) {
@@ -238,7 +240,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
   const manifest=formatManifest(items);
   if(checkGenerated) {
     try {
-      const actual=await readFile(MANIFEST_PATH,'utf8');
+      const actual=normalizeEol(await readFile(MANIFEST_PATH,'utf8'));
       if(actual!==manifest) errors.push('content/assets.json 与独立资产元数据不同步：请运行 node scripts/catalog.mjs sync');
     } catch { errors.push('缺少 content/assets.json：请运行 node scripts/catalog.mjs sync'); }
   }
