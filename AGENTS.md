@@ -205,3 +205,5 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 追加 6 项原始指南审计：Human Scribble、Hygge、Indie Sleaze、Industrial Gothic、Ink Wash、International Typographic Style；累计 130，剩余 160 项。每项保留原始指南证据、标签、双语检索；候选待验收。
 
 追加 6 项原始指南审计：Iridescent、Isometric Design、Italo Disco、Japandi、Jiggy Era、Kid Science；累计 136，剩余 154 项。每项保留原始指南证据、标签、双语检索；候选待验收。
+
+#111 最终正式锁定版 42e80c4：45427408663（344 单测、26 Chromium、Firefox/WebKit 基础冒烟、8 个 axe 场景零违规、Windows）、45427408764 Registry、45427408694 Foundation ZIP 解包严格 npm ci（71 安装包）、Vite 7.3.8 与 Chromium 全部通过；实际产物 14938111293 共 46 文件已复审。#111 已 squash 合并 1f5e3dc，树 25928e99 与验收候选相同。#110 main 45427043654 Pages 部署实际日志成功。#112 继承 #111 精确文件树，新增 18 项原始指南分类（累计 136，剩余 154），分组编辑器、色标增删、阴影恢复及风险识别须待最新 CI、真实截图复审后合并；#111 main 部署待复查。禁止提前合并。
