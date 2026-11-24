@@ -748,6 +748,7 @@ def verify_directory_workspace(browser, origin):
         page.keyboard.press("Home")
         page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === '0'")
         page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-management summary").click()
         page.locator(".directory-full-list input").check()
         assert page.locator("#gallery .project-row").count()==total
         print(f"目录性能采样：完整模式 DOM 行 {page.locator('#gallery .project-row').count()}",flush=True)
@@ -804,6 +805,7 @@ def verify_large_directory_groups(browser, origin):
         group.locator("summary").click()
         window.wait_for(state="visible")
         page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-management summary").click()
         page.locator(".directory-full-list input").check()
         assert page.locator(".directory-virtual-list").count()==0
         print(f"大型分组性能采样：组资产 {total}，折叠 DOM 0，完整模式 {page.locator('#gallery .project-row').count()}",flush=True)

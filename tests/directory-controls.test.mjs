@@ -36,7 +36,7 @@ test('项目目录、结果数量、排序和标签筛选结构完整',()=>{
 });
 
 test('项目控件紧凑显示、下拉可用且适配深色和小屏幕',()=>{
-  const css=read('assets/styles.css');
+  const css=read('assets/styles.css')+'\n'+read('assets/ui/directory-controls.css');
   const dropdown=read('src/components/WorkbenchSelect.jsx');
   assert.match(css,/[.]project-panel [.]list-controls [.]project-controls-heading/);
   assert.match(css,/[.]project-panel [.]result-count/);

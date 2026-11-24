@@ -25,13 +25,13 @@ test('工作台组件 CSS 在同一入口加载且没有重复的基础规则',(
     assert.ok(file.includes(selector),'共享组件样式丢失：'+selector);
     assert.ok(!entry.includes('\n'+selector),'主样式表不应复制基础组件样式：'+selector);
   }
-  for(const relative of ['project-row.css','dialog.css','preview-toolbar.css']){
+  for(const relative of ['project-row.css','dialog.css','preview-toolbar.css','directory-controls.css']){
     assert.ok(entry.includes('@import url("./ui/'+relative+'");'),'主站遗漏组件 CSS：'+relative);
   }
   assert.match(row,/project-row-emoji/);
   assert.match(dialog,/dialog-source-pane/);
   assert.match(toolbar,/viewport-menu-in/);
-  assert.match(entry,/\.project-panel \.list-controls/);
+  assert.match(read('assets/ui/directory-controls.css'),/\.project-panel \.list-controls/);
   assert.match(entry,/\.app-shell\.is-settings/);
 });
 
