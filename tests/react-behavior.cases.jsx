@@ -207,3 +207,22 @@ test('目录筛选缓存不受预览、菜单或主题影响，筛选变更仍�
     assert.deepEqual(observed.tags,['组件']);
   }finally{unmount();}
 });
+
+ test('目录多维筛选保持排序，并提供忽略当前维度的候选数量',()=>{
+  const other={...asset,id:'other',source:'external',projectId:'other',technologies:['Vue'],tags:['组件','动效']};
+  const state={assets:[asset,other],labels,favorites:new Set(),category:'all',tag:'组件',
+    reuse:'',query:'',sort:'featured',technology:'Vue',source:'external',projectId:'',
+    favoritesOnly:false,importedOnly:false,curatedOnly:false};
+  let observed;
+  function Probe({value}){observed=useCatalogResults(value);return null;}
+  const {rerender,unmount}=render(<Probe value={state}/>);
+  try{
+    assert.deepEqual(observed.filtered.map(item=>item.id),['other']);
+    assert.deepEqual(observed.facets.tag.map(item=>item.value).sort(),['动效','组件'].sort());
+    rerender(<Probe value={{...state,source:'local'}}/>);
+    assert.equal(observed.filtered.length,0);
+    assert.deepEqual(observed.facets.source.map(item=>[item.value,item.count]),[['external',1],['local',0]]);
+    rerender(<Probe value={{...state,technology:'',source:'',projectId:'ui-vault'}}/>);
+    assert.deepEqual(observed.filtered.map(item=>item.id),[asset.id]);
+  }finally{unmount();}
+});

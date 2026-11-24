@@ -793,100 +793,42 @@ body.settings-body { min-height:100vh;min-height:100dvh;background:var(--canvas)
 
 /* 目录筛选工具栏与预览 Topbar 共用单行高度，留出更多列表空间。 */
 .project-panel .list-controls {
-  display:flex;align-items:center;gap:8px;
+  display:flex;align-items:center;
   height:var(--list-controls-height,var(--workbench-toolbar-height));min-height:var(--workbench-toolbar-height);
-  padding:0 12px;flex:none;
-  background:var(--surface);border-bottom:1px solid var(--line);
+  padding:0 12px;flex:none;background:var(--surface);border-bottom:1px solid var(--line);
 }
-.project-panel .list-controls .project-controls-heading {
-  display:flex;align-items:center;justify-content:flex-start;
-  flex:0 0 auto;min-width:0;min-height:0;margin:0;
-}
-.project-panel .list-controls .project-controls-label {
-  display:inline-flex;align-items:center;gap:5px;min-width:0;
-  color:var(--ink);font-size:12px;font-weight:700;letter-spacing:-.025em;
-  white-space:nowrap;
-}
-.project-panel .result-count {
-  display:inline-flex;align-items:center;justify-content:center;
-  min-width:22px;height:20px;padding:0 5px;
-  border:1px solid var(--line-soft);border-radius:6px;
-  background:var(--canvas);color:var(--muted);
-  font-size:10px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums;
-}
-.project-panel .list-controls-filters {
-  display:flex;align-items:center;gap:6px;flex:1 1 auto;min-width:0;
-}
-.project-panel .list-controls .select-field--sort,
-.project-panel .list-controls .select-field--tag {
-  flex:1 1 0;width:auto;min-width:0;
-}
-.project-panel .list-controls .tag-select-label {
-  display:flex;align-items:center;flex:1 1 0;
-  gap:0;width:auto;min-width:0;margin:0;
-}
-/* 复用度筛选固定宽度放在「项目目录」标题行右侧，筛选行维持排序/标签两列。 */
-.project-panel .list-controls .reuse-select-label {
-  display:flex;flex:0 0 auto;align-items:center;
-  margin-left:auto;min-width:0;
-}
-.project-panel .select-field--reuse { width:104px;min-width:0;max-width:104px;flex:0 0 auto; }
-.project-panel .tag-select-label .select-field { min-width:0;width:100%; }
-.project-panel .select-field--reuse .select-trigger {
-  width:100%;min-width:0;height:34px;min-height:34px;padding:0 7px;
-  border:1px solid var(--line);border-radius:8px;
-  background:var(--canvas);color:var(--text);font-size:11px;font-weight:560;
-}
-.project-panel .select-field--reuse .select-trigger:hover { border-color:var(--focus);background:var(--sidebar); }
-.project-panel .select-field--reuse.is-open .select-trigger { border-color:var(--line);background:var(--accent-soft);color:var(--accent); }
-.project-panel .select-field--sort .select-trigger,
-.project-panel .select-field--sort > select,
-.project-panel .select-field--tag .select-trigger,
-.project-panel .select-field--tag > select {
-  width:100%;min-width:0;height:34px;min-height:34px;padding:0 7px;
-  border:1px solid var(--line);border-radius:8px;
-  background:var(--canvas);color:var(--text);font-size:11px;font-weight:560;
-}
-.project-panel .select-field--sort .select-trigger:hover,
-.project-panel .select-field--tag .select-trigger:hover {
-  border-color:var(--focus);background:var(--sidebar);
-}
-.project-panel :is(.select-field--sort,.select-field--tag).is-open .select-trigger,
-.project-panel :is(.select-field--sort,.select-field--tag).has-filter .select-trigger {
-  border-color:var(--line);background:var(--accent-soft);color:var(--accent);
-}
-.project-panel .list-controls .select-leading .ui-icon { width:14px;height:14px; }
-.project-panel .list-controls .select-chevron .ui-icon { width:12px;height:12px; }
-.project-panel .list-controls .select-trigger { gap:5px; }
-.project-panel .list-controls .select-value { min-width:0; }
-.project-panel .list-controls .select-popover {
-  width:max(100%,180px);max-width:min(300px,calc(100vw - 26px));border-color:var(--line);
-}
-html[data-theme="dark"] .project-panel .list-controls { background:var(--surface);border-color:var(--line); }
-html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--tag) .select-trigger {
-  background:var(--canvas);border-color:var(--line);
-}
-html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--tag):hover .select-trigger {
-  background:var(--sidebar);
-}
-html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--tag).has-filter .select-trigger,
-html[data-theme="dark"] .project-panel :is(.select-field--sort,.select-field--tag).is-open .select-trigger {
-  background:var(--accent-soft);border-color:var(--line);color:var(--accent);
-}
-@media(max-width:1250px) and (min-width:761px) {
-  .project-panel .list-controls { padding-inline:9px;gap:6px; }
-  .project-panel .list-controls-filters { gap:4px; }
-}
-@media(max-width:930px) and (min-width:761px) {
-  .project-panel .project-controls-label { font-size:11px;gap:4px; }
-  .project-panel .list-controls .select-trigger { padding-inline:5px;gap:3px; }
-  .project-panel .list-controls .select-chevron { display:none; }
-}
-@media(max-width:760px) {
-  .project-panel .list-controls { padding-inline:9px; }
+.project-panel .list-controls .project-controls-heading {display:flex;align-items:center;min-width:0;margin:0;width:100%;}
+.project-panel .list-controls .project-controls-label {display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;color:var(--ink);font-size:12px;font-weight:700;white-space:nowrap;}
+.project-panel .result-count {display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:20px;padding:0 5px;border:1px solid var(--line-soft);border-radius:6px;background:var(--canvas);color:var(--muted);font-size:10px;font-weight:600;font-variant-numeric:tabular-nums;}
+.project-panel .directory-tools {flex:none;min-width:0;padding:8px 10px;border-bottom:1px solid var(--line-soft);background:var(--surface);}
+.project-panel .list-controls-filters {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;min-width:0;}
+.project-panel .directory-tools .select-field--sort {min-width:0;width:100%;}
+.project-panel .directory-tools .select-trigger,.project-panel .directory-filter-toggle,.project-panel .directory-facet-field select {min-width:0;height:34px;min-height:34px;border:1px solid var(--line);border-radius:7px;background:var(--canvas);color:var(--text);font:inherit;font-size:11px;}
+.project-panel .directory-tools .select-trigger {width:100%;gap:5px;padding:0 7px;}
+.project-panel .directory-tools .select-leading .ui-icon,.project-panel .directory-filter-toggle .ui-icon {width:14px;height:14px;flex:none;}
+.project-panel .directory-tools .select-chevron .ui-icon {width:12px;height:12px;}
+.project-panel .directory-tools .select-popover {width:max(100%,160px);max-width:calc(100vw - 24px);}
+.project-panel .directory-filter-toggle {display:flex;align-items:center;justify-content:center;gap:5px;padding:0 8px;white-space:nowrap;}
+.project-panel .directory-tools :is(.select-trigger,.directory-filter-toggle,.directory-facet-field select):hover {background:var(--hover);}
+.project-panel .directory-filter-toggle:is([aria-expanded="true"],[data-active="true"]) {background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line,var(--line));}
+.project-panel .directory-active-filters {display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-top:7px;}
+.project-panel .directory-active-filters button {display:inline-flex;align-items:center;gap:4px;max-width:100%;min-width:0;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--canvas);color:var(--text);font-size:10px;}
+.project-panel .directory-active-filters button span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.project-panel .directory-active-filters .ui-icon {width:11px;height:11px;flex:none;}
+.project-panel .directory-facets {display:grid;gap:8px;max-height:min(36vh,280px);overflow-y:auto;overscroll-behavior:contain;padding:9px 2px 2px;margin-top:8px;border-top:1px solid var(--line-soft);}
+.project-panel .directory-facets[hidden] {display:none;}
+.project-panel .directory-facet-field {display:grid;gap:4px;min-width:0;color:var(--muted);font-size:11px;}
+.project-panel .directory-facet-field select {width:100%;padding:0 6px;}
+.project-panel .directory-clear {color:var(--accent);font-size:11px;}
+.project-panel .directory-clear:disabled {opacity:.5;cursor:default;}
+.project-panel .directory-reset {justify-self:start;padding:5px 0;background:none;border:0;}
+.project-panel .directory-tools :is(button,select):focus-visible {outline:2px solid var(--focus);outline-offset:1px;}
+@media(max-width:930px) {
+  .project-panel .directory-tools {padding-inline:8px;}
+  .project-panel .list-controls {padding-inline:10px;}
 }
 @media(max-width:480px) {
-  .project-panel .list-controls { padding-inline:10px;gap:6px; }
+  .project-panel .directory-facets {max-height:24vh;}
 }
 
 /* 窄预览区保持一行工具栏：正文截断，按钮不向下挤占 iframe 高度。 */

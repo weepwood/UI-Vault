@@ -4,13 +4,16 @@
  * 保持现有扁平字段协议，与 filterAssets() 及浏览器收藏数据兼容。
  */
 import { isPreviewMode, normalizeCustomWidth, DEFAULT_CUSTOM_WIDTH } from './preview.js';
-import { REUSE_LEVELS } from './catalog.js';
+import { REUSE_LEVELS,FACET_KEYS } from './catalog.js';
 
 const REUSE_IDS=new Set(REUSE_LEVELS.map(level=>level.id));
 
 export const DEFAULT_FILTERS=Object.freeze({
   category:'all',
   tag:'',
+  technology:'',
+  source:'',
+  projectId:'',
   reuse:'',
   query:'',
   sort:'featured',
@@ -76,6 +79,16 @@ export function setCatalogTag(state,tag){
   state.tag=String(tag);
   return state;
 }
+export function setCatalogFacet(state,key,value){
+  if(!FACET_KEYS.includes(key))throw new RangeError('未知目录分面：'+key);
+  state[key]=String(value);
+  return state;
+}
+export function clearCatalogFacets(state){
+  for(const key of FACET_KEYS)state[key]='';
+  state.reuse='';
+  return state;
+}
 export function setCatalogReuse(state,reuse){
   if(reuse&&!REUSE_IDS.has(reuse))throw new RangeError('未知复用程度：'+reuse);
   state.reuse=String(reuse);
@@ -83,7 +96,7 @@ export function setCatalogReuse(state,reuse){
 }
 export function hasActiveCatalogFilters(state){
   return state.category!=='all'||state.favoritesOnly||state.importedOnly||state.curatedOnly||
-    Boolean(state.tag)||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured';
+    FACET_KEYS.some(key=>Boolean(state[key]))||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured';
 }
 
 /** 同一个项目再次选中不能重新初始化预览，避免 iframe 被无意义地卸载。 */

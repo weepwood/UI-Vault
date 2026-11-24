@@ -38,7 +38,7 @@ test('React 列表独立滚动，使用统一过滤器和独立预览',async()=>
  ].map(read));
  assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*flex:\s*1 1 0/);
  assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*overscroll-behavior:\s*contain/);
- assert.match(hooks,/const \{filtered,tags\}=useCatalogResults\(state\)/);
+ assert.match(hooks,/const \{filtered,tags,facets\}=useCatalogResults\(state\)/);
  assert.match(results,/filterAssets\(assets,filters,favorites\)/);
  assert.match(react,/<ProjectList items={filtered}/);
  assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
