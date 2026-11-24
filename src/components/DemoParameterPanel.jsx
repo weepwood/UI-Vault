@@ -99,13 +99,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       <label className="parameter-preset-import">导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
     <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
-    {values&&<><div className="parameter-presets">
-      <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
-      <label>名称<input aria-label="预设名称" value={presetName} maxLength={40} onChange={e=>setPresetName(e.target.value)} disabled={busy}/></label>
-      <button type="button" disabled={busy||!presetChoice} onClick={()=>{const preset=presets.find(item=>item.name===presetChoice);if(preset)replaceValues(preset.values,true);}}>应用预设</button><button type="button" disabled={busy||invalid||!presetName.trim()} onClick={savePreset}>保存预设</button><button type="button" disabled={busy||!presetChoice} onClick={deletePreset}>删除预设</button>
-      <button type="button" disabled={busy||!presets.length} onClick={()=>downloadSourceText(exportParameterPresets(asset,presets),asset.id+'-presets.json')}>导出预设</button>
-      <label className="parameter-preset-import">导入预设<input type="file" aria-label="导入预设" accept="application/json,.json" disabled={busy} onChange={loadPresets}/></label>
-    </div><div className="demo-parameter-fields">{fields.map(field=><label key={field.key} className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
+    {values&&<><div className="demo-parameter-fields">{fields.map(field=><div key={field.key} className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={blocking} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
       :field.type==='boolean'?<input aria-label={field.label} type="checkbox" disabled={blocking} checked={values[field.key]} onChange={event=>edit(field,event.target.checked)}/>
@@ -113,7 +107,14 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
         step={field.type==='number'?field.step||1:undefined} disabled={blocking} value={drafts[field.key]??values[field.key]}
         aria-invalid={invalidFields.includes(field)||undefined}
         onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}
-      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</label>)}</div>
+      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</div>)}</div>
+      <div className="parameter-presets-heading">参数预设与文件管理</div><div className="parameter-presets">
+      <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
+      <label>名称<input aria-label="预设名称" value={presetName} maxLength={40} onChange={e=>setPresetName(e.target.value)} disabled={busy}/></label>
+      <button type="button" disabled={busy||!presetChoice} onClick={()=>{const preset=presets.find(item=>item.name===presetChoice);if(preset)replaceValues(preset.values,true);}}>应用预设</button><button type="button" disabled={busy||invalid||!presetName.trim()} onClick={savePreset}>保存预设</button><button type="button" disabled={busy||!presetChoice} onClick={deletePreset}>删除预设</button>
+      <button type="button" disabled={busy||!presets.length} onClick={()=>downloadSourceText(exportParameterPresets(asset,presets),asset.id+'-presets.json')}>导出预设</button>
+      <label className="parameter-preset-import">导入预设<input type="file" aria-label="导入预设" accept="application/json,.json" disabled={busy} onChange={loadPresets}/></label>
+    </div>
       <div className="demo-parameter-actions">{(asset.id===FOUNDATION_ID?['css','json','ts']:asset.id==='warm-workbench'?['css','json']:['json']).map(format=><button key={format} type="button" disabled={busy||invalid} onClick={()=>download(format)}>导出 {format.toUpperCase()}</button>)}</div>
       <p>{asset.id===FOUNDATION_ID?'导出是当前编辑值的快照，非完整 Foundation 主题；修改后请检查色彩对比度。':asset.id==='warm-workbench'?'CSS 是布局变量快照，需与原 Demo 样式配合；JSON 可导入恢复。':'JSON 是已登记参数的快照，不是可独立运行的效果源码；使用 Demo 自带导出或源码区下载。'}</p></>}
   </section>;
