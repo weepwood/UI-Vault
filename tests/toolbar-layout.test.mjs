@@ -4,13 +4,14 @@ import {readFileSync} from 'node:fs';
 
 const read=path=>readFileSync(new URL('../'+path,import.meta.url),'utf8');
 
-test('外站提示和原站入口位于 React Topbar，预览区不再叠加提示',()=>{
+test('原站入口保留，Topbar 不再渲染影响高度的沙箱说明',()=>{
   const toolbar=read('src/components/PreviewToolbar.jsx');
   const frame=read('src/components/PreviewFrame.jsx');
   const legacy=read('assets/core/workbench.js');
   const css=read('assets/styles.css')+'\n'+read('assets/ui/directory-controls.css');
-  assert.match(toolbar,/className="topbar-embed-notice"/);
-  assert.match(toolbar,/沙箱会拦截嵌入页的外链跳转，请使用“在原站查看”。/);
+  assert.doesNotMatch(toolbar,/topbar-embed-notice/);
+  assert.doesNotMatch(toolbar,/沙箱会拦截嵌入页的外链跳转/);
+  assert.doesNotMatch(read('assets/ui/preview-toolbar.css'),/topbar-embed-notice/);
   assert.match(toolbar,/asset\?\.siteUrl\?'在原站查看':'单独打开'/);
   assert.match(toolbar,/title=\{asset\?\.siteUrl\?'在原站查看':'单独打开'\}/);
   assert.doesNotMatch(frame,/external-preview-hint/);
