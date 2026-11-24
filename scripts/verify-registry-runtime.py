@@ -74,6 +74,20 @@ def main():
                 expect(page.get_by_test_id("popover-content")).to_be_hidden()
                 expect(popover).to_have_attribute("aria-expanded","false")
                 expect(popover).to_be_focused()
+                uncontrolled=page.get_by_role("combobox",name="非受控选择")
+                expect(uncontrolled).to_contain_text("甲")
+                uncontrolled.click()
+                page.get_by_role("option",name="乙").click()
+                expect(uncontrolled).to_contain_text("乙")
+                page.set_viewport_size({"width":390,"height":844})
+                edge=page.get_by_role("button",name="边缘浮层")
+                edge.click()
+                content=page.get_by_test_id("edge-content").locator("xpath=ancestor::*[contains(concat(' ',normalize-space(@class),' '),' ui-primitive-popover ')][1]")
+                expect(content).to_be_visible()
+                bounds=content.bounding_box()
+                assert bounds["x"]>=-1 and bounds["y"]>=-1 and bounds["x"]+bounds["width"]<=391 and bounds["y"]+bounds["height"]<=845, bounds
+                page.keyboard.press("Escape")
+                expect(edge).to_be_focused()
                 assert not errors, errors
                 assert not external, external
                 page.close()

@@ -1078,6 +1078,23 @@ def verify_live_parameter_dock(browser, origin):
         page.keyboard.press("Home")
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="0px"
+        slider=dock.get_by_role("slider",name="卡片圆角滑块")
+        slider.scroll_into_view_if_needed()
+        box=slider.bounding_box()
+        x,y=box["x"],box["y"]+box["height"]/2
+        page.mouse.move(x+4,y)
+        page.mouse.down()
+        for step in range(1,25):
+            page.mouse.move(x+4+(box["width"]-8)*step/24,y)
+            page.wait_for_timeout(12)
+        page.mouse.up()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        final_value=slider.input_value()
+        assert int(final_value)>0
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")==final_value+"px"
+        dock.get_by_role("button",name="撤销",exact=True).click()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="0px"
         page.screenshot(path=str(OUTPUT/"parameter-dock-desktop.png"))
         dock.get_by_role("button",name="关闭实时参数").click()
         dock.wait_for(state="hidden")
