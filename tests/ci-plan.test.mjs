@@ -1,0 +1,28 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {planCI} from '../scripts/ci-plan.mjs';
+const pr=paths=>planCI({event:'pull_request',paths});
+const fast={fast:true,build:false,visual:false,windows:false,full:false};
+const full={fast:true,build:true,visual:true,windows:true,full:true};
+test('普通资产、独立 Demo、局部 CSS 与文档 PR 不启动重型检查',()=>{
+  assert.deepEqual(pr(['catalog/assets/demo.json','content/assets.json','demos/components/demo/index.html','assets/ui/controls.css','README.md']),fast);
+});
+test('核心预览与权限改动仅升级 Linux 构建和浏览器验证',()=>{
+  assert.deepEqual(pr(['src/components/PreviewFrame.jsx']),{...fast,build:true,visual:true});
+  assert.deepEqual(pr(['assets/core/preview-policy.js']),{...fast,build:true,visual:true});
+});
+test('跨平台构建改动仅升级构建和 Windows 验证',()=>{
+  assert.deepEqual(pr(['scripts/run-python.mjs']),{...fast,build:true,windows:true});
+});
+test('工作流自身变更、版本 tag、手动 full 与基线重生成完整验收',()=>{
+  assert.deepEqual(pr(['.github/workflows/deploy.yml']),full);
+  assert.deepEqual(planCI({event:'push',ref:'refs/tags/v1.0.0'}),full);
+  assert.deepEqual(planCI({event:'workflow_dispatch',mode:'full'}),full);
+  assert.deepEqual(planCI({event:'workflow_dispatch',mode:'quick',regenerate:true}),full);
+});
+test('main push 和定期刷新仅构建部署，手动 quick 可额外验证',()=>{
+  const build={...fast,fast:false,build:true};
+  assert.deepEqual(planCI({event:'push',ref:'refs/heads/main'}),build);
+  assert.deepEqual(planCI({event:'schedule',ref:'refs/heads/main'}),build);
+  assert.deepEqual(planCI({event:'workflow_dispatch',mode:'quick'}),{...fast,build:true});
+});

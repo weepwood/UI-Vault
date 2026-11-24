@@ -66,7 +66,7 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 
 ### 验证与提交
 
-19. 提交前必须运行 `npm install && npm run check`（包含 `validate`、`test`、`design:audit`、`build`、`check-dist`）。无法运行时，明确说明哪些项没有验证。
+19. **日常迭代快速检查，高风险改动专项验证，正式发布完整验收。** 日常 PR 优先 `npm ci`（依赖未变且已安装时无需重复安装）与 `npm run check:fast`；核心交互、iframe 权限、构建、CI 或跨平台改动按风险执行专项验证；正式发布运行 `npm run check`、Chromium 回归与 Windows CI。无法运行时明确说明未验证项，禁止将跳过视为通过。main 合并后只执行资产协议校验、构建与发布目录检查，不重复常规 PR 测试。
 20. 没有看过真实浏览器渲染（截图或 Chromium 视觉回归），不能声称「视觉已验收」，只能说「构建与测试通过」。
 21. 所有 Git commit 信息使用中文。
 
@@ -98,7 +98,7 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 - [ ] 键盘导航、可见焦点、长文本、空状态、`prefers-reduced-motion` 都检查过
 - [ ] 动态文本用 `textContent` 或经过审查的转义函数输出
 - [ ] 按 [docs/OPEN-SOURCE-DESIGN-WORKFLOW.md](docs/OPEN-SOURCE-DESIGN-WORKFLOW.md) 的顺序审查过
-- [ ] `npm run check` 通过；如有截图，注明视口和主题
+- [ ] 通过对应风险等级的检查（日常 `npm run check:fast`，高风险专项，正式发布完整）；如有截图，注明视口和主题
 
 ---
 
@@ -112,7 +112,8 @@ npm run new:reference -- ui-project https://github.com/example/repo 参考项目
 npm run catalog:sync
 npm run design:audit
 npm run visual:test          # Chromium 视觉回归
-npm run check                # 提交前完整检查
+npm run check:fast           # 日常迭代
+npm run check                # 正式发布或构建专项检查
 ```
 
 架构细节：[docs/REACT-MIGRATION.md](docs/REACT-MIGRATION.md)、[docs/TWO-PANE-WORKBENCH.md](docs/TWO-PANE-WORKBENCH.md)、[docs/COMPONENT-SYSTEM.md](docs/COMPONENT-SYSTEM.md)。

@@ -9,7 +9,7 @@
 1. 禁止删除与强推 main。
 2. 要求通过 Pull Request 才能合并到 main。
 3. 启用 required status checks；先运行一次 `UI Vault 校验与发布`，再选择真实出现的校验检查名称 `元数据校验、测试与静态构建`。
-4. 最好要求合并前分支与主分支保持最新（若使用线性历史并频繁自动合并，则评估构建成本）。
+4. 单人快速迭代不勾选 Require branches to be up to date before merging；不强制 Dismiss stale pull request approvals。合并前检查实际冲突与当前提交 CI。
 5. 单人维护时不必强制至少 1 位其他审查者；否则维护者可能无法自行推进 PR。
 6. 发布部署仅允许来自 main 的已验证产物。
 
@@ -24,6 +24,6 @@
 
 ## CI 与分支
 
-`deploy.yml` 在 PR 执行校验，main push 校验成功后才发布 Pages。同一 ref 的旧运行将被取消以避免重复部署。
+`deploy.yml` 通过 `scripts/ci-plan.mjs` 分级：普通 PR 仅执行资产校验、Node 单测、lint、设计审计；核心交互/权限改动加 Chromium 与构建，跨平台构建改动加 Windows，CI 自身变更完整验证。main push 与定期刷新仅执行必要的资产校验、构建、dist 检查及发布，不重复完整 PR 测试。手动 `full`（默认）或 `v*` tag 执行全部验证；发布 GitHub Release 前应核对对应 tag 的完整 CI 成功。基线重生成不部署站点。推荐将稳定的 `元数据校验、测试与静态构建` 设为 required check；如需保护 Windows 专项，另选该检查（普通 PR 正常跳过）。未启用保护时应坚持通过 PR 合并，直接 push main 不会补跑完整 PR 校验。同一 ref 的普通旧运行自动取消。
 
 `link-check.yml` 每周巡检外部 `siteUrl` 并上传报告。HTTP 404/410 标记为失效，权限拒绝或网络错误标记为无法确认，不会自动移除资产或阻断生产部署。

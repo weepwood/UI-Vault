@@ -61,7 +61,7 @@ npm run new:demo -- components magnetic-button 磁吸按钮
 npm run new:reference -- ui-demo https://github.com/example/repo 参考设计
 npm run catalog:sync
 npm run check:fast            # 校验 + 测试 + 设计审计 + lint（本地迭代）
-npm run check                 # 提交前完整检查（额外含构建与发布目录检查）
+npm run check                 # 正式发布或构建专项（额外含构建与发布目录检查）
 ```
 
 ## 架构原则
@@ -86,7 +86,7 @@ npm run build
 node scripts/check-dist.mjs
 ```
 
-`npm run check` 会运行以上全部步骤。GitHub Actions 在 PR 执行检查，在 main 自动部署 GitHub Pages。
+`npm run check` 会运行以上全部步骤。日常 PR 执行快速检查，高风险变更按路径升级至专项构建、Chromium 或 Windows；手动 full 和 v* tag 完整验收。main 仅校验资产协议、构建与检查发布目录后自动部署 GitHub Pages。详见 [仓库治理](docs/REPOSITORY-GOVERNANCE.md)。
 
 构建产物为 `dist/`，使用发布白名单，避免公开 `catalog/`、`scripts/`、`tests/` 等内部目录。保持资产 ID、原有 `demos/.../index.html` 路径和浏览器收藏兼容。
 
@@ -155,7 +155,7 @@ npm run check           # 完整 CI 等价检查
 - **统一 React 运行态**：`src/useWorkbench.js` 是 UI 状态协调点，`src/components/` 负责交互组件，`assets/core/` 保存纯逻辑。
 - **独立 Demo**：HTML、Vue、React 等项目保持自身技术栈；跨仓项目以受限 iframe 预览，失败时保留原站链接。
 - **资产协议**：`catalog/assets/*.json` 是唯一事实来源；权限通过 `previewCapabilities` 显式声明，`copyable` 只用于自包含单文件 HTML。
-- **发布**：`npm run check` 包括目录校验、测试、对比度审计、构建、产物校验；CI 还执行 Chromium 视觉回归。
+- **发布**：日常 `check:fast`，按风险触发专项检查；正式发布 `check` 加 Chromium 视觉回归及 Windows 验证。
 
 ## 工程协作与维护
 
