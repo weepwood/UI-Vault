@@ -102,3 +102,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 新增 Modernisme、Monochrome Luxe、Monoline Illustration、Moody Maximalism、Moss Punk、Nature Distilled 六项原始指南分类，累计170项，剩余120项无标签、190项无显式风格标签。
 
 新增 Nautical 至 Neon Ooze 八项原始指南审计，累计178项，剩余112项无标签、182项无显式风格标签。
+
+新增 Neumorphism 至 Nordic Noir 六项原始指南审计，累计184项，剩余106项无标签、176项无显式风格标签。

@@ -1636,3 +1636,14 @@ html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-edit
 .material-selected-color .material-stop-position input{width:52px;padding-inline:5px;color:var(--text);font:inherit;font-variant-numeric:tabular-nums}
 #parameter-dock .parameter-section-nav button{scroll-margin-inline:4px}
 @media(max-width:760px){#parameter-dock .parameter-section-nav button{min-height:32px} .material-stop-position{min-height:32px}}
+
+/* 材质操作区：使用已有语义令牌，保持双主题一致。 */
+.material-angle-tools{display:flex;align-items:center;flex-wrap:wrap;gap:5px;margin-top:8px;color:var(--muted);font-size:11px}
+.material-angle-indicator{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border:1px solid var(--line);border-radius:50%;color:var(--accent)}
+.material-angle-tools button{min-height:30px;border:1px solid var(--line);border-radius:6px;padding:4px 8px;background:var(--surface);color:var(--text);font:inherit}
+.material-angle-tools button[aria-pressed=true],.shadow-layer-editor button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
+.shadow-layer-editor{display:grid;gap:8px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.shadow-layer-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(104px,1fr));gap:6px}
+.shadow-layer-fields label{display:grid;gap:4px;font-size:11px;color:var(--muted)}
+.shadow-layer-fields label span{display:flex;align-items:center;gap:4px}
+.shadow-layer-fields input{width:100%;min-width:0;min-height:30px;border:1px solid var(--line);border-radius:6px;padding:4px 6px;background:var(--surface);color:var(--text);font:inherit}

@@ -1,10 +1,10 @@
 import {useRef,useState} from 'react';
-export function HexColorInput({color,disabled,onCommit}){
+export function HexColorInput({color,disabled,onCommit,label="当前色标 HEX"}){
  const [draft,setDraft]=useState(null);
  const value=draft??color.toUpperCase();
  const valid=/^#[0-9a-f]{6}$/i.test(value);
  function commit(){if(valid&&value.toLowerCase()!==color.toLowerCase())onCommit(value.toLowerCase());setDraft(null);}
- return <input className="material-hex-input" aria-label="当前色标 HEX" aria-invalid={!valid||undefined} disabled={disabled} value={value} maxLength={7} spellCheck={false} onChange={e=>setDraft(e.target.value)} onBlur={commit} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();commit();}else if(e.key==='Escape'){e.preventDefault();setDraft(null);}}}/>;
+ return <input className="material-hex-input" aria-label={label} aria-invalid={!valid||undefined} disabled={disabled} value={value} maxLength={7} spellCheck={false} onChange={e=>setDraft(e.target.value)} onBlur={commit} onKeyDown={e=>{if(e.key==='Enter'){e.preventDefault();commit();}else if(e.key==='Escape'){e.preventDefault();setDraft(null);}}}/>;
 }
 const CURVES=Object.freeze([
   {label:'线性',points:[0,0,100,100]},
@@ -38,14 +38,25 @@ export function GradientStopEditor({values,disabled,onPatch,onStart,onMove,onEnd
       {middle.map((stop,index)=><button type="button" key={stop.key} data-gradient-stop={stop.key} className="material-stop-handle" role="slider" aria-valuemin={0} aria-valuemax={100} aria-valuenow={stop.position} aria-valuetext={stop.position+'%'} aria-label={stop.label} title={stop.label+' '+stop.position+'%'} data-selected={chosen.key===(stop.key==='gradientMidPosition'?'gradientMidColor':'gradientMid2Color')} onFocus={()=>setSelected(stop.key==='gradientMidPosition'?'gradientMidColor':'gradientMid2Color')} disabled={disabled||!values.gradient} style={{left:stop.position+'%',backgroundColor:stop.color,top:15+index*9}} onPointerDown={event=>start(event,stop.key)} onPointerMove={move} onPointerUp={end} onPointerCancel={end} onLostPointerCapture={end} onKeyDown={event=>{const delta={ArrowLeft:-1,ArrowRight:1,ArrowDown:-1,ArrowUp:1}[event.key];if(!delta&&!['Home','End'].includes(event.key))return;event.preventDefault();onMove(stop.key,event.key==='Home'?0:event.key==='End'?100:Math.max(0,Math.min(100,stop.position+delta*(event.shiftKey?10:1))));}}/>)}
     </div>
     {values.gradient&&<div className="material-stop-selection"><div className="material-stop-options" aria-label="选择渐变色标">{stops.map(stop=><button type="button" key={stop.key} disabled={disabled} aria-pressed={chosen.key===stop.key} onClick={()=>setSelected(stop.key)}><i style={{backgroundColor:stop.color}} aria-hidden="true"/>{stop.label} {stop.position}%</button>)}</div><div className="material-selected-color">{chosen.label}<input type="color" aria-label="当前色标颜色" disabled={disabled} value={chosen.color} onChange={e=>onPatch({[chosen.key]:e.target.value})}/><HexColorInput key={chosen.key} color={chosen.color} disabled={disabled} onCommit={color=>onPatch({[chosen.key]:color})}/>{chosen.key==='gradientMidColor'||chosen.key==='gradientMid2Color'?<label className="material-stop-position">位置 <input type="number" aria-label="当前色标位置" min={0} max={100} step={1} disabled={disabled} value={chosen.position} onChange={e=>{if(e.target.value==='')return;const n=Number(e.target.value);if(Number.isInteger(n)&&n>=0&&n<=100)onMove(chosen.key==='gradientMidColor'?'gradientMidPosition':'gradientMid2Position',n);}}/>%</label>:null}</div></div>}
+    {values.gradient&&<div className="material-angle-tools"><strong>渐变方向</strong><span className="material-angle-indicator" aria-hidden="true" style={{transform:`rotate(${values.gradientAngle}deg)`}}>↑</span><output>{values.gradientAngle}°</output>{[0,45,90,135,180,270].map(angle=><button type="button" key={angle} disabled={disabled} aria-label={`渐变方向 ${angle} 度`} aria-pressed={values.gradientAngle===angle} onClick={()=>onPatch({gradientAngle:angle})}>{angle}°</button>)}</div>}
     <div className="material-action-row material-stop-actions">{[["gradientMid","第一中色标"],["gradientMid2","第二中色标"]].map(([key,label])=><button type="button" key={key} aria-pressed={values[key]} disabled={disabled||!values.gradient} onClick={()=>onPatch({[key]:!values[key]})}>{values[key]?"移除 ":"添加 "}{label}</button>)}</div>
   </div>;
 }
 export function ShadowActions({values,disabled,onPatch}){
   const lastOpacity=useRef({});
-  const layers=[['shadowOpacity','主阴影'],['shadow2Opacity','第二层阴影']];
+  const [selected,setSelected]=useState('shadow');
+  const layers=[['shadow','主阴影'],['shadow2','第二层阴影']];
   if(values.shadowReversed)layers.reverse();
-  return <div className="material-shadow-controls"><div className="material-action-row"><strong>阴影层 · 从前到后</strong>{layers.map(([key,label])=><button type="button" key={key} aria-pressed={values[key]>0} disabled={disabled} onClick={()=>{if(values[key]>0){lastOpacity.current[key]=values[key];onPatch({[key]:0});}else onPatch({[key]:lastOpacity.current[key]??15});}}><i className="shadow-layer-color" aria-hidden="true" style={{backgroundColor:values[key==='shadowOpacity'?'shadowColor':'shadow2Color']}}/>{label} · {values[key]>0?'启用':'关闭'}</button>)}</div><div className="material-action-row"><button type="button" aria-label="交换阴影层顺序" disabled={disabled} onClick={()=>onPatch({shadowReversed:!values.shadowReversed})}>交换前后顺序</button></div></div>;
+  const colorKey=selected+'Color';
+  const label=selected==='shadow'?'主阴影':'第二层阴影';
+  const properties=selected==='shadow'?[['Opacity','不透明度',0,50,'%'],['Blur','模糊',0,48,'px'],['Y','纵向偏移',0,24,'px']]:[['Opacity','不透明度',0,50,'%'],['Blur','模糊',0,48,'px'],['X','横向偏移',-24,24,'px'],['Y','纵向偏移',-24,24,'px'],['Spread','扩展',-12,12,'px']];
+  return <div className="material-shadow-controls">
+    <div className="material-action-row"><strong>阴影层 · 从前到后</strong>{layers.map(([prefix,name])=>{const key=prefix+'Opacity';return <button type="button" key={key} aria-pressed={values[key]>0} disabled={disabled} onClick={()=>{if(values[key]>0){lastOpacity.current[key]=values[key];onPatch({[key]:0});}else onPatch({[key]:lastOpacity.current[key]??15});}}><i className="shadow-layer-color" aria-hidden="true" style={{backgroundColor:values[prefix+'Color']}}/>{name} · {values[key]>0?'启用':'关闭'}</button>;})}</div>
+    <div className="material-action-row"><button type="button" aria-label="交换阴影层顺序" disabled={disabled} onClick={()=>onPatch({shadowReversed:!values.shadowReversed})}>交换前后顺序</button></div>
+    <div className="shadow-layer-editor"><div className="material-action-row" role="group" aria-label="选择编辑阴影层">{layers.map(([prefix,name])=><button type="button" key={prefix} disabled={disabled} aria-pressed={selected===prefix} onClick={()=>setSelected(prefix)}>编辑{name}</button>)}</div>
+    <div className="material-selected-color"><strong>{label}</strong><input type="color" aria-label="选中阴影层颜色" disabled={disabled} value={values[colorKey]} onChange={e=>onPatch({[colorKey]:e.target.value})}/><HexColorInput key={colorKey} label="选中阴影层 HEX" color={values[colorKey]} disabled={disabled} onCommit={color=>onPatch({[colorKey]:color})}/></div>
+    <div className="shadow-layer-fields">{properties.map(([suffix,name,min,max,unit])=><label key={selected+suffix}>{name}<span><input type="number" aria-label={'选中阴影层'+name} min={min} max={max} step={1} disabled={disabled} value={values[selected+suffix]} onChange={e=>{const n=Number(e.target.value);if(e.target.value!==''&&Number.isInteger(n)&&n>=min&&n<=max)onPatch({[selected+suffix]:n});}}/>{unit}</span></label>)}</div></div>
+  </div>;
 }
 export function CurvePresets({values,disabled,onPatch}){
   return <div className="material-action-row"><strong>曲线预设</strong>{CURVES.map(({label,points})=><button type="button" key={label} aria-pressed={points.every((n,i)=>n===values[['curveX1','curveY1','curveX2','curveY2'][i]])} disabled={disabled} onClick={()=>onPatch(Object.fromEntries(['curveX1','curveY1','curveX2','curveY2'].map((key,i)=>[key,points[i]])))}>{label}</button>)}</div>;

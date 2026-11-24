@@ -163,7 +163,13 @@ const TERM_ALIASES=Object.freeze({
   "新矢量心核风":["neo vectorheart"],"neo vectorheart":["新矢量心核风"],
   "新古典主义":["neoclassicism"],"neoclassicism":["新古典主义"],
   "霓虹哥特风":["neon gothic"],"neon gothic":["霓虹哥特风"],
-  "霓虹黏液风":["neon ooze"],"neon ooze":["霓虹黏液风"]
+  "霓虹黏液风":["neon ooze"],"neon ooze":["霓虹黏液风"],
+  "新拟物风":["neumorphism"],"neumorphism":["新拟物风"],
+  "新客观主义":["new objectivity"],"new objectivity":["新客观主义"],
+  "新浪潮设计":["new wave"],"new wave":["新浪潮设计"],
+  "黑色装饰艺术":["noir deco"],"noir deco":["黑色装饰艺术"],
+  "黑色极简主义":["noir minimalism"],"noir minimalism":["黑色极简主义"],
+  "北欧黑色风":["nordic noir"],"nordic noir":["北欧黑色风"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
