@@ -1,5 +1,5 @@
-import {useEffect,useRef,useState} from 'react';
-import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID} from '../../assets/core/demo-parameters.js';
+import {Fragment,useEffect,useRef,useState} from 'react';
+import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID,warmLayoutCssValues} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
 import {createParameterTransport} from '../../assets/core/parameter-transport.js';
@@ -87,6 +87,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     catch{notify('Token 下载失败');}
   }
   if(!fields)return null;
+  const advanced=asset.id==='warm-workbench'&&values?warmLayoutCssValues(values):null;
   return <section className="demo-parameter-panel" aria-label="Demo 参数配置" aria-busy={busy}>
     <h3>Demo 参数配置</h3><p>{liveEditing?'读取参数后可直接调整并观察预览；实时应用不会重载页面。':'仅支持已登记的本地 Demo；应用后关闭说明弹窗即可查看效果，不会重载预览。'}</p>
     <div className="demo-parameter-actions">
@@ -99,7 +100,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       <label className="parameter-preset-import">导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
     <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
-    {values&&<><div className="demo-parameter-fields">{fields.map(field=><div key={field.key} className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
+    {values&&<>{advanced&&<div className="parameter-material-preview" aria-label="当前编辑材质与曲线示意"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient'],boxShadow:advanced['--warm-card-shadow']}}><strong>表面预览</strong><small>{values.gradient?'双色渐变':'纯色'}</small></div><svg viewBox="0 0 120 100" role="img" aria-label="当前三次贝塞尔曲线"><path d="M10 90H110V10" fill="none" stroke="currentColor" opacity=".25"/><path d={`M10 90C${10+values.curveX1} ${90-values.curveY1*.8},${10+values.curveX2} ${90-values.curveY2*.8},110 10`} fill="none" stroke="currentColor" strokeWidth="2"/></svg><code>{advanced['--warm-motion-curve']}</code></div>}<div className="demo-parameter-fields">{fields.map((field,index)=><Fragment key={field.key}>{field.group&&field.group!==fields[index-1]?.group&&<h4 className="parameter-group-title">{field.group}</h4>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={blocking} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
       :field.type==='boolean'?<input aria-label={field.label} type="checkbox" disabled={blocking} checked={values[field.key]} onChange={event=>edit(field,event.target.checked)}/>
@@ -109,7 +110,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
         onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}
       {liveEditing&&field.type==='color'&&<small className="parameter-value-hint">{values[field.key].toUpperCase()}{field.css&&<span title={field.css}>{field.css}</span>}</small>}
       {liveEditing&&field.type==='number'&&field.unit&&<small className="parameter-unit-hint">{field.unit}</small>}
-      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</div>)}</div>
+      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</div></Fragment>)}</div>
       <div className="parameter-presets-heading">参数预设与文件管理</div><div className="parameter-presets">
       <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
       <label>名称<input aria-label="预设名称" value={presetName} maxLength={40} onChange={e=>setPresetName(e.target.value)} disabled={busy}/></label>

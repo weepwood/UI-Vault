@@ -41,7 +41,20 @@ export const WARM_LAYOUT_FIELDS=Object.freeze([
   {key:'sidebar',label:'侧栏宽度',type:'number',css:'--warm-sidebar',min:160,max:300,unit:'px',default:205},
   {key:'radius',label:'卡片圆角',type:'number',css:'--warm-radius',min:0,max:32,unit:'px',default:14},
   {key:'gap',label:'卡片间距',type:'number',css:'--warm-gap',min:8,max:32,unit:'px',default:14},
-  {key:'padding',label:'卡片内边距',type:'number',css:'--warm-padding',min:12,max:32,unit:'px',default:21}
+  {key:'padding',label:'卡片内边距',type:'number',css:'--warm-padding',min:12,max:32,unit:'px',default:21},
+  {key:'gradient',label:'启用表面渐变',type:'boolean',group:'表面渐变',default:false},
+  {key:'gradientEnd',label:'渐变终点颜色',type:'color',group:'表面渐变',default:'#efdecf'},
+  {key:'gradientAngle',label:'渐变角度',type:'number',group:'表面渐变',min:0,max:360,unit:'°',default:135},
+  {key:'shadowColor',label:'阴影颜色',type:'color',group:'阴影',default:'#493a32'},
+  {key:'shadowOpacity',label:'阴影不透明度',type:'number',group:'阴影',min:0,max:50,unit:'%',default:0},
+  {key:'shadowBlur',label:'阴影模糊',type:'number',group:'阴影',min:0,max:48,unit:'px',default:16},
+  {key:'shadowY',label:'阴影纵向偏移',type:'number',group:'阴影',min:0,max:24,unit:'px',default:6},
+  {key:'curveX1',label:'控制点 X1',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:20},
+  {key:'curveY1',label:'控制点 Y1',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:80},
+  {key:'curveX2',label:'控制点 X2',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:20},
+  {key:'curveY2',label:'控制点 Y2',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:100},
+  {key:'motionDuration',label:'悬停动效时长',type:'number',group:'动效曲线',min:0,max:600,step:20,unit:'ms',default:0},
+  {key:'motionLift',label:'悬停抬升距离',type:'number',group:'动效曲线',min:0,max:8,unit:'px',default:0}
 ].map(Object.freeze));
 const REGISTRY=Object.freeze({
   [FOUNDATION_ID]:{preview:FOUNDATION_PREVIEW,fields:FOUNDATION_FIELDS},
@@ -71,6 +84,28 @@ export function normalizeParameters(fields,values,{complete=false}={}){
   }
   if(complete&&fields.some(field=>!Object.hasOwn(result,field.key)))throw new TypeError('缺少参数');
   return result;
+}
+// 仅文件导入/旧存储迁移允许补齐新字段，消息协议仍要求完整值。
+export function normalizeStoredParameters(asset,values){
+  const fields=parameterSchemaFor(asset);
+  if(!fields)throw TypeError('未登记的 Demo');
+  const checked=normalizeParameters(fields,values);
+  if(asset.id==='warm-workbench'&&fields.filter(f=>!f.group).every(f=>Object.hasOwn(checked,f.key))&&fields.filter(f=>f.group).every(f=>!Object.hasOwn(checked,f.key))){
+    for(const field of fields)if(field.group)checked[field.key]=field.default;
+  }
+  return normalizeParameters(fields,checked,{complete:true});
+}
+// 固定字段生成 CSS，而非透传 CSS 文本；颜色、范围及布尔值均经过完整校验。
+export function warmLayoutCssValues(values){
+  const v=normalizeParameters(WARM_LAYOUT_FIELDS,values,{complete:true});
+  const css=Object.fromEntries(WARM_LAYOUT_FIELDS.filter(f=>f.css).map(f=>[f.css,String(v[f.key])+(f.unit||'')]));
+  const color=v.shadowColor.slice(1).match(/../g).map(part=>parseInt(part,16)).join(', ');
+  css['--warm-card-gradient']=v.gradient?'linear-gradient('+v.gradientAngle+'deg, '+v.surface+', '+v.gradientEnd+')':'none';
+  css['--warm-card-shadow']=v.shadowOpacity?'0 '+v.shadowY+'px '+v.shadowBlur+'px rgba('+color+', '+v.shadowOpacity/100+')':'none';
+  css['--warm-motion-curve']='cubic-bezier('+[v.curveX1,v.curveY1,v.curveX2,v.curveY2].map(x=>x/100).join(', ')+')';
+  css['--warm-motion-duration']=v.motionDuration+'ms';
+  css['--warm-motion-lift']=v.motionDuration&&v.motionLift?-v.motionLift+'px':'0px';
+  return css;
 }
 export function parameterMessage(action,requestId,values,assetId=FOUNDATION_ID){
   return {channel:PARAMETER_CHANNEL,version:PARAMETER_VERSION,assetId,action,requestId,...(values===undefined?{}:{values})};
