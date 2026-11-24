@@ -42,6 +42,12 @@ def main():
                 button.focus()
                 page.keyboard.press("Enter")
                 assert page.locator("output").inner_text() == "2"
+                page.get_by_role("textbox", name="名称").fill("示例")
+                switch=page.get_by_role("switch", name="通知")
+                switch.focus()
+                page.keyboard.press("Space")
+                assert switch.is_checked()
+                assert page.locator("#form-state").inner_text()=="示例|true"
                 assert not errors, errors
                 assert not external, external
                 page.close()

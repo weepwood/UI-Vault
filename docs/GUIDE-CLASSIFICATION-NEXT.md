@@ -22,3 +22,5 @@ v0.5.0 已发布；#99 已合并。以下为新候选，未经 CI 不合并。
 - `website-style-botanical-maximalism`：自然有机、层次、彩色
 
 仍有 290 项无显式标签，需继续逐批审查。其他变更：同标签页会话滚动锚点；全局搜索按 60 项扩展至最多 240；JSON 参数快照导入但需明确应用；React/Vue 原生 Input/Switch；Backdrop Studio 原创单 HTML ZIP，源 HTML 未发现外部运行时 src/href、已有隔离运行测试。下一阶段补全复杂原语、完整框架验收、跨分组/页面边界、外部合作协议。未新增研究或对比工作台。
+
+CLI：从可信本地 dist/registry 读取，核对索引、文件路径、模块依赖与内容哈希，拒绝覆盖，生成 REGISTRY-LOCK.json；不联网、不执行源码。独立框架工作流扩展 Input/Switch 的输入、键盘与双向状态测试；新增真实浏览器刷新恢复、搜索 60→120 项验收。Tabs/Dialog 暂不自研，下一阶段锁定 Radix/Reka 后再接入。

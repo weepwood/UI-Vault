@@ -29,3 +29,5 @@
 独立运行验收入口：`.github/workflows/registry-runtime.yml`。仅相关文件变更触发，使用临时安装目录真实编译 React JSX 和 Vue SFC，随后 Chromium 检查原生按钮行为；不将测试站点发布为正式资产。Vue 直接依赖固定版本，传递依赖锁文件由本次运行产物留存。
 
 #99 独立 React/Vue Button 验收 45406085215 成功；新增 Input/Switch 原生适配器待独立运行检查。复杂 Tabs/Dialog 优先采用 Radix/Reka，尚未引入未锁定依赖。
+
+安装 CLI（在仓库根目录，先完成构建）：`node scripts/install-registry.mjs dist/registry /path/to/project foundation-react-input foundation-react-switch`。源目录必须是用户信任的本地 Registry；哈希检测内容一致性，不证明远端身份。目标目录排他创建，生成 REGISTRY-LOCK.json 固定版本、请求模块与文件哈希。Vue 对应 foundation-vue-input、foundation-vue-switch；框架依赖由目标工程安装，仍需通过独立验收。

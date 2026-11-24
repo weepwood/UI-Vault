@@ -57,6 +57,8 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
       else onClose(true);
       return;
     }
+    // 按钮保持原生 Enter/Space；列表键盘导航仅由输入框处理。
+    if(event.key!=='Tab'&&event.target!==inputRef.current)return;
     if(event.key==='ArrowDown'||event.key==='ArrowUp'){
       event.preventDefault();move(event.key==='ArrowDown'?1:-1);
     }else if(event.key==='PageDown'||event.key==='PageUp'){

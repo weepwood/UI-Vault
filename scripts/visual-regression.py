@@ -862,6 +862,32 @@ def verify_synthetic_grouped_directory(browser, origin):
         context.close()
 
 
+def verify_directory_session_and_search_limit(browser, origin):
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".directory-virtual-list").wait_for(state="visible",timeout=30000)
+        page.evaluate("() => document.querySelector('.project-scroll').scrollTo({top:3600})")
+        page.wait_for_function("() => !!sessionStorage.getItem('ui-vault:directory-session:v1') && JSON.parse(sessionStorage.getItem('ui-vault:directory-session:v1')).flat?.index > 40")
+        before=page.evaluate("() => document.querySelector('.project-scroll').scrollTop")
+        page.reload(wait_until="domcontentloaded")
+        page.wait_for_function("(before)=>Math.abs(document.querySelector('.project-scroll').scrollTop-before)<3",arg=before,timeout=30000)
+        page.locator("#preview-search").click()
+        field=page.locator("#compact-search-input")
+        field.fill("website")
+        page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length===60")
+        more=page.get_by_role("button",name="显示更多")
+        more.focus()
+        page.keyboard.press("Enter")
+        page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length===120")
+        field.fill("bauhaus")
+        page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length<60")
+        print("同标签页目录刷新恢复及搜索分批展开通过",flush=True)
+    finally:
+        context.close()
+
+
 def verify_preview_timeout_ready(browser, origin):
     """真实浏览器阻塞首次 iframe 请求，确认超时、重试、初始化握手与节点不被普通操作重建。"""
     context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
@@ -1740,6 +1766,7 @@ def main():
                     verify_directory_workspace,
                     verify_large_directory_groups,
                     verify_synthetic_grouped_directory,
+                    verify_directory_session_and_search_limit,
                     verify_preview_timeout_ready,
                     verify_foundation_parameters,
                     verify_effect_parameters,
