@@ -1335,6 +1335,11 @@ def verify_expanded_workbench_screenshots(browser, origin):
             hex_input.fill("#bad")
             hex_input.press("Escape")
             assert hex_input.input_value().lower()=="#123456"
+            position=dock.get_by_label("当前色标位置",exact=True)
+            position.fill("61")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert dock.locator('[data-gradient-stop="gradientMidPosition"]').get_attribute("aria-valuenow")=="61"
+
             page.screenshot(path=str(OUTPUT/f"parameter-selected-stop-{width}.png"))
             dock.get_by_role("button",name="阴影",exact=True).click()
             dock.get_by_role("button",name="复位阴影",exact=True).click()
@@ -1353,6 +1358,10 @@ def verify_expanded_workbench_screenshots(browser, origin):
 
 
 
+            dock.evaluate("el=>el.scrollTop=el.scrollHeight")
+            dock.locator('.parameter-section-nav button[aria-current="location"]').filter(has_text="预设与文件").wait_for()
+            dock.evaluate("el=>el.scrollTop=0")
+            dock.locator('.parameter-section-nav button[aria-current="location"]').filter(has_text="布局基础").wait_for()
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
             page.locator(".directory-filter-toggle").click()

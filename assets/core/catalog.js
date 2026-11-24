@@ -155,7 +155,15 @@ const TERM_ALIASES=Object.freeze({
   "单线插画":["monoline illustration"],"monoline illustration":["单线插画"],
   "暗调极繁主义":["moody maximalism"],"moody maximalism":["暗调极繁主义"],
   "苔藓朋克":["moss punk"],"moss punk":["苔藓朋克"],
-  "自然凝练风":["nature distilled"],"nature distilled":["自然凝练风"]
+  "自然凝练风":["nature distilled"],"nature distilled":["自然凝练风"],
+  "航海风":["nautical"],"nautical":["航海风"],
+  "新装饰艺术":["neo deco"],"neo deco":["新装饰艺术"],
+  "新极简主义":["neo minimalism"],"neo minimalism":["新极简主义"],
+  "新波普艺术":["neo pop"],"neo pop":["新波普艺术"],
+  "新矢量心核风":["neo vectorheart"],"neo vectorheart":["新矢量心核风"],
+  "新古典主义":["neoclassicism"],"neoclassicism":["新古典主义"],
+  "霓虹哥特风":["neon gothic"],"neon gothic":["霓虹哥特风"],
+  "霓虹黏液风":["neon ooze"],"neon ooze":["霓虹黏液风"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
