@@ -17,8 +17,9 @@
 - [x] iframe 额外能力由资产元数据白名单控制。
 - [x] 第三方资产与授权风险文档。
 - [x] CI 使用 `npm ci` 并发控制。
+- [x] 添加 `.gitattributes` 统一换行符为 LF，校验/测试对 CRLF 容错，并新增 Windows CI 校验任务，保证本地开发可复现。
+- [x] 确定根目录原创代码的 LICENSE（MIT，仅覆盖原创内容，第三方素材见 THIRD_PARTY_NOTICES.md）。
 - [ ] 核实或替换未确认可以再分发的第三方图片和字体。
-- [ ] 确定根目录原创代码的 LICENSE，不覆盖未获授权素材。
 - [ ] 在 GitHub Settings 启用 main 分支 Ruleset 与 required checks。
 
 ## P1：架构规范与质量

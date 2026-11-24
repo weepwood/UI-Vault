@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- 新增 `.gitattributes` 统一换行符为 LF；清单同步比较与相关测试对 CRLF 容错，新增 EOL 卫生测试，修复 Windows 检出下的 validate 误报与测试失败。
+- 字体与视觉回归脚本改用 `scripts/run-python.mjs` 探测可用 Python，Windows 本地 `npm run dev/build/check` 可直接运行，README 补充 Python 前置依赖。
+- CI 新增 Windows 校验任务，覆盖元数据校验、单元测试、设计审计与 JS 语法检查。
+- 根目录新增 MIT LICENSE，仅覆盖原创代码与内容；第三方素材授权边界维持 THIRD_PARTY_NOTICES.md 及各目录自带许可证。
 - 资产元数据统一验证未知字段，新增受限 iframe 权限清单 `previewCapabilities`。
 - 修正依赖独立图片/字体的 Demo 的单文件复制标记。
 - 为构建引入 `npm ci`、npm 缓存与同分支并发控制。
