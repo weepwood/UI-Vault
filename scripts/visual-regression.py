@@ -1039,7 +1039,7 @@ def verify_warm_layout_parameters(browser, origin):
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
         panel.get_by_role("checkbox",name="启用表面渐变").check()
         panel.get_by_role("spinbutton",name="渐变角度").fill("90")
-        panel.get_by_role("spinbutton",name="阴影不透明度").fill("25")
+        panel.get_by_role("spinbutton",name="阴影不透明度",exact=True).fill("25")
         panel.get_by_role("checkbox",name="启用中间色标",exact=True).check()
         panel.get_by_role("spinbutton",name="中间色标位置",exact=True).fill("35")
         panel.get_by_role("checkbox",name="启用第二个中色标",exact=True).check()

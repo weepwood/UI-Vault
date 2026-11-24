@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {checkEntry,inspectCatalog} from '../scripts/lib/catalog.mjs';
-import {getStandaloneBundlePath,getRepositoryArchiveUrl} from '../assets/core/project-delivery.js';
+import {getStandaloneBundlePath,getRepositoryArchiveUrl,getFoundationProjectPath} from '../assets/core/project-delivery.js';
 
 const data=path=>JSON.parse(readFileSync(new URL('../'+path,import.meta.url),'utf8'));
 const assets=data('content/assets.json');
@@ -40,4 +40,9 @@ test('本地多文件 Bundle 只能包含本 Demo 已发布且真实存在的文
   for(const x of bad)assert.ok(checkEntry(x,categories).some(v=>v.includes('bundleFiles')||v.includes('copyable')));
   const result=await inspectCatalog();
   assert.deepEqual(result.errors,[]);
+});
+
+test('Foundation 工程交付仅匹配明确本地资产及入口，外站/同名别名不获得 ZIP',()=>{
+ const asset=assets.find(x=>x.id==='ui-foundation-kit');assert.equal(getFoundationProjectPath(asset),'downloads/ui-foundation-kit-project.zip');
+ assert.equal(getFoundationProjectPath({...asset,source:'external'}),null);assert.equal(getFoundationProjectPath({...asset,preview:'demos/other/index.html'}),null);assert.equal(getFoundationProjectPath(notion),null);
 });

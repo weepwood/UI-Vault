@@ -179,3 +179,5 @@ Registry 正式化候选：--plan 只读预检、模块版本及运行时依赖�
 高级参数分支追加逐篇审查 Generative Pattern、Geo-Boho、GeoCities、Geometric Modernism、Glitch Art、Global Village Coffeehouse 六项原始指南，累计 106 项审计记录、剩余 184 项无显式标签；保留受控词表和原始许可。
 
 材质编辑二期：仅 warm-workbench，最多四个固定色标及两层阴影；旧 7/20 项完整存储格式显式迁移，消息仍严格完整。曲线使用 SVG 指针捕获、坐标变换与整数夹取，一次拖动记录一次撤销，数值输入可键盘操作。四个独立 Demo 内嵌协议一致，待新 CI；不宣称已验收。
+
+Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与检查脚本、Token 源及生成文件、适配器、静态示例与许可；校验阶段从临时解包目录离线构建、核对文件内容。禁止将任意 sourceFiles 或整仓目录打包；Vue 示例仍需自行安装依赖，非锁定完整运行环境。待 CI。

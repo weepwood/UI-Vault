@@ -18,3 +18,8 @@ export function getStandaloneBundlePath(asset){
   if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(asset.id||''))return null;
   return 'downloads/'+asset.id+'.zip';
 }
+
+// 独立工程仅限已审查的 Foundation 自有源码；不是任意 sourceFiles 的归档。
+export function getFoundationProjectPath(asset){
+  return asset?.source==='local'&&asset.id==='ui-foundation-kit'&&asset.preview==='demos/experiments/ui-foundation-kit/index.html'?'downloads/ui-foundation-kit-project.zip':null;
+}
