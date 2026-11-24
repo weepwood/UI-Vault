@@ -5,7 +5,7 @@ import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {githubSourceLink} from '../../assets/core/github-source-link.js';
 import {externalPreviewEvidence} from '../../assets/core/preview-ready.js';
 export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,customWidth,onChangePreview,onCustomWidth,stageElement,versionId='original',onChangeVersion,liked,onFavorite,
-  onInfo,onMenu,menuOpen,onSearch,searchOpen=false,previewEvidence}){
+  onInfo,onMenu,menuOpen,onSearch,searchOpen=false,previewEvidence,onParameters,parametersOpen=false}){
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
@@ -41,6 +41,7 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,cu
         aria-label="打开全局搜索" title="搜索项目 · Ctrl/⌘ K"
         aria-controls="compact-search-dialog" aria-haspopup="dialog" aria-expanded={String(searchOpen)}
         onClick={onSearch}><Icon name="search"/></button>
+      {onParameters&&<button type="button" id="preview-parameters" className="square-action parameter-toolbar-action" aria-label="实时参数" title="实时参数" aria-controls="parameter-dock" aria-expanded={parametersOpen} onClick={onParameters}><Icon name="sliders-horizontal"/></button>}
       <span className="topbar-separator" aria-hidden="true"/>
       <div className="topbar-actions">
         <button type="button" id="preview-info" className="info-action" aria-label="项目说明 / 源码" aria-haspopup="dialog"

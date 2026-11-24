@@ -1401,3 +1401,12 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 #dialog-source .source-standalone-action{border-color:var(--accent-line,var(--line));color:var(--accent);background:var(--accent-soft)}
 #dialog-source .source-upstream-action{color:var(--muted)}
 #dialog-source .source-buttons{flex-wrap:wrap;row-gap:6px}
+
+/* 新展开区域不改写已通过的常态截图基线。 */
+.parameter-toolbar-action[aria-expanded=true]{color:var(--accent);background:var(--accent-soft)}
+#parameter-dock .parameter-dock-header{position:sticky;top:0;z-index:2;background:var(--surface);padding:5px 0 8px;border-bottom:1px solid var(--line-soft)}
+#parameter-dock .parameter-slider{width:100%;min-width:0;accent-color:var(--accent);cursor:pointer}
+.parameter-preset-import{position:relative;overflow:hidden;display:inline-flex!important;align-items:center;justify-content:center;min-height:30px;padding:4px 8px;border:1px solid var(--line);border-radius:7px;color:var(--text)!important;cursor:pointer}
+.parameter-preset-import input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer}
+.parameter-preset-import:focus-within{outline:2px solid var(--focus);outline-offset:1px}
+@media(max-width:760px){#parameter-dock .demo-parameter-fields{grid-template-columns:repeat(2,minmax(0,1fr))}#parameter-dock .parameter-dock-header{font-size:12px}.parameter-toolbar-action{flex:none}}

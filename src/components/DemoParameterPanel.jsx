@@ -2,7 +2,7 @@ import {useEffect,useRef,useState} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
-import {readParameterPresets,saveParameterPresets,putParameterPreset} from '../../assets/core/parameter-presets.js';
+import {readParameterPresets,saveParameterPresets,putParameterPreset,exportParameterPresets,importParameterPresets} from '../../assets/core/parameter-presets.js';
 
 export function DemoParameterPanel({asset,notify,liveEditing=false}){
   const fields=parameterSchemaFor(asset);
@@ -14,7 +14,8 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   const invalid=invalidFields.length>0;
   const pending=useRef(null),liveTimer=useRef(null);
   const [autoApply,setAutoApply]=useState(liveEditing);
-  const [history,setHistory]=useState([]);
+  const [history,setHistory]=useState([]),[future,setFuture]=useState([]);
+  const sliderGesture=useRef(null);
   const [presets,setPresets]=useState(()=>readParameterPresets(asset));
   const [presetName,setPresetName]=useState('');
   const [presetChoice,setPresetChoice]=useState('');
@@ -49,17 +50,20 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     pending.current={id,frame,timer};setBusy(true);setStatus('等待 Demo 响应…');
     frame.contentWindow.postMessage(parameterMessage(action,id,action==='apply'?validated:undefined,asset.id),'*');
   }
-  function remember(){if(values)setHistory(previous=>[...previous.slice(-29),values]);}
+  function remember(){if(values){setHistory(previous=>[...previous.slice(-29),values]);setFuture([]);}}
   function scheduleLive(next){clearTimeout(liveTimer.current);if(autoApply)liveTimer.current=setTimeout(()=>request('apply',next),220);}
   function replaceValues(next,live=false){remember();setValues(next);setDrafts({});setStatus('参数已编辑 · 尚未应用');if(live)scheduleLive(next);else clearTimeout(liveTimer.current);}
   function edit(field,value){
     clearTimeout(liveTimer.current);
     if(!validParameter(field,value))return;
-    const next={...values,[field.key]:value};remember();setValues(next);
+    if(values[field.key]===value)return;
+    const next={...values,[field.key]:value};if(sliderGesture.current!==field.key)remember();setValues(next);
     setStatus('参数已编辑 · 尚未应用');
     if(!invalidFields.some(item=>item.key!==field.key))scheduleLive(next);
   }
-  function undo(){if(!history.length)return;const next=history.at(-1);setHistory(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已撤销 · 尚未应用');scheduleLive(next);}
+  function undo(){if(!history.length)return;const next=history.at(-1);if(values)setFuture(previous=>[...previous.slice(-29),values]);setHistory(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已撤销 · 尚未应用');scheduleLive(next);}
+  function redo(){if(!future.length)return;const next=future.at(-1);if(values)setHistory(previous=>[...previous.slice(-29),values]);setFuture(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已重做 · 尚未应用');scheduleLive(next);}
+  async function loadPresets(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;try{if(file.size>65536)throw Error('预设文件过大');const result=importParameterPresets(asset,await file.text(),presets);setPresets(result.items);const saved=saveParameterPresets(asset,result.items);setStatus('导入 '+result.added+' 项，跳过 '+result.skipped+' 项'+(saved?'':'；仅本次会话'));}catch{setStatus('预设导入失败：格式、资产或参数不匹配');}}
   function savePreset(){try{const next=putParameterPreset(asset,presets,presetName,values);setPresets(next);setPresetChoice(next[0].name);setPresetName('');setStatus(saveParameterPresets(asset,next)?'预设已保存':'仅本次会话保留预设');}catch{setStatus('请输入有效预设名称和完整参数');}}
   function deletePreset(){const next=presets.filter(item=>item.name!==presetChoice);setPresets(next);setPresetChoice('');setStatus(saveParameterPresets(asset,next)?'预设已删除':'删除仅本次会话生效');}
   function editNumber(field,raw){
@@ -83,6 +87,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       <button type="button" className="parameter-primary" disabled={busy||!values||invalid} onClick={()=>request('apply')}>应用参数</button>
       <button type="button" disabled={busy} onClick={()=>{remember();request('reset');}}>恢复默认</button>
       {values&&<button type="button" disabled={busy||!history.length} onClick={undo}>撤销</button>}
+      {values&&<button type="button" disabled={busy||!future.length} onClick={redo}>重做</button>}
       {liveEditing&&<label className="parameter-live-toggle"><input type="checkbox" checked={autoApply} onChange={e=>{setAutoApply(e.target.checked);clearTimeout(liveTimer.current);}}/>实时应用</label>}
       <label>导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
@@ -91,6 +96,8 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
       <label>名称<input aria-label="预设名称" value={presetName} maxLength={40} onChange={e=>setPresetName(e.target.value)} disabled={busy}/></label>
       <button type="button" disabled={busy||!presetChoice} onClick={()=>{const preset=presets.find(item=>item.name===presetChoice);if(preset)replaceValues(preset.values,true);}}>应用预设</button><button type="button" disabled={busy||invalid||!presetName.trim()} onClick={savePreset}>保存预设</button><button type="button" disabled={busy||!presetChoice} onClick={deletePreset}>删除预设</button>
+      <button type="button" disabled={busy||!presets.length} onClick={()=>downloadSourceText(exportParameterPresets(asset,presets),asset.id+'-presets.json')}>导出预设</button>
+      <label className="parameter-preset-import">导入预设<input type="file" aria-label="导入预设" accept="application/json,.json" disabled={busy} onChange={loadPresets}/></label>
     </div><div className="demo-parameter-fields">{fields.map(field=><label key={field.key} className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={busy} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
@@ -98,7 +105,8 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       :<input aria-label={field.label} type={field.type==='color'?'color':'number'} min={field.min} max={field.max}
         step={field.type==='number'?field.step||1:undefined} disabled={busy} value={drafts[field.key]??values[field.key]}
         aria-invalid={invalidFields.includes(field)||undefined}
-        onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}</label>)}</div>
+        onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}
+      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={busy} onPointerDown={()=>{remember();sliderGesture.current=field.key;}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</label>)}</div>
       <div className="demo-parameter-actions">{(asset.id===FOUNDATION_ID?['css','json','ts']:asset.id==='warm-workbench'?['css','json']:['json']).map(format=><button key={format} type="button" disabled={busy||invalid} onClick={()=>download(format)}>导出 {format.toUpperCase()}</button>)}</div>
       <p>{asset.id===FOUNDATION_ID?'导出是当前编辑值的快照，非完整 Foundation 主题；修改后请检查色彩对比度。':asset.id==='warm-workbench'?'CSS 是布局变量快照，需与原 Demo 样式配合；JSON 可导入恢复。':'JSON 是已登记参数的快照，不是可独立运行的效果源码；使用 Demo 自带导出或源码区下载。'}</p></>}
   </section>;

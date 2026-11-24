@@ -1066,16 +1066,52 @@ def verify_live_parameter_dock(browser, origin):
         dock.get_by_role("button",name="撤销",exact=True).click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
+        dock.get_by_role("button",name="重做",exact=True).click()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
         dock.get_by_role("combobox",name="参数预设").select_option("圆角24")
         dock.get_by_role("button",name="应用预设",exact=True).click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
         assert page.evaluate("() => window.__liveFrame===document.querySelector('#preview-stage iframe')")
+        dock.get_by_role("slider",name="卡片圆角滑块").focus()
+        page.keyboard.press("Home")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="0px"
+        page.screenshot(path=str(OUTPUT/"parameter-dock-desktop.png"))
         dock.get_by_role("button",name="关闭实时参数").click()
         dock.wait_for(state="hidden")
         print("实时编辑、预设保存/恢复、撤销、iframe 稳定性通过",flush=True)
     finally:
         context.close()
+
+
+def verify_expanded_workbench_screenshots(browser, origin):
+    for width,height in ((1440,900),(390,844)):
+        context=browser.new_context(viewport={"width":width,"height":height},reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator("#preview-parameters").wait_for()
+            page.locator("#preview-parameters").click()
+            dock=page.locator("#parameter-dock")
+            dock.get_by_role("button",name="读取当前参数").click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+1")
+            assert page.locator("#preview-stage").bounding_box()["height"]>0
+            page.screenshot(path=str(OUTPUT/f"expanded-parameters-{width}.png"))
+            dock.get_by_role("button",name="关闭实时参数").click()
+            if width<761: page.locator("#menu-toggle").click()
+            page.locator(".directory-filter-toggle").click()
+            page.locator("#directory-facets").wait_for()
+            page.screenshot(path=str(OUTPUT/f"expanded-facets-{width}.png"))
+            if width<761: page.locator("#sidebar-dismiss").click()
+            page.locator("#preview-search").click()
+            page.locator("#compact-search-input").fill("website")
+            page.get_by_role("button",name="显示更多").wait_for()
+            page.screenshot(path=str(OUTPUT/f"expanded-search-{width}.png"))
+        finally:
+            context.close()
 
 
 def verify_standalone_delivery(browser):
@@ -1834,6 +1870,7 @@ def main():
                     verify_effect_parameters,
                     verify_warm_layout_parameters,
                     verify_live_parameter_dock,
+                    verify_expanded_workbench_screenshots,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,
                     verify_liquid_orb_unified,

@@ -502,12 +502,13 @@ function WorkbenchPortals({nodes}){
       versionId={state.versionId} onChangeVersion={changeVersion}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>{closeDock();if(selected)setDialogOpen(true);}}
+      parametersOpen={dockOpen} onParameters={parameterSchemaFor(effectiveAsset)?()=>{if(dockOpen)closeDock();else{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}:undefined}
       onMenu={onMenuToggle} menuOpen={menuOpen}
       onSearch={openPalette} searchOpen={compactSearchOpen} previewEvidence={snapshotRow(previewHealthSnapshot,selected?.id)}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(dockOpen&&<div className="parameter-dock-inner">
-      <div className="parameter-dock-header"><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();document.getElementById('preview-info')?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>
+      <div className="parameter-dock-header"><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();(document.getElementById('preview-parameters')||document.getElementById('preview-info'))?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>
       <DemoParameterPanel key={dockKey} asset={effectiveAsset} notify={notify} liveEditing/>
     </div>,nodes.parameterDock)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}

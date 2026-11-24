@@ -51,7 +51,13 @@ const TERM_ALIASES=Object.freeze({
   '卡片式':['card based design'],'card based design':['卡片式'],
   '天体风':['celestialcore'],'celestialcore':['天体风'],
   '混沌设计':['chaos design'],'chaos design':['混沌设计'],
-  '中国风装饰':['chinoiserie'],'chinoiserie':['中国风装饰']
+  '中国风装饰':['chinoiserie'],'chinoiserie':['中国风装饰'],
+  '色彩模糊':['chromatic blur'],'chromatic blur':['色彩模糊'],
+  '铬金属风':['chromecore'],'chromecore':['铬金属风'],
+  '黏土拟态':['claymorphism'],'claymorphism':['黏土拟态'],
+  '色块设计':['color block'],'color block':['色块设计'],
+  '混凝土粗野':['concrete brutalism'],'concrete brutalism':['混凝土粗野'],
+  '构成主义':['constructivism'],'constructivism':['构成主义']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
