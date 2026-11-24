@@ -1,3 +1,5 @@
+import {ResearchEditor,TopicEditor} from './ResearchEditors.jsx';
+import {RESEARCH_STATES,normalizeResearch} from '../../assets/core/personal-research.js';
 import {exportPersonalBackup,parsePersonalBackup,mergePersonalBackup,backupCounts,MAX_BACKUP_BYTES} from '../../assets/core/personal-backup.js';
 import {useEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './WorkbenchSelect.jsx';
@@ -25,6 +27,9 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
   const [folderName,setFolderName]=useState('');
   const [target,setTarget]=useState('');
   const [editing,setEditing]=useState('');
+  const [reviewing,setReviewing]=useState('');
+  const [topicEditing,setTopicEditing]=useState('');
+  const [topicTarget,setTopicTarget]=useState('');
   const [confirm,setConfirm]=useState('');
   const [status,setStatus]=useState('');
   const [ruleSource,setRuleSource]=useState('');
@@ -77,6 +82,11 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
       onRestoreBackup(next);setBackup(null);setStatus('已合并到当前会话；同名及同 ID 本地记录保留');
     }catch(error){setStatus('导入失败：'+error.message);}
   }
+  const research=library.research||normalizeResearch();
+  const reviewMap=new Map(research.reviews.map(item=>[item.id,item]));
+  const reviewingAsset=assets.find(item=>item.id===reviewing);
+  const topic=research.topics.find(item=>'topic:'+item.id===view);
+  const editedTopic=research.topics.find(item=>item.id===topicEditing);
   const noteMap=new Map(library.notes.map(item=>[item.id,item.text]));
   const recentMap=new Map(library.recent.map(item=>[item.id,item.at]));
   const editAsset=assets.find(item=>item.id===editing);
@@ -85,7 +95,7 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
     try{onChange(changePersonalLibrary(library,action));setStatus(message);return true;}
     catch(error){setStatus(error.message);return false;}
   }
-  function changeView(next){setView(next);setPage(0);setSelection([]);setEditing('');setConfirm('');}
+  function changeView(next){setView(next);setPage(0);setSelection([]);setEditing('');setReviewing('');setTopicEditing('');setConfirm('');}
   function createFolder(){
     const id=globalThis.crypto?.randomUUID?.()||'folder-'+Date.now()+'-'+Math.random().toString(36).slice(2);
     if(apply({type:'folder-create',id,name:folderName},'收藏夹已创建')){
@@ -121,6 +131,17 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
         <nav className="personal-navigation" aria-label="个人资产范围">
           {modes.map(([id,label])=><button type="button" key={id} aria-pressed={view===id} onClick={()=>changeView(id)}>{label}</button>)}
           {initialAssetId&&<button type="button" aria-pressed={view==='current'} onClick={()=>changeView('current')}>当前资产</button>}
+          <h3>研究状态</h3>
+          {RESEARCH_STATES.filter(item=>item.id).map(item=><button type="button" key={item.id} aria-pressed={view==='research:'+item.id}
+            onClick={()=>changeView('research:'+item.id)}>{item.label}</button>)}
+          <button type="button" aria-pressed={view==='research:rated'} onClick={()=>changeView('research:rated')}>已评分</button>
+          <button type="button" aria-pressed={view==='research:used'} onClick={()=>changeView('research:used')}>使用记录</button>
+          <h3>研究主题</h3>
+          {research.topics.map(item=><button type="button" key={item.id} aria-pressed={view==='topic:'+item.id} onClick={()=>changeView('topic:'+item.id)}>
+            <Icon name="folder"/><span>{item.title}</span><small>{item.ids.filter(id=>catalogIds.has(id)).length}</small></button>)}
+          <button type="button" onClick={()=>{setReviewing('');setEditing('');setTopicEditing('new');}}>新建研究主题</button>
+          {topic&&<><button type="button" onClick={()=>{setReviewing('');setEditing('');setTopicEditing(topic.id);}}>编辑主题笔记</button>
+            <button type="button" onClick={()=>{if(confirm!=='topic:'+topic.id){setConfirm('topic:'+topic.id);return;}if(apply({type:'research-topic-delete',id:topic.id},'主题已删除，资产和评价保留')){if(topicTarget===topic.id)setTopicTarget('');changeView('all');}}}>{confirm==='topic:'+topic.id?'确认删除研究主题':'删除研究主题'}</button></>}
           <h3>收藏夹</h3>
           {library.folders.map(item=><button type="button" key={item.id} aria-pressed={view==='folder:'+item.id} onClick={()=>changeView('folder:'+item.id)}>
             <Icon name="folder"/><span>{item.name}</span><small>{item.ids.filter(id=>catalogIds.has(id)).length}</small>
@@ -168,18 +189,31 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
             <button type="button" disabled={!target||!selected.length} onClick={()=>batch('folder-add')}>加入</button>
             {folder&&<button type="button" disabled={!selected.length} onClick={()=>batch('folder-remove')}>移出本夹</button>}
           </div>
+          {research.topics.length>0&&<div className="personal-batch">
+            <select aria-label="目标研究主题" value={topicTarget} onChange={event=>setTopicTarget(event.target.value)}>
+              <option value="">关联研究主题</option>{research.topics.map(item=><option key={item.id} value={item.id}>{item.title}</option>)}
+            </select>
+            <button type="button" disabled={!selected.length||!topicTarget} onClick={()=>{if(apply({type:'research-topic-add',id:topicTarget,ids:selected},'已关联 '+selected.length+' 项资产'))setSelection([]);}}>关联</button>
+            {topic&&<button type="button" disabled={!selected.length} onClick={()=>{if(apply({type:'research-topic-remove',id:topic.id,ids:selected},'已解除资产关联'))setSelection([]);}}>解除关联</button>}
+          </div>}
+          {topic&&<details className="personal-topic-summary"><summary>{topic.title} · 主题笔记</summary><p>{topic.text||'暂无研究笔记'}</p></details>}
           {smart&&<small className="personal-smart-hint">根据保存的规则实时匹配；不能手动移入或移出此智能收藏夹。</small>}
           <details className="personal-backup"><summary>个人数据备份与恢复</summary>
             <div className="personal-actions"><button type="button" onClick={downloadBackup}>导出全部个人数据</button>
               <label className="directory-import-label">读取备份 JSON<input type="file" accept=".json,application/json" onChange={loadBackup}/></label></div>
             {backup&&<div className="personal-backup-preview">
-              <p>备份内容：{Object.entries(backupCounts(backup)).map(([key,value])=>({favorites:'收藏',folders:'收藏夹',smartFolders:'智能夹',notes:'备注',recent:'历史',presets:'方案'})[key]+' '+value).join(' · ')}</p>
+              <p>备份内容：{Object.entries(backupCounts(backup)).map(([key,value])=>({favorites:'收藏',folders:'收藏夹',smartFolders:'智能夹',notes:'备注',recent:'历史',presets:'方案',reviews:'评价',usage:'使用记录',topics:'研究主题'})[key]+' '+value).join(' · ')}</p>
               <p>同名或同 ID 收藏夹、同资产备注保留本地版本；收藏取并集，历史保留最近 100 条。</p>
               <label><input type="checkbox" checked={restorePreferences} onChange={event=>setRestorePreferences(event.target.checked)}/> 同时恢复备份中的界面设置</label>
               <div className="personal-actions"><button type="button" onClick={applyBackup}>确认合并备份</button><button type="button" onClick={()=>setBackup(null)}>取消</button></div>
             </div>}
           </details>
           <div className="personal-status" role="status">{status}</div>
+          {topicEditing&&<TopicEditor key={topicEditing} topic={editedTopic} onCancel={()=>setTopicEditing('')} onSave={(id,title,text)=>{
+            if(apply({type:'research-topic-save',id,title,text},'研究主题已保存')){setTopicTarget(id);changeView('topic:'+id);}
+          }}/>}
+          {reviewingAsset&&<ResearchEditor key={reviewingAsset.id} asset={reviewingAsset} review={reviewMap.get(reviewingAsset.id)}
+            usage={research.usage.filter(item=>item.assetId===reviewingAsset.id)} onAction={apply} onClose={()=>setReviewing('')}/>}
           {editAsset&&<NoteEditor key={editAsset.id} asset={editAsset} text={noteMap.get(editAsset.id)||''} onCancel={()=>setEditing('')}
             onSave={text=>{if(apply({type:'note',id:editAsset.id,text},text.trim()?'备注已保存':'备注已清除'))setEditing('');}}/>}
           <div className="personal-rows">
@@ -188,9 +222,11 @@ export function PersonalLibraryDialog({assets,favorites,library,labels,presets,p
               <div className="personal-row-copy"><button type="button" onClick={()=>{close();onPreview(asset.id);}}>{asset.title}</button>
                 <small>{view==='recent'&&recentMap.has(asset.id)?new Date(recentMap.get(asset.id)).toLocaleString():asset.subtitle||asset.type}</small>
                 {noteMap.has(asset.id)&&<p>{noteMap.get(asset.id)}</p>}
+                {reviewMap.has(asset.id)&&<small className="personal-review-summary">{reviewMap.get(asset.id).rating>0?'★'.repeat(reviewMap.get(asset.id).rating)+' · ':''}{RESEARCH_STATES.find(item=>item.id===reviewMap.get(asset.id).status)?.label}</small>}
               </div>
               {favorites.has(asset.id)&&<span className="personal-liked" title="已收藏"><Icon name="heart"/></span>}
-              <button type="button" onClick={()=>setEditing(asset.id)} aria-label={'编辑备注 '+asset.title}>{noteMap.has(asset.id)?'编辑备注':'备注'}</button>
+              <button type="button" aria-label={'研究记录 '+asset.title} onClick={()=>{setEditing('');setTopicEditing('');setReviewing(asset.id);}}>研究</button>
+              <button type="button" onClick={()=>{setReviewing('');setTopicEditing('');setEditing(asset.id);}} aria-label={'编辑备注 '+asset.title}>{noteMap.has(asset.id)?'编辑备注':'备注'}</button>
             </div>)}
             {!visible.length&&<p className="personal-empty">没有匹配的资产</p>}
           </div>

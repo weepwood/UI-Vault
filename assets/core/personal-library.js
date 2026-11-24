@@ -1,3 +1,4 @@
+import {normalizeResearch,changeResearch} from './personal-research.js';
 import {filterAssets,facetSelection,FACET_KEYS} from './catalog.js';
 import {snapshotFilters} from './filter-presets.js';
 // 独立的本地个人资产数据；不修改公开资产清单、旧收藏键或共享 URL。
@@ -6,10 +7,11 @@ export const LIBRARY_LIMITS=Object.freeze({folders:30,smartFolders:30,items:5000
 const idOf=value=>typeof value==='string'&&/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,159}$/.test(value)?value:'';
 const textOf=(value,max)=>typeof value==='string'?value.trim().slice(0,max):'';
 function idsOf(values){return Array.isArray(values)?[...new Set(values.map(idOf).filter(Boolean))].slice(0,LIBRARY_LIMITS.items):[];}
-export function emptyPersonalLibrary(){return {version:1,folders:[],smartFolders:[],notes:[],recent:[]};}
+export function emptyPersonalLibrary(){return {version:1,folders:[],smartFolders:[],notes:[],recent:[],research:normalizeResearch()};}
 export function normalizePersonalLibrary(raw){
   const result=emptyPersonalLibrary();
   if(!raw||raw.version!==1)return result;
+  result.research=normalizeResearch(raw.research);
   const seenIds=new Set(),seenNames=new Set();
   for(const folder of Array.isArray(raw.folders)?raw.folders:[]){
     const id=idOf(folder?.id),name=textOf(folder?.name,LIBRARY_LIMITS.nameLength);
@@ -59,6 +61,7 @@ export function recordAssetVisit(library,id,at){
 }
 export function changePersonalLibrary(library,action){
   const {type}=action;
+  if(type.startsWith('research-'))return {...library,research:changeResearch(library.research,action)};
   if(type==='smart-create'||type==='smart-update'){
     const id=idOf(action.id),name=textOf(action.name,LIBRARY_LIMITS.nameLength),rules=snapshotFilters(action.rules);
     const entries=library.smartFolders||[];
@@ -123,6 +126,15 @@ export function personalAssetItems(assets,library,favorites,view,query='',labels
   }else if(view==='recent'){
     const byId=new Map(assets.map(asset=>[asset.id,asset]));
     items=library.recent.map(item=>byId.get(item.id)).filter(Boolean);
+  }else if(view.startsWith('research:')){
+    const research=library.research||normalizeResearch();
+    const status=view.slice(9);
+    const ids=new Set(status==='rated'?research.reviews.filter(item=>item.rating>0).map(item=>item.id):
+      status==='used'?research.usage.map(item=>item.assetId):research.reviews.filter(item=>item.status===status).map(item=>item.id));
+    items=assets.filter(asset=>ids.has(asset.id));
+  }else if(view.startsWith('topic:')){
+    const ids=new Set(library.research?.topics.find(item=>item.id===view.slice(6))?.ids||[]);
+    items=assets.filter(asset=>ids.has(asset.id));
   }else if(view.startsWith('smart:')){
     items=smartFolderItems(assets,(library.smartFolders||[]).find(item=>item.id===view.slice(6)),favorites,labels);
   }else if(view.startsWith('folder:')){

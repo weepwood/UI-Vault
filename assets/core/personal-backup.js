@@ -1,3 +1,4 @@
+import {mergeResearch,validateResearchBackup} from './personal-research.js';
 import {normalizePersonalLibrary,LIBRARY_LIMITS} from './personal-library.js';
 import {exportFilterPresets,importFilterPresets,MAX_FILTER_PRESETS} from './filter-presets.js';
 import {normalizeSettings} from './settings.js';
@@ -27,7 +28,8 @@ export function parsePersonalBackup(text){
   }
   if(smart.some(folder=>!isObject(folder)||typeof folder.name!=='string'||folder.name.trim().length>LIBRARY_LIMITS.nameLength))throw new TypeError('智能收藏夹记录错误');
   if(!raw.favorites.every(validId)||personal.notes.some(note=>typeof note?.text!=='string'||note.text.length>LIBRARY_LIMITS.noteLength))throw new TypeError('收藏或备注记录错误');
-  const normalized=normalizePersonalLibrary(personal);
+  const research=validateResearchBackup(personal.research);
+  const normalized=normalizePersonalLibrary({...personal,research});
   if(normalized.folders.length!==personal.folders.length||normalized.smartFolders.length!==smart.length||normalized.notes.length!==personal.notes.length||normalized.recent.length!==personal.recent.length)throw new TypeError('备份存在无效或重复记录');
   const presets=importFilterPresets(JSON.stringify({format:'ui-vault-directory-presets',version:1,presets:raw.presets}),[]).presets;
   return {personal:normalized,favorites:new Set(raw.favorites),presets,preferences:normalizeSettings(raw.preferences)};
@@ -50,9 +52,9 @@ export function mergePersonalBackup(current,incoming,{restorePreferences=false}=
   const favorites=new Set([...current.favorites,...incoming.favorites]);
   if(favorites.size>LIBRARY_LIMITS.items)throw new RangeError('收藏合并后超过上限');
   const presets=importFilterPresets(exportFilterPresets(incoming.presets),current.presets).presets;
-  return {personal:{version:1,folders,smartFolders,notes,recent},favorites,presets,
+  return {personal:{version:1,folders,smartFolders,notes,recent,research:mergeResearch(local.research,remote.research)},favorites,presets,
     preferences:restorePreferences?incoming.preferences:current.preferences};
 }
 export function backupCounts(data){
-  return {favorites:data.favorites.size,folders:data.personal.folders.length,smartFolders:(data.personal.smartFolders||[]).length,notes:data.personal.notes.length,recent:data.personal.recent.length,presets:data.presets.length};
+  return {favorites:data.favorites.size,folders:data.personal.folders.length,smartFolders:(data.personal.smartFolders||[]).length,notes:data.personal.notes.length,recent:data.personal.recent.length,presets:data.presets.length,reviews:data.personal.research?.reviews.length||0,usage:data.personal.research?.usage.length||0,topics:data.personal.research?.topics.length||0};
 }

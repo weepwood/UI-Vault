@@ -35,7 +35,7 @@ test('统一备份往返包含原收藏、手工夹、智能夹、备注、历�
   data.favorites.add('b');data.presets=putFilterPreset([],'筛选',{technology:'Vue'});data.preferences.theme='dark';
   const imported=parsePersonalBackup(exportPersonalBackup(data));
   assert.deepEqual(imported,data);
-  assert.deepEqual(backupCounts(imported),{favorites:1,folders:1,smartFolders:1,notes:1,recent:1,presets:1});
+  assert.deepEqual(backupCounts(imported),{favorites:1,folders:1,smartFolders:1,notes:1,recent:1,presets:1,reviews:0,usage:0,topics:0});
 });
 test('非覆盖合并保留本地同名/同 ID、收藏并集、最新历史与可选设置',()=>{
   let local=add(fixture(),{type:'folder-create',id:'local',name:'同名'});

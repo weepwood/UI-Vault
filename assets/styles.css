@@ -1426,3 +1426,13 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 .personal-backup .personal-actions{margin-top:6px;}
 .personal-backup-preview{display:grid;gap:6px;}
 .personal-backup-preview p{margin:0;line-height:1.5;}
+
+.personal-research-editor,.personal-topic-summary{display:grid;gap:6px;flex:none;max-height:34vh;overflow:auto;padding:8px;border:1px solid var(--line);border-radius:6px;font-size:11px;color:var(--ink);}
+.personal-topic-summary p{white-space:pre-wrap;overflow-wrap:anywhere;margin:6px 0;}
+.personal-research-editor textarea{resize:vertical;min-height:64px;}
+.personal-research-editor .personal-actions input{flex:1;min-width:80px;}
+.personal-usage-list{display:grid;gap:4px;}
+.personal-usage-list>div{display:flex;align-items:center;gap:8px;border-top:1px solid var(--line-soft);padding-top:5px;}
+.personal-usage-list>div span{flex:1;min-width:0;overflow-wrap:anywhere;}
+.personal-usage-list small{display:block;color:var(--muted);}
+.personal-row-copy .personal-review-summary{color:var(--accent);}
