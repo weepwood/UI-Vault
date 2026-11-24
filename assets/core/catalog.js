@@ -72,7 +72,14 @@ const TERM_ALIASES=Object.freeze({
   '解构主义':['deconstructivism'],'deconstructivism':['解构主义'],
   '柴油朋克':['dieselpunk'],'dieselpunk':['柴油朋克'],
   '数字拼贴':['digital collage'],'digital collage':['数字拼贴'],
-  '数字花园':['digital garden'],'digital garden':['数字花园']
+  '数字花园':['digital garden'],'digital garden':['数字花园'],
+  '多巴胺设计':['dopamine design'],'dopamine design':['多巴胺设计'],
+  '双色调':['duotone'],'duotone':['双色调'],
+  '大地色':['earth tones'],'earth tones':['大地色'],
+  '杂志排版':['editorial magazine layout'],'editorial magazine layout':['杂志排版'],
+  '表现主义':['expressionism'],'expressionism':['表现主义'],
+  '仙灵风':['fairycore'],'fairycore':['仙灵风'],
+  '黑色电影':['film noir'],'film noir':['黑色电影']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

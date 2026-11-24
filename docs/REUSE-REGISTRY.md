@@ -35,3 +35,7 @@
 复杂原语候选：foundation-react-primitives / foundation-vue-primitives，各包含 Tabs、Dialog、Select、Popover，分别声明 radix-ui@1.4.3 与 reka-ui@2.10.1，保留共享 Token/CSS 与各自许可证。独立 CI 安装固定直接版本并保留传递依赖锁文件；目标工程需自行安装依赖，CLI 不执行 npm install。尚待运行验收。
 
 #105：成功运行 45411525324 的原始 package-lock.json（116 条记录，SHA256 86d9525e740fd2870db9b17c1b992efaad3139fb3040f05a43e39b68ea6dddaf）纳入 tests/registry-runtime/，Git blob 8b66c219a39fe1c0482e74dcda781eb880516912 与实际产物逐字节一致。隔离 npm ci 禁用安装脚本，验证 lock 未被修改；主站运行依赖不变。新增非受控选择与移动边缘碰撞验收，待 CI。
+
+## 可复现安装验收记录
+
+#105 原提交 04cb815a 的 CI 45414603355 实际通过：从仓库完整锁文件复制至隔离目录，执行 npm ci --ignore-scripts，cmp 锁文件无变化；React/Vue 编译、受控与非受控 Select、禁用选项、Dialog/Popover 焦点、390px 边缘碰撞均通过。目标工程依然自行安装依赖；Registry 只交付源文件和许可证，不携带 node_modules。可在本仓库以临时目录复制 tests/registry-runtime/package{,-lock}.json，再 npm ci，运行 node scripts/verify-registry-frameworks.mjs <临时目录> 与 python scripts/verify-registry-runtime.py <临时目录> 复现。主站依赖不变。

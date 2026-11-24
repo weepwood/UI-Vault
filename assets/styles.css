@@ -1424,3 +1424,9 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 .project-panel .directory-facets{max-height:min(43vh,340px);scrollbar-gutter:stable}
 .command-palette-pagination .command-palette-more{min-height:28px;white-space:nowrap}
 @media(max-width:760px){#parameter-dock .demo-parameter-fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}#parameter-dock .parameter-field{padding:6px;gap:3px}#parameter-dock .parameter-number input[type=number]{width:54px}#parameter-dock .parameter-field>span{font-size:11px}.project-panel .directory-facets{max-height:31vh}#parameter-dock .parameter-dock-header strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}}
+
+/* #105 真实移动截图：先呈现参数本身，再呈现预设管理，避免首屏仅见工具。 */
+#parameter-dock .parameter-presets-heading{font-size:11px;font-weight:650;color:var(--muted);border-top:1px solid var(--line-soft);padding-top:8px}
+#parameter-dock .parameter-presets{margin:0}
+#parameter-dock .parameter-status{font-variant-numeric:tabular-nums}
+@media(max-width:760px){#parameter-dock .demo-parameter-panel{gap:7px}#parameter-dock .demo-parameter-panel h3{font-size:12px}#parameter-dock .demo-parameter-actions{gap:4px}#parameter-dock .demo-parameter-actions button{min-height:32px;padding:4px 6px}#parameter-dock .parameter-dock-header{padding:4px 0 6px}#parameter-dock .parameter-field{min-height:40px}#parameter-dock .parameter-presets{gap:6px}}

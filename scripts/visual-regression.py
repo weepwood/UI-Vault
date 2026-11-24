@@ -1080,6 +1080,19 @@ def verify_live_parameter_dock(browser, origin):
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="0px"
         slider=dock.get_by_role("slider",name="卡片圆角滑块")
         slider.scroll_into_view_if_needed()
+        page.evaluate("""() => {
+          const probe={frames:[],inputs:[],acks:[],running:true,last:0};
+          window.__parameterProbe=probe;
+          const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
+          const slider=document.querySelector('#parameter-dock input[aria-label="卡片圆角滑块"]');
+          slider.addEventListener('input',()=>probe.inputs.push({t:performance.now(),value:Number(slider.value)}));
+          window.addEventListener('message',event=>{
+            if(event.source===frame.contentWindow&&event.origin==='null'&&event.data?.channel==='ui-vault:demo-parameters'&&event.data.action==='state')
+              probe.acks.push({t:performance.now(),value:event.data.values.radius});
+          },true);
+          function sample(t){if(!probe.running)return;if(probe.last)probe.frames.push(t-probe.last);probe.last=t;requestAnimationFrame(sample);}
+          requestAnimationFrame(sample);
+        }""")
         box=slider.bounding_box()
         x,y=box["x"],box["y"]+box["height"]/2
         page.mouse.move(x+4,y)
@@ -1092,9 +1105,44 @@ def verify_live_parameter_dock(browser, origin):
         final_value=slider.input_value()
         assert int(final_value)>0
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")==final_value+"px"
+        report=page.evaluate("""() => {
+          const p=window.__parameterProbe;p.running=false;
+          const frames=p.frames.slice().sort((a,b)=>a-b),last=p.inputs.at(-1),ack=p.acks.filter(x=>x.value===last?.value&&x.t>=last.t).at(-1);
+          return {inputs:p.inputs.length,acknowledgments:p.acks.length,frames:frames.length,frameP50Ms:frames[Math.floor(frames.length*.5)]??null,frameP95Ms:frames[Math.floor(frames.length*.95)]??null,finalInputToAckMs:ack?ack.t-last.t:null,finalValue:last?.value??null};
+        }""")
+        assert report["inputs"]>=5 and report["frames"]>=5 and report["acknowledgments"]>=1,report
+        assert report["finalInputToAckMs"] is not None and report["finalInputToAckMs"]<1500,report
+        (OUTPUT/"parameter-drag-performance.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
+        print("PARAMETER_DRAG_PERFORMANCE="+json.dumps(report),flush=True)
         dock.get_by_role("button",name="撤销",exact=True).click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="0px"
+        page.evaluate("""() => {
+          const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
+          window.__heldParameterReplies=[];
+          window.__holdParameterReplies=true;
+          window.addEventListener('message',event=>{
+            if(window.__holdParameterReplies&&event.source===frame.contentWindow&&event.origin==='null'&&event.data?.channel==='ui-vault:demo-parameters'&&event.data.action==='state'){
+              window.__heldParameterReplies.push(event);event.stopImmediatePropagation();
+            }
+          },true);
+        }""")
+        number=dock.get_by_role("spinbutton",name="卡片圆角")
+        number.fill("18")
+        page.wait_for_function("()=>window.__heldParameterReplies.length===1")
+        assert number.is_enabled()
+        number.fill("22")
+        dock.get_by_text("编辑值已保留",exact=False).wait_for(timeout=6000)
+        assert number.input_value()=="22"
+        assert not dock.get_by_role("checkbox",name="实时应用").is_checked()
+        page.evaluate("()=>{window.__holdParameterReplies=false}")
+        dock.get_by_role("button",name="应用参数",exact=True).click()
+        page.evaluate("()=>{for(const event of window.__heldParameterReplies)window.dispatchEvent(new MessageEvent('message',{data:event.data,origin:event.origin,source:event.source}));}")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert number.input_value()=="22"
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="22px"
+        assert page.evaluate("()=>window.__liveFrame===document.querySelector('#preview-stage iframe')")
+        print("参数响应丢失、最新值保留、自动应用暂停、旧请求重放与手动恢复通过",flush=True)
         page.screenshot(path=str(OUTPUT/"parameter-dock-desktop.png"))
         dock.get_by_role("button",name="关闭实时参数").click()
         dock.wait_for(state="hidden")
@@ -1116,6 +1164,7 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+1")
             assert page.locator("#preview-stage").bounding_box()["height"]>0
+            assert dock.locator(".demo-parameter-fields").bounding_box()["y"] < dock.locator(".parameter-presets").bounding_box()["y"]
             page.screenshot(path=str(OUTPUT/f"expanded-parameters-{width}.png"))
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
@@ -1127,6 +1176,12 @@ def verify_expanded_workbench_screenshots(browser, origin):
             page.locator("#compact-search-input").fill("website")
             page.get_by_role("button",name="显示更多").wait_for()
             page.screenshot(path=str(OUTPUT/f"expanded-search-{width}.png"))
+            page.keyboard.press("Escape")
+            page.keyboard.press("Escape")
+            page.locator("#preview-info").click()
+            page.locator("#tab-source").click()
+            page.locator("#source-copy").wait_for(state="visible")
+            page.screenshot(path=str(OUTPUT/f"expanded-source-{width}.png"))
         finally:
             context.close()
 
