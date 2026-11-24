@@ -90,3 +90,38 @@ test('搜索输入不再出现独立黑色焦点边框，并支持清除、回�
   // 具体标签候选行为由 React 行为测试覆盖，保留主工作台使用共享筛选 Hook 的集成守卫。
   assert.match(hooks,/const \{filtered,tags\}=useCatalogResults\(state\)/);
 });
+
+test('归一化缓存不掩盖资产内容、分类名称与数组字段的修改',()=>{
+  const item=make('cache-demo','旧标题',{tags:['初始标签'],type:'component'});
+  const labels={component:'旧分类'};
+  assert.deepEqual(filterAssets([item],{query:'旧标题',labels}),[item]);
+  assert.deepEqual(filterAssets([item],{query:'旧分类',labels}),[item]);
+  item.title='新标题';
+  item.tags[0]='新标签';
+  labels.component='新分类';
+  assert.deepEqual(filterAssets([item],{query:'旧标题',labels}),[]);
+  assert.deepEqual(filterAssets([item],{query:'新标题 新标签 新分类',labels}),[item]);
+  assert.deepEqual(filterAssets([item],{query:'旧分类',labels}),[]);
+  assert.equal(searchMatchDetail(item,'新标签',labels).text,'新标签');
+});
+test('特殊查询不会误访问别名表的对象原型',()=>{
+  const item=make('test','原型安全测试');
+  for(const query of ['constructor','__proto__','toString','hasOwnProperty']){
+    assert.deepEqual(filterAssets([item],{query}),[]);
+    assert.equal(searchMatchDetail(item,query).label,'名称');
+  }
+});
+test('标签子集保持完整目录在各排序模式下的结果顺序',()=>{
+  const assets=Array.from({length:160},(_,i)=>make('asset-'+i,'React '+(i%13),{
+    tags:i%3?['组件库']:['动效'],featured:i%5===0,projectId:'project-'+(i%4),
+    created:'2026-11-'+String(i%28+1).padStart(2,'0'),technologies:['React','WebGPU']
+  }));
+  const favorites=new Set(assets.filter((_,i)=>i%2===0).map(item=>item.id));
+  for(const sort of ['featured','az','newest','project']){
+    const filters={query:'react webgpu',sort,favoritesOnly:true};
+    const scoped=filterAssets(assets,filters,favorites);
+    for(const tag of ['组件库','动效','缺失标签']){
+      assert.deepEqual(scoped.filter(item=>item.tags.includes(tag)),filterAssets(assets,{...filters,tag},favorites));
+    }
+  }
+});

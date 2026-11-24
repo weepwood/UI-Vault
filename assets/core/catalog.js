@@ -40,40 +40,61 @@ function searchFields(asset,labels={}){
 export function assetSearchText(asset,labels={}){
   return searchFields(asset,labels).flatMap(field=>field.values).filter(Boolean).map(normalizeSearchText).join(' ');
 }
-function matchQuality(value,term){
-  const text=normalizeSearchText(value);
+// 只缓存字符串的纯归一化结果，不缓存资产对象或查询结果：
+// 数据替换、原地编辑或分类标签变更都不会读到过期索引。
+// FIFO 容量与单条长度双重限制，避免长期打开工作台时缓存无限增长。
+const MAX_SEARCH_VALUES=8192;
+const MAX_SEARCH_VALUE_LENGTH=512;
+const normalizedValues=new Map();
+function normalizedValue(value){
+  const raw=String(value??'');
+  if(normalizedValues.has(raw))return normalizedValues.get(raw);
+  const text=normalizeSearchText(raw);
+  const entry={text,compact:text.replace(/\s+/g,'')};
+  if(raw.length<=MAX_SEARCH_VALUE_LENGTH){
+    if(normalizedValues.size>=MAX_SEARCH_VALUES)normalizedValues.delete(normalizedValues.keys().next().value);
+    normalizedValues.set(raw,entry);
+  }
+  return entry;
+}
+function matchNormalized({text,compact},term){
   if(!text)return 0;
   if(text===term)return 1.5;
   if(text.startsWith(term))return 1.25;
   if(text.includes(term))return 1;
   // WebGPU、Vue3、Liquid-Glass 和仓库 slug 同时支持含/不含连接符的查询。
-  if(term.length>=2&&text.replace(/\s+/g,'').includes(term))return .9;
-  for(const alias of TERM_ALIASES[term]||[]){
+  if(term.length>=2&&compact.includes(term))return .9;
+  // 用户查询可能恰好为 constructor 等对象原型属性；只读取词表自有键。
+  for(const alias of Object.hasOwn(TERM_ALIASES,term)?TERM_ALIASES[term]:[]){
     if(text.includes(alias))return .48;
   }
   return 0;
 }
-function assetRelevance(asset,terms,labels){
-  if(!terms.length)return 0;
-  const fields=searchFields(asset,labels);
+function matchQuality(value,term){
+  return matchNormalized(normalizedValue(value),term);
+}
+function assetRelevance(asset,terms,labels,phrase,compactPhrase){
+  // 每个候选资产的字段只归一化一次，多词匹配复用同一批字段。
+  const fields=searchFields(asset,labels).map(({key,values})=>({
+    weight:FIELD_WEIGHTS[key],values:values.map(normalizedValue)
+  }));
   let score=0;
   // 多个词需要全部命中；每个词可以匹配不同的元数据字段。
   for(const term of terms){
     let best=0;
-    for(const {key,values} of fields){
+    for(const {weight,values} of fields){
       for(const value of values){
-        const quality=matchQuality(value,term);
-        if(quality)best=Math.max(best,FIELD_WEIGHTS[key]*quality);
+        const quality=matchNormalized(value,term);
+        if(quality)best=Math.max(best,weight*quality);
       }
     }
     if(!best)return -1;
     score+=best;
   }
-  const phrase=terms.join(' ');
-  const title=normalizeSearchText(asset.title);
-  const id=normalizeSearchText(asset.id);
+  const {text:title,compact:compactTitle}=normalizedValue(asset.title);
+  const {text:id}=normalizedValue(asset.id);
   if(title===phrase)score+=200;
-  else if(title.includes(phrase)||title.replace(/\s/g,'').includes(phrase.replace(/\s/g,'')))score+=70;
+  else if(title.includes(phrase)||compactTitle.includes(compactPhrase))score+=70;
   if(id===phrase)score+=120;
   return score;
 }
@@ -97,6 +118,8 @@ export function reuseLevelOf(asset){
 }
 export function filterAssets(assets,{category='all',tag='',reuse='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
   const terms=tokenizeSearch(query);
+  const phrase=terms.join(' ');
+  const compactPhrase=phrase.replace(/\s/g,'');
   const matches=[];
   for(const asset of assets){
     if((category!=='all'&&asset.type!==category)||
@@ -105,7 +128,7 @@ export function filterAssets(assets,{category='all',tag='',reuse='',query='',fav
       (curatedOnly&&asset.curated!==true)||
       (reuse&&reuseLevelOf(asset)!==reuse)||
       (tag&&!asset.tags?.includes(tag)))continue;
-    const score=terms.length?assetRelevance(asset,terms,labels):0;
+    const score=terms.length?assetRelevance(asset,terms,labels,phrase,compactPhrase):0;
     if(score<0)continue;
     matches.push({asset,score});
   }
