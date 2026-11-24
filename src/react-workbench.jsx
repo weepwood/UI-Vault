@@ -12,6 +12,7 @@ export {ProjectRow,ProjectList,CategoryNavigation};
 import {useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {useWorkbench} from './useWorkbench.js';
+import {REUSE_LEVELS} from '../assets/core/catalog.js';
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
@@ -54,7 +55,7 @@ function QuickFilters({state,onFilter}){
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
   </button>)}</>;
 }
-function ListControls({state,tags,onSort,onTag,count}){
+function ListControls({state,tags,onSort,onTag,onReuse,reuseLevels,count}){
   return <>
     <div className="section-row project-controls-heading">
       <span className="project-controls-label">项目目录
@@ -71,13 +72,19 @@ function ListControls({state,tags,onSort,onTag,count}){
           options={[{value:'',label:'全部标签'},...tags.map(tag=>({value:tag,label:tag}))]}
           icon="bookmark" className="select-field--tag"/>
       </div>
+      <div className="reuse-select-label">
+        <span id="reuse-filter-label" className="sr-only">复用程度</span>
+        <WorkbenchSelect id="reuse-filter" label="按复用程度筛选" value={state.reuse} onChange={onReuse}
+          options={[{value:'',label:'全部复用度'},...reuseLevels.map(level=>({value:level.id,label:level.label}))]}
+          icon="copy" className="select-field--reuse"/>
+      </div>
     </div>
   </>;
 }
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
   const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,dispatch,openView,
-    selectAsset,filter,changeSearch,changeSort,changeTag,reset,
+    selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [dialogOpen,setDialogOpen]=useState(false);
@@ -336,7 +343,8 @@ function WorkbenchPortals({nodes}){
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} tags={tags} onSort={changeSort}
-      onTag={changeTag} count={filtered.length}/>,nodes.listControls)}
+      onTag={changeTag} onReuse={changeReuse} reuseLevels={REUSE_LEVELS}
+      count={filtered.length}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
       projects={state.projects} groupByProject={state.sort==='project'}

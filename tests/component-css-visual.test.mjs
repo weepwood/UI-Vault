@@ -39,7 +39,13 @@ test('真实 Chromium 截图测试会对固定基线进行尺寸和颜色采样�
   assert.match(workflow,/python -m playwright install chromium/);
   assert.match(workflow,/scripts\/visual-regression[.]py/);
   assert.match(workflow,/visual-output\//);
-  assert.ok(!workflow.includes('visual-regression.py --bootstrap'),'正常 CI 禁止重新生成基线');
+  // 自动触发（push/PR/默认 dispatch）的视觉回归必须保持只读基线比较：
+  // --bootstrap 不允许作为步骤的直跑命令出现，只能出现在人工勾选 regenerate-baselines 的条件分支里，
+  // 且整个工作流中该开关只出现一次，避免绕过「基线更新必须单独审核」的守卫。
+  assert.doesNotMatch(workflow,/run: python scripts\/visual-regression[.]py --bootstrap/);
+  assert.match(workflow,/"\$\{\{ inputs[.]regenerate-baselines \}\}" = "true"/);
+  assert.match(workflow,/if: inputs[.]regenerate-baselines == true/);
+  assert.equal((workflow.match(/visual-regression[.]py --bootstrap/g)||[]).length,1,'--bootstrap 只应出现在唯一的受控分支');
   assert.match(workflow,/runs-on: ubuntu-24[.]04/);
   const fixture=JSON.parse(read('tests/visual-baselines.json'));
   assert.equal(fixture.version,1);

@@ -4,10 +4,14 @@
  * 保持现有扁平字段协议，与 filterAssets() 及浏览器收藏数据兼容。
  */
 import { PREVIEW_WIDTHS, isPreviewMode, normalizeCustomWidth, DEFAULT_CUSTOM_WIDTH } from './preview.js';
+import { REUSE_LEVELS } from './catalog.js';
+
+const REUSE_IDS=new Set(REUSE_LEVELS.map(level=>level.id));
 
 export const DEFAULT_FILTERS=Object.freeze({
   category:'all',
   tag:'',
+  reuse:'',
   query:'',
   sort:'featured',
   favoritesOnly:false,
@@ -72,9 +76,14 @@ export function setCatalogTag(state,tag){
   state.tag=String(tag);
   return state;
 }
+export function setCatalogReuse(state,reuse){
+  if(reuse&&!REUSE_IDS.has(reuse))throw new RangeError('未知复用程度：'+reuse);
+  state.reuse=String(reuse);
+  return state;
+}
 export function hasActiveCatalogFilters(state){
   return state.category!=='all'||state.favoritesOnly||state.importedOnly||state.curatedOnly||
-    Boolean(state.tag)||Boolean(state.query.trim())||state.sort!=='featured';
+    Boolean(state.tag)||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured';
 }
 
 /** 同一个项目再次选中不能重新初始化预览，避免 iframe 被无意义地卸载。 */

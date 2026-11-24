@@ -30,7 +30,7 @@ UI Vault 是用来**查找、查看、复制、比较 UI 资产**的个人工作
 | 栏 | DOM 锚点 | 宽度 | 职责 |
 | --- | --- | --- | --- |
 | 导航栏 | `aside#sidebar` | 208px（窄屏 190px / 168px） | Logo、资源类型、基本分类。**不放滚动的项目列表** |
-| 项目栏 | `section#project-panel` | 292px（窄屏 252px / 218px） | 排序、标签筛选、项目列表、收藏按钮、当前选择态 |
+| 项目栏 | `section#project-panel` | 292px（窄屏 252px / 218px） | 排序、标签与复用度筛选、项目列表、收藏按钮、当前选择态 |
 | 预览栏 | `main#main` → `#preview-stage` | 剩余全部宽高 | 顶部 Topbar + 真实网页 |
 
 - 导航栏和项目栏外层包在 `div#library-rail` 中，供移动端整体展开。

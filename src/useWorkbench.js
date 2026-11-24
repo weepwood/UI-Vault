@@ -5,7 +5,7 @@ import {resolveAsset} from '../assets/core/render.js';
 import {resolveVersionId} from '../assets/core/asset-versions.js';
 import {createWorkbenchRouter} from '../assets/core/workbench-router.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
-  setCatalogQuery,setCatalogSort,setCatalogTag,activateAsset,deactivateAsset,
+  setCatalogQuery,setCatalogSort,setCatalogTag,setCatalogReuse,activateAsset,deactivateAsset,
   changePreviewMode,setCustomPreviewWidth,hasActiveCatalogFilters} from '../assets/core/workbench-state.js';
 import {readViewportSession,saveViewportSession} from '../assets/core/viewport-session.js';
 import {loadSettings,applySettings,SETTINGS_KEY,DEFAULT_SETTINGS} from '../assets/core/settings.js';
@@ -51,6 +51,7 @@ export function workbenchReducer(current,action){
     case 'query':setCatalogQuery(next,action.value);return next;
     case 'sort':setCatalogSort(next,action.value);return chooseVisible(next);
     case 'tag':setCatalogTag(next,action.value);return chooseVisible(next);
+    case 'reuse':setCatalogReuse(next,action.value);return chooseVisible(next);
     case 'select':{
       const asset=next.assets.find(a=>a.id===action.id);
       if(asset){
@@ -196,13 +197,13 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  const catalogDeps=[state.assets,state.labels,state.category,state.tag,state.query,state.sort,
+  const catalogDeps=[state.assets,state.labels,state.category,state.tag,state.reuse,state.query,state.sort,
     state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites];
   const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),catalogDeps);
   // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
   const tags=useMemo(()=>popularTags(
     filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag
-  ),[state.assets,state.labels,state.category,state.query,state.sort,state.tag,
+  ),[state.assets,state.labels,state.category,state.reuse,state.query,state.sort,state.tag,
     state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites]);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
@@ -225,6 +226,7 @@ export function useWorkbench(){
   const changeSearch=useCallback(value=>{leaveSettings();dispatch({type:'query',value});},[leaveSettings]);
   const changeSort=useCallback(value=>{leaveSettings();dispatch({type:'sort',value});},[leaveSettings]);
   const changeTag=useCallback(value=>{leaveSettings();dispatch({type:'tag',value});},[leaveSettings]);
+  const changeReuse=useCallback(value=>{leaveSettings();dispatch({type:'reuse',value});},[leaveSettings]);
   const reset=useCallback(()=>{leaveSettings();dispatch({type:'reset'});},[leaveSettings]);
   const favorite=useCallback(id=>{
     if(!id)return;
@@ -265,6 +267,6 @@ export function useWorkbench(){
   },[state.assets,copyText,notify]);
 
   return {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
-    dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,reset,
+    dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
 }

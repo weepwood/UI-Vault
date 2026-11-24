@@ -79,7 +79,23 @@ function assetRelevance(asset,terms,labels){
 }
 const byTitle=(a,b)=>a.title.localeCompare(b.title,'zh-CN');
 const byFeatured=(a,b)=>Number(b.featured)-Number(a.featured)||b.created.localeCompare(a.created)||byTitle(a,b);
-export function filterAssets(assets,{category='all',tag='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
+// 复用程度（Phase 1 目录治理）：从既有元数据派生，不增加 schema 字段。
+// 优先级：手工精选 stable > 独立演示包 > 单文件可复制 > 本地实验 > 外部参考。
+export const REUSE_LEVELS=Object.freeze([
+  {id:'verified',label:'已验证'},
+  {id:'installable',label:'可安装'},
+  {id:'copyable',label:'可复制'},
+  {id:'sample',label:'本地实现'},
+  {id:'reference',label:'外部项目'}
+]);
+export function reuseLevelOf(asset){
+  if(asset.curated&&asset.curationStage==='stable')return 'verified';
+  if(Array.isArray(asset.bundleFiles)&&asset.bundleFiles.length)return 'installable';
+  if(asset.copyable===true)return 'copyable';
+  if(asset.source==='local')return 'sample';
+  return 'reference';
+}
+export function filterAssets(assets,{category='all',tag='',reuse='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
   const terms=tokenizeSearch(query);
   const matches=[];
   for(const asset of assets){
@@ -87,6 +103,7 @@ export function filterAssets(assets,{category='all',tag='',query='',favoritesOnl
       (favoritesOnly&&!favorites.has(asset.id))||
       (importedOnly&&!asset.originRepo)||
       (curatedOnly&&asset.curated!==true)||
+      (reuse&&reuseLevelOf(asset)!==reuse)||
       (tag&&!asset.tags?.includes(tag)))continue;
     const score=terms.length?assetRelevance(asset,terms,labels):0;
     if(score<0)continue;
