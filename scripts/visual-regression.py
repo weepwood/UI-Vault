@@ -1202,6 +1202,8 @@ def verify_landfolio_version_switch(browser, origin):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
+    parser.add_argument("--capture-current", action="store_true",
+                        help="已审核的 UI 变更：只采集当前构建并输出新基线 JSON，人工复核后提交")
     parser.add_argument("--reference-url", default="https://weepwood.github.io/UI-Vault/")
     args = parser.parse_args()
     if not DIST.is_dir():
@@ -1212,34 +1214,46 @@ def main():
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=["--no-sandbox"])
             try:
-                expected = None
-                if args.bootstrap:
-                    expected = capture_all(browser, args.reference_url, OUTPUT / "reference")
-                else:
-                    if not BASELINE.is_file():
-                        raise RuntimeError("缺少视觉基线，请运行显式 bootstrap 并审核/提交样本")
-                    data = json.loads(BASELINE.read_text(encoding="utf-8"))
-                    if data["grid"] != list(GRID) or data["version"] != 1:
-                        raise AssertionError("视觉基线格式不兼容")
-                    expected = data["cases"]
-                current = capture_all(browser, local, OUTPUT / "current")
-                failures = []
-                for name, *_ in CASES:
-                    try:
-                        print(compare(name, current[name], expected[name]))
-                    except AssertionError as exc:
-                        failures.append(str(exc))
-                if args.bootstrap:
-                    # 初始化仅用于人工审核并输出固定的测试基线，不自动改写仓库。
+                if args.capture_current:
+                    # 已审核的 UI 变更：只采集当前构建并输出新基线，不做与线上站点的对比；
+                    # 仍需人工查看 visual-output/current/ 后提交 tests/visual-baselines.json。
+                    current = capture_all(browser, local, OUTPUT / "current")
                     print("VISUAL_BASELINE_JSON=" + json.dumps({
                         "version": 1,
                         "browser": "playwright-chromium-linux",
                         "grid": list(GRID),
                         "cases": current
                     }, ensure_ascii=False, separators=(",", ":")), flush=True)
-                if failures:
-                    raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
-                print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
+                    print(f"已采集当前构建基线：{len(CASES)} 个场景，请人工审核 visual-output/current/ 后提交。")
+                else:
+                    expected = None
+                    if args.bootstrap:
+                        expected = capture_all(browser, args.reference_url, OUTPUT / "reference")
+                    else:
+                        if not BASELINE.is_file():
+                            raise RuntimeError("缺少视觉基线，请运行显式 bootstrap 并审核/提交样本")
+                        data = json.loads(BASELINE.read_text(encoding="utf-8"))
+                        if data["grid"] != list(GRID) or data["version"] != 1:
+                            raise AssertionError("视觉基线格式不兼容")
+                        expected = data["cases"]
+                    current = capture_all(browser, local, OUTPUT / "current")
+                    failures = []
+                    for name, *_ in CASES:
+                        try:
+                            print(compare(name, current[name], expected[name]))
+                        except AssertionError as exc:
+                            failures.append(str(exc))
+                    if args.bootstrap:
+                        # 初始化仅用于人工审核并输出固定的测试基线，不自动改写仓库。
+                        print("VISUAL_BASELINE_JSON=" + json.dumps({
+                            "version": 1,
+                            "browser": "playwright-chromium-linux",
+                            "grid": list(GRID),
+                            "cases": current
+                        }, ensure_ascii=False, separators=(",", ":")), flush=True)
+                    if failures:
+                        raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
+                    print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")
                 verify_react_interactions(browser, local)
                 verify_project_health_and_grouping(browser, local)
                 verify_landfolio_version_switch(browser, local)

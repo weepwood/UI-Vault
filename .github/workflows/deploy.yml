@@ -62,7 +62,7 @@ jobs:
       - name: Chromium 视觉回归（只读仓库基线，或按需重新生成）
         run: |
           if [ "${{ inputs.regenerate-baselines }}" = "true" ]; then
-            python scripts/visual-regression.py --bootstrap
+            python scripts/visual-regression.py --capture-current
           else
             python scripts/visual-regression.py
           fi

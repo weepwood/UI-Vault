@@ -52,6 +52,12 @@ npm run visual:bootstrap
 
 该指令同时截图已发布主站与当前构建，先验证两者差异，再打印**当前构建**的 `VISUAL_BASELINE_JSON=...` 供审核。不会自动改写仓库基线。正常 CI 只读取已提交的基线，不接受“截图变化即自动通过”。基线首次创建时已验证九种场景的缩略图 MAE 为 0，随后固定到 `tests/visual-baselines.json`。若是有意变更 UI，请审核完整 PNG 与 CI 报告，确认视觉变更后再提交新的 JSON 数据。
 
+**已审核的 UI 变更走 `--capture-current`**：只采集当前构建的截图并打印新的 `VISUAL_BASELINE_JSON`，不做“本地 ≡ 线上”的对比（该对比只属于初始 bootstrap）。CI 侧由 `workflow_dispatch` 勾选 `regenerate-baselines` 触发，脚本在 Linux 基线环境截图，`ui-vault-visual-baselines-*` 产物给出 JSON，`ui-vault-visual-*` 产物给出 reference/current 的完整 PNG，供人工逐张复核后提交：
+
+```sh
+python3 scripts/visual-regression.py --capture-current   # Windows 用 python
+```
+
 完整截图与 CI 上的 `ui-vault-visual-*` 构建产物可以用于观察某个变更，但缩略图对比不能替代真实用户交互测试，也不能发现所有像素级细节差异。
 
 **初始化可靠性注意：** 截图脚本必须等到工作台项目列表加载完成后再固定 `data-theme`，否则主站初始化可能异步覆盖主题，造成错误的明暗截图对比；此类截图时序差异不能认定为 UI 变化。CI 固定使用 Ubuntu 24.04 + Playwright Chromium 1.55，避免 Linux 字体或浏览器升级导致基线漂移。

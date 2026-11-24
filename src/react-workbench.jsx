@@ -60,6 +60,12 @@ function ListControls({state,tags,onSort,onTag,onReuse,reuseLevels,count}){
       <span className="project-controls-label">项目目录
         <span className="result-count" id="results-count" aria-label="当前项目数量">{state.loading?'—':count}</span>
       </span>
+      <div className="reuse-select-label">
+        <span id="reuse-filter-label" className="sr-only">复用程度</span>
+        <WorkbenchSelect id="reuse-filter" label="按复用程度筛选" value={state.reuse} onChange={onReuse}
+          options={[{value:'',label:'全部复用度'},...reuseLevels.map(level=>({value:level.id,label:level.label}))]}
+          icon="copy" className="select-field--reuse"/>
+      </div>
     </div>
     <div className="list-controls-filters">
       <WorkbenchSelect id="sort" label="项目排序" value={state.sort} onChange={onSort}
@@ -70,12 +76,6 @@ function ListControls({state,tags,onSort,onTag,onReuse,reuseLevels,count}){
         <WorkbenchSelect id="tag-filter" label="按标签筛选" value={state.tag} onChange={onTag}
           options={[{value:'',label:'全部标签'},...tags.map(tag=>({value:tag,label:tag}))]}
           icon="bookmark" className="select-field--tag"/>
-      </div>
-      <div className="reuse-select-label">
-        <span id="reuse-filter-label" className="sr-only">复用程度</span>
-        <WorkbenchSelect id="reuse-filter" label="按复用程度筛选" value={state.reuse} onChange={onReuse}
-          options={[{value:'',label:'全部复用度'},...reuseLevels.map(level=>({value:level.id,label:level.label}))]}
-          icon="copy" className="select-field--reuse"/>
       </div>
     </div>
   </>;

@@ -45,7 +45,8 @@ test('真实 Chromium 截图测试会对固定基线进行尺寸和颜色采样�
   assert.doesNotMatch(workflow,/run: python scripts\/visual-regression[.]py --bootstrap/);
   assert.match(workflow,/"\$\{\{ inputs[.]regenerate-baselines \}\}" = "true"/);
   assert.match(workflow,/if: inputs[.]regenerate-baselines == true/);
-  assert.equal((workflow.match(/visual-regression[.]py --bootstrap/g)||[]).length,1,'--bootstrap 只应出现在唯一的受控分支');
+  assert.equal((workflow.match(/visual-regression[.]py --bootstrap/g)||[]).length,0,'--bootstrap 不允许出现在 CI');
+  assert.equal((workflow.match(/visual-regression[.]py --capture-current/g)||[]).length,1,'--capture-current 只应出现在唯一的受控分支');
   assert.match(workflow,/runs-on: ubuntu-24[.]04/);
   const fixture=JSON.parse(read('tests/visual-baselines.json'));
   assert.equal(fixture.version,1);
