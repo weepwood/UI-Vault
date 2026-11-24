@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/registry-runtime"
           printf '%s\n' '{"private":true,"type":"module"}' > "$RUNNER_TEMP/registry-runtime/package.json"
-          npm install --prefix "$RUNNER_TEMP/registry-runtime" --save-exact --ignore-scripts --no-audit --no-fund vue@3.5.24 @vue/compiler-sfc@3.5.24
+          npm install --prefix "$RUNNER_TEMP/registry-runtime" --save-exact --ignore-scripts --no-audit --no-fund vue@3.5.24 @vue/compiler-sfc@3.5.24 radix-ui@1.4.3 reka-ui@2.10.1 react@19.3.1 react-dom@19.3.1
       - name: 从 Registry 安装并独立构建
         run: node scripts/verify-registry-frameworks.mjs "$RUNNER_TEMP/registry-runtime"
       - name: 安装浏览器验收环境
