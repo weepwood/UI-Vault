@@ -3,9 +3,8 @@ import {ViewportSwitcher} from './ViewportSwitcher.jsx';
 export {ViewportSwitcher}; // 兼容工作台组件展厅既有导入路径
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {githubSourceLink} from '../../assets/core/github-source-link.js';
-import {externalPreviewEvidence} from '../../assets/core/preview-ready.js';
 export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,customWidth,onChangePreview,onCustomWidth,stageElement,versionId='original',onChangeVersion,liked,onFavorite,
-  onInfo,onMenu,menuOpen,onSearch,searchOpen=false,previewEvidence,onParameters,parametersOpen=false}){
+  onInfo,onMenu,menuOpen,onSearch,searchOpen=false,onParameters,parametersOpen=false}){
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
@@ -23,10 +22,6 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,cu
       <div className="project-identity">
         <span className="topbar-kind" id="preview-kind">{asset?kind:'选择项目'}</span>
         <h1 id="preview-title" tabIndex={-1}>{asset?.title||'没有匹配的项目'}</h1>
-        {asset?.siteUrl&&<span className="topbar-embed-notice"
-          title={externalPreviewEvidence(previewEvidence)+'；沙箱会拦截嵌入页的外链跳转，请使用“在原站查看”。'}>
-          <Icon name="info"/><span>沙箱会拦截嵌入页的外链跳转，请使用“在原站查看”。</span>
-        </span>}
         <span className="topbar-subtitle" id="preview-subtitle">
           {asset?(asset.subtitle||asset.description):'清除筛选条件以继续浏览。'}
         </span>
