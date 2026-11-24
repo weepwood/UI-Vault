@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import {execFileSync} from 'node:child_process';
 import { dirname, resolve, sep, extname } from 'node:path';
 import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
-import {runPython} from './lib/python.mjs';
+import {runPythonOrThrow} from './lib/python.mjs';
 import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';
 
 const {errors,items}=await inspectCatalog();
@@ -108,7 +108,7 @@ for(const relative of versionedAssets.filter(path=>/\.(?:js|mjs)$/.test(path))){
 }
 console.log('静态入口已同步版本化：'+assetRevision+'（HTML / CSS / JS 模块）');
 // 仅对显式审查通过的本地 Demo 生成独立 ZIP，不打包整个仓库或外部依赖。
-runPython(['scripts/build-bundles.py','--build'],{cwd:ROOT});
+runPythonOrThrow(['scripts/build-bundles.py','--build'],{cwd:ROOT});
 // 离线构建时生成未核实状态占位，不伪造远端成功。
 execFileSync(process.execPath,['scripts/project-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});
 execFileSync(process.execPath,['scripts/preview-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});

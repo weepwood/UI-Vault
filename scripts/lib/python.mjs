@@ -9,8 +9,11 @@ const candidates = process.platform === 'win32' ? ['python', 'python3'] : ['pyth
 const quote = value => /[ \t"]/.test(value) ? `"${value.replace(/"/g, '\\"')}"` : value;
 
 const probePython = exe => {
-  // shell:true 时必须传入单个命令字符串，避免 Node DEP0190 警告（shell 模式不转义参数数组）。
-  const probe = spawnSync(`${exe} --version`, { encoding: 'utf8', shell: process.platform === 'win32' });
+  // Windows 上经 shell 解析命令（商店别名与 PATHEXT），POSIX 必须用参数数组：
+  // shell:false 时整串会被当成可执行文件名，导致 Linux/CI 找不到解释器。
+  const probe = process.platform === 'win32'
+    ? spawnSync(`${exe} --version`, { encoding: 'utf8', shell: true })
+    : spawnSync(exe, ['--version'], { encoding: 'utf8' });
   return probe.status === 0 && /Python \d/.test(`${probe.stdout}${probe.stderr}`);
 };
 
@@ -30,8 +33,17 @@ export function runPython(args, options = {}) {
   const python = resolvePython();
   if (!python) throw new Error(`未找到可用的 Python 3 解释器（已尝试：${candidates.join('、')}）。请安装 Python 3.12+`);
   if (process.platform === 'win32') {
+    // shell:true + 单个字符串命令（不是参数数组），不触发 Node DEP0190 警告。
     const command = [python, ...args.map(quote)].join(' ');
-    return spawnSync(command, { stdio: 'inherit', ...options });
+    return spawnSync(command, { stdio: 'inherit', shell: true, ...options });
   }
   return spawnSync(python, args, { stdio: 'inherit', ...options });
+}
+
+// 运行 Python 脚本，失败时抛出（含退出码与错误信息），避免调用方静默跳过。
+export function runPythonOrThrow(args, options = {}) {
+  const result = runPython(args, options);
+  if (result.error) throw result.error;
+  if (result.status !== 0) throw new Error(`Python 脚本失败（退出码 ${result.status}）：${args.join(' ')}`);
+  return result;
 }
