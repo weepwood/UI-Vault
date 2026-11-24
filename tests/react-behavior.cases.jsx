@@ -7,6 +7,8 @@ import { Icon } from '../src/components/Icon.jsx';
 import { WorkbenchSelect } from '../src/components/WorkbenchSelect.jsx';
 import { ProjectList, ProjectRow } from '../src/components/ProjectList.jsx';
 import { SearchField } from '../src/components/SearchField.jsx';
+import { CompactSearchPanel } from '../src/components/CompactSearchPanel.jsx';
+import { useCatalogResults } from '../src/useCatalogResults.js';
 
 const labels = { component: '组件', style: '风格', reference: '参考', all: '全部资源' };
 const asset = {
@@ -151,4 +153,51 @@ test('SearchField 有值时出现清除按钮，点击清空并回调 onChange',
   rerender(<SearchField value="" onChange={value => changes.push(value)} onSubmit={() => {}}/>);
   assert.ok(!$(container, 'button.search-clear'), '无值时清除按钮消失');
   unmount();
+});
+
+test('全局搜索往返查询不恢复旧高亮，Enter 选择当前第一项', () => {
+  const items=[asset,{...asset,id:'other-button',title:'另一个按钮'}];
+  const inputRef={current:null};
+  const chosen=[];
+  const panel=value=><CompactSearchPanel inputRef={inputRef} value={value}
+    items={items} loading={false} onChange={()=>{}} onClose={()=>{}}
+    onChoose={id=>chosen.push(id)}/>;
+  const {container,rerender,unmount}=render(panel('按钮'));
+  const dialog=()=>$(container,'[role="dialog"]');
+  const active=()=>$(container,'[role="combobox"]').getAttribute('aria-activedescendant');
+  try{
+    fire(dialog(),'keydown',{key:'ArrowDown'});
+    assert.equal(active(),'command-result-1');
+    rerender(panel('按钮示'));
+    assert.equal(active(),'command-result-0');
+    rerender(panel('按钮'));
+    assert.equal(active(),'command-result-0');
+    fire(dialog(),'keydown',{key:'Enter'});
+    assert.deepEqual(chosen,[asset.id]);
+  }finally{unmount();}
+});
+
+test('目录筛选缓存不受预览、菜单或主题影响，筛选变更仍然生效', () => {
+  const other={...asset,id:'other',type:'style',tags:['风格']};
+  const state={assets:[asset,other],labels,favorites:new Set(),category:'all',
+    tag:'',reuse:'',query:'',sort:'featured',favoritesOnly:false,importedOnly:false,curatedOnly:false};
+  let observed;
+  function Probe({value}){
+    observed=useCatalogResults(value);
+    return null;
+  }
+  const {rerender,unmount}=render(<Probe value={state}/>);
+  try{
+    const before=observed;
+    assert.equal(before.filtered.length,2);
+    rerender(<Probe value={{...state,active:other,customWidth:960,menuOpen:true,preferences:{theme:'dark'}}}/>);
+    assert.strictEqual(observed.filtered,before.filtered);
+    assert.strictEqual(observed.tags,before.tags);
+    rerender(<Probe value={{...state,category:'style'}}/>);
+    assert.deepEqual(observed.filtered.map(item=>item.id),[other.id]);
+    assert.deepEqual(observed.tags,['风格']);
+    rerender(<Probe value={{...state,favoritesOnly:true,favorites:new Set([asset.id])}}/>);
+    assert.deepEqual(observed.filtered.map(item=>item.id),[asset.id]);
+    assert.deepEqual(observed.tags,['组件']);
+  }finally{unmount();}
 });

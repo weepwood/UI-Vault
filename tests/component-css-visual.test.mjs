@@ -51,6 +51,11 @@ test('真实 Chromium 截图测试会对固定基线进行尺寸和颜色采样�
   assert.match(script,/target = OUTPUT \/ "visual-baselines[.]json"/);
   assert.match(workflow,/path: visual-output\/visual-baselines[.]json/);
   assert.match(workflow,/if-no-files-found: error/);
+  // 外站夹具与错误收集只保留一处实现，避免各场景各自内联 route/lamdba 后再次漂移。
+  assert.match(script,/def serve_stub\(page, url_glob, body\)/);
+  assert.match(script,/def track_page_errors\(page\)/);
+  assert.equal((script.match(/page\.route\(/g)||[]).length,1,'page.route 只应出现在 serve_stub 内');
+  assert.equal((script.match(/page\.on\("pageerror"/g)||[]).length,1,'pageerror 只应出现在 track_page_errors 内');
   assert.match(workflow,/runs-on: ubuntu-24[.]04/);
   const fixture=JSON.parse(read('tests/visual-baselines.json'));
   assert.equal(fixture.version,1);

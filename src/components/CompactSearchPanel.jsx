@@ -13,10 +13,9 @@ function MatchTitle({title,query}){
 // 按参考 Command Palette 的设计独立实现：中央面板、渐变光晕、固定高度结果、键盘高亮。
 // 搜索状态由弹窗局部参数提供，输入不会修改第二栏 ProjectList。
 export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=[],onChoose,onClose}){
-  // 键盘高亮的行号随搜索词重置：把“属于哪个搜索词”存在状态里，渲染期直接派生，
-  // 不必再在 effect 里同步 setActive(0)。
-  const [selection,setSelection]=useState({query:null,index:0});
-  const active=selection.query===value?selection.index:0;
+  // 每次查询变化都丢弃旧高亮，不能在 A→B→A 时恢复 A 的旧行号。
+  const [selection,setSelection]=useState({query:value,index:0});
+  if(selection.query!==value)setSelection({query:value,index:0});
   const setActive=index=>setSelection({query:value,index});
   const listRef=useRef(null);
   const groups=useMemo(()=>{
@@ -30,19 +29,21 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
     ];
   },[items,value,recentIds]);
   const flat=useMemo(()=>groups.flatMap(group=>group.items),[groups]);
+  // 异步目录更新导致结果缩短时也不能留下越界的 aria-activedescendant。
+  const active=selection.query===value&&selection.index<flat.length?selection.index:0;
   useLayoutEffect(()=>{
     inputRef.current?.focus({preventScroll:true});
     inputRef.current?.select();
   },[inputRef]);
   const move=(offset)=>{
-    if(!flat.length)return;
+    if(loading||!flat.length)return;
     const next=(active+offset%flat.length+flat.length)%flat.length;
     const row=listRef.current?.querySelector('[data-command-index="'+next+'"]');
     row?.scrollIntoView({block:'nearest'});
     setActive(next);
   };
   const choose=(index)=>{
-    const item=flat[index];
+    const item=loading?null:flat[index];
     if(item)onChoose(item.id);
   };
   const handleKeyDown=(event)=>{
@@ -80,7 +81,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
         <input id="compact-search-input" ref={inputRef} type="text" role="combobox"
           autoComplete="off" autoCorrect="off" spellCheck="false"
           aria-expanded="true" aria-autocomplete="list" aria-controls="compact-search-results"
-          aria-activedescendant={shownCount?'command-result-'+active:undefined}
+          aria-activedescendant={!loading&&shownCount?'command-result-'+active:undefined}
           aria-label="全局搜索项目" aria-keyshortcuts="Control+K Meta+K"
           placeholder="搜索项目、设计风格或技术栈…" value={value} maxLength={160}
           onChange={event=>onChange(event.target.value)}/>

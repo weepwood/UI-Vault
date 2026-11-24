@@ -1,5 +1,6 @@
-import {useCallback,useEffect,useLayoutEffect,useMemo,useReducer,useRef,useState} from 'react';
-import {filterAssets,popularTags} from '../assets/core/catalog.js';
+import {useCallback,useEffect,useLayoutEffect,useReducer,useRef,useState} from 'react';
+import {filterAssets} from '../assets/core/catalog.js';
+import {useCatalogResults} from './useCatalogResults.js';
 import {loadFavorites,saveFavorites} from '../assets/core/favorites.js';
 import {resolveAsset} from '../assets/core/render.js';
 import {resolveVersionId} from '../assets/core/asset-versions.js';
@@ -202,13 +203,7 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  // filterAssets / popularTags 读取整个 state（分类、标签、搜索、排序、复用度、收藏范围）：
-  // 依赖直接取 state 才不会漏掉后续新增的筛选项；state 每次 dispatch 都会换新对象，重算结果一致。
-  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),[state]);
-  // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
-  const tags=useMemo(()=>popularTags(
-    filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag
-  ),[state]);
+  const {filtered,tags}=useCatalogResults(state);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
     router.setView(view,historyMode);

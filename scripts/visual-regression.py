@@ -50,6 +50,25 @@ EMBOSS_LAB_FIXTURE = (
     "</script>"
     "</body></html>"
 )
+GR8R_STUDIO_FIXTURE = (
+    '<!doctype html><html lang="en"><head><meta charset="utf-8">'
+    "<title>Gr8r fixture</title></head><body><h1>Designed for focus</h1></body></html>"
+)
+
+
+def track_page_errors(page):
+    """记录页面运行时异常，供各场景在收尾处断言；返回列表本身，便于拼接失败原因。"""
+    collected = []
+    page.on("pageerror", lambda error: collected.append(str(error)))
+    return collected
+
+
+def serve_stub(page, url_glob, body):
+    """为外站 iframe 提供可重复响应：CI 只验证本仓的 iframe 契约，不依赖第三方站点内容。"""
+    page.route(
+        url_glob,
+        lambda route: route.fulfill(status=200, content_type="text/html; charset=utf-8", body=body),
+    )
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
@@ -168,9 +187,8 @@ def verify_react_interactions(browser, origin):
         viewport={"width": 1440, "height": 900}, device_scale_factor=1,
         reduced_motion="reduce", locale="zh-CN", color_scheme="light"
     )
-    errors = []
     page = context.new_page()
-    page.on("pageerror", lambda error: errors.append(str(error)))
+    errors = track_page_errors(page)
     try:
         page.goto(origin, wait_until="domcontentloaded")
         page.locator(".project-row").first.wait_for(state="visible", timeout=30000)
@@ -284,14 +302,7 @@ def verify_react_interactions(browser, origin):
         # CI 中使用可重复的外站响应，避免第三方 GitHub Pages 文案或网络变化使主站发布失败。
         # 2026-11-24 起 Emboss Lab 的 h1 由「海报工作台」改成「图层与元素」，旧断言把上游文案当契约，
         # 导致主站在与本次改动无关的运行里连续变红；真实外站可用性由 preview-health --live 单独采集。
-        page.route(
-            "https://weepwood.github.io/Emboss-Lab/**",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="text/html; charset=utf-8",
-                body=EMBOSS_LAB_FIXTURE,
-            ),
-        )
+        serve_stub(page, "https://weepwood.github.io/Emboss-Lab/**", EMBOSS_LAB_FIXTURE)
         page.goto(origin + "?asset=emboss-poster-lab", wait_until="domcontentloaded")
         page.locator("#preview-title").filter(has_text="Emboss Lab · 浮雕海报交互").wait_for(state="visible")
         embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
@@ -307,14 +318,7 @@ def verify_react_interactions(browser, origin):
         page.keyboard.press("Escape")
         # CI 中使用可重复的外站响应，避免第三方 GitHub Pages 内容或网络变化使主站发布失败。
         # 仍在真正的 Chromium 中检查 iframe 导航、sandbox 与子页面渲染；真实外站可用性另行核验。
-        page.route(
-            "https://weepwood.github.io/gr8r-studio-ui/**",
-            lambda route: route.fulfill(
-                status=200,
-                content_type="text/html; charset=utf-8",
-                body='<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Gr8r fixture</title></head><body><h1>Designed for focus</h1></body></html>',
-            ),
-        )
+        serve_stub(page, "https://weepwood.github.io/gr8r-studio-ui/**", GR8R_STUDIO_FIXTURE)
         page.goto(origin + "?asset=gr8r-studio-ui", wait_until="domcontentloaded")
         page.locator("#preview-title").filter(has_text="暖色扁平组件体系").wait_for(state="visible")
         gr8r_embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
@@ -355,8 +359,7 @@ def verify_liquid_orb_unified(browser, origin):
             reduced_motion="reduce", locale="zh-CN", color_scheme="dark",
         )
         page = context.new_page()
-        errors = []
-        page.on("pageerror", lambda error: errors.append(str(error)))
+        errors = track_page_errors(page)
         try:
             page.goto(origin + "demos/components/liquid-orb/index.html", wait_until="domcontentloaded")
             # The quality control must share the existing custom size-picker UI.
@@ -532,8 +535,7 @@ def verify_liquid_orb_unified(browser, origin):
     # UI-Vault React 实际嵌入采用 sandboxed iframe；再验证一次内部标签切换。
     context = browser.new_context(viewport={"width": 1440, "height": 900}, reduced_motion="reduce")
     page = context.new_page()
-    embedded_errors = []
-    page.on("pageerror", lambda error: embedded_errors.append(str(error)))
+    embedded_errors = track_page_errors(page)
     try:
         page.goto(origin + "?asset=liquid-orb", wait_until="domcontentloaded")
         preview = page.frame_locator('iframe[data-preview-frame="local"]')
@@ -612,8 +614,7 @@ def verify_rare_interactions(browser, origin):
             reduced_motion="reduce", locale="zh-CN",
         )
         page = context.new_page()
-        errors = []
-        page.on("pageerror", lambda error: errors.append(str(error)))
+        errors = track_page_errors(page)
         try:
             page.goto(origin + "demos/curated/rare-interactions/index.html", wait_until="domcontentloaded")
             assert page.locator(".sample").count() == 8, "未找到八组交互组件"
@@ -710,8 +711,7 @@ def verify_search_experience(browser, origin):
         context=browser.new_context(viewport={"width":width,"height":height},
                                     reduced_motion="reduce",locale="zh-CN")
         page=context.new_page()
-        errors=[]
-        page.on("pageerror",lambda error:errors.append(str(error)))
+        errors=track_page_errors(page)
         try:
             page.goto(origin+"?asset=atlas-academia",wait_until="domcontentloaded")
             page.locator(".project-row").first.wait_for(state="attached",timeout=30000)
@@ -809,8 +809,7 @@ def verify_background_lab(browser, origin):
             reduced_motion=reduced, locale="zh-CN",
         )
         page = context.new_page()
-        errors = []
-        page.on("pageerror", lambda error: errors.append(str(error)))
+        errors = track_page_errors(page)
         try:
             page.goto(origin + "demos/effects/aurora-field/index.html", wait_until="domcontentloaded")
             page.locator("#stage").wait_for(state="visible")
