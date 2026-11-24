@@ -79,7 +79,19 @@ const TERM_ALIASES=Object.freeze({
   '杂志排版':['editorial magazine layout'],'editorial magazine layout':['杂志排版'],
   '表现主义':['expressionism'],'expressionism':['表现主义'],
   '仙灵风':['fairycore'],'fairycore':['仙灵风'],
-  '黑色电影':['film noir'],'film noir':['黑色电影']
+  '黑色电影':['film noir'],'film noir':['黑色电影'],
+  '扁平设计':['flat design'],'flat design':['扁平设计'],
+  '弗莱舍动画':['fleischer style'],'fleischer style':['弗莱舍动画'],
+  '森林风':['forestcore'],'forestcore':['森林风'],
+  '四色设计':['four colors'],'four colors':['四色设计'],
+  '九十年代雅致风':['frasurbane'],'frasurbane':['九十年代雅致风'],
+  '法式乡村':['french provincial style'],'french provincial style':['法式乡村'],
+  '磨砂触感':['frosted touch'],'frosted touch':['磨砂触感'],
+  '弗鲁提格航空风':['frutiger aero'],'frutiger aero':['弗鲁提格航空风'],
+  '弗鲁提格生态风':['frutiger eco'],'frutiger eco':['弗鲁提格生态风'],
+  '未来原始主义':['future primitive'],'future primitive':['未来原始主义'],
+  '未来主义':['futurism'],'futurism':['未来主义'],
+  'z世代极繁主义':['gen z maximalism'],'gen z maximalism':['z世代极繁主义']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

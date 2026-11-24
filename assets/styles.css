@@ -1430,3 +1430,22 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 #parameter-dock .parameter-presets{margin:0}
 #parameter-dock .parameter-status{font-variant-numeric:tabular-nums}
 @media(max-width:760px){#parameter-dock .demo-parameter-panel{gap:7px}#parameter-dock .demo-parameter-panel h3{font-size:12px}#parameter-dock .demo-parameter-actions{gap:4px}#parameter-dock .demo-parameter-actions button{min-height:32px;padding:4px 6px}#parameter-dock .parameter-dock-header{padding:4px 0 6px}#parameter-dock .parameter-field{min-height:40px}#parameter-dock .parameter-presets{gap:6px}}
+
+/* 源码阅读与参数语义：仅影响按需打开的工具，不改变三栏和 iframe。 */
+.source-reader-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;min-width:0;padding:5px 0;color:var(--muted);font-size:11px}
+.source-current-path{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:monospace}
+.source-wrap-toggle{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;cursor:pointer}
+.source-wrap-toggle input{accent-color:var(--accent)}
+.source-file-browser{border:1px solid var(--line);border-radius:7px;padding:5px 8px;color:var(--muted);font-size:12px;margin-bottom:8px}
+.source-file-browser summary{cursor:pointer;min-height:24px;line-height:24px}
+.source-file-browser ul{list-style:none;margin:4px 0;padding:0;max-height:180px;overflow:auto}
+.source-file-browser li button{display:flex;align-items:center;gap:7px;width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:5px 7px;border-radius:4px;font:inherit;cursor:pointer}
+.source-file-browser li button:hover{background:var(--hover)}
+.source-file-browser li button[aria-pressed=true]{background:var(--accent-soft);color:var(--accent)}
+.source-file-browser li button .ui-icon{width:14px;height:14px;flex:none}
+.source-file-browser li button small{margin-left:auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--muted);font-size:10px}
+.source-view.source-view-wrap,.source-view.source-view-wrap code{white-space:pre-wrap;overflow-wrap:anywhere}
+#parameter-dock .parameter-value-hint{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:4px 8px;color:var(--muted);font-size:10px;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+#parameter-dock .parameter-value-hint span{font-family:monospace}
+#parameter-dock .parameter-unit-hint{grid-column:1/-1;text-align:right;color:var(--muted);font-size:10px;line-height:1}
+@media(max-width:760px){.source-file-browser li button small{display:none}.source-reader-tools{gap:6px}.source-current-path{font-size:10px}}

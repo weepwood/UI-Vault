@@ -64,6 +64,7 @@ function PageInfoPanel({info,asset}){
 export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify,onEditParameters}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
+  const [wrapSource,setWrapSource]=useState(false);
   // 只保存“真正取回（或失败）的源码”；加载占位与未打开时的提示由下面的 source 在渲染期派生。
   const [loadedSource,setSource]=useState({id:null,path:null,text:'',status:'',ready:false});
   const [pageInfo,setPageInfo]=useState({id:null,info:null});
@@ -282,7 +283,9 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
               :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
       </p>
       <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<><a href={resolveAsset('registry/index.json')} target="_blank" rel="noopener noreferrer">Foundation Registry（发布站点）</a></>}</div>
-      <pre className="source-view"><code id="source-code">{isCurrent?source.text:'选择“源代码”查看项目实现。'}</code></pre>
+      {selectedFile&&<div className="source-reader-tools"><span className="source-current-path" title={selectedFile.path}>{selectedFile.path}</span><label className="source-wrap-toggle"><input type="checkbox" checked={wrapSource} onChange={event=>setWrapSource(event.target.checked)}/> 自动换行</label></div>}
+      {files.length>1&&<details className="source-file-browser" key={asset?.id+':'+asset?.preview}><summary>源码文件目录 · {files.length} 项</summary><ul aria-label="已登记源码文件">{files.map(file=><li key={file.path}><button type="button" onClick={()=>setFilePath(file.path)} aria-pressed={file.path===selectedFile?.path}><Icon name="file-code"/><span>{file.name}</span><small>{file.path.slice(0,file.path.lastIndexOf('/'))}</small></button></li>)}</ul></details>}
+      <pre className={'source-view'+(wrapSource?' source-view-wrap':'')}><code id="source-code">{isCurrent?source.text:'选择“源代码”查看项目实现。'}</code></pre>
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
       aria-labelledby="tab-page-info" tabIndex={0} hidden={tab!=='page-info'}>

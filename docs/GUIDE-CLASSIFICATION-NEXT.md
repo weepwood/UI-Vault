@@ -53,4 +53,8 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 
 #106 首次 CI 45416170650：337/337 单测通过；拖动 49 帧 P95 16.8ms，最终确认 17.5ms，响应丢失场景未出现预期提示导致失败。已确认 #105 原父提交和 main f04844d 树 SHA 均为 077d9769；同步主分支并将故障注入监听器提前至 init script，增加在途、空闲及异常诊断断言。根因假设仍需新 CI 证实；保留原超时与安全边界。
 
+下一候选：12 篇原始指南分类（Flat Design、Fleischer Style、Forestcore、Four Colors、Frasurbane、French Provincial、Frosted Touch、Frutiger Aero/Eco、Future Primitive、Futurism、Gen Z Maximalism）；审计累计 100 项、剩余 190 项无显式标签。同步受控词表与双语检索测试，生成索引按既有 formatManifest 排序序列化。待 CI 验证，不先于 #106 合并。
+
+交付候选：Registry 预检/锁定模块与运行时依赖，源码区原生可展开文件目录、换行、完整路径和多文件切换专项截图；实时参数颜色/Token/单位标注。深度 UI 布局重构、渐变/阴影/曲线协议、正式高亮组件与完整工程包后续独立验证，不能把当前候选视为已完成。
+
 #106/107 第二轮实际失败：337/338 项单测分别全部通过，唯一 Chromium 场景未捕获响应；前轮 init script 是未调用的箭头函数。已改为 IIFE 并断言安装成功、提前捕获响应及输出诊断。#107 独立 Registry 45418831182 成功，不能替代 Chromium 验收；不先合并。
