@@ -16,41 +16,52 @@ export const VIEWPORT_PRESETS=Object.freeze([
 export function ViewportSwitcher({
   mode='fluid',customWidth=DEFAULT_CUSTOM_WIDTH,onChange,onCustomWidth,stageElement,visible=true
 }){
-  const [expanded,setExpanded]=useState(false);
-  const [draft,setDraft]=useState(String(customWidth));
-  const [attempted,setAttempted]=useState(false);
-  const [metrics,setMetrics]=useState(null);
+  // 展开态属于“某一次可见”的临时状态：visible 变化时在渲染期就地重置
+  // （React 官方“存储上一次的值、条件式更新”写法），不必再用 effect 回写。
+  const [expandedState,setExpandedState]=useState({visible,expanded:false});
+  if(expandedState.visible!==visible)setExpandedState({visible,expanded:false});
+  const expanded=expandedState.expanded;
+  const setExpanded=next=>setExpandedState({visible,expanded:typeof next==='function'?next(expanded):next});
+  // 输入草稿与校验提示同理：customWidth 或展开态变化时重置输入过程。
+  const inputKey=customWidth+'|'+expanded;
+  const [inputState,setInputState]=useState({key:inputKey,draft:String(customWidth),attempted:false});
+  if(inputState.key!==inputKey)setInputState({key:inputKey,draft:String(customWidth),attempted:false});
+  const draft=inputState.draft,attempted=inputState.attempted;
+  const editDraft=value=>setInputState({key:inputKey,draft:value,attempted:false});
+  const markAttempted=()=>setInputState(state=>({key:inputKey,draft:state.draft,attempted:true}));
+  const [measured,setMeasured]=useState({element:null,width:0,height:0});
   const root=useRef(null),trigger=useRef(null),buttons=useRef([]);
   const current=VIEWPORT_PRESETS.find(item=>item.mode===mode)||
     {mode:'custom',name:'自定义',icon:'sliders-horizontal',detail:customWidth+' px'};
   const valid=isValidCustomWidth(draft);
   const selectedWidth=mode==='custom'?customWidth:PREVIEW_WIDTHS[mode];
 
-  useEffect(()=>{setDraft(String(customWidth));setAttempted(false);},[customWidth,expanded]);
-  useEffect(()=>{if(!visible)setExpanded(false);},[visible]);
   useEffect(()=>{
     if(!expanded)return;
-    const outside=event=>{if(!root.current?.contains(event.target))setExpanded(false);};
+    const outside=event=>{if(!root.current?.contains(event.target))setExpandedState({visible,expanded:false});};
     document.addEventListener('pointerdown',outside);
     return ()=>document.removeEventListener('pointerdown',outside);
-  },[expanded]);
+  },[expanded,visible]);
 
   // 用实际预览容器计算缩放，不能用浏览器窗口宽度冒充 iframe 视口宽度。
+  // 这里只订阅容器尺寸；缩放比例在渲染期由纯函数派生，模式与自定义宽度变化无需重新测量。
   useLayoutEffect(()=>{
-    if(!stageElement||!visible){setMetrics(null);return;}
+    if(!stageElement||!visible)return;
     const measure=()=>{
-      const layout=calculatePreviewLayout(stageElement.clientWidth,stageElement.clientHeight,mode,customWidth);
-      setMetrics(old=>old?.width===layout?.width&&old?.scale===layout?.scale?old:layout);
+      const width=stageElement.clientWidth,height=stageElement.clientHeight;
+      setMeasured(old=>old.element===stageElement&&old.width===width&&old.height===height?old:{element:stageElement,width,height});
     };
-    measure();
     if(typeof ResizeObserver==='undefined'){
+      const frame=requestAnimationFrame(measure);
       window.addEventListener('resize',measure);
-      return ()=>window.removeEventListener('resize',measure);
+      return ()=>{cancelAnimationFrame(frame);window.removeEventListener('resize',measure);};
     }
     const resize=new ResizeObserver(measure);
     resize.observe(stageElement);
     return ()=>resize.disconnect();
-  },[stageElement,mode,customWidth,visible]);
+  },[stageElement,visible]);
+  const metrics=visible&&measured.element===stageElement
+    ?calculatePreviewLayout(measured.width,measured.height,mode,customWidth):null;
 
   function close(focus=false){
     setExpanded(false);
@@ -62,7 +73,7 @@ export function ViewportSwitcher({
   }
   function applyCustom(event){
     event.preventDefault();
-    setAttempted(true);
+    markAttempted();
     if(!valid)return;
     onCustomWidth(Number(draft));
     close(true);
@@ -123,7 +134,7 @@ export function ViewportSwitcher({
               min={MIN_CUSTOM_WIDTH} max={MAX_CUSTOM_WIDTH} step="1"
               value={draft} aria-invalid={String(attempted&&!valid)}
               aria-describedby="viewport-width-range"
-              onChange={event=>{setDraft(event.target.value);setAttempted(false);}}/>
+              onChange={event=>editDraft(event.target.value)}/>
             <span aria-hidden="true">px</span>
           </div>
           <button type="submit" className="viewport-custom-apply" disabled={!valid}>应用</button>

@@ -40,12 +40,15 @@ export default [
     plugins: { 'react-hooks': hooks },
     rules: {
       ...hooks.configs.recommended.rules,
-      // React Compiler 语义类规则（set-state-in-effect / immutability 等）对既有
-      // 稳定代码约 30 处，修复需要真实浏览器回归验证，先降为 warn 并列入 ROADMAP；
-      // rules-of-hooks、set-state-in-render 等 bug 类规则保持 error。
-      'react-hooks/set-state-in-effect': 'warn',
+      // React Compiler 语义类规则：2026-11-24 已把既有约 30 处全部收敛（ROADMAP P1）。
+      // 这三条曾经集中的规则改为 error 作棘轮，防止新代码重新引入；
+      // 确需「在 effect 内直接同步挂载区 DOM」或「故意保持陈旧依赖」时，
+      // 按仓库惯例写 eslint-disable-next-line + 中文原因（AGENTS.md 第 9-12 条）。
+      'react-hooks/set-state-in-effect': 'error',
+      'react-hooks/immutability': 'error',
+      'react-hooks/exhaustive-deps': 'error',
+      // 其余 Compiler 语义规则当前零违规，仍留 warn 以便新场景逐步收敛。
       'react-hooks/purity': 'warn',
-      'react-hooks/immutability': 'warn',
       'react-hooks/preserve-manual-memoization': 'warn',
       'react-hooks/refs': 'warn',
       'react-hooks/globals': 'warn',

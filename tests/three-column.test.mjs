@@ -32,13 +32,14 @@ test('资源导航、项目列表、真实预览在独立三栏',async()=>{
  assert.match(css,/\.project-panel\s*\{\s*display:\s*flex/);
 });
 test('React 列表独立滚动，使用统一过滤器和独立预览',async()=>{
- const [css,react,hooks,preview,list]=await Promise.all([
+ const [css,react,hooks,preview,list,results]=await Promise.all([
   'assets/styles.css','src/react-workbench.jsx','src/useWorkbench.js',
-  'src/components/PreviewFrame.jsx','src/components/ProjectList.jsx'
+  'src/components/PreviewFrame.jsx','src/components/ProjectList.jsx','src/useCatalogResults.js'
  ].map(read));
  assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*flex:\s*1 1 0/);
  assert.match(css,/[.]project-panel [.]project-scroll\s*\{[^}]*overscroll-behavior:\s*contain/);
- assert.match(hooks,/filterAssets\(state.assets,state,state.favorites\)/);
+ assert.match(hooks,/const \{filtered,tags\}=useCatalogResults\(state\)/);
+ assert.match(results,/filterAssets\(assets,\{\.\.\.filters,tag\},favorites\)/);
  assert.match(react,/<ProjectList items={filtered}/);
  assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
  assert.match(list,/key={asset.id}/);

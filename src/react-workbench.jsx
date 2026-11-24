@@ -86,7 +86,6 @@ function WorkbenchPortals({nodes}){
     selectAsset,filter,changeSort,changeTag,changeReuse,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
-  const [dialogOpen,setDialogOpen]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const [compactSearchOpen,setCompactSearchOpen]=useState(false);
@@ -108,7 +107,15 @@ function WorkbenchPortals({nodes}){
   const operationsActive=state.view==='operations';
   const notLibrary=settingsActive||operationsActive;
   const liked=selected?state.favorites.has(selected.id):false;
-  const onDialogChange=useCallback(value=>setDialogOpen(Boolean(value)),[]);
+  // 弹层只在“当前项目 + 当前视图”这个上下文里有效：切换项目或进出设置/管理页时，
+  // 渲染期就能判定为已关闭，不需要 effect 里回调 setState（避免级联渲染和残留一帧旧内容）。
+  // 存储上一次的上下文键并就地重置，密钥变化后旧值被丢弃，回到同一项目不会自动弹回。
+  const dialogKey=(selected?.id||'')+'|'+state.view;
+  const [dialogState,setDialogState]=useState({key:dialogKey,open:false});
+  if(dialogState.key!==dialogKey)setDialogState({key:dialogKey,open:false});
+  const dialogOpen=dialogState.open;
+  const setDialogOpen=useCallback(value=>setDialogState({key:dialogKey,open:Boolean(value)}),[dialogKey]);
+  const onDialogChange=useCallback(value=>setDialogOpen(Boolean(value)),[setDialogOpen]);
   const onMenuToggle=useCallback(()=>menu(!state.menuOpen),[menu,state.menuOpen]);
   const onSelect=useCallback(id=>{
     selectAsset(id);
@@ -126,7 +133,7 @@ function WorkbenchPortals({nodes}){
     nodes.collapseToggle.setAttribute('aria-expanded',String(mobile||!navCollapsed));
     const label=navCollapsed&&!mobile?'展开侧边栏':'收起侧边栏';
     nodes.collapseToggle.setAttribute('aria-label',label);
-    nodes.collapseToggle.title=label;
+    nodes.collapseToggle.setAttribute('title',label);
     if(!opening){
       return ()=>nodes.shell.classList.remove('is-nav-revealing');
     }
@@ -169,7 +176,7 @@ function WorkbenchPortals({nodes}){
       const target=previous?.isConnected&&previous.getClientRects().length?previous:fallback;
       target?.focus({preventScroll:true});
     });
-  },[mobile]);
+  },[]);
   useEffect(()=>{
     const onToggle=()=>{
       setCompactSearchOpen(false);
@@ -191,7 +198,6 @@ function WorkbenchPortals({nodes}){
     };
   },[nodes,mobile,menu]);
 
-  useEffect(()=>setDialogOpen(false),[selected?.id,settingsActive,operationsActive]);
   useEffect(()=>{
     const query=window.matchMedia('(max-width:760px)');
     const change=()=>{setMobile(query.matches);if(!query.matches)menu(false);};
@@ -201,6 +207,10 @@ function WorkbenchPortals({nodes}){
   useLayoutEffect(()=>{
     nodes.shell.classList.toggle('is-settings',settingsActive);
     nodes.shell.classList.toggle('is-operations',operationsActive);
+    // 挂载区显隐/inert 在 effect 内直接写 DOM 是既有设计（AGENTS.md 第 9-12 条），
+    // 改成 state 渲染会重建 iframe；同块的 inert 与 settings.hidden 写法还被
+    // tests/mobile-navigation.test.mjs、tests/settings-location.test.mjs 锁定。
+    // eslint-disable-next-line react-hooks/immutability -- 只写 DOM 属性，不修改 React props
     nodes.operations.hidden=!operationsActive;
     nodes.settings.hidden=!settingsActive;
     nodes.projectPanel.inert=notLibrary;
@@ -262,6 +272,9 @@ function WorkbenchPortals({nodes}){
     const handle=()=>reset();
     resetControl.addEventListener('click',handle);
     emptyReset.addEventListener('click',handle);
+    // 复位按钮显隐与空状态文案在 effect 内直接同步（AGENTS.md 第 9-12 条）：
+    // 这些是挂载区的原生 DOM 文本/显隐，改成 state 渲染会给纯展示文案多一次渲染并动到 iframe 宿主。
+    // eslint-disable-next-line react-hooks/immutability -- 只写 DOM 属性，不修改 React props
     resetControl.hidden=!filteredActive;
     // 目录还在加载时不显示空状态，否则首屏会先闪出“没有找到项目”。
     nodes.empty.hidden=state.loading||(filtered.length>0&&!state.error);
@@ -295,10 +308,12 @@ function WorkbenchPortals({nodes}){
     return ()=>window.removeEventListener('message',receive);
   },[nodes.stage,notify,selected?.externalLinkBridge,selected?.id,selected?.siteUrl,selected?.source]);
   useEffect(()=>{
+    // 设置页状态行是 aria-live 区域，文案与 toast 同源，在 effect 内直接写入 DOM。
+    // eslint-disable-next-line react-hooks/immutability -- 只写 DOM 文本，不修改 React props
     nodes.settingsStatus.textContent=notice;
   },[notice,nodes]);
   useLayoutEffect(()=>{
-    nodes.stage.dataset.size=selected?.source==='local'?state.previewSize:'fluid';
+    nodes.stage.setAttribute('data-size',selected?.source==='local'?state.previewSize:'fluid');
   },[nodes,selected?.id,selected?.source,state.previewSize]);
 
   // 主工作区和目录栏不在同一个 grid 行内：以 Topbar 实际占用高度为准，
