@@ -12,13 +12,14 @@ const OPTIONS={
   motion:['system','reduced'],preview:['fluid','mobile','tablet','desktop']
 };
 const isAllowed=(key,value)=>OPTIONS[key]?.includes(String(value));
+export function normalizeSettings(raw){
+  if(!raw||typeof raw!=='object'||Array.isArray(raw))return {...DEFAULT_SETTINGS};
+  return Object.fromEntries(Object.entries(DEFAULT_SETTINGS).map(([key,value])=>
+    [key,isAllowed(key,raw[key])?String(raw[key]):value]));
+}
 export function loadSettings(){
-  try{
-    const raw=JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}');
-    if(!raw||typeof raw!=='object'||Array.isArray(raw))return {...DEFAULT_SETTINGS};
-    return Object.fromEntries(Object.entries(DEFAULT_SETTINGS).map(([key,value])=>
-      [key,isAllowed(key,raw[key])?String(raw[key]):value]));
-  }catch{return {...DEFAULT_SETTINGS};}
+  try{return normalizeSettings(JSON.parse(localStorage.getItem(SETTINGS_KEY)||'{}'));}
+  catch{return {...DEFAULT_SETTINGS};}
 }
 export function applySettings(settings){
   const root=document.documentElement;

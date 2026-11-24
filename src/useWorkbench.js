@@ -1,4 +1,4 @@
-import {snapshotFilters} from '../assets/core/filter-presets.js';
+import {snapshotFilters,readFilterPresets,writeFilterPresets} from '../assets/core/filter-presets.js';
 import {useCallback,useEffect,useLayoutEffect,useReducer,useRef,useState} from 'react';
 import {filterAssets} from '../assets/core/catalog.js';
 import {useCatalogResults} from './useCatalogResults.js';
@@ -18,7 +18,7 @@ function initial(){
   const session=createWorkbenchState();
   const preferences=loadSettings();
   const viewport=readViewportSession();
-  return {...session,favorites:loadFavorites(),personal:readPersonalLibrary(),preferences,
+  return {...session,favorites:loadFavorites(),personal:readPersonalLibrary(),presets:readFilterPresets(),preferences,
     previewSize:viewport?.mode||preferences.preview,customWidth:viewport?.width||session.customWidth,
     view:router.read().view,versionId:'original',menuOpen:false,loading:true,error:null};
 }
@@ -72,6 +72,12 @@ export function workbenchReducer(current,action){
     }
     case 'version':next.versionId=resolveVersionId(next.active,action.id);return next;
     case 'personal':return {...next,personal:action.library};
+    case 'presets':return {...next,presets:action.presets};
+    case 'personalBackup':{
+      const {personal,favorites,presets,preferences}=action.data;
+      const restored={...next,personal,favorites,presets,preferences};
+      return restored.favoritesOnly?chooseVisible(restored):restored;
+    }
     case 'favoriteBatch':{
       const known=new Set(next.assets.map(asset=>asset.id));
       next.favorites=changeFavoriteMembership(current.favorites,action.ids.filter(id=>known.has(id)),action.add);
@@ -142,6 +148,7 @@ export function useWorkbench(){
   const [previewHealthSnapshot,setPreviewHealthSnapshot]=useState(null);
   const previousSettings=useRef(state.preferences);
   const previousPersonal=useRef(state.personal);
+  const previousPresets=useRef(state.presets);
   const initialized=useRef(false);
   const notify=useCallback(message=>{
     setNotice(message);
@@ -196,6 +203,11 @@ export function useWorkbench(){
     previousPersonal.current=state.personal;
     if(!writePersonalLibrary(state.personal))queueMicrotask(()=>notify('个人资产数据仅保留在本次会话，无法写入浏览器存储'));
   },[state.personal,notify]);
+  useEffect(()=>{
+    if(previousPresets.current===state.presets)return;
+    previousPresets.current=state.presets;
+    if(!writeFilterPresets(state.presets))queueMicrotask(()=>notify('筛选方案无法写入浏览器存储，仅本次会话保留'));
+  },[state.presets,notify]);
   useLayoutEffect(()=>{applySettings(state.preferences);},[state.preferences]);
   // 在固定与自定义视口之间切换时记住上次选择；不污染设置面板的默认预设。
   useEffect(()=>{
@@ -256,6 +268,8 @@ export function useWorkbench(){
   const clearFacets=useCallback(()=>{leaveSettings();dispatch({type:'clearFacets'});},[leaveSettings]);
   const reset=useCallback(()=>{leaveSettings();dispatch({type:'reset'});},[leaveSettings]);
   const updatePersonal=useCallback(library=>dispatch({type:'personal',library}),[]);
+  const updatePresets=useCallback(presets=>dispatch({type:'presets',presets}),[]);
+  const restorePersonalBackup=useCallback(data=>dispatch({type:'personalBackup',data}),[]);
   const favoriteBatch=useCallback((ids,add)=>dispatch({type:'favoriteBatch',ids,add}),[]);
   const favorite=useCallback(id=>{
     if(!id)return;
@@ -297,5 +311,5 @@ export function useWorkbench(){
 
   return {state,filtered,tags,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,changeFacet,changeGroup,applyPreset,clearFacets,reset,
-    favorite,updatePersonal,favoriteBatch,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
+    favorite,updatePersonal,updatePresets,restorePersonalBackup,favoriteBatch,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
 }

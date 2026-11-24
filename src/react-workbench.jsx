@@ -13,7 +13,7 @@ import {createPortal} from 'react-dom';
 import {useWorkbench} from './useWorkbench.js';
 import {REUSE_LEVELS,facetSelection,normalizeFacetSelection} from '../assets/core/catalog.js';
 import {groupStyleOptions} from '../assets/core/style-taxonomy.js';
-import {readFilterPresets,putFilterPreset,writeFilterPresets,exportFilterPresets,importFilterPresets} from '../assets/core/filter-presets.js';
+import {putFilterPreset,exportFilterPresets,importFilterPresets,snapshotFilters} from '../assets/core/filter-presets.js';
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
@@ -73,9 +73,9 @@ function facetLabel(key,value,projects){
   if(key==='projectId')return projects.find(project=>project.id===value)?.name||value;
   return value;
 }
-export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,onPersonalLibrary,reuseLevels,count,toolsRoot}){
+export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,onPersonalLibrary,onPresetsChange,reuseLevels,count,toolsRoot}){
   const [expanded,setExpanded]=useState(false);
-  const [presets,setPresets]=useState(()=>readFilterPresets());
+  const presets=state.presets||[];
   const [presetName,setPresetName]=useState('');
   const [presetChoice,setPresetChoice]=useState('');
   const [presetStatus,setPresetStatus]=useState('');
@@ -83,17 +83,17 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
   function savePreset(){
     try{
       const next=putFilterPreset(presets,presetName,state);
-      setPresets(next);
+      onPresetsChange(next);
       setPresetChoice(next[0].name);
       setPresetName('');
-      setPresetStatus(writeFilterPresets(next)?'方案已保存':'浏览器存储不可用，仅本次会话保留');
+      setPresetStatus('方案已更新');
     }catch(error){setPresetStatus(error.message);}
   }
   function deletePreset(){
     if(!presetChoice)return;
     const next=presets.filter(item=>item.name!==presetChoice);
-    setPresets(next);setPresetChoice('');
-    setPresetStatus(writeFilterPresets(next)?'方案已删除':'浏览器存储不可用，删除仅本次会话生效');
+    onPresetsChange(next);setPresetChoice('');
+    setPresetStatus('方案已删除');
   }
   const filterTrigger=useRef(null);
   const selected=facetFields.flatMap(field=>facetSelection(state[field.key]).map(value=>({...field,value})));
@@ -106,9 +106,8 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
     try{
       if(file.size>256*1024)throw new RangeError('方案文件不得超过 256 KB');
       const restored=importFilterPresets(await file.text(),presets);
-      setPresets(restored.presets);
-      const saved=writeFilterPresets(restored.presets);
-      setPresetStatus('导入 '+restored.added+' 项，保留同名 '+restored.skipped+' 项'+(saved?'':'；仅本次会话保留'));
+      onPresetsChange(restored.presets);
+      setPresetStatus('导入 '+restored.added+' 项，保留同名 '+restored.skipped+' 项');
     }catch(error){setPresetStatus('导入失败：'+error.message);}
   }
   function downloadPresets(){
@@ -194,7 +193,8 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
           </div>
           <span className="directory-preset-hint" role="status">{presetStatus}</span>
         </div>
-        <button type="button" className="directory-personal-open" onClick={onPersonalLibrary}><UIIcon name="bookmark"/> 个人资产管理</button>
+        <button type="button" className="directory-personal-open" onClick={()=>onPersonalLibrary('all')}><UIIcon name="bookmark"/> 个人资产管理</button>
+        {state.active&&<button type="button" className="directory-personal-open" onClick={()=>onPersonalLibrary('current')}>管理当前资产</button>}
         <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label>
       </div>
     </>,toolsRoot)}
@@ -204,10 +204,10 @@ function WorkbenchPortals({nodes}){
   const app=useWorkbench();
   const {state,filtered,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,openView,
     selectAsset,filter,changeSort,changeFacet,changeReuse,changeGroup,applyPreset,clearFacets,reset,
-    favorite,updatePersonal,favoriteBatch,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
+    favorite,updatePersonal,updatePresets,restorePersonalBackup,favoriteBatch,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [fullDirectory,setFullDirectory]=useState(false);
-  const [personalOpen,setPersonalOpen]=useState(false);
+  const [personalOpen,setPersonalOpen]=useState('');
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const [compactSearchOpen,setCompactSearchOpen]=useState(false);
@@ -480,7 +480,7 @@ function WorkbenchPortals({nodes}){
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} facets={facets} onSort={changeSort}
       onFacet={changeFacet} onReuse={changeReuse} onClear={clearFacets} reuseLevels={REUSE_LEVELS}
-      onGroup={changeGroup} onApplyPreset={applyPreset} fullDirectory={fullDirectory} onFullDirectory={setFullDirectory} onPersonalLibrary={()=>setPersonalOpen(true)}
+      onGroup={changeGroup} onApplyPreset={applyPreset} fullDirectory={fullDirectory} onFullDirectory={setFullDirectory} onPersonalLibrary={setPersonalOpen} onPresetsChange={updatePresets}
       count={filtered.length} toolsRoot={nodes.directoryTools}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
@@ -523,8 +523,9 @@ function WorkbenchPortals({nodes}){
       <UIIcon name="settings"/><span>设置</span>
     </a></>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
-    {personalOpen&&createPortal(<PersonalLibraryDialog assets={state.assets} favorites={state.favorites} library={state.personal}
-      onChange={updatePersonal} onFavoriteBatch={favoriteBatch} onClose={()=>setPersonalOpen(false)}
+    {personalOpen&&createPortal(<PersonalLibraryDialog assets={state.assets} favorites={state.favorites} library={state.personal} labels={state.labels} presets={state.presets} preferences={state.preferences}
+      currentFilters={snapshotFilters(state)} initialAssetId={personalOpen==='current'?selected?.id:''}
+      onChange={updatePersonal} onRestoreBackup={restorePersonalBackup} onFavoriteBatch={favoriteBatch} onClose={()=>setPersonalOpen('')}
       onPreview={id=>{if(state.view!=='library')openView('library');onSelect(id);}}/>,document.body)}
     <ProjectDialog root={nodes.dialog} asset={effectiveAsset} labels={state.labels}
       project={state.projects.find(p=>p.id===effectiveAsset?.projectId)||null}

@@ -1,10 +1,12 @@
+import {filterAssets,facetSelection,FACET_KEYS} from './catalog.js';
+import {snapshotFilters} from './filter-presets.js';
 // 独立的本地个人资产数据；不修改公开资产清单、旧收藏键或共享 URL。
 export const PERSONAL_LIBRARY_KEY='ui-vault:personal-library:v1';
-export const LIBRARY_LIMITS=Object.freeze({folders:30,items:5000,notes:1000,noteLength:2000,recent:100,nameLength:40});
+export const LIBRARY_LIMITS=Object.freeze({folders:30,smartFolders:30,items:5000,notes:1000,noteLength:2000,recent:100,nameLength:40});
 const idOf=value=>typeof value==='string'&&/^[a-zA-Z0-9][a-zA-Z0-9_.:-]{0,159}$/.test(value)?value:'';
 const textOf=(value,max)=>typeof value==='string'?value.trim().slice(0,max):'';
 function idsOf(values){return Array.isArray(values)?[...new Set(values.map(idOf).filter(Boolean))].slice(0,LIBRARY_LIMITS.items):[];}
-export function emptyPersonalLibrary(){return {version:1,folders:[],notes:[],recent:[]};}
+export function emptyPersonalLibrary(){return {version:1,folders:[],smartFolders:[],notes:[],recent:[]};}
 export function normalizePersonalLibrary(raw){
   const result=emptyPersonalLibrary();
   if(!raw||raw.version!==1)return result;
@@ -14,6 +16,15 @@ export function normalizePersonalLibrary(raw){
     if(!id||!name||seenIds.has(id)||seenNames.has(name))continue;
     seenIds.add(id);seenNames.add(name);result.folders.push({id,name,ids:idsOf(folder.ids)});
     if(result.folders.length>=LIBRARY_LIMITS.folders)break;
+  }
+  const smartIds=new Set(),smartNames=new Set();
+  for(const item of Array.isArray(raw.smartFolders)?raw.smartFolders:[]){
+    const id=idOf(item?.id),name=textOf(item?.name,LIBRARY_LIMITS.nameLength);
+    if(!id||!name||smartIds.has(id)||smartNames.has(name)||!item.rules||typeof item.rules!=='object'||Array.isArray(item.rules))continue;
+    const rules=snapshotFilters(item.rules);
+    if(!hasSmartRules(rules))continue;
+    smartIds.add(id);smartNames.add(name);result.smartFolders.push({id,name,rules});
+    if(result.smartFolders.length>=LIBRARY_LIMITS.smartFolders)break;
   }
   const noteIds=new Set();
   for(const note of Array.isArray(raw.notes)?raw.notes:[]){
@@ -48,6 +59,19 @@ export function recordAssetVisit(library,id,at){
 }
 export function changePersonalLibrary(library,action){
   const {type}=action;
+  if(type==='smart-create'||type==='smart-update'){
+    const id=idOf(action.id),name=textOf(action.name,LIBRARY_LIMITS.nameLength),rules=snapshotFilters(action.rules);
+    const entries=library.smartFolders||[];
+    if(!id||!name||!hasSmartRules(rules))throw new RangeError('请输入名称并设置至少一个实际筛选条件');
+    if(entries.some(item=>item.id!==id&&item.name===name))throw new RangeError('智能收藏夹名称重复');
+    if(type==='smart-create'){
+      if(entries.length>=LIBRARY_LIMITS.smartFolders||entries.some(item=>item.id===id))throw new RangeError('智能收藏夹已达上限或 ID 重复');
+      return {...library,smartFolders:[...entries,{id,name,rules}]};
+    }
+    if(!entries.some(item=>item.id===id))throw new RangeError('智能收藏夹不存在');
+    return {...library,smartFolders:entries.map(item=>item.id===id?{id,name,rules}:item)};
+  }
+  if(type==='smart-delete')return {...library,smartFolders:(library.smartFolders||[]).filter(item=>item.id!==action.id)};
   if(type==='folder-create'){
     const id=idOf(action.id),name=textOf(action.name,LIBRARY_LIMITS.nameLength);
     if(!id||!name)throw new RangeError('请输入有效收藏夹名称');
@@ -85,7 +109,13 @@ export function changeFavoriteMembership(favorites,ids,add){
   for(const id of idsOf(ids))if(add)next.add(id);else next.delete(id);
   return next;
 }
-export function personalAssetItems(assets,library,favorites,view,query=''){
+export function hasSmartRules(rules){
+  return Boolean(rules.category&&rules.category!=='all'||rules.query?.trim()||rules.reuse||rules.favoritesOnly||rules.importedOnly||rules.curatedOnly||FACET_KEYS.some(key=>facetSelection(rules[key]).length));
+}
+export function smartFolderItems(assets,folder,favorites,labels={}){
+  return folder?filterAssets(assets,{...folder.rules,labels},favorites):[];
+}
+export function personalAssetItems(assets,library,favorites,view,query='',labels={}){
   let items=assets;
   if(view==='favorites')items=assets.filter(asset=>favorites.has(asset.id));
   else if(view==='notes'){
@@ -93,6 +123,8 @@ export function personalAssetItems(assets,library,favorites,view,query=''){
   }else if(view==='recent'){
     const byId=new Map(assets.map(asset=>[asset.id,asset]));
     items=library.recent.map(item=>byId.get(item.id)).filter(Boolean);
+  }else if(view.startsWith('smart:')){
+    items=smartFolderItems(assets,(library.smartFolders||[]).find(item=>item.id===view.slice(6)),favorites,labels);
   }else if(view.startsWith('folder:')){
     const ids=new Set(library.folders.find(folder=>folder.id===view.slice(7))?.ids||[]);
     items=assets.filter(asset=>ids.has(asset.id));
