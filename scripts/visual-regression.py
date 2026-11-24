@@ -853,6 +853,44 @@ def verify_synthetic_grouped_directory(browser, origin):
         context.close()
 
 
+def verify_preview_timeout_ready(browser, origin):
+    """真实浏览器阻塞首次 iframe 请求，确认超时、重试、初始化握手与节点不被普通操作重建。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    held=[]
+    try:
+        def defer_first(route):
+            if "ui-vault-retry=" in route.request.url:
+                route.continue_()
+            else:
+                held.append(route)
+        context.route("**/demos/experiments/ui-foundation-kit/index.html*",defer_first)
+        page=context.new_page()
+        page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+        frame=page.locator('#preview-stage iframe[data-preview-frame="local"]')
+        frame.wait_for(state="attached",timeout=30000)
+        page.locator(".preview-recovery").wait_for(state="visible",timeout=20000)
+        assert frame.get_attribute("data-preview-status")=="timeout"
+        assert frame.get_attribute("data-preview-ready")=="unverified"
+        # 伪造非当前 iframe 的消息不能被接受。
+        page.evaluate("() => window.postMessage({channel:'ui-vault:preview-ready',version:1,action:'ready',assetId:'ui-foundation-kit',nonce:'0'.repeat(32)},'*')")
+        assert frame.get_attribute("data-preview-ready")=="unverified"
+        page.locator(".preview-recovery button").click()
+        page.wait_for_function("() => document.querySelector('#preview-stage iframe')?.dataset.previewReady === 'verified'",timeout=30000)
+        assert frame.get_attribute("data-preview-status")=="loaded"
+        assert page.locator(".preview-recovery").count()==0
+        page.evaluate("() => window.__readyFrame=document.querySelector('#preview-stage iframe')")
+        page.locator("#preview-favorite").click()
+        assert page.evaluate("() => window.__readyFrame===document.querySelector('#preview-stage iframe')")
+        print("预览超时、真实重试、合作 Demo ready 与伪造消息拒绝通过",flush=True)
+    finally:
+        for route in held:
+            try:
+                route.abort()
+            except Exception:
+                pass
+        context.close()
+
+
 def verify_foundation_parameters(browser, origin):
     """实际 opaque sandbox：读取、应用、重置、不重建 iframe；独立 Demo 编辑和导出。"""
     context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
@@ -1693,6 +1731,7 @@ def main():
                     verify_directory_workspace,
                     verify_large_directory_groups,
                     verify_synthetic_grouped_directory,
+                    verify_preview_timeout_ready,
                     verify_foundation_parameters,
                     verify_effect_parameters,
                     verify_standalone_delivery,

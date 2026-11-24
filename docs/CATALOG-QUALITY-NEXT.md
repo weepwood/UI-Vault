@@ -6,6 +6,6 @@
 - 虚拟列表同实例的折叠、重排、密度变化按首行 ID + 偏移恢复。跨模式/跨页面滚动记忆尚未完成。5000 项 Chromium 测试增加 90 个 rAF 间隔样本及 JSON 产物，不设未经测量的硬件阈值。
 - React/Vue Registry 依赖解析、循环和哈希验证、排他安装。React 源码在临时目录独立打包；Vue 源码已安装测试，未完成编译和交互验收。
 - editor-shell、warm-workbench：元数据为原创示例，HTML 内嵌 Lucide ISC 声明，无外部运行时 src/href；根 MIT 仅覆盖原创代码。新增显式单文件 ZIP，保留复制 HTML，附根许可和哈希清单；现有隔离运行用例改为从真实 ZIP 解包。其他素材许可未逐项核实，不扩大打包。
-- 预览超时重试与合作站点 ready、生产证据仍需单独实测；不降低 iframe 安全限制。
+- 预览：仅 Foundation 本地合作 Demo 接入一次性随机 challenge/ready，校验当前 iframe WindowProxy、opaque origin、资产 ID、版本与 nonce；第三方 HTTP 响应证据只用于工具栏提示，不声称可交互。新增阻塞首次请求、超时、显式重试、伪造消息拒绝及收藏不重建的真实 Chromium 场景；尚待 CI。未接入任何外部站点的 ready 协议。
 
 全量 CI 未通过前不得合并。不得宣称尚未执行的真实浏览器结果。

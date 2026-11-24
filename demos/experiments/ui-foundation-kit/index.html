@@ -641,6 +641,12 @@ function installParameterBridge(assetId,fields,{read,apply,reset}){
   $('#token-editor-format').addEventListener('change',()=>syncEditor());
   new MutationObserver(()=>syncEditor()).observe(root,{attributes:true,attributeFilter:['data-theme','data-accent']});
   syncEditor();
+  // 只有初始化完成且直接父窗口同源时才答复一次性挑战，不执行任意命令。
+  if(window.parent!==window)window.addEventListener('message',event=>{
+    const data=event.data;
+    if(event.source!==window.parent||event.origin!==location.origin||data?.channel!=='ui-vault:preview-ready'||data.version!==1||data.action!=='probe'||data.assetId!=='ui-foundation-kit'||!/^[0-9a-f]{32}$/.test(data.nonce))return;
+    event.source.postMessage({channel:data.channel,version:1,action:'ready',assetId:data.assetId,nonce:data.nonce},event.origin);
+  });
   // sandbox 中子页为 opaque origin。仅接受同站点的直接父窗口、精确协议与白名单值。
   if(window.parent!==window)window.addEventListener('message',event=>{
     if(event.source!==window.parent||event.origin!==location.origin||!validParameterMessage(event.data,['read','apply','reset']))return;

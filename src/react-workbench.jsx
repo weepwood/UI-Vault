@@ -1,3 +1,4 @@
+import {snapshotRow} from '../assets/core/project-operations.js';
 import { createRoot } from 'react-dom/client';
 import {ProjectRow,ProjectList} from './components/ProjectList.jsx';
 import {CategoryNavigation} from './components/CategoryNavigation.jsx';
@@ -491,7 +492,7 @@ function WorkbenchPortals({nodes}){
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>selected&&setDialogOpen(true)}
       onMenu={onMenuToggle} menuOpen={menuOpen}
-      onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
+      onSearch={openPalette} searchOpen={compactSearchOpen} previewEvidence={snapshotRow(previewHealthSnapshot,selected?.id)}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
