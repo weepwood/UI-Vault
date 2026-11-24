@@ -798,6 +798,46 @@ def verify_large_directory_groups(browser, origin):
         context.close()
 
 
+def verify_foundation_parameters(browser, origin):
+    """实际 opaque sandbox：读取、应用、重置、不重建 iframe；独立 Demo 编辑和导出。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+        iframe=page.locator('#preview-stage iframe[data-preview-frame="local"]')
+        iframe.wait_for(state="attached",timeout=30000)
+        frame=page.frame_locator('#preview-stage iframe[data-preview-frame="local"]')
+        frame.locator("#token-editor").wait_for(state="attached",timeout=30000)
+        page.evaluate("() => { window.__parameterFrame=document.querySelector('#preview-stage iframe'); }")
+        page.locator("#preview-info").click()
+        page.locator("#tab-page-info").click()
+        panel=page.locator(".demo-parameter-panel")
+        panel.get_by_role("button",name="读取当前参数",exact=True).click()
+        panel.get_by_label("基础圆角",exact=True).wait_for(state="visible")
+        initial=panel.get_by_label("基础圆角",exact=True).input_value()
+        panel.get_by_label("基础圆角",exact=True).fill("24")
+        panel.get_by_role("button",name="应用参数",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for(state="visible")
+        assert frame.locator("html").evaluate("(el)=>el.style.getPropertyValue('--ui-radius-md')")=="24px"
+        panel.get_by_role("button",name="恢复默认",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for(state="visible")
+        assert panel.get_by_label("基础圆角",exact=True).input_value()==initial
+        assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__parameterFrame")
+        page.keyboard.press("Escape")
+        frame.locator("#token-editor summary").click()
+        frame.locator("#token-edit-radius").fill("20")
+        assert frame.locator("html").evaluate("(el)=>el.style.getPropertyValue('--ui-radius-md')")=="20px"
+        frame.locator("#token-editor-export").click()
+        assert "--ui-radius-md: 20px;" in frame.locator("#token-editor-output").input_value()
+        frame.locator("#token-editor-format").select_option("json")
+        assert json.loads(frame.locator("#token-editor-output").input_value())["tokens"]["--ui-radius-md"]=="20px"
+        frame.locator("#token-editor-reset").click()
+        assert frame.locator("html").evaluate("(el)=>el.style.getPropertyValue('--ui-radius-md')")==""
+    finally:
+        context.close()
+    print("Foundation 参数协议、真实 iframe、Token 编辑及导出通过。")
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -1417,6 +1457,7 @@ def main():
                 verify_directory_facets(browser, local)
                 verify_directory_workspace(browser, local)
                 verify_large_directory_groups(browser, local)
+                verify_foundation_parameters(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)
