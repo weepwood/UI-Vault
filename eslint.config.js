@@ -15,6 +15,7 @@ export default [
       '.cache/**',
       'visual-output/**',
       'assets/react-workbench.js', // esbuild 生成的主站运行时
+      'assets/source-highlight-worker.js', // esbuild 生成的 Worker（源文件仍检查）
       'assets/showcase/**',        // esbuild 生成的组件展厅运行时
       'assets/style-atlas/**',     // esbuild 生成的图鉴运行时
       'demos/**',                   // 独立 Demo（含第三方实现），不加入主站构建

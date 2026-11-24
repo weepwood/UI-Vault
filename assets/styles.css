@@ -1554,3 +1554,36 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 #parameter-dock input[type=checkbox]{accent-color:var(--accent)}
 #parameter-dock .parameter-field:focus-within{border-color:var(--accent-line)}
 @media(max-width:760px){#parameter-dock{--parameter-header-height:38px}#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:78px}}
+
+/* 固定操作与分组为一个整体，避免独立 sticky 层遮挡。 */
+#parameter-dock .parameter-fixed-controls{position:sticky;top:var(--parameter-header-height);z-index:3;min-width:0;background:var(--surface);display:grid;gap:4px;padding:4px 0 0}
+#parameter-dock .parameter-section-nav{position:static;overflow-x:auto;z-index:auto}
+#parameter-dock .parameter-main-actions{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:2px 1px 4px;min-width:0}
+#parameter-dock .parameter-main-actions>*{flex:none;white-space:nowrap}
+#parameter-dock .parameter-status{margin:0;min-height:16px;font-size:11px}
+#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:144px}
+.material-combination-presets{display:flex;flex-wrap:wrap;align-items:center;gap:5px;padding:6px 0;color:var(--text)}
+.material-combination-presets small{color:var(--muted);font-size:11px}
+.material-combination-presets button,.parameter-group-reset,.material-stop-options button,.material-action-title button{border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--text);font:inherit;font-size:11px;padding:4px 8px;min-height:30px;cursor:pointer}
+.parameter-group-reset{grid-column:1/-1;justify-self:start;margin-top:-3px}
+.material-stop-selection{display:grid;gap:6px;margin-top:8px;min-width:0}
+.material-stop-options{display:flex;flex-wrap:wrap;gap:4px}
+.material-stop-options button{display:inline-flex;align-items:center;gap:5px}
+.material-stop-options i{width:12px;height:12px;border-radius:3px;border:1px solid var(--line);flex:none}
+.material-stop-options button[aria-pressed=true],.material-action-title button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent-line,var(--line));color:var(--accent)}
+.material-stop-handle[data-selected=true]{outline:2px solid var(--accent);outline-offset:2px}
+.material-selected-color{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text)}
+.material-selected-color input{width:34px;height:28px;border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:3px}
+.material-selected-color code{font-variant-numeric:tabular-nums;color:var(--muted)}
+:is(.material-combination-presets button,.parameter-group-reset,.material-stop-options button,.material-action-title button):hover:not(:disabled){background:var(--hover)}
+:is(.material-combination-presets button,.parameter-group-reset,.material-stop-options button,.material-action-title button):disabled{opacity:.5;cursor:default}
+:is(.material-combination-presets button,.parameter-group-reset,.material-stop-options button,.material-action-title button):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+@media(max-width:760px){#parameter-dock .parameter-main-actions{gap:4px}#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:138px}.material-combination-presets small{flex-basis:100%}}
+
+.parameter-group-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;padding-top:6px;border-top:1px solid var(--line-soft)}
+.demo-parameter-fields .parameter-group-header .parameter-group-title{margin:0;padding:0;border:0;flex:1}
+.parameter-group-header .parameter-group-reset{margin:0;min-height:26px}
+/* 主站控件统一语义焦点与展开状态，保留既有布局尺寸和下拉交互。 */
+:is(.directory-filter-toggle,.select-trigger,.directory-facet-field select,.parameter-field input,.parameter-field select,.search-field input,.parameter-presets input,.parameter-presets select):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.select-field.is-open .select-trigger{border-color:var(--accent-line,var(--accent));background:var(--accent-soft)}
+.select-popover{border-color:var(--line);background:var(--surface);color:var(--text)}

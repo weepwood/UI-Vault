@@ -92,3 +92,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 #111 最终正式锁定版 42e80c4：45427408663（344 单测、26 Chromium、Firefox/WebKit 基础冒烟、8 个 axe 场景零违规、Windows）、45427408764 Registry、45427408694 Foundation ZIP 解包严格 npm ci（71 安装包）、Vite 7.3.8 与 Chromium 全部通过；实际产物 14938111293 共 46 文件已复审。#111 已 squash 合并 1f5e3dc，树 25928e99 与验收候选相同。#110 main 45427043654 Pages 部署实际日志成功。#112 继承 #111 精确文件树，新增 18 项原始指南分类（累计 136，剩余 154），分组编辑器、色标增删、阴影恢复及风险识别须待最新 CI、真实截图复审后合并；#111 main 部署待复查。禁止提前合并。
 
 #112 a0fffa1 已通过 CI 45429115346 并合并 6eaccec；正式主分支审计累计 136，未标记 154。下一候选审查 Kidcore、Kinfolk、Laser Grid、Light Academia、Light Skeuomorphism、Ligne Claire，累计 142、未标记 148（待 CI）。保留原始指南、许可及精选状态。
+
+#113 已合并 917f3fa，审计 142、未标记 148。下一候选逐篇审查 Liminal Space、Liquid Fluid Design、Liquid Metal、Live Laugh Love、Low Poly、Lush Velvet、Luxury Minimalism、Mallsoft，累计 150，未标记 140；所有资产缺显式风格标签 210（不同指标）。待 CI。

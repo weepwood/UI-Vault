@@ -133,7 +133,15 @@ const TERM_ALIASES=Object.freeze({
   '激光网格风':['laser grid'],'laser grid':['激光网格风'],
   '明亮学院风':['light academia'],'light academia':['明亮学院风'],
   '轻拟物风':['light skeuomorphism'],'light skeuomorphism':['轻拟物风'],
-  '清晰线条风':['ligne claire'],'ligne claire':['清晰线条风']
+  '清晰线条风':['ligne claire'],'ligne claire':['清晰线条风'],
+  '阈限空间':['liminal space'],'liminal space':['阈限空间'],
+  '液态流体设计':['liquid fluid design'],'liquid fluid design':['液态流体设计'],
+  '液态金属':['liquid metal'],'liquid metal':['液态金属'],
+  '温馨标语风':['live laugh love'],'live laugh love':['温馨标语风'],
+  '低多边形':['low poly'],'low poly':['低多边形'],
+  '华丽丝绒风':['lush velvet'],'lush velvet':['华丽丝绒风'],
+  '奢华极简':['luxury minimalism'],'luxury minimalism':['奢华极简'],
+  '怀旧商场风':['mallsoft'],'mallsoft':['怀旧商场风']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
