@@ -1607,3 +1607,12 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-editor,.parameter-group-visual){border-color:var(--line)}
 #parameter-dock :is(.material-stop-options button,.material-action-title button,.material-combination-presets button,.parameter-group-reset):focus-visible{outline-offset:1px}
 #parameter-dock .parameter-status{color:var(--muted)}
+
+/* 参数检查器高度由用户调整，默认保持既有视觉；始终保留预览空间。 */
+#parameter-dock{max-height:var(--parameter-dock-size,42vh)}
+#parameter-dock:has(.parameter-dock-resize:focus-visible) .parameter-dock-resize span{background:var(--accent)}
+.parameter-dock-resize{position:absolute;inset:0 0 auto;height:8px;display:flex;align-items:center;justify-content:center;cursor:ns-resize;touch-action:none;z-index:1}
+.parameter-dock-resize span{width:32px;height:3px;border-radius:2px;background:var(--line);pointer-events:none}
+.parameter-dock-resize:hover span{background:var(--accent)}
+.parameter-dock-resize:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
+@media(max-width:760px){#parameter-dock{max-height:var(--parameter-dock-size,40dvh)}.parameter-dock-resize{height:12px}}

@@ -1295,6 +1295,15 @@ def verify_expanded_workbench_screenshots(browser, origin):
             assert page.locator("#preview-stage").bounding_box()["height"]>0
             assert dock.locator(".demo-parameter-fields").bounding_box()["y"] < dock.locator(".parameter-presets").bounding_box()["y"]
             page.screenshot(path=str(OUTPUT/f"expanded-parameters-{width}.png"))
+            resize=dock.get_by_role("separator",name="调整参数面板高度")
+            before=dock.bounding_box()["height"]
+            resize.focus()
+            resize.press("End")
+            page.wait_for_function("before=>document.querySelector('#parameter-dock').getBoundingClientRect().height>before+30",arg=before)
+            assert page.locator("#preview-stage").bounding_box()["height"]>0
+            page.screenshot(path=str(OUTPUT/f"parameter-resized-{width}.png"))
+            resize.press("Enter")
+            page.wait_for_function("before=>Math.abs(document.querySelector('#parameter-dock').getBoundingClientRect().height-before)<2",arg=before)
             dock.get_by_role("button",name="表面渐变",exact=True).click()
             assert dock.get_by_role("heading",name="表面渐变",exact=True).evaluate("(el)=>el===document.activeElement")
             dock.locator('.parameter-section-nav button[data-selected="true"]').filter(has_text="表面渐变").wait_for()
