@@ -822,6 +822,16 @@ body.settings-body { min-height:100vh;min-height:100dvh;background:var(--canvas)
 .project-panel .directory-clear {color:var(--accent);font-size:11px;}
 .project-panel .directory-clear:disabled {opacity:.5;cursor:default;}
 .project-panel .directory-reset {justify-self:start;padding:5px 0;background:none;border:0;}
+.project-panel .directory-group-status {display:flex;align-items:center;gap:5px;margin-top:7px;color:var(--muted);font-size:11px;}
+.project-panel .directory-group-status .ui-icon {width:13px;height:13px;}
+.project-panel .directory-group-status button {margin-left:auto;background:none;border:0;color:var(--muted);padding:3px;}
+.project-panel .directory-preset-quick {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px;margin-top:7px;}
+.project-panel .directory-preset-quick :is(select,input,button) {min-width:0;height:30px;padding:0 6px;border:1px solid var(--line);border-radius:6px;background:var(--canvas);color:var(--text);font:inherit;font-size:11px;}
+.project-panel .directory-preset-quick button:disabled {opacity:.5;}
+.project-panel .directory-preset-editor {display:grid;gap:4px;border-top:1px solid var(--line-soft);padding-top:8px;font-size:11px;color:var(--muted);}
+.project-panel .directory-preset-editor .directory-preset-quick {margin-top:0;}
+.project-panel .directory-preset-hint {font-size:10px;overflow-wrap:anywhere;}
+.project-panel .directory-full-list {display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px;}
 .project-panel .directory-tools :is(button,select):focus-visible {outline:2px solid var(--focus);outline-offset:1px;}
 @media(max-width:930px) {
   .project-panel .directory-tools {padding-inline:8px;}

@@ -57,3 +57,9 @@ html[data-theme="dark"] .project-panel .project-item.is-selected .project-row-em
 .asset-project-count{font-variant-numeric:tabular-nums;color:var(--muted);font-size:10px}
 .asset-project-items{display:grid;gap:3px}
 @media(prefers-reduced-motion:reduce){.asset-project-summary::before{transition:none}}
+
+/* 长目录的固定行距窗口；完整列表及分组保持原有可访问 DOM。 */
+.directory-virtual-list {position:relative;min-width:0;overflow-anchor:none;}
+.directory-virtual-row {position:absolute;inset-inline:0;min-width:0;display:flex;}
+.directory-virtual-row>.project-item {flex:1;min-width:0;}
+.directory-virtual-row .project-row {min-height:0;}

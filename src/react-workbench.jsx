@@ -12,6 +12,7 @@ import {useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'rea
 import {createPortal} from 'react-dom';
 import {useWorkbench} from './useWorkbench.js';
 import {REUSE_LEVELS} from '../assets/core/catalog.js';
+import {readFilterPresets,putFilterPreset,writeFilterPresets} from '../assets/core/filter-presets.js';
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
@@ -25,8 +26,12 @@ import {readNavCollapsed,saveNavCollapsed,NAV_COLLAPSED_KEY} from '../assets/cor
 import {searchCommandAssets,readCommandRecent,addCommandRecent} from '../assets/core/global-search.js';
 
 const sortOptions=[
-  {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'},
-  {value:'project',label:'按项目分组'}
+  {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'}
+];
+const groupOptions=[
+  {value:'none',label:'不分组'},{value:'project',label:'按来源项目'},{value:'category',label:'按资源类别'},
+  {value:'style',label:'按主要风格'},{value:'technology',label:'按主要技术栈'},
+  {value:'source',label:'按资源形式'},{value:'reuse',label:'按复用程度'}
 ];
 function QuickFilters({state,onFilter}){
   const options=[
@@ -55,7 +60,8 @@ function QuickFilters({state,onFilter}){
   </button>)}</>;
 }
 const facetFields=[
-  {key:'tag',id:'tag-filter',label:'内容 / 风格',empty:'全部标签'},
+  {key:'tag',id:'tag-filter',label:'内容类型',empty:'全部内容'},
+  {key:'style',id:'style-filter',label:'视觉风格',empty:'全部风格'},
   {key:'technology',id:'technology-filter',label:'技术栈',empty:'全部技术'},
   {key:'source',id:'source-filter',label:'资源形式',empty:'全部形式'},
   {key:'projectId',id:'project-filter',label:'来源项目',empty:'全部项目'}
@@ -65,8 +71,28 @@ function facetLabel(key,value,projects){
   if(key==='projectId')return projects.find(project=>project.id===value)?.name||value;
   return value;
 }
-export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,reuseLevels,count,toolsRoot}){
+export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,reuseLevels,count,toolsRoot}){
   const [expanded,setExpanded]=useState(false);
+  const [presets,setPresets]=useState(()=>readFilterPresets());
+  const [presetName,setPresetName]=useState('');
+  const [presetChoice,setPresetChoice]=useState('');
+  const [presetStatus,setPresetStatus]=useState('');
+  const group=state.sort==='project'?'project':state.groupBy||'none';
+  function savePreset(){
+    try{
+      const next=putFilterPreset(presets,presetName,state);
+      setPresets(next);
+      setPresetChoice(next[0].name);
+      setPresetName('');
+      setPresetStatus(writeFilterPresets(next)?'方案已保存':'浏览器存储不可用，仅本次会话保留');
+    }catch(error){setPresetStatus(error.message);}
+  }
+  function deletePreset(){
+    if(!presetChoice)return;
+    const next=presets.filter(item=>item.name!==presetChoice);
+    setPresets(next);setPresetChoice('');
+    setPresetStatus(writeFilterPresets(next)?'方案已删除':'浏览器存储不可用，删除仅本次会话生效');
+  }
   const filterTrigger=useRef(null);
   const selected=facetFields.filter(field=>state[field.key]);
   const activeCount=selected.length+Number(Boolean(state.reuse));
@@ -79,15 +105,26 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,reuseL
     </div>
     {createPortal(<>
       <div className="list-controls-filters">
-        <WorkbenchSelect id="sort" label="项目排序与分组" value={state.sort} onChange={onSort}
+        <WorkbenchSelect id="sort" label="项目排序" value={state.sort==='project'?'featured':state.sort} onChange={onSort}
           options={sortOptions} icon="arrow-up-down"
-          icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down',project:'folder'}} className="select-field--sort"/>
+          icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}} className="select-field--sort"/>
         <button type="button" ref={filterTrigger} className="directory-filter-toggle"
           aria-controls="directory-facets" aria-expanded={expanded} data-active={activeCount>0}
           onClick={()=>setExpanded(value=>!value)}>
           <UIIcon name="sliders-horizontal"/><span>筛选{activeCount?' · '+activeCount:''}</span>
         </button>
       </div>
+      {group!=='none'&&<div className="directory-group-status"><UIIcon name="folder"/><span>{groupOptions.find(option=>option.value===group)?.label}</span><button type="button" onClick={()=>onGroup('none')} aria-label="取消分组"><UIIcon name="x"/></button></div>}
+      {presets.length>0&&<div className="directory-preset-quick">
+        <select aria-label="常用筛选方案" id="directory-preset" value={presetChoice} onChange={event=>{
+          const name=event.target.value;setPresetChoice(name);
+          const preset=presets.find(item=>item.name===name);if(preset)onApplyPreset(preset.filters);
+        }}>
+          <option value="">常用方案</option>
+          {presets.map(preset=><option key={preset.name} value={preset.name}>{preset.name}</option>)}
+        </select>
+        <button type="button" disabled={!presetChoice} onClick={()=>{const preset=presets.find(item=>item.name===presetChoice);if(preset)onApplyPreset(preset.filters);}}>应用</button>
+      </div>}
       {activeCount>0&&<div className="directory-active-filters" aria-label="已选筛选">
         {state.reuse&&<button type="button" onClick={()=>onReuse('')} title={'移除'+reuseLabel}>{reuseLabel}<UIIcon name="x"/></button>}
         {selected.map(field=><button type="button" key={field.key} onClick={()=>onFacet(field.key,'')}
@@ -97,6 +134,11 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,reuseL
       </div>}
       <div id="directory-facets" className="directory-facets" hidden={!expanded}
         onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();setExpanded(false);filterTrigger.current?.focus();}}}>
+        <label className="directory-facet-field" htmlFor="directory-group"><span>结果分组</span>
+          <select id="directory-group" value={group} onChange={event=>onGroup(event.target.value)}>
+            {groupOptions.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}
+          </select>
+        </label>
         <label className="directory-facet-field" htmlFor="reuse-filter"><span>复用程度</span>
           <select id="reuse-filter" aria-label="按复用程度筛选" value={state.reuse} onChange={event=>onReuse(event.target.value)}>
             {[{id:'',label:'全部复用'},...reuseLevels].map(level=><option key={level.id} value={level.id}>{level.label}</option>)}
@@ -112,6 +154,17 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,reuseL
           </select>
         </label>)}
         <button type="button" className="directory-clear directory-reset" onClick={onClear} disabled={!activeCount}>清除筛选条件</button>
+        <div className="directory-preset-editor">
+          <label htmlFor="directory-preset-name">保存当前筛选方案</label>
+          <div className="directory-preset-quick">
+            <input id="directory-preset-name" maxLength={40} placeholder="方案名称" value={presetName} onChange={event=>setPresetName(event.target.value)}/>
+            <button type="button" onClick={savePreset} disabled={!presetName.trim()}>保存</button>
+          </div>
+          <span className="directory-preset-hint">同名方案将更新，最多 20 个，仅保存在本机。</span>
+          {presetChoice&&<button className="directory-clear directory-reset" type="button" onClick={deletePreset}>删除所选方案</button>}
+          <span className="directory-preset-hint" role="status">{presetStatus}</span>
+        </div>
+        <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label>
       </div>
     </>,toolsRoot)}
   </>;
@@ -119,9 +172,10 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,reuseL
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
   const {state,filtered,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,openView,
-    selectAsset,filter,changeSort,changeFacet,changeReuse,clearFacets,reset,
+    selectAsset,filter,changeSort,changeFacet,changeReuse,changeGroup,applyPreset,clearFacets,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
+  const [fullDirectory,setFullDirectory]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const [compactSearchOpen,setCompactSearchOpen]=useState(false);
@@ -394,10 +448,12 @@ function WorkbenchPortals({nodes}){
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} facets={facets} onSort={changeSort}
       onFacet={changeFacet} onReuse={changeReuse} onClear={clearFacets} reuseLevels={REUSE_LEVELS}
+      onGroup={changeGroup} onApplyPreset={applyPreset} fullDirectory={fullDirectory} onFullDirectory={setFullDirectory}
       count={filtered.length} toolsRoot={nodes.directoryTools}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
-      projects={state.projects} groupByProject={state.sort==='project'}
+      projects={state.projects} groupByProject={state.sort==='project'} groupBy={state.groupBy}
+      scrollRoot={nodes.directoryScroll} virtualize={!fullDirectory} density={state.preferences.density}
       loading={state.loading}/>,nodes.gallery)}
     {createPortal(<PreviewToolbar asset={selected} effectiveAsset={effectiveAsset} labels={state.labels}
       previewMode={state.previewSize} customWidth={state.customWidth}
@@ -453,7 +509,7 @@ export function mountWorkbench(){
     shell:$('.app-shell'),rail:$('#library-rail'),main:$('#main'),
     projectPanel:$('#project-panel'),shade:$('#mobile-shade'),
     quickFilters:$('.quick-filters'),categories:$('#category-nav'),
-    listControls:$('.list-controls'),directoryTools:$('#directory-tools'),gallery:$('#gallery'),
+    listControls:$('.list-controls'),directoryTools:$('#directory-tools'),directoryScroll:$('.project-scroll'),gallery:$('#gallery'),
     topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
     settingsLink:$('.sidebar-footer'),collapseToggle:$('#nav-collapse-toggle'),
     dialog:$('#project-dialog'),

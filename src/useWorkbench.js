@@ -1,3 +1,4 @@
+import {snapshotFilters} from '../assets/core/filter-presets.js';
 import {useCallback,useEffect,useLayoutEffect,useReducer,useRef,useState} from 'react';
 import {filterAssets} from '../assets/core/catalog.js';
 import {useCatalogResults} from './useCatalogResults.js';
@@ -6,7 +7,7 @@ import {resolveAsset} from '../assets/core/render.js';
 import {resolveVersionId} from '../assets/core/asset-versions.js';
 import {createWorkbenchRouter} from '../assets/core/workbench-router.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
-  setCatalogQuery,setCatalogSort,setCatalogTag,setCatalogReuse,setCatalogFacet,clearCatalogFacets,activateAsset,deactivateAsset,
+  setCatalogQuery,setCatalogSort,setCatalogTag,setCatalogReuse,setCatalogFacet,clearCatalogFacets,setCatalogGroup,activateAsset,deactivateAsset,
   changePreviewMode,setCustomPreviewWidth,hasActiveCatalogFilters} from '../assets/core/workbench-state.js';
 import {readViewportSession,saveViewportSession} from '../assets/core/viewport-session.js';
 import {loadSettings,applySettings,SETTINGS_KEY,DEFAULT_SETTINGS} from '../assets/core/settings.js';
@@ -50,7 +51,9 @@ export function workbenchReducer(current,action){
     // 只更新搜索列表，不因每次键入/删字反复卸载正在运行的 iframe。
     // 用户点击结果时再切换预览，保持 WebGPU 等重型 Demo 的连续运行。
     case 'query':setCatalogQuery(next,action.value);return next;
-    case 'sort':setCatalogSort(next,action.value);return chooseVisible(next);
+    case 'sort':setCatalogSort(next,action.value);return next;
+    case 'group':setCatalogGroup(next,action.value);return next;
+    case 'preset':Object.assign(next,snapshotFilters(action.filters));return chooseVisible(next);
     case 'tag':setCatalogTag(next,action.value);return chooseVisible(next);
     case 'reuse':setCatalogReuse(next,action.value);return chooseVisible(next);
     case 'facet':setCatalogFacet(next,action.key,action.value);return chooseVisible(next);
@@ -229,6 +232,8 @@ export function useWorkbench(){
   const changeTag=useCallback(value=>{leaveSettings();dispatch({type:'tag',value});},[leaveSettings]);
   const changeReuse=useCallback(value=>{leaveSettings();dispatch({type:'reuse',value});},[leaveSettings]);
   const changeFacet=useCallback((key,value)=>{leaveSettings();dispatch({type:'facet',key,value});},[leaveSettings]);
+  const changeGroup=useCallback(value=>{leaveSettings();dispatch({type:'group',value});},[leaveSettings]);
+  const applyPreset=useCallback(filters=>{leaveSettings();dispatch({type:'preset',filters});},[leaveSettings]);
   const clearFacets=useCallback(()=>{leaveSettings();dispatch({type:'clearFacets'});},[leaveSettings]);
   const reset=useCallback(()=>{leaveSettings();dispatch({type:'reset'});},[leaveSettings]);
   const favorite=useCallback(id=>{
@@ -270,6 +275,6 @@ export function useWorkbench(){
   },[state.assets,copyText,notify]);
 
   return {state,filtered,tags,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
-    dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,changeFacet,clearFacets,reset,
+    dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,changeFacet,changeGroup,applyPreset,clearFacets,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
 }

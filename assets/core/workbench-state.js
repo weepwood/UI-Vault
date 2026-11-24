@@ -11,18 +11,21 @@ const REUSE_IDS=new Set(REUSE_LEVELS.map(level=>level.id));
 export const DEFAULT_FILTERS=Object.freeze({
   category:'all',
   tag:'',
+  style:'',
   technology:'',
   source:'',
   projectId:'',
   reuse:'',
   query:'',
   sort:'featured',
+  groupBy:'none',
   favoritesOnly:false,
   importedOnly:false,
   curatedOnly:false
 });
 export const FILTER_MODES=Object.freeze(['favoritesOnly','importedOnly','curatedOnly']);
-const SORT_MODES=new Set(['featured','newest','az','project']);
+export const SORT_MODES=Object.freeze(['featured','newest','az','project']);
+export const GROUP_MODES=Object.freeze(['none','project','category','style','technology','source','reuse']);
 
 /** @returns {object} 会话状态对象，字段兼容 core/catalog.js 的筛选协议。 */
 export function createWorkbenchState(){
@@ -71,8 +74,15 @@ export function setCatalogQuery(state,query){
   return state;
 }
 export function setCatalogSort(state,sort){
-  if(!SORT_MODES.has(sort))throw new RangeError('未知排序模式：'+sort);
+  if(!SORT_MODES.includes(sort))throw new RangeError('未知排序模式：'+sort);
   state.sort=sort;
+  if(sort==='project')state.groupBy='project';
+  return state;
+}
+export function setCatalogGroup(state,group){
+  if(!GROUP_MODES.includes(group))throw new RangeError('未知分组模式：'+group);
+  state.groupBy=group;
+  if(state.sort==='project')state.sort='featured';
   return state;
 }
 export function setCatalogTag(state,tag){
@@ -96,7 +106,7 @@ export function setCatalogReuse(state,reuse){
 }
 export function hasActiveCatalogFilters(state){
   return state.category!=='all'||state.favoritesOnly||state.importedOnly||state.curatedOnly||
-    FACET_KEYS.some(key=>Boolean(state[key]))||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured';
+    FACET_KEYS.some(key=>Boolean(state[key]))||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured'||(state.groupBy||'none')!=='none';
 }
 
 /** 同一个项目再次选中不能重新初始化预览，避免 iframe 被无意义地卸载。 */

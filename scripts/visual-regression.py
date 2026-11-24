@@ -714,6 +714,46 @@ def verify_directory_facets(browser, origin):
     print("目录组合筛选通过：桌面、窄屏、手机、计数、组合清除与 Escape。")
 
 
+def verify_directory_workspace(browser, origin):
+    """独立风格、分组与排序、方案持久化，以及长目录的窗口与键盘边界。"""
+    context = browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        virtual=page.locator(".directory-virtual-list")
+        virtual.wait_for(state="visible",timeout=30000)
+        total=int(virtual.get_attribute("data-total"))
+        assert total>120 and page.locator("#gallery .project-row").count()<60
+        page.locator("#gallery .project-row").first.focus()
+        page.keyboard.press("End")
+        page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === String(Number(document.querySelector('.directory-virtual-list').dataset.total)-1)")
+        page.keyboard.press("Home")
+        page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === '0'")
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-full-list input").check()
+        assert page.locator("#gallery .project-row").count()==total
+        page.locator(".directory-full-list input").uncheck()
+        page.locator("#style-filter").select_option(index=1)
+        style=page.locator("#style-filter").input_value()
+        assert style
+        assert int(page.locator("#results-count").inner_text())>0
+        page.locator("#directory-group").select_option("technology")
+        assert page.locator(".asset-project-group").count()>0
+        assert page.locator("#sort").input_value()=="featured"
+        page.locator("#directory-preset-name").fill("测试风格方案")
+        page.locator(".directory-preset-editor button").first.click()
+        page.reload(wait_until="domcontentloaded")
+        page.locator("#directory-preset").wait_for(state="visible",timeout=30000)
+        page.locator("#directory-preset").select_option("测试风格方案")
+        page.locator(".directory-filter-toggle").click()
+        assert page.locator("#style-filter").input_value()==style
+        assert page.locator("#directory-group").input_value()=="technology"
+        assert page.locator(".asset-project-group").count()>0
+    finally:
+        context.close()
+    print("目录工作台回归通过：风格、独立分组、预设恢复、虚拟列表键盘与完整列表回退。")
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -959,12 +999,12 @@ def verify_project_health_and_grouping(browser, origin):
     page = context.new_page()
     try:
         page.goto(origin + "?asset=atlas-academia", wait_until="domcontentloaded")
-        page.locator('[data-id="atlas-academia"]').wait_for(state="visible", timeout=30000)
+        page.locator(".project-row").first.wait_for(state="visible", timeout=30000)
         page.locator('#preview-stage iframe[data-preview-frame="local"]').wait_for(state="attached")
         page.evaluate("() => { window.__groupIframe=document.querySelector('#preview-stage iframe'); }")
-        sorting = page.locator("#sort").locator("xpath=..")
-        sorting.locator(".select-trigger").click()
-        sorting.locator('[data-value="project"]').click()
+        page.locator(".directory-filter-toggle").click()
+        page.locator("#directory-group").select_option("project")
+        page.locator(".directory-filter-toggle").click()
         expected_groups = len(json.loads((ROOT / "content/projects.json").read_text(encoding="utf-8")))
         assert page.locator(".asset-project-group").count() == expected_groups, "项目归组数量不正确"
         group = page.locator(".asset-project-group").filter(has_text="Style Atlas")
@@ -1331,6 +1371,7 @@ def main():
                 verify_search_experience(browser, local)
                 verify_topbar_alignment(browser, local)
                 verify_directory_facets(browser, local)
+                verify_directory_workspace(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)
