@@ -30,7 +30,7 @@ export function ProjectRow({asset,labels,selected,onSelect,query='',position,set
 function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,virtualize,density}){
   const [expanded,setExpanded]=React.useState(true);
   const name=group.name||group.project?.name||'未归组';
-  return <details className="asset-project-group" open={expanded}
+  return <details className="asset-project-group" data-group-id={group.id} open={expanded}
     onToggle={event=>setExpanded(event.currentTarget.open)}>
     <summary className="asset-project-summary" aria-label={name+'，'+group.items.length+' 条资源'}>
       <span className="asset-project-name">{name}</span>
@@ -38,7 +38,7 @@ function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,vi
     </summary>
     <div className="asset-project-items" role="list" aria-label={name+' 的资源'}>
       {expanded&&(virtualize&&scrollRoot&&group.items.length>120
-        ?<VirtualProjectList items={group.items} selectedId={selectedId} scrollRoot={scrollRoot} density={density}
+        ?<VirtualProjectList items={group.items} selectedId={selectedId} scrollRoot={scrollRoot} density={density} grouped
           renderRow={(asset,index)=><ProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
             onSelect={onSelect} query={query} position={index+1} setSize={group.items.length}/>}/>
         :group.items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}

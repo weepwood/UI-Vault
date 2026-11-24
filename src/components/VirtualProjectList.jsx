@@ -2,7 +2,7 @@ import {useLayoutEffect,useRef,useState} from 'react';
 import {virtualWindow} from '../../assets/core/virtual-window.js';
 
 // 只挂载可视区域及缓冲行。分组模式/小目录由 ProjectList 使用完整列表。
-export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow}){
+export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow,grouped=false}){
   const rowHeight=density==='compact'?48:60;
   const host=useRef(null),pendingFocus=useRef(null);
   const [metrics,setMetrics]=useState({top:0,height:800});
@@ -19,7 +19,7 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
       if(!host.current)return;
       const rootRect=scrollRoot.getBoundingClientRect(),listRect=host.current.getBoundingClientRect();
       const viewportTop=rootRect.top+scrollRoot.clientTop,viewportBottom=viewportTop+scrollRoot.clientHeight;
-      const visible=Math.max(0,Math.min(viewportBottom,listRect.bottom)-Math.max(viewportTop,listRect.top));
+      const visible=grouped?Math.max(0,Math.min(viewportBottom,listRect.bottom)-Math.max(viewportTop,listRect.top)):scrollRoot.clientHeight;
       const next={top:Math.max(0,viewportTop-listRect.top),height:visible};
       setMetrics(previous=>previous.top===next.top&&previous.height===next.height?previous:next);
     }
@@ -30,9 +30,10 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     if(host.current)observer?.observe(host.current);
     if(scrollRoot.firstElementChild)observer?.observe(scrollRoot.firstElementChild);
     window.addEventListener('resize',schedule);
-    schedule();
+    // 初次布局直接采样，后续滚动与 ResizeObserver 使用 rAF 合并。
+    sync();
     return ()=>{cancelAnimationFrame(frame);observer?.disconnect();scrollRoot.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
-  },[scrollRoot,items,rowHeight]);
+  },[scrollRoot,items,rowHeight,grouped]);
   useLayoutEffect(()=>{
     const index=pendingFocus.current;
     if(index===null)return;

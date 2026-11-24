@@ -133,7 +133,7 @@ export function normalizeFacetSelection(value){
   const values=facetSelection(value).slice(0,30);
   return values.length>1?values:values[0]||'';
 }
-function facetMatcher(filters,except=''){
+export function createCatalogFacetMatcher(filters={},except=''){
   const entries=FACET_KEYS.filter(key=>key!==except).map(key=>[key,facetSelection(filters[key])]).filter(([,values])=>values.length);
   return asset=>entries.every(([key,selected])=>{
     const values=facetValues(asset,key);
@@ -141,13 +141,13 @@ function facetMatcher(filters,except=''){
   });
 }
 export function matchesCatalogFacets(asset,filters={},except=''){
-  return facetMatcher(filters,except)(asset);
+  return createCatalogFacetMatcher(filters,except)(asset);
 }
 export function catalogFacetOptions(assets,filters={}){
   const result={};
   for(const key of FACET_KEYS){
     const counts=new Map();
-    const matches=facetMatcher(filters,key);
+    const matches=createCatalogFacetMatcher(filters,key);
     const selected=facetSelection(filters[key]);
     for(const asset of assets){
       if(!matches(asset))continue;
@@ -167,7 +167,7 @@ export function filterAssets(assets,{category='all',tag='',style='',technology='
   const phrase=terms.join(' ');
   const compactPhrase=phrase.replace(/\s/g,'');
   const matches=[];
-  const matchesFacets=facetMatcher({tag,style,technology,source,projectId});
+  const matchesFacets=createCatalogFacetMatcher({tag,style,technology,source,projectId});
   for(const asset of assets){
     if((category!=='all'&&asset.type!==category)||
       (favoritesOnly&&!favorites.has(asset.id))||
