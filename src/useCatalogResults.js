@@ -7,9 +7,10 @@ export function useCatalogResults(state){
     favoritesOnly,importedOnly,curatedOnly}=state;
   const filters=useMemo(()=>({labels,category,reuse,query,sort,favoritesOnly,importedOnly,curatedOnly}),
     [labels,category,reuse,query,sort,favoritesOnly,importedOnly,curatedOnly]);
-  const filtered=useMemo(()=>filterAssets(assets,{...filters,tag},favorites),[assets,filters,tag,favorites]);
-  // 标签候选不受当前标签限制；保留已选择的标签以便清除。
+  // 先计算不含标签限制的有序集合，标签筛选只做稳定子集提取。
+  // 相关性、排序与其它条件均相同，无需再次对整个目录评分和排序。
   const tagAssets=useMemo(()=>filterAssets(assets,filters,favorites),[assets,filters,favorites]);
+  const filtered=useMemo(()=>tag?tagAssets.filter(asset=>asset.tags?.includes(tag)):tagAssets,[tagAssets,tag]);
   const tags=useMemo(()=>popularTags(tagAssets,14,tag),[tagAssets,tag]);
   return {filtered,tags};
 }
