@@ -123,9 +123,9 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
               })}
             </div>)}
           </div>
-          {value.trim()&&items.length>shownCount&&<div className="command-palette-footer" role="status">
+          {value.trim()&&items.length>shownCount&&<div className="command-palette-footer command-palette-pagination" role="status">
             <span>显示 {shownCount} / {items.length} 项</span>
-            {limit<240?<button type="button" className="command-palette-clear" style={{width:'auto',padding:'0 8px'}} onClick={()=>setLimitState({query:value,limit:Math.min(240,limit+MAX_RESULTS)})}>显示更多</button>:<span>请缩小关键词范围</span>}
+            {limit<240?<button type="button" className="command-palette-more" onClick={()=>setLimitState({query:value,limit:Math.min(240,limit+MAX_RESULTS)})}>显示更多</button>:<span>请缩小关键词范围</span>}
           </div>}
           <div className="command-palette-footer">
             <span><kbd>↑</kbd><kbd>↓</kbd> 导航　<kbd>↵</kbd> 选择</span>

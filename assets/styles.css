@@ -1374,3 +1374,30 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
 .preview-recovery span{flex:1 1 160px;min-width:0}
 .preview-recovery button,.preview-recovery a{padding:5px 8px;border:1px solid var(--line);border-radius:5px;background:var(--surface);color:var(--accent);font:inherit;text-decoration:none;white-space:nowrap}
 .preview-recovery button:hover,.preview-recovery a:hover{background:var(--hover)}
+
+/* 参数编辑停靠在当前预览内部，不创建新的工作台或覆盖 iframe。 */
+#parameter-dock[hidden]{display:none}
+#parameter-dock{flex:0 0 auto;max-height:42vh;overflow:auto;overscroll-behavior:contain;border-top:1px solid var(--line);background:var(--surface);color:var(--text);min-width:0}
+.parameter-dock-inner{padding:10px 16px 16px;max-width:1100px;margin:0 auto}
+.parameter-dock-header{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;font-size:13px}
+.parameter-dock-header button,.parameter-dock-launch,.parameter-presets button,.directory-density-control button,.command-palette-more{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:6px 10px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--text);font:inherit;cursor:pointer}
+.parameter-dock-header button:hover,.parameter-dock-launch:hover,.parameter-presets button:hover,.directory-density-control button:hover,.command-palette-more:hover{background:var(--hover)}
+.parameter-dock-header .ui-icon,.parameter-dock-launch .ui-icon{width:15px;height:15px}
+.parameter-dock-launch{margin:0 0 10px}
+#parameter-dock .demo-parameter-panel{margin:0;border:0;padding:0;background:transparent}
+#parameter-dock .demo-parameter-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:9px}
+.parameter-presets{display:flex;align-items:end;gap:8px;flex-wrap:wrap;margin:8px 0}
+.parameter-presets label{display:grid;gap:4px;font-size:11px;color:var(--muted)}
+.parameter-presets :is(input,select){min-width:0;max-width:180px;min-height:30px;padding:4px 8px;border:1px solid var(--line);border-radius:6px;color:var(--text);background:var(--canvas)}
+.parameter-live-toggle{display:inline-flex;align-items:center;gap:4px;font-size:11px}
+.directory-facet-heading{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:10px;margin:2px 0}
+.directory-facet-heading strong{color:var(--text);font-size:11px}
+.directory-density-control{display:flex;gap:4px;padding:3px;background:var(--canvas);border:1px solid var(--line);border-radius:8px}
+.directory-density-control button{flex:1;min-height:28px;padding:3px 6px;border-color:transparent;font-size:11px}
+.directory-density-control button[aria-pressed=true]{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-line,var(--line))}
+.command-palette-pagination{justify-content:space-between}.command-palette-more{font-size:11px;padding:4px 8px}
+@media(max-width:760px){#parameter-dock{max-height:40dvh}.parameter-dock-inner{padding:8px 10px}.parameter-presets label{flex:1 1 105px}.parameter-presets :is(input,select){width:100%;max-width:none}}
+
+#dialog-source .source-standalone-action{border-color:var(--accent-line,var(--line));color:var(--accent);background:var(--accent-soft)}
+#dialog-source .source-upstream-action{color:var(--muted)}
+#dialog-source .source-buttons{flex-wrap:wrap;row-gap:6px}

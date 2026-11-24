@@ -20,6 +20,8 @@ import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
+import {DemoParameterPanel} from './components/DemoParameterPanel.jsx';
+import {parameterSchemaFor} from '../assets/core/demo-parameters.js';
 import {SettingsPanel} from './components/SettingsPanel.jsx';
 import {ProjectOperationsPanel} from './components/ProjectOperationsPanel.jsx';
 import {closeDropdowns} from '../assets/core/dropdown.js';
@@ -73,7 +75,7 @@ function facetLabel(key,value,projects){
   if(key==='projectId')return projects.find(project=>project.id===value)?.name||value;
   return value;
 }
-export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,reuseLevels,count,toolsRoot}){
+export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,reuseLevels,count,toolsRoot,onDensity}){
   const [expanded,setExpanded]=useState(false);
   const [presets,setPresets]=useState(()=>readFilterPresets());
   const [presetName,setPresetName]=useState('');
@@ -155,6 +157,8 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
       </div>}
       <div id="directory-facets" className="directory-facets" hidden={!expanded}
         onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();setExpanded(false);filterTrigger.current?.focus();}}}>
+        <div className="directory-facet-heading"><strong>分组与展示</strong><span>{count} 项</span></div>
+        {onDensity&&<div className="directory-density-control" role="group" aria-label="目录密度">{[['comfortable','舒适'],['compact','紧凑']].map(([value,label])=><button key={value} type="button" aria-pressed={state.preferences.density===value} onClick={()=>onDensity(value)}>{label}</button>)}</div>}
         <label className="directory-facet-field" htmlFor="directory-group"><span>结果分组</span>
           <select id="directory-group" value={group} onChange={event=>onGroup(event.target.value)}>
             {groupOptions.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}
@@ -165,6 +169,7 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
             {[{id:'',label:'全部复用'},...reuseLevels].map(level=><option key={level.id} value={level.id}>{level.label}</option>)}
           </select>
         </label>
+        <div className="directory-facet-heading"><strong>资源筛选</strong><span>{activeCount} 项已选</span></div>
         {facetFields.map(field=><label className="directory-facet-field" key={field.key} htmlFor={field.id}>
           <span>{field.label}</span>
           <select id={field.id} value={facetSelection(state[field.key])[0]||''} onChange={event=>addFacet(field.key,event.target.value)}>
@@ -234,6 +239,12 @@ function WorkbenchPortals({nodes}){
   const [dialogState,setDialogState]=useState({key:dialogKey,open:false});
   if(dialogState.key!==dialogKey)setDialogState({key:dialogKey,open:false});
   const dialogOpen=dialogState.open;
+  const dockKey=dialogKey+'|'+(effectiveAsset?.preview||'');
+  const [dockState,setDockState]=useState({key:dockKey,open:false});
+  if(dockState.key!==dockKey)setDockState({key:dockKey,open:false});
+  const dockOpen=dockState.open&&!notLibrary&&Boolean(parameterSchemaFor(effectiveAsset));
+  const closeDock=()=>setDockState({key:dockKey,open:false});
+  useLayoutEffect(()=>{nodes.parameterDock.toggleAttribute('hidden',!dockOpen);},[nodes,dockOpen]);
   const setDialogOpen=useCallback(value=>setDialogState({key:dialogKey,open:Boolean(value)}),[dialogKey]);
   const onDialogChange=useCallback(value=>setDialogOpen(Boolean(value)),[setDialogOpen]);
   const onMenuToggle=useCallback(()=>menu(!state.menuOpen),[menu,state.menuOpen]);
@@ -479,7 +490,7 @@ function WorkbenchPortals({nodes}){
     {createPortal(<ListControls state={state} facets={facets} onSort={changeSort}
       onFacet={changeFacet} onReuse={changeReuse} onClear={clearFacets} reuseLevels={REUSE_LEVELS}
       onGroup={changeGroup} onApplyPreset={applyPreset} fullDirectory={fullDirectory} onFullDirectory={setFullDirectory}
-      count={filtered.length} toolsRoot={nodes.directoryTools}/>,nodes.listControls)}
+      count={filtered.length} toolsRoot={nodes.directoryTools} onDensity={value=>changePreference('density',value)}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
       projects={state.projects} groupByProject={state.sort==='project'} groupBy={state.groupBy}
@@ -490,11 +501,15 @@ function WorkbenchPortals({nodes}){
       onChangePreview={changePreview} onCustomWidth={changeCustomWidth} stageElement={nodes.stage}
       versionId={state.versionId} onChangeVersion={changeVersion}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
-      onInfo={()=>selected&&setDialogOpen(true)}
+      onInfo={()=>{closeDock();if(selected)setDialogOpen(true);}}
       onMenu={onMenuToggle} menuOpen={menuOpen}
       onSearch={openPalette} searchOpen={compactSearchOpen} previewEvidence={snapshotRow(previewHealthSnapshot,selected?.id)}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
+    {createPortal(dockOpen&&<div className="parameter-dock-inner">
+      <div className="parameter-dock-header"><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();document.getElementById('preview-info')?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>
+      <DemoParameterPanel key={dockKey} asset={effectiveAsset} notify={notify} liveEditing/>
+    </div>,nodes.parameterDock)}
     {createPortal(<ProjectOperationsPanel projects={state.projects} assets={state.assets}
       health={projectHealthSnapshot} preview={previewHealthSnapshot}
       onMenuToggle={onMenuToggle} menuOpen={menuOpen}/>,nodes.operations)}
@@ -526,7 +541,7 @@ function WorkbenchPortals({nodes}){
       projectAssetCount={state.assets.filter(a=>a.projectId===effectiveAsset?.projectId).length}
       projectHealthSnapshot={projectHealthSnapshot}
       open={dialogOpen} onOpenChange={onDialogChange} onCopySource={copySource}
-      onCopyLink={copyLink} onCopyText={copyText} notify={notify}/>
+      onCopyLink={copyLink} onCopyText={copyText} notify={notify} onEditParameters={()=>{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}/>
   </>;
 }
 /**
@@ -540,7 +555,7 @@ export function mountWorkbench(){
     projectPanel:$('#project-panel'),shade:$('#mobile-shade'),
     quickFilters:$('.quick-filters'),categories:$('#category-nav'),
     listControls:$('.list-controls'),directoryTools:$('#directory-tools'),directoryScroll:$('.project-scroll'),gallery:$('#gallery'),
-    topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
+    topbar:$('.topbar'),stage:$('#preview-stage'),parameterDock:$('#parameter-dock'),settings:$('#settings-view'),operations:$('#operations-view'),
     settingsLink:$('.sidebar-footer'),collapseToggle:$('#nav-collapse-toggle'),
     dialog:$('#project-dialog'),
     toast:$('#toast'),reset:$('#reset-filters'),empty:$('#empty'),
@@ -550,7 +565,7 @@ export function mountWorkbench(){
   const missing=Object.entries(nodes).filter(([,el])=>!el).map(([key])=>key);
   if(missing.length)throw Error('React 工作台缺少挂载节点：'+missing.join(', '));
   for(const key of ['quickFilters','categories','listControls','directoryTools','gallery',
-    'topbar','stage','settings','operations','settingsLink','dialog','toast']){
+    'topbar','stage','parameterDock','settings','operations','settingsLink','dialog','toast']){
     nodes[key].replaceChildren();
   }
   const mount=document.createElement('div');
