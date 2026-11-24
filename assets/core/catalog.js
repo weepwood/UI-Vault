@@ -109,7 +109,25 @@ const TERM_ALIASES=Object.freeze({
   '巨型无衬线排版':['grotesk display'],'grotesk display':['巨型无衬线排版'],
   '粗粝复兴风':['grunge revival'],'grunge revival':['粗粝复兴风'],
   '古斯塔夫风格':['gustavian'],'gustavian':['古斯塔夫风格'],
-  '手绘风格':['hand drawn'],'hand drawn':['手绘风格']
+  '手绘风格':['hand drawn'],'hand drawn':['手绘风格'],
+  '欧舞霓虹风':['hands up'],'hands up':['欧舞霓虹风'],
+  '英雄现实主义':['heroic realism'],'heroic realism':['英雄现实主义'],
+  '独立手账风':['hipness purgatory'],'hipness purgatory':['独立手账风'],
+  '好莱坞摄政风':['hollywood regency'],'hollywood regency':['好莱坞摄政风'],
+  '全息界面':['holographic ui'],'holographic ui':['全息界面'],
+  '蜂蜜田园风':['honeycore'],'honeycore':['蜂蜜田园风'],
+  '人手涂写风':['human scribble'],'human scribble':['人手涂写风'],
+  '北欧温馨风':['hygge'],'hygge':['北欧温馨风'],
+  '独立派对风':['indie sleaze'],'indie sleaze':['独立派对风'],
+  '工业哥特风':['industrial gothic'],'industrial gothic':['工业哥特风'],
+  '水墨画风':['ink wash'],'ink wash':['水墨画风'],
+  '国际主义排版':['international typographic style'],'international typographic style':['国际主义排版'],
+  '虹彩材质':['iridescent'],'iridescent':['虹彩材质'],
+  '等距投影设计':['isometric design'],'isometric design':['等距投影设计'],
+  '意大利迪斯科风':['italo disco'],'italo disco':['意大利迪斯科风'],
+  '日式北欧融合风':['japandi'],'japandi':['日式北欧融合风'],
+  '闪亮西装时代风':['jiggy era'],'jiggy era':['闪亮西装时代风'],
+  '儿童科学风':['kid science'],'kid science':['儿童科学风']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

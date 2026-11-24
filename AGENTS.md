@@ -195,3 +195,15 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 追加六项原始指南证据：Grandmillennial、Grocery Girl Fall、Grotesk Display、Grunge Revival、Gustavian、Hand Drawn。累计 118，剩余 172；保留原始许可与精选状态，候选待 CI。
 
 #110 同步后 45425575734 / 45425575830 全部通过（344 单测、26 Chromium、Windows、Registry、ZIP 重建），真实视觉产物 14934954291 共 37 文件复审后合并 8da05a5，树一致。#111 原候选三套 CI 45426165182 / 45426164924 / 45426165318 全部通过，视觉产物 14937725340 共 46 文件复审。Vue 真实锁 Artifact 14936578027，59,108 字节、lockfileVersion 3、121 依赖项、官方 npm Registry 与完整 integrity；SHA-256 e834886e4a3f197ca3d2471c7f12ec6701b6945615f0540d4994feabdbf9097c，Git blob 23ddb57c50d1517b2e1edcd4d724877c19b36a46。只读临时工作流 45427130703 验证字节后已移除；原始锁进入 ZIP 白名单，禁止缺锁回退，严格比较解包锁与提交锁，npm ci 后再次比对及 vue-tsc/Vite、Chromium 验收，待新 CI。
+
+#111 实际 1440/390 参数截图仍被所有材质示意挤占首屏。下一候选改为布局字段优先、渐变/阴影/曲线各自分组的原位编辑与焦点跳转，保留数字输入和协议。中间色标增删复用布尔字段，方向键/Home/End，阴影重新启用恢复本次会话关闭前不透明度（无历史默认15%）。不增加第四栏或弹窗，不修改像素基线；新增分组跳转、色标增删与阴影恢复浏览器断言，待 CI。
+
+追加六项指南证据 Hands Up、Heroic Realism、Hipness Purgatory、Hollywood Regency、Holographic UI、Honeycore；累计 124，剩余 166，保留原始许可与精选状态。待 CI。
+
+#112 自审发现分拆 MaterialActions 时 JSX 容器收尾错误，合并前修正；补充 CI 路由将 MaterialActions/BezierEditor 单独改动也视为视觉风险。阴影示意文字使用固定可读标签，避免自定义深色表面导致低对比。等待实际完整 CI。
+
+追加 6 项原始指南审计：Human Scribble、Hygge、Indie Sleaze、Industrial Gothic、Ink Wash、International Typographic Style；累计 130，剩余 160 项。每项保留原始指南证据、标签、双语检索；候选待验收。
+
+追加 6 项原始指南审计：Iridescent、Isometric Design、Italo Disco、Japandi、Jiggy Era、Kid Science；累计 136，剩余 154 项。每项保留原始指南证据、标签、双语检索；候选待验收。
+
+#111 最终正式锁定版 42e80c4：45427408663（344 单测、26 Chromium、Firefox/WebKit 基础冒烟、8 个 axe 场景零违规、Windows）、45427408764 Registry、45427408694 Foundation ZIP 解包严格 npm ci（71 安装包）、Vite 7.3.8 与 Chromium 全部通过；实际产物 14938111293 共 46 文件已复审。#111 已 squash 合并 1f5e3dc，树 25928e99 与验收候选相同。#110 main 45427043654 Pages 部署实际日志成功。#112 继承 #111 精确文件树，新增 18 项原始指南分类（累计 136，剩余 154），分组编辑器、色标增删、阴影恢复及风险识别须待最新 CI、真实截图复审后合并；#111 main 部署待复查。禁止提前合并。
