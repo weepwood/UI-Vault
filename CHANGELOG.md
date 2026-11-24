@@ -4,6 +4,10 @@
 
 ## Unreleased
 
+- Chromium 视觉基线按审核后的构建重新生成（标签归并后弹窗标签收为 4 个一行、复用度下拉移入「项目目录」标题行）；`--capture-current` 把结果写入 `visual-output/visual-baselines.json`，CI 产物改为上传该文件，不再把仓库里未改写的基线当新基线交给人工审核。
+- 视觉回归中的外站 iframe（Emboss Lab / Gr8r Studio）改用固定夹具，只断言本仓可控的 `src`、`sandbox`、原站与源码链接；上游改标题文案不再让与改动无关的 CI 变红，真实站点可用性仍由 `preview-health --live` 采集。
+- 复用度筛选中性标签缩短为「全部复用」，避免 104px 触发器出现省略号；测试补上标签长度与触发器宽度守卫。
+- `scripts/run-python.mjs` 改为复用 `scripts/lib/python.mjs` 的探测与跨平台调用，视觉回归脚本抽出 `serve_stub` / `track_page_errors` 辅助函数，去掉重复实现。
 - 引入 ESLint 10 与 React Hooks 检查（eslint-plugin-react-hooks 7）：JSX 解析、浏览器/Node 全局按目录划分，空 catch 与全角文案排版为显式豁免；清理全量 dead import 与无效转义，rules-of-hooks 为 error，Compiler 语义规则先降为 warn 并列入路线图。
 - 新增 React 组件行为测试基架（esbuild JSX 钩子 + happy-dom + act），10 组核心用例覆盖目录行、分组、下拉选择/键盘流、搜索清除；node --test 全量经 jsx-register 钩子运行，CI 同步。
 - npm run check 分层：新增 check:fast（validate + 测试 + 设计审计 + lint，本地迭代用），check 保持完整链并接入 lint。
