@@ -1364,6 +1364,18 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.get_by_role("spinbutton",name="第二层阴影模糊",exact=True).input_value()=="27"
             page.screenshot(path=str(OUTPUT/f"parameter-shadow-layer-{width}.png"))
+            blur=dock.get_by_label("选中阴影层模糊",exact=True)
+            blur.fill("29")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            blur.fill("31")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            dock.get_by_role("button",name="撤销",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert blur.input_value()!="29", "连续输入不应逐次撤销"
+            dock.get_by_role("button",name="重做",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert blur.input_value()=="31"
+
             dock.get_by_role("button",name="复位阴影",exact=True).click()
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.get_by_role("spinbutton",name="阴影不透明度",exact=True).input_value()=="0"
