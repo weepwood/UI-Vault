@@ -901,6 +901,60 @@ def verify_personal_backup_and_smart_folders(browser, origin):
     print("智能收藏夹、统一备份下载及导入、刷新恢复通过。")
 
 
+def verify_personal_research(browser, origin):
+    """评价、研究状态、实际使用、主题关联与刷新持久化。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-personal-open").click()
+        dialog=page.locator("#personal-library-dialog")
+        dialog.wait_for(state="visible")
+        row=dialog.locator(".personal-row").first
+        asset_id=row.get_attribute("data-personal-id")
+        row.get_by_role("button",name="研究记录",exact=False).click()
+        dialog.get_by_label("个人评分",exact=True).select_option("5")
+        dialog.get_by_label("研究状态",exact=True).select_option("studying")
+        dialog.get_by_role("button",name="保存评价",exact=True).click()
+        dialog.locator("#personal-use-context").fill("个人桌面应用")
+        dialog.get_by_role("button",name="登记使用",exact=True).click()
+        assert "个人桌面应用" in dialog.locator(".personal-usage-list").inner_text()
+        dialog.locator(".personal-research-editor").get_by_role("button",name="关闭",exact=True).click()
+        dialog.get_by_role("button",name="研究中",exact=True).click()
+        assert dialog.locator(".personal-row").count()==1
+        assert dialog.locator(".personal-row").first.get_attribute("data-personal-id")==asset_id
+        dialog.get_by_role("button",name="新建研究主题",exact=True).click()
+        dialog.locator("#personal-topic-title").fill("桌面设计研究")
+        dialog.locator("#personal-topic-text").fill("记录交互和布局思路")
+        dialog.get_by_role("button",name="保存研究主题",exact=True).click()
+        dialog.get_by_role("button",name="研究中",exact=True).click()
+        dialog.locator(".personal-row input[type=checkbox]").first.check()
+        dialog.get_by_role("button",name="关联",exact=True).click()
+        dialog.locator(".personal-navigation button").filter(has_text="桌面设计研究").click()
+        assert dialog.locator(".personal-row").count()==1
+        assert dialog.locator(".personal-row").first.get_attribute("data-personal-id")==asset_id
+        page.keyboard.press("Escape")
+        dialog.wait_for(state="detached")
+        page.reload(wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-personal-open").click()
+        dialog.locator(".personal-navigation button").filter(has_text="桌面设计研究").click()
+        dialog.locator(".personal-topic-summary summary").click()
+        assert "记录交互和布局思路" in dialog.locator(".personal-topic-summary").inner_text()
+        row=dialog.locator(".personal-row").first
+        assert row.get_attribute("data-personal-id")==asset_id
+        assert "研究中" in row.inner_text()
+        row.get_by_role("button",name="研究记录",exact=False).click()
+        assert dialog.get_by_label("个人评分",exact=True).input_value()=="5"
+        assert "个人桌面应用" in dialog.locator(".personal-usage-list").inner_text()
+    finally:
+        context.close()
+    print("个人研究工作流通过：评分、研究状态、使用登记、多资产关联入口与刷新恢复。")
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -1522,6 +1576,7 @@ def main():
                 verify_large_directory_groups(browser, local)
                 verify_personal_library(browser, local)
                 verify_personal_backup_and_smart_folders(browser, local)
+                verify_personal_research(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

@@ -1,0 +1,67 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {emptyPersonalLibrary,normalizePersonalLibrary,changePersonalLibrary,personalAssetItems} from '../assets/core/personal-library.js';
+import {normalizeResearch,changeResearch,mergeResearch,validateResearchBackup,RESEARCH_LIMITS} from '../assets/core/personal-research.js';
+import {exportPersonalBackup,parsePersonalBackup,mergePersonalBackup} from '../assets/core/personal-backup.js';
+import {DEFAULT_SETTINGS} from '../assets/core/settings.js';
+
+const assets=[{id:'a',title:'Panel'},{id:'b',title:'Menu'},{id:'c',title:'Canvas'}];
+const review=(id,rating,status)=>({type:'research-review',id,rating,status});
+const topic=(id,title,text)=>({type:'research-topic-save',id,title,text});
+const use=(id,assetId,context)=>({type:'research-use',id,assetId,context,at:100});
+test('旧版研究数据为空，评分与状态独立，支持清除和范围筛选',()=>{
+  const old=normalizePersonalLibrary({version:1,folders:[],smartFolders:[],notes:[],recent:[]});
+  assert.deepEqual(old.research,normalizeResearch());
+  let library=changePersonalLibrary(old,review('a',5,'studying'));
+  library=changePersonalLibrary(library,review('b',0,'queued'));
+  library=changePersonalLibrary(library,review('c',4,''));
+  assert.deepEqual(personalAssetItems(assets,library,new Set(),'research:studying'),[assets[0]]);
+  assert.deepEqual(personalAssetItems(assets,library,new Set(),'research:rated'),[assets[0],assets[2]]);
+  assert.throws(()=>changePersonalLibrary(library,review('a',6,'studying')),TypeError);
+  assert.deepEqual(changePersonalLibrary(library,review('a',0,'')).research.reviews.map(x=>x.id),['c','b']);
+  assert.equal(old.research.reviews.length,0);
+});
+test('使用记录是手动事件，同一资产可多次登记，删除不影响评价',()=>{
+  let library=changePersonalLibrary(emptyPersonalLibrary(),review('a',4,'reused'));
+  library=changePersonalLibrary(library,use('u1','a','桌面应用'));
+  library=changePersonalLibrary(library,use('u2','a','组件演示'));
+  assert.equal(library.research.usage.length,2);
+  assert.deepEqual(personalAssetItems(assets,library,new Set(),'research:used'),[assets[0]]);
+  assert.throws(()=>changePersonalLibrary(library,use('u2','b','重复')),RangeError);
+  library=changePersonalLibrary(library,{type:'research-use-delete',id:'u1'});
+  assert.equal(library.research.usage.length,1);
+  assert.equal(library.research.reviews[0].rating,4);
+  assert.equal(library.recent.length,0);
+});
+test('研究主题关联去重、更新笔记保留资产、解除关联与删除独立',()=>{
+  let library=changePersonalLibrary(emptyPersonalLibrary(),topic('t','设计主题','原笔记'));
+  library=changePersonalLibrary(library,{type:'research-topic-add',id:'t',ids:['a','b','a','future']});
+  assert.deepEqual(library.research.topics[0].ids,['a','b','future']);
+  library=changePersonalLibrary(library,topic('t','更新主题','新笔记'));
+  assert.equal(library.research.topics[0].text,'新笔记');
+  assert.deepEqual(personalAssetItems(assets,library,new Set(),'topic:t'),assets.slice(0,2));
+  library=changePersonalLibrary(library,{type:'research-topic-remove',id:'t',ids:['a']});
+  assert.deepEqual(library.research.topics[0].ids,['b','future']);
+  assert.throws(()=>changePersonalLibrary(library,{type:'research-topic-add',id:'t',ids:Array.from({length:RESEARCH_LIMITS.links+1},(_,i)=>'id'+i)}),RangeError);
+  assert.deepEqual(changePersonalLibrary(library,{type:'research-topic-delete',id:'t'}).research.topics,[]);
+});
+test('研究记录进入统一备份，同 ID 本地优先，旧格式兼容，异常拒绝',()=>{
+  const data=()=>({personal:emptyPersonalLibrary(),favorites:new Set(),presets:[],preferences:{...DEFAULT_SETTINGS}});
+  const local=data(),remote=data();
+  local.personal=changePersonalLibrary(local.personal,review('a',5,'studied'));
+  remote.personal=changePersonalLibrary(remote.personal,review('a',2,'queued'));
+  remote.personal=changePersonalLibrary(remote.personal,topic('t','主题','笔记'));
+  remote.personal=changePersonalLibrary(remote.personal,use('u','a','场景'));
+  const parsed=parsePersonalBackup(exportPersonalBackup(remote));
+  assert.deepEqual(parsed,remote);
+  const merged=mergePersonalBackup(local,parsed);
+  assert.equal(merged.personal.research.reviews[0].rating,5);
+  assert.equal(merged.personal.research.topics[0].title,'主题');
+  assert.equal(merged.personal.research.usage.length,1);
+  const old=JSON.parse(exportPersonalBackup(local));delete old.personal.research;
+  assert.deepEqual(parsePersonalBackup(JSON.stringify(old)).personal.research,normalizeResearch());
+  assert.throws(()=>validateResearchBackup({reviews:[{id:'a',rating:9,status:'queued'}],usage:[],topics:[]}),TypeError);
+  assert.throws(()=>validateResearchBackup({reviews:[],usage:[],topics:[{id:'t',title:'x',text:'',ids:['a','a']}]}),TypeError);
+  assert.deepEqual(mergeResearch(local.personal.research,remote.personal.research).reviews,local.personal.research.reviews);
+  assert.throws(()=>changeResearch({},review('a',3,'wrong')),TypeError);
+});
