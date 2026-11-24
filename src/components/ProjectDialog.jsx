@@ -8,6 +8,8 @@ import {getRepositoryArchiveUrl,getStandaloneBundlePath} from '../../assets/core
 import {assetReuseManifest} from '../../assets/core/reuse-manifest.js';
 import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
 import {DesignGuide} from './DesignGuide.jsx';
+import {DemoParameterPanel} from './DemoParameterPanel.jsx';
+import {parameterSchemaFor} from '../../assets/core/demo-parameters.js';
 
 function sourceLink(asset,file){
   if(!asset)return 'https://github.com/weepwood/UI-Vault';
@@ -294,6 +296,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
           title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
       </section>}
       <ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>
+      {open&&tab==='page-info'&&parameterSchemaFor(asset)&&<DemoParameterPanel key={asset.id+':'+asset.preview} asset={asset} notify={notify}/>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
     {asset?.designGuidePath&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"

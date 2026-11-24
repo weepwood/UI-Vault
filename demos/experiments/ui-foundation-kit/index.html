@@ -330,6 +330,7 @@
 [data-density="compact"] .setting-row { padding:9px 0; }
 [data-density="compact"] .sample-head { padding-top:12px; padding-bottom:12px; }
 
+.token-editor{margin-top:12px;padding:16px;}.token-editor summary{cursor:pointer;font-weight:600;}.token-editor p{font-size:12px;color:var(--ui-muted);margin:10px 0;}.token-editor-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;}.token-editor-fields label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;}.token-editor-fields input{min-width:0;width:76px;color:var(--ui-text);background:var(--ui-surface);border:1px solid var(--ui-border);border-radius:var(--ui-radius-sm);padding:4px;}.token-editor-fields input[type=color]{height:32px;}.token-editor-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:12px;font-size:12px;}.token-editor select{color:var(--ui-text);background:var(--ui-surface);border:1px solid var(--ui-border);padding:5px;}.token-editor textarea{display:block;width:100%;margin-top:10px;resize:vertical;color:var(--ui-text);background:var(--ui-canvas);border:1px solid var(--ui-border);padding:8px;font:12px monospace;}.token-editor textarea[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -383,6 +384,16 @@
         </section>
         <section id="tokens" class="main-section"><div class="section-head"><div><h2>设计 Token</h2><p>修改一个变量，在所有组件中同步生效。</p></div><button class="ui-button ui-button--outline ui-button--sm" id="copy-tokens" type="button"><svg class="ui-icon"><use href="#i-copy"/></svg>复制当前主题</button></div>
           <div class="token-layout"><div class="ui-card token-section"><div class="token-header"><h3>主题配色</h3><span class="ui-badge" id="theme-name">Indigo / Light</span></div><div class="token-strip" id="token-strip"><div class="token-swatch"><div style="background:var(--ui-canvas)"></div><span>Canvas</span><code data-color="canvas"></code></div><div class="token-swatch"><div style="background:var(--ui-surface)"></div><span>Surface</span><code data-color="surface"></code></div><div class="token-swatch"><div style="background:var(--ui-text)"></div><span>Text</span><code data-color="text"></code></div><div class="token-swatch"><div style="background:var(--ui-accent)"></div><span>Accent</span><code data-color="accent"></code></div><div class="token-swatch"><div style="background:var(--ui-border)"></div><span>Border</span><code data-color="border"></code></div></div><div class="accent-settings"><span>品牌强调色</span><div class="accent-choices" role="group" aria-label="品牌强调色"><button type="button" data-accent-choice="indigo" class="accent-dot" aria-label="Indigo" aria-pressed="true" style="--dot:#4355CB"></button><button type="button" data-accent-choice="slate" class="accent-dot" aria-label="Slate" aria-pressed="false" style="--dot:#334155"></button><button type="button" data-accent-choice="teal" class="accent-dot" aria-label="Teal" aria-pressed="false" style="--dot:#0C766D"></button><button type="button" data-accent-choice="clay" class="accent-dot" aria-label="Clay" aria-pressed="false" style="--dot:#9B4629"></button></div></div></div><div class="ui-card token-section scale-section"><h3>尺寸与节奏</h3><p>固定的层级比堆叠视觉特效更重要。</p><div class="scale-row"><span>间距</span><div class="scale-bars"><i style="width:16px"></i><i style="width:32px"></i><i style="width:48px"></i><i style="width:72px"></i></div><small>4 / 8 / 12 / 18</small></div><div class="scale-row"><span>圆角</span><div class="radius-demo"><i></i><i></i><i></i></div><small>8 / 10 / 14</small></div><div class="scale-row"><span>动效</span><div class="timing-track"><i></i></div><small>120–240ms</small></div></div></div>
+          <details class="ui-card token-editor" id="token-editor">
+            <summary>自定义 Design Tokens</summary>
+            <p>修改选定变量，实时更新本页组件。自定义值覆盖当前主题，重置后恢复主题默认值。</p>
+            <div id="token-editor-fields" class="token-editor-fields"></div>
+            <div class="token-editor-actions"><button class="ui-button ui-button--outline ui-button--sm" type="button" id="token-editor-reset">重置自定义值</button>
+              <label>导出格式 <select id="token-editor-format"><option value="css">CSS</option><option value="json">JSON</option><option value="ts">TypeScript</option></select></label>
+              <button class="ui-button ui-button--sm" type="button" id="token-editor-export">生成代码</button></div>
+            <textarea id="token-editor-output" aria-label="Token 导出代码" rows="7" readonly hidden></textarea>
+            <p id="token-editor-status" role="status">导出为当前 12 项变量的快照，不包含完整主题。</p>
+          </details>
         </section>
         <section id="guidelines" class="main-section guidelines"><div class="section-head"><div><h2>设计准则</h2><p>让一致性来自规则，而不是复制页面。</p></div></div><div class="rule-row"><span class="rule-index">01</span><div><strong>内容优先</strong><p>删除无用途的装饰性文字，让信息层级可被快速理解。</p></div><svg class="ui-icon"><use href="#i-check"/></svg></div><div class="rule-row"><span class="rule-index">02</span><div><strong>按需使用组件</strong><p>常规元素优先原生 HTML；复杂弹窗、菜单与组合框使用成熟的无障碍组件。</p></div><svg class="ui-icon"><use href="#i-check"/></svg></div><div class="rule-row"><span class="rule-index">03</span><div><strong>反馈要真实</strong><p>加载、错误、空状态、成功与撤销必须有明确的行为与提示。</p></div><svg class="ui-icon"><use href="#i-check"/></svg></div></section>
         <footer class="page-footer"><span>UI Foundation · 可跨项目复用的设计基础</span><span>Vue · React · Rust/GPUI</span></footer>
@@ -487,6 +498,116 @@
   document.addEventListener('keydown',ev=>{if((ev.metaKey||ev.ctrlKey)&&ev.key.toLowerCase()==='k'){ev.preventDefault();if(searchDialog.open)searchDialog.close();else openSearch();}});
   const navLinks=$$('#main-nav .nav-link');navLinks.forEach(a=>a.addEventListener('click',()=>{navLinks.forEach(x=>x.classList.remove('active'));a.classList.add('active');}));
   refreshTheme();setTab('overview');
+  // BEGIN UI-VAULT PARAMETER CORE (同 assets/core/demo-parameters.js，单文件 Demo 保持独立)
+// 版本化、显式登记的 Demo 参数协议。仅支持确定的类型和值域，不传任意 CSS 或代码。
+const PARAMETER_CHANNEL='ui-vault:demo-parameters';
+const PARAMETER_VERSION=1;
+const FOUNDATION_ID='ui-foundation-kit';
+const FOUNDATION_PREVIEW='demos/experiments/ui-foundation-kit/index.html';
+const FOUNDATION_FIELDS=Object.freeze([
+  {key:'canvas',label:'画布颜色',type:'color',css:'--ui-canvas'},
+  {key:'surface',label:'表面颜色',type:'color',css:'--ui-surface'},
+  {key:'text',label:'文字颜色',type:'color',css:'--ui-text'},
+  {key:'muted',label:'次级文字',type:'color',css:'--ui-muted'},
+  {key:'border',label:'边框颜色',type:'color',css:'--ui-border'},
+  {key:'accent',label:'强调色',type:'color',css:'--ui-accent'},
+  {key:'accent-on',label:'强调色文字',type:'color',css:'--ui-accent-on'},
+  {key:'radius',label:'基础圆角',type:'number',css:'--ui-radius-md',min:0,max:32,unit:'px'},
+  {key:'space',label:'基础间距',type:'number',css:'--ui-space-4',min:4,max:32,unit:'px'},
+  {key:'control',label:'控件高度',type:'number',css:'--ui-size-control',min:24,max:64,unit:'px'},
+  {key:'font',label:'基础字号',type:'number',css:'--ui-type-base',min:12,max:22,unit:'px'},
+  {key:'motion',label:'基础动效时长',type:'number',css:'--ui-motion-fast',min:0,max:600,unit:'ms'}
+].map(Object.freeze));
+function parameterSchemaFor(asset){
+  return asset?.source==='local'&&asset.id===FOUNDATION_ID&&asset.preview===FOUNDATION_PREVIEW?FOUNDATION_FIELDS:null;
+}
+function validParameter(field,value){
+  if(field.type==='color')return typeof value==='string'&&/^#[0-9a-f]{6}$/i.test(value);
+  if(field.type==='number')return Number.isInteger(value)&&value>=field.min&&value<=field.max;
+  if(field.type==='boolean')return typeof value==='boolean';
+  if(field.type==='enum')return typeof value==='string'&&field.options.includes(value);
+  return false;
+}
+function normalizeParameters(fields,values,{complete=false}={}){
+  if(!values||typeof values!=='object'||Array.isArray(values))throw new TypeError('参数必须为对象');
+  const result={};
+  for(const [key,value] of Object.entries(values)){
+    const field=fields.find(item=>item.key===key);
+    if(!field||!validParameter(field,value))throw new TypeError('无效参数：'+key);
+    result[key]=field.type==='color'?value.toLowerCase():value;
+  }
+  if(complete&&fields.some(field=>!Object.hasOwn(result,field.key)))throw new TypeError('缺少参数');
+  return result;
+}
+function parameterMessage(action,requestId,values){
+  return {channel:PARAMETER_CHANNEL,version:PARAMETER_VERSION,assetId:FOUNDATION_ID,action,requestId,...(values===undefined?{}:{values})};
+}
+function validParameterMessage(data,actions){
+  return !!data&&data.channel===PARAMETER_CHANNEL&&data.version===PARAMETER_VERSION&&data.assetId===FOUNDATION_ID&&actions.includes(data.action)&&typeof data.requestId==='string'&&/^[a-zA-Z0-9-]{1,80}$/.test(data.requestId);
+}
+function tokenExport(values,format){
+  const normalized=normalizeParameters(FOUNDATION_FIELDS,values,{complete:true});
+  const tokens=Object.fromEntries(FOUNDATION_FIELDS.map(field=>[field.css,typeof normalized[field.key]==='number'?normalized[field.key]+field.unit:normalized[field.key]]));
+  if(format==='css')return '/* UI Foundation: 当前编辑参数快照；非完整主题。 */\n:root {\n'+Object.entries(tokens).map(([key,value])=>'  '+key+': '+value+';').join('\n')+'\n}\n';
+  if(format==='json')return JSON.stringify({format:'ui-vault-token-snapshot',version:1,tokens},null,2)+'\n';
+  if(format==='ts')return 'export const tokens = '+JSON.stringify(tokens,null,2)+' as const;\n';
+  throw new TypeError('未知导出格式');
+}
+  // END UI-VAULT PARAMETER CORE
+  const editorFields=$('#token-editor-fields'),editorOutput=$('#token-editor-output'),editorStatus=$('#token-editor-status');
+  const inputs=new Map();
+  function currentParameters(){
+    const style=getComputedStyle(root);
+    return normalizeParameters(FOUNDATION_FIELDS,Object.fromEntries(FOUNDATION_FIELDS.map(field=>{
+      const raw=style.getPropertyValue(field.css).trim();
+      return [field.key,field.type==='number'?Number.parseInt(raw,10):raw];
+    })),{complete:true});
+  }
+  function syncEditor(){
+    const values=currentParameters();
+    for(const [key,input] of inputs)input.value=String(values[key]);
+    if(!editorOutput.hidden)editorOutput.value=tokenExport(values,$('#token-editor-format').value);
+    refreshTheme();
+  }
+  function applyParameters(values){
+    const checked=normalizeParameters(FOUNDATION_FIELDS,values);
+    for(const field of FOUNDATION_FIELDS)if(Object.hasOwn(checked,field.key))
+      root.style.setProperty(field.css,field.type==='number'?checked[field.key]+field.unit:checked[field.key]);
+    syncEditor();
+  }
+  function resetParameters(){
+    for(const field of FOUNDATION_FIELDS)root.style.removeProperty(field.css);
+    syncEditor();
+  }
+  for(const field of FOUNDATION_FIELDS){
+    const label=document.createElement('label'),input=document.createElement('input');
+    label.append(document.createTextNode(field.label));
+    input.type=field.type==='color'?'color':'number';
+    input.id='token-edit-'+field.key;
+    if(field.type==='number'){input.min=field.min;input.max=field.max;input.step=1;}
+    input.addEventListener('input',()=>{
+      const value=field.type==='number'?input.valueAsNumber:input.value;
+      if(validParameter(field,value)){applyParameters({[field.key]:value});editorStatus.textContent='当前变量已更新';}
+      else editorStatus.textContent='请输入允许范围内的值';
+    });
+    input.addEventListener('change',()=>syncEditor());
+    inputs.set(field.key,input);label.append(input);editorFields.append(label);
+  }
+  $('#token-editor-reset').addEventListener('click',()=>{resetParameters();editorStatus.textContent='已恢复当前主题默认值';});
+  $('#token-editor-export').addEventListener('click',()=>{editorOutput.hidden=false;editorOutput.value=tokenExport(currentParameters(),$('#token-editor-format').value);editorOutput.focus();editorOutput.select();editorStatus.textContent='代码已生成并选中，可复制到自己的项目。';});
+  $('#token-editor-format').addEventListener('change',()=>syncEditor());
+  new MutationObserver(()=>syncEditor()).observe(root,{attributes:true,attributeFilter:['data-theme','data-accent']});
+  syncEditor();
+  // sandbox 中子页为 opaque origin。仅接受同站点的直接父窗口、精确协议与白名单值。
+  if(window.parent!==window)window.addEventListener('message',event=>{
+    if(event.source!==window.parent||event.origin!==location.origin||!validParameterMessage(event.data,['read','apply','reset']))return;
+    const {action,requestId,values}=event.data;
+    try{
+      if(action==='apply')applyParameters(values);
+      else if(action==='reset')resetParameters();
+      event.source.postMessage(parameterMessage('state',requestId,currentParameters()),event.origin);
+    }catch{event.source.postMessage(parameterMessage('error',requestId),event.origin);}
+  });
 })();
 
 </script>
