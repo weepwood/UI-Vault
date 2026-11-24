@@ -4,7 +4,7 @@ import {projectInfoMarkup} from '../../assets/core/workbench.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {getSourceFiles,downloadSourceText} from '../../assets/core/source-files.js';
-import {getRepositoryArchiveUrl,getStandaloneBundlePath} from '../../assets/core/project-delivery.js';
+import {getRepositoryArchiveUrl,getStandaloneBundlePath,getFoundationProjectPath} from '../../assets/core/project-delivery.js';
 import {assetReuseManifest} from '../../assets/core/reuse-manifest.js';
 import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
 import {DesignGuide} from './DesignGuide.jsx';
@@ -194,6 +194,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   const isCurrent=source.id===asset?.id&&source.path===selectedFile?.path;
   // 独立交付文件通过静态白名单生成；外部仓库由 GitHub 提供整仓快照。
   const standaloneBundle=getStandaloneBundlePath(asset);
+  const foundationProject=getFoundationProjectPath(asset);
   const repositoryArchive=getRepositoryArchiveUrl(asset);
   function downloadReuseManifest(){
     if(!asset)return;
@@ -265,6 +266,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
             download={asset.id+'.zip'} className="source-standalone-action" title="仅包含该 Demo 已审核的独立文件">
             <Icon name="download"/><span>下载独立演示 ZIP</span>
           </a>}
+          {foundationProject&&<a id="source-foundation-project" href={resolveAsset(foundationProject)} download="ui-foundation-kit-project.zip" className="source-standalone-action" title="含 Token、CSS、构建脚本、框架适配器和许可；不含 node_modules"><Icon name="download"/><span>下载 Foundation 源码工程</span></a>}
           {repositoryArchive&&<a id="source-repo-archive" href={repositoryArchive}
             target="_blank" rel="noopener noreferrer"
             title="GitHub 仓库快照；若当前资源属于仓库子目录，压缩包将包含完整仓库">
@@ -276,7 +278,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
         </div>
       </div>
       <p className="source-delivery-note" role="note">
-        {asset?.source==='external'
+        {foundationProject?'Foundation 源码工程包含可离线构建的 Token/CSS、静态演示与 React/Vue/GPUI 适配源码及说明。Vue 示例需另装依赖；本包不含 node_modules。':asset?.source==='external'
           ?'外部项目仍在原仓库独立维护。仓库 ZIP 是完整源码快照，不保证仅包含当前演示，也不代表已获得商业复用许可。'
           :standaloneBundle
             ?'独立演示 ZIP 只包含该页面需要的已登记静态文件，可脱离 UI-Vault 工作台使用。'
@@ -286,8 +288,10 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
       </p>
       <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<><a href={resolveAsset('registry/index.json')} target="_blank" rel="noopener noreferrer">Foundation Registry（发布站点）</a></>}</div>
       {selectedFile&&<div className="source-reader-tools"><span className="source-current-path" title={selectedFile.path}>{selectedFile.path}</span><label className="source-wrap-toggle"><input type="checkbox" checked={wrapSource} onChange={event=>setWrapSource(event.target.checked)}/> 自动换行</label><label className="source-wrap-toggle"><input type="checkbox" checked={highlightSource} onChange={event=>setHighlightSource(event.target.checked)}/> 语法高亮</label></div>}
+      <div className="source-reader-layout">
       {files.length>1&&<details className="source-file-browser" key={asset?.id+':'+asset?.preview}><summary>源码文件目录 · {files.length} 项</summary><ul aria-label="已登记源码文件">{files.map(file=><li key={file.path}><button type="button" onClick={()=>setFilePath(file.path)} aria-pressed={file.path===selectedFile?.path}><Icon name="file-code"/><span>{file.name}</span><small>{file.path.slice(0,file.path.lastIndexOf('/'))}</small></button></li>)}</ul></details>}
       <pre className={'source-view'+(wrapSource?' source-view-wrap':'')}><SourceCode text={isCurrent?source.text:'选择“源代码”查看项目实现。'} language={selectedFile?.language} enabled={Boolean(highlightSource&&open&&tab==='source'&&isCurrent&&source.ready)}/></pre>
+      </div>
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
       aria-labelledby="tab-page-info" tabIndex={0} hidden={tab!=='page-info'}>

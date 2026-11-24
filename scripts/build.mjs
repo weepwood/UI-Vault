@@ -113,6 +113,7 @@ runPythonOrThrow(['scripts/build-bundles.py','--build'],{cwd:ROOT});
 // 只发布明确属于 MIT Foundation 的固定文件，不从第三方目录抓取组件。
 execFileSync(process.execPath,[REGISTRY_ROOT+'/scripts/build-tokens.mjs'],{cwd:ROOT,stdio:'inherit'});
 await writeRegistry(resolve(ROOT,REGISTRY_ROOT),resolve(out,'registry'));
+runPythonOrThrow(['scripts/build-foundation-project.py','--build'],{cwd:ROOT});
 // 离线构建时生成未核实状态占位，不伪造远端成功。
 execFileSync(process.execPath,['scripts/project-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});
 execFileSync(process.execPath,['scripts/preview-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});

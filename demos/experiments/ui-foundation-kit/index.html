@@ -546,10 +546,22 @@ const WARM_LAYOUT_FIELDS=Object.freeze([
   {key:'gradient',label:'启用表面渐变',type:'boolean',group:'表面渐变',default:false},
   {key:'gradientEnd',label:'渐变终点颜色',type:'color',group:'表面渐变',default:'#efdecf'},
   {key:'gradientAngle',label:'渐变角度',type:'number',group:'表面渐变',min:0,max:360,unit:'°',default:135},
+  {key:'gradientMid',label:'启用中间色标',type:'boolean',group:'表面渐变',default:false,extension:2},
+  {key:'gradientMidColor',label:'中间色标颜色',type:'color',group:'表面渐变',default:'#e5c8ac',extension:2},
+  {key:'gradientMidPosition',label:'中间色标位置',type:'number',group:'表面渐变',min:0,max:100,unit:'%',default:50,extension:2},
+  {key:'gradientMid2',label:'启用第二个中色标',type:'boolean',group:'表面渐变',default:false,extension:2},
+  {key:'gradientMid2Color',label:'第二个中色标颜色',type:'color',group:'表面渐变',default:'#f7e6d5',extension:2},
+  {key:'gradientMid2Position',label:'第二个中色标位置',type:'number',group:'表面渐变',min:0,max:100,unit:'%',default:75,extension:2},
   {key:'shadowColor',label:'阴影颜色',type:'color',group:'阴影',default:'#493a32'},
   {key:'shadowOpacity',label:'阴影不透明度',type:'number',group:'阴影',min:0,max:50,unit:'%',default:0},
   {key:'shadowBlur',label:'阴影模糊',type:'number',group:'阴影',min:0,max:48,unit:'px',default:16},
   {key:'shadowY',label:'阴影纵向偏移',type:'number',group:'阴影',min:0,max:24,unit:'px',default:6},
+  {key:'shadow2Color',label:'第二层阴影颜色',type:'color',group:'阴影',default:'#493a32',extension:2},
+  {key:'shadow2Opacity',label:'第二层阴影不透明度',type:'number',group:'阴影',min:0,max:50,unit:'%',default:0,extension:2},
+  {key:'shadow2Blur',label:'第二层阴影模糊',type:'number',group:'阴影',min:0,max:48,unit:'px',default:8,extension:2},
+  {key:'shadow2X',label:'第二层阴影横向偏移',type:'number',group:'阴影',min:-24,max:24,unit:'px',default:0,extension:2},
+  {key:'shadow2Y',label:'第二层阴影纵向偏移',type:'number',group:'阴影',min:-24,max:24,unit:'px',default:2,extension:2},
+  {key:'shadow2Spread',label:'第二层阴影扩展',type:'number',group:'阴影',min:-12,max:12,unit:'px',default:0,extension:2},
   {key:'curveX1',label:'控制点 X1',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:20},
   {key:'curveY1',label:'控制点 Y1',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:80},
   {key:'curveX2',label:'控制点 X2',type:'number',group:'动效曲线',min:0,max:100,unit:'%',default:20},
@@ -591,8 +603,15 @@ function normalizeStoredParameters(asset,values){
   const fields=parameterSchemaFor(asset);
   if(!fields)throw TypeError('未登记的 Demo');
   const checked=normalizeParameters(fields,values);
-  if(asset.id==='warm-workbench'&&fields.filter(f=>!f.group).every(f=>Object.hasOwn(checked,f.key))&&fields.filter(f=>f.group).every(f=>!Object.hasOwn(checked,f.key))){
-    for(const field of fields)if(field.group)checked[field.key]=field.default;
+  if(asset.id==='warm-workbench'){
+    const legacy=fields.filter(f=>!f.group),advanced=fields.filter(f=>f.group&&!f.extension),extension=fields.filter(f=>f.extension===2);
+    const hasAll=items=>items.every(f=>Object.hasOwn(checked,f.key));
+    const hasNone=items=>items.every(f=>!Object.hasOwn(checked,f.key));
+    if(hasAll(legacy)&&hasNone(advanced)&&hasNone(extension)){
+      for(const field of [...advanced,...extension])checked[field.key]=field.default;
+    }else if(hasAll(legacy)&&hasAll(advanced)&&hasNone(extension)){
+      for(const field of extension)checked[field.key]=field.default;
+    }
   }
   return normalizeParameters(fields,checked,{complete:true});
 }
@@ -600,9 +619,16 @@ function normalizeStoredParameters(asset,values){
 function warmLayoutCssValues(values){
   const v=normalizeParameters(WARM_LAYOUT_FIELDS,values,{complete:true});
   const css=Object.fromEntries(WARM_LAYOUT_FIELDS.filter(f=>f.css).map(f=>[f.css,String(v[f.key])+(f.unit||'')]));
-  const color=v.shadowColor.slice(1).match(/../g).map(part=>parseInt(part,16)).join(', ');
-  css['--warm-card-gradient']=v.gradient?'linear-gradient('+v.gradientAngle+'deg, '+v.surface+', '+v.gradientEnd+')':'none';
-  css['--warm-card-shadow']=v.shadowOpacity?'0 '+v.shadowY+'px '+v.shadowBlur+'px rgba('+color+', '+v.shadowOpacity/100+')':'none';
+  const stops=[];
+  if(v.gradientMid)stops.push([v.gradientMidPosition,v.gradientMidColor]);
+  if(v.gradientMid2)stops.push([v.gradientMid2Position,v.gradientMid2Color]);
+  stops.sort((a,b)=>a[0]-b[0]);
+  css['--warm-card-gradient']=v.gradient?'linear-gradient('+v.gradientAngle+'deg, '+[v.surface,...stops.map(([position,color])=>color+' '+position+'%'),v.gradientEnd].join(', ')+')':'none';
+  const rgba=(color,opacity)=>'rgba('+color.slice(1).match(/../g).map(part=>parseInt(part,16)).join(', ')+', '+opacity/100+')';
+  const shadows=[];
+  if(v.shadowOpacity)shadows.push('0 '+v.shadowY+'px '+v.shadowBlur+'px '+rgba(v.shadowColor,v.shadowOpacity));
+  if(v.shadow2Opacity)shadows.push(v.shadow2X+'px '+v.shadow2Y+'px '+v.shadow2Blur+'px '+v.shadow2Spread+'px '+rgba(v.shadow2Color,v.shadow2Opacity));
+  css['--warm-card-shadow']=shadows.join(', ')||'none';
   css['--warm-motion-curve']='cubic-bezier('+[v.curveX1,v.curveY1,v.curveX2,v.curveY2].map(x=>x/100).join(', ')+')';
   css['--warm-motion-duration']=v.motionDuration+'ms';
   css['--warm-motion-lift']=v.motionDuration&&v.motionLift?-v.motionLift+'px':'0px';

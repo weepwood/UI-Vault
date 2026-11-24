@@ -4,7 +4,7 @@
 
 ## 快速使用
 
-**1. 直接查看静态 Demo**：打开 `demo/index.html`，或直接打开交付包中的单文件版本 `UI-Foundation-Demo.html`。无 npm 依赖。
+**1. 直接查看静态 Demo**：打开 `demo/index.html`。无 npm 依赖。
 
 **2. 构建设计 Token**（仅需 Node.js >=20）：
 
@@ -30,7 +30,7 @@ npm run dev
 npm run build
 ```
 
-> Vue 示例需要联网安装依赖，当前环境无法联网访问 npm Registry，已验证的是脚本/Token/浏览器静态示例，不是 Vue npm 构建。
+> Vue 示例需要联网安装依赖，独立 Vue 示例目前没有锁文件；需要自行安装依赖并验证构建。Registry 适配器另有独立锁定的 React/Vue CI，不等同于该示例。
 
 ## 目录
 

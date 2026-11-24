@@ -1039,14 +1039,31 @@ def verify_warm_layout_parameters(browser, origin):
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
         panel.get_by_role("checkbox",name="启用表面渐变").check()
         panel.get_by_role("spinbutton",name="渐变角度").fill("90")
-        panel.get_by_role("spinbutton",name="阴影不透明度").fill("25")
+        panel.get_by_role("spinbutton",name="阴影不透明度",exact=True).fill("25")
+        panel.get_by_role("checkbox",name="启用中间色标",exact=True).check()
+        panel.get_by_role("spinbutton",name="中间色标位置",exact=True).fill("35")
+        panel.get_by_role("checkbox",name="启用第二个中色标",exact=True).check()
+        panel.get_by_role("spinbutton",name="第二个中色标位置",exact=True).fill("75")
+        panel.get_by_role("spinbutton",name="第二层阴影不透明度",exact=True).fill("15")
+        panel.get_by_role("spinbutton",name="第二层阴影横向偏移",exact=True).fill("-4")
+        handle=panel.locator("[data-curve-handle='1']")
+        handle.scroll_into_view_if_needed()
+        point=handle.bounding_box()
+        page.mouse.move(point["x"]+point["width"]/2,point["y"]+point["height"]/2)
+        page.mouse.down()
+        page.mouse.move(point["x"]+point["width"]/2+15,point["y"]+point["height"]/2+10,steps=5)
+        page.mouse.up()
+        assert int(panel.get_by_role("spinbutton",name="控制点 X1",exact=True).input_value())>20
+        assert int(panel.get_by_role("spinbutton",name="控制点 Y1",exact=True).input_value())<80
         panel.get_by_role("spinbutton",name="悬停动效时长").fill("200")
         panel.get_by_role("spinbutton",name="悬停抬升距离").fill("3")
         panel.get_by_role("button",name="应用参数",exact=True).click()
         panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         card=frame.locator(".stat").first
-        assert "linear-gradient(90deg" in card.evaluate("(el)=>getComputedStyle(el).backgroundImage")
-        assert card.evaluate("(el)=>getComputedStyle(el).boxShadow")!="none"
+        gradient=card.evaluate("(el)=>getComputedStyle(el).backgroundImage")
+        assert "linear-gradient(90deg" in gradient and "35%" in gradient and "75%" in gradient,gradient
+        shadow=card.evaluate("(el)=>getComputedStyle(el).boxShadow")
+        assert shadow.count("rgba(")==2,shadow
         assert card.evaluate("(el)=>getComputedStyle(el).transitionDuration")=="0s", "减少动画必须禁用悬停动画"
         assert page.evaluate("() => window.__layoutFrame===document.querySelector('#preview-stage iframe')")
         page.screenshot(path=str(OUTPUT/"advanced-parameter-dialog.png"))
@@ -1233,6 +1250,11 @@ def verify_expanded_workbench_screenshots(browser, origin):
                 page.get_by_role("checkbox",name="自动换行").check()
                 assert page.locator(".source-view").evaluate("(el)=>getComputedStyle(el).whiteSpace")=="pre-wrap"
                 assert page.locator("#source-copy").is_enabled()
+                tree_box=page.locator(".source-file-browser").bounding_box()
+                code_box=page.locator(".source-view").bounding_box()
+                assert code_box["width"]>tree_box["width"] and code_box["height"]>=88
+                assert code_box["x"]>=tree_box["x"]+tree_box["width"]-1, "目录与源码应并排"
+                assert abs(code_box["y"]-tree_box["y"])<=2
                 page.screenshot(path=str(OUTPUT/"source-file-browser-desktop.png"))
                 raw=page.locator("#source-code").text_content()
                 page.get_by_role("checkbox",name="语法高亮").check()

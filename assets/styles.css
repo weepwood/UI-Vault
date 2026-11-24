@@ -1469,3 +1469,29 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 .parameter-material-swatch{min-width:0;min-height:72px;display:grid;align-content:center;gap:4px;padding:10px;border:1px solid var(--line-soft);border-radius:8px;color:#37312b}
 .parameter-material-swatch strong,.parameter-material-swatch small{justify-self:start;background:#fdfbf8;padding:2px 5px;border-radius:3px;color:#37312b;font-size:11px}
 .parameter-material-preview svg{width:100%;height:78px;color:var(--accent)}.parameter-material-preview code{grid-column:1/-1;font-size:10px;overflow-wrap:anywhere;color:var(--muted)}
+
+/* 仅在高级材质编辑展开区内生效，不改变三栏默认视觉基线。 */
+.parameter-material-preview{grid-template-columns:minmax(0,1fr) minmax(100px,144px)}
+.parameter-material-preview .bezier-editor{height:104px;overflow:visible}
+.bezier-handle{cursor:grab;touch-action:none}.bezier-handle:active{cursor:grabbing}
+
+/* #107 真实截图：展开目录占满弹窗，代码被挤出。让目录与代码共享剩余空间。 */
+.source-reader-layout{display:flex;flex-direction:column;flex:1 1 auto;min-height:0;min-width:0;gap:8px}
+.source-reader-layout .source-file-browser{flex:none;margin:0;min-width:0}
+.source-reader-layout .source-view{flex:1 1 auto;min-width:0;min-height:88px!important}
+.source-reader-layout .source-file-browser li button>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+@media(min-width:761px){
+ .source-reader-layout:has(.source-file-browser[open]){flex-direction:row;align-items:stretch}
+ .source-reader-layout .source-file-browser[open]{display:flex;flex-direction:column;flex:0 0 min(32%,220px);overflow:hidden}
+ .source-reader-layout .source-file-browser[open] ul{flex:1 1 auto;min-height:0;max-height:none;overflow:auto}
+ .source-reader-layout .source-file-browser[open] li button small{display:none}
+}
+@media(max-width:760px){
+ .source-reader-layout .source-file-browser[open] ul{max-height:min(110px,15dvh)}
+ #dialog-source{overflow-y:auto}
+}
+/* 展开筛选的垂直密度优化，普通目录行高和虚拟列表尺寸不变。 */
+.project-panel .directory-facets{gap:5px;padding-top:6px}
+.project-panel .directory-facet-field{gap:3px}
+.project-panel .directory-facet-field select{height:32px;min-height:32px}
+.project-panel .directory-facet-heading{margin:1px 0}

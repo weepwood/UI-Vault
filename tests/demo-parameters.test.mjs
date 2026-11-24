@@ -78,3 +78,18 @@ test('暖色高级参数安全生成 CSS，旧七项快照迁移但消息仍严�
  assert.throws(()=>warmLayoutCssValues({...edited,gradientEnd:'url(https://example.com)'}));assert.throws(()=>warmLayoutCssValues({...edited,curveX1:101}));
  assert.match(exportLayoutCss(asset,edited),/--warm-card-gradient: linear-gradient/);
 });
+
+test('四个色标按位置排序、两层阴影独立生成并迁移完整旧二十项快照',()=>{
+ const asset={id:'warm-workbench',source:'local',preview:'demos/layouts/warm-workbench/index.html'};
+ const defaults=Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default]));
+ const legacy=Object.fromEntries(WARM_LAYOUT_FIELDS.filter(f=>!f.extension).map(f=>[f.key,f.default]));
+ assert.equal(Object.keys(legacy).length,20);
+ assert.deepEqual(normalizeStoredParameters(asset,legacy),defaults);
+ assert.throws(()=>normalizeStoredParameters(asset,{...legacy,gradientMid:true}));
+ assert.throws(()=>normalizeParameters(WARM_LAYOUT_FIELDS,legacy,{complete:true}));
+ const css=warmLayoutCssValues({...defaults,gradient:true,gradientMid:true,gradientMid2:true,gradientMidPosition:80,gradientMid2Position:20,shadowOpacity:10,shadow2Opacity:20,shadow2X:-4,shadow2Spread:-2});
+ assert.match(css['--warm-card-gradient'],/#f7e6d5 20%, #e5c8ac 80%/);
+ assert.equal(css['--warm-card-shadow'],'0 6px 16px rgba(73, 58, 50, 0.1), -4px 2px 8px -2px rgba(73, 58, 50, 0.2)');
+ assert.throws(()=>warmLayoutCssValues({...defaults,gradientMidPosition:101}));
+ assert.throws(()=>warmLayoutCssValues({...defaults,shadow2Color:'url(https://example.com)'}));
+});

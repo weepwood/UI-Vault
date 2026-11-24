@@ -18,3 +18,10 @@ test('旧暖色预设保留七项原始值并填充默认高级参数',()=>{
  const storage={getItem:()=>JSON.stringify([{name:'旧预设',values:{...legacy,radius:22}}])};
  const result=readParameterPresets(asset,storage);assert.equal(result.length,1);assert.equal(result[0].values.radius,22);assert.equal(result[0].values.gradient,false);assert.equal(result[0].values.shadowOpacity,0);
 });
+
+test('二十项暖色旧预设保留编辑并迁移新增色标和阴影',()=>{
+ const asset={id:'warm-workbench',source:'local',preview:'demos/layouts/warm-workbench/index.html'};
+ const previous=Object.fromEntries(WARM_LAYOUT_FIELDS.filter(f=>!f.extension).map(f=>[f.key,f.default]));
+ const storage={getItem:()=>JSON.stringify([{name:'旧材质',values:{...previous,gradient:true,shadowOpacity:15}}])};
+ const [item]=readParameterPresets(asset,storage);assert.equal(item.values.gradient,true);assert.equal(item.values.shadowOpacity,15);assert.equal(item.values.gradientMid,false);assert.equal(item.values.shadow2Opacity,0);
+});

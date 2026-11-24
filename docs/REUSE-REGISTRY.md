@@ -41,3 +41,7 @@
 #105 原提交 04cb815a 的 CI 45414603355 实际通过：从仓库完整锁文件复制至隔离目录，执行 npm ci --ignore-scripts，cmp 锁文件无变化；React/Vue 编译、受控与非受控 Select、禁用选项、Dialog/Popover 焦点、390px 边缘碰撞均通过。目标工程依然自行安装依赖；Registry 只交付源文件和许可证，不携带 node_modules。可在本仓库以临时目录复制 tests/registry-runtime/package{,-lock}.json，再 npm ci，运行 node scripts/verify-registry-frameworks.mjs <临时目录> 与 python scripts/verify-registry-runtime.py <临时目录> 复现。主站依赖不变。
 
 下一候选：本地 CLI 新增 `--plan`（用法：`node scripts/install-registry.mjs --plan dist/registry /path/to/project foundation-react-primitives`），仅输出依赖闭包、模块版本、运行时要求、文件哈希与目标路径，不创建目录、不执行 npm install。实际安装的 REGISTRY-LOCK.json 增加 modules/runtime，保留原协议版本和字段；不同模块对同一运行时声明不一致时保守拒绝，不尝试自动解 semver。新增测试待 CI。
+
+## Foundation 源码工程 ZIP（候选）
+
+`downloads/ui-foundation-kit-project.zip` 是与静态 Demo ZIP、Registry 单模块安装、外站整仓快照不同的交付物。固定白名单包含 Foundation 自有 Token 源、生成 CSS/TS/Rust/JSON、构建检查与安装脚本、静态 Demo、React/Vue/GPUI 适配器及原许可。归档带 SHA-256 清单，构建检查在临时目录解包后离线重新生成 Token 并逐字节比对。Vue 示例仍需联网安装未锁定的依赖，不声称其可复现构建；React/GPUI 是适配源码而非完整应用。待 CI。
