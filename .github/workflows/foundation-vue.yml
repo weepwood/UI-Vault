@@ -30,13 +30,11 @@ jobs:
           python scripts/build-foundation-project.py --verify
           mkdir -p "$RUNNER_TEMP/foundation-project"
           unzip -q dist/downloads/ui-foundation-kit-project.zip -d "$RUNNER_TEMP/foundation-project"
-      - name: 锁文件候选生成及独立 npm ci
+      - name: 验证已提交锁文件并严格独立 npm ci
         run: |
+          cmp subprojects/ui-foundation-kit/adapters/vue/package-lock.json "$RUNNER_TEMP/foundation-project/adapters/vue/package-lock.json"
           cd "$RUNNER_TEMP/foundation-project/adapters/vue"
-          if [ ! -f package-lock.json ]; then
-            echo "::warning::缺少已提交锁文件，本轮仅为候选锁生成；不得作为最终交付验收"
-            npm install --package-lock-only --ignore-scripts --no-audit --no-fund
-          fi
+          test -s package-lock.json
           cp package-lock.json "$RUNNER_TEMP/foundation-vue-package-lock.json"
           npm ci --no-audit --no-fund
           cmp package-lock.json "$RUNNER_TEMP/foundation-vue-package-lock.json"

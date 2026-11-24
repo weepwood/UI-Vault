@@ -193,3 +193,5 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 三栏候选视觉：保留原布局宽度和行高，精修导航选中权重、列表文字行高/计数与宽屏 Topbar 分类信息；不自动更新像素基线。Foundation Vue 使用 Registry 已验收的 Vue 3.5.24 / Reka 2.10.1，独立 Actions 在实际工程 ZIP 解包目录生成候选锁（若缺失）并 npm ci、构建和浏览器冒烟。真实锁文件必须下载审查后提交并重新验收；缺锁候选不能合并。
 
 追加六项原始指南证据：Grandmillennial、Grocery Girl Fall、Grotesk Display、Grunge Revival、Gustavian、Hand Drawn。累计 118，剩余 172；保留原始许可与精选状态，候选待 CI。
+
+#110 同步后 45425575734 / 45425575830 全部通过（344 单测、26 Chromium、Windows、Registry、ZIP 重建），真实视觉产物 14934954291 共 37 文件复审后合并 8da05a5，树一致。#111 原候选三套 CI 45426165182 / 45426164924 / 45426165318 全部通过，视觉产物 14937725340 共 46 文件复审。Vue 真实锁 Artifact 14936578027，59,108 字节、lockfileVersion 3、121 依赖项、官方 npm Registry 与完整 integrity；SHA-256 e834886e4a3f197ca3d2471c7f12ec6701b6945615f0540d4994feabdbf9097c，Git blob 23ddb57c50d1517b2e1edcd4d724877c19b36a46。只读临时工作流 45427130703 验证字节后已移除；原始锁进入 ZIP 白名单，禁止缺锁回退，严格比较解包锁与提交锁，npm ci 后再次比对及 vue-tsc/Vite、Chromium 验收，待新 CI。

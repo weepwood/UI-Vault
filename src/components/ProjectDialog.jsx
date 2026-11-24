@@ -278,7 +278,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
         </div>
       </div>
       <p className="source-delivery-note" role="note">
-        {foundationProject?'Foundation 源码工程包含可离线构建的 Token/CSS、静态演示与 React/Vue/GPUI 适配源码及说明。Vue 示例需另装依赖；本包不含 node_modules。':asset?.source==='external'
+        {foundationProject?'Foundation 源码工程包含可离线构建的 Token/CSS、静态演示与 React/Vue/GPUI 适配源码及说明。Vue 示例包含 npm 锁文件，使用 npm ci 安装；本包不含 node_modules。':asset?.source==='external'
           ?'外部项目仍在原仓库独立维护。仓库 ZIP 是完整源码快照，不保证仅包含当前演示，也不代表已获得商业复用许可。'
           :standaloneBundle
             ?'独立演示 ZIP 只包含该页面需要的已登记静态文件，可脱离 UI-Vault 工作台使用。'

@@ -17,7 +17,7 @@ FILES = (
     "adapters/react/PRIMITIVES.md", "adapters/react/README.md", "adapters/react/UiButton.jsx",
     "adapters/react/UiInput.jsx", "adapters/react/UiPrimitives.jsx", "adapters/react/UiSwitch.jsx",
     "adapters/vue/PRIMITIVES.md", "adapters/vue/README.md", "adapters/vue/index.html",
-    "adapters/vue/package.json", "adapters/vue/src/App.vue", "adapters/vue/src/app.css",
+    "adapters/vue/package.json", "adapters/vue/package-lock.json", "adapters/vue/src/App.vue", "adapters/vue/src/app.css",
     "adapters/vue/src/components/UiButton.vue", "adapters/vue/src/components/UiCard.vue",
     "adapters/vue/src/components/UiInput.vue", "adapters/vue/src/components/UiPrimitives.js",
     "adapters/vue/src/components/UiSwitch.vue", "adapters/vue/src/main.ts",
@@ -44,7 +44,7 @@ def contents():
     result["PROJECT-MANIFEST.json"] = (json.dumps({
         "format": "ui-vault-foundation-project", "version": 1, "projectVersion": version,
         "build": "node scripts/build-tokens.mjs", "check": "node scripts/check.mjs",
-        "dependencyNotice": "Token 构建不需要 npm 依赖；Vue 示例需要自行安装依赖；未打包 node_modules。",
+        "dependencyNotice": "Token 构建不需要 npm 依赖；Vue 示例附完整 npm 锁文件，使用 npm ci 安装；未打包 node_modules。",
         "files": [{"path": name, "bytes": len(data), "sha256": sha(data)} for name, data in result.items()],
     }, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
     return result

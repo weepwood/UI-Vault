@@ -25,12 +25,12 @@ node scripts/install.mjs /absolute/path/to/my-project
 
 ```sh
 cd adapters/vue
-npm install
+npm ci
 npm run dev
 npm run build
 ```
 
-> Vue 示例需要联网安装依赖，独立 Vue 示例目前没有锁文件；需要自行安装依赖并验证构建。Registry 适配器另有独立锁定的 React/Vue CI，不等同于该示例。
+> Vue 示例需要联网安装依赖，独立 Vue 示例附真实 package-lock.json，使用 npm ci。候选锁已通过解包构建与 Chromium 冒烟；正式 ZIP 锁文件纳入后须再次独立验收。Registry 适配器另有独立 CI。
 
 ## 目录
 
