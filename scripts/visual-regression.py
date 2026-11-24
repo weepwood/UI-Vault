@@ -1042,6 +1042,41 @@ def verify_warm_layout_parameters(browser, origin):
         context.close()
 
 
+def verify_live_parameter_dock(browser, origin):
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+        frame=page.frame_locator('#preview-stage iframe[data-preview-frame="local"]')
+        frame.locator(".stats").wait_for()
+        page.evaluate("() => window.__liveFrame=document.querySelector('#preview-stage iframe')")
+        page.locator("#preview-info").click()
+        page.locator("#tab-page-info").click()
+        page.get_by_role("button",name="在预览旁实时编辑").click()
+        dock=page.locator("#parameter-dock")
+        dock.wait_for(state="visible")
+        assert page.locator("#preview-stage").is_visible()
+        dock.get_by_role("button",name="读取当前参数").click()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        dock.get_by_role("spinbutton",name="卡片圆角").fill("24")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
+        dock.get_by_role("textbox",name="预设名称").fill("圆角24")
+        dock.get_by_role("button",name="保存预设").click()
+        dock.get_by_role("button",name="撤销",exact=True).click()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
+        dock.get_by_role("combobox",name="参数预设").select_option("圆角24")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
+        assert page.evaluate("() => window.__liveFrame===document.querySelector('#preview-stage iframe')")
+        dock.get_by_role("button",name="关闭实时参数").click()
+        dock.wait_for(state="hidden")
+        print("实时编辑、预设保存/恢复、撤销、iframe 稳定性通过",flush=True)
+    finally:
+        context.close()
+
+
 def verify_standalone_delivery(browser):
     """在不含主站文件的临时 HTTP 根目录运行真实发布文件与 ZIP。"""
     assets=json.loads((DIST/"content/assets.json").read_text(encoding="utf-8"))
@@ -1797,6 +1832,7 @@ def main():
                     verify_foundation_parameters,
                     verify_effect_parameters,
                     verify_warm_layout_parameters,
+                    verify_live_parameter_dock,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,
                     verify_liquid_orb_unified,

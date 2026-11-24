@@ -61,7 +61,7 @@ function PageInfoPanel({info,asset}){
  * ProjectDialog 的标签页、异步源码、焦点、Escape 和复制逻辑全由 React 管理。
  * 保留 <dialog id="project-dialog"> 原生顶层语义，状态切换不触碰 iframe。
  */
-export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
+export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify,onEditParameters}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
   // 只保存“真正取回（或失败）的源码”；加载占位与未打开时的提示由下面的 source 在渲染期派生。
@@ -296,6 +296,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
           title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
       </section>}
       <ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>
+      {open&&tab==='page-info'&&parameterSchemaFor(asset)&&onEditParameters&&<button className="parameter-dock-launch" type="button" onClick={onEditParameters}><Icon name="sliders-horizontal"/> 在预览旁实时编辑</button>}
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&<DemoParameterPanel key={asset.id+':'+asset.preview} asset={asset} notify={notify}/>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
     </section>
