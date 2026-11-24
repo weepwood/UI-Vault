@@ -1616,3 +1616,17 @@ html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-edit
 .parameter-dock-resize:hover span{background:var(--accent)}
 .parameter-dock-resize:focus-visible{outline:2px solid var(--focus);outline-offset:-2px}
 @media(max-width:760px){#parameter-dock{max-height:var(--parameter-dock-size,40dvh)}.parameter-dock-resize{height:12px}}
+
+/* 材质输入与阴影层状态沿用主站语义色。 */
+.material-selected-color .material-hex-input{width:86px;padding:4px 6px;color:var(--text);font:inherit;font-family:monospace;font-variant-numeric:tabular-nums}
+.material-hex-input[aria-invalid=true]{outline:2px solid var(--focus);outline-offset:1px}
+.shadow-layer-color{display:inline-block;width:12px;height:12px;border:1px solid var(--line);border-radius:3px;margin-inline-end:5px;vertical-align:middle}
+@media(max-width:760px){.material-stop-handle{width:24px;height:24px;min-width:24px;min-height:24px}.material-selected-color{flex-wrap:wrap}.material-stop-options button,.material-shadow-controls button{min-height:32px}}
+
+/* 保留完整拖动热区，将键盘焦点集中在实际手柄，统一双主题控件状态。 */
+.parameter-dock-resize:focus-visible{outline:none}
+.parameter-dock-resize:focus-visible span{outline:2px solid var(--focus);outline-offset:3px}
+.select-option[aria-selected=true] .select-option-icon{color:var(--accent)}
+.select-option:focus-visible{outline-offset:-2px}
+#parameter-dock .parameter-section-nav button[aria-current=location]{border-color:var(--accent-line,var(--accent));color:var(--accent);background:var(--accent-soft)}
+#parameter-dock .parameter-main-actions button:disabled{cursor:not-allowed}

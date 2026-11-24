@@ -98,3 +98,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 #114 已合并 616fde4，审计 150、未标记 140。下一候选审查 Manguebeat、Material Design、Maximalism、Medievalcore、Mediterranean、Memphis Design、Memphis Lite、Metalheart，累计 158、未标记 132、无显式视觉风格 202。待 CI。
 
 本轮新增六项原始指南审计（Metro Design 至 Mob Wife），累计 164 项，剩余 126 项无标签，196 项无显式风格词表标签；两种缺口分别统计。
+
+新增 Modernisme、Monochrome Luxe、Monoline Illustration、Moody Maximalism、Moss Punk、Nature Distilled 六项原始指南分类，累计170项，剩余120项无标签、190项无显式风格标签。

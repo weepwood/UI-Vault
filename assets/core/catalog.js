@@ -149,7 +149,13 @@ const TERM_ALIASES=Object.freeze({
   '地中海风':['mediterranean'],'mediterranean':['地中海风'],
   '孟菲斯设计':['memphis design'],'memphis design':['孟菲斯设计'],
   '轻孟菲斯风':['memphis lite'],'memphis lite':['轻孟菲斯风'],
-  '金属心核风':['metalheart'],'metalheart':['金属心核风'],"地铁磁贴设计":["metro design"],"metro design":["地铁磁贴设计"],"微交互设计":["microinteraction design"],"microinteraction design":["微交互设计"],"中世纪现代主义":["mid century modern"],"mid century modern":["中世纪现代主义"],"使命画派":["mission school"],"mission school":["使命画派"],"混合媒介":["mixed media"],"mixed media":["混合媒介"],"黑帮贵妇风":["mob wife"],"mob wife":["黑帮贵妇风"]
+  '金属心核风':['metalheart'],'metalheart':['金属心核风'],"地铁磁贴设计":["metro design"],"metro design":["地铁磁贴设计"],"微交互设计":["microinteraction design"],"microinteraction design":["微交互设计"],"中世纪现代主义":["mid century modern"],"mid century modern":["中世纪现代主义"],"使命画派":["mission school"],"mission school":["使命画派"],"混合媒介":["mixed media"],"mixed media":["混合媒介"],"黑帮贵妇风":["mob wife"],"mob wife":["黑帮贵妇风"],
+  "加泰罗尼亚现代主义":["modernisme"],"modernisme":["加泰罗尼亚现代主义"],
+  "黑白轻奢":["monochrome luxe"],"monochrome luxe":["黑白轻奢"],
+  "单线插画":["monoline illustration"],"monoline illustration":["单线插画"],
+  "暗调极繁主义":["moody maximalism"],"moody maximalism":["暗调极繁主义"],
+  "苔藓朋克":["moss punk"],"moss punk":["苔藓朋克"],
+  "自然凝练风":["nature distilled"],"nature distilled":["自然凝练风"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
