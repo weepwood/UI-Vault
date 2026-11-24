@@ -23,3 +23,5 @@ UI-Vault 包含原创代码、第三方开源组件，以及用于研究的外�
 ### 目录授权复核（2026-11-24）
 
 基于本轮 528 项目录的许可说明文本筛查，33 项明确标有未声明/未核实等字样：30 项为 Style Atlas 本地展示，均未标记可复制；3 项为 Background Effects、Emboss Poster Lab、Glass Lab 外部索引。本次未核实上游最新许可证或全部素材权利，不将筛查视为授权证明。12 项 Frame Lab 的共享资源依赖另行修正，教学样例的许可说明不自动扩展为商业再分发许可。
+
+- PrismJS 1.30.0（MIT，Copyright 2012 Lea Verou）：用于独立源码解析 Worker，仅使用 tokenize，不启用 DOM 高亮插件；保留 `assets/vendor/Prism-LICENSE.txt`。版本和 tarball integrity 固定，待真实 npm ci 验证。上游 https://github.com/PrismJS/prism/tree/v1.30.0 。

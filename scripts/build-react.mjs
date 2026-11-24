@@ -17,6 +17,7 @@ const shared = {
 };
 
 await Promise.all([
+  build({...shared,format:'iife',entryPoints:[resolve(ROOT,'src/source-highlight-worker.js')],outfile:resolve(ROOT,'assets/source-highlight-worker.js')}),
   build({
     ...shared,
     entryPoints:[resolve(ROOT,'src/react-workbench.jsx')],
