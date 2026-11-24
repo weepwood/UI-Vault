@@ -34,3 +34,8 @@ test('主站共享 CSS、目录和参数控件变更触发 Chromium 验收',()=>
 test('发布浏览器审计代码变更触发完整验收',()=>{
  assert.deepEqual(pr(['scripts/release-browser-audit.py']),{fast:true,build:true,visual:true,windows:true,full:true});
 });
+
+test('明确版本升级的 main push 触发完整验收，普通 main push 保持快速部署',()=>{
+  assert.deepEqual(planCI({event:'push',ref:'refs/heads/main',release:true}),full);
+  assert.deepEqual(planCI({event:'push',ref:'refs/heads/main',release:false}),{...fast,fast:false,build:true});
+});

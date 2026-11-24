@@ -34,12 +34,21 @@ jobs:
       visual: ${{ steps.plan.outputs.visual }}
       windows: ${{ steps.plan.outputs.windows }}
       full: ${{ steps.plan.outputs.full }}
+      release: ${{ steps.release.outputs.release }}
+      version: ${{ steps.release.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      - id: release
+        env:
+          CI_EVENT: ${{ github.event_name }}
+          CI_REF: ${{ github.ref }}
+          CI_PREVIOUS: ${{ github.event.before }}
+        run: node scripts/release-plan.mjs
       - id: plan
         env:
+          CI_RELEASE: ${{ steps.release.outputs.release }}
           CI_EVENT: ${{ github.event_name }}
           CI_REF: ${{ github.ref }}
           CI_MODE: ${{ inputs.mode }}
@@ -208,3 +217,37 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
+
+  release:
+    name: 正式版本生产校验与 Release
+    needs: [plan, validate, validate-windows, deploy]
+    if: ${{ !cancelled() && needs.plan.outputs.release == 'true' && needs.validate.result == 'success' && needs.validate-windows.result == 'success' && needs.deploy.result == 'success' }}
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: ui-vault-static
+          path: release-site
+      - name: 真实生产站点关键文件校验
+        run: python3 scripts/verify-release.py release-site
+      - name: 创建对应提交的正式版本
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.plan.outputs.version }}
+        run: |
+          set -euo pipefail
+          tag="v$VERSION"
+          refs="$(git ls-remote origin "refs/tags/$tag" "refs/tags/$tag^{}")"
+          if [ -n "$refs" ] && ! printf '%s\n' "$refs" | cut -f1 | grep -Fxq "$GITHUB_SHA"; then
+            echo "已有同名标签指向其他提交；禁止覆盖"
+            exit 1
+          fi
+          if gh release view "$tag" --json tagName >/dev/null 2>&1; then
+            test -n "$refs"
+            echo "该提交的正式版本已存在，不重复发布"
+          else
+            gh release create "$tag" --target "$GITHUB_SHA" --title "UI-Vault $tag" --notes-file "docs/releases/$tag.md"
+          fi
