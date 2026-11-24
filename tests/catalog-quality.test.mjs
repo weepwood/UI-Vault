@@ -21,3 +21,14 @@ test('终末地导航不再发布待核实字体与插画',()=>{
  assert.doesNotMatch(html,/url\(["']?(?:fonts|assets)\//);
  for(const path of ['assets/tab-active-bg.8b31f4.png','fonts/HarmonyOSSansSC-Medium.55cf26.woff2','fonts/HarmonyOSSansSC-Bold.d69da8.woff2'])assert.equal(existsSync(new URL('../demos/components/endfield-nav-tab/'+path,import.meta.url)),false);
 });
+
+test('Frame Lab 共享 CSS/JS 依赖不得标记为独立单文件',()=>{
+ const frames=assets.filter(asset=>asset.id.startsWith('atlas-frame-'));
+ assert.equal(frames.length,12);
+ for(const asset of frames){
+  assert.equal(asset.copyable,false,asset.id);
+  const html=readFileSync(new URL('../'+asset.preview,import.meta.url),'utf8');
+  assert.match(html,/reference-shell\.css/);assert.match(html,/reference-shell\.js/);
+  assert.ok(asset.reuseNotes.some(note=>note.includes('单文件不能独立运行')));
+ }
+});

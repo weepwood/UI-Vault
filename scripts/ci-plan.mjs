@@ -3,10 +3,10 @@ import {execFileSync} from 'node:child_process';
 import {appendFileSync} from 'node:fs';
 import {pathToFileURL} from 'node:url';
 
-const visualRisk=/^(?:src\/(?:react-workbench\.jsx|useWorkbench\.js|components\/(?:PreviewFrame|ProjectDialog|CompactSearchPanel|ViewportSwitcher|ProjectList|VirtualProjectList|DemoParameterPanel|WorkbenchSelect|SearchField|PreviewToolbar|CategoryNavigation|SettingsPanel)\.jsx)|assets\/core\/(?:preview(?:-policy)?|workbench-router|workbench-state|demo-parameters|virtual-window)\.js|assets\/(?:styles\.css|ui\/[^/]+\.css)|index\.html|settings\.html|scripts\/visual-regression\.py|scripts\/requirements-visual\.txt|tests\/visual-baselines\.json)$/;
+const visualRisk=/^(?:src\/(?:react-workbench\.jsx|useWorkbench\.js|components\/(?:PreviewFrame|ProjectDialog|CompactSearchPanel|ViewportSwitcher|ProjectList|VirtualProjectList|DemoParameterPanel|WorkbenchSelect|SearchField|PreviewToolbar|CategoryNavigation|SettingsPanel)\.jsx)|assets\/core\/(?:preview(?:-policy)?|workbench-router|workbench-state|demo-parameters|virtual-window)\.js|assets\/(?:styles\.css|ui\/[^/]+\.css)|index\.html|settings\.html|scripts\/(?:visual-regression|release-browser-audit)\.py|scripts\/requirements-visual\.txt|tests\/visual-baselines\.json)$/;
 const buildRisk=/^(?:package(?:-lock)?\.json|scripts\/|catalog\/[^/]+\.schema\.json|assets\/app\.js|\.github\/workflows\/)/;
 const windowsRisk=/^(?:package(?:-lock)?\.json|scripts\/lib\/python\.mjs|scripts\/run-python\.mjs|scripts\/build(?:-.*)?\.(?:mjs|py)|scripts\/requirements-.*\.txt|\.gitattributes|\.github\/workflows\/|scripts\/ci-plan\.mjs)/;
-const workflowRisk=/^(?:\.github\/workflows\/|scripts\/ci-plan\.mjs|tests\/ci-plan\.test\.mjs)/;
+const workflowRisk=/^(?:\.github\/workflows\/|scripts\/ci-plan\.mjs|scripts\/release-browser-audit\.py|tests\/ci-plan\.test\.mjs)/;
 
 export function planCI({event,ref='',mode='',regenerate=false,paths=[]}){
   const pr=event==='pull_request';
