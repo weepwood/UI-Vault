@@ -1048,7 +1048,9 @@ def verify_live_parameter_dock(browser, origin):
         page=context.new_page()
         # Install the capture listener before application listeners, not after a
         # live request. The test drops real acknowledgments without changing the app.
-        page.add_init_script("""() => {
+        page.add_init_script("""(() => {
+          if(window!==window.top)return;
+          window.__parameterFaultHookInstalled=true;
           window.__heldParameterReplies=[];
           window.__holdParameterReplies=false;
           window.addEventListener('message',event=>{
@@ -1058,8 +1060,9 @@ def verify_live_parameter_dock(browser, origin):
               event.stopImmediatePropagation();
             }
           },true);
-        }""")
+        })();""")
         page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+        assert page.evaluate("()=>window.__parameterFaultHookInstalled===true"), "故障注入监听器必须已执行"
         frame=page.frame_locator('#preview-stage iframe[data-preview-frame="local"]')
         frame.locator(".stats").wait_for()
         page.evaluate("() => window.__liveFrame=document.querySelector('#preview-stage iframe')")
@@ -1133,7 +1136,11 @@ def verify_live_parameter_dock(browser, origin):
         page.evaluate("()=>{window.__heldParameterReplies=[];window.__holdParameterReplies=true}")
         number=dock.get_by_role("spinbutton",name="卡片圆角")
         number.fill("18")
-        page.wait_for_function("()=>window.__heldParameterReplies.length===1")
+        try:
+            page.wait_for_function("()=>window.__heldParameterReplies.length===1",timeout=2000)
+        except Exception:
+            print("PARAMETER_FAULT_INJECTION="+json.dumps({"installed":page.evaluate("()=>window.__parameterFaultHookInstalled===true"),"held":page.evaluate("()=>window.__heldParameterReplies.length"),"status":dock.locator(".parameter-status").inner_text()},ensure_ascii=False),flush=True)
+            raise
         assert number.is_enabled()
         assert dock.locator(".demo-parameter-panel").get_attribute("aria-busy")=="true", "被拦截的响应不得提前完成请求"
         number.fill("22")
