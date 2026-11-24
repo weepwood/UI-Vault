@@ -83,13 +83,12 @@ export function DesignGuide({asset,onCopyText,notify}){
   const path=asset?.designGuidePath;
   const url=path?resolveAsset(path):null;
   const [retry,setRetry]=useState(0);
-  const [guide,setGuide]=useState({url:null,status:'idle',text:'',error:''});
+  // 只保存“真正取回的内容”：缓存命中与加载中的状态不再写进 effect，
+  // 而是在渲染期由缓存 + 本次请求键（url+retry）派生。
+  const [loaded,setLoaded]=useState({url:null,retry:0,status:'idle',text:'',error:''});
   useEffect(()=>{
-    if(!url)return;
-    const cached=guideCache.get(url);
-    if(cached!==undefined){setGuide({url,status:'ready',text:cached,error:''});return;}
+    if(!url||guideCache.has(url))return;
     const controller=new AbortController();
-    setGuide({url,status:'loading',text:'',error:''});
     fetch(url,{signal:controller.signal,cache:'force-cache'})
       .then(async response=>{
         if(!response.ok)throw Error('HTTP '+response.status);
@@ -100,27 +99,31 @@ export function DesignGuide({asset,onCopyText,notify}){
         if(controller.signal.aborted)return;
         guideCache.set(url,text);
         if(guideCache.size>MAX_CACHED_GUIDES)guideCache.delete(guideCache.keys().next().value);
-        setGuide({url,status:'ready',text,error:''});
+        setLoaded({url,retry,status:'ready',text,error:''});
       }).catch(error=>{
         if(controller.signal.aborted)return;
-        setGuide({url,status:'error',text:'',error:error.message||'网络请求失败'});
+        setLoaded({url,retry,status:'error',text:'',error:error.message||'网络请求失败'});
       });
     return ()=>controller.abort();
   },[url,retry]);
-  const ready=guide.url===url&&guide.status==='ready';
-  const status=guide.url===url?guide.status:'loading';
+  // 缓存命中直接可读；否则只有与当前 url+retry 对应的那次请求结果才算数。
+  const cached=url?guideCache.get(url):undefined;
+  const attempt=loaded.url===url&&loaded.retry===retry?loaded:null;
+  const ready=cached!==undefined||attempt?.status==='ready';
+  const text=cached!==undefined?cached:attempt?attempt.text:'';
+  const status=ready?'ready':attempt?attempt.status:'loading';
   function download(){
     if(!ready)return;
-    try{downloadSourceText(guide.text,path.split('/').at(-1));notify('设计指南已下载');}
+    try{downloadSourceText(text,path.split('/').at(-1));notify('设计指南已下载');}
     catch{notify('下载失败，请在 UI-Vault 仓库中保存文件');}
   }
   return <div className="design-guide-view">
     <div className="design-guide-toolbar">
       <div className="design-guide-toolbar-title"><strong>Design.md</strong>
-        <span role="status">{ready?guide.text.split('\n').length+' 行 · Markdown':status==='error'?'读取失败':'正在读取设计指南…'}</span>
+        <span role="status">{ready?text.split('\n').length+' 行 · Markdown':status==='error'?'读取失败':'正在读取设计指南…'}</span>
       </div>
       <div className="source-buttons">
-        <button type="button" disabled={!ready} onClick={()=>onCopyText(guide.text,'设计指南已复制')}>
+        <button type="button" disabled={!ready} onClick={()=>onCopyText(text,'设计指南已复制')}>
           <Icon name="copy"/>复制
         </button>
         <button type="button" disabled={!ready} onClick={download}>
@@ -129,9 +132,9 @@ export function DesignGuide({asset,onCopyText,notify}){
         <a href={url} target="_blank" rel="noopener noreferrer"><Icon name="external-link"/>查看归档文件</a>
       </div>
     </div>
-    {ready?<MarkdownGuide text={guide.text}/>:status==='error'
+    {ready?<MarkdownGuide text={text}/>:status==='error'
       ?<div className="design-guide-state" role="alert"><strong>暂时无法读取设计指南</strong>
-        <p>可能是网络中断或 UI-Vault 尚未发布此文件。{guide.error}</p>
+        <p>可能是网络中断或 UI-Vault 尚未发布此文件。{attempt?.error}</p>
         <button type="button" onClick={()=>setRetry(n=>n+1)}>重试加载</button>
       </div>
       :<div className="design-guide-state" role="status">正在从 UI-Vault 加载 Markdown…</div>}

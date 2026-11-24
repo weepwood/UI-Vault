@@ -161,11 +161,15 @@ export function useWorkbench(){
   },[]);
   useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route})),[]);
   useEffect(()=>{
+    // versionId 也必须进依赖：router.navigate 在 href 相同时直接返回 false，
+    // 因此版本没写进 URL 时（首次加载、切换项目归位 V1）这里才会真正补一次 replace。
     if(!state.loading)router.setAsset(state.active?.id||null,'replace',state.versionId);
-  },[state.active?.id,state.loading]);
+  },[state.active?.id,state.loading,state.versionId]);
   useEffect(()=>{
     if(!initialized.current){initialized.current=true;return;}
-    if(!saveFavorites(state.favorites))notify('无法持久保存收藏，本次会话仍可使用');
+    // 持久化失败只能在写入后回报；用微任务把提示排到 effect 之外，
+    // 既不在 effect 体内同步 setState（级联渲染），提示时机也仍在同一轮任务内。
+    if(!saveFavorites(state.favorites))queueMicrotask(()=>notify('无法持久保存收藏，本次会话仍可使用'));
   },[state.favorites,notify]);
   useLayoutEffect(()=>{applySettings(state.preferences);},[state.preferences]);
   // 在固定与自定义视口之间切换时记住上次选择；不污染设置面板的默认预设。
@@ -177,7 +181,8 @@ export function useWorkbench(){
     if(previousSettings.current===state.preferences)return;
     previousSettings.current=state.preferences;
     try{localStorage.setItem(SETTINGS_KEY,JSON.stringify(state.preferences));}
-    catch{notify('当前浏览器无法保存设置，刷新后可能恢复默认值');}
+    // 同收藏：存储异常提示用微任务回报，不在 effect 体内同步 setState。
+    catch{queueMicrotask(()=>notify('当前浏览器无法保存设置，刷新后可能恢复默认值'));}
   },[state.preferences,notify]);
   useEffect(()=>{
     const sync=()=>{
@@ -197,14 +202,13 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),
-    [state.assets,state.labels,state.category,state.tag,state.reuse,state.query,state.sort,
-      state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites]);
+  // filterAssets / popularTags 读取整个 state（分类、标签、搜索、排序、复用度、收藏范围）：
+  // 依赖直接取 state 才不会漏掉后续新增的筛选项；state 每次 dispatch 都会换新对象，重算结果一致。
+  const filtered=useMemo(()=>filterAssets(state.assets,state,state.favorites),[state]);
   // 标签选择只展示当前搜索/分类/收藏范围内相关的标签；保留已选项以便清除。
   const tags=useMemo(()=>popularTags(
     filterAssets(state.assets,{...state,tag:''},state.favorites),14,state.tag
-  ),[state.assets,state.labels,state.category,state.reuse,state.query,state.sort,state.tag,
-    state.favoritesOnly,state.importedOnly,state.curatedOnly,state.favorites]);
+  ),[state]);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
     router.setView(view,historyMode);

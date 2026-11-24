@@ -1,4 +1,4 @@
-import React,{useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import React,{useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './Icon.jsx';
 import {projectEmoji} from '../../assets/core/workbench.js';
 import {highlightSearchText,searchMatchDetail} from '../../assets/core/catalog.js';
@@ -13,7 +13,11 @@ function MatchTitle({title,query}){
 // 按参考 Command Palette 的设计独立实现：中央面板、渐变光晕、固定高度结果、键盘高亮。
 // 搜索状态由弹窗局部参数提供，输入不会修改第二栏 ProjectList。
 export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=[],onChoose,onClose}){
-  const [active,setActive]=useState(0);
+  // 键盘高亮的行号随搜索词重置：把“属于哪个搜索词”存在状态里，渲染期直接派生，
+  // 不必再在 effect 里同步 setActive(0)。
+  const [selection,setSelection]=useState({query:null,index:0});
+  const active=selection.query===value?selection.index:0;
+  const setActive=index=>setSelection({query:value,index});
   const listRef=useRef(null);
   const groups=useMemo(()=>{
     if(value.trim())return [{label:'搜索结果',items:items.slice(0,MAX_RESULTS)}];
@@ -26,19 +30,16 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
     ];
   },[items,value,recentIds]);
   const flat=useMemo(()=>groups.flatMap(group=>group.items),[groups]);
-  useEffect(()=>setActive(0),[value]);
   useLayoutEffect(()=>{
     inputRef.current?.focus({preventScroll:true});
     inputRef.current?.select();
   },[inputRef]);
   const move=(offset)=>{
     if(!flat.length)return;
-    setActive(index=>{
-      const next=(index+offset%flat.length+flat.length)%flat.length;
-      const row=listRef.current?.querySelector('[data-command-index="'+next+'"]');
-      row?.scrollIntoView({block:'nearest'});
-      return next;
-    });
+    const next=(active+offset%flat.length+flat.length)%flat.length;
+    const row=listRef.current?.querySelector('[data-command-index="'+next+'"]');
+    row?.scrollIntoView({block:'nearest'});
+    setActive(next);
   };
   const choose=(index)=>{
     const item=flat[index];

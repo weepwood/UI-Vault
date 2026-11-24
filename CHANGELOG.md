@@ -19,6 +19,7 @@
 - 为构建引入 `npm ci`、npm 缓存与同分支并发控制。
 - 新增定期外部站点链接巡检、第三方授权风险清单与贡献/安全说明。
 - 更新当前 React 三栏工作台的架构与扩展文档。
+- 收敛 React Compiler 类 ESLint 告警（29 条 → 0）：effect 内的同步 setState 改为渲染期派生或事件驱动更新（搜索面板高亮行、DesignGuide 缓存与加载态、ProjectDialog 源码面板、ViewportSwitcher 展开态与尺寸指标、项目说明弹层的上下文键）；补全 `PreviewFrame`、`ProjectDialog`、`useWorkbench` 的依赖；`title` / `data-size` 改用 `setAttribute` 写入；仍需在 effect 内直接同步挂载区 DOM 的四处按 AGENTS.md 第 9-12 条显式豁免并注明原因。
 
 ## 既有历史
 

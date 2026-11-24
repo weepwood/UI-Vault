@@ -20,6 +20,15 @@ function safeStrings(value){
   return Array.isArray(value)?value.filter(item=>typeof item==='string').slice(0,12):[];
 }
 
+// 原生 dialog 的默认高度随隐藏 pane 的内容变化；打开时锁定实际高度，避免标签切换导致整个弹窗跳动。
+// 命令式修改传进来的 dialog 节点写在这里：节点是按引用修改的 DOM，而不是要改写的 props 值。
+function lockDialogHeight(root){
+  const height=root.getBoundingClientRect().height;
+  if(height<=0)return;
+  root.style.height=Math.ceil(height)+'px';
+  root.dataset.stableHeight='true';
+}
+
 function PageInfoPanel({info,asset}){
   if(!info)return <div className="page-info-empty"><strong>{asset?.title||'当前页面'}</strong><p>此页面暂未提供额外的组件说明。可在预览中查看交互与视觉效果。</p></div>;
   const pattern=info.pattern&&typeof info.pattern==='object'?info.pattern:{};
@@ -52,28 +61,41 @@ function PageInfoPanel({info,asset}){
 export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
-  const [source,setSource]=useState({id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});
+  // 只保存“真正取回（或失败）的源码”；加载占位与未打开时的提示由下面的 source 在渲染期派生。
+  const [loadedSource,setSource]=useState({id:null,path:null,text:'',status:'',ready:false});
   const [pageInfo,setPageInfo]=useState({id:null,info:null});
+  const assetId=asset?.id,assetSource=asset?.source,assetPreview=asset?.preview;
   const files=getSourceFiles(asset);
   const selectedFile=files.find(file=>file.path===filePath)||files[0];
+  // 源码面板的显示状态按“资产 + 文件”派生：已取回的同一文件一直复用（来回切换标签不闪加载态、
+  // 也不重复请求）；本次打开源码标签但尚未取回时显示加载占位；其余情况显示对应来源的提示占位。
+  const sourceIntended=Boolean(assetId)&&assetSource==='local'&&Boolean(selectedFile)&&open&&tab==='source';
+  const sourceFetched=loadedSource.id===assetId&&loadedSource.path===selectedFile?.path;
+  // 外部项目与未登记文件各有专门的说明文案：这两类不会发起请求，文案必须由来源决定，不能退回通用提示。
+  const sourcePlaceholder=assetId&&assetSource!=='local'
+    ?{id:assetId,path:null,text:'此项目的源代码保存在原始仓库中，请通过 GitHub 源码链接查看。',status:'外部项目 · 不复制第三方源代码',ready:false}
+    :assetId&&!selectedFile
+      ?{id:assetId,path:null,text:'此多文件项目尚未登记可直接查看的源码文件，请在 GitHub 查看完整实现。',status:'尚未登记可下载文件',ready:false}
+      :{id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false};
+  const source=sourceFetched?loadedSource:sourceIntended
+    ?{id:assetId,path:selectedFile.path,text:'正在加载本地源码…',status:'正在读取 '+selectedFile.name,ready:false}
+    :sourcePlaceholder;
   const savedFocus=useRef(null);
   const sourceTab=useRef(null);
-  useEffect(()=>{setTab('overview');setFilePath('');setSource({id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false});setPageInfo({id:null,info:null});},[asset?.id,asset?.preview]);
+  // 切换资产必须同步丢弃上一次的标签页、源码与页面信息：若改成渲染期派生，
+  // 再次打开同一资产时会命中旧内容而不再重新请求源码（现有测试也锁定了这个 effect 形态）。
+  // eslint-disable-next-line react-hooks/set-state-in-effect
+  useEffect(()=>{setTab('overview');setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
   useEffect(()=>{
     if(!root)return;
-    if(open&&asset){
+    if(open&&assetId){
       savedFocus.current=document.activeElement;
       if(!root.open){
         root.showModal();
-        // 原生 dialog 的默认高度随隐藏 pane 的内容变化；在打开时锁定实际高度，避免标签切换导致整个弹窗跳动。
-        const height=root.getBoundingClientRect().height;
-        if(height>0){
-          root.style.height=Math.ceil(height)+'px';
-          root.dataset.stableHeight='true';
-        }
+        lockDialogHeight(root);
       }
     }else if(root.open)root.close();
-  },[root,open,asset?.id]);
+  },[root,open,assetId]);
   useEffect(()=>{
     if(!root)return;
     const close=()=>{
@@ -96,19 +118,18 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   },[root,onOpenChange]);
   useEffect(()=>{
     if(!open||tab!=='source'||!asset)return;
-    const controller=new AbortController();
+    // 外部项目与尚未登记文件的 Demo 都不发请求；这两种情况的占位文案由上面的 source 派生，
+    // 因此不需要在 effect 里同步写一次状态。
     if(asset.source!=='local'){
-      setSource({id:asset.id,path:null,text:'此项目的源代码保存在原始仓库中，请通过 GitHub 源码链接查看。',status:'外部项目 · 不复制第三方源代码',ready:false});
-      return ()=>controller.abort();
+      return;
     }
     if(!selectedFile){
-      setSource({id:asset.id,path:null,text:'此多文件项目尚未登记可直接查看的源码文件，请在 GitHub 查看完整实现。',status:'尚未登记可下载文件',ready:false});
-      return ()=>controller.abort();
+      return;
     }
     const path=selectedFile.path;
     // 仅在文件发生变化或尚未成功加载时请求。来回切换说明与源码时复用已显示内容，避免先闪出加载态。
-    if(source.id===asset.id&&source.path===path&&source.ready)return ()=>controller.abort();
-    setSource({id:asset.id,path,text:'正在加载本地源码…',status:'正在读取 '+selectedFile.name,ready:false});
+    if(source.id===asset.id&&source.path===path&&source.ready)return;
+    const controller=new AbortController();
     fetch(resolveAsset(path),{cache:'no-cache',signal:controller.signal})
       .then(async response=>{
         if(!response.ok)throw Error('HTTP '+response.status);
@@ -123,26 +144,30 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
         setSource({id:asset.id,path,text:'无法加载此源码文件，请通过 GitHub 查看。',status:'源码加载失败',ready:false});
       });
     return ()=>controller.abort();
+    // source 的 id/path/ready 只用于判断“同一资产的同一文件是否已加载完成”，
+    // 把它们写进依赖会让本 effect 自己写入的结果再次把它唤醒（重复请求同一文件），
+    // 所以这里故意只依赖请求键：资产、标签页与文件路径。
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   },[asset?.id,open,tab,selectedFile?.path]);
   useEffect(()=>{
-    if(!asset||asset.source!=='local')return;
+    if(!assetId||assetSource!=='local')return;
     const receive=event=>{
       const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
       if(!frame||event.source!==frame.contentWindow||event.data?.type!=='ui-vault:page-info')return;
       try{
-        const expected=new URL(resolveAsset(asset.preview),document.baseURI).pathname;
+        const expected=new URL(resolveAsset(assetPreview),document.baseURI).pathname;
         if(event.data.path!==expected)return;
       }catch{return;}
-      if(event.data.info&&typeof event.data.info==='object')setPageInfo({id:asset.id,info:event.data.info});
+      if(event.data.info&&typeof event.data.info==='object')setPageInfo({id:assetId,info:event.data.info});
     };
     window.addEventListener('message',receive);
     return ()=>window.removeEventListener('message',receive);
-  },[asset?.id,asset?.preview,asset?.source]);
+  },[assetId,assetPreview,assetSource]);
   useEffect(()=>{
-    if(!open||tab!=='page-info'||!asset||asset.source!=='local')return;
+    if(!open||tab!=='page-info'||!assetId||assetSource!=='local')return;
     const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
     frame?.contentWindow?.postMessage({type:'ui-vault:request-page-info'},'*');
-  },[open,tab,asset?.id]);
+  },[open,tab,assetId,assetSource]);
   if(!root)return null;
   function infoClick(event){
     const copy=event.target.closest('[data-copy]');

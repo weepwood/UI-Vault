@@ -1,4 +1,4 @@
-import {memo,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
+import {memo,useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {applyPreviewLayout,calculatePreviewLayout,normalizeCustomWidth,PREVIEW_WIDTHS,MIN_CUSTOM_WIDTH,MAX_CUSTOM_WIDTH} from '../../assets/core/preview.js';
 import {resolveAsset} from '../../assets/core/render.js';
 import {getPreviewPolicy} from '../../assets/core/preview-policy.js';
@@ -25,15 +25,20 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   const resizeHandle=useRef(null);
   const resizeDrag=useRef(null);
   const {sandbox,allow:permissions,allowFullScreen}=getPreviewPolicy(asset);
+  const assetId=asset?.id,assetSource=asset?.source,assetPreview=asset?.preview;
+  // 玻璃球预览需要跟随布局比例：只有这两个 Demo 接收 setDisplayScale 消息。
+  const orbScaleTarget=asset?(asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog'):false;
   const src=!asset?null:asset.source==='local'?previewUrl(asset):asset.siteUrl||null;
   // 同一资产的多版本共享一个 iframe：初始 src 保持固定，后续版本使用子框架
   // location.replace，避免 iframe 自身向顶层联合历史记录追加条目。
+  // 故意只跟随资产身份冻结入口地址：src 变化必须走上面的替换式导航，不能重建 iframe 节点。
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const iframeEntrySrc=useMemo(()=>src,[asset?.id,asset?.source]);
   const lastFrameNavigation=useRef({assetId:null,src:null});
   useLayoutEffect(()=>{
-    if(!asset||asset.source!=='local'||!frame.current)return;
+    if(!assetId||assetSource!=='local'||!frame.current)return;
     const previous=lastFrameNavigation.current;
-    if(previous.assetId===asset.id&&previous.src!==src){
+    if(previous.assetId===assetId&&previous.src!==src){
       try{
         // sandbox iframe 使用 opaque origin；跨域仅允许导航，不读取子文档。
         frame.current.contentWindow.location.replace(src);
@@ -42,8 +47,8 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
         frame.current.src=src;
       }
     }
-    lastFrameNavigation.current={assetId:asset.id,src};
-  },[asset?.id,asset?.source,src]);
+    lastFrameNavigation.current={assetId,src};
+  },[assetId,assetSource,src]);
   // 记录“已加载完成的页面”，与当前页面比较即可得出是否在加载，切换项目时无需额外重置。
   // 只比较 # 之前的部分：仅改动 hash 时 iframe 不会重新加载，也不会触发 load 事件。
   const page=src?src.split('#')[0]:null;
@@ -57,8 +62,8 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   },[page]);
   const progress=framePending&&<div className="preview-progress" role="progressbar" aria-label="正在加载预览"/>;
   // 尺寸计算只在挂载、模式切换和容器尺寸变化时运行（见下方 ResizeObserver）。
-  const applyFrameLayout=()=>{
-    if(!asset||asset.source!=='local'||!frame.current)return;
+  const applyFrameLayout=useCallback(()=>{
+    if(!assetId||assetSource!=='local'||!frame.current)return;
     const stage=frame.current.parentElement;
     if(!stage)return;
     stage.dataset.size=mode;
@@ -70,17 +75,17 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
       resizeHandle.current.style.display=(canResize||resizeDrag.current)?'grid':'none';
       resizeHandle.current.style.left=Math.max(0,Math.min(stage.clientWidth-14,result.left+visualWidth-7))+'px';
     }
-    if((asset.id==='liquid-orb'||asset.id==='liquid-orb-thinking-dialog')&&result){
+    if(orbScaleTarget&&result){
       frame.current.contentWindow?.postMessage({
         channel:'ui-vault/liquid-orb',event:'command',
         action:'setDisplayScale',value:result.scale
       },'*');
     }
-  };
+  },[assetId,assetSource,orbScaleTarget,mode,customWidth]);
   // iframe 的 load 事件：收起进度条并按最终文档重新计算一次尺寸。
   const updateFrameLayout=()=>{markLoaded();applyFrameLayout();};
   useLayoutEffect(()=>{
-    if(!asset||asset.source!=='local'||!frame.current)return;
+    if(!assetId||assetSource!=='local'||!frame.current)return;
     const stage=frame.current.parentElement;
     const resize=()=>applyFrameLayout();
     resize();
@@ -91,7 +96,7 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
     const observer=new ResizeObserver(resize);
     observer.observe(stage);
     return ()=>observer.disconnect();
-  },[asset?.id,asset?.preview,asset?.source,mode,customWidth]);
+  },[applyFrameLayout,assetId,assetSource,assetPreview]);
   function dragWidth(event){
     if(event.button!==0||!frame.current)return;
     const stage=frame.current.parentElement;

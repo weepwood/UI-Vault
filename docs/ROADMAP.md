@@ -29,7 +29,7 @@
 - [x] Dependabot 和定期外部 `siteUrl` 检查。
 - [x] 引入 ESLint 10 + eslint-plugin-react-hooks：rules-of-hooks 等缺陷类规则为 error；React Compiler 语义规则（set-state-in-effect / immutability 等，约 30 处）先降为 warn，修复需配 Chromium 真实浏览器回归逐处验证。
 - [x] 将核心目录/下拉/搜索断言升级为 React 行为测试（happy-dom + act，10 组用例）；源码正则断言保留用于宽覆盖。
-- [ ] 修复 React Compiler 类 lint 告警（约 30 处 setState-in-effect / immutability / exhaustive-deps）。
+- [x] 修复 React Compiler 类 lint 告警（29 条 → 0）：能等价重构的改成渲染期派生或事件驱动更新，只在「effect 内必须直接同步挂载区 DOM」处保留显式豁免并注明理由。
 - [ ] 增加可访问性检查（如 axe-core）、浏览器兼容冒烟测试。
 - [ ] 资产来源与图片/字体许可证的自动化核验流程。
 
