@@ -3,6 +3,7 @@ import {readFile,stat} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 import {runPythonOrThrow} from './lib/python.mjs';
+import {buildRegistry,REGISTRY_ROOT} from './lib/reuse-registry.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
@@ -13,6 +14,11 @@ for(const a of items){
 }
 for(const p of new Set(paths))assert.ok((await stat(join(out,p))).isFile(),'缺失发布文件：'+p);
 
+const expectedRegistry=await buildRegistry(resolve(ROOT,REGISTRY_ROOT));
+assert.deepEqual(JSON.parse(await readFile(join(out,'registry/index.json'),'utf8')),expectedRegistry.index,'Registry 索引与当前 Foundation 不一致');
+for(const item of expectedRegistry.items){
+  assert.deepEqual(JSON.parse(await readFile(join(out,'registry/items',item.id+'.json'),'utf8')),item,'Registry 文件内容、版本或哈希不一致：'+item.id);
+}
 const publishedHealth=JSON.parse(await readFile(join(out,'content/project-health.json'),'utf8'));
 const registeredProjects=JSON.parse(await readFile(join(out,'content/projects.json'),'utf8'));
 assert.equal(publishedHealth.version,1,'项目健康快照协议版本不正确');

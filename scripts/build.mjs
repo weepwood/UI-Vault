@@ -5,6 +5,7 @@ import { dirname, resolve, sep, extname } from 'node:path';
 import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
 import {runPythonOrThrow} from './lib/python.mjs';
 import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';
+import {writeRegistry,REGISTRY_ROOT} from './lib/reuse-registry.mjs';
 
 const {errors,items}=await inspectCatalog();
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
@@ -109,6 +110,9 @@ for(const relative of versionedAssets.filter(path=>/\.(?:js|mjs)$/.test(path))){
 console.log('静态入口已同步版本化：'+assetRevision+'（HTML / CSS / JS 模块）');
 // 仅对显式审查通过的本地 Demo 生成独立 ZIP，不打包整个仓库或外部依赖。
 runPythonOrThrow(['scripts/build-bundles.py','--build'],{cwd:ROOT});
+// 只发布明确属于 MIT Foundation 的固定文件，不从第三方目录抓取组件。
+execFileSync(process.execPath,[REGISTRY_ROOT+'/scripts/build-tokens.mjs'],{cwd:ROOT,stdio:'inherit'});
+await writeRegistry(resolve(ROOT,REGISTRY_ROOT),resolve(out,'registry'));
 // 离线构建时生成未核实状态占位，不伪造远端成功。
 execFileSync(process.execPath,['scripts/project-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});
 execFileSync(process.execPath,['scripts/preview-health.mjs','--offline'],{cwd:ROOT,stdio:'inherit'});

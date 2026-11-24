@@ -5,6 +5,7 @@ import {resolveAsset} from '../../assets/core/render.js';
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {getSourceFiles,downloadSourceText} from '../../assets/core/source-files.js';
 import {getRepositoryArchiveUrl,getStandaloneBundlePath} from '../../assets/core/project-delivery.js';
+import {assetReuseManifest} from '../../assets/core/reuse-manifest.js';
 import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
 import {DesignGuide} from './DesignGuide.jsx';
 
@@ -189,6 +190,11 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   // 独立交付文件通过静态白名单生成；外部仓库由 GitHub 提供整仓快照。
   const standaloneBundle=getStandaloneBundlePath(asset);
   const repositoryArchive=getRepositoryArchiveUrl(asset);
+  function downloadReuseManifest(){
+    if(!asset)return;
+    try{downloadSourceText(JSON.stringify(assetReuseManifest(asset),null,2)+'\n',asset.id+'-reuse.json');notify('复用清单已下载');}
+    catch{notify('复用清单下载失败');}
+  }
   function downloadCurrent(){
     if(!isCurrent||!source.ready||!selectedFile)return;
     try{const name=downloadSourceText(source.text,selectedFile.name);notify('已下载 '+name);}
@@ -273,6 +279,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
               ?'该 Demo 是可独立保存的单文件页面；如需复用，请保留源码中的来源与许可证说明。'
               :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
       </p>
+      <div className="source-delivery-note"><button type="button" id="source-reuse-manifest" onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<> · <a href={resolveAsset('registry/index.json')} target="_blank" rel="noopener noreferrer">Foundation Registry（发布站点）</a></>}</div>
       <pre className="source-view"><code id="source-code">{isCurrent?source.text:'选择“源代码”查看项目实现。'}</code></pre>
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
