@@ -119,3 +119,7 @@ npm run check                # 正式发布或构建专项检查
 ```
 
 架构细节：[docs/REACT-MIGRATION.md](docs/REACT-MIGRATION.md)、[docs/TWO-PANE-WORKBENCH.md](docs/TWO-PANE-WORKBENCH.md)、[docs/COMPONENT-SYSTEM.md](docs/COMPONENT-SYSTEM.md)。
+
+### 集中收口检查
+
+共享主站 CSS、目录行/虚拟窗口及 Demo 参数组件均视为视觉风险；正式发布必须保留完整 Chromium 与 Windows 验收，禁止自动接受新基线。待核实第三方许可不得通过根 MIT 推定。

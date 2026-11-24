@@ -6,13 +6,11 @@
 <title>导航标签 Nav Tab</title>
 <style>
 /*
- * 终末地导航标签 Nav Tab —— 1:1 复刻（纯组件展示，无说明文字）
+ * 终末地导航标签 Nav Tab —— 交互与几何研究（独立素材版本）
  * 来源：https://endfield.hypergryph.com/version_briefing/latest
  * 几何/遮罩/动效参数取自该页公开渲染样式（2026-11-21 浏览器实测）
- * 素材：assets/tab-active-bg.8b31f4.png（激活插画）
- *       fonts/HarmonyOSSansSC-{Medium,Bold}.woff2（原站内嵌字体）
- * 版权：插画、字体及「明日方舟：终末地」UI 权利归鹰角网络 / 华为等权利方所有。
- *       仅供学习研究，商用请自行取得授权。
+ * 素材：系统字体与独立 CSS 渐变；不使用原站插画或字体。
+ * 原作品名称、商标与 UI 权利归各权利人。
  *
  * TUNING —— 全部可调参数集中在 :root，逐项对应原站实测值（1920 视口 / root 16px）
  * --accent/--gold  斜纹底色 #f7cd5c / 竖条金 #dabb65
@@ -24,16 +22,6 @@
  * --halo-*         标题四层白光晕 0 0 4/8/12/16px #e1e1e0
  * --stage-scale    整体缩放（JS 按视口高度自适应，一屏看全 7 项）
  */
-@font-face{
-  font-family:"HarmonyOS_Sans_SC";
-  src:url("fonts/HarmonyOSSansSC-Medium.55cf26.woff2") format("woff2");
-  font-weight:400 500;font-display:swap;
-}
-@font-face{
-  font-family:"HarmonyOS_Sans_SC";
-  src:url("fonts/HarmonyOSSansSC-Bold.d69da8.woff2") format("woff2");
-  font-weight:600 900;font-display:swap;
-}
 :root{
   --accent:#f7cd5c;--gold:#dabb65;
   --stripe-size:.5rem;--stripe-fade:10rem;--overlap:.5rem;--radius:.379rem;
@@ -42,7 +30,7 @@
   --halo-3:#e1e1e0 0 0 .75rem;--halo-4:#e1e1e0 0 0 1rem;
   --halo-idle:rgba(225,225,224,0) 0 0 .25rem,rgba(225,225,224,0) 0 0 .5rem,
     rgba(225,225,224,0) 0 0 .75rem,rgba(225,225,224,0) 0 0 1rem;
-  font-family:"HarmonyOS_Sans_SC",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
   color-scheme:dark;
 }
 *{box-sizing:border-box}
@@ -87,10 +75,10 @@ button:focus-visible{outline:2px solid #fff100;outline-offset:4px}
 /* 背景层：原站 .xh6xJE */
 .tab-bg{position:absolute;inset:0;border-radius:var(--radius);
   background:rgba(55,55,57,.6);transition:background var(--dur) var(--ease)}
-/* 插画层：原站 .ntFJ5x —— 原站真实激活插画素材，默认透明，激活淡入 */
+/* 插画层：原站 .ntFJ5x —— 独立 CSS 渐变替代插画，默认透明，激活淡入 */
 .tab-art{position:absolute;inset:0;border-radius:var(--radius);overflow:hidden;opacity:0;
   box-shadow:0 .25rem .75rem rgba(0,0,0,.35);transition:opacity var(--dur) var(--ease);
-  background-image:url("assets/tab-active-bg.8b31f4.png");
+  background-image:linear-gradient(115deg,#393836 0%,#515047 45%,#8b7745 100%),repeating-linear-gradient(135deg,transparent 0 7px,#f7cd5c18 7px 9px);
   background-position:50%;background-repeat:no-repeat;background-size:cover}
 /* 左侧竖条：原站 .KHykTF:after */
 .tab-btn::after{content:"";position:absolute;left:.875rem;top:50%;transform:translateY(-50%);
