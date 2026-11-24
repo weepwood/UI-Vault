@@ -1221,6 +1221,20 @@ def verify_landfolio_version_switch(browser, origin):
         context.close()
     print("Landfolio 版本回归通过：V1/V2 预览、源码、Design.md、链接、历史返回和 iframe 稳定。")
 
+def write_baseline(cases):
+    """把采集结果写成可直接提交的基线文件，同时作为 CI 产物供人工下载。"""
+    document = {
+        "version": 1,
+        "browser": "playwright-chromium-linux",
+        "grid": list(GRID),
+        "cases": cases,
+    }
+    target = OUTPUT / "visual-baselines.json"
+    # 与仓库中的 tests/visual-baselines.json 保持同样的排版，方便 review diff。
+    target.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    return document
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--bootstrap", action="store_true", help="显式从已发布的主站生成初始基线")
@@ -1240,13 +1254,8 @@ def main():
                     # 已审核的 UI 变更：只采集当前构建并输出新基线，不做与线上站点的对比；
                     # 仍需人工查看 visual-output/current/ 后提交 tests/visual-baselines.json。
                     current = capture_all(browser, local, OUTPUT / "current")
-                    print("VISUAL_BASELINE_JSON=" + json.dumps({
-                        "version": 1,
-                        "browser": "playwright-chromium-linux",
-                        "grid": list(GRID),
-                        "cases": current
-                    }, ensure_ascii=False, separators=(",", ":")), flush=True)
-                    print(f"已采集当前构建基线：{len(CASES)} 个场景，请人工审核 visual-output/current/ 后提交。")
+                    print("VISUAL_BASELINE_JSON=" + json.dumps(write_baseline(current), ensure_ascii=False, separators=(",", ":")), flush=True)
+                    print(f"已采集当前构建基线：{len(CASES)} 个场景，请人工审核 visual-output/current/ 与 visual-output/visual-baselines.json 后提交。", flush=True)
                 else:
                     expected = None
                     if args.bootstrap:
@@ -1267,12 +1276,7 @@ def main():
                             failures.append(str(exc))
                     if args.bootstrap:
                         # 初始化仅用于人工审核并输出固定的测试基线，不自动改写仓库。
-                        print("VISUAL_BASELINE_JSON=" + json.dumps({
-                            "version": 1,
-                            "browser": "playwright-chromium-linux",
-                            "grid": list(GRID),
-                            "cases": current
-                        }, ensure_ascii=False, separators=(",", ":")), flush=True)
+                        print("VISUAL_BASELINE_JSON=" + json.dumps(write_baseline(current), ensure_ascii=False, separators=(",", ":")), flush=True)
                     if failures:
                         raise AssertionError("Chromium 视觉回归失败：\\n" + "\\n".join(failures))
                     print(f"视觉回归通过：{len(CASES)} 个真实 Chromium 截图场景。")

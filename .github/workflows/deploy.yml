@@ -71,7 +71,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ui-vault-visual-baselines-${{ github.run_id }}
-          path: tests/visual-baselines.json
+          # 必须上传脚本写出的采集结果；仓库里的 tests/visual-baselines.json 在 CI 中不会被改写，
+          # 上传它只会把旧基线当成新基线交给人工审核。
+          path: visual-output/visual-baselines.json
+          if-no-files-found: error
       - name: 上传视觉回归截图（成功或失败均保留）
         if: always()
         uses: actions/upload-artifact@v4
