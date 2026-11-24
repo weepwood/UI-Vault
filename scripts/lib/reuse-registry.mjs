@@ -26,7 +26,7 @@ export async function buildRegistry(root){
     const files=await Promise.all(entry.files.map(read));
     items.push({format:REGISTRY_FORMAT,protocolVersion:1,id:entry.id,title:entry.title,kind:entry.kind,version,license:'MIT',
       dependencies:[...entry.dependencies],files,delivery:'vendored-snapshot',
-      ...(entry.framework?{framework:entry.framework,runtime:entry.runtime,notice:'源码快照；由目标框架构建，不是已安装组件包。'}:{}),
+      ...(entry.framework?{framework:entry.framework,runtime:entry.runtime}:{}),
       notice:entry.framework?'原生按钮源码适配器，不包含框架运行时；复制后按目标工程构建并保留 LICENSE。':'CSS recipes 不提供框架交互原语；复制后在自己的项目中维护，须同时安装依赖项与保留 LICENSE。'});
   }
   const index={format:REGISTRY_FORMAT,protocolVersion:1,version,items:items.map(({id,title,kind,dependencies,files,framework,runtime})=>({id,title,kind,dependencies,...(framework?{framework,runtime}:{}),path:'items/'+id+'.json',fileCount:files.length}))};

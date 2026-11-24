@@ -819,7 +819,7 @@ def verify_synthetic_grouped_directory(browser, origin):
         sample=next(item for item in source if item["id"]=="ui-foundation-kit")
         assets=[dict(sample,id=f"stress-{i}",title=f"Stress {i:04d}",technologies=[f"Tech {i//50:03d}"]) for i in range(5000)]
         page=context.new_page()
-        page.route("**/content/assets.json*",lambda route:route.fulfill(json=assets))
+        context.route("**/content/assets.json*",lambda route:route.fulfill(json=assets))
         page.goto(origin,wait_until="domcontentloaded")
         page.locator(".directory-virtual-list").wait_for(state="visible",timeout=30000)
         page.locator(".directory-filter-toggle").click()
