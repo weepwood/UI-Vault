@@ -79,6 +79,32 @@ jobs:
         with:
           name: ui-vault-static
           path: dist
+  validate-windows:
+    name: Windows 本地开发环境校验
+    # 保护本地可复现性：Windows 检出曾因 CRLF 换行符导致 validate 误报与大量测试
+    # 断言失败（见 .gitattributes 与 docs/ROADMAP.md）。此任务不运行依赖
+    # Python 字体子集化与 Chromium 截图的步骤，只覆盖与 Linux 一致的部分。
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: 安装 React 构建依赖
+        run: npm ci --no-audit --no-fund
+      - name: 校验资产协议
+        run: node scripts/validate.mjs
+      - name: 单元测试
+        run: node --test tests/*.test.mjs
+      - name: 设计规范与文字对比度检查
+        run: node scripts/design-audit.mjs
+      - name: JavaScript 语法检查
+        run: |
+          find assets scripts tests -type f \( -name '*.js' -o -name '*.mjs' \) -print0 | xargs -0 -n1 node --check
   deploy:
     name: GitHub Pages 发布
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
