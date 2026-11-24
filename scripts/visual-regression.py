@@ -225,6 +225,12 @@ def verify_react_interactions(browser, origin):
         assert page.locator("#preview-stage").get_attribute("data-size") == "custom"
         actual_css_width = page.locator("#preview-stage iframe").evaluate("(el)=>parseFloat(el.style.width)")
         stage_width = page.locator("#preview-stage").evaluate("(el)=>el.clientWidth")
+        # CSS 尺寸更新后等待实际布局/动画收敛，仍保留原来的 3px 容差。
+        page.wait_for_function("""() => {
+            const frame=document.querySelector('#preview-stage iframe');
+            const stage=document.querySelector('#preview-stage');
+            return frame && stage && Math.abs(frame.getBoundingClientRect().width-Math.min(640,stage.clientWidth))<3;
+        }""",timeout=5000)
         visual_width = page.locator("#preview-stage iframe").evaluate("(el)=>el.getBoundingClientRect().width")
         assert abs(actual_css_width-640)<1, f"自定义视口 CSS 宽度应为 640px，实际 {actual_css_width}"
         assert abs(visual_width-min(640,stage_width))<3, f"iframe 可见宽度未随实际容器缩放：{visual_width} / {stage_width}"
@@ -841,7 +847,11 @@ def verify_personal_library(browser, origin):
         dialog.get_by_role("button",name="最近浏览",exact=True).click()
         assert dialog.locator(".personal-row").first.get_attribute("data-personal-id")==asset_id
         dialog.get_by_role("button",name="我的收藏",exact=True).click()
-        assert dialog.locator(".personal-row").filter(has=dialog.locator(".personal-liked")).count()>=1
+        # 精确验证刚收藏的资产，而不是使用包含外层 dialog 的相对 locator。
+        favorite_row=dialog.locator(f'.personal-row[data-personal-id="{asset_id}"]')
+        favorite_row.locator(".personal-liked").wait_for(state="visible")
+        assert favorite_row.count()==1
+        assert page.evaluate("(id)=>JSON.parse(localStorage.getItem('ui-vault-favorites-v1')||'[]').includes(id)",asset_id)
         page.keyboard.press("Escape")
         dialog.wait_for(state="detached")
     finally:
