@@ -74,7 +74,7 @@ test('暖色高级参数安全生成 CSS，旧七项快照迁移但消息仍严�
  assert.throws(()=>normalizeStoredParameters(asset,{...legacy,gradient:true}));
  const css=warmLayoutCssValues(defaults);assert.equal(css['--warm-card-gradient'],'none');assert.equal(css['--warm-card-shadow'],'none');assert.equal(css['--warm-motion-lift'],'0px');
  const edited={...defaults,gradient:true,gradientAngle:90,shadowOpacity:25,motionDuration:200,motionLift:3};
- const result=warmLayoutCssValues(edited);assert.match(result['--warm-card-gradient'],/^linear-gradient\\(90deg,/);assert.match(result['--warm-card-shadow'],/0.25\\)$/);assert.equal(result['--warm-motion-lift'],'-3px');assert.match(result['--warm-motion-curve'],/^cubic-bezier/);
+ const result=warmLayoutCssValues(edited);assert.ok(result['--warm-card-gradient'].startsWith('linear-gradient(90deg,'));assert.ok(result['--warm-card-shadow'].endsWith('0.25)'));assert.equal(result['--warm-motion-lift'],'-3px');assert.ok(result['--warm-motion-curve'].startsWith('cubic-bezier('));
  assert.throws(()=>warmLayoutCssValues({...edited,gradientEnd:'url(https://example.com)'}));assert.throws(()=>warmLayoutCssValues({...edited,curveX1:101}));
  assert.match(exportLayoutCss(asset,edited),/--warm-card-gradient: linear-gradient/);
 });
@@ -89,7 +89,7 @@ test('四个色标按位置排序、两层阴影独立生成并迁移完整旧�
  assert.throws(()=>normalizeParameters(WARM_LAYOUT_FIELDS,legacy,{complete:true}));
  const css=warmLayoutCssValues({...defaults,gradient:true,gradientMid:true,gradientMid2:true,gradientMidPosition:80,gradientMid2Position:20,shadowOpacity:10,shadow2Opacity:20,shadow2X:-4,shadow2Spread:-2});
  assert.match(css['--warm-card-gradient'],/#f7e6d5 20%, #e5c8ac 80%/);
- assert.match(css['--warm-card-shadow'],/rgba\\([^)]*0.1\\), -4px 2px 8px -2px rgba\\([^)]*0.2\\)/);
+ assert.equal(css['--warm-card-shadow'],'0 6px 16px rgba(73, 58, 50, 0.1), -4px 2px 8px -2px rgba(73, 58, 50, 0.2)');
  assert.throws(()=>warmLayoutCssValues({...defaults,gradientMidPosition:101}));
  assert.throws(()=>warmLayoutCssValues({...defaults,shadow2Color:'url(https://example.com)'}));
 });
