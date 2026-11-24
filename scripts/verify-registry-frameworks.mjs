@@ -20,7 +20,7 @@ const button=await readFile(join(installation.target,'adapters/vue/src/component
 const parsed=parse(button,{filename:'UiButton.vue'});
 if(parsed.errors.length)throw Error(JSON.stringify(parsed.errors));
 const compiled=compileScript(parsed.descriptor,{id:'ui-vault-registry-button',inlineTemplate:true});
-await writeFile(join(target,'VueButton.mjs'),compiled.content);
+await writeFile(join(target,'VueButton.ts'),compiled.content);
 const css="import './ui-foundation/dist/theme.css';\nimport './ui-foundation/styles/base.css';\nimport './ui-foundation/styles/components.css';\n";
 await writeFile(join(target,'react-entry.jsx'),css+`import {useState} from 'react';
 import {createRoot} from 'react-dom/client';
@@ -28,7 +28,7 @@ import {UiButton} from './ui-foundation/adapters/react/UiButton.jsx';
 function App(){const [count,setCount]=useState(0);return <main><UiButton variant="outline" size="sm" onClick={()=>setCount(x=>x+1)}>增加</UiButton><UiButton disabled>禁用</UiButton><UiButton loading>加载</UiButton><output>{count}</output></main>}
 createRoot(document.getElementById('app')).render(<App/>);`);
 await writeFile(join(target,'vue-entry.mjs'),css+`import {createApp,h,ref} from 'vue';
-import UiButton from './VueButton.mjs';
+import UiButton from './VueButton.ts';
 createApp({setup(){const count=ref(0);return ()=>h('main',[
 h(UiButton,{variant:'outline',size:'sm',onClick:()=>count.value++},{default:()=> '增加'}),
 h(UiButton,{disabled:true},{default:()=> '禁用'}),

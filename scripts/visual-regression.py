@@ -839,6 +839,15 @@ def verify_synthetic_grouped_directory(browser, origin):
         page.keyboard.press("Enter")
         page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5100'")
         assert window.get_attribute("data-total")=="5100"
+        # 首个组标题保持焦点挂载；滚动到后续组，再折叠上方组，验证同一资产锚点。
+        page.locator('[data-virtual-group]').first.focus()
+        page.evaluate("() => document.querySelector('.project-scroll').scrollTo({top:7200})")
+        page.wait_for_function("() => document.querySelector('[data-virtual-index=\"120\"]') !== null")
+        before=page.evaluate("() => document.querySelector('.project-scroll').scrollTop")
+        page.locator('[data-virtual-group]').first.evaluate("(button)=>button.click()")
+        page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5050'")
+        page.wait_for_function("(before)=>Math.abs(document.querySelector('.project-scroll').scrollTop-(before-3000))<3",arg=before)
+        print("上方分组折叠后恢复首行滚动锚点通过",flush=True)
         # 记录实际连续滚动 rAF 间隔，不把 CI 机器帧率外推至用户设备。
         frames=page.evaluate("""async()=>{
           const root=document.querySelector('.project-scroll'),intervals=[];let last=performance.now();
