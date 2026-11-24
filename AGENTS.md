@@ -201,3 +201,5 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 追加六项指南证据 Hands Up、Heroic Realism、Hipness Purgatory、Hollywood Regency、Holographic UI、Honeycore；累计 124，剩余 166，保留原始许可与精选状态。待 CI。
 
 #112 自审发现分拆 MaterialActions 时 JSX 容器收尾错误，合并前修正；补充 CI 路由将 MaterialActions/BezierEditor 单独改动也视为视觉风险。阴影示意文字使用固定可读标签，避免自定义深色表面导致低对比。等待实际完整 CI。
+
+追加 6 项原始指南审计：Human Scribble、Hygge、Indie Sleaze、Industrial Gothic、Ink Wash、International Typographic Style；累计 130，剩余 160 项。每项保留原始指南证据、标签、双语检索；候选待验收。
