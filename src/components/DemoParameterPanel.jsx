@@ -2,6 +2,7 @@ import {Fragment,useEffect,useRef,useState} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID,warmLayoutCssValues} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
+import {BezierEditor} from './BezierEditor.jsx';
 import {createParameterTransport} from '../../assets/core/parameter-transport.js';
 import {readParameterPresets,saveParameterPresets,putParameterPreset,exportParameterPresets,importParameterPresets} from '../../assets/core/parameter-presets.js';
 
@@ -16,7 +17,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   const transportRef=useRef(null),revision=useRef(0);
   const [autoApply,setAutoApply]=useState(liveEditing);
   const [history,setHistory]=useState([]),[future,setFuture]=useState([]);
-  const sliderGesture=useRef(null);
+  const sliderGesture=useRef(null),curveGesture=useRef(null);
   const [presets,setPresets]=useState(()=>readParameterPresets(asset));
   const [presetName,setPresetName]=useState('');
   const [presetChoice,setPresetChoice]=useState('');
@@ -68,6 +69,17 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     setStatus('参数已编辑 · 尚未应用');
     if(!invalidFields.some(item=>item.key!==field.key))scheduleLive(next);else transportRef.current?.cancelQueued();
   }
+  function editCurve(point,x,y){
+    if(blocking||!values||![1,2].includes(point))return;
+    const xKey='curveX'+point,yKey='curveY'+point;
+    if(!validParameter(fields.find(f=>f.key===xKey),x)||!validParameter(fields.find(f=>f.key===yKey),y))return;
+    if(values[xKey]===x&&values[yKey]===y)return;
+    if(!curveGesture.current?.recorded){remember();if(curveGesture.current)curveGesture.current.recorded=true;}
+    const next={...values,[xKey]:x,[yKey]:y};
+    revision.current++;setValues(next);setDrafts(previous=>{const updated={...previous};delete updated[xKey];delete updated[yKey];return updated;});
+    setStatus('参数已编辑 · 尚未应用');
+    if(!invalidFields.some(f=>f.key!==xKey&&f.key!==yKey))scheduleLive(next);else transportRef.current?.cancelQueued();
+  }
   function undo(){if(!history.length)return;revision.current++;const next=history.at(-1);if(values)setFuture(previous=>[...previous.slice(-29),values]);setHistory(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已撤销 · 尚未应用');scheduleLive(next);}
   function redo(){if(!future.length)return;revision.current++;const next=future.at(-1);if(values)setHistory(previous=>[...previous.slice(-29),values]);setFuture(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已重做 · 尚未应用');scheduleLive(next);}
   async function loadPresets(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;try{if(file.size>65536)throw Error('预设文件过大');const result=importParameterPresets(asset,await file.text(),presets);setPresets(result.items);const saved=saveParameterPresets(asset,result.items);setStatus('导入 '+result.added+' 项，跳过 '+result.skipped+' 项'+(saved?'':'；仅本次会话'));}catch{setStatus('预设导入失败：格式、资产或参数不匹配');}}
@@ -100,7 +112,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       <label className="parameter-preset-import">导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
     <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
-    {values&&<>{advanced&&<div className="parameter-material-preview" aria-label="当前编辑材质与曲线示意"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient'],boxShadow:advanced['--warm-card-shadow']}}><strong>表面预览</strong><small>{values.gradient?'双色渐变':'纯色'}</small></div><svg viewBox="0 0 120 100" role="img" aria-label="当前三次贝塞尔曲线"><path d="M10 90H110V10" fill="none" stroke="currentColor" opacity=".25"/><path d={`M10 90C${10+values.curveX1} ${90-values.curveY1*.8},${10+values.curveX2} ${90-values.curveY2*.8},110 10`} fill="none" stroke="currentColor" strokeWidth="2"/></svg><code>{advanced['--warm-motion-curve']}</code></div>}<div className="demo-parameter-fields">{fields.map((field,index)=><Fragment key={field.key}>{field.group&&field.group!==fields[index-1]?.group&&<h4 className="parameter-group-title">{field.group}</h4>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
+    {values&&<>{advanced&&<div className="parameter-material-preview" aria-label="当前编辑材质与曲线示意"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient'],boxShadow:advanced['--warm-card-shadow']}}><strong>表面预览</strong><small>{values.gradient?(2+Number(values.gradientMid)+Number(values.gradientMid2))+' 色标渐变':'纯色'}</small></div><BezierEditor values={values} disabled={blocking} onStart={()=>{curveGesture.current={recorded:false};}} onMove={editCurve} onEnd={()=>{curveGesture.current=null;}}/><code>{advanced['--warm-motion-curve']}</code></div>}<div className="demo-parameter-fields">{fields.map((field,index)=><Fragment key={field.key}>{field.group&&field.group!==fields[index-1]?.group&&<h4 className="parameter-group-title">{field.group}</h4>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={blocking} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
       :field.type==='boolean'?<input aria-label={field.label} type="checkbox" disabled={blocking} checked={values[field.key]} onChange={event=>edit(field,event.target.checked)}/>

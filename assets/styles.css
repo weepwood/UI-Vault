@@ -1469,3 +1469,8 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 .parameter-material-swatch{min-width:0;min-height:72px;display:grid;align-content:center;gap:4px;padding:10px;border:1px solid var(--line-soft);border-radius:8px;color:#37312b}
 .parameter-material-swatch strong,.parameter-material-swatch small{justify-self:start;background:#fdfbf8;padding:2px 5px;border-radius:3px;color:#37312b;font-size:11px}
 .parameter-material-preview svg{width:100%;height:78px;color:var(--accent)}.parameter-material-preview code{grid-column:1/-1;font-size:10px;overflow-wrap:anywhere;color:var(--muted)}
+
+/* 仅在高级材质编辑展开区内生效，不改变三栏默认视觉基线。 */
+.parameter-material-preview{grid-template-columns:minmax(0,1fr) minmax(100px,144px)}
+.parameter-material-preview .bezier-editor{height:104px;overflow:visible}
+.bezier-handle{cursor:grab;touch-action:none}.bezier-handle:active{cursor:grabbing}
