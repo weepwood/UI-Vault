@@ -3,7 +3,7 @@ import {virtualWindow} from '../../assets/core/virtual-window.js';
 
 // 只挂载可视区域及缓冲行。分组模式/小目录由 ProjectList 使用完整列表。
 export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow}){
-  const rowHeight=density==='compact'?45:57;
+  const rowHeight=density==='compact'?48:60;
   const host=useRef(null),pendingFocus=useRef(null);
   const [metrics,setMetrics]=useState({top:0,height:800});
   const [focusedId,setFocusedId]=useState(null);

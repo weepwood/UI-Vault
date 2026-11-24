@@ -35,7 +35,7 @@ test('工作台使用独立 Project 数据，不把项目分组状态传入 ifra
  const loader=read('src/useWorkbench.js');
  const list=read('src/components/ProjectList.jsx');
  assert.match(loader,/content\/projects\.json/);
- assert.match(app,/groupByProject=\{state\.sort==='project'\}/);
+ assert.match(app,/groupBy=\{state\.groupBy\}/);
  assert.match(list,/groupAssetsByProject\(items,projects\)/);
  assert.doesNotMatch(read('src/components/PreviewFrame.jsx'),/projects\.map|groupByProject/);
 });

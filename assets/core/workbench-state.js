@@ -76,6 +76,7 @@ export function setCatalogQuery(state,query){
 export function setCatalogSort(state,sort){
   if(!SORT_MODES.includes(sort))throw new RangeError('未知排序模式：'+sort);
   state.sort=sort;
+  if(sort==='project')state.groupBy='project';
   return state;
 }
 export function setCatalogGroup(state,group){
