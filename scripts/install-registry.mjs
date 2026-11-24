@@ -4,7 +4,7 @@ import {readFile,realpath,lstat} from 'node:fs/promises';
 import {resolve,join,sep} from 'node:path';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
-import {installRegistrySnapshot} from './lib/registry-install.mjs';
+import {installRegistrySnapshot,planRegistryInstall} from './lib/registry-install.mjs';
 export async function readLocalRegistry(directory){
  const root=await realpath(directory);
  async function read(path){
@@ -26,11 +26,14 @@ export async function readLocalRegistry(directory){
  return {index,items};
 }
 async function main(){
- const [directory,parent,...ids]=process.argv.slice(2);
+ const args=process.argv.slice(2),dryRun=args[0]==='--plan';
+ if(dryRun)args.shift();
+ const [directory,parent,...ids]=args;
  if(!directory||!parent||!ids.length)throw Error('用法：node scripts/install-registry.mjs dist/registry /path/to/project foundation-react-input ...');
  const registry=await readLocalRegistry(directory);
+ if(dryRun){const plan=planRegistryInstall(registry,ids);console.log(JSON.stringify({...plan,target:resolve(parent,'ui-foundation'),files:plan.files.map(({path,sha256})=>({path,sha256}))},null,2));return;}
  const result=await installRegistrySnapshot(registry,ids,parent);
  const sha=createHash('sha256').update(await readFile(join(directory,'index.json'))).digest('hex');
- console.log(JSON.stringify({target:result.target,files:result.files.length,indexSha256:sha},null,2));
+ console.log(JSON.stringify({target:result.target,files:result.files.length,modules:result.modules,runtime:result.runtime,indexSha256:sha},null,2));
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)main().catch(error=>{console.error(error.message);process.exitCode=1;});
