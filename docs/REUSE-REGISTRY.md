@@ -19,3 +19,7 @@
 项目说明/源码中可导出当前资产的复用清单：明确区分单 HTML、独立 ZIP、源码参考、外部项目。文件列表不等于完整工程；外部仓库快照不代表商业许可。清单使用站点根目录相对路径，不包含未登记的本地文件内容。
 
 后续：提供可交互 Token 浏览及导出，逐项验证独立 Demo 的依赖闭包，最后再考虑经过真正跨项目验收的框架组件安装入口。
+
+## 框架源码快照（第二阶段）
+
+新增 foundation-react-button 与 foundation-vue-button，依赖 foundation-components，登记目标运行时范围及源文件哈希。React 按钮采用原生 button；Vue 复用现有 Vue 3 示例的 UiButton.vue，均使用同一 Foundation CSS，不提供自研复杂交互。目标项目仍负责安装框架、构建、运行验收；不等于 shadcn CLI 安装包。ZIP 的 MANIFEST.json 列出入口、许可说明、实际文件字节数和 SHA-256（不包括清单自身）。

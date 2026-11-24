@@ -226,3 +226,18 @@ test('目录筛选缓存不受预览、菜单或主题影响，筛选变更仍�
     assert.deepEqual(observed.filtered.map(item=>item.id),[asset.id]);
   }finally{unmount();}
 });
+
+// Foundation React 适配器仅复用原生按钮交互和共享 CSS，不引入新的自研原语。
+import {UiButton} from '../subprojects/ui-foundation-kit/adapters/react/UiButton.jsx';
+test('Foundation React Button 保留原生事件、默认类型及加载禁用语义',()=>{
+  let clicks=0;
+  const {container,rerender,unmount}=render(<UiButton variant="outline" size="sm" onClick={()=>clicks++}>保存</UiButton>);
+  const button=container.querySelector('button');
+  assert.equal(button.type,'button');
+  assert.ok(button.classList.contains('ui-button--outline'));
+  assert.ok(button.classList.contains('ui-button--sm'));
+  fire(button,'click');assert.equal(clicks,1);
+  rerender(<UiButton loading onClick={()=>clicks++}>保存</UiButton>);
+  assert.equal(button.disabled,true);assert.equal(button.getAttribute('aria-busy'),'true');
+  unmount();
+});

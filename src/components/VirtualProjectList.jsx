@@ -35,8 +35,10 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     return ()=>{cancelAnimationFrame(frame);observer?.disconnect();scrollRoot.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
   },[scrollRoot,items,rowHeight,grouped]);
   useLayoutEffect(()=>{
-    const index=pendingFocus.current;
-    if(index===null)return;
+    const id=pendingFocus.current;
+    if(id===null)return;
+    const index=items.findIndex(item=>item.id===id);
+    if(index<0){pendingFocus.current=null;return;}
     const button=host.current?.querySelector('[data-virtual-index="'+index+'"] button');
     if(button){pendingFocus.current=null;button.focus({preventScroll:true});}
   });
@@ -48,7 +50,7 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     const next=event.key==='Home'?0:event.key==='End'?items.length-1:
       Math.max(0,Math.min(items.length-1,index+(event.key==='ArrowDown'?1:-1)));
     if(next===index)return;
-    pendingFocus.current=next;
+    pendingFocus.current=items[next].id;
     const offset=host.current.getBoundingClientRect().top-scrollRoot.getBoundingClientRect().top-scrollRoot.clientTop+scrollRoot.scrollTop;
     const top=offset+next*rowHeight;
     if(top<scrollRoot.scrollTop)scrollRoot.scrollTo({top});

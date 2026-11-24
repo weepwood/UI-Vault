@@ -12,7 +12,22 @@ const TERM_ALIASES=Object.freeze({
   '组件':['component'],'component':['组件'],
   '布局':['layout'],'layout':['布局'],
   '镜像':['mirror'],'mirror':['镜像'],
-  '桌面':['desktop'],'desktop':['桌面']
+  '桌面':['desktop'],'desktop':['桌面'],
+  '极简':['minimalism','minimal','minimalist'],'minimalism':['极简'],'minimal':['极简'],'minimalist':['极简'],
+  '粗野':['brutalism','brutalist'],'brutalism':['粗野'],'brutalist':['粗野'],
+  '设计系统':['design system'],'design system':['设计系统'],
+  '命令面板':['command palette'],'command palette':['命令面板'],
+  '暗色':['dark mode','dark theme'],'dark mode':['暗色'],'dark theme':['暗色'],
+  '浅色':['light mode','light theme'],'light mode':['浅色'],'light theme':['浅色'],
+  '数据可视化':['data visualization'],'data visualization':['数据可视化'],
+  '背景特效':['background effects'],'background effects':['背景特效'],
+  '落地页':['landing page'],'landing page':['落地页'],
+  '导航':['navigation'],'navigation':['导航'],
+  '编辑器':['editor'],'editor':['编辑器'],
+  '复古':['retro','vintage'],'retro':['复古'],'vintage':['复古'],
+  '霓虹':['neon'],'neon':['霓虹'],
+  '渐变':['gradient'],'gradient':['渐变'],
+  '排版':['typography','版式'],'typography':['排版','版式'],'版式':['typography','排版']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
@@ -22,7 +37,14 @@ export function normalizeSearchText(value){
     .replace(/[\p{P}\p{S}\s]+/gu,' ').trim();
 }
 export function tokenizeSearch(query){
-  return [...new Set(normalizeSearchText(query).split(/\s+/).filter(term=>term&&!OMIT_TOKENS.has(term)))].slice(0,8);
+  const words=normalizeSearchText(query).split(/\s+/).filter(Boolean);
+  const terms=[];
+  for(let i=0;i<words.length;i++){
+    const pair=words.slice(i,i+2).join(' ');
+    if(i+1<words.length&&Object.hasOwn(TERM_ALIASES,pair)){terms.push(pair);i++;}
+    else if(!OMIT_TOKENS.has(words[i]))terms.push(words[i]);
+  }
+  return [...new Set(terms)].slice(0,8);
 }
 function searchFields(asset,labels={}){
   return [
@@ -67,7 +89,8 @@ function matchNormalized({text,compact},term){
   if(term.length>=2&&compact.includes(term))return .9;
   // 用户查询可能恰好为 constructor 等对象原型属性；只读取词表自有键。
   for(const alias of Object.hasOwn(TERM_ALIASES,term)?TERM_ALIASES[term]:[]){
-    if(text.includes(alias))return .48;
+    // 英文别名按完整词/短语匹配，避免 minimal 命中 minimalistic 之外的无关拼接词。
+    if(/[\u4e00-\u9fff]/u.test(alias)?text.includes(alias):(' '+text+' ').includes(' '+alias+' '))return .48;
   }
   return 0;
 }

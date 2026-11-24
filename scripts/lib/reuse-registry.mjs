@@ -4,7 +4,9 @@ import {createHash} from 'node:crypto';
 const entries=[
   {id:'foundation-tokens',title:'UI Foundation Design Tokens',kind:'tokens',dependencies:[],files:['tokens/foundation.json','tokens/themes.json','dist/theme.css','dist/tokens.json','dist/tokens.ts','dist/tokens.rs','LICENSE']},
   {id:'foundation-base',title:'UI Foundation 基础 CSS',kind:'css',dependencies:['foundation-tokens'],files:['styles/base.css']},
-  {id:'foundation-components',title:'UI Foundation 组件 CSS recipes',kind:'css-recipes',dependencies:['foundation-base'],files:['styles/components.css','INTEGRATION.md']}
+  {id:'foundation-components',title:'UI Foundation 组件 CSS recipes',kind:'css-recipes',dependencies:['foundation-base'],files:['styles/components.css','INTEGRATION.md']},
+  {id:'foundation-react-button',title:'React Button 源码适配器',kind:'framework-source',framework:'react',runtime:{react:'>=19 <20'},dependencies:['foundation-components'],files:['adapters/react/UiButton.jsx','adapters/react/README.md']},
+  {id:'foundation-vue-button',title:'Vue Button 源码适配器',kind:'framework-source',framework:'vue',runtime:{vue:'>=3.5 <4'},dependencies:['foundation-components'],files:['adapters/vue/src/components/UiButton.vue','adapters/vue/README.md']}
 ];
 export const REGISTRY_FORMAT='ui-vault-foundation-registry';
 export const REGISTRY_ROOT='subprojects/ui-foundation-kit';
@@ -24,9 +26,10 @@ export async function buildRegistry(root){
     const files=await Promise.all(entry.files.map(read));
     items.push({format:REGISTRY_FORMAT,protocolVersion:1,id:entry.id,title:entry.title,kind:entry.kind,version,license:'MIT',
       dependencies:[...entry.dependencies],files,delivery:'vendored-snapshot',
-      notice:'CSS recipes 不提供框架交互原语；复制后在自己的项目中维护，须同时安装依赖项与保留 LICENSE。'});
+      ...(entry.framework?{framework:entry.framework,runtime:entry.runtime,notice:'源码快照；由目标框架构建，不是已安装组件包。'}:{}),
+      notice:entry.framework?'原生按钮源码适配器，不包含框架运行时；复制后按目标工程构建并保留 LICENSE。':'CSS recipes 不提供框架交互原语；复制后在自己的项目中维护，须同时安装依赖项与保留 LICENSE。'});
   }
-  const index={format:REGISTRY_FORMAT,protocolVersion:1,version,items:items.map(({id,title,kind,dependencies,files})=>({id,title,kind,dependencies,path:'items/'+id+'.json',fileCount:files.length}))};
+  const index={format:REGISTRY_FORMAT,protocolVersion:1,version,items:items.map(({id,title,kind,dependencies,files,framework,runtime})=>({id,title,kind,dependencies,...(framework?{framework,runtime}:{}),path:'items/'+id+'.json',fileCount:files.length}))};
   return {index,items};
 }
 export async function writeRegistry(root,out){
