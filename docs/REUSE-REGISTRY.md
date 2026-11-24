@@ -45,3 +45,7 @@
 ## Foundation 源码工程 ZIP（候选）
 
 `downloads/ui-foundation-kit-project.zip` 是与静态 Demo ZIP、Registry 单模块安装、外站整仓快照不同的交付物。固定白名单包含 Foundation 自有 Token 源、生成 CSS/TS/Rust/JSON、构建检查与安装脚本、静态 Demo、React/Vue/GPUI 适配器及原许可。归档带 SHA-256 清单，构建检查在临时目录解包后离线重新生成 Token 并逐字节比对。Vue 示例仍需联网安装未锁定的依赖，不声称其可复现构建；React/GPUI 是适配源码而非完整应用。待 CI。
+
+Foundation Vue 独立构建候选：固定 Vue/Reka 为已验证版本。独立 workflow 从实际 Foundation ZIP 解包，若仓库缺锁，仅生成候选锁 Artifact；从此锁 npm ci、运行 vue-tsc/Vite 并启动静态产物做真实 Chromium 冒烟。必须将实际生成锁文件审查提交并将其纳入 ZIP 白名单，再执行严格 npm ci；未完成不得声称完整可复现。
+
+正式锁文件候选：从真实 Artifact 14936578027 提取并逐字节核对 SHA-256/Git blob；121 依赖项全部 npm 官方源并含 integrity。ZIP 现在要求 adapters/vue/package-lock.json；独立 workflow 比对仓库与解包锁，严格 npm ci，构建后比对锁未变并运行浏览器。原候选已完成实际 Vite 7.3.8 构建与 Chromium 操作，最终锁定版待 CI。禁止无锁降级。

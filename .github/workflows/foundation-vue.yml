@@ -1,0 +1,53 @@
+name: Foundation Vue 独立工程验收
+on:
+  pull_request:
+    paths:
+      - 'subprojects/ui-foundation-kit/**'
+      - 'scripts/build-foundation-project.py'
+      - '.github/workflows/foundation-vue.yml'
+      - 'scripts/verify-foundation-vue.py'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: foundation-vue-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  isolated-vue:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: 生成真实源码工程并解包
+        run: |
+          node subprojects/ui-foundation-kit/scripts/build-tokens.mjs
+          python scripts/build-foundation-project.py --build
+          python scripts/build-foundation-project.py --verify
+          mkdir -p "$RUNNER_TEMP/foundation-project"
+          unzip -q dist/downloads/ui-foundation-kit-project.zip -d "$RUNNER_TEMP/foundation-project"
+      - name: 验证已提交锁文件并严格独立 npm ci
+        run: |
+          cmp subprojects/ui-foundation-kit/adapters/vue/package-lock.json "$RUNNER_TEMP/foundation-project/adapters/vue/package-lock.json"
+          cd "$RUNNER_TEMP/foundation-project/adapters/vue"
+          test -s package-lock.json
+          cp package-lock.json "$RUNNER_TEMP/foundation-vue-package-lock.json"
+          npm ci --no-audit --no-fund
+          cmp package-lock.json "$RUNNER_TEMP/foundation-vue-package-lock.json"
+          npm run build
+      - name: 安装浏览器并验证独立产物
+        run: |
+          python -m pip install -r scripts/requirements-visual.txt
+          python -m playwright install chromium --with-deps
+          python scripts/verify-foundation-vue.py "$RUNNER_TEMP/foundation-project/adapters/vue/dist"
+      - name: 上传实际锁文件
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-vue-lock-${{ github.run_id }}
+          path: ${{ runner.temp }}/foundation-vue-package-lock.json
+          if-no-files-found: error

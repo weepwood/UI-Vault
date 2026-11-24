@@ -187,3 +187,11 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 材质编辑与交付候选追加六项原始指南（Goblincore、Googie、Gorpcore、Gothic、Graffiti Pop、Grain and Grit），分类审计累计 112 项，未标记 178 项；双语别名与原始指南证据同步，不提升精选状态。待 CI。
 
 #107 已合并 de35249；#108 复验两套 CI 通过后合并 1b4a19f，树与候选一致。#109 CI 45422897553 Linux/Windows 均在 tests/demo-parameters.test.mjs:77 双重转义正则语法错误失败（333/334，未进入 Chromium）；改用字面字符串前缀/后缀断言，保留语义校验，不降低门槛。同步已合并 #108 树，待新 CI。
+
+#109 CI 45424106670（341 单测/26 Chromium）通过，合并 2dd548a，树等价。#110 45424168943（344 单测/26 Chromium/Windows/工程 ZIP 离线重建）与 Registry 45424169003 通过；下载 14935698532、14935513829 各 37 文件，检查实际源码并排、高亮、桌面/移动参数及双主题目录。#110 同步 main 后 023af83 待复验。新候选在原 32 字段上增加色标拖动/方向键、阴影启停、曲线预设及停靠区紧凑布局，不改变消息协议与旧预设；新截图及浏览器回归待 CI。
+
+三栏候选视觉：保留原布局宽度和行高，精修导航选中权重、列表文字行高/计数与宽屏 Topbar 分类信息；不自动更新像素基线。Foundation Vue 使用 Registry 已验收的 Vue 3.5.24 / Reka 2.10.1，独立 Actions 在实际工程 ZIP 解包目录生成候选锁（若缺失）并 npm ci、构建和浏览器冒烟。真实锁文件必须下载审查后提交并重新验收；缺锁候选不能合并。
+
+追加六项原始指南证据：Grandmillennial、Grocery Girl Fall、Grotesk Display、Grunge Revival、Gustavian、Hand Drawn。累计 118，剩余 172；保留原始许可与精选状态，候选待 CI。
+
+#110 同步后 45425575734 / 45425575830 全部通过（344 单测、26 Chromium、Windows、Registry、ZIP 重建），真实视觉产物 14934954291 共 37 文件复审后合并 8da05a5，树一致。#111 原候选三套 CI 45426165182 / 45426164924 / 45426165318 全部通过，视觉产物 14937725340 共 46 文件复审。Vue 真实锁 Artifact 14936578027，59,108 字节、lockfileVersion 3、121 依赖项、官方 npm Registry 与完整 integrity；SHA-256 e834886e4a3f197ca3d2471c7f12ec6701b6945615f0540d4994feabdbf9097c，Git blob 23ddb57c50d1517b2e1edcd4d724877c19b36a46。只读临时工作流 45427130703 验证字节后已移除；原始锁进入 ZIP 白名单，禁止缺锁回退，严格比较解包锁与提交锁，npm ci 后再次比对及 vue-tsc/Vite、Chromium 验收，待新 CI。
