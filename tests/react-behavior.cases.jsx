@@ -178,7 +178,7 @@ test('全局搜索往返查询不恢复旧高亮，Enter 选择当前第一项',
 });
 
 test('目录筛选缓存不受预览、菜单或主题影响，筛选变更仍然生效', () => {
-  const other={...asset,id:'other',type:'style',tags:['风格']};
+  const other={...asset,id:'other',title:'示例风格',subtitle:'Style sample',description:'视觉风格',type:'style',tags:['风格']};
   const state={assets:[asset,other],labels,favorites:new Set(),category:'all',
     tag:'',reuse:'',query:'',sort:'featured',favoritesOnly:false,importedOnly:false,curatedOnly:false};
   let observed;
