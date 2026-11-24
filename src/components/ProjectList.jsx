@@ -26,6 +26,8 @@ export function ProjectRow({asset,labels,selected,onSelect,query='',position,set
   </article>;
 }
 
+const MemoProjectRow=React.memo(ProjectRow);
+
 // 原生 details 的 open 属性需要真实受控状态，defaultOpen 不是该元素的标准属性。
 function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,virtualize,density}){
   const [expanded,setExpanded]=React.useState(true);
@@ -39,9 +41,9 @@ function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,vi
     <div className="asset-project-items" role="list" aria-label={name+' 的资源'}>
       {expanded&&(virtualize&&scrollRoot&&group.items.length>120
         ?<VirtualProjectList items={group.items} selectedId={selectedId} scrollRoot={scrollRoot} density={density} grouped
-          renderRow={(asset,index)=><ProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
+          renderRow={(asset,index)=><MemoProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
             onSelect={onSelect} query={query} position={index+1} setSize={group.items.length}/>}/>
-        :group.items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
+        :group.items.map(asset=><MemoProjectRow key={asset.id} asset={asset} labels={labels}
           selected={asset.id===selectedId} onSelect={onSelect} query={query}/>))}
     </div>
   </details>;
@@ -49,14 +51,14 @@ function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,vi
 const SKELETON_ROWS=[0,1,2,3,4,5,6];
 
 export function ProjectList({items,labels,selectedId,onSelect,query='',loading=false,projects=[],groupByProject=false,groupBy='none',scrollRoot,virtualize=false,density='comfortable'}){
+  const grouping=groupByProject?'project':groupBy;
+  const groups=React.useMemo(()=>grouping==='none'?[]:grouping==='project'?groupAssetsByProject(items,projects):groupCatalogAssets(items,grouping,{projects,labels}),[items,grouping,projects,labels]);
   // 目录首次加载时显示占位行，避免列表先空白、再整体跳出。
   if(loading)return <>{SKELETON_ROWS.map(index=><div key={index} className="project-skeleton" aria-hidden="true">
     <span className="project-skeleton-icon"/>
     <span className="project-skeleton-lines"><span/><span/></span>
   </div>)}</>;
-  const grouping=groupByProject?'project':groupBy;
   if(grouping!=='none'){
-    const groups=grouping==='project'?groupAssetsByProject(items,projects):groupCatalogAssets(items,grouping,{projects,labels});
     return <>{groups.map(group=>
       <AssetProjectGroup key={grouping+':'+group.id+':'+query} group={group} labels={labels}
         selectedId={selectedId} onSelect={onSelect} query={query}
@@ -64,8 +66,8 @@ export function ProjectList({items,labels,selectedId,onSelect,query='',loading=f
   }
   if(virtualize&&scrollRoot&&items.length>120)return <VirtualProjectList
     items={items} selectedId={selectedId} scrollRoot={scrollRoot} density={density}
-    renderRow={(asset,index)=><ProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
+    renderRow={(asset,index)=><MemoProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
       onSelect={onSelect} query={query} position={index+1} setSize={items.length}/>}/>;
-  return <>{items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
+  return <>{items.map(asset=><MemoProjectRow key={asset.id} asset={asset} labels={labels}
     selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}</>;
 }

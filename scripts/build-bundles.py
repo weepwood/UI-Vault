@@ -81,7 +81,10 @@ class RuntimeRefs(HTMLParser):
         elif tag in ("img", "source", "video", "audio") and attrs.get("src"):
             self.refs.append(attrs["src"])
         elif tag == "a" and attrs.get("href", "").lower().split("?")[0].endswith(".html"):
-            self.refs.append(attrs["href"])
+            href = attrs["href"]
+            url = urlsplit(href)
+            if not url.scheme and not url.netloc:
+                self.refs.append(href)
 
 
 def verify_static_deps(asset, files):
@@ -126,15 +129,17 @@ def contents(asset, entries):
 
 
 def verify_parameter_demo_sources():
-    """仅核对三个已登记的单文件 Demo 的显式 HTML 静态引用；非完整 JS 依赖分析。"""
-    assets = {asset["id"]: asset for asset in json.loads(MANIFEST.read_text(encoding="utf-8"))}
-    for identifier in ("ui-foundation-kit", "aurora-field", "liquid-orb"):
-        asset = assets[identifier]
+    """覆盖所有声明可复制的单文件；静态引用校验不能替代浏览器运行验收。"""
+    assets = json.loads(MANIFEST.read_text(encoding="utf-8"))
+    for asset in assets:
+        if asset.get("copyable") is not True:
+            continue
+        identifier = asset["id"]
         if asset["source"] != "local" or not asset.get("copyable") or asset["preview"] != asset.get("code"):
             raise ValueError(f"{identifier}: 单文件交付协议不一致")
         path = asset["preview"]
         verify_static_deps(asset, [(PurePosixPath(path).name, read_output(path))])
-        print(f"单文件参数 Demo 静态资源校验通过：{identifier}")
+        print(f"单文件 Demo 静态资源校验通过：{identifier}")
 
 
 def build():

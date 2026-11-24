@@ -45,6 +45,7 @@ export function checkEntry(entry, categories, fileName='') {
   if(!categories.some(x=>x.id===entry.type)) errors.push(where+': 未注册的资产分类 '+String(entry.type));
   if(!Array.isArray(entry.tags) || !entry.tags.every(isText)) errors.push(where+': tags 必须是字符串数组（元素非空，允许为空数组）');
   if(!isStrings(entry.technologies)) errors.push(where+': technologies 必须是非空字符串数组');
+  else if(new Set(entry.technologies.map(value=>value.trim().toLowerCase())).size!==entry.technologies.length)errors.push(where+': technologies 存在大小写或空白重复');
   const unknown=unknownTags(entry.tags);
   if(unknown.length) errors.push(where+': 标签不在受控词表：'+unknown.join('、')+'（词表见 catalog/tag-vocabulary.json；历史标签映射见 catalog/tag-migrations.json，新词先扩充词表）');
   if(!isText(entry.license)) errors.push(where+': 必须明确授权信息');
@@ -199,7 +200,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
   const projectsResult=await inspectProjects({checkGenerated});
   errors.push(...projectsResult.errors);
   const projectsById=new Map(projectsResult.projects.map(p=>[p.id,p]));
-  const ids=new Set(),items=[],publishedVariantPaths=new Set();
+  const ids=new Set(),items=[],publishedVariantPaths=new Set(),localPreviewPaths=new Map();
   for(const {fileName,entry} of source.entries) {
     errors.push(...checkEntry(entry,source.categories,fileName));
     if(!entry.projectId||!projectsById.has(entry.projectId))errors.push(entry.id+': projectId 必须指向已注册 Project');
@@ -215,6 +216,8 @@ export async function inspectCatalog({checkGenerated=true}={}) {
     ids.add(entry.id);
     items.push(entry);
     if(entry.source==='local') {
+      if(localPreviewPaths.has(entry.preview))errors.push(entry.id+': 本地预览地址重复 '+localPreviewPaths.get(entry.preview));
+      localPreviewPaths.set(entry.preview,entry.id);
       for(const v of entry.versions||[]){
         if(v?.projectId&&!projectsById.has(v.projectId))errors.push(entry.id+': 版本 projectId 未登记 '+v.projectId);
         else if(v?.projectId&&canonicalGitHubRepository(v.originRepo)?.toLowerCase()!==projectsById.get(v.projectId).repository.toLowerCase())

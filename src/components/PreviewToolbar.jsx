@@ -42,7 +42,7 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,cu
         onClick={onSearch}><Icon name="search"/></button>
       <span className="topbar-separator" aria-hidden="true"/>
       <div className="topbar-actions">
-        <button type="button" id="preview-info" className="info-action" aria-haspopup="dialog"
+        <button type="button" id="preview-info" className="info-action" aria-label="项目说明 / 源码" aria-haspopup="dialog"
           aria-controls="project-dialog" disabled={!asset} onClick={onInfo}>
           <Icon name="book-open"/><span>项目说明 / 源码</span>
         </button>

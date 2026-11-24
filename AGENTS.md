@@ -121,3 +121,15 @@ npm run check                # 正式发布或构建专项检查
 ```
 
 架构细节：[docs/REACT-MIGRATION.md](docs/REACT-MIGRATION.md)、[docs/TWO-PANE-WORKBENCH.md](docs/TWO-PANE-WORKBENCH.md)、[docs/COMPONENT-SYSTEM.md](docs/COMPONENT-SYSTEM.md)。
+
+### 集中收口检查
+
+共享主站 CSS、目录行/虚拟窗口及 Demo 参数组件均视为视觉风险；正式发布必须保留完整 Chromium 与 Windows 验收，禁止自动接受新基线。待核实第三方许可不得通过根 MIT 推定。
+
+正式发布增加 `scripts/release-browser-audit.py`：axe JSON 报告、明确语义缺陷门禁、Firefox/WebKit 冒烟。报告中的非门禁缺陷不得视为通过；需要逐项复审。独立运行使用浏览器 context.route 拒绝外部网络，不放宽截图夹具守卫。
+
+Frame Lab 的 12 项资产依赖主站共享 reference-shell CSS/JS，不得标记为独立单文件，除非完成实际依赖闭包和独立运行验收。来源许可不明确的资产不能仅凭同属个人 GitHub 账户推定再分发许可。
+
+完整发布验收：独立 Chromium 场景应收集全部失败并在末尾统一报错，不因第一个场景失败而隐藏其余问题。axe 与跨浏览器报告不依赖 Chromium 交互成功，但构建、环境安装必须成功；任何验收失败仍阻断发布。涉及浏览器布局的断言等待真实几何收敛，不降低原阈值或使用固定 sleep。
+
+响应式图标按钮必须拥有独立于可能隐藏的可见文字的可访问名称，并同时检查首屏静态 HTML 与 React 渲染；移动端 axe 报告不能通过隐藏、排除节点或降低规则门禁规避。
