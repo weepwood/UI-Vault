@@ -100,3 +100,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 本轮新增六项原始指南审计（Metro Design 至 Mob Wife），累计 164 项，剩余 126 项无标签，196 项无显式风格词表标签；两种缺口分别统计。
 
 新增 Modernisme、Monochrome Luxe、Monoline Illustration、Moody Maximalism、Moss Punk、Nature Distilled 六项原始指南分类，累计170项，剩余120项无标签、190项无显式风格标签。
+
+新增 Nautical 至 Neon Ooze 八项原始指南审计，累计178项，剩余112项无标签、182项无显式风格标签。

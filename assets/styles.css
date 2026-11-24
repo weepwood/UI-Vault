@@ -1630,3 +1630,9 @@ html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-edit
 .select-option:focus-visible{outline-offset:-2px}
 #parameter-dock .parameter-section-nav button[aria-current=location]{border-color:var(--accent-line,var(--accent));color:var(--accent);background:var(--accent-soft)}
 #parameter-dock .parameter-main-actions button:disabled{cursor:not-allowed}
+
+/* 分组随实际滚动同步，色标精确位置输入与现有操作控件统一。 */
+.material-stop-position{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;color:var(--muted)}
+.material-selected-color .material-stop-position input{width:52px;padding-inline:5px;color:var(--text);font:inherit;font-variant-numeric:tabular-nums}
+#parameter-dock .parameter-section-nav button{scroll-margin-inline:4px}
+@media(max-width:760px){#parameter-dock .parameter-section-nav button{min-height:32px} .material-stop-position{min-height:32px}}

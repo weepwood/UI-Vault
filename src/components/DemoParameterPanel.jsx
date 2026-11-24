@@ -92,6 +92,36 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     if(blocking||invalid||!values)return;
     try{replaceValues(normalizeParameters(fields,{...values,...patch},{complete:true}),true);}catch{setStatus('参数不合法');}
   }
+  const hasMaterialGroups=asset.id==='warm-workbench'&&Boolean(values);
+  useEffect(()=>{
+    if(!liveEditing||!hasMaterialGroups)return;
+    const toolbar=toolbarRef.current,dock=toolbar?.closest('#parameter-dock');
+    if(!dock)return;
+    let frame=0;
+    function sync(){
+      frame=0;
+      const boundary=dock.getBoundingClientRect().top+(dock.querySelector('.parameter-dock-header')?.offsetHeight||0)+toolbar.offsetHeight+12;
+      const entries=Object.entries(sectionRefs.current).filter(([,node])=>node?.isConnected);
+      if(!entries.length)return;
+      let name=entries[0][0];
+      for(const [key,node] of entries){if(node.getBoundingClientRect().top<=boundary)name=key;}
+      if(dock.scrollTop>0&&dock.scrollHeight-dock.clientHeight-dock.scrollTop<=2)name=entries.at(-1)[0];
+      setActiveSection(name);
+    }
+    function schedule(){if(!frame)frame=requestAnimationFrame(sync);}
+    dock.addEventListener('scroll',schedule,{passive:true});
+    const observer=new ResizeObserver(schedule);observer.observe(dock);observer.observe(toolbar);
+    schedule();
+    return ()=>{dock.removeEventListener('scroll',schedule);observer.disconnect();if(frame)cancelAnimationFrame(frame);};
+  },[liveEditing,hasMaterialGroups]);
+  useEffect(()=>{
+    if(!hasMaterialGroups)return;
+    const nav=toolbarRef.current?.querySelector('.parameter-section-nav'),button=nav?.querySelector('[aria-current="location"]');
+    if(!nav||!button)return;
+    const outer=nav.getBoundingClientRect(),inner=button.getBoundingClientRect();
+    if(inner.left<outer.left)nav.scrollLeft+=inner.left-outer.left-4;
+    else if(inner.right>outer.right)nav.scrollLeft+=inner.right-outer.right+4;
+  },[activeSection,hasMaterialGroups]);
   function jumpSection(name){
     setActiveSection(name);const target=sectionRefs.current[name];if(!target)return;
     target.focus({preventScroll:true});const dock=target.closest('#parameter-dock');
