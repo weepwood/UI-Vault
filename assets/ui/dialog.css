@@ -179,3 +179,6 @@ html[data-motion="reduced"] .demo-parameter-panel :is(button,select,input){trans
 .source-manifest-actions :is(button,a):hover{background:var(--hover);}
 .source-manifest-actions :is(button,a):focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
 .source-manifest-actions button:disabled{opacity:.45;}
+
+@media(prefers-reduced-motion:reduce){.source-manifest-actions :is(button,a){transition:none;}}
+html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:none;}

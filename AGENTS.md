@@ -123,3 +123,5 @@ npm run check                # 正式发布或构建专项检查
 ### 集中收口检查
 
 共享主站 CSS、目录行/虚拟窗口及 Demo 参数组件均视为视觉风险；正式发布必须保留完整 Chromium 与 Windows 验收，禁止自动接受新基线。待核实第三方许可不得通过根 MIT 推定。
+
+正式发布增加 `scripts/release-browser-audit.py`：axe JSON 报告、明确语义缺陷门禁、Firefox/WebKit 冒烟。报告中的非门禁缺陷不得视为通过；需要逐项复审。独立运行使用浏览器 context.route 拒绝外部网络，不放宽截图夹具守卫。

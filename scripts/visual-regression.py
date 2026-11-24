@@ -916,21 +916,23 @@ def verify_standalone_delivery(browser):
         thread=threading.Thread(target=server.serve_forever,daemon=True)
         thread.start()
         origin=f"http://127.0.0.1:{server.server_port}/"
-        context=browser.new_context(viewport={"width":1280,"height":900},reduced_motion="reduce",locale="zh-CN")
+        context=browser.new_context(viewport={"width":1280,"height":900},reduced_motion="reduce",locale="zh-CN",service_workers="block")
+        external=[]
+        def route_request(route):
+            url=route.request.url
+            if url.startswith(origin) or url.startswith(("data:","blob:")):
+                route.continue_()
+            else:
+                external.append(url)
+                route.abort()
+        # 独立交付禁止外部运行依赖。使用上下文拦截，不与外站页面夹具混用。
+        context.route("**/*",route_request)
         try:
             for identifier in (*ids,"notion-design-demo"):
                 page=context.new_page()
                 failed=[]
-                external=[]
+                external.clear()
                 errors=track_page_errors(page)
-                def route_request(route):
-                    url=route.request.url
-                    if url.startswith(origin) or url.startswith(("data:","blob:")):
-                        route.continue_()
-                    else:
-                        external.append(url)
-                        route.abort()
-                page.route("**/*",route_request)
                 page.on("response",lambda response: failed.append(response.url) if response.status>=400 and response.url.startswith(origin) and not response.url.endswith("/favicon.ico") else None)
                 response=page.goto(origin+identifier+"/index.html",wait_until="load",timeout=30000)
                 assert response and response.ok, identifier
@@ -977,6 +979,7 @@ def verify_release_keyboard_and_performance(browser, origin):
         page.keyboard.press("Enter")
         dialog=page.locator("#project-dialog")
         dialog.wait_for(state="visible")
+        page.locator("#tab-overview").click()
         page.locator("#tab-overview").focus()
         page.keyboard.press("ArrowRight")
         assert page.locator("#tab-source").get_attribute("aria-selected")=="true"
@@ -991,7 +994,7 @@ def verify_release_keyboard_and_performance(browser, origin):
                 assert control.get_attribute("aria-label") or control.evaluate("(el)=>!!el.labels?.length || !!el.textContent.trim()")
         page.keyboard.press("Escape")
         dialog.wait_for(state="hidden")
-        assert page.locator("#preview-info").evaluate("(el)=>document.activeElement===el")
+        page.wait_for_function("() => document.activeElement===document.querySelector('#preview-info')")
         print("发布性能采样："+json.dumps({"catalogAssets":total,"initialRows":rows,"initialDirectoryMs":elapsed},ensure_ascii=False),flush=True)
     finally:
         context.close()
@@ -999,6 +1002,7 @@ def verify_release_keyboard_and_performance(browser, origin):
     try:
         page=mobile.new_page()
         page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+        page.frame_locator('#preview-stage iframe[data-preview-frame="local"]').locator("#token-editor").wait_for(state="attached",timeout=30000)
         page.locator("#preview-info").click()
         page.locator("#tab-page-info").click()
         panel=page.locator(".demo-parameter-panel")

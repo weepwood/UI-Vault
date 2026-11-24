@@ -108,6 +108,12 @@ jobs:
           else
             python scripts/visual-regression.py
           fi
+      - name: 安装正式验收的跨浏览器环境
+        if: needs.plan.outputs.full == 'true' && inputs.regenerate-baselines != true
+        run: python -m playwright install firefox webkit --with-deps
+      - name: 正式验收 axe 无障碍与跨浏览器冒烟
+        if: needs.plan.outputs.full == 'true' && inputs.regenerate-baselines != true
+        run: python scripts/release-browser-audit.py
       - name: 上传重生成的视觉基线（供人工审核后提交）
         if: inputs.regenerate-baselines == true
         uses: actions/upload-artifact@v4
