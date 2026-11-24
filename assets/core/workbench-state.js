@@ -4,7 +4,7 @@
  * 保持现有扁平字段协议，与 filterAssets() 及浏览器收藏数据兼容。
  */
 import { isPreviewMode, normalizeCustomWidth, DEFAULT_CUSTOM_WIDTH } from './preview.js';
-import { REUSE_LEVELS,FACET_KEYS } from './catalog.js';
+import { REUSE_LEVELS,FACET_KEYS,normalizeFacetSelection,facetSelection } from './catalog.js';
 
 const REUSE_IDS=new Set(REUSE_LEVELS.map(level=>level.id));
 
@@ -91,7 +91,7 @@ export function setCatalogTag(state,tag){
 }
 export function setCatalogFacet(state,key,value){
   if(!FACET_KEYS.includes(key))throw new RangeError('未知目录分面：'+key);
-  state[key]=String(value);
+  state[key]=normalizeFacetSelection(value);
   return state;
 }
 export function clearCatalogFacets(state){
@@ -106,7 +106,7 @@ export function setCatalogReuse(state,reuse){
 }
 export function hasActiveCatalogFilters(state){
   return state.category!=='all'||state.favoritesOnly||state.importedOnly||state.curatedOnly||
-    FACET_KEYS.some(key=>Boolean(state[key]))||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured'||(state.groupBy||'none')!=='none';
+    FACET_KEYS.some(key=>facetSelection(state[key]).length>0)||Boolean(state.reuse)||Boolean(state.query.trim())||state.sort!=='featured'||(state.groupBy||'none')!=='none';
 }
 
 /** 同一个项目再次选中不能重新初始化预览，避免 iframe 被无意义地卸载。 */

@@ -27,18 +27,22 @@ export function ProjectRow({asset,labels,selected,onSelect,query='',position,set
 }
 
 // 原生 details 的 open 属性需要真实受控状态，defaultOpen 不是该元素的标准属性。
-function AssetProjectGroup({group,labels,selectedId,onSelect,query}){
+function AssetProjectGroup({group,labels,selectedId,onSelect,query,scrollRoot,virtualize,density}){
   const [expanded,setExpanded]=React.useState(true);
   const name=group.name||group.project?.name||'未归组';
-  return <details className="asset-project-group" open={expanded}
+  return <details className="asset-project-group" data-group-id={group.id} open={expanded}
     onToggle={event=>setExpanded(event.currentTarget.open)}>
     <summary className="asset-project-summary" aria-label={name+'，'+group.items.length+' 条资源'}>
       <span className="asset-project-name">{name}</span>
       <span className="asset-project-count">{group.items.length}</span>
     </summary>
     <div className="asset-project-items" role="list" aria-label={name+' 的资源'}>
-      {group.items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
-        selected={asset.id===selectedId} onSelect={onSelect} query={query}/>)}
+      {expanded&&(virtualize&&scrollRoot&&group.items.length>120
+        ?<VirtualProjectList items={group.items} selectedId={selectedId} scrollRoot={scrollRoot} density={density} grouped
+          renderRow={(asset,index)=><ProjectRow asset={asset} labels={labels} selected={asset.id===selectedId}
+            onSelect={onSelect} query={query} position={index+1} setSize={group.items.length}/>}/>
+        :group.items.map(asset=><ProjectRow key={asset.id} asset={asset} labels={labels}
+          selected={asset.id===selectedId} onSelect={onSelect} query={query}/>))}
     </div>
   </details>;
 }
@@ -55,7 +59,8 @@ export function ProjectList({items,labels,selectedId,onSelect,query='',loading=f
     const groups=grouping==='project'?groupAssetsByProject(items,projects):groupCatalogAssets(items,grouping,{projects,labels});
     return <>{groups.map(group=>
       <AssetProjectGroup key={grouping+':'+group.id+':'+query} group={group} labels={labels}
-        selectedId={selectedId} onSelect={onSelect} query={query}/>)}</>;
+        selectedId={selectedId} onSelect={onSelect} query={query}
+        scrollRoot={scrollRoot} virtualize={virtualize} density={density}/>)}</>;
   }
   if(virtualize&&scrollRoot&&items.length>120)return <VirtualProjectList
     items={items} selectedId={selectedId} scrollRoot={scrollRoot} density={density}

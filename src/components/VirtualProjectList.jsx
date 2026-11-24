@@ -2,12 +2,12 @@ import {useLayoutEffect,useRef,useState} from 'react';
 import {virtualWindow} from '../../assets/core/virtual-window.js';
 
 // 只挂载可视区域及缓冲行。分组模式/小目录由 ProjectList 使用完整列表。
-export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow}){
+export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRow,grouped=false}){
   const rowHeight=density==='compact'?48:60;
   const host=useRef(null),pendingFocus=useRef(null);
   const [metrics,setMetrics]=useState({top:0,height:800});
   const [focusedId,setFocusedId]=useState(null);
-  const {start,end}=virtualWindow(items.length,metrics.top,metrics.height,rowHeight);
+  const {start,end}=metrics.height>0?virtualWindow(items.length,metrics.top,metrics.height,rowHeight):{start:0,end:0};
   const indices=Array.from({length:end-start},(_,i)=>start+i);
   // 滚动时保留真实键盘焦点对应的行；选中预览不强制改变目录滚动位置。
   const focusedIndex=focusedId?items.findIndex(item=>item.id===focusedId):-1;
@@ -18,17 +18,22 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     function sync(){
       if(!host.current)return;
       const rootRect=scrollRoot.getBoundingClientRect(),listRect=host.current.getBoundingClientRect();
-      const next={top:Math.max(0,rootRect.top+scrollRoot.clientTop-listRect.top),height:scrollRoot.clientHeight};
+      const viewportTop=rootRect.top+scrollRoot.clientTop,viewportBottom=viewportTop+scrollRoot.clientHeight;
+      const visible=grouped?Math.max(0,Math.min(viewportBottom,listRect.bottom)-Math.max(viewportTop,listRect.top)):scrollRoot.clientHeight;
+      const next={top:Math.max(0,viewportTop-listRect.top),height:visible};
       setMetrics(previous=>previous.top===next.top&&previous.height===next.height?previous:next);
     }
     function schedule(){cancelAnimationFrame(frame);frame=requestAnimationFrame(sync);}
     scrollRoot.addEventListener('scroll',schedule,{passive:true});
     const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(schedule);
     observer?.observe(scrollRoot);
+    if(host.current)observer?.observe(host.current);
+    if(scrollRoot.firstElementChild)observer?.observe(scrollRoot.firstElementChild);
     window.addEventListener('resize',schedule);
-    schedule();
+    // 初次布局直接采样，后续滚动与 ResizeObserver 使用 rAF 合并。
+    sync();
     return ()=>{cancelAnimationFrame(frame);observer?.disconnect();scrollRoot.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};
-  },[scrollRoot,items,rowHeight]);
+  },[scrollRoot,items,rowHeight,grouped]);
   useLayoutEffect(()=>{
     const index=pendingFocus.current;
     if(index===null)return;

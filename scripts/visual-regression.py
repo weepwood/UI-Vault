@@ -280,7 +280,10 @@ def verify_react_interactions(browser, origin):
         assert page.evaluate("JSON.parse(localStorage.getItem('ui-vault:preferences:v1')).theme") == "system", "重置未恢复主题默认值"
         page.go_back(wait_until="domcontentloaded")
         page.locator("#preview-stage").wait_for(state="visible")
-        visible_before = page.locator("#gallery .project-row").count()
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
+        directory_before = page.locator("#results-count").inner_text()
+        rows_before = page.locator("#gallery .project-item").evaluate_all("(els)=>els.map(el=>el.dataset.id)")
         page.locator("#preview-search").click()
         search_panel = page.locator("#compact-search-dialog")
         search_panel.wait_for(state="visible")
@@ -295,7 +298,8 @@ def verify_react_interactions(browser, origin):
             assert search_result.locator(".command-palette-item-icon").inner_text() == catalog_row.locator(".project-row-emoji").inner_text(), "搜索结果 Emoji 与项目目录不一致"
         page.locator("#compact-search-input").fill("xyz-unique-never-match")
         assert page.locator(".compact-search-result").count() == 0, "全局搜索未显示无结果状态"
-        assert page.locator("#gallery .project-row").count() == visible_before, "全局搜索改变了第二栏目录"
+        assert page.locator("#results-count").inner_text() == directory_before, "全局搜索改变了目录匹配数量"
+        assert page.locator("#gallery .project-item").evaluate_all("(els)=>els.map(el=>el.dataset.id)") == rows_before, "全局搜索改变了可见目录或顺序"
         page.locator("#compact-search-input").press("Escape")
         page.locator("#compact-search-input").press("Escape")
         page.locator("#compact-search-dialog").wait_for(state="hidden")
@@ -724,6 +728,7 @@ def verify_directory_workspace(browser, origin):
         virtual.wait_for(state="visible",timeout=30000)
         total=int(virtual.get_attribute("data-total"))
         assert total>120 and page.locator("#gallery .project-row").count()<60
+        print(f"目录性能采样：资产总量 {total}，首屏 DOM 行 {page.locator('#gallery .project-row').count()}",flush=True)
         page.locator("#gallery .project-row").first.focus()
         page.keyboard.press("End")
         page.wait_for_function("() => document.activeElement.closest('[data-virtual-index]')?.dataset.virtualIndex === String(Number(document.querySelector('.directory-virtual-list').dataset.total)-1)")
@@ -732,11 +737,20 @@ def verify_directory_workspace(browser, origin):
         page.locator(".directory-filter-toggle").click()
         page.locator(".directory-full-list input").check()
         assert page.locator("#gallery .project-row").count()==total
+        print(f"目录性能采样：完整模式 DOM 行 {page.locator('#gallery .project-row').count()}",flush=True)
         page.locator(".directory-full-list input").uncheck()
         page.locator("#style-filter").select_option(index=1)
         style=page.locator("#style-filter").input_value()
         assert style
-        assert int(page.locator("#results-count").inner_text())>0
+        first_count=int(page.locator("#results-count").inner_text())
+        assert first_count>0
+        second=page.locator("#style-filter option").evaluate_all("(els,first)=>els.find(el=>el.value && el.value!==first)?.value",style)
+        page.locator("#style-filter").select_option(second)
+        assert page.locator(".directory-active-filters button").count()==3
+        assert int(page.locator("#results-count").inner_text())>=first_count
+        page.locator(".directory-active-filters button").nth(1).click()
+        assert page.locator(".directory-active-filters button").count()==2
+        assert int(page.locator("#results-count").inner_text())==first_count
         page.locator("#directory-group").select_option("technology")
         assert page.locator(".asset-project-group").count()>0
         assert page.locator("#sort").input_value()=="featured"
@@ -752,6 +766,36 @@ def verify_directory_workspace(browser, origin):
     finally:
         context.close()
     print("目录工作台回归通过：风格、独立分组、预设恢复、虚拟列表键盘与完整列表回退。")
+
+
+def verify_large_directory_groups(browser, origin):
+    """使用真实目录按资源形式分组，验证超大分组窗口化与折叠卸载。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".directory-virtual-list").wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator("#directory-group").select_option("source")
+        page.locator(".directory-filter-toggle").click()
+        candidate=page.locator(".asset-project-group").filter(has=page.locator(".directory-virtual-list")).first
+        candidate.wait_for(state="attached")
+        group_id=candidate.get_attribute("data-group-id")
+        group=page.locator(".asset-project-group").filter(has=page.locator("summary")).and_(page.locator(f'[data-group-id="{group_id}"]'))
+        window=group.locator(".directory-virtual-list")
+        total=int(window.get_attribute("data-total"))
+        assert total>120
+        assert group.locator(".project-row").count()<60
+        group.locator("summary").click()
+        page.wait_for_function("(id)=>!document.querySelector('[data-group-id='+JSON.stringify(id)+'] .project-row')",arg=group_id)
+        group.locator("summary").click()
+        window.wait_for(state="visible")
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-full-list input").check()
+        assert page.locator(".directory-virtual-list").count()==0
+        print(f"大型分组性能采样：组资产 {total}，折叠 DOM 0，完整模式 {page.locator('#gallery .project-row').count()}",flush=True)
+    finally:
+        context.close()
 
 
 def verify_topbar_alignment(browser, origin):
@@ -1372,6 +1416,7 @@ def main():
                 verify_topbar_alignment(browser, local)
                 verify_directory_facets(browser, local)
                 verify_directory_workspace(browser, local)
+                verify_large_directory_groups(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

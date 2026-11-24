@@ -125,21 +125,38 @@ function facetValues(asset,key){
   if(key==='technology')return asset.technologies||[];
   return asset[key]?[asset[key]]:[];
 }
+// 兼容旧的单值字符串；多值在维度内取并集、维度之间取交集。
+export function facetSelection(value){
+  return [...new Set((Array.isArray(value)?value:[value]).filter(item=>typeof item==='string'&&item.trim()).map(item=>item.trim()))];
+}
+export function normalizeFacetSelection(value){
+  const values=facetSelection(value).slice(0,30);
+  return values.length>1?values:values[0]||'';
+}
+export function createCatalogFacetMatcher(filters={},except=''){
+  const entries=FACET_KEYS.filter(key=>key!==except).map(key=>[key,facetSelection(filters[key])]).filter(([,values])=>values.length);
+  return asset=>entries.every(([key,selected])=>{
+    const values=facetValues(asset,key);
+    return selected.some(value=>values.includes(value));
+  });
+}
 export function matchesCatalogFacets(asset,filters={},except=''){
-  return FACET_KEYS.every(key=>key===except||!filters[key]||facetValues(asset,key).includes(filters[key]));
+  return createCatalogFacetMatcher(filters,except)(asset);
 }
 export function catalogFacetOptions(assets,filters={}){
   const result={};
   for(const key of FACET_KEYS){
     const counts=new Map();
+    const matches=createCatalogFacetMatcher(filters,key);
+    const selected=facetSelection(filters[key]);
     for(const asset of assets){
-      if(!matchesCatalogFacets(asset,filters,key))continue;
+      if(!matches(asset))continue;
       for(const value of new Set(facetValues(asset,key))){
-        if(key==='tag'&&isStyleTag(value)&&value!==filters.tag)continue;
+        if(key==='tag'&&isStyleTag(value)&&!selected.includes(value))continue;
         counts.set(value,(counts.get(value)||0)+1);
       }
     }
-    if(filters[key]&&!counts.has(filters[key]))counts.set(filters[key],0);
+    for(const value of selected)if(!counts.has(value))counts.set(value,0);
     result[key]=[...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'zh-CN'))
       .map(([value,count])=>({value,count}));
   }
@@ -150,13 +167,14 @@ export function filterAssets(assets,{category='all',tag='',style='',technology='
   const phrase=terms.join(' ');
   const compactPhrase=phrase.replace(/\s/g,'');
   const matches=[];
+  const matchesFacets=createCatalogFacetMatcher({tag,style,technology,source,projectId});
   for(const asset of assets){
     if((category!=='all'&&asset.type!==category)||
       (favoritesOnly&&!favorites.has(asset.id))||
       (importedOnly&&!asset.originRepo)||
       (curatedOnly&&asset.curated!==true)||
       (reuse&&reuseLevelOf(asset)!==reuse)||
-      !matchesCatalogFacets(asset,{tag,style,technology,source,projectId}))continue;
+      !matchesFacets(asset))continue;
     const score=terms.length?assetRelevance(asset,terms,labels,phrase,compactPhrase):0;
     if(score<0)continue;
     matches.push({asset,score});

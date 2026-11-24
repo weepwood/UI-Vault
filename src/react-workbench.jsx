@@ -11,8 +11,9 @@ export {ProjectRow,ProjectList,CategoryNavigation};
 import {useCallback,useEffect,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {createPortal} from 'react-dom';
 import {useWorkbench} from './useWorkbench.js';
-import {REUSE_LEVELS} from '../assets/core/catalog.js';
-import {readFilterPresets,putFilterPreset,writeFilterPresets} from '../assets/core/filter-presets.js';
+import {REUSE_LEVELS,facetSelection,normalizeFacetSelection} from '../assets/core/catalog.js';
+import {groupStyleOptions} from '../assets/core/style-taxonomy.js';
+import {readFilterPresets,putFilterPreset,writeFilterPresets,exportFilterPresets,importFilterPresets} from '../assets/core/filter-presets.js';
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
@@ -94,7 +95,26 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
     setPresetStatus(writeFilterPresets(next)?'方案已删除':'浏览器存储不可用，删除仅本次会话生效');
   }
   const filterTrigger=useRef(null);
-  const selected=facetFields.filter(field=>state[field.key]);
+  const selected=facetFields.flatMap(field=>facetSelection(state[field.key]).map(value=>({...field,value})));
+  function removeFacet(key,value){onFacet(key,normalizeFacetSelection(facetSelection(state[key]).filter(item=>item!==value)));}
+  function addFacet(key,value){onFacet(key,value?normalizeFacetSelection([...facetSelection(state[key]),value]):'');}
+  async function restorePresets(event){
+    const file=event.target.files?.[0];
+    event.target.value='';
+    if(!file)return;
+    try{
+      if(file.size>256*1024)throw new RangeError('方案文件不得超过 256 KB');
+      const restored=importFilterPresets(await file.text(),presets);
+      setPresets(restored.presets);
+      const saved=writeFilterPresets(restored.presets);
+      setPresetStatus('导入 '+restored.added+' 项，保留同名 '+restored.skipped+' 项'+(saved?'':'；仅本次会话保留'));
+    }catch(error){setPresetStatus('导入失败：'+error.message);}
+  }
+  function downloadPresets(){
+    const url=URL.createObjectURL(new Blob([exportFilterPresets(presets)],{type:'application/json'}));
+    const link=document.createElement('a');link.href=url;link.download='ui-vault-filter-presets.json';link.click();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);
+  }
   const activeCount=selected.length+Number(Boolean(state.reuse));
   const reuseLabel=reuseLevels.find(level=>level.id===state.reuse)?.label||state.reuse;
   return <>
@@ -127,9 +147,9 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
       </div>}
       {activeCount>0&&<div className="directory-active-filters" aria-label="已选筛选">
         {state.reuse&&<button type="button" onClick={()=>onReuse('')} title={'移除'+reuseLabel}>{reuseLabel}<UIIcon name="x"/></button>}
-        {selected.map(field=><button type="button" key={field.key} onClick={()=>onFacet(field.key,'')}
-          title={'移除'+facetLabel(field.key,state[field.key],state.projects)}>
-          <span>{facetLabel(field.key,state[field.key],state.projects)}</span><UIIcon name="x"/></button>)}
+        {selected.map(field=><button type="button" key={field.key+':'+field.value} onClick={()=>removeFacet(field.key,field.value)}
+          title={'移除'+facetLabel(field.key,field.value,state.projects)}>
+          <span>{facetLabel(field.key,field.value,state.projects)}</span><UIIcon name="x"/></button>)}
         <button type="button" className="directory-clear" onClick={onClear}>清除</button>
       </div>}
       <div id="directory-facets" className="directory-facets" hidden={!expanded}
@@ -146,12 +166,17 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
         </label>
         {facetFields.map(field=><label className="directory-facet-field" key={field.key} htmlFor={field.id}>
           <span>{field.label}</span>
-          <select id={field.id} value={state[field.key]||''} onChange={event=>onFacet(field.key,event.target.value)}>
-            <option value="">{field.empty}</option>
-            {(facets[field.key]||[]).map(option=><option key={option.value} value={option.value}>
+          <select id={field.id} value={facetSelection(state[field.key])[0]||''} onChange={event=>addFacet(field.key,event.target.value)}>
+            <option value="">{field.empty}（清除本维度）</option>
+            {field.key==='style'?groupStyleOptions(facets.style||[]).map(group=><optgroup key={group.label} label={group.label}>
+              {group.items.map(option=><option key={option.value} value={option.value}
+                disabled={facetSelection(state[field.key]).slice(1).includes(option.value)}>{option.value}（{option.count}）</option>)}
+            </optgroup>):(facets[field.key]||[]).map(option=><option key={option.value} value={option.value}
+              disabled={facetSelection(state[field.key]).slice(1).includes(option.value)}>
               {facetLabel(field.key,option.value,state.projects)}（{option.count}）
             </option>)}
           </select>
+          {facetSelection(state[field.key]).length>0&&<span className="directory-preset-hint">已选 {facetSelection(state[field.key]).length} 项 · 继续选择可追加</span>}
         </label>)}
         <button type="button" className="directory-clear directory-reset" onClick={onClear} disabled={!activeCount}>清除筛选条件</button>
         <div className="directory-preset-editor">
@@ -162,6 +187,10 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
           </div>
           <span className="directory-preset-hint">同名方案将更新，最多 20 个，仅保存在本机。</span>
           {presetChoice&&<button className="directory-clear directory-reset" type="button" onClick={deletePreset}>删除所选方案</button>}
+          <div className="directory-backup-actions">
+            <button type="button" onClick={downloadPresets} disabled={!presets.length}>导出 JSON</button>
+            <label className="directory-import-label">导入 JSON<input type="file" accept=".json,application/json" onChange={restorePresets}/></label>
+          </div>
           <span className="directory-preset-hint" role="status">{presetStatus}</span>
         </div>
         <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label>
