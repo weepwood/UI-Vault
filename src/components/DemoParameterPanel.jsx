@@ -1,7 +1,7 @@
 import {useEffect,useRef,useState} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
-import {importParameterSnapshot} from '../../assets/core/parameter-snapshot.js';
+import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
 
 export function DemoParameterPanel({asset,notify}){
   const fields=parameterSchemaFor(asset);
@@ -54,7 +54,7 @@ export function DemoParameterPanel({asset,notify}){
   }
   function download(format){
     if(invalid)return;
-    try{downloadSourceText(asset.id===FOUNDATION_ID?tokenExport(values,format):exportDemoParameters(asset,values),asset.id+'-parameters.'+format);notify('参数快照已下载');}
+    try{downloadSourceText(asset.id===FOUNDATION_ID?tokenExport(values,format):format==='css'?exportLayoutCss(asset,values):exportDemoParameters(asset,values),asset.id+'-parameters.'+format);notify('参数快照已下载');}
     catch{notify('Token 下载失败');}
   }
   if(!fields)return null;
@@ -75,7 +75,7 @@ export function DemoParameterPanel({asset,notify}){
         step={field.type==='number'?field.step||1:undefined} disabled={busy} value={drafts[field.key]??values[field.key]}
         aria-invalid={invalidFields.includes(field)||undefined}
         onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}</label>)}</div>
-      <div className="demo-parameter-actions">{(asset.id===FOUNDATION_ID?['css','json','ts']:['json']).map(format=><button key={format} type="button" disabled={busy||invalid} onClick={()=>download(format)}>导出 {format.toUpperCase()}</button>)}</div>
-      <p>{asset.id===FOUNDATION_ID?'导出是当前编辑值的快照，非完整 Foundation 主题；修改后请检查色彩对比度。':'JSON 是已登记参数的快照，不是可独立运行的效果源码；使用 Demo 自带导出或源码区下载。'}</p></>}
+      <div className="demo-parameter-actions">{(asset.id===FOUNDATION_ID?['css','json','ts']:asset.id==='warm-workbench'?['css','json']:['json']).map(format=><button key={format} type="button" disabled={busy||invalid} onClick={()=>download(format)}>导出 {format.toUpperCase()}</button>)}</div>
+      <p>{asset.id===FOUNDATION_ID?'导出是当前编辑值的快照，非完整 Foundation 主题；修改后请检查色彩对比度。':asset.id==='warm-workbench'?'CSS 是布局变量快照，需与原 Demo 样式配合；JSON 可导入恢复。':'JSON 是已登记参数的快照，不是可独立运行的效果源码；使用 Demo 自带导出或源码区下载。'}</p></>}
   </section>;
 }

@@ -51,3 +51,17 @@ test('第二批单文件 Demo 内嵌核心同步',()=>{
  const core=readFileSync(new URL('../assets/core/demo-parameters.js',import.meta.url),'utf8').replace(/^export /gm,'').trim();
  for(const path of ['demos/effects/aurora-field/index.html','demos/components/liquid-orb/index.html'])assert.ok(readFileSync(new URL('../'+path,import.meta.url),'utf8').includes(core));
 });
+
+import {WARM_LAYOUT_FIELDS} from '../assets/core/demo-parameters.js';
+import {exportLayoutCss} from '../assets/core/parameter-snapshot.js';
+test('暖色布局仅登记固定 CSS 变量，默认参数与内嵌核心同步',()=>{
+ const asset={id:'warm-workbench',source:'local',preview:'demos/layouts/warm-workbench/index.html'};
+ assert.equal(parameterSchemaFor(asset),WARM_LAYOUT_FIELDS);
+ const defaults=Object.fromEntries(WARM_LAYOUT_FIELDS.map(field=>[field.key,field.default]));
+ assert.match(exportLayoutCss(asset,defaults),/--warm-sidebar: 205px;/);
+ assert.match(exportLayoutCss(asset,defaults),/--warm-canvas: #f4f0eb;/);
+ assert.throws(()=>exportLayoutCss(asset,{...defaults,radius:33}));
+ assert.throws(()=>exportLayoutCss(asset,{...defaults,canvas:'url(https://example.com)'}));
+ const core=readFileSync(new URL('../assets/core/demo-parameters.js',import.meta.url),'utf8').replace(/^export /gm,'').trim();
+ assert.ok(readFileSync(new URL('../'+asset.preview,import.meta.url),'utf8').includes(core));
+});

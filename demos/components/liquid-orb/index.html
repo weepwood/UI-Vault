@@ -2025,10 +2025,20 @@ const ORB_FIELDS=Object.freeze([
   {key:'playing',label:'播放动画',type:'boolean'},
   {key:'glass',label:'玻璃外壳',type:'boolean'}
 ].map(Object.freeze));
+const WARM_LAYOUT_FIELDS=Object.freeze([
+  {key:'canvas',label:'画布颜色',type:'color',css:'--warm-canvas',default:'#f4f0eb'},
+  {key:'surface',label:'卡片颜色',type:'color',css:'--warm-surface',default:'#fdfbf8'},
+  {key:'accent',label:'进度条强调色',type:'color',css:'--warm-accent',default:'#db976e'},
+  {key:'sidebar',label:'侧栏宽度',type:'number',css:'--warm-sidebar',min:160,max:300,unit:'px',default:205},
+  {key:'radius',label:'卡片圆角',type:'number',css:'--warm-radius',min:0,max:32,unit:'px',default:14},
+  {key:'gap',label:'卡片间距',type:'number',css:'--warm-gap',min:8,max:32,unit:'px',default:14},
+  {key:'padding',label:'卡片内边距',type:'number',css:'--warm-padding',min:12,max:32,unit:'px',default:21}
+].map(Object.freeze));
 const REGISTRY=Object.freeze({
   [FOUNDATION_ID]:{preview:FOUNDATION_PREVIEW,fields:FOUNDATION_FIELDS},
   'aurora-field':{preview:'demos/effects/aurora-field/index.html',fields:BACKDROP_FIELDS},
-  'liquid-orb':{preview:'demos/components/liquid-orb/index.html',fields:ORB_FIELDS}
+  'liquid-orb':{preview:'demos/components/liquid-orb/index.html',fields:ORB_FIELDS},
+  'warm-workbench':{preview:'demos/layouts/warm-workbench/index.html',fields:WARM_LAYOUT_FIELDS}
 });
 function parameterSchemaFor(asset){
   if(asset?.source!=='local'||!Object.hasOwn(REGISTRY,asset.id))return null;

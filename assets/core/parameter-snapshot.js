@@ -9,3 +9,11 @@ export function importParameterSnapshot(asset,raw){
  }
  throw Error('参数文件与当前 Demo 不匹配');
 }
+
+// 仅允许已登记布局的固定 CSS 变量，绝不将导入文本直接拼进 CSS。
+export function exportLayoutCss(asset,values){
+ const fields=parameterSchemaFor(asset);
+ if(asset?.id!=='warm-workbench'||!fields)throw Error('未登记的布局');
+ const checked=normalizeParameters(fields,values,{complete:true});
+ return '/* Warm Workbench 参数快照；与原 Demo 样式配合使用 */\n:root {\n'+fields.map(field=>'  '+field.css+': '+checked[field.key]+(field.unit||'')+';').join('\n')+'\n}\n';
+}
