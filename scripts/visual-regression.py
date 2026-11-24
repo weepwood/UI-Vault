@@ -1046,6 +1046,19 @@ def verify_live_parameter_dock(browser, origin):
     context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
     try:
         page=context.new_page()
+        # Install the capture listener before application listeners, not after a
+        # live request. The test drops real acknowledgments without changing the app.
+        page.add_init_script("""() => {
+          window.__heldParameterReplies=[];
+          window.__holdParameterReplies=false;
+          window.addEventListener('message',event=>{
+            const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
+            if(window.__holdParameterReplies&&frame&&event.source===frame.contentWindow&&event.origin==='null'&&event.data?.channel==='ui-vault:demo-parameters'&&event.data.action==='state'){
+              window.__heldParameterReplies.push({data:event.data,origin:event.origin,source:event.source});
+              event.stopImmediatePropagation();
+            }
+          },true);
+        }""")
         page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
         frame=page.frame_locator('#preview-stage iframe[data-preview-frame="local"]')
         frame.locator(".stats").wait_for()
@@ -1117,22 +1130,25 @@ def verify_live_parameter_dock(browser, origin):
         dock.get_by_role("button",name="撤销",exact=True).click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="0px"
-        page.evaluate("""() => {
-          const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
-          window.__heldParameterReplies=[];
-          window.__holdParameterReplies=true;
-          window.addEventListener('message',event=>{
-            if(window.__holdParameterReplies&&event.source===frame.contentWindow&&event.origin==='null'&&event.data?.channel==='ui-vault:demo-parameters'&&event.data.action==='state'){
-              window.__heldParameterReplies.push(event);event.stopImmediatePropagation();
-            }
-          },true);
-        }""")
+        page.evaluate("()=>{window.__heldParameterReplies=[];window.__holdParameterReplies=true}")
         number=dock.get_by_role("spinbutton",name="卡片圆角")
         number.fill("18")
         page.wait_for_function("()=>window.__heldParameterReplies.length===1")
         assert number.is_enabled()
+        assert dock.locator(".demo-parameter-panel").get_attribute("aria-busy")=="true", "被拦截的响应不得提前完成请求"
         number.fill("22")
-        dock.get_by_text("编辑值已保留",exact=False).wait_for(timeout=6000)
+        try:
+            dock.get_by_text("编辑值已保留",exact=False).wait_for(timeout=6000)
+        except Exception:
+            print("PARAMETER_TIMEOUT_DIAGNOSTIC="+json.dumps({
+                "status":dock.locator(".parameter-status").inner_text(),
+                "value":number.input_value(),
+                "busy":dock.locator(".demo-parameter-panel").get_attribute("aria-busy"),
+                "held":page.evaluate("()=>window.__heldParameterReplies.length"),
+                "autoApply":dock.get_by_role("checkbox",name="实时应用").is_checked()
+            },ensure_ascii=False),flush=True)
+            raise
+        assert dock.locator(".demo-parameter-panel").get_attribute("aria-busy")=="false"
         assert number.input_value()=="22"
         assert not dock.get_by_role("checkbox",name="实时应用").is_checked()
         page.evaluate("()=>{window.__holdParameterReplies=false}")
