@@ -17,3 +17,5 @@ CI 应执行快速检查、完整 Chromium 真实回归、ZIP 构建校验和 Wi
 首次 CI 45404342254 Linux 单元测试 321/323，两个失败均由新增压力测试 page.route 与既有隔离夹具守卫冲突造成；改为独立 context.route，不修改既有断言或基线。#96/#97 合并后的 Pages 工作流 45404104266 已成功部署；尚未发布新版本。
 
 发布候选 v0.5.0：main 的真实版本增长触发完整 CI；仅 Pages 部署成功并核对线上 index、资产清单、Registry 与 ZIP 哈希后，由隔离的 contents:write job 创建精确提交的 Release。普通 push、PR、计划任务不创建 Release；已有同名不同提交标签拒绝覆盖。当前仅为候选，未宣称发布。
+
+后续独立分支实施状态见 CATALOG-QUALITY-NEXT.md；不得在 v0.5.0 完整验收前合并后续功能。

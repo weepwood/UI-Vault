@@ -839,7 +839,16 @@ def verify_synthetic_grouped_directory(browser, origin):
         page.keyboard.press("Enter")
         page.wait_for_function("() => document.querySelector('.directory-virtual-list')?.dataset.total === '5100'")
         assert window.get_attribute("data-total")=="5100"
-        print(f"5000 项 / 100 组浏览器压力：DOM {page.locator('#gallery .project-row').count()} 行，折叠与 Home/End 通过",flush=True)
+        # 记录实际连续滚动 rAF 间隔，不把 CI 机器帧率外推至用户设备。
+        frames=page.evaluate("""async()=>{
+          const root=document.querySelector('.project-scroll'),intervals=[];let last=performance.now();
+          for(let i=0;i<90;i++){await new Promise(requestAnimationFrame);const now=performance.now();intervals.push(now-last);last=now;root.scrollTop+=240;}
+          return intervals.sort((a,b)=>a-b);
+        }""")
+        report={"assets":5000,"groups":100,"mountedRows":page.locator("#gallery .project-row").count(),"frameP50Ms":round(frames[44],2),"frameP95Ms":round(frames[85],2),"samples":len(frames)}
+        assert report["mountedRows"]<60
+        (OUTPUT/"grouped-directory-performance.json").write_text(json.dumps(report,indent=2),encoding="utf-8")
+        print("GROUPED_DIRECTORY_PERFORMANCE="+json.dumps(report),flush=True)
     finally:
         context.close()
 
@@ -941,19 +950,21 @@ def verify_standalone_delivery(browser):
     with tempfile.TemporaryDirectory(prefix="ui-vault-delivery-") as temp:
         root=Path(temp)
         ids=("ui-foundation-kit","aurora-field","liquid-orb","editor-shell","warm-workbench")
-        for identifier in ids:
+        for identifier in (*ids,"notion-design-demo"):
             entry=by_id[identifier]
             target=root/identifier
             target.mkdir()
-            shutil.copyfile(DIST/entry["code"],target/"index.html")
-        package=root/"notion-design-demo"
-        package.mkdir()
-        with zipfile.ZipFile(DIST/"downloads/notion-design-demo.zip") as archive:
-            for member in archive.infolist():
-                path=package/member.filename
-                assert path.resolve().is_relative_to(package.resolve()), "ZIP 越界路径"
-                path.parent.mkdir(parents=True,exist_ok=True)
-                path.write_bytes(archive.read(member))
+            if entry.get("bundleFiles"):
+                with zipfile.ZipFile(DIST/"downloads"/(identifier+".zip")) as archive:
+                    manifest=json.loads(archive.read("MANIFEST.json"))
+                    assert manifest["assetId"]==identifier
+                    for member in archive.infolist():
+                        path=target/member.filename
+                        assert path.resolve().is_relative_to(target.resolve()), "ZIP 越界路径"
+                        path.parent.mkdir(parents=True,exist_ok=True)
+                        path.write_bytes(archive.read(member))
+            else:
+                shutil.copyfile(DIST/entry["code"],target/"index.html")
         server=ThreadingHTTPServer(("127.0.0.1",0),partial(QuietHandler,directory=str(root)))
         thread=threading.Thread(target=server.serve_forever,daemon=True)
         thread.start()

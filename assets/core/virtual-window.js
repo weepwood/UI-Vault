@@ -18,3 +18,16 @@ export function groupedVirtualRows(groups,collapsed=new Set()){
   }
   return rows;
 }
+
+// 以可视首行 ID 和行内偏移恢复目录位置；删除该行时回退至原索引附近。
+export function virtualScrollAnchor(items,top,rowHeight){
+  if(!items.length||rowHeight<=0)return null;
+  const index=Math.min(items.length-1,Math.max(0,Math.floor(top/rowHeight)));
+  return {id:items[index].id,index,offset:Math.max(0,Math.min(rowHeight-1,top-index*rowHeight)),rowHeight};
+}
+export function restoreVirtualScroll(items,anchor,rowHeight){
+  if(!anchor||!items.length||rowHeight<=0)return 0;
+  const found=items.findIndex(item=>item.id===anchor.id);
+  const index=found>=0?found:Math.min(items.length-1,Math.max(0,anchor.index));
+  return index*rowHeight+Math.min(rowHeight-1,Math.round(anchor.offset*rowHeight/anchor.rowHeight));
+}

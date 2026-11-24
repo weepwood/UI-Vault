@@ -14,7 +14,11 @@ const TERM_ALIASES=Object.freeze({
   '镜像':['mirror'],'mirror':['镜像'],
   '桌面':['desktop'],'desktop':['桌面'],
   '极简':['minimalism','minimal','minimalist'],'minimalism':['极简'],'minimal':['极简'],'minimalist':['极简'],
-  '粗野':['brutalism','brutalist'],'brutalism':['粗野'],'brutalist':['粗野'],
+  '粗野':['brutalism','brutalist','neubrutalism'],'粗野主义':['粗野','brutalism','brutalist','neubrutalism'],'brutalism':['粗野'],'brutalist':['粗野'],'neubrutalism':['粗野'],
+  '玻璃拟态':['glassmorphism','玻璃材质'],'glassmorphism':['玻璃材质','玻璃拟态'],
+  '液态玻璃':['liquid glass','液态玻璃'],'liquid glass':['液态玻璃'],
+  '赛博朋克':['cyberpunk'],'cyberpunk':['赛博朋克'],
+  '像素':['pixel'],'pixel':['像素'],
   '设计系统':['design system'],'design system':['设计系统'],
   '命令面板':['command palette'],'command palette':['命令面板'],
   '暗色':['dark mode','dark theme'],'dark mode':['暗色'],'dark theme':['暗色'],
@@ -143,7 +147,7 @@ export function reuseLevelOf(asset){
 // 目录分面：不同维度取交集，同维度候选计数忽略自身当前选项。
 export const FACET_KEYS=Object.freeze(['tag','style','technology','source','projectId']);
 function facetValues(asset,key){
-  if(key==='tag')return asset.tags||[]; // 保留旧 API 对所有标签的直接查询
+  if(key==='tag')return asset.type==='design-style'?[...new Set(['风格主题',...(asset.tags||[])])]:asset.tags||[]; // 类型可证明的内容分面，不推断视觉标签
   if(key==='style')return styleTagsOf(asset);
   if(key==='technology')return asset.technologies||[];
   return asset[key]?[asset[key]]:[];
