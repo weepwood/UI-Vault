@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {FOUNDATION_ID,FOUNDATION_PREVIEW,FOUNDATION_FIELDS,parameterSchemaFor,normalizeParameters,validParameterMessage,parameterMessage,tokenExport} from '../assets/core/demo-parameters.js';
+import {FOUNDATION_ID,FOUNDATION_PREVIEW,FOUNDATION_FIELDS,parameterSchemaFor,normalizeParameters,validParameterMessage,parameterMessage,tokenExport,BACKDROP_FIELDS,ORB_FIELDS,exportDemoParameters} from '../assets/core/demo-parameters.js';
 const values=Object.fromEntries(FOUNDATION_FIELDS.map(f=>[f.key,f.type==='color'?'#ABCDEF':f.min]));
 test('仅登记的本地 Foundation 资产启用参数协议',()=>{
  const asset={id:FOUNDATION_ID,preview:FOUNDATION_PREVIEW,source:'local'};
@@ -32,4 +32,22 @@ test('自包含 Demo 内嵌参数核心与主站完全一致',()=>{
  const core=readFileSync(new URL('../assets/core/demo-parameters.js',import.meta.url),'utf8').replace(/^export /gm,'').trim();
  const html=readFileSync(new URL('../'+FOUNDATION_PREVIEW,import.meta.url),'utf8');
  assert.ok(html.includes(core));
+});
+
+test('效果登记与 enum、boolean、步长校验，消息不能跨资产',()=>{
+ const asset={source:'local',id:'aurora-field',preview:'demos/effects/aurora-field/index.html'};
+ const values={effect:'mesh',palette:'2',intensity:80,speed:125,blur:20,motion:'static',grain:true,vignette:false,follow:false};
+ assert.equal(parameterSchemaFor(asset),BACKDROP_FIELDS);
+ assert.equal(BACKDROP_FIELDS[0].options.length,42);
+ assert.deepEqual(JSON.parse(exportDemoParameters(asset,values)).values,values);
+ assert.throws(()=>normalizeParameters(BACKDROP_FIELDS,{speed:127}),TypeError);
+ assert.throws(()=>normalizeParameters(BACKDROP_FIELDS,{grain:'true'}),TypeError);
+ assert.throws(()=>normalizeParameters(BACKDROP_FIELDS,{effect:'https://example.com'}),TypeError);
+ assert.equal(validParameterMessage(parameterMessage('read','a',undefined,'aurora-field'),['read'],'liquid-orb'),false);
+ assert.equal(parameterSchemaFor({id:'liquid-orb',preview:'demos/components/liquid-orb/index.html',source:'local'}),ORB_FIELDS);
+ assert.equal(parameterSchemaFor({id:'liquid-orb-thinking-dialog',preview:'demos/components/liquid-orb/index.html',source:'local'}),null);
+});
+test('第二批单文件 Demo 内嵌核心同步',()=>{
+ const core=readFileSync(new URL('../assets/core/demo-parameters.js',import.meta.url),'utf8').replace(/^export /gm,'').trim();
+ for(const path of ['demos/effects/aurora-field/index.html','demos/components/liquid-orb/index.html'])assert.ok(readFileSync(new URL('../'+path,import.meta.url),'utf8').includes(core));
 });

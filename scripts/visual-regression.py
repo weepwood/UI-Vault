@@ -838,6 +838,46 @@ def verify_foundation_parameters(browser, origin):
     print("Foundation 参数协议、真实 iframe、Token 编辑及导出通过。")
 
 
+def verify_effect_parameters(browser, origin):
+    """第二批参数接口真实交互；WebGPU 不可用时仅验证控制状态，不声称渲染通过。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        for asset,control,value,child,expected in [
+            ("aurora-field","背景效果","mesh","#stage","mesh"),
+            ("liquid-orb","流速（%）","150","#speed","1.5")
+        ]:
+            page.goto(origin+"?asset="+asset,wait_until="domcontentloaded")
+            frame=page.frame_locator('#preview-stage iframe[data-preview-frame="local"]')
+            frame.locator(child).wait_for(state="attached",timeout=30000)
+            page.evaluate("() => { window.__effectFrame=document.querySelector('#preview-stage iframe'); }")
+            page.locator("#preview-info").click()
+            page.locator("#tab-page-info").click()
+            panel=page.locator(".demo-parameter-panel")
+            panel.get_by_role("button",name="读取当前参数",exact=True).click()
+            field=panel.get_by_label(control,exact=True)
+            field.wait_for(state="visible")
+            if asset=="aurora-field":
+                field.select_option(value)
+                panel.get_by_label("颗粒纹理",exact=True).check()
+            else:
+                field.fill(value)
+                panel.get_by_label("玻璃外壳",exact=True).uncheck()
+            panel.get_by_role("button",name="应用参数",exact=True).click()
+            panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for(state="visible")
+            if asset=="aurora-field":
+                assert frame.locator(child).get_attribute("data-fx")==expected
+                assert frame.locator(child).evaluate("(el)=>el.classList.contains('g')")
+            else:
+                assert float(frame.locator(child).input_value())==float(expected)
+            assert page.evaluate("() => document.querySelector('#preview-stage iframe') === window.__effectFrame")
+            panel.get_by_role("button",name="恢复默认",exact=True).click()
+            panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for(state="visible")
+            page.keyboard.press("Escape")
+    finally:
+        context.close()
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -1458,6 +1498,7 @@ def main():
                 verify_directory_workspace(browser, local)
                 verify_large_directory_groups(browser, local)
                 verify_foundation_parameters(browser, local)
+                verify_effect_parameters(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

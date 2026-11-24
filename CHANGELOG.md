@@ -4,6 +4,7 @@
 
 ## Unreleased
 
+- Backdrop Studio 与 Liquid Orb 接入统一参数协议，新增枚举、布尔和整数步长校验、效果参数 JSON 导出及三个单文件 Demo 的静态依赖检查。
 - Foundation Token 编辑器：12 项颜色、尺寸、动效参数实时调整与 CSS/JSON/TS 快照；主站页面信息区通过参数协议 v1 读取、应用与重置指定本地 Demo。
 - 收敛产品边界，取消个人研究与双预览对比；建立 Foundation 静态复用 Registry（Token、基础 CSS、组件 CSS），并支持源码区导出资产复用清单。
 

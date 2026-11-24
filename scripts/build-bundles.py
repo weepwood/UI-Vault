@@ -125,7 +125,20 @@ def contents(asset, entries):
     return result
 
 
+def verify_parameter_demo_sources():
+    """仅核对三个已登记的单文件 Demo 的显式 HTML 静态引用；非完整 JS 依赖分析。"""
+    assets = {asset["id"]: asset for asset in json.loads(MANIFEST.read_text(encoding="utf-8"))}
+    for identifier in ("ui-foundation-kit", "aurora-field", "liquid-orb"):
+        asset = assets[identifier]
+        if asset["source"] != "local" or not asset.get("copyable") or asset["preview"] != asset.get("code"):
+            raise ValueError(f"{identifier}: 单文件交付协议不一致")
+        path = asset["preview"]
+        verify_static_deps(asset, [(PurePosixPath(path).name, read_output(path))])
+        print(f"单文件参数 Demo 静态资源校验通过：{identifier}")
+
+
 def build():
+    verify_parameter_demo_sources()
     directory = DIST / "downloads"
     directory.mkdir(parents=True, exist_ok=True)
     for asset, entries in plans():
@@ -141,6 +154,7 @@ def build():
 
 
 def verify():
+    verify_parameter_demo_sources()
     for asset, entries in plans():
         target = DIST / "downloads" / f"{asset['id']}.zip"
         expected = contents(asset, entries)
