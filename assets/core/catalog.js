@@ -85,7 +85,13 @@ const TERM_ALIASES=Object.freeze({
   '森林风':['forestcore'],'forestcore':['森林风'],
   '四色设计':['four colors'],'four colors':['四色设计'],
   '九十年代雅致风':['frasurbane'],'frasurbane':['九十年代雅致风'],
-  '法式乡村':['french provincial style'],'french provincial style':['法式乡村']
+  '法式乡村':['french provincial style'],'french provincial style':['法式乡村'],
+  '磨砂触感':['frosted touch'],'frosted touch':['磨砂触感'],
+  '弗鲁提格航空风':['frutiger aero'],'frutiger aero':['弗鲁提格航空风'],
+  '弗鲁提格生态风':['frutiger eco'],'frutiger eco':['弗鲁提格生态风'],
+  '未来原始主义':['future primitive'],'future primitive':['未来原始主义'],
+  '未来主义':['futurism'],'futurism':['未来主义'],
+  'z世代极繁主义':['gen z maximalism'],'gen z maximalism':['z世代极繁主义']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

@@ -52,3 +52,5 @@ CI 45407378059 首轮单测的搜索键盘回归失败：过严输入框事件�
 #106 候选：逐篇读取 20 项原始指南，累计 88 项审计记录、剩余 202 项无显式标签。#104 已合并，#105 原提交两套 CI 已通过并同步等价主分支树，需复验。依据 #105 真实展开截图，调整参数控件优先于预设；数字输入和滑块不再共用 HTML label。新增实际拖动 rAF/最终确认延迟记录、丢失响应模拟与旧消息重放、手动恢复；追加源码区双尺寸截图，不自动更改基线。待 CI。
 
 #106 首次 CI 45416170650：337/337 单测通过；拖动 49 帧 P95 16.8ms，最终确认 17.5ms，响应丢失场景未出现预期提示导致失败。已确认 #105 原父提交和 main f04844d 树 SHA 均为 077d9769；同步主分支并将故障注入监听器提前至 init script，增加在途、空闲及异常诊断断言。根因假设仍需新 CI 证实；保留原超时与安全边界。
+
+下一候选：12 篇原始指南分类（Flat Design、Fleischer Style、Forestcore、Four Colors、Frasurbane、French Provincial、Frosted Touch、Frutiger Aero/Eco、Future Primitive、Futurism、Gen Z Maximalism）；审计累计 100 项、剩余 190 项无显式标签。同步受控词表与双语检索测试，生成索引按既有 formatManifest 排序序列化。待 CI 验证，不先于 #106 合并。
