@@ -622,7 +622,8 @@ def verify_glass_materials(browser, origin):
             external_height=page.locator('.topbar').bounding_box()['height']
             assert page.locator('.topbar-embed-notice').count()==0
             page.goto(origin + "?asset=warm-workbench", wait_until="domcontentloaded")
-            page.locator('#preview-title').filter(has_text="暖色工作台").wait_for(state="visible")
+            page.locator('#preview-title').filter(has_text="暖色工作台").wait_for(state="attached")
+            page.locator('.topbar').wait_for(state="visible")
             page.evaluate("() => document.fonts.ready")
             page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
             local_height=page.locator('.topbar').bounding_box()['height']

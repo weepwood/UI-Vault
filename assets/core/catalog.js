@@ -194,7 +194,23 @@ const TERM_ALIASES=Object.freeze({
   "幼犬可爱风":["puppycore"],"puppycore":["幼犬可爱风"],
   "静奢风":["quiet luxury"],"quiet luxury":["静奢风"],
   "激进设计":["radical design"],"radical design":["激进设计"],
-  "原始工业风":["raw industrial"],"raw industrial":["原始工业风"]
+  "原始工业风":["raw industrial"],"raw industrial":["原始工业风"],
+  "射线枪哥特风":["raygun gothic"],"raygun gothic":["射线枪哥特风"],
+  "衰退流行风":["recession pop"],"recession pop":["衰退流行风"],
+  "摄政时代风":["regencycore"],"regencycore":["摄政时代风"],
+  "共鸣极简风":["resonant stark"],"resonant stark":["共鸣极简风"],
+  "复古动画风":["retro anime"],"retro anime":["复古动画风"],
+  "复古计算机风":["retro computing"],"retro computing":["复古计算机风"],
+  "复古餐厅风":["retro diner"],"retro diner":["复古餐厅风"],
+  "复古未来主义":["retro futurism"],"retro futurism":["复古未来主义"],
+  "彩光电竞风":["rgb gamer"],"rgb gamer":["彩光电竞风"],
+  "孔版印刷风":["risograph"],"risograph":["孔版印刷风"],
+  "摇滚少女风":["rocker grrl diva"],"rocker grrl diva":["摇滚少女风"],
+  "洛可可":["rococo"],"rococo":["洛可可"],
+  "浪漫主义":["romanticism"],"romanticism":["浪漫主义"],
+  "乡野现代风":["rustic modern"],"rustic modern":["乡野现代风"],
+  "神圣几何":["sacred geometry"],"sacred geometry":["神圣几何"],
+  "北欧波西米亚风":["scandi boho"],"scandi boho":["北欧波西米亚风"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
