@@ -57,7 +57,22 @@ const TERM_ALIASES=Object.freeze({
   '黏土拟态':['claymorphism'],'claymorphism':['黏土拟态'],
   '色块设计':['color block'],'color block':['色块设计'],
   '混凝土粗野':['concrete brutalism'],'concrete brutalism':['混凝土粗野'],
-  '构成主义':['constructivism'],'constructivism':['构成主义']
+  '构成主义':['constructivism'],'constructivism':['构成主义'],
+  '企业孟菲斯':['corporate memphis'],'corporate memphis':['企业孟菲斯'],
+  '田园风':['cottagecore'],'cottagecore':['田园风'],
+  '手作风':['craftcore'],'craftcore':['手作风'],
+  '水晶风':['crystal core'],'crystal core':['水晶风'],
+  '立体主义':['cubism'],'cubism':['立体主义'],
+  '赛博极简':['cyberminimalism'],'cyberminimalism':['赛博极简'],
+  '达达主义':['dadaism'],'dadaism':['达达主义'],
+  '丹麦粉彩':['danish pastel'],'danish pastel':['丹麦粉彩'],
+  '暗黑学院':['dark academia'],'dark academia':['暗黑学院'],
+  '暗黑植物':['dark botanical'],'dark botanical':['暗黑植物'],
+  '风格派':['de stijl'],'de stijl':['风格派'],
+  '解构主义':['deconstructivism'],'deconstructivism':['解构主义'],
+  '柴油朋克':['dieselpunk'],'dieselpunk':['柴油朋克'],
+  '数字拼贴':['digital collage'],'digital collage':['数字拼贴'],
+  '数字花园':['digital garden'],'digital garden':['数字花园']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
