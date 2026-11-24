@@ -16,13 +16,13 @@ UI-Vault 主界面采用 [lxgw/975Yuan](https://github.com/lxgw/975Yuan)，源�
 先准备 Node >= 22 与 Python 3.12（建议建立 Python 虚拟环境），然后：
 
 ```bash
-python3 -m pip install -r scripts/requirements-fonts.txt
+python3 -m pip install -r scripts/requirements-fonts.txt   # Windows 用 python
 npm run fonts:build        # 生成 assets/fonts/，不会提交到 Git
 npm run dev
 npm run check
 ```
 
-`npm run dev`、`npm run build` 和 `npm run check` 均会自动调用字体生成器；第二次运行若字符与版本未变化会直接命中本地缓存。上游原版 TTF 缓存在 `.cache/fonts/975yuan/`，不会打包到站点中。
+`npm run fonts:build`、`npm run dev`、`npm run build` 和 `npm run check` 均通过 `scripts/run-python.mjs` 自动探测可用的 Python 解释器（Windows 上 `python3` 通常是商店占位符，会回退到 `python`）后调用字体生成器；第二次运行若字符与版本未变化会直接命中本地缓存。上游原版 TTF 缓存在 `.cache/fonts/975yuan/`，不会打包到站点中。
 
 CI 会安装 Python 字体依赖，在 Node 静态构建前生成网页字体。构建检查确保包含字体 CSS、9 个 WOFF2 文件及 OFL 许可证，不允许分发原版 TTF。GitHub Pages 产物仍保留内容指纹入口。
 

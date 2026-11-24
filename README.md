@@ -50,10 +50,11 @@
 
 ## 快速开始
 
-需要 Node 22+；主站使用 React 19 和 esbuild，先运行 `npm ci`。
+需要 Node 22+；主站使用 React 19 和 esbuild，先运行 `npm ci`。`npm run dev` / `npm run build` / `npm run check` 还需要 Python 3.12+ 来生成网页字体子集：`python -m pip install -r scripts/requirements-fonts.txt`（Windows 用 `python`，`python3` 通常是不可用的商店占位符；Linux/CI 用 `python3`）。
 
 ```bash
 npm ci
+python -m pip install -r scripts/requirements-fonts.txt
 npm run dev                  # http://localhost:4173
 npm run new:demo -- components magnetic-button 磁吸按钮
 npm run new:reference -- ui-demo https://github.com/example/repo 参考设计

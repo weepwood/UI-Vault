@@ -39,7 +39,7 @@
 
 ```sh
 npm run build
-python3 -m pip install -r scripts/requirements-visual.txt
+python3 -m pip install -r scripts/requirements-visual.txt   # Windows 用 python
 python3 -m playwright install chromium --with-deps
 npm run visual:test
 ```
@@ -47,7 +47,7 @@ npm run visual:test
 **基线更新必须单独审核。** 初始化基线时运行：
 
 ```sh
-python3 scripts/visual-regression.py --bootstrap
+npm run visual:bootstrap
 ```
 
 该指令同时截图已发布主站与当前构建，先验证两者差异，再打印**当前构建**的 `VISUAL_BASELINE_JSON=...` 供审核。不会自动改写仓库基线。正常 CI 只读取已提交的基线，不接受“截图变化即自动通过”。基线首次创建时已验证九种场景的缩略图 MAE 为 0，随后固定到 `tests/visual-baselines.json`。若是有意变更 UI，请审核完整 PNG 与 CI 报告，确认视觉变更后再提交新的 JSON 数据。
