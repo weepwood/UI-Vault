@@ -1025,7 +1025,7 @@ def verify_warm_layout_parameters(browser, origin):
         frame.locator(".stats").wait_for()
         page.evaluate("() => window.__layoutFrame=document.querySelector('#preview-stage iframe')")
         page.locator("#preview-info").click()
-        page.locator("#tab-source").click()
+        page.locator("#tab-page-info").click()
         panel=page.locator(".demo-parameter-panel")
         panel.get_by_role("button",name="读取当前参数").click()
         panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
