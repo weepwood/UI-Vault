@@ -798,6 +798,57 @@ def verify_large_directory_groups(browser, origin):
         context.close()
 
 
+def verify_personal_library(browser, origin):
+    """真实浏览器验证新建收藏夹、批量收藏、备注、历史与刷新恢复。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        page.goto(origin,wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-personal-open").click()
+        dialog=page.locator("#personal-library-dialog")
+        dialog.wait_for(state="visible")
+        dialog.locator("#personal-folder-name").fill("设计研究")
+        dialog.get_by_role("button",name="新建",exact=True).click()
+        dialog.get_by_role("button",name="全部资产",exact=True).click()
+        first=dialog.locator(".personal-row").first
+        asset_id=first.get_attribute("data-personal-id")
+        first.locator('input[type="checkbox"]').check()
+        dialog.get_by_role("button",name="加入",exact=True).click()
+        folder=dialog.locator(".personal-navigation button").filter(has_text="设计研究")
+        folder.click()
+        assert dialog.locator(".personal-row").count()==1
+        row=dialog.locator(".personal-row").first
+        row.locator('input[type="checkbox"]').check()
+        dialog.get_by_role("button",name="批量收藏",exact=True).click()
+        assert row.locator(".personal-liked").count()==1
+        row.get_by_role("button",name="编辑备注",exact=False).click()
+        dialog.locator("#personal-note").fill("个人设计研究测试")
+        dialog.get_by_role("button",name="保存备注",exact=True).click()
+        assert "个人设计研究测试" in row.inner_text()
+        row.locator(".personal-row-copy button").click()
+        dialog.wait_for(state="detached")
+        assert page.evaluate("(id)=>new URL(location.href).searchParams.get('asset')===id",asset_id)
+        page.reload(wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        page.locator(".directory-filter-toggle").click()
+        page.locator(".directory-personal-open").click()
+        dialog.wait_for(state="visible")
+        dialog.locator(".personal-navigation button").filter(has_text="设计研究").click()
+        assert dialog.locator(".personal-row").count()==1
+        assert "个人设计研究测试" in dialog.locator(".personal-row").inner_text()
+        dialog.get_by_role("button",name="最近浏览",exact=True).click()
+        assert dialog.locator(".personal-row").first.get_attribute("data-personal-id")==asset_id
+        dialog.get_by_role("button",name="我的收藏",exact=True).click()
+        assert dialog.locator(".personal-row").filter(has=dialog.locator(".personal-liked")).count()>=1
+        page.keyboard.press("Escape")
+        dialog.wait_for(state="detached")
+    finally:
+        context.close()
+    print("个人资产管理通过：收藏夹、批量收藏、备注、最近浏览、刷新恢复与 Escape。")
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -1417,6 +1468,7 @@ def main():
                 verify_directory_facets(browser, local)
                 verify_directory_workspace(browser, local)
                 verify_large_directory_groups(browser, local)
+                verify_personal_library(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)

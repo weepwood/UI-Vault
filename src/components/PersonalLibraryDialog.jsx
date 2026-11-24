@@ -37,6 +37,7 @@ export function PersonalLibraryDialog({assets,favorites,library,onChange,onFavor
   const visible=items.slice(currentPage*PAGE_SIZE,(currentPage+1)*PAGE_SIZE);
   const chosen=new Set(selection);
   const known=new Set(items.map(item=>item.id));
+  const catalogIds=useMemo(()=>new Set(assets.map(asset=>asset.id)),[assets]);
   const selected=selection.filter(id=>known.has(id));
   const folder=library.folders.find(item=>'folder:'+item.id===view);
   const noteMap=new Map(library.notes.map(item=>[item.id,item.text]));
@@ -49,7 +50,7 @@ export function PersonalLibraryDialog({assets,favorites,library,onChange,onFavor
   }
   function changeView(next){setView(next);setPage(0);setSelection([]);setEditing('');setConfirm('');}
   function createFolder(){
-    const id=globalThis.crypto.randomUUID();
+    const id=globalThis.crypto?.randomUUID?.()||'folder-'+Date.now()+'-'+Math.random().toString(36).slice(2);
     if(apply({type:'folder-create',id,name:folderName},'收藏夹已创建')){
       setTarget(id);setFolderName('');changeView('folder:'+id);
     }
@@ -59,6 +60,8 @@ export function PersonalLibraryDialog({assets,favorites,library,onChange,onFavor
   }
   function batch(type){
     if(!selected.length)return;
+    if(type==='folder-add'&&!library.folders.some(item=>item.id===target))return;
+    if(type==='folder-remove'&&!folder)return;
     if(type==='favorite'||type==='unfavorite'){
       onFavoriteBatch(selected,type==='favorite');setStatus('已处理 '+selected.length+' 项收藏状态');
     }else if(!apply({type,id:type==='folder-add'?target:folder?.id,ids:selected},'已处理 '+selected.length+' 项收藏夹归属'))return;
@@ -81,7 +84,7 @@ export function PersonalLibraryDialog({assets,favorites,library,onChange,onFavor
           {modes.map(([id,label])=><button type="button" key={id} aria-pressed={view===id} onClick={()=>changeView(id)}>{label}</button>)}
           <h3>收藏夹</h3>
           {library.folders.map(item=><button type="button" key={item.id} aria-pressed={view==='folder:'+item.id} onClick={()=>changeView('folder:'+item.id)}>
-            <Icon name="folder"/><span>{item.name}</span><small>{item.ids.filter(id=>assets.some(asset=>asset.id===id)).length}</small>
+            <Icon name="folder"/><span>{item.name}</span><small>{item.ids.filter(id=>catalogIds.has(id)).length}</small>
           </button>)}
           <label htmlFor="personal-folder-name">收藏夹名称</label>
           <input id="personal-folder-name" maxLength={LIBRARY_LIMITS.nameLength} value={folderName} onChange={event=>setFolderName(event.target.value)} placeholder="输入名称"/>

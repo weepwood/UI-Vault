@@ -44,7 +44,7 @@ export function workbenchReducer(current,action){
       if(preferred)activateAsset(next,preferred,next.previewSize);
       chooseVisible(next);
       next.versionId=resolveVersionId(next.active,action.routeVariant);
-      if(action.routeAsset===next.active?.id&&next.personal)next.personal=recordAssetVisit(next.personal,next.active.id,action.at);
+      if(next.active&&action.routeAsset===next.active.id&&next.personal)next.personal=recordAssetVisit(next.personal,next.active.id,action.at);
       return next;
     }
     case 'error':return {...next,loading:false,error:action.message};
