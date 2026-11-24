@@ -22,10 +22,11 @@ test('设备选择器与说明按钮之间放置搜索图标，快捷键打开�
 test('项目目录、结果数量、排序和标签筛选结构完整',()=>{
   const html=read('index.html');
   const controls=html.slice(html.indexOf('<div class="list-controls"'),html.indexOf('<p id="results-status"'));
-  assert.match(controls,/role="group" aria-label="项目排序与标签筛选"/);
+  assert.match(controls,/role="group" aria-label="项目目录标题"/);
   assert.match(controls,/class="section-row project-controls-heading"/);
   assert.match(controls,/class="project-controls-label"/);
   assert.match(controls,/id="results-count"/);
+  assert.match(controls,/id="directory-tools"[^>]*aria-label="目录筛选与分组"/);
   assert.match(controls,/class="select-field select-field--sort"/);
   assert.match(controls,/id="sort"/);
   assert.match(controls,/class="select-field select-field--tag"/);
@@ -39,9 +40,9 @@ test('项目控件紧凑显示、下拉可用且适配深色和小屏幕',()=>{
   const dropdown=read('src/components/WorkbenchSelect.jsx');
   assert.match(css,/[.]project-panel [.]list-controls [.]project-controls-heading/);
   assert.match(css,/[.]project-panel [.]result-count/);
-  assert.match(css,/[.]project-panel [.]select-field--sort [.]select-trigger/);
-  assert.match(css,/[.]project-panel [.]select-field--tag [.]select-trigger/);
-  assert.match(css,/html\[data-theme="dark"\] [.]project-panel [.]list-controls/);
+  assert.match(css,/[.]project-panel [.]directory-tools [.]select-trigger/);
+  assert.match(css,/[.]project-panel [.]directory-facet-field select/);
+  assert.match(css,/[.]project-panel [.]directory-tools[^}]*background:var\(--surface\)/);
   assert.match(css,/@media\(max-width:480px\)/);
   assert.doesNotMatch(css,/[.]search-field kbd/);
   // 排序不是默认值、或选了标签时，下拉显示“已筛选”状态。

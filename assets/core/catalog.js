@@ -116,7 +116,31 @@ export function reuseLevelOf(asset){
   if(asset.source==='local')return 'sample';
   return 'reference';
 }
-export function filterAssets(assets,{category='all',tag='',reuse='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
+// 目录分面：不同维度取交集，同维度候选计数忽略自身当前选项。
+export const FACET_KEYS=Object.freeze(['tag','technology','source','projectId']);
+function facetValues(asset,key){
+  if(key==='tag')return asset.tags||[];
+  if(key==='technology')return asset.technologies||[];
+  return asset[key]?[asset[key]]:[];
+}
+export function matchesCatalogFacets(asset,filters={},except=''){
+  return FACET_KEYS.every(key=>key===except||!filters[key]||facetValues(asset,key).includes(filters[key]));
+}
+export function catalogFacetOptions(assets,filters={}){
+  const result={};
+  for(const key of FACET_KEYS){
+    const counts=new Map();
+    for(const asset of assets){
+      if(!matchesCatalogFacets(asset,filters,key))continue;
+      for(const value of new Set(facetValues(asset,key)))counts.set(value,(counts.get(value)||0)+1);
+    }
+    if(filters[key]&&!counts.has(filters[key]))counts.set(filters[key],0);
+    result[key]=[...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'zh-CN'))
+      .map(([value,count])=>({value,count}));
+  }
+  return result;
+}
+export function filterAssets(assets,{category='all',tag='',technology='',source='',projectId='',reuse='',query='',favoritesOnly=false,importedOnly=false,curatedOnly=false,sort='featured',labels={}}={},favorites=new Set()){
   const terms=tokenizeSearch(query);
   const phrase=terms.join(' ');
   const compactPhrase=phrase.replace(/\s/g,'');
@@ -127,7 +151,7 @@ export function filterAssets(assets,{category='all',tag='',reuse='',query='',fav
       (importedOnly&&!asset.originRepo)||
       (curatedOnly&&asset.curated!==true)||
       (reuse&&reuseLevelOf(asset)!==reuse)||
-      (tag&&!asset.tags?.includes(tag)))continue;
+      !matchesCatalogFacets(asset,{tag,technology,source,projectId}))continue;
     const score=terms.length?assetRelevance(asset,terms,labels,phrase,compactPhrase):0;
     if(score<0)continue;
     matches.push({asset,score});

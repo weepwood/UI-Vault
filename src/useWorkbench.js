@@ -6,7 +6,7 @@ import {resolveAsset} from '../assets/core/render.js';
 import {resolveVersionId} from '../assets/core/asset-versions.js';
 import {createWorkbenchRouter} from '../assets/core/workbench-router.js';
 import {createWorkbenchState,setCatalogData,changeCatalogFilter,resetCatalogFilters,
-  setCatalogQuery,setCatalogSort,setCatalogTag,setCatalogReuse,activateAsset,deactivateAsset,
+  setCatalogQuery,setCatalogSort,setCatalogTag,setCatalogReuse,setCatalogFacet,clearCatalogFacets,activateAsset,deactivateAsset,
   changePreviewMode,setCustomPreviewWidth,hasActiveCatalogFilters} from '../assets/core/workbench-state.js';
 import {readViewportSession,saveViewportSession} from '../assets/core/viewport-session.js';
 import {loadSettings,applySettings,SETTINGS_KEY,DEFAULT_SETTINGS} from '../assets/core/settings.js';
@@ -53,6 +53,8 @@ export function workbenchReducer(current,action){
     case 'sort':setCatalogSort(next,action.value);return chooseVisible(next);
     case 'tag':setCatalogTag(next,action.value);return chooseVisible(next);
     case 'reuse':setCatalogReuse(next,action.value);return chooseVisible(next);
+    case 'facet':setCatalogFacet(next,action.key,action.value);return chooseVisible(next);
+    case 'clearFacets':clearCatalogFacets(next);return chooseVisible(next);
     case 'select':{
       const asset=next.assets.find(a=>a.id===action.id);
       if(asset){
@@ -203,7 +205,7 @@ export function useWorkbench(){
     };
   },[state.preferences]);
 
-  const {filtered,tags}=useCatalogResults(state);
+  const {filtered,tags,facets}=useCatalogResults(state);
   const filteredActive=hasActiveCatalogFilters(state);
   const openView=useCallback((view,{historyMode='push'}={})=>{
     router.setView(view,historyMode);
@@ -226,6 +228,8 @@ export function useWorkbench(){
   const changeSort=useCallback(value=>{leaveSettings();dispatch({type:'sort',value});},[leaveSettings]);
   const changeTag=useCallback(value=>{leaveSettings();dispatch({type:'tag',value});},[leaveSettings]);
   const changeReuse=useCallback(value=>{leaveSettings();dispatch({type:'reuse',value});},[leaveSettings]);
+  const changeFacet=useCallback((key,value)=>{leaveSettings();dispatch({type:'facet',key,value});},[leaveSettings]);
+  const clearFacets=useCallback(()=>{leaveSettings();dispatch({type:'clearFacets'});},[leaveSettings]);
   const reset=useCallback(()=>{leaveSettings();dispatch({type:'reset'});},[leaveSettings]);
   const favorite=useCallback(id=>{
     if(!id)return;
@@ -265,7 +269,7 @@ export function useWorkbench(){
     }catch{notify('源码读取失败，请在 GitHub 打开对应文件');}
   },[state.assets,copyText,notify]);
 
-  return {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
-    dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,reset,
+  return {state,filtered,tags,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
+    dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,changeFacet,clearFacets,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
 }

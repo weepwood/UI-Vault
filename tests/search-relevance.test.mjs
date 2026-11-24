@@ -88,7 +88,7 @@ test('搜索输入不再出现独立黑色焦点边框，并支持清除、回�
   assert.match(react,/query={state.query}/);
   assert.match(hooks,/case 'query':setCatalogQuery\(next,action.value\);return next;/);
   // 具体标签候选行为由 React 行为测试覆盖，保留主工作台使用共享筛选 Hook 的集成守卫。
-  assert.match(hooks,/const \{filtered,tags\}=useCatalogResults\(state\)/);
+  assert.match(hooks,/const \{filtered,tags,facets\}=useCatalogResults\(state\)/);
 });
 
 test('归一化缓存不掩盖资产内容、分类名称与数组字段的修改',()=>{

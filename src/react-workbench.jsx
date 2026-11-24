@@ -54,36 +54,72 @@ function QuickFilters({state,onFilter}){
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
   </button>)}</>;
 }
-function ListControls({state,tags,onSort,onTag,onReuse,reuseLevels,count}){
+const facetFields=[
+  {key:'tag',id:'tag-filter',label:'内容 / 风格',empty:'全部标签'},
+  {key:'technology',id:'technology-filter',label:'技术栈',empty:'全部技术'},
+  {key:'source',id:'source-filter',label:'资源形式',empty:'全部形式'},
+  {key:'projectId',id:'project-filter',label:'来源项目',empty:'全部项目'}
+];
+function facetLabel(key,value,projects){
+  if(key==='source')return ({local:'本地演示',external:'外部参考'})[value]||value;
+  if(key==='projectId')return projects.find(project=>project.id===value)?.name||value;
+  return value;
+}
+export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,reuseLevels,count,toolsRoot}){
+  const [expanded,setExpanded]=useState(false);
+  const filterTrigger=useRef(null);
+  const selected=facetFields.filter(field=>state[field.key]);
+  const activeCount=selected.length+Number(Boolean(state.reuse));
+  const reuseLabel=reuseLevels.find(level=>level.id===state.reuse)?.label||state.reuse;
   return <>
     <div className="section-row project-controls-heading">
       <span className="project-controls-label">项目目录
         <span className="result-count" id="results-count" aria-label="当前项目数量">{state.loading?'—':count}</span>
       </span>
-      <div className="reuse-select-label">
-        <span id="reuse-filter-label" className="sr-only">复用程度</span>
-        <WorkbenchSelect id="reuse-filter" label="按复用程度筛选" value={state.reuse} onChange={onReuse}
-          options={[{value:'',label:'全部复用'},...reuseLevels.map(level=>({value:level.id,label:level.label}))]}
-          icon="copy" className="select-field--reuse"/>
-      </div>
     </div>
-    <div className="list-controls-filters">
-      <WorkbenchSelect id="sort" label="项目排序" value={state.sort} onChange={onSort}
-        options={sortOptions} icon="arrow-up-down"
-        icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down',project:'folder-tree'}} className="select-field--sort"/>
-      <div className="tag-select-label">
-        <span id="tag-filter-label" className="sr-only">标签</span>
-        <WorkbenchSelect id="tag-filter" label="按标签筛选" value={state.tag} onChange={onTag}
-          options={[{value:'',label:'全部标签'},...tags.map(tag=>({value:tag,label:tag}))]}
-          icon="bookmark" className="select-field--tag"/>
+    {createPortal(<>
+      <div className="list-controls-filters">
+        <WorkbenchSelect id="sort" label="项目排序与分组" value={state.sort} onChange={onSort}
+          options={sortOptions} icon="arrow-up-down"
+          icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down',project:'folder'}} className="select-field--sort"/>
+        <button type="button" ref={filterTrigger} className="directory-filter-toggle"
+          aria-controls="directory-facets" aria-expanded={expanded} data-active={activeCount>0}
+          onClick={()=>setExpanded(value=>!value)}>
+          <UIIcon name="sliders-horizontal"/><span>筛选{activeCount?' · '+activeCount:''}</span>
+        </button>
       </div>
-    </div>
+      {activeCount>0&&<div className="directory-active-filters" aria-label="已选筛选">
+        {state.reuse&&<button type="button" onClick={()=>onReuse('')} title={'移除'+reuseLabel}>{reuseLabel}<UIIcon name="x"/></button>}
+        {selected.map(field=><button type="button" key={field.key} onClick={()=>onFacet(field.key,'')}
+          title={'移除'+facetLabel(field.key,state[field.key],state.projects)}>
+          <span>{facetLabel(field.key,state[field.key],state.projects)}</span><UIIcon name="x"/></button>)}
+        <button type="button" className="directory-clear" onClick={onClear}>清除</button>
+      </div>}
+      <div id="directory-facets" className="directory-facets" hidden={!expanded}
+        onKeyDown={event=>{if(event.key==='Escape'){event.stopPropagation();setExpanded(false);filterTrigger.current?.focus();}}}>
+        <label className="directory-facet-field" htmlFor="reuse-filter"><span>复用程度</span>
+          <select id="reuse-filter" aria-label="按复用程度筛选" value={state.reuse} onChange={event=>onReuse(event.target.value)}>
+            {[{id:'',label:'全部复用'},...reuseLevels].map(level=><option key={level.id} value={level.id}>{level.label}</option>)}
+          </select>
+        </label>
+        {facetFields.map(field=><label className="directory-facet-field" key={field.key} htmlFor={field.id}>
+          <span>{field.label}</span>
+          <select id={field.id} value={state[field.key]||''} onChange={event=>onFacet(field.key,event.target.value)}>
+            <option value="">{field.empty}</option>
+            {(facets[field.key]||[]).map(option=><option key={option.value} value={option.value}>
+              {facetLabel(field.key,option.value,state.projects)}（{option.count}）
+            </option>)}
+          </select>
+        </label>)}
+        <button type="button" className="directory-clear directory-reset" onClick={onClear} disabled={!activeCount}>清除筛选条件</button>
+      </div>
+    </>,toolsRoot)}
   </>;
 }
 function WorkbenchPortals({nodes}){
   const app=useWorkbench();
-  const {state,filtered,tags,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,openView,
-    selectAsset,filter,changeSort,changeTag,changeReuse,reset,
+  const {state,filtered,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,openView,
+    selectAsset,filter,changeSort,changeFacet,changeReuse,clearFacets,reset,
     favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
@@ -279,7 +315,7 @@ function WorkbenchPortals({nodes}){
     // 目录还在加载时不显示空状态，否则首屏会先闪出“没有找到项目”。
     nodes.empty.hidden=state.loading||(filtered.length>0&&!state.error);
     nodes.emptyMessage.textContent=state.error||
-      (state.favoritesOnly&&!state.query.trim()&&!state.tag?'这里还没有收藏的项目。':
+      (state.favoritesOnly&&state.favorites.size===0?'这里还没有收藏的项目。':
         state.query.trim()?'没有找到与“'+state.query.trim().slice(0,36)+'”匹配的项目。请尝试减少关键词或清除筛选条件。':
         '没有找到符合当前条件的项目。');
     nodes.resultsStatus.textContent=state.loading?'正在加载项目目录…':state.query.trim()?
@@ -289,7 +325,7 @@ function WorkbenchPortals({nodes}){
       resetControl.removeEventListener('click',handle);
       emptyReset.removeEventListener('click',handle);
     };
-  },[nodes,reset,filteredActive,filtered.length,state.loading,state.error,state.favoritesOnly,state.query,state.tag]);
+  },[nodes,reset,filteredActive,filtered.length,state.loading,state.error,state.favoritesOnly,state.favorites.size,state.query]);
   useEffect(()=>{
     if(!notice)return;
     nodes.toast.classList.add('show');
@@ -356,9 +392,9 @@ function WorkbenchPortals({nodes}){
     {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
-    {createPortal(<ListControls state={state} tags={tags} onSort={changeSort}
-      onTag={changeTag} onReuse={changeReuse} reuseLevels={REUSE_LEVELS}
-      count={filtered.length}/>,nodes.listControls)}
+    {createPortal(<ListControls state={state} facets={facets} onSort={changeSort}
+      onFacet={changeFacet} onReuse={changeReuse} onClear={clearFacets} reuseLevels={REUSE_LEVELS}
+      count={filtered.length} toolsRoot={nodes.directoryTools}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
       projects={state.projects} groupByProject={state.sort==='project'}
@@ -417,7 +453,7 @@ export function mountWorkbench(){
     shell:$('.app-shell'),rail:$('#library-rail'),main:$('#main'),
     projectPanel:$('#project-panel'),shade:$('#mobile-shade'),
     quickFilters:$('.quick-filters'),categories:$('#category-nav'),
-    listControls:$('.list-controls'),gallery:$('#gallery'),
+    listControls:$('.list-controls'),directoryTools:$('#directory-tools'),gallery:$('#gallery'),
     topbar:$('.topbar'),stage:$('#preview-stage'),settings:$('#settings-view'),operations:$('#operations-view'),
     settingsLink:$('.sidebar-footer'),collapseToggle:$('#nav-collapse-toggle'),
     dialog:$('#project-dialog'),
@@ -427,7 +463,7 @@ export function mountWorkbench(){
   };
   const missing=Object.entries(nodes).filter(([,el])=>!el).map(([key])=>key);
   if(missing.length)throw Error('React 工作台缺少挂载节点：'+missing.join(', '));
-  for(const key of ['quickFilters','categories','listControls','gallery',
+  for(const key of ['quickFilters','categories','listControls','directoryTools','gallery',
     'topbar','stage','settings','operations','settingsLink','dialog','toast']){
     nodes[key].replaceChildren();
   }
