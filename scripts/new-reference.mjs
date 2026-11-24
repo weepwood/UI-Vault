@@ -28,7 +28,7 @@ if(canonical&&!matching){
 }
 const entry={id,title:rest.join(' ').trim(),subtitle:'External design reference',
   description:'外部参考，待补充视觉分析与复用建议。',type:'reference',source:'external',url,
-  projectId,tags:['待分类'],technologies:['待确认'],license:'以源仓库为准',
+  projectId,tags:['跨仓参考'],technologies:['待确认'],license:'以源仓库为准',
   cover:'style',featured:false,created:new Date().toISOString().slice(0,10)};
 const path=join(ENTRY_DIR,id+'.json'),projectPath=newProject&&join(PROJECT_ENTRY_DIR,projectId+'.json');
 let assetCreated=false,projectCreated=false;

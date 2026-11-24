@@ -6,6 +6,7 @@ import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
 import {PREVIEW_CAPABILITIES} from '../../assets/core/preview-policy.js';
 import {inspectProjects,canonicalGitHubRepository} from './projects.mjs';
 import {normalizeEol} from './text.mjs';
+import {unknownTags} from './tag-taxonomy.mjs';
 
 export const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const ASSET_FIELDS=new Set(Object.keys(JSON.parse(readFileSync(new URL('../../catalog/asset.schema.json',import.meta.url),'utf8')).properties));
@@ -42,7 +43,10 @@ export function checkEntry(entry, categories, fileName='') {
   if(fileName && entry.id+'.json' !== fileName) errors.push(where+': 文件名必须与 id 一致');
   if(!isText(entry.title) || !isText(entry.description)) errors.push(where+': 标题与描述不可为空');
   if(!categories.some(x=>x.id===entry.type)) errors.push(where+': 未注册的资产分类 '+String(entry.type));
-  if(!isStrings(entry.tags) || !isStrings(entry.technologies)) errors.push(where+': tags/technologies 必须是非空字符串数组');
+  if(!Array.isArray(entry.tags) || !entry.tags.every(isText)) errors.push(where+': tags 必须是字符串数组（元素非空，允许为空数组）');
+  if(!isStrings(entry.technologies)) errors.push(where+': technologies 必须是非空字符串数组');
+  const unknown=unknownTags(entry.tags);
+  if(unknown.length) errors.push(where+': 标签不在受控词表：'+unknown.join('、')+'（词表见 catalog/tag-vocabulary.json；历史标签映射见 catalog/tag-migrations.json，新词先扩充词表）');
   if(!isText(entry.license)) errors.push(where+': 必须明确授权信息');
   if(typeof entry.featured !== 'boolean') errors.push(where+': featured 应为布尔值');
   if(typeof entry.created !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(entry.created) ||

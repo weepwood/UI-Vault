@@ -18,7 +18,7 @@ test('Thinking 胶囊对话框被登记为可嵌入的多文件组件', () => {
   assert.equal(metadata.type, 'component');
   assert.equal(metadata.copyable, false);
   assert.match(metadata.description, /Siri/);
-  assert.ok(metadata.tags.includes('Siri'));
+  assert.ok(metadata.tags.includes('玻璃材质'));
   assert.equal(metadata.preview, demo+'index.html');
   assert.ok(metadata.publish.includes(demo+'dialog.js'));
   assert.ok(metadata.publish.includes(demo+'dialog.css'));

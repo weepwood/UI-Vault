@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import {join} from 'node:path';
 import {ROOT,checkEntry,checkCategories,inspectCatalog,formatManifest,safeRelativePath,normalizeEol} from '../scripts/lib/catalog.mjs';
 const cats=[{id:'component',label:'组件',symbol:'◩'},{id:'reference',label:'参考',symbol:'⌘'}];
-const base={id:'sample-button',title:'示例按钮',description:'按钮示例',type:'component',source:'local',tags:['button'],technologies:['HTML'],license:'原创示例',preview:'demos/components/sample-button/index.html',code:'demos/components/sample-button/index.html',created:'2026-11-21',featured:false,copyable:true,cover:'warm'};
+const base={id:'sample-button',title:'示例按钮',description:'按钮示例',type:'component',source:'local',tags:['组件'],technologies:['HTML'],license:'原创示例',preview:'demos/components/sample-button/index.html',code:'demos/components/sample-button/index.html',created:'2026-11-21',featured:false,copyable:true,cover:'warm'};
 test('分类可扩展但不可重复或使用保留 ID',()=>{
   assert.deepEqual(checkCategories(cats),[]);
   assert.ok(checkCategories([...cats,cats[0]]).length);

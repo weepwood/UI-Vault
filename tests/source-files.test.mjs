@@ -4,7 +4,7 @@ import {getSourceFiles,downloadSourceText,SOURCE_EXTENSIONS} from '../assets/cor
 import {checkEntry} from '../scripts/lib/catalog.mjs';
 
 const asset={id:'example',title:'示例',description:'测试',type:'demo',source:'local',
-  tags:['Demo'],technologies:['HTML'],license:'原创',featured:false,created:'2026-11-22',
+  tags:['组件'],technologies:['HTML'],license:'原创',featured:false,created:'2026-11-22',
   preview:'demos/example/index.html',code:'demos/example/index.html',copyable:true};
 const categories=[{id:'demo',label:'Demo',symbol:'D'}];
 
