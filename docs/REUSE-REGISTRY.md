@@ -25,3 +25,5 @@
 新增 foundation-react-button 与 foundation-vue-button，依赖 foundation-components，登记目标运行时范围及源文件哈希。React 按钮采用原生 button；Vue 复用现有 Vue 3 示例的 UiButton.vue，均使用同一 Foundation CSS，不提供自研复杂交互。目标项目仍负责安装框架、构建、运行验收；不等于 shadcn CLI 安装包。ZIP 的 MANIFEST.json 列出入口、许可说明、实际文件字节数和 SHA-256（不包括清单自身）。
 
 第二轮：`scripts/lib/registry-install.mjs` 提供依赖闭包、循环检查、文件哈希、路径冲突与排他安装；测试复制 React/Vue 文件并独立打包 React 适配器（React 运行时仍由目标项目提供）。Vue 编译及真实交互仍待验证。
+
+独立运行验收入口：`.github/workflows/registry-runtime.yml`。仅相关文件变更触发，使用临时安装目录真实编译 React JSX 和 Vue SFC，随后 Chromium 检查原生按钮行为；不将测试站点发布为正式资产。Vue 直接依赖固定版本，传递依赖锁文件由本次运行产物留存。
