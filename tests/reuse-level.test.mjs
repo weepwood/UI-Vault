@@ -49,7 +49,7 @@ test('状态协议：reuse 属于默认筛选，可设置、校验并随重置�
 
 test('目录控件渲染复用程度筛选，级别标签与核心枚举一致',()=>{
   const jsx=readFileSync(new URL('../src/react-workbench.jsx',import.meta.url),'utf8');
-  const css=readFileSync(new URL('../assets/styles.css',import.meta.url),'utf8');
+  const css=readFileSync(new URL('../assets/ui/directory-controls.css',import.meta.url),'utf8');
   assert.ok(jsx.includes('id="reuse-filter"'));
   assert.ok(jsx.includes('按复用程度筛选'));
   // 复用度下拉固定在「项目目录」标题行右侧，触发器只有 104px：中性标签必须短到不出现省略号。

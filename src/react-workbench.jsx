@@ -186,7 +186,7 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
           {facetSelection(state[field.key]).length>0&&<span className="directory-preset-hint">已选 {facetSelection(state[field.key]).length} 项 · 继续选择可追加</span>}
         </label>)}
         <button type="button" className="directory-clear directory-reset" onClick={onClear} disabled={!activeCount}>清除筛选条件</button>
-        <div className="directory-preset-editor">
+        <details className="directory-management"><summary>筛选方案与列表设置</summary><div className="directory-preset-editor">
           <label htmlFor="directory-preset-name">保存当前筛选方案</label>
           <div className="directory-preset-quick">
             <input id="directory-preset-name" maxLength={40} placeholder="方案名称" value={presetName} onChange={event=>setPresetName(event.target.value)}/>
@@ -200,7 +200,7 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
           </div>
           <span className="directory-preset-hint" role="status">{presetStatus}</span>
         </div>
-        <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label>
+        <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label></details>
       </div>
     </>,toolsRoot)}
   </>;

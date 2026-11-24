@@ -1,0 +1,64 @@
+/* 目录筛选工具栏与预览 Topbar 共用单行高度，留出更多列表空间。 */
+.project-panel .list-controls {
+  display:flex;align-items:center;
+  height:var(--list-controls-height,var(--workbench-toolbar-height));min-height:var(--workbench-toolbar-height);
+  padding:0 12px;flex:none;background:var(--surface);border-bottom:1px solid var(--line);
+}
+.project-panel .list-controls .project-controls-heading {display:flex;align-items:center;min-width:0;margin:0;width:100%;}
+.project-panel .list-controls .project-controls-label {display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;color:var(--ink);font-size:12px;font-weight:700;white-space:nowrap;}
+.project-panel .result-count {display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:20px;padding:0 5px;border:1px solid var(--line-soft);border-radius:6px;background:var(--canvas);color:var(--muted);font-size:10px;font-weight:600;font-variant-numeric:tabular-nums;}
+.project-panel .directory-tools {position:relative;z-index:4;flex:none;min-width:0;padding:8px 10px;border-bottom:1px solid var(--line-soft);background:var(--surface);}
+.project-panel .list-controls-filters {display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:6px;min-width:0;}
+.project-panel .directory-tools .select-field--sort {min-width:0;width:100%;}
+.project-panel .directory-tools .select-trigger,.project-panel .directory-filter-toggle,.project-panel .directory-facet-field select {min-width:0;height:34px;min-height:34px;border:1px solid var(--line);border-radius:7px;background:var(--canvas);color:var(--text);font:inherit;font-size:11px;}
+.project-panel .directory-tools .select-trigger {width:100%;gap:5px;padding:0 7px;}
+.project-panel .directory-tools .select-leading .ui-icon,.project-panel .directory-filter-toggle .ui-icon {width:14px;height:14px;flex:none;}
+.project-panel .directory-tools .select-chevron .ui-icon {width:12px;height:12px;}
+.project-panel .directory-tools .select-popover {width:max(100%,160px);max-width:calc(100vw - 24px);}
+.project-panel .directory-filter-toggle {display:flex;align-items:center;justify-content:center;gap:5px;padding:0 8px;white-space:nowrap;}
+.project-panel .directory-tools :is(.select-trigger,.directory-filter-toggle,.directory-facet-field select):hover {background:var(--hover);}
+.project-panel .directory-filter-toggle:is([aria-expanded="true"],[data-active="true"]) {background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line,var(--line));}
+.project-panel .directory-active-filters {display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-top:7px;}
+.project-panel .directory-active-filters button {display:inline-flex;align-items:center;gap:4px;max-width:100%;min-width:0;padding:3px 5px;border:1px solid var(--line);border-radius:5px;background:var(--canvas);color:var(--text);font-size:10px;}
+.project-panel .directory-active-filters button span {overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.project-panel .directory-active-filters .ui-icon {width:11px;height:11px;flex:none;}
+.project-panel .directory-facets {display:grid;gap:8px;max-height:min(43vh,340px);scrollbar-gutter:stable;overflow-y:auto;overscroll-behavior:contain;padding:8px 2px 4px;margin-top:8px;border-top:1px solid var(--line-soft);}
+.project-panel .directory-facets[hidden] {display:none;}
+.project-panel .directory-facet-field {display:grid;gap:4px;min-width:0;color:var(--muted);font-size:11px;}
+.project-panel .directory-facet-field select {width:100%;padding:0 6px;}
+.project-panel .directory-clear {color:var(--accent);font-size:11px;}
+.project-panel .directory-clear:disabled {opacity:.5;cursor:default;}
+.project-panel .directory-reset {justify-self:start;padding:5px 0;background:none;border:0;}
+.project-panel .directory-group-status {display:flex;align-items:center;gap:5px;margin-top:7px;color:var(--muted);font-size:11px;}
+.project-panel .directory-group-status .ui-icon {width:13px;height:13px;}
+.project-panel .directory-group-status button {margin-left:auto;background:none;border:0;color:var(--muted);padding:3px;}
+.project-panel .directory-preset-quick {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px;margin-top:7px;}
+.project-panel .directory-preset-quick :is(select,input,button) {min-width:0;height:30px;padding:0 6px;border:1px solid var(--line);border-radius:6px;background:var(--canvas);color:var(--text);font:inherit;font-size:11px;}
+.project-panel .directory-preset-quick button:disabled {opacity:.5;}
+.project-panel .directory-preset-editor {display:grid;gap:4px;border-top:1px solid var(--line-soft);padding-top:8px;font-size:11px;color:var(--muted);}
+.project-panel .directory-preset-editor .directory-preset-quick {margin-top:0;}
+.project-panel .directory-preset-hint {font-size:10px;overflow-wrap:anywhere;}
+.project-panel .directory-full-list {display:flex;align-items:center;gap:5px;color:var(--muted);font-size:11px;}
+.project-panel .directory-tools :is(button,select):focus-visible {outline:2px solid var(--focus);outline-offset:1px;}
+@media(max-width:930px) {
+  .project-panel .directory-tools {padding-inline:8px;}
+  .project-panel .list-controls {padding-inline:10px;}
+}
+@media(max-width:480px) {
+  .project-panel .directory-facets {max-height:24vh;}
+}
+
+
+.directory-management{border-top:1px solid var(--line);padding-top:6px;min-width:0}
+.directory-management summary{cursor:pointer;color:var(--muted);font-size:11px;padding:6px 0}
+.directory-management[open] summary{color:var(--ink)}
+.directory-management .directory-preset-editor{border-top:0}
+
+/* 同一控件表面、同一焦点与选中反馈，筛选字段按任务分组。 */
+.project-panel .directory-tools :is(.select-trigger,.directory-filter-toggle,.directory-facet-field select){background:var(--surface);border-radius:var(--radius-md,9px)}
+.project-panel .directory-facet-heading{padding:6px 0 2px;border-top:1px solid var(--line-soft)}
+.project-panel .directory-facet-heading:first-child{border-top:0;padding-top:0}
+.project-panel .directory-facet-heading strong{font-weight:650;color:var(--ink)}
+.project-panel .directory-active-filters button{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+.project-panel .directory-filter-toggle:is([aria-expanded=true],[data-active=true]){background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
+@media(max-width:760px){.project-panel .directory-facets{max-height:31dvh}}
