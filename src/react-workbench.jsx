@@ -1,4 +1,3 @@
-import {snapshotRow} from '../assets/core/project-operations.js';
 import { createRoot } from 'react-dom/client';
 import {ProjectRow,ProjectList} from './components/ProjectList.jsx';
 import {CategoryNavigation} from './components/CategoryNavigation.jsx';
@@ -505,7 +504,7 @@ function WorkbenchPortals({nodes}){
       onInfo={()=>{closeDock();if(selected)setDialogOpen(true);}}
       parametersOpen={dockOpen} onParameters={parameterSchemaFor(effectiveAsset)?()=>{if(dockOpen)closeDock();else{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}:undefined}
       onMenu={onMenuToggle} menuOpen={menuOpen}
-      onSearch={openPalette} searchOpen={compactSearchOpen} previewEvidence={snapshotRow(previewHealthSnapshot,selected?.id)}/>,nodes.topbar)}
+      onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
     {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(dockOpen&&<div className="parameter-dock-inner">

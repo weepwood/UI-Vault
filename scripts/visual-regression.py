@@ -619,6 +619,17 @@ def verify_glass_materials(browser, origin):
             assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2"), name + ": 主站横向溢出"
             OUTPUT.mkdir(parents=True, exist_ok=True)
             page.screenshot(path=str(OUTPUT / ("glass-lab-embed-" + name + ".png")), full_page=True, animations="disabled")
+            external_height=page.locator('.topbar').bounding_box()['height']
+            assert page.locator('.topbar-embed-notice').count()==0
+            page.goto(origin + "?asset=warm-workbench", wait_until="domcontentloaded")
+            page.locator('#preview-title').filter(has_text="暖色工作台").wait_for(state="attached")
+            page.locator('.topbar').wait_for(state="visible")
+            page.evaluate("() => document.fonts.ready")
+            page.evaluate("() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))")
+            local_height=page.locator('.topbar').bounding_box()['height']
+            assert abs(local_height-external_height)<=1, f"{name}: 顶栏切换高度变化 {external_height} → {local_height}"
+            assert page.locator('.topbar-embed-notice').count()==0
+
         finally:
             context.close()
     print("Glass Lab 回归通过：旧资产深链接、在线 iframe、材质内容及桌面/移动端预览。")
@@ -1353,6 +1364,18 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.get_by_role("spinbutton",name="第二层阴影模糊",exact=True).input_value()=="27"
             page.screenshot(path=str(OUTPUT/f"parameter-shadow-layer-{width}.png"))
+            blur=dock.get_by_label("选中阴影层模糊",exact=True)
+            blur.fill("29")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            blur.fill("31")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            dock.get_by_role("button",name="撤销",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert blur.input_value()!="29", "连续输入不应逐次撤销"
+            dock.get_by_role("button",name="重做",exact=True).click()
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            assert blur.input_value()=="31"
+
             dock.get_by_role("button",name="复位阴影",exact=True).click()
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.get_by_role("spinbutton",name="阴影不透明度",exact=True).input_value()=="0"

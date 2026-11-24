@@ -41,5 +41,5 @@ test('全部 528 条资产的标签都在受控词表内', async () => {
   assert.deepEqual(errors, []);
   const distinct = new Set(items.flatMap(item => item.tags || []));
   for (const tag of distinct) assert.ok(TAG_VOCABULARY_WORDS.has(tag), '词表外标签：' + tag);
-  assert.ok(items.some(item => (item.tags || []).length === 0), '应允许空标签数组（机器组标签已删除）');
+  assert.ok(items.every(item => (item.tags || []).length > 0), '现有目录不得重新出现无标签资产');
 });
