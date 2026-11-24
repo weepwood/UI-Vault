@@ -52,7 +52,7 @@ test('第二批单文件 Demo 内嵌核心同步',()=>{
  for(const path of ['demos/effects/aurora-field/index.html','demos/components/liquid-orb/index.html'])assert.ok(readFileSync(new URL('../'+path,import.meta.url),'utf8').includes(core));
 });
 
-import {WARM_LAYOUT_FIELDS} from '../assets/core/demo-parameters.js';
+import {WARM_LAYOUT_FIELDS,warmLayoutCssValues,normalizeStoredParameters} from '../assets/core/demo-parameters.js';
 import {exportLayoutCss} from '../assets/core/parameter-snapshot.js';
 test('暖色布局仅登记固定 CSS 变量，默认参数与内嵌核心同步',()=>{
  const asset={id:'warm-workbench',source:'local',preview:'demos/layouts/warm-workbench/index.html'};
@@ -64,4 +64,17 @@ test('暖色布局仅登记固定 CSS 变量，默认参数与内嵌核心同步
  assert.throws(()=>exportLayoutCss(asset,{...defaults,canvas:'url(https://example.com)'}));
  const core=readFileSync(new URL('../assets/core/demo-parameters.js',import.meta.url),'utf8').replace(/^export /gm,'').trim();
  assert.ok(readFileSync(new URL('../'+asset.preview,import.meta.url),'utf8').includes(core));
+});
+
+test('暖色高级参数安全生成 CSS，旧七项快照迁移但消息仍严格完整',()=>{
+ const asset={id:'warm-workbench',source:'local',preview:'demos/layouts/warm-workbench/index.html'},defaults=Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default]));
+ const legacy=Object.fromEntries(WARM_LAYOUT_FIELDS.filter(f=>!f.group).map(f=>[f.key,f.default]));
+ assert.deepEqual(normalizeStoredParameters(asset,legacy),defaults);
+ assert.throws(()=>normalizeParameters(WARM_LAYOUT_FIELDS,legacy,{complete:true}));
+ assert.throws(()=>normalizeStoredParameters(asset,{...legacy,gradient:true}));
+ const css=warmLayoutCssValues(defaults);assert.equal(css['--warm-card-gradient'],'none');assert.equal(css['--warm-card-shadow'],'none');assert.equal(css['--warm-motion-lift'],'0px');
+ const edited={...defaults,gradient:true,gradientAngle:90,shadowOpacity:25,motionDuration:200,motionLift:3};
+ const result=warmLayoutCssValues(edited);assert.match(result['--warm-card-gradient'],/^linear-gradient\\(90deg,/);assert.match(result['--warm-card-shadow'],/0.25\\)$/);assert.equal(result['--warm-motion-lift'],'-3px');assert.match(result['--warm-motion-curve'],/^cubic-bezier/);
+ assert.throws(()=>warmLayoutCssValues({...edited,gradientEnd:'url(https://example.com)'}));assert.throws(()=>warmLayoutCssValues({...edited,curveX1:101}));
+ assert.match(exportLayoutCss(asset,edited),/--warm-card-gradient: linear-gradient/);
 });

@@ -1037,7 +1037,24 @@ def verify_warm_layout_parameters(browser, origin):
         panel.get_by_role("button",name="恢复默认",exact=True).click()
         panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
-        print("暖色布局参数应用、重置及 iframe 稳定性通过",flush=True)
+        panel.get_by_role("checkbox",name="启用表面渐变").check()
+        panel.get_by_role("spinbutton",name="渐变角度").fill("90")
+        panel.get_by_role("spinbutton",name="阴影不透明度").fill("25")
+        panel.get_by_role("spinbutton",name="悬停动效时长").fill("200")
+        panel.get_by_role("spinbutton",name="悬停抬升距离").fill("3")
+        panel.get_by_role("button",name="应用参数",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        card=frame.locator(".stat").first
+        assert "linear-gradient(90deg" in card.evaluate("(el)=>getComputedStyle(el).backgroundImage")
+        assert card.evaluate("(el)=>getComputedStyle(el).boxShadow")!="none"
+        assert card.evaluate("(el)=>getComputedStyle(el).transitionDuration")=="0s", "减少动画必须禁用悬停动画"
+        assert page.evaluate("() => window.__layoutFrame===document.querySelector('#preview-stage iframe')")
+        page.screenshot(path=str(OUTPUT/"advanced-parameter-dialog.png"))
+        panel.get_by_role("button",name="恢复默认",exact=True).click()
+        panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert card.evaluate("(el)=>getComputedStyle(el).backgroundImage")=="none"
+        assert card.evaluate("(el)=>getComputedStyle(el).boxShadow")=="none"
+        print("暖色布局参数应用、渐变阴影、减少动画、重置及 iframe 稳定性通过",flush=True)
     finally:
         context.close()
 
