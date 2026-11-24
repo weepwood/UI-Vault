@@ -107,6 +107,8 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
         step={field.type==='number'?field.step||1:undefined} disabled={blocking} value={drafts[field.key]??values[field.key]}
         aria-invalid={invalidFields.includes(field)||undefined}
         onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}
+      {liveEditing&&field.type==='color'&&<small className="parameter-value-hint">{values[field.key].toUpperCase()}{field.css&&<span title={field.css}>{field.css}</span>}</small>}
+      {liveEditing&&field.type==='number'&&field.unit&&<small className="parameter-unit-hint">{field.unit}</small>}
       {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</div>)}</div>
       <div className="parameter-presets-heading">参数预设与文件管理</div><div className="parameter-presets">
       <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>

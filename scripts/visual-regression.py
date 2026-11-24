@@ -1198,6 +1198,18 @@ def verify_expanded_workbench_screenshots(browser, origin):
             page.locator("#tab-source").click()
             page.locator("#source-copy").wait_for(state="visible")
             page.screenshot(path=str(OUTPUT/f"expanded-source-{width}.png"))
+            if width==1440:
+                page.goto(origin+"?asset=notion-design-demo",wait_until="domcontentloaded")
+                page.locator("#preview-info").click()
+                page.locator("#tab-source").click()
+                page.locator(".source-file-browser summary").click()
+                page.locator(".source-file-browser").get_by_role("button",name="styles.css",exact=False).click()
+                page.wait_for_function("()=>document.querySelector('#source-status')?.textContent.startsWith('CSS ·')")
+                assert page.locator(".source-current-path").inner_text().endswith("/styles.css")
+                page.get_by_role("checkbox",name="自动换行").check()
+                assert page.locator(".source-view").evaluate("(el)=>getComputedStyle(el).whiteSpace")=="pre-wrap"
+                assert page.locator("#source-copy").is_enabled()
+                page.screenshot(path=str(OUTPUT/"source-file-browser-desktop.png"))
         finally:
             context.close()
 
