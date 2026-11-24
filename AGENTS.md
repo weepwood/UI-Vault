@@ -56,6 +56,8 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 13. `demos/`、`subprojects/` 和页面镜像不需要使用 React，也不加入主站构建，继续按白名单发布各自的静态文件。不同 Demo 禁止运行时跨目录 import，独立跨仓项目不能依赖 UI-Vault 的业务 Bundle。iframe 新权限只能在资产 `previewCapabilities` 声明，并经 schema 和运行时白名单校验；不得引入 `allow-same-origin`。
 14. `assets/core/` 放可测试的纯函数（检索、状态、路由、存储协议、预览计算），继续被 React 层复用。
 
+存储可靠性：读取 `localStorage` / `sessionStorage` 对象本身也可能抛出异常，必须放在 `try` 内；不可用时保持会话可操作，写入失败不得报告已持久化。见 [docs/SETTINGS.md](docs/SETTINGS.md) 与 `tests/storage-resilience.test.mjs`。
+
 ### 布局不变式
 
 15. 桌面端固定为 **导航 / 目录 / 预览** 三栏（`aside#sidebar`、`section#project-panel`、`main#main`），前两栏包在 `div#library-rail` 中。不得合并导航和目录，不得退回卡片画廊。
