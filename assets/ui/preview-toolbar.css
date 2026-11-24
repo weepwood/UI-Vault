@@ -184,3 +184,10 @@ html[data-motion="reduced"] .viewport-controls .viewport-options{animation:none}
 @container preview-toolbar (max-width:430px){.topbar .select-field--version{flex:0 0 40px;width:40px;min-width:40px}
 .topbar .select-field--version .select-trigger{justify-content:center;padding:0 9px}
 .topbar .select-field--version .select-value,.topbar .select-field--version .select-chevron{display:none}}
+
+/* 大预览区显示实际资源类型，空间不足保持单行标题。 */
+@container preview-toolbar (min-width:850px){
+ .topbar .project-identity .topbar-kind{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:10px;line-height:1.25;color:var(--muted);font-weight:500}
+ .topbar .project-identity h1{font-size:16px;line-height:1.4}
+ .topbar .topbar-tools{gap:8px}
+}

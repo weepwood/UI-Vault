@@ -1514,3 +1514,12 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 .material-action-row button{border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:5px;padding:4px 8px;min-height:28px;font:inherit;font-size:11px}
 .material-action-row button[aria-pressed=true]{color:var(--accent);background:var(--accent-soft);border-color:var(--accent-line)}
 .material-action-row button:disabled{opacity:.5}
+
+/* 三栏视觉精修：维持原宽度、虚拟行高与工具栏高度，仅调整信息层次。 */
+#sidebar .nav-button{border-radius:6px;font-weight:500}
+#sidebar .nav-button.is-active{font-weight:650}
+#sidebar .nav-index .ui-icon{stroke-width:1.85}
+.project-panel .project-row-title{font-weight:640;line-height:1.35}
+.project-panel .project-row-subtitle{line-height:1.4}
+.project-panel .project-controls-label{letter-spacing:.015em}
+.project-panel .result-count{border-radius:4px;font-variant-numeric:tabular-nums}
