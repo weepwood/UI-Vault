@@ -199,3 +199,5 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 #111 实际 1440/390 参数截图仍被所有材质示意挤占首屏。下一候选改为布局字段优先、渐变/阴影/曲线各自分组的原位编辑与焦点跳转，保留数字输入和协议。中间色标增删复用布尔字段，方向键/Home/End，阴影重新启用恢复本次会话关闭前不透明度（无历史默认15%）。不增加第四栏或弹窗，不修改像素基线；新增分组跳转、色标增删与阴影恢复浏览器断言，待 CI。
 
 追加六项指南证据 Hands Up、Heroic Realism、Hipness Purgatory、Hollywood Regency、Holographic UI、Honeycore；累计 124，剩余 166，保留原始许可与精选状态。待 CI。
+
+#112 自审发现分拆 MaterialActions 时 JSX 容器收尾错误，合并前修正；补充 CI 路由将 MaterialActions/BezierEditor 单独改动也视为视觉风险。阴影示意文字使用固定可读标签，避免自定义深色表面导致低对比。等待实际完整 CI。

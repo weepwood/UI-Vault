@@ -28,7 +28,7 @@ test('main push 和定期刷新仅构建部署，手动 quick 可额外验证',(
 });
 
 test('主站共享 CSS、目录和参数控件变更触发 Chromium 验收',()=>{
-  for(const path of ['assets/styles.css','assets/ui/controls.css','assets/ui/dialog.css','src/components/ProjectList.jsx','src/components/VirtualProjectList.jsx','src/components/DemoParameterPanel.jsx','assets/core/demo-parameters.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
+  for(const path of ['assets/styles.css','assets/ui/controls.css','assets/ui/dialog.css','src/components/ProjectList.jsx','src/components/VirtualProjectList.jsx','src/components/DemoParameterPanel.jsx','src/components/MaterialActions.jsx','src/components/BezierEditor.jsx','assets/core/demo-parameters.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
 });
 
 test('发布浏览器审计代码变更触发完整验收',()=>{
