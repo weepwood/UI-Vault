@@ -127,7 +127,13 @@ const TERM_ALIASES=Object.freeze({
   '意大利迪斯科风':['italo disco'],'italo disco':['意大利迪斯科风'],
   '日式北欧融合风':['japandi'],'japandi':['日式北欧融合风'],
   '闪亮西装时代风':['jiggy era'],'jiggy era':['闪亮西装时代风'],
-  '儿童科学风':['kid science'],'kid science':['儿童科学风']
+  '儿童科学风':['kid science'],'kid science':['儿童科学风'],
+  '儿童复古趣味风':['kidcore'],'kidcore':['儿童复古趣味风'],
+  '慢生活杂志风':['kinfolk'],'kinfolk':['慢生活杂志风'],
+  '激光网格风':['laser grid'],'laser grid':['激光网格风'],
+  '明亮学院风':['light academia'],'light academia':['明亮学院风'],
+  '轻拟物风':['light skeuomorphism'],'light skeuomorphism':['轻拟物风'],
+  '清晰线条风':['ligne claire'],'ligne claire':['清晰线条风']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 

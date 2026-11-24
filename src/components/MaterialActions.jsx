@@ -32,7 +32,9 @@ export function GradientStopEditor({values,disabled,onPatch,onStart,onMove,onEnd
 }
 export function ShadowActions({values,disabled,onPatch}){
   const lastOpacity=useRef({});
-  return <div className="material-action-row"><strong>阴影层</strong>{[['shadowOpacity','主阴影'],['shadow2Opacity','第二层阴影']].map(([key,label])=><button type="button" key={key} aria-pressed={values[key]>0} disabled={disabled} onClick={()=>{if(values[key]>0){lastOpacity.current[key]=values[key];onPatch({[key]:0});}else onPatch({[key]:lastOpacity.current[key]??15});}}>{label} · {values[key]>0?'启用':'关闭'}</button>)}</div>;
+  const layers=[['shadowOpacity','主阴影'],['shadow2Opacity','第二层阴影']];
+  if(values.shadowReversed)layers.reverse();
+  return <div className="material-shadow-controls"><div className="material-action-row"><strong>阴影层 · 从前到后</strong>{layers.map(([key,label])=><button type="button" key={key} aria-pressed={values[key]>0} disabled={disabled} onClick={()=>{if(values[key]>0){lastOpacity.current[key]=values[key];onPatch({[key]:0});}else onPatch({[key]:lastOpacity.current[key]??15});}}>{label} · {values[key]>0?'启用':'关闭'}</button>)}</div><div className="material-action-row"><button type="button" aria-label="交换阴影层顺序" disabled={disabled} onClick={()=>onPatch({shadowReversed:!values.shadowReversed})}>交换前后顺序</button></div></div>;
 }
 export function CurvePresets({values,disabled,onPatch}){
   return <div className="material-action-row"><strong>曲线预设</strong>{CURVES.map(({label,points})=><button type="button" key={label} aria-pressed={points.every((n,i)=>n===values[['curveX1','curveY1','curveX2','curveY2'][i]])} disabled={disabled} onClick={()=>onPatch(Object.fromEntries(['curveX1','curveY1','curveX2','curveY2'].map((key,i)=>[key,points[i]])))}>{label}</button>)}</div>;

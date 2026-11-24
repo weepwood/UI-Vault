@@ -207,3 +207,9 @@ Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与�
 追加 6 项原始指南审计：Iridescent、Isometric Design、Italo Disco、Japandi、Jiggy Era、Kid Science；累计 136，剩余 154 项。每项保留原始指南证据、标签、双语检索；候选待验收。
 
 #111 最终正式锁定版 42e80c4：45427408663（344 单测、26 Chromium、Firefox/WebKit 基础冒烟、8 个 axe 场景零违规、Windows）、45427408764 Registry、45427408694 Foundation ZIP 解包严格 npm ci（71 安装包）、Vite 7.3.8 与 Chromium 全部通过；实际产物 14938111293 共 46 文件已复审。#111 已 squash 合并 1f5e3dc，树 25928e99 与验收候选相同。#110 main 45427043654 Pages 部署实际日志成功。#112 继承 #111 精确文件树，新增 18 项原始指南分类（累计 136，剩余 154），分组编辑器、色标增删、阴影恢复及风险识别须待最新 CI、真实截图复审后合并；#111 main 部署待复查。禁止提前合并。
+
+#112 最终提交 a0fffa1，CI 45429115346 全部通过（26 Chromium、Firefox/WebKit、8 个 axe 场景零违规、Windows）。下载真实产物 14938892549 共 48 文件，桌面/移动分组、深色目录抽查；参数拖动 P95 16.7ms、最终确认 17.8ms。squash 合并 6eaccec，树 30033473 与候选一致。#111 main 45428987542 与 #112 main 45430454987 的 Pages 发布均成功。独立线上 Chromium 检查已部署的分组界面，圆角实际应用 24px、恢复 14px、无 pageerror；未覆盖全部交互。
+
+后续候选在独立 worktree 深化分组导航固定、统一停靠区控件和阴影真实排序。排序仅新增一个严格布尔字段 shadowReversed，保留两层各自颜色、透明度、偏移、扩展和模糊；旧完整 7/20/32 字段存储迁移，不允许不完整消息。四个自包含 Demo 内嵌核心同步。保持三栏、iframe 沙箱、默认视觉与原基线；增加 CSS 实际顺序、撤销、桌面/移动分组定位专项回归。追加 6 项原始指南证据 Kidcore、Kinfolk、Laser Grid、Light Academia、Light Skeuomorphism、Ligne Claire；审计累计 142，未标记 148，候选待完整 CI。
+
+本地新候选严格 npm ci、345 单测、设计审计、ESLint、完整静态构建与产物检查成功；Mac Python 默认缺 fontTools，使用既有 venv 与系统 CA 正常生成字体，不关闭 TLS。复用本机 Playwright/Chromium 做独立 1440/390 实测：分组导航顶部与固定标题底部一致（567/545.4px）；阴影由 25% 前、23% 后变为 23% 前、25% 后，其他值不变；两张真实截图已抽查，CI 新截图等待选中态更新后捕获。尚未执行该候选完整跨浏览器与 CI，不得先合并。
