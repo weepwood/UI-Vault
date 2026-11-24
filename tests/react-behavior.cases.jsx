@@ -193,6 +193,12 @@ test('目录筛选缓存不受预览、菜单或主题影响，筛选变更仍�
     rerender(<Probe value={{...state,active:other,customWidth:960,menuOpen:true,preferences:{theme:'dark'}}}/>);
     assert.strictEqual(observed.filtered,before.filtered);
     assert.strictEqual(observed.tags,before.tags);
+    rerender(<Probe value={{...state,tag:'组件'}}/>);
+    assert.deepEqual(observed.filtered.map(item=>item.id),[asset.id]);
+    assert.deepEqual(new Set(observed.tags),new Set(['组件','风格']));
+    rerender(<Probe value={{...state,tag:'旧标签',query:'按钮'}}/>);
+    assert.deepEqual(observed.filtered,[]);
+    assert.deepEqual(observed.tags,['组件','旧标签']);
     rerender(<Probe value={{...state,category:'style'}}/>);
     assert.deepEqual(observed.filtered.map(item=>item.id),[other.id]);
     assert.deepEqual(observed.tags,['风格']);
