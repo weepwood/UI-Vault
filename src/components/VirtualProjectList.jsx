@@ -7,7 +7,7 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
   const host=useRef(null),pendingFocus=useRef(null);
   const [metrics,setMetrics]=useState({top:0,height:800});
   const [focusedId,setFocusedId]=useState(null);
-  const {start,end}=virtualWindow(items.length,metrics.top,metrics.height,rowHeight);
+  const {start,end}=metrics.height>0?virtualWindow(items.length,metrics.top,metrics.height,rowHeight):{start:0,end:0};
   const indices=Array.from({length:end-start},(_,i)=>start+i);
   // 滚动时保留真实键盘焦点对应的行；选中预览不强制改变目录滚动位置。
   const focusedIndex=focusedId?items.findIndex(item=>item.id===focusedId):-1;
@@ -18,13 +18,17 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     function sync(){
       if(!host.current)return;
       const rootRect=scrollRoot.getBoundingClientRect(),listRect=host.current.getBoundingClientRect();
-      const next={top:Math.max(0,rootRect.top+scrollRoot.clientTop-listRect.top),height:scrollRoot.clientHeight};
+      const viewportTop=rootRect.top+scrollRoot.clientTop,viewportBottom=viewportTop+scrollRoot.clientHeight;
+      const visible=Math.max(0,Math.min(viewportBottom,listRect.bottom)-Math.max(viewportTop,listRect.top));
+      const next={top:Math.max(0,viewportTop-listRect.top),height:visible};
       setMetrics(previous=>previous.top===next.top&&previous.height===next.height?previous:next);
     }
     function schedule(){cancelAnimationFrame(frame);frame=requestAnimationFrame(sync);}
     scrollRoot.addEventListener('scroll',schedule,{passive:true});
     const observer=typeof ResizeObserver==='undefined'?null:new ResizeObserver(schedule);
     observer?.observe(scrollRoot);
+    if(host.current)observer?.observe(host.current);
+    if(scrollRoot.firstElementChild)observer?.observe(scrollRoot.firstElementChild);
     window.addEventListener('resize',schedule);
     schedule();
     return ()=>{cancelAnimationFrame(frame);observer?.disconnect();scrollRoot.removeEventListener('scroll',schedule);window.removeEventListener('resize',schedule);};

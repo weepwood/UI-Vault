@@ -125,8 +125,20 @@ function facetValues(asset,key){
   if(key==='technology')return asset.technologies||[];
   return asset[key]?[asset[key]]:[];
 }
+// 兼容旧的单值字符串；多值在维度内取并集、维度之间取交集。
+export function facetSelection(value){
+  return [...new Set((Array.isArray(value)?value:[value]).filter(item=>typeof item==='string'&&item.trim()).map(item=>item.trim()))];
+}
+export function normalizeFacetSelection(value){
+  const values=facetSelection(value).slice(0,30);
+  return values.length>1?values:values[0]||'';
+}
 export function matchesCatalogFacets(asset,filters={},except=''){
-  return FACET_KEYS.every(key=>key===except||!filters[key]||facetValues(asset,key).includes(filters[key]));
+  return FACET_KEYS.every(key=>{
+    if(key===except)return true;
+    const selected=facetSelection(filters[key]);
+    return !selected.length||selected.some(value=>facetValues(asset,key).includes(value));
+  });
 }
 export function catalogFacetOptions(assets,filters={}){
   const result={};
@@ -135,11 +147,11 @@ export function catalogFacetOptions(assets,filters={}){
     for(const asset of assets){
       if(!matchesCatalogFacets(asset,filters,key))continue;
       for(const value of new Set(facetValues(asset,key))){
-        if(key==='tag'&&isStyleTag(value)&&value!==filters.tag)continue;
+        if(key==='tag'&&isStyleTag(value)&&!facetSelection(filters.tag).includes(value))continue;
         counts.set(value,(counts.get(value)||0)+1);
       }
     }
-    if(filters[key]&&!counts.has(filters[key]))counts.set(filters[key],0);
+    for(const value of facetSelection(filters[key]))if(!counts.has(value))counts.set(value,0);
     result[key]=[...counts].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'zh-CN'))
       .map(([value,count])=>({value,count}));
   }

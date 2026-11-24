@@ -1361,3 +1361,10 @@ html[data-motion="reduced"] .command-palette-item{transition:none}
  outline:2px solid var(--focus);outline-offset:2px;
  background:var(--accent-soft);
 }
+
+/* 筛选方案导入与导出使用同一行，原生文件控件保留键盘可访问性。 */
+.directory-backup-actions {display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px;}
+.directory-backup-actions button,.directory-import-label {position:relative;min-width:0;display:grid;place-items:center;padding:6px 4px;border:1px solid var(--line);border-radius:6px;background:var(--canvas);color:var(--text);font:inherit;}
+.directory-backup-actions button:disabled {opacity:.5;}
+.directory-import-label input {position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;}
+.directory-import-label:focus-within {outline:2px solid var(--focus);outline-offset:1px;}
