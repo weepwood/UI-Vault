@@ -90,7 +90,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   }
   function applyMaterialPatch(patch){
     if(blocking||invalid||!values)return;
-    try{replaceValues(normalizeParameters(fields,{...values,...patch},{complete:true}),true);}catch{setStatus('参数不合法');}
+    try{const next=normalizeParameters(fields,{...values,...patch},{complete:true});if(Object.keys(patch).every(key=>next[key]===values[key]))return;replaceValues(next,true);}catch{setStatus('参数不合法');}
   }
   const hasMaterialGroups=asset.id==='warm-workbench'&&Boolean(values);
   useEffect(()=>{

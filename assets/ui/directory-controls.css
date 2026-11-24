@@ -62,3 +62,9 @@
 .project-panel .directory-active-filters button{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
 .project-panel .directory-filter-toggle:is([aria-expanded=true],[data-active=true]){background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
 @media(max-width:760px){.project-panel .directory-facets{max-height:31dvh}}
+
+.project-panel .directory-facet-field{grid-template-columns:minmax(0,65px) minmax(0,1fr);align-items:center;gap:6px}
+.project-panel .directory-facet-field .directory-preset-hint{grid-column:2}
+.project-panel .directory-facet-field select{height:34px;min-height:34px;text-overflow:ellipsis}
+.project-panel .directory-facets{gap:8px}
+@media(max-width:480px){.project-panel .directory-facet-field{grid-template-columns:minmax(0,1fr)}.project-panel .directory-facet-field .directory-preset-hint{grid-column:1}}

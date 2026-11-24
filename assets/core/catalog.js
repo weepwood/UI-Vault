@@ -169,7 +169,19 @@ const TERM_ALIASES=Object.freeze({
   "新浪潮设计":["new wave"],"new wave":["新浪潮设计"],
   "黑色装饰艺术":["noir deco"],"noir deco":["黑色装饰艺术"],
   "黑色极简主义":["noir minimalism"],"noir minimalism":["黑色极简主义"],
-  "北欧黑色风":["nordic noir"],"nordic noir":["北欧黑色风"]
+  "北欧黑色风":["nordic noir"],"nordic noir":["北欧黑色风"],
+  "老钱风":["old money"],"old money":["老钱风"],
+  "光效艺术":["op art"],"op art":["光效艺术"],
+  "有机现代风":["organic modern"],"organic modern":["有机现代风"],
+  "东德怀旧风":["ostalgie"],"ostalgie":["东德怀旧风"],
+  "剪纸风":["paper cut"],"paper cut":["剪纸风"],
+  "视差设计":["parallax design"],"parallax design":["视差设计"],
+  "巴黎少女风":["parisian girly"],"parisian girly":["巴黎少女风"],
+  "粉彩粗野主义":["pastel brutalism"],"pastel brutalism":["粉彩粗野主义"],
+  "粉彩哥特风":["pastel goth"],"pastel goth":["粉彩哥特风"],
+  "像素风":["pc 98"],"pc 98":["pc 98 像素风"],
+  "奢华拼贴风":["pen and pixel"],"pen and pixel":["奢华拼贴风"],
+  "物体海报风":["plakatstil"],"plakatstil":["物体海报风"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
