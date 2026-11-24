@@ -173,3 +173,9 @@
 @media(max-width:560px){.demo-parameter-fields{grid-template-columns:minmax(0,1fr);}.demo-parameter-actions button{flex:1 1 auto;}}
 @media(prefers-reduced-motion:reduce){.demo-parameter-panel :is(button,select,input){transition:none;}}
 html[data-motion="reduced"] .demo-parameter-panel :is(button,select,input){transition:none;}
+
+.source-manifest-actions{display:flex;align-items:center;flex-wrap:wrap;gap:8px;}
+.source-manifest-actions :is(button,a){display:inline-flex;align-items:center;gap:5px;min-height:32px;padding:5px 10px;border:1px solid var(--line);border-radius:6px;color:var(--text);background:var(--surface);font:inherit;transition:background-color var(--motion-fast) ease;}
+.source-manifest-actions :is(button,a):hover{background:var(--hover);}
+.source-manifest-actions :is(button,a):focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+.source-manifest-actions button:disabled{opacity:.45;}

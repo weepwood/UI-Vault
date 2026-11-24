@@ -281,7 +281,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
               ?'该 Demo 是可独立保存的单文件页面；如需复用，请保留源码中的来源与许可证说明。'
               :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
       </p>
-      <div className="source-delivery-note"><button type="button" id="source-reuse-manifest" onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<> · <a href={resolveAsset('registry/index.json')} target="_blank" rel="noopener noreferrer">Foundation Registry（发布站点）</a></>}</div>
+      <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<><a href={resolveAsset('registry/index.json')} target="_blank" rel="noopener noreferrer">Foundation Registry（发布站点）</a></>}</div>
       <pre className="source-view"><code id="source-code">{isCurrent?source.text:'选择“源代码”查看项目实现。'}</code></pre>
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"

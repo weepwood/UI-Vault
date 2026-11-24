@@ -92,6 +92,9 @@ jobs:
       - name: 发布目录检查
         if: needs.plan.outputs.build == 'true'
         run: node scripts/check-dist.mjs
+      - name: 正式验收搜索与分面性能采样
+        if: needs.plan.outputs.full == 'true'
+        run: node scripts/benchmark-search.mjs
       - name: 安装 Chromium 视觉回归环境
         if: needs.plan.outputs.visual == 'true'
         run: |

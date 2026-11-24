@@ -13,6 +13,10 @@ import json
 import os
 from pathlib import Path
 import threading
+import shutil
+import tempfile
+import zipfile
+import time
 import zlib
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from functools import partial
@@ -814,8 +818,18 @@ def verify_foundation_parameters(browser, origin):
         panel=page.locator(".demo-parameter-panel")
         panel.get_by_role("button",name="读取当前参数",exact=True).click()
         panel.get_by_label("基础圆角",exact=True).wait_for(state="visible")
-        initial=panel.get_by_label("基础圆角",exact=True).input_value()
-        panel.get_by_label("基础圆角",exact=True).fill("24")
+        radius=panel.get_by_label("基础圆角",exact=True)
+        initial=radius.input_value()
+        radius.fill("")
+        assert radius.get_attribute("aria-invalid")=="true"
+        assert panel.get_by_role("button",name="应用参数",exact=True).is_disabled()
+        radius.fill("33")
+        assert panel.get_by_role("button",name="应用参数",exact=True).is_disabled()
+        radius.fill("24")
+        assert radius.get_attribute("aria-invalid") is None
+        radius.focus()
+        assert radius.evaluate("(el)=>el===document.activeElement")
+        assert panel.get_by_role("button",name="应用参数",exact=True).is_enabled()
         panel.get_by_role("button",name="应用参数",exact=True).click()
         panel.get_by_text("已连接 · 参数已同步",exact=True).wait_for(state="visible")
         assert frame.locator("html").evaluate("(el)=>el.style.getPropertyValue('--ui-radius-md')")=="24px"
@@ -876,6 +890,126 @@ def verify_effect_parameters(browser, origin):
             page.keyboard.press("Escape")
     finally:
         context.close()
+
+
+def verify_standalone_delivery(browser):
+    """在不含主站文件的临时 HTTP 根目录运行真实发布文件与 ZIP。"""
+    assets=json.loads((DIST/"content/assets.json").read_text(encoding="utf-8"))
+    by_id={item["id"]:item for item in assets}
+    with tempfile.TemporaryDirectory(prefix="ui-vault-delivery-") as temp:
+        root=Path(temp)
+        ids=("ui-foundation-kit","aurora-field","liquid-orb","editor-shell","warm-workbench")
+        for identifier in ids:
+            entry=by_id[identifier]
+            target=root/identifier
+            target.mkdir()
+            shutil.copyfile(DIST/entry["code"],target/"index.html")
+        package=root/"notion-design-demo"
+        package.mkdir()
+        with zipfile.ZipFile(DIST/"downloads/notion-design-demo.zip") as archive:
+            for member in archive.infolist():
+                path=package/member.filename
+                assert path.resolve().is_relative_to(package.resolve()), "ZIP 越界路径"
+                path.parent.mkdir(parents=True,exist_ok=True)
+                path.write_bytes(archive.read(member))
+        server=ThreadingHTTPServer(("127.0.0.1",0),partial(QuietHandler,directory=str(root)))
+        thread=threading.Thread(target=server.serve_forever,daemon=True)
+        thread.start()
+        origin=f"http://127.0.0.1:{server.server_port}/"
+        context=browser.new_context(viewport={"width":1280,"height":900},reduced_motion="reduce",locale="zh-CN")
+        try:
+            for identifier in (*ids,"notion-design-demo"):
+                page=context.new_page()
+                failed=[]
+                external=[]
+                errors=track_page_errors(page)
+                def route_request(route):
+                    url=route.request.url
+                    if url.startswith(origin) or url.startswith(("data:","blob:")):
+                        route.continue_()
+                    else:
+                        external.append(url)
+                        route.abort()
+                page.route("**/*",route_request)
+                page.on("response",lambda response: failed.append(response.url) if response.status>=400 and response.url.startswith(origin) and not response.url.endswith("/favicon.ico") else None)
+                response=page.goto(origin+identifier+"/index.html",wait_until="load",timeout=30000)
+                assert response and response.ok, identifier
+                assert page.locator("body").inner_text().strip(), identifier+" 页面没有可读内容"
+                page.evaluate("document.fonts.ready")
+                if identifier=="ui-foundation-kit":
+                    page.locator("#token-editor summary").click()
+                    page.locator("#token-edit-radius").fill("20")
+                    assert page.locator("html").evaluate("(el)=>el.style.getPropertyValue('--ui-radius-md')")=="20px"
+                elif identifier=="aurora-field":
+                    assert page.locator("#stage").get_attribute("data-fx")
+                elif identifier=="liquid-orb":
+                    assert page.locator("#speed").count()==1
+                elif identifier=="notion-design-demo":
+                    for name in ("components.html","patterns.html","tokens.html"):
+                        response=page.goto(origin+identifier+"/"+name,wait_until="load",timeout=30000)
+                        assert response and response.ok and page.locator("body").inner_text().strip()
+                assert not failed, f"{identifier} 缺少独立文件：{failed}"
+                assert not external, f"{identifier} 运行依赖外部网络：{external}"
+                assert not errors, f"{identifier} 运行异常：{errors}"
+                page.close()
+                print("独立运行通过："+identifier,flush=True)
+        finally:
+            context.close()
+            server.shutdown()
+            server.server_close()
+
+
+def verify_release_keyboard_and_performance(browser, origin):
+    """验证真实浏览器键盘与参数面板，记录时延样本而不伪造硬件无关阈值。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=context.new_page()
+        started=time.perf_counter()
+        page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+        page.locator(".project-row").first.wait_for(state="visible",timeout=30000)
+        elapsed=round((time.perf_counter()-started)*1000,1)
+        total=int(page.locator("#results-count").inner_text())
+        rows=page.locator("#gallery .project-row").count()
+        assert 0<rows<=total
+        if total>120:
+            assert rows<60
+        page.locator("#preview-info").focus()
+        page.keyboard.press("Enter")
+        dialog=page.locator("#project-dialog")
+        dialog.wait_for(state="visible")
+        page.locator("#tab-overview").focus()
+        page.keyboard.press("ArrowRight")
+        assert page.locator("#tab-source").get_attribute("aria-selected")=="true"
+        page.keyboard.press("ArrowRight")
+        assert page.locator("#tab-page-info").get_attribute("aria-selected")=="true"
+        panel=page.locator(".demo-parameter-panel")
+        panel.get_by_role("button",name="读取当前参数",exact=True).click()
+        panel.get_by_label("基础圆角",exact=True).wait_for(state="visible")
+        assert panel.evaluate("(el)=>el.scrollWidth<=el.clientWidth+2")
+        for control in panel.locator("input,select,button").all():
+            if control.is_enabled():
+                assert control.get_attribute("aria-label") or control.evaluate("(el)=>!!el.labels?.length || !!el.textContent.trim()")
+        page.keyboard.press("Escape")
+        dialog.wait_for(state="hidden")
+        assert page.locator("#preview-info").evaluate("(el)=>document.activeElement===el")
+        print("发布性能采样："+json.dumps({"catalogAssets":total,"initialRows":rows,"initialDirectoryMs":elapsed},ensure_ascii=False),flush=True)
+    finally:
+        context.close()
+    mobile=browser.new_context(viewport={"width":390,"height":844},reduced_motion="reduce",locale="zh-CN")
+    try:
+        page=mobile.new_page()
+        page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+        page.locator("#preview-info").click()
+        page.locator("#tab-page-info").click()
+        panel=page.locator(".demo-parameter-panel")
+        panel.get_by_role("button",name="读取当前参数",exact=True).click()
+        panel.get_by_label("基础圆角",exact=True).wait_for(state="visible")
+        assert panel.evaluate("(el)=>el.scrollWidth<=el.clientWidth+2")
+        page.keyboard.press("Escape")
+        page.locator("#project-dialog").wait_for(state="hidden")
+    finally:
+        mobile.close()
+    print("键盘、焦点恢复、参数命名与手机溢出专项通过。",flush=True)
 
 
 def verify_topbar_alignment(browser, origin):
@@ -1499,6 +1633,8 @@ def main():
                 verify_large_directory_groups(browser, local)
                 verify_foundation_parameters(browser, local)
                 verify_effect_parameters(browser, local)
+                verify_standalone_delivery(browser)
+                verify_release_keyboard_and_performance(browser, local)
                 verify_liquid_orb_unified(browser, local)
                 verify_glass_materials(browser, local)
                 verify_rare_interactions(browser, local)
