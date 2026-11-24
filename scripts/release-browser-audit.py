@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
+from contextlib import closing
 from threading import Thread
 from playwright.sync_api import sync_playwright
 
@@ -20,7 +21,8 @@ class QuietHandler(SimpleHTTPRequestHandler):
         pass
 
 def scan(page,name):
-    page.add_script_tag(path=str(AXE))
+    if not page.evaluate("() => typeof window.axe !== 'undefined'"):
+        page.add_script_tag(path=str(AXE))
     result=page.evaluate("""async () => await axe.run(document, {
         iframes: false, runOnly: {type: 'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}
     })""")
@@ -51,7 +53,7 @@ def main():
     smoke=[]
     try:
         with sync_playwright() as p:
-            with p.chromium.launch() as browser:
+            with closing(p.chromium.launch()) as browser:
                 for scheme in ("light","dark"):
                     for width in (1440,390):
                         context=browser.new_context(viewport={"width":width,"height":900},color_scheme=scheme,reduced_motion="reduce",locale="zh-CN")
@@ -65,7 +67,7 @@ def main():
                             context.close()
             for name in ("firefox","webkit"):
                 try:
-                    with getattr(p,name).launch() as browser:
+                    with closing(getattr(p,name).launch()) as browser:
                         context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
                         try:
                             page=context.new_page()
