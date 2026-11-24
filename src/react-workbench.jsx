@@ -19,6 +19,7 @@ import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
+import {PersonalLibraryDialog} from './components/PersonalLibraryDialog.jsx';
 import {SettingsPanel} from './components/SettingsPanel.jsx';
 import {ProjectOperationsPanel} from './components/ProjectOperationsPanel.jsx';
 import {closeDropdowns} from '../assets/core/dropdown.js';
@@ -72,7 +73,7 @@ function facetLabel(key,value,projects){
   if(key==='projectId')return projects.find(project=>project.id===value)?.name||value;
   return value;
 }
-export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,reuseLevels,count,toolsRoot}){
+export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGroup,onApplyPreset,fullDirectory,onFullDirectory,onPersonalLibrary,reuseLevels,count,toolsRoot}){
   const [expanded,setExpanded]=useState(false);
   const [presets,setPresets]=useState(()=>readFilterPresets());
   const [presetName,setPresetName]=useState('');
@@ -193,6 +194,7 @@ export function ListControls({state,facets,onSort,onFacet,onReuse,onClear,onGrou
           </div>
           <span className="directory-preset-hint" role="status">{presetStatus}</span>
         </div>
+        <button type="button" className="directory-personal-open" onClick={onPersonalLibrary}><UIIcon name="bookmark"/> 个人资产管理</button>
         <label className="directory-full-list"><input type="checkbox" checked={fullDirectory} onChange={event=>onFullDirectory(event.target.checked)}/> 完整列表（关闭虚拟滚动）</label>
       </div>
     </>,toolsRoot)}
@@ -202,9 +204,10 @@ function WorkbenchPortals({nodes}){
   const app=useWorkbench();
   const {state,filtered,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,openView,
     selectAsset,filter,changeSort,changeFacet,changeReuse,changeGroup,applyPreset,clearFacets,reset,
-    favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
+    favorite,updatePersonal,favoriteBatch,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,
     copyText,copyLink,copySource}=app;
   const [fullDirectory,setFullDirectory]=useState(false);
+  const [personalOpen,setPersonalOpen]=useState(false);
   const [mobile,setMobile]=useState(()=>window.matchMedia('(max-width:760px)').matches);
   const [navCollapsed,setNavCollapsed]=useState(()=>readNavCollapsed());
   const [compactSearchOpen,setCompactSearchOpen]=useState(false);
@@ -477,7 +480,7 @@ function WorkbenchPortals({nodes}){
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} facets={facets} onSort={changeSort}
       onFacet={changeFacet} onReuse={changeReuse} onClear={clearFacets} reuseLevels={REUSE_LEVELS}
-      onGroup={changeGroup} onApplyPreset={applyPreset} fullDirectory={fullDirectory} onFullDirectory={setFullDirectory}
+      onGroup={changeGroup} onApplyPreset={applyPreset} fullDirectory={fullDirectory} onFullDirectory={setFullDirectory} onPersonalLibrary={()=>setPersonalOpen(true)}
       count={filtered.length} toolsRoot={nodes.directoryTools}/>,nodes.listControls)}
     {createPortal(<ProjectList items={filtered} labels={state.labels}
       selectedId={selected?.id} onSelect={onSelect} query={state.query}
@@ -520,6 +523,9 @@ function WorkbenchPortals({nodes}){
       <UIIcon name="settings"/><span>设置</span>
     </a></>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
+    {personalOpen&&createPortal(<PersonalLibraryDialog assets={state.assets} favorites={state.favorites} library={state.personal}
+      onChange={updatePersonal} onFavoriteBatch={favoriteBatch} onClose={()=>setPersonalOpen(false)}
+      onPreview={id=>{if(state.view!=='library')openView('library');onSelect(id);}}/>,document.body)}
     <ProjectDialog root={nodes.dialog} asset={effectiveAsset} labels={state.labels}
       project={state.projects.find(p=>p.id===effectiveAsset?.projectId)||null}
       projectAssetCount={state.assets.filter(a=>a.projectId===effectiveAsset?.projectId).length}

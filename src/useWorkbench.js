@@ -3,6 +3,7 @@ import {useCallback,useEffect,useLayoutEffect,useReducer,useRef,useState} from '
 import {filterAssets} from '../assets/core/catalog.js';
 import {useCatalogResults} from './useCatalogResults.js';
 import {loadFavorites,saveFavorites} from '../assets/core/favorites.js';
+import {readPersonalLibrary,writePersonalLibrary,recordAssetVisit,changeFavoriteMembership} from '../assets/core/personal-library.js';
 import {resolveAsset} from '../assets/core/render.js';
 import {resolveVersionId} from '../assets/core/asset-versions.js';
 import {createWorkbenchRouter} from '../assets/core/workbench-router.js';
@@ -17,7 +18,7 @@ function initial(){
   const session=createWorkbenchState();
   const preferences=loadSettings();
   const viewport=readViewportSession();
-  return {...session,favorites:loadFavorites(),preferences,
+  return {...session,favorites:loadFavorites(),personal:readPersonalLibrary(),preferences,
     previewSize:viewport?.mode||preferences.preview,customWidth:viewport?.width||session.customWidth,
     view:router.read().view,versionId:'original',menuOpen:false,loading:true,error:null};
 }
@@ -43,6 +44,7 @@ export function workbenchReducer(current,action){
       if(preferred)activateAsset(next,preferred,next.previewSize);
       chooseVisible(next);
       next.versionId=resolveVersionId(next.active,action.routeVariant);
+      if(action.routeAsset===next.active?.id&&next.personal)next.personal=recordAssetVisit(next.personal,next.active.id,action.at);
       return next;
     }
     case 'error':return {...next,loading:false,error:action.message};
@@ -64,10 +66,17 @@ export function workbenchReducer(current,action){
         const oldId=next.active?.id;
         activateAsset(next,asset,next.previewSize);
         if(oldId!==next.active?.id)next.versionId='original';
+        if(next.personal)next.personal=recordAssetVisit(next.personal,asset.id,action.at);
       }
       return next;
     }
     case 'version':next.versionId=resolveVersionId(next.active,action.id);return next;
+    case 'personal':return {...next,personal:action.library};
+    case 'favoriteBatch':{
+      const known=new Set(next.assets.map(asset=>asset.id));
+      next.favorites=changeFavoriteMembership(current.favorites,action.ids.filter(id=>known.has(id)),action.add);
+      return next.favoritesOnly?chooseVisible(next):next;
+    }
     case 'favorite':{
       const favorites=new Set(current.favorites);
       if(favorites.has(action.id))favorites.delete(action.id);else favorites.add(action.id);
@@ -104,7 +113,11 @@ export function workbenchReducer(current,action){
       next.view=action.view;
       next.menuOpen=false;
       const asset=next.assets.find(a=>a.id===action.asset);
-      if(asset)activateAsset(next,asset,next.previewSize);
+      if(asset){
+        const previousId=next.active?.id;
+        activateAsset(next,asset,next.previewSize);
+        if(action.view==='library'&&previousId!==asset.id&&next.personal)next.personal=recordAssetVisit(next.personal,asset.id,action.at);
+      }
       next.versionId=resolveVersionId(next.active,action.variant);
       return next;
     }
@@ -128,6 +141,7 @@ export function useWorkbench(){
   const [projectHealthSnapshot,setProjectHealthSnapshot]=useState(null);
   const [previewHealthSnapshot,setPreviewHealthSnapshot]=useState(null);
   const previousSettings=useRef(state.preferences);
+  const previousPersonal=useRef(state.personal);
   const initialized=useRef(false);
   const notify=useCallback(message=>{
     setNotice(message);
@@ -141,7 +155,7 @@ export function useWorkbench(){
       fetchJSON('content/projects.json',controller.signal)
     ]).then(([assets,categories,projects])=>{
       if(!Array.isArray(assets)||!Array.isArray(categories)||!Array.isArray(projects))throw Error('资源清单格式不正确');
-      dispatch({type:'catalog',assets,categories,projects,routeAsset:router.read().asset,routeVariant:router.read().variant});
+      dispatch({type:'catalog',assets,categories,projects,routeAsset:router.read().asset,routeVariant:router.read().variant,at:Date.now()});
     }).catch(error=>{
       if(error.name==='AbortError')return;
       console.error('UI-Vault React 工作台：',error);
@@ -165,7 +179,7 @@ export function useWorkbench(){
       .catch(()=>{});
     return ()=>controller.abort();
   },[]);
-  useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route})),[]);
+  useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route,at:Date.now()})),[]);
   useEffect(()=>{
     // versionId 也必须进依赖：router.navigate 在 href 相同时直接返回 false，
     // 因此版本没写进 URL 时（首次加载、切换项目归位 V1）这里才会真正补一次 replace。
@@ -177,6 +191,11 @@ export function useWorkbench(){
     // 既不在 effect 体内同步 setState（级联渲染），提示时机也仍在同一轮任务内。
     if(!saveFavorites(state.favorites))queueMicrotask(()=>notify('无法持久保存收藏，本次会话仍可使用'));
   },[state.favorites,notify]);
+  useEffect(()=>{
+    if(previousPersonal.current===state.personal)return;
+    previousPersonal.current=state.personal;
+    if(!writePersonalLibrary(state.personal))queueMicrotask(()=>notify('个人资产数据仅保留在本次会话，无法写入浏览器存储'));
+  },[state.personal,notify]);
   useLayoutEffect(()=>{applySettings(state.preferences);},[state.preferences]);
   // 在固定与自定义视口之间切换时记住上次选择；不污染设置面板的默认预设。
   useEffect(()=>{
@@ -219,7 +238,7 @@ export function useWorkbench(){
     // 重复选择当前风格时保留 V2/V3，切换到其它风格才回到原版 V1。
     const version=id===state.active?.id?state.versionId:'original';
     router.setAsset(id,options.historyMode||'push',version);
-    dispatch({type:'select',id});
+    dispatch({type:'select',id,at:Date.now()});
     dispatch({type:'menu',value:false});
   },[state.active?.id,state.versionId]);
   const filter=useCallback((kind,value)=>{
@@ -236,6 +255,8 @@ export function useWorkbench(){
   const applyPreset=useCallback(filters=>{leaveSettings();dispatch({type:'preset',filters});},[leaveSettings]);
   const clearFacets=useCallback(()=>{leaveSettings();dispatch({type:'clearFacets'});},[leaveSettings]);
   const reset=useCallback(()=>{leaveSettings();dispatch({type:'reset'});},[leaveSettings]);
+  const updatePersonal=useCallback(library=>dispatch({type:'personal',library}),[]);
+  const favoriteBatch=useCallback((ids,add)=>dispatch({type:'favoriteBatch',ids,add}),[]);
   const favorite=useCallback(id=>{
     if(!id)return;
     notify(state.favorites.has(id)?'已从收藏中移除':'已加入收藏');
@@ -276,5 +297,5 @@ export function useWorkbench(){
 
   return {state,filtered,tags,facets,filteredActive,projectHealthSnapshot,previewHealthSnapshot,notice,noticeRevision,notify,
     dispatch,openView,leaveSettings,selectAsset,filter,changeSearch,changeSort,changeTag,changeReuse,changeFacet,changeGroup,applyPreset,clearFacets,reset,
-    favorite,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
+    favorite,updatePersonal,favoriteBatch,changePreference,resetPreferences,changePreview,changeCustomWidth,changeVersion,menu,copyText,copyLink,copySource};
 }
