@@ -79,7 +79,13 @@ const TERM_ALIASES=Object.freeze({
   '杂志排版':['editorial magazine layout'],'editorial magazine layout':['杂志排版'],
   '表现主义':['expressionism'],'expressionism':['表现主义'],
   '仙灵风':['fairycore'],'fairycore':['仙灵风'],
-  '黑色电影':['film noir'],'film noir':['黑色电影']
+  '黑色电影':['film noir'],'film noir':['黑色电影'],
+  '扁平设计':['flat design'],'flat design':['扁平设计'],
+  '弗莱舍动画':['fleischer style'],'fleischer style':['弗莱舍动画'],
+  '森林风':['forestcore'],'forestcore':['森林风'],
+  '四色设计':['four colors'],'four colors':['四色设计'],
+  '九十年代雅致风':['frasurbane'],'frasurbane':['九十年代雅致风'],
+  '法式乡村':['french provincial style'],'french provincial style':['法式乡村']
 });
 const OMIT_TOKENS=new Set(['and','or']);
 
