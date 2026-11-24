@@ -926,6 +926,37 @@ def verify_preview_timeout_ready(browser, origin):
         context.close()
 
 
+def verify_parameter_readiness(browser, origin):
+    context=browser.new_context(viewport={"width":390,"height":844},reduced_motion="reduce",locale="zh-CN",color_scheme="dark")
+    held=[]
+    try:
+        context.route("**/demos/layouts/warm-workbench/index.html*",lambda route:held.append(route))
+        page=context.new_page()
+        page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+        page.locator("#preview-parameters").click()
+        dock=page.locator("#parameter-dock")
+        read=dock.get_by_role("button",name="读取当前参数",exact=True)
+        dock.get_by_text("预览加载中 · 完成后可读取参数",exact=True).wait_for()
+        assert read.is_disabled()
+        assert dock.get_by_role("button",name="恢复默认",exact=True).is_disabled()
+        assert held
+        held.pop().continue_()
+        page.wait_for_function("()=>document.querySelector('#preview-stage iframe')?.dataset.previewStatus==='loaded'")
+        read.click()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        assert page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+1")
+        assert dock.locator(".parameter-main-actions").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+        dock.get_by_role("button",name="表面渐变",exact=True).click()
+        dock.get_by_role("button",name="快速启用渐变",exact=True).click()
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        page.screenshot(path=str(OUTPUT/"parameter-compact-dark-390.png"))
+    finally:
+        for route in held:
+            try: route.abort()
+            except Exception: pass
+        context.close()
+
+
 def verify_foundation_parameters(browser, origin):
     """实际 opaque sandbox：读取、应用、重置、不重建 iframe；独立 Demo 编辑和导出。"""
     context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
@@ -2102,6 +2133,7 @@ def main():
                     verify_synthetic_grouped_directory,
                     verify_directory_session_and_search_limit,
                     verify_preview_timeout_ready,
+                    verify_parameter_readiness,
                     verify_foundation_parameters,
                     verify_effect_parameters,
                     verify_warm_layout_parameters,

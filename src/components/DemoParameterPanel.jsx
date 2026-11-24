@@ -1,4 +1,4 @@
-import {Fragment,useEffect,useRef,useState} from 'react';
+import {Fragment,useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID,warmLayoutCssValues} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
@@ -8,8 +8,12 @@ import {BezierEditor} from './BezierEditor.jsx';
 import {createParameterTransport} from '../../assets/core/parameter-transport.js';
 import {readParameterPresets,saveParameterPresets,putParameterPreset,exportParameterPresets,importParameterPresets} from '../../assets/core/parameter-presets.js';
 
+function previewPending(){return document.querySelector('#preview-stage iframe[data-preview-frame="local"]')?.dataset.previewStatus==='pending';}
+function subscribePreviewStatus(notify){const stage=document.querySelector('#preview-stage');if(!stage)return ()=>{};const observer=new MutationObserver(notify);observer.observe(stage,{subtree:true,childList:true,attributes:true,attributeFilter:['data-preview-status']});return ()=>observer.disconnect();}
+
 export function DemoParameterPanel({asset,notify,liveEditing=false}){
   const fields=parameterSchemaFor(asset);
+  const waitingForPreview=useSyncExternalStore(subscribePreviewStatus,previewPending);
   const [values,setValues]=useState(null);
   const [status,setStatus]=useState('尚未连接参数接口');
   const [busy,setBusy]=useState(false),[blocking,setBlocking]=useState(false);
@@ -28,6 +32,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     const transport=createParameterTransport({
       send(job){
         const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
+        if(frame?.dataset.previewStatus==='pending')throw Error('预览正在加载，请在加载完成后读取参数');
         const expected=new URL(asset.preview,document.baseURI);
         const actual=frame?.dataset.previewUrl?new URL(frame.dataset.previewUrl,document.baseURI):null;
         if(!frame?.contentWindow||!actual||actual.origin!==expected.origin||actual.pathname!==expected.pathname)throw Error('当前预览不支持此参数接口');
@@ -115,15 +120,15 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   return <section className="demo-parameter-panel" aria-label="Demo 参数配置" aria-busy={busy}>
     <h3>Demo 参数配置</h3><p className="parameter-intro">{liveEditing?'读取参数后可直接调整并观察预览；实时应用不会重载页面。':'仅支持已登记的本地 Demo；应用后关闭说明弹窗即可查看效果，不会重载预览。'}</p>
     <div className="parameter-fixed-controls" ref={toolbarRef}><div className="demo-parameter-actions parameter-main-actions">
-      <button type="button" disabled={busy} onClick={()=>request('read')}>读取当前参数</button>
-      <button type="button" className="parameter-primary" disabled={busy||!values||invalid} onClick={()=>request('apply')}>应用参数</button>
-      <button type="button" disabled={busy} onClick={()=>{remember();request('reset');}}>恢复默认</button>
+      <button type="button" aria-label="读取当前参数" disabled={busy||waitingForPreview} onClick={()=>request('read')}><span className="parameter-action-full">读取当前参数</span><span className="parameter-action-short" aria-hidden="true">读取</span></button>
+      <button type="button" className="parameter-primary" aria-label="应用参数" disabled={busy||waitingForPreview||!values||invalid} onClick={()=>request('apply')}><span className="parameter-action-full">应用参数</span><span className="parameter-action-short" aria-hidden="true">应用</span></button>
+      <button type="button" aria-label="恢复默认" disabled={busy||waitingForPreview} onClick={()=>{remember();request('reset');}}><span className="parameter-action-full">恢复默认</span><span className="parameter-action-short" aria-hidden="true">默认</span></button>
       {values&&<button type="button" disabled={busy||!history.length} onClick={undo}>撤销</button>}
       {values&&<button type="button" disabled={busy||!future.length} onClick={redo}>重做</button>}
-      {liveEditing&&<label className="parameter-live-toggle"><input type="checkbox" checked={autoApply} onChange={e=>{setAutoApply(e.target.checked);if(!e.target.checked)transportRef.current?.cancelQueued();}}/>实时应用</label>}
-      <label className="parameter-preset-import">导入 JSON <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
+      {liveEditing&&<label className="parameter-live-toggle"><input type="checkbox" checked={autoApply} onChange={e=>{setAutoApply(e.target.checked);if(!e.target.checked)transportRef.current?.cancelQueued();}} aria-label="实时应用"/><span className="parameter-action-full">实时应用</span><span className="parameter-action-short" aria-hidden="true">实时</span></label>}
+      <label className="parameter-preset-import"><span className="parameter-action-full">导入 JSON</span><span className="parameter-action-short" aria-hidden="true">导入</span> <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
-    <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
+    <p role="status" className="parameter-status">{waitingForPreview?'预览加载中 · 完成后可读取参数':invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
     {advanced&&<nav className="parameter-section-nav" aria-label="材质参数分组">{['布局基础','表面渐变','阴影','动效曲线','预设与文件'].map(name=><button key={name} type="button" data-selected={activeSection===name} aria-current={activeSection===name?'location':undefined} onClick={()=>jumpSection(name)}>{name}</button>)}</nav>}</div>{values&&<>{advanced&&<div className="material-combination-presets"><strong>材质组合</strong>{MATERIAL_PRESETS.map(preset=><button key={preset.label} type="button" disabled={blocking||invalid} onClick={()=>applyMaterialPatch(preset.patch)}>{preset.label}</button>)}<small>保留布局基础与动效参数</small></div>}<div className="demo-parameter-fields">{fields.filter(field=>field.key!=='shadowReversed').map((field,index,visibleFields)=><Fragment key={field.key}>{advanced&&(index===0||field.group!==visibleFields[index-1]?.group)&&<><div className="parameter-group-header"><h4 className="parameter-group-title" tabIndex={-1} ref={node=>{sectionRefs.current[field.group||'布局基础']=node;}}>{field.group||'布局基础'}</h4><button className="parameter-group-reset" type="button" disabled={blocking||invalid} onClick={()=>applyMaterialPatch(resetMaterialGroup(field.group||'布局基础'))}>复位{field.group||'布局基础'}</button></div>{field.group==='表面渐变'&&<div className="parameter-group-visual"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient']}}><strong>表面预览</strong><small>{values.gradient?(2+Number(values.gradientMid)+Number(values.gradientMid2))+' 色标渐变':'纯色'}</small></div><GradientStopEditor values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch} onStart={key=>{sliderGesture.current={key,recorded:false};}} onMove={(key,value)=>{const field=fields.find(f=>f.key===key);setDrafts(previous=>({...previous,[key]:String(value)}));edit(field,value);}} onEnd={()=>{sliderGesture.current=null;}}/></div>}{field.group==='阴影'&&<div className="parameter-group-visual"><div className="parameter-shadow-sample" style={{backgroundColor:values.surface,boxShadow:advanced['--warm-card-shadow']}}><span>阴影预览</span></div><ShadowActions values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch}/></div>}{field.group==='动效曲线'&&<div className="parameter-group-visual parameter-curve-preview"><BezierEditor values={values} disabled={blocking} onStart={()=>{curveGesture.current={recorded:false};}} onMove={editCurve} onEnd={()=>{curveGesture.current=null;}}/><div><code>{advanced['--warm-motion-curve']}</code><CurvePresets values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch}/></div></div>}</>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={blocking} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>

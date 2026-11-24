@@ -1587,3 +1587,23 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 :is(.directory-filter-toggle,.select-trigger,.directory-facet-field select,.parameter-field input,.parameter-field select,.search-field input,.parameter-presets input,.parameter-presets select):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .select-field.is-open .select-trigger{border-color:var(--accent-line,var(--accent));background:var(--accent-soft)}
 .select-popover{border-color:var(--line);background:var(--surface);color:var(--text)}
+
+/* 窄屏检查器：保持完整无障碍名称，缩短可视文案；关键操作不再被横向截断。 */
+.parameter-action-short{display:none}
+#parameter-dock{scroll-padding-top:156px}
+@media(max-width:760px){
+ #parameter-dock .parameter-action-full{display:none}
+ #parameter-dock .parameter-action-short{display:inline}
+ #parameter-dock .parameter-fixed-controls{gap:2px;padding-top:2px}
+ #parameter-dock .parameter-main-actions{gap:3px;padding:1px 1px 3px}
+ #parameter-dock .parameter-main-actions button,#parameter-dock .parameter-main-actions .parameter-preset-import{min-height:30px;padding:4px 6px;font-size:11px}
+ #parameter-dock .parameter-section-nav{padding:2px 0 4px}
+ #parameter-dock .parameter-section-nav button{min-height:28px;padding-inline:6px}
+ #parameter-dock{scroll-padding-top:138px}
+ #parameter-dock .parameter-group-visual{padding:6px}
+ #parameter-dock .material-stop-selection{gap:4px;margin-top:5px}
+}
+/* 主站双主题编辑区继续复用语义令牌；真实材质色块保留自身色彩。 */
+html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-editor,.parameter-group-visual){border-color:var(--line)}
+#parameter-dock :is(.material-stop-options button,.material-action-title button,.material-combination-presets button,.parameter-group-reset):focus-visible{outline-offset:1px}
+#parameter-dock .parameter-status{color:var(--muted)}
