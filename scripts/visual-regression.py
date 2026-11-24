@@ -1067,6 +1067,7 @@ def verify_live_parameter_dock(browser, origin):
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="14px"
         dock.get_by_role("combobox",name="参数预设").select_option("圆角24")
+        dock.get_by_role("button",name="应用预设",exact=True).click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
         assert page.evaluate("() => window.__liveFrame===document.querySelector('#preview-stage iframe')")

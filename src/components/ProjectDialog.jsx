@@ -249,7 +249,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
             :selectedFile?<span className="source-file-label">{selectedFile.name}</span>:null}
           <span id="source-status" role="status">{isCurrent?source.status:'选择源码标签后加载'}</span>
         </div>
-        <div className="source-buttons">
+        <div className="source-buttons" role="group" aria-label="当前资源交付操作">
           <button type="button" id="source-copy" disabled={!isCurrent||!source.ready}
             onClick={()=>onCopyText(source.text,'项目源码已复制')}>
             <Icon name="copy"/><span>复制源码</span>
@@ -259,7 +259,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
             <Icon name="download"/><span>下载文件</span>
           </button>
           {standaloneBundle&&<a id="source-bundle" href={resolveAsset(standaloneBundle)}
-            download={asset.id+'.zip'} title="仅包含该 Demo 已审核的独立文件">
+            download={asset.id+'.zip'} className="source-standalone-action" title="仅包含该 Demo 已审核的独立文件">
             <Icon name="download"/><span>下载独立演示 ZIP</span>
           </a>}
           {repositoryArchive&&<a id="source-repo-archive" href={repositoryArchive}
@@ -267,7 +267,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
             title="GitHub 仓库快照；若当前资源属于仓库子目录，压缩包将包含完整仓库">
             <Icon name="download"/><span>下载完整仓库 ZIP</span>
           </a>}
-          <a id="source-repo" href={sourceLink(asset,selectedFile)} target="_blank" rel="noopener noreferrer">
+          <a id="source-repo" className="source-upstream-action" href={sourceLink(asset,selectedFile)} target="_blank" rel="noopener noreferrer">
             <Icon name="external-link"/><span>GitHub 源码</span>
           </a>
         </div>

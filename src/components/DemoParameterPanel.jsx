@@ -88,9 +88,9 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     </div>
     <p role="status" className="parameter-status">{invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
     {values&&<><div className="parameter-presets">
-      <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>{const name=e.target.value;setPresetChoice(name);const preset=presets.find(item=>item.name===name);if(preset)replaceValues(preset.values,true);}} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
+      <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
       <label>名称<input aria-label="预设名称" value={presetName} maxLength={40} onChange={e=>setPresetName(e.target.value)} disabled={busy}/></label>
-      <button type="button" disabled={busy||invalid||!presetName.trim()} onClick={savePreset}>保存预设</button><button type="button" disabled={busy||!presetChoice} onClick={deletePreset}>删除预设</button>
+      <button type="button" disabled={busy||!presetChoice} onClick={()=>{const preset=presets.find(item=>item.name===presetChoice);if(preset)replaceValues(preset.values,true);}}>应用预设</button><button type="button" disabled={busy||invalid||!presetName.trim()} onClick={savePreset}>保存预设</button><button type="button" disabled={busy||!presetChoice} onClick={deletePreset}>删除预设</button>
     </div><div className="demo-parameter-fields">{fields.map(field=><label key={field.key} className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={busy} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
