@@ -35,7 +35,8 @@ test('设置与资源目录共用 React 受控下拉组件',()=>{
  const css=read('assets/styles.css');
  assert.match(settings,/<WorkbenchSelect/);
  assert.match(filters,/<WorkbenchSelect id="sort"/);
- assert.match(filters,/<WorkbenchSelect id="tag-filter"/);
+ assert.match(filters,/id:'tag-filter'/);
+ assert.match(filters,/<select id=\{field.id\}/);
  assert.match(controls,/aria-haspopup="listbox"/);
  assert.match(css,/[.]settings-select [.]select-popover/);
 });

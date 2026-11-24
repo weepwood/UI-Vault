@@ -9,7 +9,7 @@ import * as dropdownModule from '../assets/core/dropdown.js';
 
 const read=path=>readFile(join(ROOT,path),'utf8');
 
-test('排序与标签筛选保留原生 select 回退，并统一由 dropdown 增强',async()=>{
+test('排序使用共享下拉，分面使用受控原生 select',async()=>{
   const [html]=await Promise.all(['index.html','assets/app.js'].map(read));
   assert.match(html,/class="select-field select-field--sort"><select id="sort"/);
   assert.match(html,/class="select-field select-field--tag"><select id="tag-filter"/);
@@ -18,7 +18,8 @@ test('排序与标签筛选保留原生 select 回退，并统一由 dropdown �
   const react=await read('src/react-workbench.jsx');
   const component=await read('src/components/WorkbenchSelect.jsx');
   assert.match(react,/<WorkbenchSelect id="sort"/);
-  assert.match(react,/<WorkbenchSelect id="tag-filter"/);
+  assert.match(react,/id:'tag-filter'/);
+  assert.match(react,/<select id=\{field.id\} value=\{state\[field.key\]\|\|''\}/);
   assert.match(component,/<select id={id}/);
   assert.match(component,/role="listbox"/);
   assert.match(component,/onChange={event=>onChange\(event.target.value\)}/);
