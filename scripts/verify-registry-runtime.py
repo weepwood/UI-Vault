@@ -5,7 +5,7 @@ import threading
 from functools import partial
 from pathlib import Path
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright, expect
 
 def main():
     directory = Path(sys.argv[1]).resolve() / "runtime-site"
@@ -57,7 +57,8 @@ def main():
                 page.get_by_role("dialog",name="示例对话框").wait_for()
                 page.keyboard.press("Escape")
                 page.get_by_role("dialog",name="示例对话框").wait_for(state="hidden")
-                assert trigger.evaluate("(el)=>document.activeElement===el")
+                # Radix/Reka close autofocus runs after the dialog unmount; wait for the actual focus.
+                expect(trigger).to_be_focused(timeout=5000)
                 select=page.get_by_role("combobox",name="选择选项")
                 select.click()
                 page.get_by_role("option",name="乙").click()

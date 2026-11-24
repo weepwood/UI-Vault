@@ -244,7 +244,7 @@ function WorkbenchPortals({nodes}){
   if(dockState.key!==dockKey)setDockState({key:dockKey,open:false});
   const dockOpen=dockState.open&&!notLibrary&&Boolean(parameterSchemaFor(effectiveAsset));
   const closeDock=()=>setDockState({key:dockKey,open:false});
-  useLayoutEffect(()=>{nodes.parameterDock.hidden=!dockOpen;},[nodes,dockOpen]);
+  useLayoutEffect(()=>{nodes.parameterDock.toggleAttribute('hidden',!dockOpen);},[nodes,dockOpen]);
   const setDialogOpen=useCallback(value=>setDialogState({key:dialogKey,open:Boolean(value)}),[dialogKey]);
   const onDialogChange=useCallback(value=>setDialogOpen(Boolean(value)),[setDialogOpen]);
   const onMenuToggle=useCallback(()=>menu(!state.menuOpen),[menu,state.menuOpen]);
