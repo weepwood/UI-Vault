@@ -37,7 +37,7 @@ export function VirtualProjectList({items,selectedId,scrollRoot,density,renderRo
     const previous=previousLayout.current;
     if(!grouped&&previous&&savedAnchor.current&&(previous.items!==items||previous.rowHeight!==rowHeight)&&host.current){
       const offset=host.current.getBoundingClientRect().top-scrollRoot.getBoundingClientRect().top-scrollRoot.clientTop+scrollRoot.scrollTop;
-      scrollRoot.scrollTop=offset+restoreVirtualScroll(items,savedAnchor.current,rowHeight);
+      scrollRoot.scrollTo({top:offset+restoreVirtualScroll(items,savedAnchor.current,rowHeight)});
     }
     previousLayout.current={items,rowHeight};
     // 初次布局直接采样，后续滚动与 ResizeObserver 使用 rAF 合并。

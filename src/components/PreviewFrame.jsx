@@ -95,7 +95,7 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
     challenge.current=null;setReadyProof(null);
     setNavigation(previous=>({page,attempt:previous.attempt+1,status:'pending'}));
     // 失败重试需要实际新导航；同 URL 的 replace 可能仅更新 hash。
-    // 重建仅用于显式重试，普通资产切换/设备调整保持现有节点语义。
+    // 显式重试导航当前节点，普通资产切换/设备调整保持现有节点语义。
     const url=new URL(src,document.baseURI);
     url.searchParams.set('ui-vault-retry',String(attempt+1));
     try{frame.current.contentWindow.location.replace(url.href);}

@@ -9,3 +9,5 @@
 - 预览：仅 Foundation 本地合作 Demo 接入一次性随机 challenge/ready，校验当前 iframe WindowProxy、opaque origin、资产 ID、版本与 nonce；第三方 HTTP 响应证据只用于工具栏提示，不声称可交互。新增阻塞首次请求、超时、显式重试、伪造消息拒绝及收藏不重建的真实 Chromium 场景；尚待 CI。未接入任何外部站点的 ready 协议。
 
 全量 CI 未通过前不得合并。不得宣称尚未执行的真实浏览器结果。
+
+初次 #99 CI 45405500268 单元测试通过；React Hooks immutability 拒绝对 DOM prop 直接赋值，改用原有 scrollTo DOM 方法，不降低检查门槛。#98 已完整 CI 通过并合并；真实 Chromium 5000 项 / 100 组挂载 13 行，325/325 单元测试、21 个交互场景通过。v0.5.0 正式工作流 45405533300 尚在执行。
