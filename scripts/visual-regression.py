@@ -1250,6 +1250,11 @@ def verify_expanded_workbench_screenshots(browser, origin):
                 page.get_by_role("checkbox",name="自动换行").check()
                 assert page.locator(".source-view").evaluate("(el)=>getComputedStyle(el).whiteSpace")=="pre-wrap"
                 assert page.locator("#source-copy").is_enabled()
+                tree_box=page.locator(".source-file-browser").bounding_box()
+                code_box=page.locator(".source-view").bounding_box()
+                assert code_box["width"]>tree_box["width"] and code_box["height"]>=88
+                assert code_box["x"]>=tree_box["x"]+tree_box["width"]-1, "目录与源码应并排"
+                assert abs(code_box["y"]-tree_box["y"])<=2
                 page.screenshot(path=str(OUTPUT/"source-file-browser-desktop.png"))
                 raw=page.locator("#source-code").text_content()
                 page.get_by_role("checkbox",name="语法高亮").check()
