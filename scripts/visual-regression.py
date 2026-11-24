@@ -38,6 +38,19 @@ CASES = [
     ("mobile-dialog-dark", 390, 844, "dark", "mobile-dialog"),
 ]
 
+# 外站 iframe 的可重复夹具：只验证「沙箱允许脚本执行并渲染出内容」，不复制上游文案与导出逻辑。
+EMBOSS_LAB_FIXTURE = (
+    '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
+    "<title>Emboss Lab fixture</title></head><body>"
+    "<h1>海报工作台</h1><div id=\"emboss-fixture-host\"></div>"
+    "<script>"
+    "var mark=document.createElement('div');"
+    "mark.id='emboss-fixture-ready';mark.textContent='fixture ready';"
+    "document.getElementById('emboss-fixture-host').appendChild(mark);"
+    "</script>"
+    "</body></html>"
+)
+
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, _fmt, *_args):
@@ -268,16 +281,25 @@ def verify_react_interactions(browser, origin):
         page.locator("#compact-search-input").press("Escape")
         page.locator("#compact-search-input").press("Escape")
         page.locator("#compact-search-dialog").wait_for(state="hidden")
+        # CI 中使用可重复的外站响应，避免第三方 GitHub Pages 文案或网络变化使主站发布失败。
+        # 2026-11-24 起 Emboss Lab 的 h1 由「海报工作台」改成「图层与元素」，旧断言把上游文案当契约，
+        # 导致主站在与本次改动无关的运行里连续变红；真实外站可用性由 preview-health --live 单独采集。
+        page.route(
+            "https://weepwood.github.io/Emboss-Lab/**",
+            lambda route: route.fulfill(
+                status=200,
+                content_type="text/html; charset=utf-8",
+                body=EMBOSS_LAB_FIXTURE,
+            ),
+        )
         page.goto(origin + "?asset=emboss-poster-lab", wait_until="domcontentloaded")
         page.locator("#preview-title").filter(has_text="Emboss Lab · 浮雕海报交互").wait_for(state="visible")
         embed = page.locator('#preview-stage iframe[data-preview-frame="external"]')
         embed.wait_for(state="attached")
         assert embed.get_attribute("src") == "https://weepwood.github.io/Emboss-Lab/", "Emboss Lab 未嵌入 GitHub Pages 页面"
         assert embed.get_attribute("sandbox") == "allow-scripts allow-forms allow-downloads", "Emboss Lab 外站预览沙箱配置错误"
-        page.frame_locator('#preview-stage iframe[data-preview-frame="external"]').locator("h1").filter(has_text="海报工作台").wait_for(state="visible", timeout=20000)
-        with page.expect_download(timeout=15000) as download_info:
-            page.frame_locator('#preview-stage iframe[data-preview-frame="external"]').locator("#exportButton").click()
-        assert download_info.value.suggested_filename.startswith("emboss-lab-"), "Emboss Lab PNG 导出文件名异常"
+        # 断言落在主站可控的部分：外站页面确实在沙箱里渲染、脚本可执行；不绑定上游文案。
+        page.frame_locator('#preview-stage iframe[data-preview-frame="external"]').locator("#emboss-fixture-ready").wait_for(state="visible", timeout=20000)
         assert page.locator("#preview-open").get_attribute("href") == "https://weepwood.github.io/Emboss-Lab/", "Emboss Lab 原站入口链接错误"
         page.locator("#preview-info").click()
         page.locator("#project-dialog").wait_for(state="visible")

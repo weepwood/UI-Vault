@@ -60,4 +60,6 @@ python3 scripts/visual-regression.py --capture-current   # Windows 用 python
 
 完整截图与 CI 上的 `ui-vault-visual-*` 构建产物可以用于观察某个变更，但缩略图对比不能替代真实用户交互测试，也不能发现所有像素级细节差异。
 
+**外站 iframe 只断言本仓可控的部分：** `verify_react_interactions` 里的 Emboss Lab、Gr8r Studio 都用 `page.route` 提供固定夹具，检查 iframe 的 `src`、`sandbox`、原站入口与源码链接，以及「沙箱子页面能渲染出内容」。不上游站点的标题文案、导出文件名这类第三方内容做断言——2026-11-24 Emboss Lab 把 `<h1>` 从「海报工作台」改成「图层与元素」，旧断言因此让与改动无关的 CI 连续变红。外站真实可用性由 `node scripts/preview-health.mjs --live`（CI 步骤「采集预览站点 HTTP 与 iframe 限制证据」）单独采集。
+
 **初始化可靠性注意：** 截图脚本必须等到工作台项目列表加载完成后再固定 `data-theme`，否则主站初始化可能异步覆盖主题，造成错误的明暗截图对比；此类截图时序差异不能认定为 UI 变化。CI 固定使用 Ubuntu 24.04 + Playwright Chromium 1.55，避免 Linux 字体或浏览器升级导致基线漂移。

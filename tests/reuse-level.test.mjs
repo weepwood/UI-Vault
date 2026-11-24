@@ -49,9 +49,15 @@ test('状态协议：reuse 属于默认筛选，可设置、校验并随重置�
 
 test('目录控件渲染复用程度筛选，级别标签与核心枚举一致',()=>{
   const jsx=readFileSync(new URL('../src/react-workbench.jsx',import.meta.url),'utf8');
+  const css=readFileSync(new URL('../assets/styles.css',import.meta.url),'utf8');
   assert.ok(jsx.includes('id="reuse-filter"'));
   assert.ok(jsx.includes('按复用程度筛选'));
-  assert.ok(jsx.includes('全部复用度'));
+  // 复用度下拉固定在「项目目录」标题行右侧，触发器只有 104px：中性标签必须短到不出现省略号。
+  assert.ok(jsx.includes("label:'全部复用'}"),'中性选项标签应保持短标题');
+  assert.match(css,/\.select-field--reuse \{ width:104px/);
+  for(const level of REUSE_LEVELS){
+    assert.ok(level.label.length<=4,'级别标签过长会挤掉触发器文字：'+level.label);
+  }
   // WorkbenchPortals 必须把 changeReuse 接到目录控件，并且选项来自核心枚举 REUSE_LEVELS。
   assert.ok(jsx.includes('onReuse={changeReuse}'));
   assert.ok(jsx.includes('reuseLevels={REUSE_LEVELS}'));

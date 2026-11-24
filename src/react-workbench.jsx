@@ -63,7 +63,7 @@ function ListControls({state,tags,onSort,onTag,onReuse,reuseLevels,count}){
       <div className="reuse-select-label">
         <span id="reuse-filter-label" className="sr-only">复用程度</span>
         <WorkbenchSelect id="reuse-filter" label="按复用程度筛选" value={state.reuse} onChange={onReuse}
-          options={[{value:'',label:'全部复用度'},...reuseLevels.map(level=>({value:level.id,label:level.label}))]}
+          options={[{value:'',label:'全部复用'},...reuseLevels.map(level=>({value:level.id,label:level.label}))]}
           icon="copy" className="select-field--reuse"/>
       </div>
     </div>
