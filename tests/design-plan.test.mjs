@@ -54,3 +54,17 @@ test('局部设计规范 CSS 使用有界值、共享规则及主题限定，不
  assert.throws(()=>designPlanCSS({...proposal,surface:'#fff;evil'},'dark'));
  assert.throws(()=>designPlanCSS(proposal,'dark"]{}'));
 });
+
+import {designMaterial,designMaterialCSS} from '../assets/core/design-material.js';
+import {WARM_LAYOUT_FIELDS} from '../assets/core/demo-parameters.js';
+import {exportMaterialSnapshot,materialTokens} from '../assets/core/material-presets.js';
+test('规范材质复用严格快照与原材质生成器，不接收任意 CSS',()=>{
+ const values={...Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default])),gradient:true,gradientAngle:90,shadowOpacity:25};
+ const raw=exportMaterialSnapshot(values);
+ assert.deepEqual(designMaterial(raw),materialTokens(values));
+ assert.match(designMaterialCSS(raw),/linear-gradient\(90deg/);
+ assert.match(designMaterialCSS(raw),/rgba\(73, 58, 50, 0.25\)/);
+ const bad=JSON.parse(raw);bad.values.gradientEnd='red;bad';
+ assert.throws(()=>designMaterial(JSON.stringify(bad)));
+ assert.throws(()=>designMaterial(JSON.stringify({...JSON.parse(raw),version:2})));
+});

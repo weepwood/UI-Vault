@@ -1,6 +1,8 @@
 import {useEffect,useRef,useState} from 'react';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {DesignMaterialDelivery} from './DesignMaterialDelivery.jsx';
+import {DesignRegistryDelivery} from './DesignRegistryDelivery.jsx';
 import {DesignPlanPreview} from './DesignPlanPreview.jsx';
 import {designPlanCSS} from '../../assets/core/design-plan-style.js';
 import {composeKnowledge} from '../../assets/core/knowledge-composition.js';
@@ -69,6 +71,8 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
    <div className="registry-module-info"><button type="button" disabled={!proposal} onClick={()=>{try{downloadSourceText(designPlanCSS(proposal,theme),'workbench-design-plan.css');notify('局部规范 CSS 已下载');}catch{notify('下载失败');}}}>下载局部规范 CSS</button></div>
    <p>在真实 Workbench React 组件及共享 controls.css、dropdown.css 后加载，容器添加 wb-reuse-theme wb-design-plan 和匹配的 data-theme。它不是独立组件包。</p>
   </details>
+  <DesignMaterialDelivery notify={notify}/>
+  <DesignRegistryDelivery document={proposal?createDesignPlan(composition,baseline,proposal):null} notify={notify}/>
   <label>导入规范 JSON<input aria-label="导入规范 JSON" type="file" accept=".json,application/json" onChange={selectFile}/></label>
   {pending&&<><p role="status">待恢复：{pending.composition.entries.length} 项资产 · {pending.baseline.theme} · {pending.difference.changes.length} 项差异；不会自动保存或应用预览。</p><div className="registry-module-info"><button type="button" onClick={applyImport}>确认恢复导入规范</button><button type="button" onClick={()=>{readId.current.id++;setPending(null);setStatus('已取消导入');}}>取消导入</button></div></>}
   <label>方案名称<input aria-label="设计方案名称" maxLength={40} value={name} onChange={e=>setName(e.target.value)}/></label>

@@ -46,6 +46,6 @@ test('共享图标、知识复用和真实展厅/实验室独立改动触发视�
 });
 
 test('知识交付与设计规范单独修改仍触发真实浏览器验收',()=>{
- for(const path of ['src/components/DesignPlan.jsx','src/components/DesignPlanPreview.jsx','assets/core/design-plan.js','assets/core/design-plan-style.js','assets/core/knowledge-composition.js','assets/core/knowledge-record.js','assets/core/knowledge-search.js','assets/core/knowledge-template.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
+ for(const path of ['src/components/DesignPlan.jsx','src/components/DesignPlanPreview.jsx','src/components/DesignRegistryDelivery.jsx','src/components/DesignMaterialDelivery.jsx','assets/core/design-material.js','assets/core/design-registry-delivery.js','assets/core/design-plan.js','assets/core/design-plan-style.js','assets/core/knowledge-composition.js','assets/core/knowledge-record.js','assets/core/knowledge-search.js','assets/core/knowledge-template.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
  assert.deepEqual(pr(['assets/core/knowledge-experimental.js','docs/KNOWLEDGE-INDEX.md']),fast);
 });

@@ -87,3 +87,17 @@ node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-plan.json --
 下载 workbench-design-plan.css 后，按 Workbench 资产 REUSE.md 的八份真实文件接入 React 工程；先加载共享 controls.css、dropdown.css 与可选 reuse-theme.css，再加载下载的局部规范 CSS。给现有容器添加 className="wb-reuse-theme wb-design-plan" 和与导出一致的 data-theme="light" 或 "dark"。规范改变容器间距与控件实际字号、圆角及动效时长，保留原交互逻辑；减少动效优先。导出文件没有任意选择器输入，不是完整独立组件包，不自动安装，也不等同于 Foundation Registry 的 React/Vue 适配器。宿主若使用同名共享组件类，仍需检查 CSS 层叠冲突。
 
 实测独立 React 工程使用静态发布产物八份登记文件、REUSE.md 示例与从真实 UI 下载的浅深 CSS，1440/390/320px 三视口验证 20px 间距、18px 圆角、16px 字号、宿主变量不污染、键盘选择与清除回焦、减少动效及无页面横向溢出。此为本地独立接入验收，非自动 Agent 安装认证。
+
+### 规范与 Foundation Registry 工程交付
+
+在规范区展开「Foundation Registry 工程交付」，显式选择 CSS、React 或 Vue 交付组合。与 Registry 浏览器共享现有 profile、依赖拓扑及命令生成器。下载的 design-registry-delivery.json 含当前完整规范、Registry 版本、请求模块、依赖模块及运行时声明、预检/安装/复验命令。它不会推断资产的框架兼容性、自动安装依赖或把 Workbench 局部 CSS 自动映射至 Foundation 控件。
+
+```bash
+node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-registry-delivery.json --root dist
+```
+
+校验重建交付清单，核验设计规范、当前可信 Registry 及真实安装器的依赖、文件哈希和冲突预检。输出实际去重文件摘要；下载的清单不是逐文件版本锁，不能证明不同构建的同版本 Registry 文件不曾改变。实际安装和目标目录复验仍需使用生成的安装命令；./my-project 替换为已存在的目标父目录。安装器不覆盖目标，不执行源码或安装运行时。运行时依赖安装、目标工程编译、无障碍和视觉验收独立进行。
+
+### 规范与真实材质附件
+
+「真实材质联动」接收 Warm Workbench 导出的 ui-vault-material v1 JSON，文件限 8 KiB，复用原有严格参数校验、渐变色标与双层阴影生成器。用户明确确认后才显示实际独立材质表面。失败保留当前材质及规范。下载 design-plan-material.css，作用于 wb-design-plan 容器内的 plan-material-surface 元素。只输出背景色、渐变及阴影，尺寸、圆角和布局由宿主决定，不伪造玻璃或滤镜，不覆盖控件的正文色或表面色。附件仅当前面板会话保存，暂不进入规范 JSON、Registry 清单或持久化方案，需单独保留原始快照。

@@ -208,3 +208,5 @@ CI 45397408636 已通过 9/9 Chromium 截图、20/20 交互、Firefox 与 WebKit
 - V0.10 规范交付闭环：JSON 显式恢复、同源 DESIGN.md、可信静态产物离线重建和两份基准源字节校验。后续深化真实组件接入及材质关联；不自动应用规范或改动三栏。
 
 - V0.10 真实控件规范映射：复用 Workbench SearchField/WorkbenchSelect、局部 CSS 交付和独立 React 接入验证。Foundation Registry 工程安装与真实材质联动仍为独立后续工作，不将两套交付混同。
+
+- V0.10 Registry 工程交付及材质联动：复用现有 CSS/React/Vue profile 与安装器，结构化规范清单和真实本地预检；支持独立真实材质附件及 CSS 下载。后续推进方案版本、附件持久化与 Registry 控件的目标样式映射，避免混淆 Workbench 与 Foundation 两套交付。

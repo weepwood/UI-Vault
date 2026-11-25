@@ -10,8 +10,13 @@ import {selectKnowledgeRecord,knowledgeDelivery} from '../assets/core/knowledge-
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {designHandoffMarkdown} from '../assets/core/knowledge-template.js';
 import {composeKnowledge,compositionMarkdown} from '../assets/core/knowledge-composition.js';
-import {verifyHandoff,verifyComposition,verifyDesignPlan} from '../scripts/verify-knowledge-handoff.mjs';
+import {verifyHandoff,verifyComposition,verifyDesignPlan,verifyDesignRegistryDelivery} from '../scripts/verify-knowledge-handoff.mjs';
 import {foundationBaseline,createDesignPlan,validateDesignPlan,designPlanMarkdown} from '../assets/core/design-plan.js';
+import {writeRegistry,REGISTRY_ROOT} from '../scripts/lib/reuse-registry.mjs';
+import {readRegistryIndex} from '../assets/core/registry-browser.js';
+import {designRegistryDelivery} from '../assets/core/design-registry-delivery.js';
+import {readLocalRegistry} from '../scripts/install-registry.mjs';
+import {installRegistrySnapshot,verifyRegistrySnapshot} from '../scripts/lib/registry-install.mjs';
 const {items}=await inspectCatalog(),index=await buildKnowledgeIndex(ROOT,items);
 async function fixture(id,version='original'){
  const root=await mkdtemp(join(tmpdir(),'ui-vault-handoff-'));
@@ -115,5 +120,31 @@ test('完整设计规范重建、Markdown 同源、拒绝篡改与基准字节�
   item.files[0].content+=' ';
   await writeFile(path,JSON.stringify(item));
   const changed=await verifyDesignPlan(doc,root);assert.equal(changed.verified,false);assert.equal(changed.baselineFiles[0].status,'mismatch');
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('规范 Registry 交付三种技术栈真实预检、安装复验与篡改保护',async()=>{
+ const {root}=await fixture('workbench-components');
+ try{
+  await writeRegistry(REGISTRY_ROOT,join(root,'registry'));
+  const registry=await readLocalRegistry(join(root,'registry')),rIndex=readRegistryIndex(registry.index);
+  const baseline=foundationBaseline(registry.items.find(i=>i.id==='foundation-tokens'),'light');
+  const doc=createDesignPlan(composeKnowledge(index,items,['workbench-components/original']),baseline,baseline.tokens);
+  for(const profile of ['css','react','vue']){
+   const bundle=designRegistryDelivery(doc,rIndex,profile);
+   const report=await verifyDesignRegistryDelivery(bundle,root);
+   assert.equal(report.verified,true);assert.equal(report.registry.modules.length,profile==='css'?3:7);
+   const parent=join(root,profile);await mkdir(parent);
+   const installed=await installRegistrySnapshot(registry,bundle.requested,parent);
+   assert.equal(installed.files.length,report.registry.files.length);
+   assert.equal((await verifyRegistrySnapshot(registry,bundle.requested,parent)).verified,true);
+   await assert.rejects(installRegistrySnapshot(registry,bundle.requested,parent),/EEXIST/);
+   await assert.rejects(verifyDesignRegistryDelivery({...bundle,commands:{...bundle.commands,install:'unsafe'}},root),/不一致/);
+  }
+  const bundle=designRegistryDelivery(doc,rIndex,'react');
+  const target=join(root,'registry/items/foundation-react-input.json');
+  const poisoned=JSON.parse(await readFile(target,'utf8'));poisoned.files[0].content+=' ';
+  await writeFile(target,JSON.stringify(poisoned));
+  await assert.rejects(verifyDesignRegistryDelivery(bundle,root),/哈希/);
  }finally{await rm(root,{recursive:true,force:true});}
 });

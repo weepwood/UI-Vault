@@ -1,3 +1,7 @@
+import {designRegistryDelivery} from '../assets/core/design-registry-delivery.js';
+import {readRegistryIndex} from '../assets/core/registry-browser.js';
+import {readLocalRegistry} from './install-registry.mjs';
+import {planRegistryInstall} from './lib/registry-install.mjs';
 // Compare an untrusted handoff with a trusted local published catalog/index, then
 // hash only the registered direct evidence. No networking or source execution.
 import {readFile,lstat,realpath} from 'node:fs/promises';
@@ -78,11 +82,23 @@ export async function verifyDesignPlan(doc,root){
  const composition=await verifyComposition(document.composition,base);
  return {format:'ui-vault-design-plan-verification',version:1,verified:composition.verified&&baselineFiles.every(f=>f.status==='match'),baselineFiles,composition,notice:'校验可信本地目录、直接登记证据及 Registry 内嵌基准源字节，重算提议差异；不认证实际样式、外部文件、安装、许可或索引签名。'};
 }
+export async function verifyDesignRegistryDelivery(doc,root){
+ const base=await realpath(root);
+ if(doc?.format!=='ui-vault-design-registry-delivery'||doc.version!==1)throw Error('Registry 交付协议无效');
+ const raw=JSON.parse(await registeredFile(base,'registry/index.json',256*1024));
+ const expected=designRegistryDelivery(doc.design,readRegistryIndex(raw),doc.profile);
+ if(!isDeepStrictEqual(doc,expected))throw Error('Registry 交付与登记数据不一致');
+ const registry=await readLocalRegistry(resolve(base,'registry'));
+ const plan=planRegistryInstall(registry,expected.requested);
+ if(!isDeepStrictEqual(plan.modules.map(m=>m.id),expected.modules.map(m=>m.id))||!isDeepStrictEqual(plan.runtime,expected.runtime))throw Error('安装计划与浏览器依赖不一致');
+ const design=await verifyDesignPlan(doc.design,base);
+ return {format:'ui-vault-design-registry-verification',version:1,verified:design.verified,design,registry:{version:plan.registryVersion,modules:plan.modules,runtime:plan.runtime,files:plan.files.map(({path,sha256})=>({path,sha256}))},notice:'实际安装器离线预检；未安装、执行或认证目标项目。'};
+}
 export async function main(args){
  if(args.length!==4||args[0]!=='--handoff'||args[2]!=='--root')throw Error('用法：--handoff <JSON> --root <可信本地静态产物目录>');
  const info=await lstat(args[1]);if(!info.isFile()||info.size>1024*1024)throw Error('清单文件无效或超过1MiB');
  const doc=JSON.parse(await readFile(args[1],'utf8'));
- const result=await (doc.format==='ui-vault-design-plan'?verifyDesignPlan(doc,args[3]):doc.format==='ui-vault-ai-composition'?verifyComposition(doc,args[3]):verifyHandoff(doc,args[3]));
+ const result=await (doc.format==='ui-vault-design-registry-delivery'?verifyDesignRegistryDelivery(doc,args[3]):doc.format==='ui-vault-design-plan'?verifyDesignPlan(doc,args[3]):doc.format==='ui-vault-ai-composition'?verifyComposition(doc,args[3]):verifyHandoff(doc,args[3]));
  console.log(JSON.stringify(result,null,2));
  if(!result.verified)process.exitCode=1;
 }
