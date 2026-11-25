@@ -88,14 +88,14 @@ test('从真实登记文件在隔离目录编译接入文档的React示例',asyn
  const root=fileURLToPath(new URL('../',import.meta.url)),dir=await mkdtemp(join(tmpdir(),'ui-vault-source-reuse-'));
  try{
   const catalog=JSON.parse(await readFile(join(root,'catalog/assets/workbench-components.json'),'utf8'));
-  const files=getSourceFiles(catalog).filter(f=>f.path.startsWith('src/')||f.path.startsWith('assets/'));
-  assert.equal(files.length,7);
+  const files=getSourceFiles(catalog).filter(f=>f.path.startsWith('src/')||f.path.startsWith('assets/')||f.path.endsWith('/reuse-theme.css'));
+  assert.equal(files.length,8);
   for(const f of files){await mkdir(dirname(join(dir,f.path)),{recursive:true});await copyFile(join(root,f.path),join(dir,f.path));}
   const doc=await readFile(join(root,'demos/components/workbench-system/REUSE.md'),'utf8');
   const code=doc.match(/```jsx\n([\s\S]*?)\n```/)[1];
   await writeFile(join(dir,'main.jsx'),code+"\nimport {createRoot} from 'react-dom/client';createRoot(document.body).render(<FormDemo/>);");
   const result=await build({absWorkingDir:dir,entryPoints:['main.jsx'],nodePaths:[resolve(root,'node_modules')],bundle:true,jsx:'automatic',format:'iife',outfile:join(dir,'main.js'),write:false,logLevel:'silent'});
   assert.ok(result.outputFiles.some(f=>f.path.endsWith('.js')&&f.text.includes('reuse-result')));
-  assert.ok(result.outputFiles.some(f=>f.path.endsWith('.css')&&f.text.includes('.search-field')));
+  assert.ok(result.outputFiles.some(f=>f.path.endsWith('.css')&&f.text.includes('.search-field')&&f.text.includes('.wb-reuse-theme[data-theme=')));
  }finally{await rm(dir,{recursive:true,force:true});}
 });

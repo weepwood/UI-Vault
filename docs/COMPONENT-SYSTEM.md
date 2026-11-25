@@ -148,3 +148,5 @@ demos/components/workbench-system/
 ## v0.9 真实共享表单接入
 
 SearchField、WorkbenchSelect、Icon 和四份显式依赖已在组件展厅源码目录登记。参见 [REUSE.md](../demos/components/workbench-system/REUSE.md)。只为该资产允许七个固定公开路径，目录校验、源码阅读器和知识证据一致；未开放任意 src 或 assets 路径。独立临时工程从七份文件构建文档示例，真实 Chromium 搜索清除、键盘选择与焦点恢复通过。组件仍依赖 React 和主站语义样式，不能将这份源码清单视为 npm 独立安装包。通用独立组件交付继续使用 Foundation Registry。
+
+- v0.9 接入增强：新增可选 `demos/components/workbench-system/reuse-theme.css`（.wb-reuse-theme 局部浅深主题、焦点、图标及减少动效）；真实七份源文件+此适配层共八份。独立工程实测宿主 body 不获得局部变量、浅深色与键盘行为通过。共享 controls/dropdown CSS 仍有通用类选择器，宿主同名冲突需自行核对，不保证完全 CSS 隔离。
