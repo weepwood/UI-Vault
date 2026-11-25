@@ -194,7 +194,8 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
     setTab(next);
     document.getElementById('tab-'+next)?.focus();
   }
-  const registryActive=registryOpen&&asset?.id==='ui-foundation-kit';
+  const registryAvailable=['ui-foundation-kit','workbench-components'].includes(asset?.id);
+  const registryActive=registryOpen&&registryAvailable;
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
   const isCurrent=source.id===asset?.id&&source.path===selectedFile?.path;
@@ -294,7 +295,8 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
               ?'该 Demo 是可独立保存的单文件页面；如需复用，请保留源码中的来源与许可证说明。'
               :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
       </p>
-      <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" hidden={registryActive} onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<button type="button" aria-expanded={registryOpen} onClick={event=>{event.currentTarget.closest('.dialog-source-pane').scrollTop=0;setRegistryOpen(value=>!value);}}>{registryOpen?'返回源码':'浏览 Foundation Registry'}</button>}</div>
+      <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" hidden={registryActive} onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{registryAvailable&&<button type="button" aria-expanded={registryOpen} onClick={event=>{event.currentTarget.closest('.dialog-source-pane').scrollTop=0;setRegistryOpen(value=>!value);}}>{registryOpen?'返回源码':asset?.id==='workbench-components'?'浏览通用 Foundation Registry':'浏览 Foundation Registry'}</button>}</div>
+      {registryActive&&asset?.id==='workbench-components'&&<p className="source-delivery-note">当前浏览的是通用 Foundation 组件及 Token 安装入口，不是 SearchField / WorkbenchSelect 的独立安装包。返回源码可查看真实工作台实现与接入说明。</p>}
       {!registryActive&&selectedFile&&<div className="source-reader-tools"><span className="source-current-path" title={selectedFile.path}>{selectedFile.path}</span><label className="source-wrap-toggle"><input type="checkbox" checked={wrapSource} onChange={event=>setWrapSource(event.target.checked)}/> 自动换行</label><label className="source-wrap-toggle"><input type="checkbox" checked={highlightSource} onChange={event=>setHighlightSource(event.target.checked)}/> 语法高亮</label></div>}
       </div>
       {registryActive?open&&tab==='source'&&<RegistryBrowser onCopyText={onCopyText}/>:<>

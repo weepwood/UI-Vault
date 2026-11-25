@@ -1760,6 +1760,62 @@ def verify_notion_storage_fallback(browser, origin):
             context.close()
 
 
+def verify_material_tokens_and_registry_link(browser, origin):
+    """解析后的材质 Token 与真实渲染一致，通用 Registry 和原始源码之间可往返。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator("#preview-parameters").click()
+            dock=page.locator("#parameter-dock")
+            frame=page.frame_locator("#preview-stage iframe")
+            def button(name):return dock.get_by_role("button",name=name,exact=True)
+            def sync():expect(dock.get_by_text("已连接 · 参数已同步",exact=True)).to_be_visible()
+            def download(name):
+                with page.expect_download() as info:button(name).click()
+                return info.value.path().read_text("utf-8")
+            button("读取当前参数").click()
+            sync()
+            for preset in ("双层柔光","平面纯色"):
+                button(preset).click()
+                sync()
+                expected=frame.locator("html").evaluate("e=>['--warm-surface','--warm-card-gradient','--warm-card-shadow'].map(k=>getComputedStyle(e).getPropertyValue(k).trim())")
+                css=download("Token CSS")
+                doc=json.loads(download("Token JSON"))
+                assert doc["format"]=="ui-vault-material-tokens" and doc["version"]==1
+                assert [doc["tokens"][k]["value"] for k in ("surface","gradient","shadow")]==expected
+                independent=context.new_page()
+                try:
+                    independent.set_content('<style>'+css+'</style><section class="ui-vault-material-tokens"><div class="ui-vault-material" style="border-radius:29px;padding:15px">sample</div></section><div id="outside">outside</div>')
+                    actual=independent.locator(".ui-vault-material").evaluate("e=>{const s=getComputedStyle(e);return [s.backgroundImage,s.boxShadow,s.borderRadius,s.paddingTop]}")
+                    assert actual[2:]==["29px","15px"]
+                    assert (actual[0]=="none")== (preset=="平面纯色")
+                    assert (actual[1]=="none")== (preset=="平面纯色")
+                    assert not independent.locator("#outside").evaluate("e=>getComputedStyle(e).getPropertyValue('--uv-material-surface').trim()")
+                finally:
+                    independent.close()
+            page.goto(origin+"?asset=workbench-components",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            page.locator("#tab-source").click()
+            page.locator(".source-file-browser summary").click()
+            page.locator(".source-file-browser").get_by_role("button",name="SearchField.jsx",exact=False).click()
+            expect(page.locator("#source-code")).to_contain_text("export function SearchField")
+            source=page.locator("#source-code").text_content()
+            page.get_by_role("button",name="浏览通用 Foundation Registry",exact=True).click()
+            expect(page.get_by_role("combobox",name="选择 Registry 模块")).to_be_visible()
+            page.get_by_role("combobox",name="选择 Registry 交付组合").select_option("vue")
+            expect(page.locator(".registry-commands")).to_contain_text("install-registry")
+            expect(page.get_by_text("当前浏览的是通用 Foundation 组件及 Token 安装入口",exact=False)).to_be_visible()
+            page.screenshot(path=str(OUTPUT/f"material-token-registry-{width}-{theme}.png"))
+            page.get_by_role("button",name="返回源码",exact=True).click()
+            assert page.locator("#source-code").text_content()==source
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_material_library(browser, origin):
     """独立 CSS 真正可用，材质预设跨刷新恢复且不覆盖布局/动效。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
@@ -3362,6 +3418,7 @@ def main():
                     verify_notion_header_quality,
                     verify_material_snapshot_and_reuse,
                     verify_material_library,
+                    verify_material_tokens_and_registry_link,
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,
