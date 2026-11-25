@@ -1,0 +1,82 @@
+{
+  "$description": "仅用于学习的 DTCG 2025.10 风格样例；不代表 UI Vault 主站实际设计规范。",
+  "base": {
+    "color": {
+      "$type": "color",
+      "paper": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            1,
+            1,
+            1
+          ],
+          "alpha": 1
+        }
+      },
+      "ink": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.125,
+            0.16,
+            0.18
+          ],
+          "alpha": 1
+        }
+      },
+      "accent": {
+        "$value": {
+          "colorSpace": "srgb",
+          "components": [
+            0.19,
+            0.37,
+            0.5
+          ],
+          "alpha": 1
+        }
+      }
+    },
+    "space": {
+      "$type": "dimension",
+      "small": {
+        "$value": {
+          "value": 8,
+          "unit": "px"
+        }
+      },
+      "medium": {
+        "$value": {
+          "value": 16,
+          "unit": "px"
+        }
+      }
+    }
+  },
+  "semantic": {
+    "surface": {
+      "$type": "color",
+      "$value": "{base.color.paper}"
+    },
+    "text": {
+      "$type": "color",
+      "$value": "{base.color.ink}"
+    },
+    "action": {
+      "$type": "color",
+      "$value": "{base.color.accent}"
+    }
+  },
+  "component": {
+    "button": {
+      "background": {
+        "$type": "color",
+        "$value": "{semantic.action}"
+      },
+      "padding": {
+        "$type": "dimension",
+        "$value": "{base.space.medium}"
+      }
+    }
+  }
+}
