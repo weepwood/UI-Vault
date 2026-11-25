@@ -22,7 +22,7 @@ test('排序使用共享下拉，分面使用受控原生 select',async()=>{
   assert.match(react,/<select id=\{field.id\} value=\{facetSelection\(state\[field.key\]\)\[0\]\|\|''\}/);
   assert.match(component,/<select id={id}/);
   assert.match(component,/role="listbox"/);
-  assert.match(component,/onChange={event=>onChange\(event.target.value\)}/);
+  assert.match(component,/onChange=\{event=>\{if\(!disabled\)onChange\(event.target.value\);\}\}/);
 
 });
 
@@ -30,7 +30,7 @@ test('下拉菜单支持键盘焦点、ARIA、外部点击、滚动与 Esc 关�
   const source=await read('src/components/WorkbenchSelect.jsx');
   for(const key of ['ArrowDown','ArrowUp','Home','End','Escape','Enter','Tab'])
     assert.ok(source.includes(key),'缺少键盘交互 '+key);
-  for(const part of ['aria-haspopup="listbox"','aria-controls={menuId}','aria-expanded={String(open)}',
+  for(const part of ['aria-haspopup="listbox"','aria-controls={menuId}','aria-expanded={String(open&&!disabled)}',
     'role="listbox"','role="option"','aria-selected={String(option.value===value)}',
     "document.addEventListener('pointerdown'","document.addEventListener('focusin'",
     'hidden tabIndex={-1}','trigger.current?.focus({preventScroll:true})',

@@ -33,3 +33,7 @@
 .select-popover[data-placement="top"] { top:auto; bottom:calc(100% + 5px); transform-origin:bottom right; --select-enter-offset:4px; }
 
 .select-option[aria-selected=true] .select-option-icon{color:var(--accent)}
+
+.select-field[data-invalid=true] .select-trigger{border-color:var(--parameter-error)}
+.select-field[data-invalid=true] .select-trigger:focus-visible{outline-color:var(--parameter-error)}
+.select-field[data-disabled=true] .select-trigger,.select-field[data-disabled=true] .select-trigger:hover{background:var(--canvas);border-color:var(--line);cursor:not-allowed}

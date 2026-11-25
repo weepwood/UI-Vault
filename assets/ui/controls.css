@@ -55,3 +55,11 @@ html[data-motion="reduced"] #preview-favorite:active{transform:none}
 }
 html[data-motion="reduced"] :is(.square-action,.dialog-close,.info-action,.open-action):active{transform:none}
 html[data-motion="reduced"] .square-action .ui-icon.is-pulsing{animation:none}
+
+/* Explicit semantic states; default controls keep their existing geometry. */
+.search-field[data-invalid=true]{border-color:var(--parameter-error);box-shadow:none}
+.search-field[data-invalid=true]:focus-within{box-shadow:0 0 0 2px var(--parameter-error)}
+.search-field[data-invalid=true] input:focus-visible{outline:none;box-shadow:none}
+.search-field[data-disabled=true]{background:var(--canvas);color:var(--muted);box-shadow:none}
+.search-field[data-disabled=true] :is(input,.search-icon){cursor:not-allowed}
+.search-field input:disabled{opacity:.65}

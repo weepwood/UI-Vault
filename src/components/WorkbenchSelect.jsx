@@ -5,8 +5,10 @@ import {Icon} from './Icon.jsx';
 // 保留现有 select-field DOM/CSS 协议，但值、弹窗和键盘行为全部归 React。
 // Icon 已移到 ./Icon.jsx；这里继续导出，兼容现有 import {Icon} from './WorkbenchSelect.jsx'。
 export {Icon};
-export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='',dataSetting }){
+export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='',dataSetting,disabled=false,invalid=false,describedBy }){
   const [open,setOpen]=useState(false);
+  // Close during render when disabled, before effects or focus can reopen a stale menu.
+  if(disabled&&open)setOpen(false);
   const host=useRef(null),trigger=useRef(null),optionRefs=useRef([]),menu=useRef(null);
   const initialFocus=useRef(0),anchorRect=useRef(null);
   const generated=useId();
@@ -84,16 +86,19 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     focusOption(initialFocus.current);
   },[open,focusOption,dataSetting]);
   function reveal(index){
+    if(disabled)return;
     closeDropdowns();
     initialFocus.current=index;
     setOpen(true);
   }
   function choose(next){
+    if(disabled)return;
     if(next!==value)onChange(next);
     setOpen(false);
     trigger.current?.focus({preventScroll:true});
   }
   function onKeys(event){
+    if(disabled)return;
     if(event.key==='Escape'){
       event.preventDefault();event.stopPropagation();setOpen(false);trigger.current?.focus();
       return;
@@ -110,15 +115,17 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
       (current+(event.key==='ArrowDown'?1:-1)+options.length)%options.length;
     focusOption(next);
   }
-  return <div className={'select-field '+className+(open?' is-open':'')+(value&&(id==='sort'?value!=='featured':id==='tag-filter')?' has-filter':'')} ref={host}>
-    <select id={id} data-setting={dataSetting} aria-label={label} value={value} onChange={event=>onChange(event.target.value)} hidden tabIndex={-1}>
+  return <div className={'select-field '+className+(open?' is-open':'')+(value&&(id==='sort'?value!=='featured':id==='tag-filter')?' has-filter':'')} ref={host} data-disabled={disabled||undefined} data-invalid={invalid||undefined}>
+    <select id={id} data-setting={dataSetting} aria-label={label} value={value} onChange={event=>{if(!disabled)onChange(event.target.value);}} disabled={disabled} hidden tabIndex={-1}>
       {options.map(option=><option key={option.value} value={option.value}>{option.label}</option>)}
     </select>
     <button ref={trigger} type="button" className="select-trigger" aria-haspopup="listbox"
-      aria-controls={menuId} aria-expanded={String(open)}
+      aria-controls={menuId} aria-expanded={String(open&&!disabled)} disabled={disabled}
+      aria-invalid={invalid||undefined} aria-describedby={describedBy}
       aria-label={label+'：'+(selected?.label||'')}
       onClick={()=>open?setOpen(false):reveal(Math.max(0,options.findIndex(x=>x.value===value)))}
       onKeyDown={event=>{
+        if(disabled)return;
         if(event.key==='ArrowDown'||event.key==='ArrowUp'||event.key==='Home'||event.key==='End'){
           if(!open&&(event.key==='Home'||event.key==='End'))return;
           event.preventDefault();
@@ -131,7 +138,7 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
       <span className="select-value">{selected?.label||''}</span>
       <span className="select-chevron" aria-hidden="true"><Icon name="chevron-down"/></span>
     </button>
-    <div ref={menu} id={menuId} className="select-popover" role="listbox" aria-label={label} hidden={!open}>
+    <div ref={menu} id={menuId} className="select-popover" role="listbox" aria-label={label} hidden={!open||disabled}>
       {options.map((option,i)=><div key={option.value} role="option" className="select-option"
         ref={el=>{optionRefs.current[i]=el;}} tabIndex={-1} data-value={option.value}
         aria-selected={String(option.value===value)}

@@ -121,3 +121,15 @@ test('主站直达真实展厅与配方实验室，展厅保留沙箱权限和�
  assert.match(demo,/wb-reset-demo/);
  assert.match(demo,/window.self!==window.top/);
 });
+
+test('共享表单支持原生禁用、错误说明及关闭禁用下拉',async()=>{
+ const [search,select,demo]=await Promise.all(['src/components/SearchField.jsx','src/components/WorkbenchSelect.jsx',base+'demo.jsx'].map(read));
+ for(const component of [search,select]){
+   assert.match(component,/disabled=\{disabled\}/);
+   assert.match(component,/aria-invalid=\{invalid\|\|undefined\}/);
+   assert.match(component,/aria-describedby=\{describedBy\}/);
+ }
+ assert.match(select,/hidden=\{!open\|\|disabled\}/);
+ assert.match(select,/if\(disabled&&open\)setOpen\(false\)/);
+ assert.match(demo,/wb-play-state/);
+});

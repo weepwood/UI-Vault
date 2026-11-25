@@ -152,3 +152,7 @@
 .wb-live-code{max-height:220px;overflow:auto;margin:0;background:var(--canvas);border:1px solid var(--line-soft);border-radius:7px;padding:11px;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.6 ui-monospace,monospace;color:var(--ink)}
 .wb-playground-fields input:not([type=checkbox]){min-width:0;width:100%;min-height:34px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);padding:5px 8px}
 .wb-form-stage .wb-component-hint{margin:0}
+
+.wb-state-hint{font-size:11px;color:var(--muted);margin:-6px 0 0;overflow-wrap:anywhere}
+.wb-state-hint.is-error{color:var(--parameter-error)}
+.wb-form-stage[aria-busy=true]{border-color:var(--accent-line)}
