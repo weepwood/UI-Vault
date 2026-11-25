@@ -34,8 +34,9 @@ test('下拉菜单支持键盘焦点、ARIA、外部点击、滚动与 Esc 关�
     'role="listbox"','role="option"','aria-selected={String(option.value===value)}',
     "document.addEventListener('pointerdown'","document.addEventListener('focusin'",
     'hidden tabIndex={-1}','trigger.current?.focus({preventScroll:true})',
-    "scrollIntoView?.({block:'nearest'})"])
+    'item.focus({preventScroll:true})','popup.scrollTop+=','useLayoutEffect(()=>{'])
     assert.ok(source.includes(part),'缺少下拉菜单交互 '+part);
+  assert.doesNotMatch(source,/requestAnimationFrame\(/,'展开后不可延迟初始焦点');
   assert.match(source,/\{selected\?\.label\|\|''\}/);
   assert.match(source,/\{option\.label\}/);
 });

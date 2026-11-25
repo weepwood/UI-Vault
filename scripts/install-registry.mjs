@@ -4,7 +4,8 @@ import {readFile,realpath,lstat} from 'node:fs/promises';
 import {resolve,join,sep} from 'node:path';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
-import {installRegistrySnapshot,planRegistryInstall} from './lib/registry-install.mjs';
+import {isDeepStrictEqual} from 'node:util';
+import {installRegistrySnapshot,planRegistryInstall,verifyRegistrySnapshot} from './lib/registry-install.mjs';
 export async function readLocalRegistry(directory){
  const root=await realpath(directory);
  async function read(path){
@@ -20,18 +21,18 @@ export async function readLocalRegistry(directory){
  for(const row of index.items){
   if(typeof row.id!=='string'||!/^[a-z0-9-]+$/.test(row.id)||seen.has(row.id)||row.path!=='items/'+row.id+'.json')throw Error('Registry 索引路径无效');
   seen.add(row.id);const item=await read(row.path);
-  if(item.id!==row.id||item.kind!==row.kind||JSON.stringify(item.dependencies)!==JSON.stringify(row.dependencies)||item.files?.length!==row.fileCount)throw Error('Registry 索引与模块不一致');
+  if(item.id!==row.id||item.kind!==row.kind||JSON.stringify(item.dependencies)!==JSON.stringify(row.dependencies)||item.files?.length!==row.fileCount||item.framework!==row.framework||!isDeepStrictEqual(item.runtime,row.runtime))throw Error('Registry 索引与模块不一致');
   items.push(item);
  }
  return {index,items};
 }
 async function main(){
- const args=process.argv.slice(2),dryRun=args[0]==='--plan';
- if(dryRun)args.shift();
+ const args=process.argv.slice(2),mode=['--plan','--verify'].includes(args[0])?args.shift():'install';
  const [directory,parent,...ids]=args;
- if(!directory||!parent||!ids.length)throw Error('用法：node scripts/install-registry.mjs dist/registry /path/to/project foundation-react-input ...');
+ if(!directory||!parent||!ids.length)throw Error('用法：node scripts/install-registry.mjs [--plan|--verify] dist/registry /path/to/project foundation-react-input ...');
  const registry=await readLocalRegistry(directory);
- if(dryRun){const plan=planRegistryInstall(registry,ids);console.log(JSON.stringify({...plan,target:resolve(parent,'ui-foundation'),files:plan.files.map(({path,sha256})=>({path,sha256}))},null,2));return;}
+ if(mode==='--verify'){const result=await verifyRegistrySnapshot(registry,ids,parent);console.log(JSON.stringify(result,null,2));if(!result.verified)process.exitCode=1;return;}
+ if(mode==='--plan'){const plan=planRegistryInstall(registry,ids);console.log(JSON.stringify({...plan,target:resolve(parent,'ui-foundation'),files:plan.files.map(({path,sha256})=>({path,sha256}))},null,2));return;}
  const result=await installRegistrySnapshot(registry,ids,parent);
  const sha=createHash('sha256').update(await readFile(join(directory,'index.json'))).digest('hex');
  console.log(JSON.stringify({target:result.target,files:result.files.length,modules:result.modules,runtime:result.runtime,indexSha256:sha},null,2));

@@ -12,7 +12,7 @@
 | foundation-base | base.css | foundation-tokens |
 | foundation-components | components.css、INTEGRATION.md | foundation-base |
 
-协议：`ui-vault-foundation-registry`，protocolVersion 1。每个 item 包含 Foundation 版本、显式依赖、许可、文件相对路径、UTF-8 内容和 SHA-256。按依赖顺序取文件，保留原始相对路径及 LICENSE。复制入目标项目后无需在线依赖 UI-Vault。此协议不是 shadcn Registry，不提供自动安装 CLI 或已验证的 React/Vue 行为组件。
+协议：`ui-vault-foundation-registry`，protocolVersion 1。每个 item 包含 Foundation 版本、显式依赖、许可、文件相对路径、UTF-8 内容和 SHA-256。按依赖顺序取文件，保留原始相对路径及 LICENSE。复制入目标项目后无需在线依赖 UI-Vault。此协议不是 shadcn Registry；目前提供本地安装 CLI 与独立验收的 React/Vue 源码适配器（见下文），不自动安装运行时依赖。
 
 `npm run build` 先执行现有 Foundation Token 生成脚本，再生成 `dist/registry/`，`node scripts/check-dist.mjs` 校验内容与源文件一致。开发时可以直接查看构建目录，普通 dev 服务器不生成 Registry。
 
@@ -44,8 +44,19 @@
 
 ## Foundation 源码工程 ZIP（候选）
 
-`downloads/ui-foundation-kit-project.zip` 是与静态 Demo ZIP、Registry 单模块安装、外站整仓快照不同的交付物。固定白名单包含 Foundation 自有 Token 源、生成 CSS/TS/Rust/JSON、构建检查与安装脚本、静态 Demo、React/Vue/GPUI 适配器及原许可。归档带 SHA-256 清单，构建检查在临时目录解包后离线重新生成 Token 并逐字节比对。Vue 示例仍需联网安装未锁定的依赖，不声称其可复现构建；React/GPUI 是适配源码而非完整应用。待 CI。
+`downloads/ui-foundation-kit-project.zip` 是与静态 Demo ZIP、Registry 单模块安装、外站整仓快照不同的交付物。固定白名单包含 Foundation 自有 Token 源、生成 CSS/TS/Rust/JSON、构建检查与安装脚本、静态 Demo、React/Vue/GPUI 适配器及原许可。归档带 SHA-256 清单，构建检查在临时目录解包后离线重新生成 Token 并逐字节比对。Vue 示例已随 ZIP 提供完整锁文件并执行严格 npm ci 和独立构建验收；React/GPUI 是适配源码而非完整应用。
 
 Foundation Vue 独立构建候选：固定 Vue/Reka 为已验证版本。独立 workflow 从实际 Foundation ZIP 解包，若仓库缺锁，仅生成候选锁 Artifact；从此锁 npm ci、运行 vue-tsc/Vite 并启动静态产物做真实 Chromium 冒烟。必须将实际生成锁文件审查提交并将其纳入 ZIP 白名单，再执行严格 npm ci；未完成不得声称完整可复现。
 
 正式锁文件候选：从真实 Artifact 14936578027 提取并逐字节核对 SHA-256/Git blob；121 依赖项全部 npm 官方源并含 integrity。ZIP 现在要求 adapters/vue/package-lock.json；独立 workflow 比对仓库与解包锁，严格 npm ci，构建后比对锁未变并运行浏览器。原候选已完成实际 Vite 7.3.8 构建与 Chromium 操作，最终锁定版待 CI。禁止无锁降级。
+
+
+## 安装后的完整性复验
+
+从可信的本地 Registry 安装后，可用相同模块列表只读核验：
+
+```bash
+node scripts/install-registry.mjs --verify dist/registry /path/to/project foundation-react-input foundation-vue-switch
+```
+
+输出 JSON 包含 verified、checked、total 和 issues（文件路径与原因：missing、modified、unsafe、unreadable、lock-mismatch）。完整一致退出码为 0，任何差异退出码为 1。以可信 Registry 的实际依赖闭包、版本、运行时要求与字节哈希为基准，而非相信安装目录中可被修改的 REGISTRY-LOCK.json。不会覆盖、修复、删除文件或安装依赖；有意修改源码也会被报告为差异。仅检查已登记交付文件及锁文件，不扫描额外工程文件，也不等于运行时/许可证合规审核。拒绝符号链接、Windows 保留文件名及大小写目录冲突；请在静止的本地目录运行，避免并发改写。当前包含 modules/runtime 的 v1 锁文件结构保持兼容；更早缺少这些字段的锁会被报告为不一致，不会自动迁移。

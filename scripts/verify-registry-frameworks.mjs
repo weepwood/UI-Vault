@@ -5,7 +5,7 @@ import {createRequire} from 'node:module';
 import {execFileSync} from 'node:child_process';
 import {build} from 'esbuild';
 import {buildRegistry,REGISTRY_ROOT} from './lib/reuse-registry.mjs';
-import {installRegistrySnapshot} from './lib/registry-install.mjs';
+import {installRegistrySnapshot,verifyRegistrySnapshot} from './lib/registry-install.mjs';
 
 const root=resolve('.');
 const target=resolve(process.argv[2]||'.cache/registry-runtime');
@@ -18,6 +18,9 @@ const registry=await buildRegistry(foundation);
 const requested=['react','vue'].flatMap(framework=>['button','input','switch'].map(name=>'foundation-'+framework+'-'+name));
 requested.push('foundation-react-primitives','foundation-vue-primitives');
 const installation=await installRegistrySnapshot(registry,requested,target);
+const verification=await verifyRegistrySnapshot(registry,requested,target);
+if(!verification.verified)throw Error('Registry 安装后复验失败：'+JSON.stringify(verification.issues));
+console.log('Registry 文件完整性复验：'+verification.checked+'/'+verification.total);
 for(const name of ['Button','Input','Switch']){
  const filename='Ui'+name+'.vue';
  const source=await readFile(join(installation.target,'adapters/vue/src/components',filename),'utf8');

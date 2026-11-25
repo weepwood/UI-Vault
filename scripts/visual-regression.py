@@ -23,7 +23,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from functools import partial
 
 from PIL import Image
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
@@ -894,8 +894,29 @@ def verify_directory_session_and_search_limit(browser, origin):
         more.focus()
         page.keyboard.press("Enter")
         page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length===120")
+        expect(field).to_be_focused()
+        expect(field).to_have_attribute("aria-activedescendant", "command-result-60")
+        page.wait_for_function("""() => {
+          const row = document.getElementById('command-result-60').getBoundingClientRect();
+          const list = document.querySelector('.command-palette-list').getBoundingClientRect();
+          return row.top >= list.top - 1 && row.bottom <= list.bottom + 1;
+        }""")
+        field.press("Control+End")
+        expect(field).to_have_attribute("aria-activedescendant", "command-result-119")
+        page.set_viewport_size({"width": 320, "height": 640})
+        for count in (180, 240):
+            more.focus()
+            page.keyboard.press("Enter")
+            expect(page.locator(".compact-search-result")).to_have_count(count)
+            expect(field).to_be_focused()
+            expect(field).to_have_attribute("aria-activedescendant", f"command-result-{count-60}")
+        expect(page.get_by_text("请缩小关键词范围")).to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2")
+        page.screenshot(path=str(OUTPUT / "command-search-cap-mobile.png"))
         field.fill("bauhaus")
         page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length<60")
+        expect(field).to_have_attribute("aria-activedescendant", "command-result-0")
+        assert page.locator('.command-palette-list').evaluate("(el)=>el.scrollTop") == 0
         print("同标签页目录刷新恢复及搜索分批展开通过",flush=True)
     finally:
         context.close()
@@ -1193,9 +1214,19 @@ def verify_live_parameter_dock(browser, origin):
         assert page.locator("#preview-stage").is_visible()
         dock.get_by_role("button",name="读取当前参数").click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
-        dock.get_by_role("spinbutton",name="卡片圆角").fill("24")
+        radius=dock.get_by_role("spinbutton",name="卡片圆角")
+        radius.fill("21")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        radius.fill("24")
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
+        radius.fill("999")
+        expect(radius).to_have_attribute("aria-invalid","true")
+        expect(dock.get_by_role("button",name="应用参数")).to_be_disabled()
+        radius.press("Escape")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        expect(radius).to_have_value("24")
+        expect(dock).to_be_visible()
         dock.get_by_role("textbox",name="预设名称").fill("圆角24")
         dock.get_by_role("button",name="保存预设").click()
         dock.get_by_role("button",name="撤销",exact=True).click()
@@ -1349,6 +1380,9 @@ def verify_expanded_workbench_screenshots(browser, origin):
             hex_input.press("Escape")
             assert hex_input.input_value().lower()=="#123456"
             position=dock.get_by_label("当前色标位置",exact=True)
+            position.fill("")
+            expect(position).to_have_attribute("aria-invalid","true")
+            expect(dock.get_by_role("spinbutton",name="中间色标位置",exact=True)).to_have_value("")
             position.fill("61")
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.locator('[data-gradient-stop="gradientMidPosition"]').get_attribute("aria-valuenow")=="61"
@@ -1375,6 +1409,23 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.get_by_role("button",name="重做",exact=True).click()
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert blur.input_value()=="31"
+            offset=dock.get_by_label("选中阴影层横向偏移",exact=True)
+            mirror=dock.get_by_role("spinbutton",name="第二层阴影横向偏移",exact=True)
+            offset.fill("")
+            expect(offset).to_have_value("")
+            expect(mirror).to_have_attribute("aria-invalid","true")
+            offset.press_sequentially("-12")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            expect(mirror).to_have_value("-12")
+            offset.fill("-99")
+            expect(offset).to_have_attribute("aria-invalid","true")
+            offset.fill("-12")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            offset.fill("")
+            offset.press("Escape")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            expect(offset).to_have_value("-12")
+            expect(dock).to_be_visible()
 
             dock.get_by_role("button",name="复位阴影",exact=True).click()
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
@@ -1869,7 +1920,27 @@ def verify_project_operations(browser, origin):
         assert first.count() == 1, "资产深链接丢失"
         page.locator(".ops-reset").click()
         chooser = page.locator("#operations-code").locator("xpath=..")
-        chooser.locator(".select-trigger").click()
+        trigger = chooser.locator(".select-trigger")
+        options = chooser.locator('[role="option"]')
+        trigger.click()
+        # Send End immediately after the click: opening must not defer initial focus
+        # to an animation frame that can overwrite the user's next keystroke.
+        page.keyboard.press("End")
+        expect(options.last).to_be_focused()
+        page.keyboard.press("Home")
+        expect(options.first).to_be_focused()
+        page.keyboard.press("Escape")
+        expect(trigger).to_be_focused()
+        expect(chooser.locator('[role="listbox"]')).to_be_hidden()
+        trigger.click()
+        page.keyboard.press("Tab")
+        expect(page.locator("#operations-deploy").locator("xpath=..").locator(".select-trigger")).to_be_focused()
+        expect(chooser.locator('[role="listbox"]')).to_be_hidden()
+        trigger.click()
+        page.keyboard.press("Shift+Tab")
+        expect(page.locator("#operations-query")).to_be_focused()
+        expect(chooser.locator('[role="listbox"]')).to_be_hidden()
+        trigger.click()
         chooser.locator('[data-value="failure"]').click()
         assert page.locator(".ops-project").count() == 0, "代码检查失败筛选未生效"
         assert f"显示 0 / {expected}" in page.locator(".ops-result-header").inner_text()
@@ -1887,6 +1958,41 @@ def verify_project_operations(browser, origin):
     try:
         page.goto(origin + "?view=operations", wait_until="domcontentloaded")
         page.locator("#operations-title").wait_for(state="visible", timeout=30000)
+        chooser = page.locator("#operations-code").locator("xpath=..")
+        chooser.locator(".select-trigger").click()
+        popup = chooser.locator('[role="listbox"]')
+        expect(popup).to_be_visible()
+        # Reduced motion is not required: wait for the actual rendered bounds.
+        page.wait_for_function("""() => {
+          const r = document.querySelector('#operations-code').parentElement.querySelector('[role=listbox]').getBoundingClientRect();
+          return r.left >= 11 && r.right <= innerWidth - 11 && r.top >= 11 && r.bottom <= innerHeight - 11;
+        }""")
+        page.keyboard.press("Escape")
+        expect(popup).to_be_hidden()
+        # Exercise the collision branch and the bounded listbox scroll on a short viewport.
+        page.set_viewport_size({"width": 390, "height": 400})
+        chooser.locator(".select-trigger").click()
+        page.keyboard.press("End")
+        expect(chooser.locator('[role="option"]').last).to_be_focused()
+        expect(popup).to_have_attribute("data-placement", "top")
+        try:
+            page.wait_for_function("""() => {
+              const menu = document.querySelector('#operations-code').parentElement.querySelector('[role=listbox]');
+              const r = menu.getBoundingClientRect(), last = menu.lastElementChild.getBoundingClientRect();
+              return r.left >= 11 && r.right <= innerWidth - 11 && r.top >= 11 && r.bottom <= innerHeight - 11
+                && menu.scrollTop > 0 && last.bottom <= r.bottom + 1;
+            }""")
+        except Exception:
+            print("下拉短视口诊断：",popup.evaluate("""menu=>({
+              bounds:menu.getBoundingClientRect().toJSON(),last:menu.lastElementChild.getBoundingClientRect().toJSON(),
+              scrollTop:menu.scrollTop,clientHeight:menu.clientHeight,scrollHeight:menu.scrollHeight,
+              placement:menu.dataset.placement,viewport:[innerWidth,innerHeight]
+            })"""),flush=True)
+            page.screenshot(path=str(OUTPUT/"operations-short-viewport-failure.png"))
+            raise
+        page.keyboard.press("Escape")
+        expect(popup).to_be_hidden()
+        page.set_viewport_size({"width": 390, "height": 844})
         page.locator("#operations-menu-toggle").click()
         assert "is-open" in (page.locator("#library-rail").get_attribute("class") or ""), "状态页无法打开移动端导航"
         page.keyboard.press("Escape")

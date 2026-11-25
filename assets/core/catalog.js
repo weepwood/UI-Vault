@@ -276,6 +276,8 @@ const TERM_ALIASES=Object.freeze({
   "禅意庭园":["zen garden"],"zen garden":["禅意庭园"]
 });
 const OMIT_TOKENS=new Set(['and','or']);
+// 多词风格名必须作为整体识别，优先最长的已登记别名。
+const MAX_ALIAS_WORDS=Math.max(...Object.keys(TERM_ALIASES).map(key=>key.split(' ').length));
 
 export function normalizeSearchText(value){
   return String(value??'').normalize('NFKC').toLocaleLowerCase()
@@ -286,9 +288,13 @@ export function tokenizeSearch(query){
   const words=normalizeSearchText(query).split(/\s+/).filter(Boolean);
   const terms=[];
   for(let i=0;i<words.length;i++){
-    const pair=words.slice(i,i+2).join(' ');
-    if(i+1<words.length&&Object.hasOwn(TERM_ALIASES,pair)){terms.push(pair);i++;}
-    else if(!OMIT_TOKENS.has(words[i]))terms.push(words[i]);
+    let matched=false;
+    for(let size=Math.min(MAX_ALIAS_WORDS,words.length-i);size>1;size--){
+      const phrase=words.slice(i,i+size).join(' ');
+      if(!Object.hasOwn(TERM_ALIASES,phrase))continue;
+      terms.push(phrase);i+=size-1;matched=true;break;
+    }
+    if(!matched&&!OMIT_TOKENS.has(words[i]))terms.push(words[i]);
   }
   return [...new Set(terms)].slice(0,8);
 }
