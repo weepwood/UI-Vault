@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {MATERIAL_PRESETS,resetMaterialGroup} from '../assets/core/material-presets.js';
+import {MATERIAL_PRESETS,resetMaterialGroup,matchesMaterialPreset,exportMaterialSnapshot,importMaterialSnapshot} from '../assets/core/material-presets.js';
 import {WARM_LAYOUT_FIELDS,normalizeParameters,warmLayoutCssValues} from '../assets/core/demo-parameters.js';
 const values=Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default]));
 test('材质组合仅修改渐变与阴影，保留基础和曲线；分组复位不越界',()=>{
@@ -8,4 +8,16 @@ test('材质组合仅修改渐变与阴影，保留基础和曲线；分组复�
  for(const preset of MATERIAL_PRESETS){const next=normalizeParameters(WARM_LAYOUT_FIELDS,{...before,...preset.patch},{complete:true});assert.equal(next.radius,30);assert.equal(next.surface,'#112233');assert.equal(next.motionDuration,200);}
  const next={...before,...MATERIAL_PRESETS[1].patch};assert.equal(next.gradient,true);assert.ok(next.shadow2Opacity>0);
  const reset={...next,...resetMaterialGroup('阴影')};assert.equal(warmLayoutCssValues(reset)['--warm-card-shadow'],'none');assert.equal(reset.gradient,true);assert.equal(reset.radius,30);assert.throws(()=>resetMaterialGroup('未知'));
+});
+
+test('材质快照只恢复表面与阴影，不覆盖布局/动效；严格拒绝非法字段',()=>{
+ const before={...values,surface:'#223344',radius:29,motionDuration:200,...MATERIAL_PRESETS[1].patch};
+ const patch=importMaterialSnapshot(exportMaterialSnapshot(before));
+ assert.equal(patch.surface,'#223344');assert.equal(patch.gradient,true);
+ assert.ok(!Object.hasOwn(patch,'radius'));assert.ok(!Object.hasOwn(patch,'motionDuration'));
+ assert.ok(matchesMaterialPreset(before,MATERIAL_PRESETS[1]));
+ assert.ok(!matchesMaterialPreset({...before,shadowOpacity:1},MATERIAL_PRESETS[1]));
+ const doc=JSON.parse(exportMaterialSnapshot(before));
+ for(const invalid of [{...doc,version:2},{...doc,values:{...doc.values,radius:4}},{...doc,values:{...doc.values,shadowOpacity:51}},{...doc,values:{surface:'#123456'}},{...doc,extra:true}])assert.throws(()=>importMaterialSnapshot(JSON.stringify(invalid)));
+ assert.throws(()=>importMaterialSnapshot(' '.repeat(8193)));
 });

@@ -65,3 +65,37 @@ test('React 源码弹窗具有文件选择、按文件读取、复制和下载',
   assert.match(dialog,/id="source-bundle"/);
   assert.match(dialog,/id="source-repo-archive"/);
 });
+
+test('真实工作台源码仅允许固定公开依赖，其他资产或任意src文件不可发布',()=>{
+ const sourceFiles=[{path:'src/components/SearchField.jsx'},{path:'assets/ui/controls.css'}];
+ const workbench={...asset,id:'workbench-components',copyable:false,sourceFiles};
+ assert.equal(getSourceFiles(workbench).length,2);
+ assert.deepEqual(checkEntry(workbench,categories),[]);
+ assert.equal(getSourceFiles({...workbench,id:'example'}).length,0);
+ assert.ok(checkEntry({...workbench,id:'example'},categories).length);
+ for(const path of ['src/components/Unknown.jsx','src/useWorkbench.js','assets/core/settings.js','src/components/../secret.js']){
+   const entry={...workbench,sourceFiles:[{path}]};
+   assert.equal(getSourceFiles(entry).length,0);assert.ok(checkEntry(entry,categories).length);
+ }
+});
+
+test('从真实登记文件在隔离目录编译接入文档的React示例',async()=>{
+ const {mkdtemp,mkdir,copyFile,readFile,writeFile,rm}=await import('node:fs/promises');
+ const {tmpdir}=await import('node:os');
+ const {dirname,join,resolve}=await import('node:path');
+ const {fileURLToPath}=await import('node:url');
+ const {build}=await import('esbuild');
+ const root=fileURLToPath(new URL('../',import.meta.url)),dir=await mkdtemp(join(tmpdir(),'ui-vault-source-reuse-'));
+ try{
+  const catalog=JSON.parse(await readFile(join(root,'catalog/assets/workbench-components.json'),'utf8'));
+  const files=getSourceFiles(catalog).filter(f=>f.path.startsWith('src/')||f.path.startsWith('assets/'));
+  assert.equal(files.length,7);
+  for(const f of files){await mkdir(dirname(join(dir,f.path)),{recursive:true});await copyFile(join(root,f.path),join(dir,f.path));}
+  const doc=await readFile(join(root,'demos/components/workbench-system/REUSE.md'),'utf8');
+  const code=doc.match(/```jsx\n([\s\S]*?)\n```/)[1];
+  await writeFile(join(dir,'main.jsx'),code+"\nimport {createRoot} from 'react-dom/client';createRoot(document.body).render(<FormDemo/>);");
+  const result=await build({absWorkingDir:dir,entryPoints:['main.jsx'],nodePaths:[resolve(root,'node_modules')],bundle:true,jsx:'automatic',format:'iife',outfile:join(dir,'main.js'),write:false,logLevel:'silent'});
+  assert.ok(result.outputFiles.some(f=>f.path.endsWith('.js')&&f.text.includes('reuse-result')));
+  assert.ok(result.outputFiles.some(f=>f.path.endsWith('.css')&&f.text.includes('.search-field')));
+ }finally{await rm(dir,{recursive:true,force:true});}
+});

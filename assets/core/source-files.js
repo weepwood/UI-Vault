@@ -8,7 +8,12 @@ const LANGUAGES={
   tsx:'TSX',jsx:'JSX',json:'JSON',vue:'Vue',svelte:'Svelte',
   wgsl:'WGSL',glsl:'GLSL',vert:'GLSL',frag:'GLSL',rs:'Rust',md:'Markdown',svg:'SVG',txt:'Text'
 };
-function safeSourcePath(path){
+const WORKBENCH_REUSE_FILES=Object.freeze([
+  'src/components/SearchField.jsx','src/components/WorkbenchSelect.jsx','src/components/Icon.jsx',
+  'assets/core/dropdown.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/icons/lucide.svg'
+]);
+export function safeSourcePath(path,assetId){
+  if(assetId==='workbench-components'&&WORKBENCH_REUSE_FILES.includes(path))return true;
   return typeof path==='string'&&(path.startsWith('demos/')||path.startsWith('subprojects/'))&&!/[\\?#]/.test(path)&&
     path.split('/').every(part=>part&&!part.startsWith('.')&&/^[a-zA-Z0-9_.-]+$/.test(part));
 }
@@ -20,7 +25,7 @@ export function getSourceFiles(asset){
   const seen=new Set();
   return entries.map(item=>{
     const path=item?.path;
-    if(!safeSourcePath(path)||seen.has(path))return null;
+    if(!safeSourcePath(path,asset.id)||seen.has(path))return null;
     const name=path.split('/').at(-1);
     const extension=name.slice(name.lastIndexOf('.')).toLowerCase();
     if(!SOURCE_EXTENSIONS.includes(extension))return null;

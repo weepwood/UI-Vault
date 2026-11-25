@@ -1659,3 +1659,7 @@ html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-p
 .app-shell .project-panel .project-row-title{font-feature-settings:"kern"}
 .app-shell .project-panel .project-row-subtitle{font-variant-numeric:tabular-nums}
 @media(prefers-reduced-motion:reduce){.app-shell .sidebar .workbench-shortcut{transition:none}}
+
+.material-combination-presets button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
+.material-transfer-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:100%;padding-top:6px;border-top:1px solid var(--line-soft)}
+.material-transfer-actions small{flex-basis:100%;line-height:1.5}

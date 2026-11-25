@@ -2,7 +2,7 @@ import { readFile, readdir, realpath, stat, writeFile } from 'node:fs/promises';
 import {readFileSync} from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, extname, join, resolve, sep } from 'node:path';
-import {SOURCE_EXTENSIONS} from '../../assets/core/source-files.js';
+import {SOURCE_EXTENSIONS,safeSourcePath} from '../../assets/core/source-files.js';
 import {PREVIEW_CAPABILITIES} from '../../assets/core/preview-policy.js';
 import {inspectProjects,canonicalGitHubRepository} from './projects.mjs';
 import {normalizeEol} from './text.mjs';
@@ -33,7 +33,7 @@ export function checkCategories(categories) {
   }
   return errors;
 }
-const safeSourceFilePath=path=>safeRelativePath(path,'demos/')||safeRelativePath(path,'subprojects/');
+const safeSourceFilePath=(path,id)=>safeSourcePath(path,id);
 export function checkEntry(entry, categories, fileName='') {
   const errors=[];
   const where = entry && isText(entry.id) ? entry.id : fileName || '未知资产';
@@ -128,7 +128,7 @@ export function checkEntry(entry, categories, fileName='') {
       const seen=new Set();
       for(const file of entry.sourceFiles){
         if(!file||typeof file!=='object'||Array.isArray(file)||
-          !safeSourceFilePath(file.path)||!SOURCE_EXTENSIONS.includes(extname(file.path).toLowerCase())){
+          !safeSourceFilePath(file.path,entry.id)||!SOURCE_EXTENSIONS.includes(extname(file.path).toLowerCase())){
           errors.push(where+': sourceFiles 含无效路径或不支持的源码扩展名');
           continue;
         }
@@ -236,7 +236,7 @@ export async function inspectCatalog({checkGenerated=true}={}) {
       }
       if(entry.designGuidePath&&safeRelativePath(entry.designGuidePath,'demos/')&&!(await safeExistingFile(entry.designGuidePath)))errors.push(entry.id+': 缺少设计指南 '+entry.designGuidePath);
       for(const file of entry.sourceFiles||[]){
-        if(safeSourceFilePath(file?.path)&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
+        if(safeSourceFilePath(file?.path,entry.id)&&!(await safeExistingFile(file.path)))errors.push(entry.id+': 缺少源码文件 '+file.path);
       }
       for(const file of entry.bundleFiles||[]){
         if(safeRelativePath(file,'demos/')&&!(await safeExistingFile(file)))errors.push(entry.id+': 独立演示包缺少文件 '+file);
