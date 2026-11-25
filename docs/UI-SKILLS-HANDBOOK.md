@@ -141,6 +141,71 @@ npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-gu
 
 > 基于项目 DESIGN.md 编写一个职责单一的 SKILL.md 草案：明确触发条件、必读上下文、步骤、输出格式、禁止项和验收方法。把长资料放在 references/ 并按需引用，不默认执行脚本或修改全局设置。
 
+<!-- ui-vault-research-v2:start -->
+## 11 · 原始 Skill 逐项研究
+
+原始资料为 2026-11-25 公开页面阅读记录，非固定提交快照；所有摘要、规则和原创 Skill 均为 UI Vault 归纳，不镜像第三方内容。许可证针对所列来源，不推定字体、图片或其他资产的再分发权。
+
+| Skill 与许可 | 核心方法 | 提示结构 | 适用边界与证据 |
+| --- | --- | --- | --- |
+| [frontend-design](https://github.com/anthropics/skills/blob/main/skills/frontend-design/SKILL.md)；[Apache-2.0](https://github.com/anthropics/skills/blob/main/skills/frontend-design/LICENSE.txt) | 由真实内容、用户和行业语境导出视觉方向，而非随机选取潮流效果。 | 角色与任务 → 内容和视觉线索 → 排版、色彩、布局决策 → 实现。 | 适合新界面或明确重设计；后台工具的可预测性和效率优先。（原始 SKILL.md） |
+| [impeccable](https://github.com/pbakaus/impeccable/blob/main/plugin/skills/impeccable/SKILL.md)；[Apache-2.0](https://github.com/pbakaus/impeccable/blob/main/plugin/skills/impeccable/SKILL.md) | 按产品表面目标分配视觉投入；用针对性审查和真实渲染反馈精修。 | 上下文加载 → 命令/专项手册 → 实现 → 批量看截图。 | 上游 4.10.0 指令涉及启动器及可能下载的二进制；不自动执行。（原始 SKILL.md） |
+| [emil-design-eng](https://github.com/emilkowalski/skills/blob/main/skills/emil-design-eng/SKILL.md)；[MIT](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 从反馈、弹出层定位、触发频率及细节累积理解交互质量。 | 设计工程原则 → 针对场景的实现建议 → 前后对比与原因。 | 适合交互精修；专门的动效和性能问题交给更窄的技能。（原始 SKILL.md） |
+| [animate](https://github.com/emilkowalski/skills/blob/main/skills/animate/SKILL.md)；[MIT](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 先判断是否值得动画，再确定属性、时长、曲线与中断策略。 | 判断动画目的 → 选择实现机制 → 针对组件查示例 → 代码及体感检查。 | 参数是场景化建议；不能替代实机观察。（原始 SKILL.md） |
+| [choreograph](https://github.com/emilkowalski/skills/blob/main/skills/choreograph/SKILL.md)；[MIT](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 处理多个元素的先后、重叠与整体时序，避免重复入场和等待。 | 列出关系与频率 → 选择共同或错开时序 → 检查可立即操作。 | 高频菜单与键盘操作不应因展示效果延迟。（原始 SKILL.md） |
+| [remove-animations](https://github.com/emilkowalski/skills/blob/main/skills/remove-animations/SKILL.md)；[MIT](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 只减少不必要的动画并检查依赖动画完成的状态逻辑。 | 枚举动画 → 检查依赖 → 删除或减弱 → 回归。 | 不顺带修改缓动或卸载依赖；注意隐藏元素和卸载回调。（原始 SKILL.md） |
+| [animation-performance](https://github.com/emilkowalski/skills/blob/main/skills/animation-performance/SKILL.md)；[MIT](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 按掉帧症状定位主线程、布局、绘制或合成问题。 | 性能症状 → 定位原因 → 有针对性修复 → 记录实际设备轨迹。 | transform/opacity 不是绝对性能保证；不盲目添加 will-change。（原始 SKILL.md） |
+| [break-ui](https://github.com/emilkowalski/skills/blob/main/skills/break-ui/SKILL.md)；[MIT](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 用 schema 或现实数据极值替换演示数据，定位真实破坏。 | 字段与来源 → 合理极端数据 → 开发态切换 → 先报告再修复。 | 测试通过同一数据入口；不把压力测试开关发布到生产。（原始 SKILL.md） |
+| [learn-taste](https://aiforui.dev/skills/learn-taste)；[仓库 MIT；该文件待复核](https://github.com/emilkowalski/skills/blob/main/LICENSE) | 将实际设计纠正和理由转化为可复用规则。 | 收集纠正 → 归纳适用范围 → 确认理由 → DESIGN.md 或 lint 候选。 | 原始 SKILL.md 路径未成功打开；只依据作者公开说明，不宣称已读源码。（作者说明；源码待核） |
+| [better-interface](https://github.com/jakubkrehel/skills/blob/main/skills/better-interface/SKILL.md)；[MIT](https://github.com/jakubkrehel/skills/blob/main/LICENSE) | 分派各专业领域审查，并按证据归并为排序后的结论。 | 确定范围 → 项目上下文 → 领域审查 → 去重及排序。 | 分清已有缺陷和新增回归；未检查领域必须明确标注。（原始 SKILL.md） |
+| [better-typography](https://github.com/jakubkrehel/skills/blob/main/skills/better-typography/SKILL.md)；[MIT](https://github.com/jakubkrehel/skills/blob/main/LICENSE) | 按文本角色审查字号、字重、字形、行高、换行与数字呈现。 | 项目排版系统 → 文字渲染与字体特性 → 测量与修复。 | 某些上游阈值是其工作约定，不是普适可访问性标准；中文需另验。（原始 SKILL.md） |
+| [better-colors](https://github.com/jakubkrehel/skills/blob/main/skills/better-colors/SKILL.md)；[MIT](https://github.com/jakubkrehel/skills/blob/main/LICENSE) | 根据语义角色设计色阶，计算对比度与色域而非主观估计。 | 现有 Token → 色阶与角色 → 色域与对比度 → 具体修复。 | 不强制把成熟 HEX 体系改成 OKLCH。（原始 SKILL.md） |
+| [break](https://github.com/jakubkrehel/skills/blob/main/skills/break/SKILL.md)；[MIT](https://github.com/jakubkrehel/skills/blob/main/LICENSE) | 通过隔离的真实组件测试页呈现适用的边界状态。 | 单组件 → 根据 props 选场景 → 临时页面 → 浏览器可见证据。 | 不使用生产数据；没有浏览器则只交付场景清单。（原始 SKILL.md） |
+| [web-design-guidelines](https://github.com/vercel-labs/agent-skills/blob/main/skills/web-design-guidelines/SKILL.md)；[许可待核：不再分发](https://github.com/vercel-labs/agent-skills/blob/main/README.md) | 基于随 Skill 固定版本的规则审查具体文件，而非每次从网络取规则。 | 读取本地规则快照 → 检查目标文件 → 文件与行号报告。 | 源码规则检查不是完整 UX 或 WCAG 验收；未核实独立许可证。（原始 SKILL.md） |
+| [ui-ux-pro-max](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/.claude/skills/ui-ux-pro-max/SKILL.md)；[MIT](https://github.com/nextlevelbuilder/ui-ux-pro-max-skill/blob/main/LICENSE) | 根据设计系统、领域或技术栈检索候选规则和方案。 | 确定检索模式 → 检查匹配身份和适用性 → 有证据才持久化。 | 上游搜索脚本需审计后才运行；建议库不代替产品研究。（原始 SKILL.md） |
+| [taste-skill](https://github.com/Leonxlnx/taste-skill/blob/main/skills/taste-skill/SKILL.md)；[MIT](https://github.com/Leonxlnx/taste-skill/blob/main/LICENSE) | 以艺术指导、版面表达、内容和浏览器检查约束生成结果。 | 视觉方案 → 真实内容和实现 → 多视口检查 → 记录未通过项及假设。 | 强烈的页面节奏和视觉规则偏展示型产品；不要套用到密集工作台。（原始 SKILL.md） |
+| [extract-design-md](https://github.com/google-labs-code/stitch-skills/blob/main/plugins/stitch-design/skills/extract-design-md/SKILL.md)；[Apache-2.0](https://github.com/google-labs-code/stitch-skills/blob/main/LICENSE) | 从主题、Token、组件源码或页面计算样式提炼设计语言。 | 区分源码与网址模式 → 提取证据 → 归纳角色和约束 → 文档。 | 静态提取不等于真实渲染；外部服务集成需授权，不覆盖目标项目 DESIGN.md。（原始 SKILL.md） |
+
+## 12 · 视觉设计专业知识库
+
+规范、上游设计系统与启发式原则分开使用。每条知识包含原理、工程做法和验收方法。核对日期：2026-11-25
+
+| 知识与来源 | 原理 | 工程方法 | 验收 |
+| --- | --- | --- | --- |
+| [排版与阅读](https://www.carbondesignsystem.com/building-blocks/foundations/typography/overview)；IBM Carbon；文档仅引用链接，字体许可另查 | 字号、字重、行高与字形共同建立层级；任务工具和展示内容使用不同密度。 | 先定义 title/body/label/data 四类角色；用数字等宽特性处理变化数值；检查 CJK 换行、字形回退和文本放大。 | 保留原字体与 Token，比较同一内容的宽窄屏；正文长度和字号为场景化启发，不套固定英文行长。 |
+| [色彩科学与色域](https://www.w3.org/TR/2026/CRD-css-color-4-20261123/)；W3C Candidate Recommendation Draft；W3C permissive document license | OKLCH 的 L/C/H 分别描述感知明度、彩度和色相，便于构造有规律的色阶，但并非每个组合都能在目标色域显示。 | 先建立中性色与语义角色，再在目标色域检查映射；为旧浏览器保留 CSS 回退；透明表面先求合成结果。 | 不得把 OKLCH 的 L 当 WCAG 相对亮度；实际计算最终背景上的对比度并检查双主题。 |
+| [对比度与可访问性](https://www.w3.org/TR/WCAG22/)；W3C Recommendation；W3C document use rules | WCAG 的文字对比度采用 (L较亮+0.05)/(L较暗+0.05)，普通文字 AA 通常 4.5:1、大文字 3:1；非文字控件等有独立条款。 | 对实际前景/背景和适用状态计算，不仅检查 Token；不要仅用颜色传达错误或选中。 | 区分规范门槛与视觉偏好，检查可见焦点、放大、键盘和读屏；例外按原条款。 |
+| [视觉权重与信息层级](https://www.nngroup.com/articles/principles-visual-design/)；NN/g 著作权资料；仅链接与原创归纳 | 尺度、对比、分组与平衡改变注意力分布；权重应服务任务优先级，不是装饰数量。 | 为每屏定义主要任务、辅助任务、危险操作；调整字号、留白和强调色而非堆卡片与阴影。 | 灰度截图检查主次、实际任务路径检查入口；灰度不能替代用户研究或色彩无障碍验证。 |
+| [网格、空间与对齐](https://www.carbondesignsystem.com/building-blocks/foundations/2x-grid/overview)；IBM Carbon；文档仅引用链接 | 网格的重复节奏让对齐和分组可预测。Carbon 使用 8px 基本单位；这不是所有项目都必须使用的单位。 | 优先复用本地空间尺度；将组内、组间、页面边缘的距离分别定义，使用 minmax(0,1fr) 等内容约束。 | 检查 390/768/1280px 与窄嵌入视口、长内容、放大、焦点及无意横向溢出。 |
+| [材质、层次与透明表面](https://developer.apple.com/design/human-interface-guidelines/materials)；Apple HIG；保留版权，仅引用链接 | 材质表达层的语义与深度关系；透明表面受后方内容和系统设置影响。 | 先定义 base/surface/overlay 层；仅在有分层需求时使用模糊，提供不透明回退，按文字和背景组合校验。 | 核对明暗、复杂背景、减少透明设置或替代模式、滚动性能；Apple 原生材质不能等同 CSS blur。 |
+| [构图、图形与视觉平衡](https://www.nngroup.com/articles/visual-design-cheat-sheet/)；NN/g 著作权资料；仅链接与原创归纳 | 对称只是平衡的一种；利用图形与背景、主次比例及聚合关系使视线回到内容。 | 选择一个焦点，避免多个同强度强调；建立图文对齐关系；品牌页与工具工作台分别使用表现性和功能性构图。 | 检查宽窄视口的视觉主次及真实内容；不以黄金比例或中心构图作为强制合格线。 |
+| [Token 语义与跨工具交换](https://www.designtokens.org/TR/2025.10/format/)；DTCG Final Community Group Report；W3C FSA，非 W3C 标准 | 基础值、语义角色与组件别名可形成可追踪的引用关系。 | 在现有源文件上增加必要语义别名，检测类型匹配、悬空引用和循环；导出前明确平台与色域。 | 以实际编译结果及引用检查为准；不为了套规范重写已有 Token 工具链。 |
+
+## 13 · UI Vault 原创 Skills
+
+以下是 MIT 原创纯文档 Skills，兼容 Agent Skills 的基础目录结构；手工复制单个目录到目标客户端支持的项目级 Skill 路径，保留 LICENSE。不自动安装，客户端实际发现和执行尚未验证。
+
+| Skill | 用途 | 交付 |
+| --- | --- | --- |
+| [ui-vault-design-review](https://github.com/weepwood/UI-Vault/tree/main/skills/ui-vault-design-review) | 审查页面、交互、视觉缺陷和设计一致性 | 证据驱动的缺陷排序与可执行修复 |
+| [ui-vault-design-extract](https://github.com/weepwood/UI-Vault/tree/main/skills/ui-vault-design-extract) | 从已有源码与授权的界面提取设计规则 | 可追踪的 DESIGN.md 候选和 Token 对照 |
+| [ui-vault-visual-refine](https://github.com/weepwood/UI-Vault/tree/main/skills/ui-vault-visual-refine) | 改善视觉构图、排版、色彩与密度 | 可验证的视觉方向和精修结果 |
+| [ui-vault-component-handoff](https://github.com/weepwood/UI-Vault/tree/main/skills/ui-vault-component-handoff) | 跨项目移植组件、Token 和交互契约 | 可审查的交付包与隔离验收记录 |
+
+## 14 · 跨项目交付模板
+
+先复制所需模板至临时目录并按目标项目调整，不覆盖现有规范。Token 示例是 DTCG 风格的最小演示，不宣称完整规范验证或跨框架适配。
+
+| 模板 | 使用说明 |
+| --- | --- |
+| [DESIGN.md 模板](https://github.com/weepwood/UI-Vault/blob/main/docs/ai-ui-skills/templates/DESIGN.md) | 阅读、复制到目标项目后按真实技术栈及验收要求补全。 |
+| [AGENTS.md 接入片段](https://github.com/weepwood/UI-Vault/blob/main/docs/ai-ui-skills/templates/AGENTS.md) | 阅读、复制到目标项目后按真实技术栈及验收要求补全。 |
+| [Skill 模板](https://github.com/weepwood/UI-Vault/blob/main/docs/ai-ui-skills/templates/skill-template/SKILL.md) | 阅读、复制到目标项目后按真实技术栈及验收要求补全。 |
+| [Token 示例](https://github.com/weepwood/UI-Vault/blob/main/docs/ai-ui-skills/templates/tokens.example.json) | 阅读、复制到目标项目后按真实技术栈及验收要求补全。 |
+| [组件交付清单](https://github.com/weepwood/UI-Vault/blob/main/docs/ai-ui-skills/templates/component-handoff.md) | 阅读、复制到目标项目后按真实技术栈及验收要求补全。 |
+
+<!-- ui-vault-research-v2:end -->
+
 ## 原始来源
 
 - https://aiforui.dev/skills
