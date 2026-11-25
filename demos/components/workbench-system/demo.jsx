@@ -44,10 +44,16 @@ function Showcase({nodes}){
   const [selectedId,setSelectedId]=useState(SAMPLES[0].id);
   const [mode,setMode]=useState('fluid');
   const [customWidth,setCustomWidth]=useState(800);
+  useLayoutEffect(()=>{
+    const reset=()=>{setQuery('');setSort('featured');setTag('');setCategory('all');setSelectedId(SAMPLES[0].id);setMode('fluid');setCustomWidth(800);};
+    window.addEventListener('wb-reset-demo',reset);
+    return ()=>window.removeEventListener('wb-reset-demo',reset);
+  },[]);
   // 与主站相同的检索、过滤与排序逻辑。
   const items=useMemo(()=>filterAssets(SAMPLES,{category,tag,query,sort,labels:LABELS}),
     [category,tag,query,sort]);
   const selected=items.find(item=>item.id===selectedId);
+  function report(message){const status=document.getElementById('wb-interaction-status');if(status)status.textContent=message;}
 
   useLayoutEffect(()=>{
     const {deviceStage:stage,deviceFrame:frame}=nodes;
@@ -72,22 +78,22 @@ function Showcase({nodes}){
 
   return <>
     {createPortal(<SearchField id="wb-demo-search" controls="wb-project-list" value={query}
-      onChange={setQuery} onSubmit={()=>items[0]&&setSelectedId(items[0].id)}
+      onChange={value=>{setQuery(value);report(value?'搜索：'+value:'已清空搜索');}} onSubmit={()=>{if(items[0]){setSelectedId(items[0].id);report('已选中：'+items[0].title);}}}
       placeholder="输入组件名称进行过滤" label="按名称过滤示例" shortcuts={null}/>,nodes.search)}
-    {createPortal(<WorkbenchSelect id="wb-sort" label="示例排序" value={sort} onChange={setSort}
+    {createPortal(<WorkbenchSelect id="wb-sort" label="示例排序" value={sort} onChange={value=>{setSort(value);report('排序：'+labelOf(SORT_OPTIONS,value));}}
       options={SORT_OPTIONS} icon="arrow-up-down"
       icons={{featured:'layers',newest:'calendar-days',az:'arrow-up-down'}}/>,nodes.sort)}
-    {createPortal(<WorkbenchSelect id="wb-tag" label="示例标签" value={tag} onChange={setTag}
+    {createPortal(<WorkbenchSelect id="wb-tag" label="示例标签" value={tag} onChange={value=>{setTag(value);report('标签：'+labelOf(TAG_OPTIONS,value));}}
       options={TAG_OPTIONS} icon="bookmark"
       icons={{'':'bookmark','组件':'component','Demo':'play'}}/>,nodes.tag)}
     {createPortal('当前：'+labelOf(SORT_OPTIONS,sort)+' / '+labelOf(TAG_OPTIONS,tag),nodes.selectResult)}
     {createPortal(<CategoryNavigation categories={CATEGORIES} current={category}
-      settingsActive={false} onChange={setCategory}/>,nodes.categories)}
+      settingsActive={false} onChange={value=>{setCategory(value);report('分类：'+(CATEGORIES.find(c=>c.id===value)?.label||value));}}/>,nodes.categories)}
     {createPortal(<ProjectList items={items} labels={LABELS} selectedId={selectedId}
-      onSelect={setSelectedId} query={query}/>,nodes.list)}
+      onSelect={value=>{setSelectedId(value);report('已选中：'+(items.find(a=>a.id===value)?.title||value));}} query={query}/>,nodes.list)}
     {createPortal(listStatus,nodes.listStatus)}
-    {createPortal(<ViewportSwitcher mode={mode} customWidth={customWidth} onChange={setMode}
-      onCustomWidth={width=>{setCustomWidth(width);setMode('custom');}}
+    {createPortal(<ViewportSwitcher mode={mode} customWidth={customWidth} onChange={value=>{setMode(value);report('预览模式：'+value);}}
+      onCustomWidth={width=>{setCustomWidth(width);setMode('custom');report('自定义宽度：'+width+'px');}}
       stageElement={nodes.deviceStage} visible/>,nodes.viewport)}
     {createPortal(deviceStatus,nodes.deviceStatus)}
   </>;
@@ -126,9 +132,32 @@ const summaries=Object.freeze({
   tokens:'展示当前 Workbench 语义色；跨项目设计变量由 Foundation Kit 维护。'
 });
 
+const storySources={
+ foundation:{name:'按钮 / 状态',path:'assets/ui/controls.css',snippet:'<button type="button" class="open-action">主要操作</button>\n<button type="button" class="info-action" disabled>禁用操作</button>\n<button type="button" class="square-action" aria-label="复制">…</button>'},
+ forms:{name:'搜索 / 选择',path:'src/components/WorkbenchSelect.jsx',snippet:'<SearchField id="search" value={query} onChange={setQuery} />\n<WorkbenchSelect id="sort" label="排序" value={sort}\n  options={options} onChange={setSort} />'},
+ navigation:{name:'分类 / 列表',path:'src/components/ProjectList.jsx',snippet:'<CategoryNavigation categories={categories} current={category}\n  onChange={setCategory} />\n<ProjectList items={items} labels={labels} selectedId={selectedId}\n  onSelect={setSelectedId} query={query} />'},
+ feedback:{name:'原生对话框 / 通知',path:'assets/ui/dialog.css',snippet:'<dialog class="project-dialog" aria-labelledby="dialog-title">\n  <h2 id="dialog-title">操作确认</h2>\n  <button type="button" class="info-action">关闭</button>\n</dialog>\n// 使用 dialog.showModal() / dialog.close()'},
+ viewport:{name:'设备模式 / 缩放',path:'src/components/ViewportSwitcher.jsx',snippet:'<ViewportSwitcher mode={mode} customWidth={customWidth}\n  onChange={setMode} onCustomWidth={setCustomWidth}\n  stageElement={stage} visible />\n// applyPreviewLayout(stage, frame, mode, customWidth)'},
+ tokens:{name:'语义颜色 / 尺寸',path:'assets/styles.css',snippet:'.panel {\n  background: var(--surface);\n  color: var(--ink);\n  border: 1px solid var(--line);\n  border-radius: var(--workbench-control-radius, 7px);\n}'}
+};
+
 function initShell(){
   const tabs=$$('[data-story]');
   const panels=$$('[data-story-panel]');
+  const sourceToggle=$('#wb-source-toggle'),sourcePanel=$('#wb-source-panel');
+  const report=message=>{$('#wb-interaction-status').textContent=message;};
+  const showSource=open=>{sourcePanel.hidden=!open;sourceToggle.setAttribute('aria-expanded',String(open));sourceToggle.textContent=open?'收起实现':'查看实现';};
+  sourceToggle.addEventListener('click',()=>showSource(sourcePanel.hidden));
+  $('#wb-select-source').addEventListener('click',()=>{
+    const code=$('#wb-source-code'),range=document.createRange(),selection=window.getSelection();
+    code.focus({preventScroll:true});range.selectNodeContents(code);selection.removeAllRanges();selection.addRange(range);
+    report('已选中接入代码，使用系统复制快捷键。');
+  });
+  $('#wb-reset-story').addEventListener('click',()=>{
+    window.dispatchEvent(new Event('wb-reset-demo'));
+    $$('[data-demo-toggle]').forEach((button,index)=>{button.setAttribute('aria-pressed',String(index===0));button.classList.toggle('is-active',index===0);});
+    report('已恢复所有演示控件的默认状态。');
+  });
   function showStory(id,{focus=false}={}){
     const index=tabs.findIndex(tab=>tab.dataset.story===id);
     if(index<0)return;
@@ -141,7 +170,18 @@ function initShell(){
     });
     $('#wb-story-title').textContent=tabs[index].textContent.trim();
     $('#wb-story-subtitle').textContent=summaries[id];
-    if(focus)tabs[index].focus({preventScroll:true});
+    const source=storySources[id];
+    $('#wb-story-number').textContent=String(index+1).padStart(2,'0');
+    $('#wb-inspector-title').textContent=source.name;
+    $('#wb-inspector-description').textContent='接入示例 · '+source.path;
+    $('#wb-source-code').textContent=source.snippet;
+    const link=$('#wb-source-link');link.href='https://github.com/weepwood/UI-Vault/blob/main/'+source.path;
+    // The embedded demo deliberately has no popup permission. Expose a selectable URL instead.
+    link.hidden=window.self!==window.top;
+    $('#wb-source-address').textContent=link.href;
+    $('#wb-source-address').hidden=window.self===window.top;
+    report('已切换：'+tabs[index].textContent.trim());
+    if(focus){tabs[index].focus({preventScroll:true});tabs[index].scrollIntoView({block:'nearest',inline:'nearest'});}
   }
   $('.wb-story-nav').addEventListener('click',event=>{
     const button=event.target.closest('[data-story]');
@@ -162,6 +202,7 @@ function initShell(){
   function notify(message){
     clearTimeout(toastTimer);
     toast.textContent=message;
+    report(message);
     toast.classList.add('show');
     toastTimer=setTimeout(()=>toast.classList.remove('show'),2500);
   }
@@ -173,13 +214,15 @@ function initShell(){
       const next=toggle.getAttribute('aria-pressed')!=='true';
       toggle.setAttribute('aria-pressed',String(next));
       toggle.classList.toggle('is-active',next);
+      report(next?'状态已选中':'状态已取消选中');
     }
   });
 
   const dialog=$('#wb-dialog');
-  $('#wb-open-dialog').addEventListener('click',()=>dialog.showModal());
+  $('#wb-open-dialog').addEventListener('click',()=>{dialog.showModal();report('对话框已打开');});
   $('#wb-close-dialog').addEventListener('click',()=>dialog.close());
   $('#wb-dialog-confirm').addEventListener('click',()=>dialog.close());
+  dialog.addEventListener('close',()=>report('对话框已关闭'));
   dialog.addEventListener('click',event=>{
     if(event.target===dialog)dialog.close();
   });
@@ -207,7 +250,12 @@ function initShell(){
     document.documentElement.style.colorScheme=theme;
     $$('[data-demo-theme]').forEach(item=>item.setAttribute('aria-pressed',String(item===button)));
     renderTokens();
+    report('主题：'+(theme==='dark'?'深色':'浅色'));
   }));
+  const initialTheme=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+  document.documentElement.dataset.theme=initialTheme;
+  document.documentElement.style.colorScheme=initialTheme;
+  $$('[data-demo-theme]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.demoTheme===initialTheme)));
   renderTokens();
   showStory('foundation');
 }

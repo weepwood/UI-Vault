@@ -47,6 +47,12 @@
       </div>
     </header>
     <div class="wb-story-content">
+      <div class="wb-inspector" aria-label="当前组件演示信息">
+        <div class="wb-inspector-meta"><span class="wb-inspector-kicker">LIVE COMPONENT / <span id="wb-story-number">01</span></span><strong id="wb-inspector-title">真实组件与样式</strong><p id="wb-inspector-description">直接复用当前工作台的组件与设计变量。</p></div>
+        <div class="wb-inspector-actions"><button type="button" class="info-action" id="wb-source-toggle" aria-expanded="false" aria-controls="wb-source-panel">查看实现</button><button type="button" class="info-action" id="wb-reset-story">重置演示</button></div>
+        <div class="wb-inspector-source" id="wb-source-panel" hidden><div class="wb-component-caption"><strong>接入示例</strong><a id="wb-source-link" href="https://github.com/weepwood/UI-Vault/blob/main/assets/ui/controls.css" target="_blank" rel="noopener noreferrer">查看真实源码</a></div><p class="wb-source-address" id="wb-source-address" hidden></p><pre id="wb-source-code" tabindex="0" aria-label="组件接入示例"></pre><button type="button" class="info-action" id="wb-select-source">选中代码</button><p class="wb-component-hint">接入片段用于说明现有组件 API，并非完整独立工程；在沙箱内选中后使用系统复制快捷键。</p></div>
+        <div class="wb-inspector-feedback"><span class="wb-status-dot" aria-hidden="true"></span><span id="wb-interaction-status" role="status">等待操作</span></div>
+      </div>
       <section id="story-foundation" class="wb-story-panel" role="tabpanel" aria-labelledby="story-tab-foundation" data-story-panel="foundation">
         <div class="wb-section-head"><h2>按钮和操作</h2><p>按钮通过明确的主次等级、状态和动作文案建立信息层次。</p></div>
         <div class="wb-surface">

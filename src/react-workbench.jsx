@@ -249,6 +249,12 @@ function WorkbenchPortals({nodes}){
   const setDialogOpen=useCallback(value=>setDialogState({key:dialogKey,open:Boolean(value)}),[dialogKey]);
   const onDialogChange=useCallback(value=>setDialogOpen(Boolean(value)),[setDialogOpen]);
   const onMenuToggle=useCallback(()=>menu(!state.menuOpen),[menu,state.menuOpen]);
+  useLayoutEffect(()=>{
+    for(const [id,assetId] of [['shortcut-components','workbench-components'],['shortcut-recipe-lab','design-recipe-lab']]){
+      const link=document.getElementById(id);
+      if(link){if(!notLibrary&&selected?.id===assetId)link.setAttribute('aria-current','page');else link.removeAttribute('aria-current');}
+    }
+  },[notLibrary,selected?.id]);
   const onSelect=useCallback(id=>{
     selectAsset(id);
     if(mobile)requestAnimationFrame(()=>document.getElementById('preview-title')?.focus({preventScroll:true}));
