@@ -1,4 +1,4 @@
-import {Fragment,useEffect,useRef,useState,useSyncExternalStore} from 'react';
+import {Fragment,useEffect,useLayoutEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {parameterSchemaFor,normalizeParameters,validParameter,parameterMessage,validParameterMessage,tokenExport,exportDemoParameters,FOUNDATION_ID,warmLayoutCssValues} from '../../assets/core/demo-parameters.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {importParameterSnapshot,exportLayoutCss} from '../../assets/core/parameter-snapshot.js';
@@ -95,6 +95,23 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     try{const next=normalizeParameters(fields,{...values,...patch},{complete:true});if(Object.keys(patch).every(key=>next[key]===values[key]))return;replaceValues(next,true,Object.keys(patch).length===1?Object.keys(patch)[0]:null);}catch{setStatus('参数不合法');}
   }
   const hasMaterialGroups=asset.id==='warm-workbench'&&Boolean(values);
+  // Keep the full sticky toolbar only when there is enough room to edit below it.
+  // ResizeObserver also covers user drag-resizing and multi-line validation status.
+  useLayoutEffect(()=>{
+    if(!liveEditing)return;
+    const toolbar=toolbarRef.current,dock=toolbar?.closest('#parameter-dock');
+    const header=dock?.querySelector('.parameter-dock-header');
+    if(!dock||!header||!toolbar)return;
+    function measure(){
+      const compact=dock.clientHeight-header.offsetHeight-toolbar.offsetHeight<72;
+      if(compact)dock.dataset.compactControls='true';
+      else delete dock.dataset.compactControls;
+    }
+    measure();
+    const observer=new ResizeObserver(measure);
+    observer.observe(dock);observer.observe(header);observer.observe(toolbar);
+    return ()=>{observer.disconnect();delete dock.dataset.compactControls;};
+  },[liveEditing,hasMaterialGroups]);
   useEffect(()=>{
     if(!liveEditing||!hasMaterialGroups)return;
     const toolbar=toolbarRef.current,dock=toolbar?.closest('#parameter-dock');
@@ -102,7 +119,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
     let frame=0;
     function sync(){
       frame=0;
-      const boundary=dock.getBoundingClientRect().top+(dock.querySelector('.parameter-dock-header')?.offsetHeight||0)+toolbar.offsetHeight+12;
+      const boundary=dock.getBoundingClientRect().top+(dock.querySelector('.parameter-dock-header')?.offsetHeight||0)+(dock.dataset.compactControls==='true'?0:toolbar.offsetHeight)+12;
       const entries=Object.entries(sectionRefs.current).filter(([,node])=>node?.isConnected);
       if(!entries.length)return;
       let name=entries[0][0];
@@ -127,7 +144,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   function jumpSection(name){
     setActiveSection(name);const target=sectionRefs.current[name];if(!target)return;
     target.focus({preventScroll:true});const dock=target.closest('#parameter-dock');
-    if(dock&&toolbarRef.current){const header=dock.querySelector('.parameter-dock-header');const offset=(header?.offsetHeight||0)+toolbarRef.current.offsetHeight+8;dock.scrollTop+=target.getBoundingClientRect().top-dock.getBoundingClientRect().top-offset;}else target.scrollIntoView({block:'start',behavior:'instant'});
+    if(dock&&toolbarRef.current){const header=dock.querySelector('.parameter-dock-header');const offset=(header?.offsetHeight||0)+(dock.dataset.compactControls==='true'?0:toolbarRef.current.offsetHeight)+8;dock.scrollTop+=target.getBoundingClientRect().top-dock.getBoundingClientRect().top-offset;}else target.scrollIntoView({block:'start',behavior:'instant'});
   }
   function undo(){if(!history.length)return;revision.current++;const next=history.at(-1);if(values)setFuture(previous=>[...previous.slice(-29),values]);setHistory(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已撤销 · 尚未应用');scheduleLive(next);}
   function redo(){if(!future.length)return;revision.current++;const next=future.at(-1);if(values)setHistory(previous=>[...previous.slice(-29),values]);setFuture(previous=>previous.slice(0,-1));setValues(next);setDrafts({});setStatus('已重做 · 尚未应用');scheduleLive(next);}

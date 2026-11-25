@@ -1503,19 +1503,17 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 /* #112 真实截图：跳转后分组导航消失。保持停靠区分组入口可见，标题不被遮挡。 */
 #parameter-dock{--parameter-header-height:44px}
 #parameter-dock .parameter-dock-header{z-index:4;box-sizing:border-box;height:var(--parameter-header-height)}
-#parameter-dock .parameter-section-nav{position:sticky;top:var(--parameter-header-height);z-index:3;background:var(--surface);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;align-self:start}
+#parameter-dock .parameter-section-nav{position:static;background:var(--surface);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;align-self:start}
 #parameter-dock .parameter-section-nav button{flex:none;white-space:nowrap}
 .parameter-section-nav button[data-selected=true]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-line)}
-#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:88px}
 .material-shadow-controls{display:grid;gap:7px;min-width:0}
 #parameter-dock :is(.demo-parameter-actions button,.parameter-section-nav button,.material-action-row button,.parameter-presets button){border-radius:6px;min-height:30px}
 #parameter-dock input[type=checkbox]{accent-color:var(--accent)}
 #parameter-dock .parameter-field:focus-within{border-color:var(--accent-line)}
-@media(max-width:760px){#parameter-dock{--parameter-header-height:38px}#parameter-dock :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:78px}}
+@media(max-width:760px){#parameter-dock{--parameter-header-height:38px}}
 
 /* 固定操作与分组为一个整体，避免独立 sticky 层遮挡。 */
 #parameter-dock .parameter-fixed-controls{position:sticky;top:var(--parameter-header-height);z-index:3;min-width:0;background:var(--surface);display:grid;gap:4px;padding:4px 0 0}
-#parameter-dock .parameter-section-nav{position:static;overflow-x:auto;z-index:auto}
 #parameter-dock .parameter-main-actions{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;padding:2px 1px 4px;min-width:0}
 #parameter-dock .parameter-main-actions>*{flex:none;white-space:nowrap}
 #parameter-dock .parameter-status{margin:0;min-height:16px;font-size:11px}
@@ -1588,6 +1586,12 @@ html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-edit
 .select-option:focus-visible{outline-offset:-2px}
 #parameter-dock .parameter-section-nav button[aria-current=location]{border-color:var(--accent-line,var(--accent));color:var(--accent);background:var(--accent-soft)}
 #parameter-dock .parameter-main-actions button:disabled{cursor:not-allowed}
+/* Height-aware dock: keep the close/resize header available, but let actions and
+   section navigation scroll when their sticky stack would consume the viewport. */
+#parameter-dock[data-compact-controls=true]{scroll-padding-top:calc(var(--parameter-header-height) + 8px)}
+#parameter-dock[data-compact-controls=true] .parameter-fixed-controls{position:static}
+#parameter-dock[data-compact-controls=true] :is(.parameter-group-title,.parameter-presets-heading){scroll-margin-top:0}
+
 
 /* 分组随实际滚动同步，色标精确位置输入与现有操作控件统一。 */
 .material-stop-position{display:inline-flex;align-items:center;gap:4px;white-space:nowrap;color:var(--muted)}

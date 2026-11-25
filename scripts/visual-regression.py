@@ -1462,6 +1462,35 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.locator('.parameter-section-nav button[aria-current="location"]').filter(has_text="预设与文件").wait_for()
             dock.evaluate("el=>el.scrollTop=0")
             dock.locator('.parameter-section-nav button[aria-current="location"]').filter(has_text="布局基础").wait_for()
+            if width<761:
+                # Compact mode must depend on actual dock capacity, including user resizing.
+                for short_width,short_height in ((667,300),(390,400),(390,280)):
+                    page.set_viewport_size({"width":short_width,"height":short_height})
+                    expect(dock).to_have_attribute("data-compact-controls","true")
+                    assert toolbar.evaluate("(el)=>getComputedStyle(el).position")=="static"
+                    dock.evaluate("el=>el.scrollTop=0")
+                    dock.get_by_role("button",name="阴影",exact=True).click()
+                    expect(dock.get_by_role("heading",name="阴影",exact=True)).to_be_focused()
+                    page.wait_for_function("""() => {
+                      const d=document.querySelector('#parameter-dock'),h=d.querySelector('.parameter-dock-header');
+                      const r=document.activeElement.getBoundingClientRect();
+                      return r.top>=h.getBoundingClientRect().bottom-1&&r.bottom<=d.getBoundingClientRect().bottom+1;
+                    }""")
+                    radius=dock.get_by_role("spinbutton",name="卡片圆角",exact=True)
+                    radius.focus()
+                    radius.scroll_into_view_if_needed()
+                    page.wait_for_function("""() => {
+                      const d=document.querySelector('#parameter-dock'),h=d.querySelector('.parameter-dock-header');
+                      const r=document.activeElement.getBoundingClientRect();
+                      return r.top>=h.getBoundingClientRect().bottom-1&&r.bottom<=d.getBoundingClientRect().bottom+1;
+                    }""")
+                    radius.fill("24")
+                    dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+                    assert page.locator("#preview-stage").bounding_box()["height"]>0
+                    page.screenshot(path=str(OUTPUT/f"parameter-short-{short_width}x{short_height}.png"))
+                page.set_viewport_size({"width":width,"height":height})
+                expect(dock).not_to_have_attribute("data-compact-controls","true")
+                assert toolbar.evaluate("(el)=>getComputedStyle(el).position")=="sticky"
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
             page.locator(".directory-filter-toggle").click()
