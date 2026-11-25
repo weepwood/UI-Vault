@@ -2433,6 +2433,66 @@ def verify_design_recipe_lab(browser, origin):
             context.close()
 
 
+def verify_knowledge_delivery(browser, origin):
+    """版本级证据与真实交付文件匹配；源码、指南、Registry 及配方关联。"""
+    import hashlib
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            def open_record(asset_id):
+                page.goto(origin+"?asset="+asset_id,wait_until="domcontentloaded")
+                page.locator("#preview-info").click()
+                page.locator("#tab-page-info").click()
+                page.get_by_role("button",name="查看 AI 复用证据").click()
+                expect(page.get_by_role("button",name="下载 AI 接入清单")).to_be_visible()
+                return page.locator(".knowledge-record")
+            knowledge=open_record("workbench-components")
+            knowledge.locator(".knowledge-evidence summary").click()
+            source=knowledge.get_by_role("button",name="查看SearchField.jsx",exact=True)
+            expect(source).to_be_visible()
+            with page.expect_download() as info:
+                knowledge.get_by_role("button",name="下载 AI 接入清单").click()
+            doc=json.loads(info.value.path().read_text("utf-8"))
+            assert doc["format"]=="ui-vault-ai-handoff" and doc["assetVersion"]=="original"
+            file=next(f for f in doc["delivery"]["sourceFiles"] if f["path"]=="src/components/SearchField.jsx")
+            actual=(DIST/file["path"]).read_bytes()
+            assert file["sha256"]==hashlib.sha256(actual).hexdigest() and file["bytes"]==len(actual)
+            assert doc["relatedRegistry"]["scope"]=="general-foundation-not-workbench-package"
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            knowledge.locator(".knowledge-evidence").scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"knowledge-delivery-{width}-{theme}.png"))
+            source.click()
+            expect(page.locator("#source-code")).to_contain_text("export function SearchField")
+            expect(page.locator("#tab-source")).to_be_focused()
+            page.locator("#tab-page-info").click()
+            page.locator(".knowledge-record").get_by_role("button",name="浏览通用 Foundation Registry").click()
+            expect(page.get_by_role("combobox",name="选择 Registry 模块")).to_be_visible()
+            page.get_by_role("button",name="返回源码",exact=True).click()
+            expect(page.locator("#source-code")).to_contain_text("export function SearchField")
+            knowledge=open_record("website-style-bauhaus")
+            knowledge.get_by_text("功能优先的模块化网格",exact=True).click()
+            assert "asset=design-recipe-lab" in knowledge.get_by_role("link",name="设计配方实验室（新标签页）").get_attribute("href")
+            href=knowledge.get_by_role("link",name="打开对应实验（独立页）").get_attribute("href")
+            independent=context.new_page()
+            try:
+                independent.goto(href,wait_until="domcontentloaded")
+                expect(independent.locator("#recipe-nav button").first).to_have_attribute("aria-pressed","true")
+                independent.goto(origin+"demos/experiments/design-recipe-lab/index.html?recipe=restrained-reading")
+                expect(independent.locator("#recipe-nav button").nth(4)).to_have_attribute("aria-pressed","true")
+            finally:
+                independent.close()
+            knowledge.locator(".knowledge-evidence summary").click()
+            knowledge.get_by_role("button",name="查看设计指南",exact=True).click()
+            expect(page.locator("#tab-design-guide")).to_have_attribute("aria-selected","true")
+            knowledge=open_record("design-recipe-lab")
+            expect(knowledge.locator("details:not(.knowledge-evidence)")).to_have_count(6)
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_knowledge_record(browser, origin):
     """按需读取真实发布知识索引，保留版本与证据边界。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -3488,6 +3548,7 @@ def main():
                     verify_recipe_replay,
                     verify_recipe_file_replay,
                     verify_knowledge_record,
+                    verify_knowledge_delivery,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,

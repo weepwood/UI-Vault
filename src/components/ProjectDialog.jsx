@@ -320,7 +320,10 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&onEditParameters&&<button className="parameter-dock-launch" type="button" onClick={onEditParameters}><Icon name="sliders-horizontal"/> 在预览旁实时编辑</button>}
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&<DemoParameterPanel key={asset.id+':'+asset.preview} asset={asset} notify={notify}/>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
-      {asset&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='page-info'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}/>}</div>}
+      {asset&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='page-info'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}
+        onOpenSource={path=>{if(!files.some(file=>file.path===path))return;setFilePath(path);setRegistryOpen(false);setTab('source');sourceTab.current?.focus();}}
+        onOpenGuide={asset.designGuidePath?()=>{setTab('design-guide');root.querySelector('#tab-design-guide')?.focus();}:undefined}
+        onOpenRegistry={registryAvailable?()=>{setRegistryOpen(true);setTab('source');sourceTab.current?.focus();}:undefined}/>}</div>}
     </section>
     {asset?.designGuidePath&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"
       aria-labelledby="tab-design-guide" tabIndex={0} hidden={tab!=='design-guide'}>

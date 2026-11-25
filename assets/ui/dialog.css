@@ -238,3 +238,10 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
 .knowledge-record details{border-top:1px solid var(--line);padding-top:8px}
 .knowledge-record summary{cursor:pointer;font-weight:600}
 .knowledge-record details p{margin-top:6px}
+
+.knowledge-evidence ul{display:grid;gap:8px;padding:0;list-style:none}
+.knowledge-evidence li{display:grid;gap:4px;padding:8px;border:1px solid var(--line);border-radius:7px;min-width:0}
+.knowledge-evidence :is(code,small){overflow-wrap:anywhere;white-space:normal;font-size:11px}
+.knowledge-evidence small{color:var(--muted)}
+.knowledge-evidence button{justify-self:start}
+.knowledge-record .registry-module-info{flex-wrap:wrap}

@@ -200,7 +200,8 @@ $('import-recipe').addEventListener('click',()=>{
  else{const config=studyConfigs[index];range.value=values[config.primary];for(const f of config.fields)$('study-'+f.key).value=values[f.key];update();}
  transferStatus('已应用 '+studies[index].label+' 配方，参数与当前预览同步。');
 });
-choose(0);
+const initialRecipe=recipes.findIndex(recipe=>recipe.id===new URLSearchParams(location.search).get('recipe'));
+choose(initialRecipe<0?0:initialRecipe);
 </script>
 </body>
 </html>
