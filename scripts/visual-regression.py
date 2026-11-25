@@ -2677,9 +2677,13 @@ def verify_knowledge_delivery(browser, origin):
             attached_doc=json.loads(attached.value.path().read_text("utf-8"))
             assert attached_doc["version"]==2 and attached_doc["materialAttachment"]
             assert json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(attached.value.path()),"--root",str(DIST)],encoding="utf-8"))["verified"]
+            # Restoring a saved revision must invalidate a previously staged material.
+            field.set_input_files({"name":"stale.json","mimeType":"application/json","buffer":raw.encode()})
+            expect(material.get_by_role("button",name="确认应用材质",exact=True)).to_be_visible()
             plan.get_by_label("方案历史版本").select_option("0")
             plan.get_by_role("button",name="恢复设计方案",exact=True).click()
             expect(spacing).to_have_value("20")
+            expect(material.get_by_role("button",name="确认应用材质",exact=True)).to_have_count(0)
             expect(swatch).to_have_count(0)
             plan.get_by_label("方案历史版本").select_option("current")
             plan.get_by_role("button",name="恢复设计方案",exact=True).click()

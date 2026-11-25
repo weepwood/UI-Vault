@@ -153,6 +153,9 @@ test('规范 Registry 交付三种技术栈真实预检、安装复验与篡改�
    await assert.rejects(installRegistrySnapshot(registry,bundle.requested,parent),/EEXIST/);
    await assert.rejects(verifyDesignRegistryDelivery({...bundle,commands:{...bundle.commands,install:'unsafe'}},root),/不一致/);
   }
+  assert.throws(()=>designRegistryDelivery(doc,{...rIndex,version:'99.0.0'},'react'),/版本不一致/);
+  const mismatched=structuredClone(rIndex);mismatched.items.find(i=>i.id==='foundation-tokens').files.find(f=>f.path==='tokens/themes.json').sha256='0'.repeat(64);
+  assert.throws(()=>designRegistryDelivery(doc,mismatched,'react'),/摘要.*不一致/);
   const bundle=designRegistryDelivery(doc,rIndex,'react');
   assert.equal(bundle.version,2);assert.ok(bundle.files.length>0);
   const drift=structuredClone(registry);

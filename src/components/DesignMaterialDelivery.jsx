@@ -2,11 +2,15 @@ import {useEffect,useRef,useState} from 'react';
 import {designMaterial,designMaterialCSS} from '../../assets/core/design-material.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 
-export function DesignMaterialDelivery({notify,attachment,onChange}){
- const [pending,setPending]=useState(null),[status,setStatus]=useState('');
+export function DesignMaterialDelivery({notify,attachment,onChange,restoreEpoch}){
+ const [pendingState,setPendingState]=useState(null),[statusState,setStatusState]=useState(null);
+ const pending=pendingState?.epoch===restoreEpoch?pendingState.value:null;
+ const status=statusState?.epoch===restoreEpoch?statusState.value:'';
+ function setPending(value){setPendingState({epoch:restoreEpoch,value});}
+ function setStatus(value){setStatusState({epoch:restoreEpoch,value});}
  const active=attachment?{raw:attachment,tokens:designMaterial(attachment)}:null;
  const reads=useRef({id:0});
- useEffect(()=>{const current=reads.current;return ()=>{current.id++;};},[]);
+ useEffect(()=>{const current=reads.current;return ()=>{current.id++;};},[restoreEpoch]);
  async function choose(event){
   const file=event.target.files?.[0],id=++reads.current.id;
   event.target.value='';setPending(null);

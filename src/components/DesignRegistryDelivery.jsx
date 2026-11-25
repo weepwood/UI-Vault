@@ -18,8 +18,8 @@ export function DesignRegistryDelivery({document,notify}){
   return ()=>controller.abort();
  },[attempt,requested]);
  const states=document?foundationPlanStates(document.proposal,document.baseline.theme):null;
- let delivery=null;
- try{if(result?.index&&document)delivery=designRegistryDelivery(document,result.index,profile);}catch{/* Missing profile or invalid document. */}
+ let delivery=null,deliveryError=null;
+ try{if(result?.index&&document)delivery=designRegistryDelivery(document,result.index,profile);}catch(error){deliveryError=error.message;}
  return <details className="design-registry-delivery" onToggle={e=>{if(e.target===e.currentTarget&&e.currentTarget.open)setRequested(true);}}><summary>Foundation Registry 工程交付</summary>
   <p>明确选择目标技术栈，复用现有安装器。不自动安装、不替代原 Workbench 控件包，使用单独的 Foundation CSS 适配，宿主显式启用。</p>
   {!result?<p role="status">正在读取 Registry 索引…</p>:result.error?<><p role="status">Registry 索引不可用</p><button type="button" onClick={()=>{setResult(null);setAttempt(n=>n+1);}}>重新读取 Registry</button></>:<>
@@ -31,7 +31,7 @@ export function DesignRegistryDelivery({document,notify}){
     <div className="registry-module-info"><button type="button" onClick={()=>{try{downloadSourceText(JSON.stringify(delivery,null,2)+'\n','design-registry-delivery.json');notify('Registry 交付清单已下载');}catch{notify('下载失败');}}}>下载 Registry 设计交付 JSON</button><button type="button" onClick={()=>{try{downloadSourceText(foundationPlanCSS(document.proposal,document.baseline.theme),'foundation-design-plan.css');notify('Foundation 规范 CSS 已下载');}catch{notify('下载失败');}}}>下载 Foundation 规范 CSS</button></div><p>在 Foundation 样式后加载，容器添加 ui-design-plan 与匹配的 data-theme；可为浮层另设 ui-design-plan-portal 宿主及对应主题，将元素通过 portalContainer 传入；状态色按不透明表面进行对比适配。</p>
     {states&&<><p>状态色 · 对比适配（边框对比 {states.borderContrast.toFixed(2)}:1，低于3:1时需人工复核控件边界）</p><div className="design-state-colors">{[["强调",states.accent],["成功",states.success],["错误",states.danger]].map(([label,color])=><span key={label}><i style={{backgroundColor:color}} aria-hidden="true"/>{label} {color}</span>)}</div></>}
     <div className="registry-commands">{Object.entries(delivery.commands).map(([key,cmd])=><div key={key}><strong>{({plan:'预检',install:'安装',verify:'复验'})[key]}</strong><code>{cmd}</code></div>)}</div>
-   </>:<p role="status">当前规范或所选交付组合不可用</p>}
+   </>:<p role="status">{deliveryError||"当前规范或所选交付组合不可用"}</p>}
   </>}
  </details>;
 }

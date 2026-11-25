@@ -12,7 +12,7 @@ import {PLAN_FIELDS,baselineIdentity,foundationBaseline,normalizeDesignTokens,co
 export function DesignPlan({composition,index,assets,onRestore,notify}){
  const [item,setItem]=useState(null),[failed,setFailed]=useState(false),[theme,setTheme]=useState('light'),[drafts,setDrafts]=useState({}),[opened,setOpened]=useState(false),[requested,setRequested]=useState(false),[attempt,setAttempt]=useState(0);
  const [saved,setSaved]=useState(()=>{const stored=readDesignPlans();return {items:stored.items,sessionOnly:!stored.available};}),[name,setName]=useState(''),[selected,setSelected]=useState(''),[status,setStatus]=useState('');
- const [pending,setPending]=useState(null),[attachment,setAttachment]=useState(null),[revision,setRevision]=useState("current"),[migration,setMigration]=useState(null);
+ const [pending,setPending]=useState(null),[attachment,setAttachment]=useState(null),[revision,setRevision]=useState("current"),[migration,setMigration]=useState(null),[restoreEpoch,setRestoreEpoch]=useState(0);
  const readId=useRef({id:0}),root=useRef(null);
  const draft=drafts[theme]??null;
  function setDraft(value){setDrafts(old=>({...old,[theme]:value}));}
@@ -43,8 +43,9 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
    setSaved(next);setSelected(name.trim());setRevision('current');setName('');setStatus(next.sessionOnly?'保存仅保留当前会话':'设计方案已保存');
   }catch(error){setStatus(error.message.includes("容量")?error.message:'名称重复、无效或已达8项上限');}
  }
+ function invalidatePendingRestore(){readId.current.id++;setPending(null);setMigration(null);setRestoreEpoch(n=>n+1);}
  function applySnapshot(p){
-  composeKnowledge(index,assets,p.keys,p.context);onRestore(p.keys,p.context);setTheme(p.theme);setDrafts(old=>({...old,[p.theme]:p.tokens}));setAttachment(p.materialAttachment??null);
+  composeKnowledge(index,assets,p.keys,p.context);invalidatePendingRestore();onRestore(p.keys,p.context);setTheme(p.theme);setDrafts(old=>({...old,[p.theme]:p.tokens}));setAttachment(p.materialAttachment??null);
  }
  function restore(){
   try{const p=restoreDesignPlan({...planSnapshot(candidate),name:chosen.name},composition,primary,foundationBaseline(item,candidate.theme));applySnapshot(p);setMigration(null);setStatus('设计方案已恢复；未应用到预览');}
@@ -91,7 +92,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  function applyImport(){
   try{
    const {document,keys}=validateDesignPlan(pending,index,assets,item,primary);
-   onRestore(keys,document.composition.context);setTheme(document.baseline.theme);setDrafts(old=>({...old,[document.baseline.theme]:document.proposal}));setAttachment(document.materialAttachment??null);setPending(null);setStatus('导入规范已恢复；未应用到预览');
+   invalidatePendingRestore();onRestore(keys,document.composition.context);setTheme(document.baseline.theme);setDrafts(old=>({...old,[document.baseline.theme]:document.proposal}));setAttachment(document.materialAttachment??null);setPending(null);setStatus('导入规范已恢复；未应用到预览');
   }catch{setPending(null);setStatus('规范已失效，未恢复');}
  }
  return <details className="design-plan" ref={root} open={opened} onToggle={toggle}><summary>设计规范与保存方案</summary>
@@ -108,7 +109,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
    <div className="registry-module-info"><button type="button" disabled={!proposal} onClick={()=>{try{downloadSourceText(designPlanCSS(proposal,theme),'workbench-design-plan.css');notify('局部规范 CSS 已下载');}catch{notify('下载失败');}}}>下载局部规范 CSS</button></div>
    <p>在真实 Workbench React 组件及共享 controls.css、dropdown.css 后加载，容器添加 wb-reuse-theme wb-design-plan 和匹配的 data-theme。它不是独立组件包。</p>
   </details>
-  <DesignMaterialDelivery key={primary} notify={notify} attachment={attachment} onChange={raw=>setAttachment(normalizeMaterialAttachment(raw))}/>
+  <DesignMaterialDelivery key={primary} notify={notify} restoreEpoch={restoreEpoch} attachment={attachment} onChange={raw=>setAttachment(normalizeMaterialAttachment(raw))}/>
   <DesignRegistryDelivery document={proposal?createDesignPlan(composition,baseline,proposal,attachment):null} notify={notify}/>
   <div className="design-plan-storage"><label>导入规范 JSON<input aria-label="导入规范 JSON" type="file" accept=".json,application/json" onChange={selectFile}/></label>
   {pending&&<><p role="status">待恢复：{pending.composition.entries.length} 项资产 · {pending.baseline.theme} · {pending.difference.changes.length} 项差异；不会自动保存或应用预览。</p><div className="registry-module-info"><button type="button" onClick={applyImport}>确认恢复导入规范</button><button type="button" onClick={()=>{readId.current.id++;setPending(null);setStatus('已取消导入');}}>取消导入</button></div></>}
