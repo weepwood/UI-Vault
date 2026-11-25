@@ -37,10 +37,11 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     if(!item||!popup)return;
     item.focus({preventScroll:true});
     // Only scroll the menu, not the workbench or a surrounding panel.
-    const bounds=popup.getBoundingClientRect(),row=item.getBoundingClientRect();
-    if(row.top<bounds.top+popup.clientTop)popup.scrollTop+=row.top-bounds.top-popup.clientTop;
-    else if(row.bottom>bounds.top+popup.clientTop+popup.clientHeight)
-      popup.scrollTop+=row.bottom-bounds.top-popup.clientTop-popup.clientHeight;
+    // offset coordinates are unscaled even while the pop-in animation runs.
+    const top=item.offsetTop,bottom=top+item.offsetHeight;
+    if(top<popup.scrollTop)popup.scrollTop+=top-popup.scrollTop;
+    else if(bottom>popup.scrollTop+popup.clientHeight)
+      popup.scrollTop+=bottom-popup.scrollTop-popup.clientHeight;
   },[]);
   useLayoutEffect(()=>{
     if(!open)return;
@@ -56,8 +57,8 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     const upward=below<desired&&above>below;
     popup.dataset.placement=upward?'top':'bottom';
     popup.style.setProperty('--select-available-height',Math.max(0,upward?above:below)+'px');
-    const bounds=popup.getBoundingClientRect();
-    const offset=Math.max(0,12-bounds.left)-Math.max(0,bounds.right-window.innerWidth+12);
+    const right=rect.right,left=right-popup.offsetWidth;
+    const offset=Math.max(0,12-left)-Math.max(0,right-window.innerWidth+12);
     popup.style.setProperty('--select-offset-x',offset+'px');
     focusOption(initialFocus.current);
   },[open,focusOption]);

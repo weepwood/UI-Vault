@@ -1214,9 +1214,19 @@ def verify_live_parameter_dock(browser, origin):
         assert page.locator("#preview-stage").is_visible()
         dock.get_by_role("button",name="读取当前参数").click()
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
-        dock.get_by_role("spinbutton",name="卡片圆角").fill("24")
+        radius=dock.get_by_role("spinbutton",name="卡片圆角")
+        radius.fill("21")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        radius.fill("24")
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
+        radius.fill("999")
+        expect(radius).to_have_attribute("aria-invalid","true")
+        expect(dock.get_by_role("button",name="应用参数")).to_be_disabled()
+        radius.press("Escape")
+        dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+        expect(radius).to_have_value("24")
+        expect(dock).to_be_visible()
         dock.get_by_role("textbox",name="预设名称").fill("圆角24")
         dock.get_by_role("button",name="保存预设").click()
         dock.get_by_role("button",name="撤销",exact=True).click()
@@ -1370,6 +1380,9 @@ def verify_expanded_workbench_screenshots(browser, origin):
             hex_input.press("Escape")
             assert hex_input.input_value().lower()=="#123456"
             position=dock.get_by_label("当前色标位置",exact=True)
+            position.fill("")
+            expect(position).to_have_attribute("aria-invalid","true")
+            expect(dock.get_by_role("spinbutton",name="中间色标位置",exact=True)).to_have_value("")
             position.fill("61")
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert dock.locator('[data-gradient-stop="gradientMidPosition"]').get_attribute("aria-valuenow")=="61"
@@ -1396,6 +1409,23 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.get_by_role("button",name="重做",exact=True).click()
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
             assert blur.input_value()=="31"
+            offset=dock.get_by_label("选中阴影层横向偏移",exact=True)
+            mirror=dock.get_by_role("spinbutton",name="第二层阴影横向偏移",exact=True)
+            offset.fill("")
+            expect(offset).to_have_value("")
+            expect(mirror).to_have_attribute("aria-invalid","true")
+            offset.press_sequentially("-12")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            expect(mirror).to_have_value("-12")
+            offset.fill("-99")
+            expect(offset).to_have_attribute("aria-invalid","true")
+            offset.fill("-12")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            offset.fill("")
+            offset.press("Escape")
+            dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+            expect(offset).to_have_value("-12")
+            expect(dock).to_be_visible()
 
             dock.get_by_role("button",name="复位阴影",exact=True).click()
             dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
@@ -1945,12 +1975,21 @@ def verify_project_operations(browser, origin):
         page.keyboard.press("End")
         expect(chooser.locator('[role="option"]').last).to_be_focused()
         expect(popup).to_have_attribute("data-placement", "top")
-        page.wait_for_function("""() => {
-          const menu = document.querySelector('#operations-code').parentElement.querySelector('[role=listbox]');
-          const r = menu.getBoundingClientRect(), last = menu.lastElementChild.getBoundingClientRect();
-          return r.left >= 11 && r.right <= innerWidth - 11 && r.top >= 11 && r.bottom <= innerHeight - 11
-            && menu.scrollTop > 0 && last.bottom <= r.bottom + 1;
-        }""")
+        try:
+            page.wait_for_function("""() => {
+              const menu = document.querySelector('#operations-code').parentElement.querySelector('[role=listbox]');
+              const r = menu.getBoundingClientRect(), last = menu.lastElementChild.getBoundingClientRect();
+              return r.left >= 11 && r.right <= innerWidth - 11 && r.top >= 11 && r.bottom <= innerHeight - 11
+                && menu.scrollTop > 0 && last.bottom <= r.bottom + 1;
+            }""")
+        except Exception:
+            print("下拉短视口诊断：",popup.evaluate("""menu=>({
+              bounds:menu.getBoundingClientRect().toJSON(),last:menu.lastElementChild.getBoundingClientRect().toJSON(),
+              scrollTop:menu.scrollTop,clientHeight:menu.clientHeight,scrollHeight:menu.scrollHeight,
+              placement:menu.dataset.placement,viewport:[innerWidth,innerHeight]
+            })"""),flush=True)
+            page.screenshot(path=str(OUTPUT/"operations-short-viewport-failure.png"))
+            raise
         page.keyboard.press("Escape")
         expect(popup).to_be_hidden()
         page.set_viewport_size({"width": 390, "height": 844})

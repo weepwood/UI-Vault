@@ -136,7 +136,35 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   function deletePreset(){const next=presets.filter(item=>item.name!==presetChoice);setPresets(next);setPresetChoice('');setStatus(saveParameterPresets(asset,next)?'预设已删除':'删除仅本次会话生效');}
   function editNumber(field,raw){
     setDrafts(previous=>({...previous,[field.key]:raw}));
-    if(raw.trim())edit(field,Number(raw));else{revision.current++;transportRef.current?.cancelQueued();}
+    if(!raw.trim()||!validParameter(field,Number(raw))){
+      revision.current++;transportRef.current?.cancelQueued();return;
+    }
+    if(Number(raw)===values[field.key]&&invalidFields.includes(field)){
+      if(!invalidFields.some(item=>item.key!==field.key)){
+        setStatus('参数已编辑 · 尚未应用');scheduleLive(values);
+      }
+      return;
+    }
+    edit(field,Number(raw));
+  }
+  function numberProps(key){
+    const field=fields.find(item=>item.key===key);
+    return {
+      type:'number',min:field.min,max:field.max,step:field.step||1,
+      disabled:blocking,value:drafts[key]??values[key],
+      'aria-invalid':invalidFields.includes(field)||undefined,
+      onFocus:()=>{sliderGesture.current={key,recorded:false,kind:'number'};},
+      onBlur:()=>{if(sliderGesture.current?.key===key&&sliderGesture.current.kind==='number')sliderGesture.current=null;},
+      onChange:event=>editNumber(field,event.target.value),
+      onKeyDown:event=>{
+        if(event.key!=='Escape'||!invalidFields.includes(field))return;
+        event.preventDefault();event.stopPropagation();
+        setDrafts(previous=>{const next={...previous};delete next[key];return next;});
+        if(!invalidFields.some(item=>item.key!==key)){
+          setStatus('已恢复上次有效值 · 尚未应用');scheduleLive(values);
+        }
+      }
+    };
   }
   async function loadSnapshot(event){
     const file=event.target.files?.[0];event.target.value='';if(!file)return;
@@ -160,18 +188,16 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       {liveEditing&&<label className="parameter-live-toggle"><input type="checkbox" checked={autoApply} onChange={e=>{setAutoApply(e.target.checked);if(!e.target.checked)transportRef.current?.cancelQueued();}} aria-label="实时应用"/><span className="parameter-action-full">实时应用</span><span className="parameter-action-short" aria-hidden="true">实时</span></label>}
       <label className="parameter-preset-import"><span className="parameter-action-full">导入 JSON</span><span className="parameter-action-short" aria-hidden="true">导入</span> <input type="file" accept="application/json,.json" aria-label="导入参数快照" disabled={busy} onChange={loadSnapshot}/></label>
     </div>
-    <p role="status" className="parameter-status">{waitingForPreview?'预览加载中 · 完成后可读取参数':invalid?'请输入有效范围内的参数：'+invalidFields.map(field=>field.label).join('、'):status}</p>
-    {advanced&&<nav className="parameter-section-nav" aria-label="材质参数分组">{['布局基础','表面渐变','阴影','动效曲线','预设与文件'].map(name=><button key={name} type="button" data-selected={activeSection===name} aria-current={activeSection===name?'location':undefined} onClick={()=>jumpSection(name)}>{name}</button>)}</nav>}</div>{values&&<>{advanced&&<div className="material-combination-presets"><strong>材质组合</strong>{MATERIAL_PRESETS.map(preset=><button key={preset.label} type="button" disabled={blocking||invalid} onClick={()=>applyMaterialPatch(preset.patch)}>{preset.label}</button>)}<small>保留布局基础与动效参数</small></div>}<div className="demo-parameter-fields">{fields.filter(field=>field.key!=='shadowReversed').map((field,index,visibleFields)=><Fragment key={field.key}>{advanced&&(index===0||field.group!==visibleFields[index-1]?.group)&&<><div className="parameter-group-header"><h4 className="parameter-group-title" tabIndex={-1} ref={node=>{sectionRefs.current[field.group||'布局基础']=node;}}>{field.group||'布局基础'}</h4><button className="parameter-group-reset" type="button" disabled={blocking||invalid} onClick={()=>applyMaterialPatch(resetMaterialGroup(field.group||'布局基础'))}>复位{field.group||'布局基础'}</button></div>{field.group==='表面渐变'&&<div className="parameter-group-visual"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient']}}><strong>表面预览</strong><small>{values.gradient?(2+Number(values.gradientMid)+Number(values.gradientMid2))+' 色标渐变':'纯色'}</small></div><GradientStopEditor values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch} onEditStart={startMaterial} onEditEnd={endMaterial} onStart={key=>{sliderGesture.current={key,recorded:false};}} onMove={(key,value)=>{const field=fields.find(f=>f.key===key);setDrafts(previous=>({...previous,[key]:String(value)}));edit(field,value);}} onEnd={()=>{sliderGesture.current=null;}}/></div>}{field.group==='阴影'&&<div className="parameter-group-visual"><div className="parameter-shadow-sample" style={{backgroundColor:values.surface,boxShadow:advanced['--warm-card-shadow']}}><span>阴影预览</span></div><ShadowActions values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch} onEditStart={startMaterial} onEditEnd={endMaterial}/></div>}{field.group==='动效曲线'&&<div className="parameter-group-visual parameter-curve-preview"><BezierEditor values={values} disabled={blocking} onStart={()=>{curveGesture.current={recorded:false};}} onMove={editCurve} onEnd={()=>{curveGesture.current=null;}}/><div><code>{advanced['--warm-motion-curve']}</code><CurvePresets values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch}/></div></div>}</>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
+    <p role="status" className="parameter-status">{waitingForPreview?'预览加载中 · 完成后可读取参数':invalid?'请输入有效范围内的参数（Esc 恢复）：'+invalidFields.map(field=>field.label).join('、'):status}</p>
+    {advanced&&<nav className="parameter-section-nav" aria-label="材质参数分组">{['布局基础','表面渐变','阴影','动效曲线','预设与文件'].map(name=><button key={name} type="button" data-selected={activeSection===name} aria-current={activeSection===name?'location':undefined} onClick={()=>jumpSection(name)}>{name}</button>)}</nav>}</div>{values&&<>{advanced&&<div className="material-combination-presets"><strong>材质组合</strong>{MATERIAL_PRESETS.map(preset=><button key={preset.label} type="button" disabled={blocking||invalid} onClick={()=>applyMaterialPatch(preset.patch)}>{preset.label}</button>)}<small>保留布局基础与动效参数</small></div>}<div className="demo-parameter-fields">{fields.filter(field=>field.key!=='shadowReversed').map((field,index,visibleFields)=><Fragment key={field.key}>{advanced&&(index===0||field.group!==visibleFields[index-1]?.group)&&<><div className="parameter-group-header"><h4 className="parameter-group-title" tabIndex={-1} ref={node=>{sectionRefs.current[field.group||'布局基础']=node;}}>{field.group||'布局基础'}</h4><button className="parameter-group-reset" type="button" disabled={blocking||invalid} onClick={()=>applyMaterialPatch(resetMaterialGroup(field.group||'布局基础'))}>复位{field.group||'布局基础'}</button></div>{field.group==='表面渐变'&&<div className="parameter-group-visual"><div className="parameter-material-swatch" style={{backgroundColor:values.surface,backgroundImage:advanced['--warm-card-gradient']}}><strong>表面预览</strong><small>{values.gradient?(2+Number(values.gradientMid)+Number(values.gradientMid2))+' 色标渐变':'纯色'}</small></div><GradientStopEditor values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch} onEditStart={startMaterial} onEditEnd={endMaterial} numberProps={numberProps} onStart={key=>{sliderGesture.current={key,recorded:false};}} onMove={(key,value)=>editNumber(fields.find(f=>f.key===key),String(value))} onEnd={()=>{sliderGesture.current=null;}}/></div>}{field.group==='阴影'&&<div className="parameter-group-visual"><div className="parameter-shadow-sample" style={{backgroundColor:values.surface,boxShadow:advanced['--warm-card-shadow']}}><span>阴影预览</span></div><ShadowActions values={values} disabled={blocking||invalid} numberProps={numberProps} onPatch={applyMaterialPatch} onEditStart={startMaterial} onEditEnd={endMaterial}/></div>}{field.group==='动效曲线'&&<div className="parameter-group-visual parameter-curve-preview"><BezierEditor values={values} disabled={blocking} onStart={()=>{curveGesture.current={recorded:false};}} onMove={editCurve} onEnd={()=>{curveGesture.current=null;}}/><div><code>{advanced['--warm-motion-curve']}</code><CurvePresets values={values} disabled={blocking||invalid} onPatch={applyMaterialPatch}/></div></div>}</>}<div className={'parameter-field parameter-'+field.type}><span>{field.label}</span>
       {field.type==='enum'?<select aria-label={field.label} disabled={blocking} value={values[field.key]} onChange={event=>edit(field,event.target.value)}>
         {field.choices.map(choice=><option key={choice.value} value={choice.value}>{choice.label}</option>)}</select>
       :field.type==='boolean'?<input aria-label={field.label} type="checkbox" disabled={blocking} checked={values[field.key]} onChange={event=>edit(field,event.target.checked)}/>
-      :<input aria-label={field.label} type={field.type==='color'?'color':'number'} min={field.min} max={field.max}
-        step={field.type==='number'?field.step||1:undefined} disabled={blocking} value={drafts[field.key]??values[field.key]}
-        aria-invalid={invalidFields.includes(field)||undefined}
-        onChange={event=>field.type==='number'?editNumber(field,event.target.value):edit(field,event.target.value)}/>}
+      :field.type==='number'?<input aria-label={field.label} {...numberProps(field.key)}/>
+      :<input aria-label={field.label} type="color" disabled={blocking} value={values[field.key]} onFocus={()=>{sliderGesture.current={key:field.key,recorded:false,kind:'color'};}} onBlur={()=>{if(sliderGesture.current?.key===field.key&&sliderGesture.current.kind==='color')sliderGesture.current=null;}} onChange={event=>edit(field,event.target.value)}/>}
       {liveEditing&&field.type==='color'&&<small className="parameter-value-hint">{values[field.key].toUpperCase()}{field.css&&<span title={field.css}>{field.css}</span>}</small>}
       {liveEditing&&field.type==='number'&&field.unit&&<small className="parameter-unit-hint">{field.unit}</small>}
-      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>{setDrafts(previous=>({...previous,[field.key]:event.target.value}));edit(field,Number(event.target.value));}}/>}</div></Fragment>)}</div>
+      {liveEditing&&field.type==='number'&&<input className="parameter-slider" type="range" aria-label={field.label+'滑块'} min={field.min} max={field.max} step={field.step||1} value={values[field.key]} disabled={blocking} onPointerDown={()=>{sliderGesture.current={key:field.key,recorded:false};}} onPointerUp={()=>{sliderGesture.current=null;}} onPointerCancel={()=>{sliderGesture.current=null;}} onLostPointerCapture={()=>{sliderGesture.current=null;}} onBlur={()=>{sliderGesture.current=null;}} onChange={event=>editNumber(field,event.target.value)}/>}</div></Fragment>)}</div>
       <div className="parameter-presets-heading" tabIndex={-1} ref={node=>{sectionRefs.current["预设与文件"]=node;}}>参数预设与文件管理</div><div className="parameter-presets">
       <label>参数预设<select aria-label="参数预设" value={presetChoice} onChange={e=>setPresetChoice(e.target.value)} disabled={busy}><option value="">选择预设</option>{presets.map(item=><option key={item.name} value={item.name}>{item.name}</option>)}</select></label>
       <label>名称<input aria-label="预设名称" value={presetName} maxLength={40} onChange={e=>setPresetName(e.target.value)} disabled={busy}/></label>
