@@ -371,6 +371,51 @@ def verify_react_interactions(browser, origin):
 
 
 
+def verify_endfield_typography(browser, origin):
+    """原历史字体在实际浏览器解码，校验导航、图片和真实字形。"""
+    for width,height,embed in ((1440,900,False),(390,844,True),(320,640,True)):
+        context=browser.new_context(viewport={"width":width,"height":height},reduced_motion="reduce",locale="zh-CN")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+("?asset=endfield-nav-tab" if embed else "demos/components/endfield-nav-tab/index.html"),wait_until="domcontentloaded")
+            target=page.frame_locator("#preview-stage iframe") if embed else page
+            tabs=target.get_by_role("tab")
+            expect(tabs).to_have_count(7)
+            fonts=tabs.first.evaluate("""async e=>{
+                const doc=e.ownerDocument;
+                const text=[...doc.querySelectorAll('[role=tab]')].map(t=>t.textContent).join('');
+                await Promise.all([doc.fonts.load('400 24px HarmonyOS_Sans_SC',text),doc.fonts.load('700 24px HarmonyOS_Sans_SC',text)]);
+                await doc.fonts.ready;
+                return {faces:[...doc.fonts].map(f=>[f.family,f.weight,f.status]),family:getComputedStyle(e).fontFamily};
+            }""")
+            assert len(fonts["faces"])==2 and all(f[2]=="loaded" for f in fonts["faces"]), fonts
+            assert fonts["family"].startswith("HarmonyOS_Sans_SC"), fonts
+            for i in range(7):
+                tabs.nth(i).click()
+                expect(tabs.nth(i)).to_have_attribute("aria-selected","true")
+                expect(target.locator(".tab-art").nth(i)).to_have_css("opacity","1")
+            tabs.last.press("Home")
+            expect(tabs.first).to_have_attribute("aria-selected","true")
+            tabs.first.press("ArrowDown")
+            expect(tabs.nth(1)).to_have_attribute("aria-selected","true")
+            if not embed:
+                session=context.new_cdp_session(page)
+                try:
+                    session.send("DOM.enable")
+                    session.send("CSS.enable")
+                    root=session.send("DOM.getDocument")["root"]
+                    node=session.send("DOM.querySelector",{"nodeId":root["nodeId"],"selector":"[role=tab]"})["nodeId"]
+                    actual=session.send("CSS.getPlatformFontsForNode",{"nodeId":node})["fonts"]
+                    assert any(f["isCustomFont"] and f["glyphCount"]>0 and "HarmonyOS" in f["familyName"] for f in actual), actual
+                finally:
+                    session.detach()
+            assert not errors,errors
+            page.screenshot(path=str(OUTPUT/f"endfield-typography-{width}.png"))
+        finally:
+            context.close()
+
+
 def verify_liquid_orb_fallback(browser, origin):
     """显式禁用 GPU，验证简化预览不是伪造的 WebGPU 首帧。"""
     for width,height,theme,embed in ((1440,900,"light",True),(390,844,"dark",False),(320,640,"light",True)):
@@ -2865,6 +2910,7 @@ def main():
                     verify_release_keyboard_and_performance,
                     verify_liquid_orb_unified,
                     verify_liquid_orb_fallback,
+                    verify_endfield_typography,
                     verify_glass_materials,
                     verify_rare_interactions,
                     verify_background_lab,
