@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {MATERIAL_PRESETS,resetMaterialGroup,matchesMaterialPreset,exportMaterialSnapshot,importMaterialSnapshot,exportMaterialCss,readMaterialPresets,saveMaterialPresets,addMaterialPreset} from '../assets/core/material-presets.js';
+import {MATERIAL_PRESETS,resetMaterialGroup,matchesMaterialPreset,exportMaterialSnapshot,importMaterialSnapshot,exportMaterialCss,exportMaterialTokens,materialTokens,readMaterialPresets,saveMaterialPresets,addMaterialPreset} from '../assets/core/material-presets.js';
 import {WARM_LAYOUT_FIELDS,normalizeParameters,warmLayoutCssValues} from '../assets/core/demo-parameters.js';
 const values=Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default]));
 test('材质组合仅修改渐变与阴影，保留基础和曲线；分组复位不越界',()=>{
@@ -36,4 +36,19 @@ test('独立材质CSS仅含三项表面声明，自定义材质独立存储且�
  raw='{"broken":true}';assert.deepEqual(readMaterialPresets(storage),[]);
  const full=Array.from({length:8},(_,i)=>({...items[0],name:String(i)}));
  assert.throws(()=>addMaterialPreset(full,'9',before));
+});
+
+test('材质Token采用同一解析函数，局部变量不包含布局且拒绝无效值',()=>{
+ const v={...values,...MATERIAL_PRESETS[1].patch,surface:'#123456',gradientMid2:true,gradientMid2Position:10,shadowReversed:true};
+ const tokens=materialTokens(v),actual=warmLayoutCssValues(v);
+ assert.deepEqual(tokens,{surface:actual['--warm-surface'],gradient:actual['--warm-card-gradient'],shadow:actual['--warm-card-shadow']});
+ const doc=JSON.parse(exportMaterialTokens(v,'json'));
+ assert.equal(doc.version,1);assert.equal(doc.format,'ui-vault-material-tokens');
+ assert.deepEqual(Object.keys(doc.tokens),['surface','gradient','shadow']);
+ for(const [key,value] of Object.entries(tokens))assert.equal(doc.tokens[key].value,value);
+ const css=exportMaterialTokens(v,'css');
+ assert.match(css,/\.ui-vault-material-tokens \{/);assert.match(css,/var\(--uv-material-shadow\)/);
+ assert.ok(!/border-radius|padding:|transition:|:root/.test(css));
+ assert.throws(()=>exportMaterialTokens({...v,surface:'red;bad'},'css'));
+ assert.throws(()=>exportMaterialTokens(v,'unknown'));
 });

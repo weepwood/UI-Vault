@@ -49,3 +49,16 @@ export function addMaterialPreset(items,name,values){
  name=typeof name==='string'?name.trim():'';
  return validateMaterialPresets([...items,{name,values:importMaterialSnapshot(exportMaterialSnapshot(values))}]);
 }
+
+// Portable, versioned resolved tokens. This is UI-Vault's own interchange format,
+// not a claim of DTCG conformance. Editable parameters remain in material snapshots.
+export function materialTokens(values){
+ const css=warmLayoutCssValues(values);
+ return {surface:css['--warm-surface'],gradient:css['--warm-card-gradient'],shadow:css['--warm-card-shadow']};
+}
+export function exportMaterialTokens(values,format){
+ const tokens=materialTokens(values);
+ if(format==='json')return JSON.stringify({format:'ui-vault-material-tokens',version:1,tokens:{surface:{type:'color',value:tokens.surface},gradient:{type:'css-image',value:tokens.gradient},shadow:{type:'css-shadow',value:tokens.shadow}}},null,2)+'\n';
+ if(format!=='css')throw Error('未知材质Token格式');
+ return '/* Apply ui-vault-material-tokens to the host; apply ui-vault-material to the target. */\n.ui-vault-material-tokens {\n  --uv-material-surface: '+tokens.surface+';\n  --uv-material-gradient: '+tokens.gradient+';\n  --uv-material-shadow: '+tokens.shadow+';\n}\n.ui-vault-material {\n  background-color: var(--uv-material-surface);\n  background-image: var(--uv-material-gradient);\n  box-shadow: var(--uv-material-shadow);\n}\n';
+}
