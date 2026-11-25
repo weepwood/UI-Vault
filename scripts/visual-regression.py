@@ -141,7 +141,10 @@ def capture(page, mode, theme):
         return target.screenshot(animations="disabled")
     if mode in ("dialog", "mobile-dialog"):
         if mode == "mobile-dialog":
-            page.locator(".project-row").first.click()
+            # This baseline was recorded against aurora-field. New featured
+            # assets may reorder the list; compare the same dialog specimen.
+            page.locator('.project-item[data-id="aurora-field"] .project-row').click()
+            expect(page.locator(".topbar #preview-title")).to_have_text("背景效果实验室")
         page.locator("#preview-info").click()
         dialog = page.locator("#project-dialog")
         dialog.wait_for(state="visible")
