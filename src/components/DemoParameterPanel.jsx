@@ -20,7 +20,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   const [drafts,setDrafts]=useState({});
   const invalidFields=fields?.filter(field=>Object.hasOwn(drafts,field.key)&&(!drafts[field.key].trim()||!validParameter(field,Number(drafts[field.key]))))||[];
   const invalid=invalidFields.length>0;
-  const transportRef=useRef(null),revision=useRef(0);
+  const transportRef=useRef(null),revision=useRef(0),fileGeneration=useRef({value:0});
   const [autoApply,setAutoApply]=useState(liveEditing);
   const [activeSection,setActiveSection]=useState('布局基础');
   const [history,setHistory]=useState([]),[future,setFuture]=useState([]);
@@ -41,6 +41,7 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
   }
 
   useEffect(()=>{
+    const fileLifecycle=fileGeneration.current;
     const transport=createParameterTransport({
       send(job){
         const frame=document.querySelector('#preview-stage iframe[data-preview-frame="local"]');
@@ -71,12 +72,13 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       }catch(error){transport.complete(request,{error:error.message||'返回参数无效'});}
     }
     window.addEventListener('message',receive);
-    return ()=>{window.removeEventListener('message',receive);transport.dispose();transportRef.current=null;};
+    return ()=>{fileLifecycle.value++;window.removeEventListener('message',receive);transport.dispose();transportRef.current=null;};
   },[fields,asset.id,asset.preview]);
   function request(action,snapshot=values){
     if(!fields||(action==='apply'&&!snapshot))return;
     let validated;
     if(action==='apply'){try{validated=normalizeParameters(fields,snapshot,{complete:true});}catch{setStatus('参数不合法');return;}}
+    fileGeneration.current.value++;
     transportRef.current?.manual({action,snapshot:validated,revision:revision.current});
   }
   function remember(){if(values){setHistory(previous=>[...previous.slice(-29),values]);setFuture([]);}}
@@ -195,20 +197,34 @@ export function DemoParameterPanel({asset,notify,liveEditing=false}){
       }
     };
   }
+  // Latest file selection wins across both import entry points. Do not let a
+  // delayed file replace a newer manual edit/read or a newer file selection.
+  async function readImport(file,maxBytes,parse,apply,errorMessage){
+    const generation=++fileGeneration.current.value,initialRevision=revision.current;
+    try{
+      if(file.size>maxBytes)throw Error('文件过大');
+      const raw=await file.text();
+      if(fileGeneration.current.value!==generation)return;
+      if(revision.current!==initialRevision){setStatus('读取期间参数已变化，请重新导入');return;}
+      apply(parse(raw.replace(/^\uFEFF/,'')));
+    }catch{
+      if(fileGeneration.current.value!==generation)return;
+      if(revision.current!==initialRevision){setStatus('读取期间参数已变化，请重新导入');return;}
+      setStatus(errorMessage);
+    }
+  }
   async function loadSnapshot(event){
     const file=event.target.files?.[0];event.target.value='';if(!file)return;
-    try{if(file.size>65536)throw Error('文件过大');replaceValues(importParameterSnapshot(asset,await file.text()));setStatus('已导入快照 · 尚未应用');}catch{setStatus('快照无效或与当前 Demo 不匹配');}
+    await readImport(file,65536,raw=>importParameterSnapshot(asset,raw),next=>{
+      replaceValues(next);setStatus('已导入快照 · 尚未应用');
+    },'快照无效或与当前 Demo 不匹配');
   }
   async function loadMaterial(event){
     const file=event.target.files?.[0];event.target.value='';if(!file||asset.id!=='warm-workbench'||!values||invalid)return;
-    const initialRevision=revision.current;
-    try{
-      if(file.size>8192)throw Error('文件过大');
-      const patch=importMaterialSnapshot((await file.text()).replace(/^\uFEFF/,''));
-      if(revision.current!==initialRevision){setStatus('读取期间参数已变化，请重新导入材质');return;}
+    await readImport(file,8192,raw=>importMaterialSnapshot(raw),patch=>{
       replaceValues(normalizeParameters(fields,{...values,...patch},{complete:true}));
       setStatus('材质已导入 · 布局与动效保留 · 尚未应用');
-    }catch{setStatus('材质文件无效，当前参数未改变');}
+    },'材质文件无效，当前参数未改变');
   }
   function download(format){
     if(invalid)return;
