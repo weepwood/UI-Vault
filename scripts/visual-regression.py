@@ -1767,9 +1767,9 @@ def verify_material_import_order(browser, origin):
         page=context.new_page()
         errors=track_page_errors(page)
         try:
-            page.add_init_script("""()=>{const original=File.prototype.text;window.testReads={};
+            page.add_init_script("""(()=>{const original=File.prototype.text;window.testReads={};
                 File.prototype.text=function(){if(!this.name.startsWith('hold-'))return original.call(this);
-                return new Promise((resolve,reject)=>{window.testReads[this.name]=()=>original.call(this).then(resolve,reject)})}}""")
+                return new Promise((resolve,reject)=>{window.testReads[this.name]=()=>original.call(this).then(resolve,reject)})}})()""")
             page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
             page.locator("#preview-parameters").click()
             dock=page.locator("#parameter-dock")
@@ -1789,7 +1789,7 @@ def verify_material_import_order(browser, origin):
                 upload.set_input_files({"name":name,"mimeType":"application/json","buffer":json.dumps(doc).encode()})
                 page.wait_for_function("n=>typeof window.testReads[n]==='function'",arg=name)
             def release(name):
-                page.evaluate("n=>{window.testReads[n]();delete window.testReads[n]}",name)
+                page.evaluate("n=>{const done=window.testReads[n]();delete window.testReads[n];return done}",name)
                 page.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
             initial=surface()
             queue("hold-old.json","#112233")
