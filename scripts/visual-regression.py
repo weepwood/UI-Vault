@@ -2541,7 +2541,7 @@ def verify_knowledge_delivery(browser, origin):
             composition.scroll_into_view_if_needed()
             page.screenshot(path=str(OUTPUT/f"knowledge-composition-{width}-{theme}.png"))
             plan=composition.locator(".design-plan")
-            plan.locator("summary").click()
+            plan.locator(":scope > summary").click()
             spacing=plan.get_by_label("规范基础间距",exact=True)
             radius=plan.get_by_label("规范圆角",exact=True)
             spacing.fill("20")
@@ -2582,13 +2582,51 @@ def verify_knowledge_delivery(browser, origin):
             expect(plan.get_by_text("规范文件无效或与当前登记数据不匹配，未恢复",exact=True)).to_be_visible()
             expect(spacing).to_have_value("20")
 
+            preview_details=plan.locator(".design-plan-preview")
+            preview_details.locator("summary").click()
+            sample=preview_details.get_by_role("region",name="真实组件规范预览")
+            search=sample.get_by_role("searchbox",name="规范预览搜索")
+            expect(search).to_be_visible()
+            expect(sample).to_have_css("gap","20px")
+            expect(sample.locator(".search-field")).to_have_css("border-radius","14px")
+            expect(sample.locator(".search-field")).to_have_css("background-color","rgb(255, 255, 255)")
+            search.fill("设计")
+            expect(sample.locator("output")).to_contain_text("设计")
+            sample.get_by_role("button",name="清除搜索内容").click()
+            expect(search).to_be_focused()
+            trigger=sample.get_by_role("button",name="规范预览密度：紧凑")
+            trigger.focus()
+            trigger.press("ArrowDown")
+            sample.get_by_role("option",name="紧凑").press("End")
+            sample.get_by_role("option",name="舒展").press("Enter")
+            expect(sample.locator("output")).to_contain_text("舒展")
+            expect(sample.get_by_role("button",name="规范预览密度：舒展")).to_be_focused()
+            with page.expect_download() as css_download:
+                preview_details.get_by_role("button",name="下载局部规范 CSS",exact=True).click()
+            css=css_download.value.path().read_text("utf-8")
+            assert "--plan-space:20px;" in css and "--plan-radius:14px;" in css
+            assert "backdrop-filter:" not in css
+            # Actual downloaded CSS applies to a separate opt-in host, not to the surrounding dialog.
+            metrics=sample.evaluate("""(e,css)=>{
+                const copy=e.cloneNode(true);
+                copy.removeAttribute('style');copy.hidden=true;
+                const sheet=document.createElement('style');sheet.textContent=css;
+                e.parentNode.append(sheet,copy);copy.hidden=false;
+                const result=[getComputedStyle(copy).gap,getComputedStyle(copy.querySelector('.search-field')).borderRadius,getComputedStyle(copy.querySelector('input')).fontSize];
+                copy.remove();sheet.remove();return result;
+            }""",css)
+            assert metrics==["20px","14px","14px"],metrics
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            sample.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"design-plan-components-{width}-{theme}.png"))
+            preview_details.locator("summary").click()
             plan.scroll_into_view_if_needed()
             page.screenshot(path=str(OUTPUT/f"design-plan-{width}-{theme}.png"))
             knowledge=open_record("workbench-components")
             composition=knowledge.locator(".knowledge-composition")
             composition.locator(":scope > summary").click()
             plan=composition.locator(".design-plan")
-            plan.locator("summary").click()
+            plan.locator(":scope > summary").click()
             plan.get_by_label("已保存设计方案",exact=True).select_option("验收组合")
             plan.get_by_role("button",name="恢复设计方案",exact=True).click()
             expect(plan.get_by_text("设计方案已恢复；未应用到预览",exact=True)).to_be_visible()
@@ -2598,6 +2636,25 @@ def verify_knowledge_delivery(browser, origin):
             expect(knowledge.get_by_label("组合设计场景",exact=True)).to_have_value("dense-workbench")
             plan.get_by_label("规范基准主题",exact=True).select_option("dark")
             expect(plan.get_by_label("规范表面颜色",exact=True)).to_have_value("#191e27")
+            preview_details=plan.locator(".design-plan-preview")
+            preview_details.locator("summary").click()
+            sample=preview_details.get_by_role("region",name="真实组件规范预览")
+            expect(sample).to_have_css("background-color","rgb(25, 30, 39)")
+            expect(sample).to_have_css("gap","12px")
+            expect(sample.locator(".search-field")).to_have_css("border-radius","10px")
+            expect(sample.locator("input[type=search]")).to_have_css("font-size","14px")
+            host=knowledge.evaluate("e=>getComputedStyle(e).getPropertyValue('--surface').trim()")
+            plan.get_by_label("规范表面颜色",exact=True).fill("#243345")
+            expect(sample.locator(".search-field")).to_have_css("background-color","rgb(36, 51, 69)")
+            assert knowledge.evaluate("e=>getComputedStyle(e).getPropertyValue('--surface').trim()")==host
+            # The host intentionally enforces .01ms !important to preserve transitionend.
+            assert sample.locator(".select-trigger").evaluate("e=>getComputedStyle(e).transitionDuration.split(',').every(v=>parseFloat(v)<=0.00001)")
+            with page.expect_download() as dark_css:
+                preview_details.get_by_role("button",name="下载局部规范 CSS",exact=True).click()
+            assert '[data-theme="dark"]' in dark_css.value.path().read_text("utf-8")
+            page.screenshot(path=str(OUTPUT/f"design-plan-components-dark-{width}-{theme}.png"))
+            preview_details.locator("summary").click()
+
             plan.get_by_role("button",name="删除设计方案",exact=True).click()
             expect(plan.get_by_text("设计方案已删除",exact=True)).to_be_visible()
             expect(plan.get_by_label("已保存设计方案",exact=True).locator("option")).to_have_count(1)

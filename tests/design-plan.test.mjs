@@ -40,3 +40,17 @@ test('可读但不可写的存储保留连续会话操作，恢复后也不覆�
  assert.deepEqual(state.items.map(p=>p.name),['第二份','第三份']);
  assert.equal(writes,1);assert.deepEqual(JSON.parse(raw),[plan]);
 });
+
+import {designPlanStyle,designPlanCSS,DESIGN_PLAN_RULES} from '../assets/core/design-plan-style.js';
+
+test('局部设计规范 CSS 使用有界值、共享规则及主题限定，不合成材质',()=>{
+ const style=designPlanStyle(proposal,'dark');
+ assert.equal(style['--plan-space'],'20px');assert.equal(style['--plan-radius'],'14px');
+ assert.equal(style['--plan-duration'],'0ms');assert.equal(style['color-scheme'],'dark');
+ const css=designPlanCSS(proposal,'dark');
+ assert.ok(css.endsWith(DESIGN_PLAN_RULES));
+ assert.match(css,/\.wb-reuse-theme\.wb-design-plan\[data-theme="dark"\]/);
+ assert.ok(!css.includes('backdrop-filter:'));assert.ok(!css.includes(':root'));
+ assert.throws(()=>designPlanCSS({...proposal,surface:'#fff;evil'},'dark'));
+ assert.throws(()=>designPlanCSS(proposal,'dark"]{}'));
+});

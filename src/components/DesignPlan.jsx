@@ -1,6 +1,8 @@
 import {useEffect,useRef,useState} from 'react';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {DesignPlanPreview} from './DesignPlanPreview.jsx';
+import {designPlanCSS} from '../../assets/core/design-plan-style.js';
 import {composeKnowledge} from '../../assets/core/knowledge-composition.js';
 import {PLAN_FIELDS,baselineIdentity,foundationBaseline,normalizeDesignTokens,compareDesignTokens,readDesignPlans,updateDesignPlans,restoreDesignPlan,createDesignPlan,validateDesignPlan,designPlanMarkdown,DESIGN_PLAN_MAX_BYTES} from '../../assets/core/design-plan.js';
 
@@ -61,6 +63,12 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
   <div className="design-plan-fields">{PLAN_FIELDS.map(f=><label key={f.key}>{f.label} · 基准 {baseline.tokens[f.key]}{f.unit||''}{f.type==='choice'?<select aria-label={'规范'+f.label} value={values[f.key]} onChange={e=>setDraft({...values,[f.key]:e.target.value})}>{f.options.map(v=><option key={v} value={v}>{v==='solid'?'不透明':'磨砂（目标意图）'}</option>)}</select>:<input aria-label={'规范'+f.label} type={f.type==='number'?'number':'text'} min={f.min} max={f.max} step={f.type==='number'?1:undefined} maxLength={f.type==='color'?7:undefined} value={values[f.key]} onChange={e=>setDraft({...values,[f.key]:f.type==='number'?(e.target.value===''?'':Number(e.target.value)):e.target.value})}/>}</label>)}</div>
   {difference?<><p role="status">{difference.changes.length} 项规范差异 · 正文对比 {difference.contrast.toFixed(2)}:1 · {difference.contrastPass?'达到4.5:1':'需复核'}</p><ul>{difference.changes.map(c=><li key={c.key}>{PLAN_FIELDS.find(f=>f.key===c.key).label}：{c.baseline} → {c.proposed}{c.unit||''}{c.delta!==null?'（变化 '+(c.delta>0?'+':'')+c.delta+c.unit+'）':''}</li>)}</ul>{proposal.material==='frosted'&&<p>磨砂透明背景的实际对比需单独检查。</p>}</>:<p role="status">规范值无效，请修正后保存或下载。</p>}
   <div className="registry-module-info"><button type="button" onClick={()=>setDraft(null)}>重置规范</button><button type="button" disabled={!proposal} onClick={()=>download()}>下载设计规范 JSON</button><button type="button" disabled={!proposal} onClick={()=>download(true)}>下载规范 DESIGN.md</button></div>
+  <details className="design-plan-preview"><summary>真实控件预览与 CSS 复用</summary>
+   <p>仅作用于此示例，不改变主站或原资产。七项规范映射到真实搜索与下拉组件；磨砂仅为意图，不渲染滤镜。状态色、完整可访问性及宿主冲突仍需验收。</p>
+   <DesignPlanPreview proposal={proposal} theme={theme}/>
+   <div className="registry-module-info"><button type="button" disabled={!proposal} onClick={()=>{try{downloadSourceText(designPlanCSS(proposal,theme),'workbench-design-plan.css');notify('局部规范 CSS 已下载');}catch{notify('下载失败');}}}>下载局部规范 CSS</button></div>
+   <p>在真实 Workbench React 组件及共享 controls.css、dropdown.css 后加载，容器添加 wb-reuse-theme wb-design-plan 和匹配的 data-theme。它不是独立组件包。</p>
+  </details>
   <label>导入规范 JSON<input aria-label="导入规范 JSON" type="file" accept=".json,application/json" onChange={selectFile}/></label>
   {pending&&<><p role="status">待恢复：{pending.composition.entries.length} 项资产 · {pending.baseline.theme} · {pending.difference.changes.length} 项差异；不会自动保存或应用预览。</p><div className="registry-module-info"><button type="button" onClick={applyImport}>确认恢复导入规范</button><button type="button" onClick={()=>{readId.current.id++;setPending(null);setStatus('已取消导入');}}>取消导入</button></div></>}
   <label>方案名称<input aria-label="设计方案名称" maxLength={40} value={name} onChange={e=>setName(e.target.value)}/></label>
