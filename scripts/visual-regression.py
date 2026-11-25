@@ -2532,6 +2532,45 @@ def verify_settings_popover_boundaries(browser, origin):
             context.close()
 
 
+def verify_workbench_surface_states(browser, origin):
+    """双主题中悬停、选中、滚动条及真实预览的状态一致性。"""
+    for width,height,theme in ((1440,900,"light"),(1440,900,"dark"),(820,900,"dark"),(390,844,"light"),(320,640,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+"?asset=design-recipe-lab",wait_until="domcontentloaded")
+            iframe=page.locator("#preview-stage iframe")
+            iframe.wait_for(state="attached")
+            original=iframe.element_handle()
+            page.evaluate("(t)=>document.documentElement.dataset.theme=t",theme)
+            if width<=760:page.locator("#menu-toggle").click()
+            page.locator(".project-row").first.wait_for()
+            selected=page.locator("#shortcut-recipe-lab")
+            expect(selected).to_have_attribute("aria-current","page")
+            selected_bg=selected.evaluate("e=>getComputedStyle(e).backgroundColor")
+            other=page.locator("#shortcut-components")
+            other.hover()
+            assert other.evaluate("e=>getComputedStyle(e).backgroundColor")!=selected_bg
+            expect(selected).to_have_css("background-color",selected_bg)
+            thumb=page.locator(".project-scroll").evaluate("e=>getComputedStyle(e).scrollbarColor")
+            assert ("84, 98, 109" if theme=="dark" else "192, 201, 204") in thumb,thumb
+            border=page.evaluate("""()=>{const n=document.createElement('i');n.style.color='var(--accent-line)';document.documentElement.append(n);const c=getComputedStyle(n).color;n.remove();return c}""")
+            expect(page.locator(".quick-filters .filter-button.is-active").first).to_have_css("border-color",border)
+            page.screenshot(path=str(OUTPUT/f"workbench-surface-{width}-{theme}.png"))
+            if width<=760:page.locator(".sidebar-dismiss").click()
+            button=page.locator("#preview-search")
+            button.hover()
+            page.mouse.down()
+            expect(button).to_have_css("transform","none")
+            page.mouse.up()
+            page.keyboard.press("Escape")
+            assert original.evaluate("e=>e.isConnected")
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_control_reduced_motion(browser, origin):
     for motion,preference in (("reduce","system"),("no-preference","reduced")):
         context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion=motion,locale="zh-CN")
@@ -2541,14 +2580,14 @@ def verify_control_reduced_motion(browser, origin):
             page.add_init_script("localStorage.setItem('ui-vault:preferences:v1',"+json.dumps(settings)+")")
             page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
             page.locator(".project-row").first.wait_for(state="attached")
-            for button_id in ("preview-favorite","preview-info"):
+            for button_id in ("preview-favorite","preview-info","preview-search"):
                 button=page.locator("#"+button_id)
                 button.hover()
                 page.mouse.down()
                 assert button.evaluate("""e=>{const t=getComputedStyle(e).transform;
                   return t==='none'||new DOMMatrix(t).isIdentity;}""")
                 page.mouse.up()
-                if button_id=="preview-info":page.keyboard.press("Escape")
+                if button_id in ("preview-info","preview-search"):page.keyboard.press("Escape")
             assert page.locator("#preview-favorite .ui-icon").evaluate("""e=>{
               e.classList.add('is-pulsing');return getComputedStyle(e).animationName;
             }""")=="none"
@@ -2950,6 +2989,7 @@ def main():
                     verify_project_operations,
                     verify_settings_popover_boundaries,
                     verify_control_reduced_motion,
+                    verify_workbench_surface_states,
                     verify_sidebar_collapse,
                     verify_sidebar_transition_no_reflow,
                     verify_compact_search_and_fixed_icons,

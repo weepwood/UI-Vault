@@ -16,7 +16,7 @@ test('结果项目不会受旧版全宽搜索样式影响，hover 与选中态�
   const css=source('assets/styles.css');
   assert.match(css,/\.command-palette-item\{[^}]*width:auto;[^}]*margin:3px 12px;/s);
   assert.match(css,/\.command-palette-item:hover\{background:var\(--hover-strong\);border-color:var\(--line-soft\)\}/);
-  assert.match(css,/\.command-palette-item.is-active:hover\{background:var\(--hover-strong\);border-color:var\(--line-soft\)\}/);
+  assert.match(css,/\.command-palette-item.is-active:hover\{background:var\(--hover-strong\);background:color-mix\(in srgb,var\(--accent-soft\) 70%,var\(--hover-strong\)\);border-color:var\(--accent-line-strong\)\}/);
   assert.match(css,/\.command-palette-item.is-active\{background:var\(--accent-soft\);border-color:var\(--accent-line\)\}/);
   assert.match(css,/\.command-palette-item:focus-visible\{[^}]*background:var\(--accent-soft\);outline:2px solid var\(--focus\)/s);
   assert.match(css,/\.command-palette-item\{gap:10px;margin-inline:8px;/);
