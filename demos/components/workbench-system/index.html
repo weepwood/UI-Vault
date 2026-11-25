@@ -100,6 +100,10 @@
           </div>
           <p class="wb-component-hint" id="wb-select-result" role="status" aria-live="polite">当前：精选优先 / 全部标签</p>
         </div>
+        <div class="wb-surface">
+          <div class="wb-component-caption"><strong>属性实验 · Input / Select / Slider</strong><code>真实控件</code></div>
+          <div id="wb-form-playground"></div>
+        </div>
       </section>
       <section id="story-navigation" class="wb-story-panel" role="tabpanel" aria-labelledby="story-tab-navigation" data-story-panel="navigation" hidden>
         <div class="wb-section-head"><h2>侧栏与项目条目</h2><p>与主站共用 CategoryNavigation 和 ProjectList 组件；分类、搜索、排序和标签都会改变列表。</p></div>
@@ -121,7 +125,15 @@
             <button type="button" class="info-action" id="wb-open-dialog"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#book-open"></use></svg><span>打开对话框</span></button>
             <button type="button" class="info-action" data-demo-toast="操作已完成，可继续浏览"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#circle-check"></use></svg><span>显示通知</span></button>
           </div>
-          <p class="wb-component-hint">使用浏览器原生 dialog；Escape、关闭按钮和点击遮罩可退出。</p>
+          <div class="wb-playground" aria-label="对话框属性实验">
+            <div class="wb-playground-fields">
+              <label>对话框标题<input id="wb-dialog-label" type="text" maxlength="32" value="项目说明示例"></label>
+              <label>确认文字<input id="wb-dialog-action-label" type="text" maxlength="16" value="知道了"></label>
+              <label class="wb-playground-check"><input id="wb-dialog-backdrop" type="checkbox" checked>点击遮罩关闭</label>
+            </div>
+            <pre id="wb-dialog-code" class="wb-live-code" tabindex="0" aria-label="对话框配置 JSON"></pre>
+          </div>
+          <p class="wb-component-hint">使用浏览器原生 dialog；Escape、关闭按钮始终可退出，遮罩行为可配置。</p>
         </div>
         <div class="wb-surface">
           <div class="wb-component-caption"><strong>Empty state</strong><code>.empty-list</code></div>

@@ -37,6 +37,36 @@ const TAG_OPTIONS=[
 ];
 const labelOf=(options,value)=>(options.find(option=>option.value===value)||options[0]).label;
 
+const FORM_DEFAULTS={query:'',placeholder:'搜索示例资源',label:'示例选项',icon:'bookmark',value:'compact',range:16,step:1};
+const FORM_OPTIONS=[{value:'compact',label:'紧凑'},{value:'standard',label:'标准'},{value:'comfortable',label:'舒展'}];
+function FormPlayground(){
+  const [config,setConfig]=useState(FORM_DEFAULTS);
+  function change(key,value){setConfig(old=>({...old,[key]:value}));}
+  useLayoutEffect(()=>{
+    const reset=()=>setConfig(FORM_DEFAULTS);
+    window.addEventListener('wb-reset-demo',reset);
+    return ()=>window.removeEventListener('wb-reset-demo',reset);
+  },[]);
+  const settings={SearchField:{value:config.query,placeholder:config.placeholder,label:'搜索实验'},WorkbenchSelect:{label:config.label||'示例选项',value:config.value,icon:config.icon,options:FORM_OPTIONS},range:{min:0,max:40,step:config.step,value:config.range}};
+  return <div className="wb-playground">
+    <div className="wb-playground-stage wb-form-stage">
+      <SearchField id="wb-play-search" controls="wb-play-result" shortcuts={null} value={config.query} placeholder={config.placeholder} label="搜索实验" onChange={value=>change('query',value)}/>
+      <WorkbenchSelect id="wb-play-select" label={config.label||'示例选项'} value={config.value} options={FORM_OPTIONS} icon={config.icon} onChange={value=>change('value',value)}/>
+      <label className="wb-range-line"><span>间距 <output>{config.range}px</output></span><input id="wb-play-range" type="range" min={0} max={40} step={config.step} value={config.range} onChange={event=>change('range',Number(event.target.value))}/></label>
+      <div className="wb-gap-preview" style={{gap:config.range}} aria-hidden="true"><i/><i/><i/></div>
+      <p id="wb-play-result" className="wb-component-hint" role="status">{config.query||'未输入'} · {labelOf(FORM_OPTIONS,config.value)} · {config.range}px</p>
+    </div>
+    <div className="wb-playground-fields">
+      <label>输入提示<input id="wb-play-placeholder" value={config.placeholder} maxLength={36} onChange={event=>change('placeholder',event.target.value)}/></label>
+      <label>下拉名称<input id="wb-play-select-label" value={config.label} maxLength={24} onChange={event=>change('label',event.target.value)}/></label>
+      <label>下拉图标<select id="wb-play-icon" value={config.icon} onChange={event=>change('icon',event.target.value)}><option value="bookmark">书签</option><option value="layers">图层</option><option value="component">组件</option></select></label>
+      <label>滑块步长<select id="wb-play-step" value={config.step} onChange={event=>{const step=Number(event.target.value);setConfig(old=>({...old,step,range:Math.round(old.range/step)*step}));}}><option value="1">1px</option><option value="2">2px</option><option value="5">5px</option></select></label>
+    </div>
+    <pre className="wb-live-code" id="wb-form-code" tabIndex={0} aria-label="当前组件配置 JSON">{JSON.stringify(settings,null,2)}</pre>
+    <p className="wb-component-hint">配置与上方实际控件同步；SearchField / WorkbenchSelect 复用主站实现，Slider 使用浏览器原生 range。JSON 为接入参数，不是独立安装包。</p>
+  </div>;
+}
+
 // ---------- React 部分：全部使用主站组件 ----------
 function Showcase({nodes}){
   const [query,setQuery]=useState('');
@@ -94,6 +124,7 @@ function Showcase({nodes}){
     {createPortal(<ProjectList items={items} labels={LABELS} selectedId={selectedId}
       onSelect={value=>{setSelectedId(value);report('已选中：'+(items.find(a=>a.id===value)?.title||value));}} query={query}/>,nodes.list)}
     {createPortal(listStatus,nodes.listStatus)}
+    {createPortal(<FormPlayground/>,nodes.formPlayground)}
     {createPortal(<ViewportSwitcher mode={mode} customWidth={customWidth} onChange={value=>{setMode(value);report('预览模式：'+value);}}
       onCustomWidth={width=>{setCustomWidth(width);setMode('custom');report('自定义宽度：'+width+'px');}}
       stageElement={nodes.deviceStage} visible/>,nodes.viewport)}
@@ -121,7 +152,7 @@ function installLocalSprite(){
 function mountShowcase(sprite){
   const $=selector=>document.querySelector(selector);
   const nodes={
-    search:$('#wb-search-mount'),sort:$('#wb-sort-mount'),tag:$('#wb-tag-mount'),
+    formPlayground:$('#wb-form-playground'),search:$('#wb-search-mount'),sort:$('#wb-sort-mount'),tag:$('#wb-tag-mount'),
     selectResult:$('#wb-select-result'),categories:$('#wb-category-nav'),
     list:$('#wb-project-list'),listStatus:$('#wb-list-status'),
     viewport:$('#wb-viewport-mount'),deviceStage:$('#wb-device-stage'),
@@ -252,12 +283,22 @@ function initShell(){
   });
 
   const dialog=$('#wb-dialog');
+  const dialogLabel=$('#wb-dialog-label'),dialogAction=$('#wb-dialog-action-label'),dialogBackdrop=$('#wb-dialog-backdrop');
+  function updateDialog(){
+    const title=dialogLabel.value.trim()||'项目说明示例',confirm=dialogAction.value.trim()||'知道了';
+    $('#wb-dialog-title').textContent=title;
+    $('#wb-dialog-confirm').textContent=confirm;
+    $('#wb-dialog-code').textContent=JSON.stringify({title,confirm,closeOnBackdrop:dialogBackdrop.checked,escape:true},null,2);
+  }
+  for(const field of [dialogLabel,dialogAction,dialogBackdrop])field.addEventListener('input',updateDialog);
+  window.addEventListener('wb-reset-demo',()=>{dialogLabel.value='项目说明示例';dialogAction.value='知道了';dialogBackdrop.checked=true;updateDialog();});
+  updateDialog();
   $('#wb-open-dialog').addEventListener('click',()=>{dialog.showModal();report('对话框已打开');});
   $('#wb-close-dialog').addEventListener('click',()=>dialog.close());
   $('#wb-dialog-confirm').addEventListener('click',()=>dialog.close());
   dialog.addEventListener('close',()=>report('对话框已关闭'));
   dialog.addEventListener('click',event=>{
-    if(event.target===dialog)dialog.close();
+    if(event.target===dialog&&dialogBackdrop.checked)dialog.close();
   });
 
   const colorNames=['--surface','--canvas','--sidebar','--ink','--text','--muted','--line','--accent','--accent-soft','--focus'];
