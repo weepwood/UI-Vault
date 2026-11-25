@@ -23,7 +23,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from functools import partial
 
 from PIL import Image
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect, sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent
 DIST = ROOT / "dist"
@@ -1869,12 +1869,27 @@ def verify_project_operations(browser, origin):
         assert first.count() == 1, "资产深链接丢失"
         page.locator(".ops-reset").click()
         chooser = page.locator("#operations-code").locator("xpath=..")
-        chooser.locator(".select-trigger").click()
+        trigger = chooser.locator(".select-trigger")
+        options = chooser.locator('[role="option"]')
+        trigger.click()
+        # Send End immediately after the click: opening must not defer initial focus
+        # to an animation frame that can overwrite the user's next keystroke.
         page.keyboard.press("End")
-        assert chooser.locator('[role="option"]').last.evaluate("(el) => el === document.activeElement")
+        expect(options.last).to_be_focused()
+        page.keyboard.press("Home")
+        expect(options.first).to_be_focused()
         page.keyboard.press("Escape")
-        assert chooser.locator(".select-trigger").evaluate("(el) => el === document.activeElement")
-        chooser.locator(".select-trigger").click()
+        expect(trigger).to_be_focused()
+        expect(chooser.locator('[role="listbox"]')).to_be_hidden()
+        trigger.click()
+        page.keyboard.press("Tab")
+        expect(page.locator("#operations-deploy").locator("xpath=..").locator(".select-trigger")).to_be_focused()
+        expect(chooser.locator('[role="listbox"]')).to_be_hidden()
+        trigger.click()
+        page.keyboard.press("Shift+Tab")
+        expect(page.locator("#operations-query")).to_be_focused()
+        expect(chooser.locator('[role="listbox"]')).to_be_hidden()
+        trigger.click()
         chooser.locator('[data-value="failure"]').click()
         assert page.locator(".ops-project").count() == 0, "代码检查失败筛选未生效"
         assert f"显示 0 / {expected}" in page.locator(".ops-result-header").inner_text()
@@ -1892,6 +1907,32 @@ def verify_project_operations(browser, origin):
     try:
         page.goto(origin + "?view=operations", wait_until="domcontentloaded")
         page.locator("#operations-title").wait_for(state="visible", timeout=30000)
+        chooser = page.locator("#operations-code").locator("xpath=..")
+        chooser.locator(".select-trigger").click()
+        popup = chooser.locator('[role="listbox"]')
+        expect(popup).to_be_visible()
+        # Reduced motion is not required: wait for the actual rendered bounds.
+        page.wait_for_function("""() => {
+          const r = document.querySelector('#operations-code').parentElement.querySelector('[role=listbox]').getBoundingClientRect();
+          return r.left >= 11 && r.right <= innerWidth - 11 && r.top >= 11 && r.bottom <= innerHeight - 11;
+        }""")
+        page.keyboard.press("Escape")
+        expect(popup).to_be_hidden()
+        # Exercise the collision branch and the bounded listbox scroll on a short viewport.
+        page.set_viewport_size({"width": 390, "height": 400})
+        chooser.locator(".select-trigger").click()
+        page.keyboard.press("End")
+        expect(chooser.locator('[role="option"]').last).to_be_focused()
+        expect(popup).to_have_attribute("data-placement", "top")
+        page.wait_for_function("""() => {
+          const menu = document.querySelector('#operations-code').parentElement.querySelector('[role=listbox]');
+          const r = menu.getBoundingClientRect(), last = menu.lastElementChild.getBoundingClientRect();
+          return r.left >= 11 && r.right <= innerWidth - 11 && r.top >= 11 && r.bottom <= innerHeight - 11
+            && menu.scrollTop > 0 && last.bottom <= r.bottom + 1;
+        }""")
+        page.keyboard.press("Escape")
+        expect(popup).to_be_hidden()
+        page.set_viewport_size({"width": 390, "height": 844})
         page.locator("#operations-menu-toggle").click()
         assert "is-open" in (page.locator("#library-rail").get_attribute("class") or ""), "状态页无法打开移动端导航"
         page.keyboard.press("Escape")
