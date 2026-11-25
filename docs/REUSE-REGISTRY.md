@@ -60,3 +60,7 @@ node scripts/install-registry.mjs --verify dist/registry /path/to/project founda
 ```
 
 输出 JSON 包含 verified、checked、total 和 issues（文件路径与原因：missing、modified、unsafe、unreadable、lock-mismatch）。完整一致退出码为 0，任何差异退出码为 1。以可信 Registry 的实际依赖闭包、版本、运行时要求与字节哈希为基准，而非相信安装目录中可被修改的 REGISTRY-LOCK.json。不会覆盖、修复、删除文件或安装依赖；有意修改源码也会被报告为差异。仅检查已登记交付文件及锁文件，不扫描额外工程文件，也不等于运行时/许可证合规审核。拒绝符号链接、Windows 保留文件名及大小写目录冲突；请在静止的本地目录运行，避免并发改写。当前包含 modules/runtime 的 v1 锁文件结构保持兼容；更早缺少这些字段的锁会被报告为不一致，不会自动迁移。
+
+## 工作台模块浏览入口
+
+打开 UI Foundation Kit → 项目说明 / 源码 → 源代码 → 浏览 Foundation Registry。仅此时读取正式静态索引，按基础 CSS、React、Vue 分类选择模块，查看安装顺序、声明的运行时依赖和模块 JSON。复制预检、安装及复验命令前，将 ./my-project 替换成已存在的目标父目录；在可信仓库根目录先运行 npm run build。浏览器只展示元数据，不运行安装、不验证实际文件哈希；CLI 仍是最终权威。开发源站未生成 Registry 时给出重试与构建提示，其他资产仍保持原有交付方式。

@@ -63,3 +63,9 @@ test('首屏壳节点校验应使用顶栏搜索入口，不阻止 React 挂载'
  assert.match(startup,/'preview-search'/);
  assert.doesNotMatch(startup,/'nav-expand-search'/);
 });
+
+test('关闭命令面板时不排序和匹配整个全局目录',()=>{
+ const workbench=read('src/react-workbench.jsx');
+ assert.match(workbench,/compactSearchOpen\?searchCommandAssets\(state.assets,paletteQuery,state.labels\):EMPTY_PALETTE_RESULTS/);
+ assert.match(workbench,/\[compactSearchOpen,state.assets,paletteQuery,state.labels\]/);
+});

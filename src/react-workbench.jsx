@@ -29,6 +29,7 @@ import {getExternalLinkNotice} from '../assets/core/external-link-message.js';
 import {readNavCollapsed,saveNavCollapsed,NAV_COLLAPSED_KEY} from '../assets/core/sidebar-collapse.js';
 import {searchCommandAssets,readCommandRecent,addCommandRecent} from '../assets/core/global-search.js';
 
+const EMPTY_PALETTE_RESULTS=Object.freeze([]);
 const sortOptions=[
   {value:'featured',label:'精选优先'},{value:'newest',label:'最新添加'},{value:'az',label:'名称排序'}
 ];
@@ -220,8 +221,8 @@ function WorkbenchPortals({nodes}){
   const searchReturnFocus=useRef(null);
   // 与 state.query / filtered 完全隔离；不会引发第二栏重新筛选。
   const paletteItems=useMemo(
-    ()=>searchCommandAssets(state.assets,paletteQuery,state.labels),
-    [state.assets,paletteQuery,state.labels]
+    ()=>compactSearchOpen?searchCommandAssets(state.assets,paletteQuery,state.labels):EMPTY_PALETTE_RESULTS,
+    [compactSearchOpen,state.assets,paletteQuery,state.labels]
   );
   // 图标栏进入完整宽度前不展示长文字，避免网格动画中汉字被压成竖排。
   const previousNav=useRef({collapsed:navCollapsed,mobile});

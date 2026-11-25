@@ -9,6 +9,7 @@ import {assetReuseManifest} from '../../assets/core/reuse-manifest.js';
 import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
 import {DesignGuide} from './DesignGuide.jsx';
 import {SourceCode} from './SourceCode.jsx';
+import {RegistryBrowser} from './RegistryBrowser.jsx';
 import {DemoParameterPanel} from './DemoParameterPanel.jsx';
 import {parameterSchemaFor} from '../../assets/core/demo-parameters.js';
 
@@ -67,6 +68,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   const [filePath,setFilePath]=useState('');
   const [wrapSource,setWrapSource]=useState(false);
   const [highlightSource,setHighlightSource]=useState(false);
+  const [registryOpen,setRegistryOpen]=useState(false);
   // 只保存“真正取回（或失败）的源码”；加载占位与未打开时的提示由下面的 source 在渲染期派生。
   const [loadedSource,setSource]=useState({id:null,path:null,text:'',status:'',ready:false});
   const [pageInfo,setPageInfo]=useState({id:null,info:null});
@@ -91,7 +93,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   // 切换资产必须同步丢弃上一次的标签页、源码与页面信息：若改成渲染期派生，
   // 再次打开同一资产时会命中旧内容而不再重新请求源码（现有测试也锁定了这个 effect 形态）。
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(()=>{setTab('overview');setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
+  useEffect(()=>{setTab('overview');setRegistryOpen(false);setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
   useEffect(()=>{
     if(!root)return;
     if(open&&assetId){
@@ -189,6 +191,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
     setTab(next);
     document.getElementById('tab-'+next)?.focus();
   }
+  const registryActive=registryOpen&&asset?.id==='ui-foundation-kit';
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
     (asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
   const isCurrent=source.id===asset?.id&&source.path===selectedFile?.path;
@@ -242,9 +245,9 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
       <div id="project-info" className="project-info" onClick={infoClick}
         dangerouslySetInnerHTML={{__html:asset?projectInfoMarkup(asset,labels):''}}/>
     </section>
-    <section id="dialog-source" className="dialog-pane dialog-source-pane" role="tabpanel"
+    <section id="dialog-source" className={'dialog-pane dialog-source-pane'+(registryActive?' registry-source-pane':'')} role="tabpanel"
       aria-labelledby="tab-source" tabIndex={0} hidden={tab!=='source'}>
-      <div className="source-actions">
+      <div className="source-actions" hidden={registryActive}>
         <div className="source-file-controls">
           {files.length>1
             ?<WorkbenchSelect id="source-file-select" label="选择源码文件" icon="file-code"
@@ -277,7 +280,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
           </a>
         </div>
       </div>
-      <p className="source-delivery-note" role="note">
+      <p className="source-delivery-note" role="note" hidden={registryActive}>
         {foundationProject?'Foundation 源码工程包含可离线构建的 Token/CSS、静态演示与 React/Vue/GPUI 适配源码及说明。Vue 示例包含 npm 锁文件，使用 npm ci 安装；本包不含 node_modules。':asset?.source==='external'
           ?'外部项目仍在原仓库独立维护。仓库 ZIP 是完整源码快照，不保证仅包含当前演示，也不代表已获得商业复用许可。'
           :standaloneBundle
@@ -286,12 +289,13 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
               ?'该 Demo 是可独立保存的单文件页面；如需复用，请保留源码中的来源与许可证说明。'
               :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
       </p>
-      <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<><a href={resolveAsset('registry/index.json')} target="_blank" rel="noopener noreferrer">Foundation Registry（发布站点）</a></>}</div>
+      <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" hidden={registryActive} onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<button type="button" aria-expanded={registryOpen} onClick={event=>{event.currentTarget.closest('.dialog-source-pane').scrollTop=0;setRegistryOpen(value=>!value);}}>{registryOpen?'返回源码':'浏览 Foundation Registry'}</button>}</div>
+      {registryActive?open&&tab==='source'&&<RegistryBrowser onCopyText={onCopyText}/>:<>
       {selectedFile&&<div className="source-reader-tools"><span className="source-current-path" title={selectedFile.path}>{selectedFile.path}</span><label className="source-wrap-toggle"><input type="checkbox" checked={wrapSource} onChange={event=>setWrapSource(event.target.checked)}/> 自动换行</label><label className="source-wrap-toggle"><input type="checkbox" checked={highlightSource} onChange={event=>setHighlightSource(event.target.checked)}/> 语法高亮</label></div>}
       <div className="source-reader-layout">
       {files.length>1&&<details className="source-file-browser" key={asset?.id+':'+asset?.preview}><summary>源码文件目录 · {files.length} 项</summary><ul aria-label="已登记源码文件">{files.map(file=><li key={file.path}><button type="button" onClick={()=>setFilePath(file.path)} aria-pressed={file.path===selectedFile?.path}><Icon name="file-code"/><span>{file.name}</span><small>{file.path.slice(0,file.path.lastIndexOf('/'))}</small></button></li>)}</ul></details>}
       <pre className={'source-view'+(wrapSource?' source-view-wrap':'')}><SourceCode text={isCurrent?source.text:'选择“源代码”查看项目实现。'} language={selectedFile?.language} enabled={Boolean(highlightSource&&open&&tab==='source'&&isCurrent&&source.ready)}/></pre>
-      </div>
+      </div></>}
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
       aria-labelledby="tab-page-info" tabIndex={0} hidden={tab!=='page-info'}>

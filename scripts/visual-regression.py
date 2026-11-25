@@ -913,12 +913,63 @@ def verify_directory_session_and_search_limit(browser, origin):
         expect(page.get_by_text("请缩小关键词范围")).to_be_visible()
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2")
         page.screenshot(path=str(OUTPUT / "command-search-cap-mobile.png"))
+        for width,height in ((667,300),(390,280)):
+            page.set_viewport_size({"width":width,"height":height})
+            field.press("Control+Home")
+            field.press("Control+End")
+            expect(field).to_have_attribute("aria-activedescendant","command-result-239")
+            page.wait_for_function("""() => {
+              const list=document.querySelector('.command-palette-list').getBoundingClientRect();
+              const row=document.getElementById('command-result-239').getBoundingClientRect();
+              const panel=document.querySelector('.command-palette-panel').getBoundingClientRect();
+              const footer=document.querySelector('.command-palette-footer:last-child').getBoundingClientRect();
+              return panel.top>=0&&panel.bottom<=innerHeight&&footer.bottom<=panel.bottom
+                &&list.height>=row.height&&row.top>=list.top-1&&row.bottom<=list.bottom+1;
+            }""")
+            page.screenshot(path=str(OUTPUT / f"command-search-short-{width}x{height}.png"))
+        page.set_viewport_size({"width":320,"height":640})
         field.fill("bauhaus")
         page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length<60")
         expect(field).to_have_attribute("aria-activedescendant", "command-result-0")
         assert page.locator('.command-palette-list').evaluate("(el)=>el.scrollTop") == 0
         print("同标签页目录刷新恢复及搜索分批展开通过",flush=True)
     finally:
+        context.close()
+
+
+def verify_startup_and_short_shell(browser, origin):
+    """核心目录未返回时不请求健康快照；短窗口保持工作台内部滚动。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    held=[]
+    requests=[]
+    try:
+        context.route("**/content/assets.json*",lambda route:held.append(route))
+        page=context.new_page()
+        page.on("request",lambda request:requests.append(request.url))
+        page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+        page.locator(".project-skeleton").first.wait_for(state="attached")
+        page.wait_for_function("""() => ['categories.json','projects.json'].every(name => performance.getEntriesByType('resource').some(entry=>entry.name.includes('/content/'+name)))""")
+        assert held
+        assert not any("/content/project-health.json" in url or "/content/preview-health.json" in url for url in requests)
+        held.pop().continue_()
+        page.locator("#preview-stage iframe").wait_for(state="attached")
+        # wait_for_function uses the browser resource timing buffer, so no missed event race.
+        page.wait_for_function("""() => ['project-health.json','preview-health.json'].every(name =>
+          performance.getEntriesByType('resource').some(entry=>entry.name.includes('/content/'+name)))""")
+        for width,height in ((1440,900),(1024,400),(667,300),(390,280)):
+            page.set_viewport_size({"width":width,"height":height})
+            page.wait_for_function("""() => {
+              const shell=document.querySelector('.app-shell').getBoundingClientRect();
+              const stage=document.querySelector('#preview-stage').getBoundingClientRect();
+              return Math.abs(shell.height-innerHeight)<=1&&document.documentElement.scrollHeight<=innerHeight+1
+                &&stage.height>0&&stage.bottom<=innerHeight+1;
+            }""")
+            page.screenshot(path=str(OUTPUT/f"workbench-shell-{width}x{height}.png"))
+        print("核心目录优先与四种工作台视口边界通过",flush=True)
+    finally:
+        for route in held:
+            try: route.abort()
+            except Exception: pass
         context.close()
 
 
@@ -1447,6 +1498,35 @@ def verify_expanded_workbench_screenshots(browser, origin):
             dock.locator('.parameter-section-nav button[aria-current="location"]').filter(has_text="预设与文件").wait_for()
             dock.evaluate("el=>el.scrollTop=0")
             dock.locator('.parameter-section-nav button[aria-current="location"]').filter(has_text="布局基础").wait_for()
+            if width<761:
+                # Compact mode must depend on actual dock capacity, including user resizing.
+                for short_width,short_height in ((667,300),(390,400),(390,280)):
+                    page.set_viewport_size({"width":short_width,"height":short_height})
+                    expect(dock).to_have_attribute("data-compact-controls","true")
+                    assert toolbar.evaluate("(el)=>getComputedStyle(el).position")=="static"
+                    dock.evaluate("el=>el.scrollTop=0")
+                    dock.get_by_role("button",name="阴影",exact=True).click()
+                    expect(dock.get_by_role("heading",name="阴影",exact=True)).to_be_focused()
+                    page.wait_for_function("""() => {
+                      const d=document.querySelector('#parameter-dock'),h=d.querySelector('.parameter-dock-header');
+                      const r=document.activeElement.getBoundingClientRect();
+                      return r.top>=h.getBoundingClientRect().bottom-1&&r.bottom<=d.getBoundingClientRect().bottom+1;
+                    }""")
+                    radius=dock.get_by_role("spinbutton",name="卡片圆角",exact=True)
+                    radius.focus()
+                    radius.scroll_into_view_if_needed()
+                    page.wait_for_function("""() => {
+                      const d=document.querySelector('#parameter-dock'),h=d.querySelector('.parameter-dock-header');
+                      const r=document.activeElement.getBoundingClientRect();
+                      return r.top>=h.getBoundingClientRect().bottom-1&&r.bottom<=d.getBoundingClientRect().bottom+1;
+                    }""")
+                    radius.fill("24")
+                    dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
+                    assert page.locator("#preview-stage").bounding_box()["height"]>0
+                    page.screenshot(path=str(OUTPUT/f"parameter-short-{short_width}x{short_height}.png"))
+                page.set_viewport_size({"width":width,"height":height})
+                expect(dock).not_to_have_attribute("data-compact-controls","true")
+                assert toolbar.evaluate("(el)=>getComputedStyle(el).position")=="sticky"
             dock.get_by_role("button",name="关闭实时参数").click()
             if width<761: page.locator("#menu-toggle").click()
             page.locator(".directory-filter-toggle").click()
@@ -1488,6 +1568,43 @@ def verify_expanded_workbench_screenshots(browser, origin):
                 page.screenshot(path=str(OUTPUT/"source-highlight-desktop.png"))
                 page.get_by_role("checkbox",name="语法高亮").uncheck()
                 assert page.locator("#source-code span").count()==0
+        finally:
+            context.close()
+
+
+def verify_registry_browser(browser, origin):
+    """真实发布 Registry 索引，按需读取、失败重试、跨主题浏览及复制命令。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},reduced_motion="reduce",locale="zh-CN",color_scheme=theme,permissions=["clipboard-read","clipboard-write"])
+        reads=[]
+        try:
+            def registry_route(route):
+                reads.append(route.request.url)
+                if len(reads)==1: route.fulfill(status=503,body="temporary unavailable")
+                else: route.continue_()
+            context.route("**/registry/index.json",registry_route)
+            page=context.new_page()
+            page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            page.locator("#tab-source").click()
+            assert not reads
+            page.get_by_role("button",name="浏览 Foundation Registry").click()
+            page.get_by_text("无法读取 Registry。",exact=False).wait_for()
+            page.get_by_role("button",name="重试",exact=True).click()
+            select=page.get_by_role("combobox",name="选择 Registry 模块")
+            expect(select.locator("option")).to_have_count(11)
+            select.select_option("foundation-vue-primitives")
+            expect(page.locator(".registry-dependencies li")).to_have_count(4)
+            assert "reka-ui 2.10.1" in page.locator(".registry-dependencies").inner_text()
+            assert page.locator(".registry-module-info a").get_attribute("href").endswith("/registry/items/foundation-vue-primitives.json")
+            page.screenshot(path=str(OUTPUT/f"registry-browser-{theme}-{width}.png"))
+            page.get_by_role("button",name="复制预检命令").click()
+            assert page.evaluate("()=>navigator.clipboard.readText()")=="node scripts/install-registry.mjs --plan dist/registry ./my-project foundation-vue-primitives"
+            assert page.locator(".registry-browser").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            page.get_by_role("button",name="返回源码").click()
+            expect(page.locator(".registry-browser")).to_have_count(0)
+            expect(page.locator(".source-view")).to_be_visible()
+            assert len(reads)==2
         finally:
             context.close()
 
@@ -2298,6 +2415,7 @@ def main():
                     verify_large_directory_groups,
                     verify_synthetic_grouped_directory,
                     verify_directory_session_and_search_limit,
+                    verify_startup_and_short_shell,
                     verify_preview_timeout_ready,
                     verify_parameter_readiness,
                     verify_foundation_parameters,
@@ -2305,6 +2423,7 @@ def main():
                     verify_warm_layout_parameters,
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
+                    verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,
                     verify_liquid_orb_unified,
