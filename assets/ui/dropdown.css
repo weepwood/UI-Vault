@@ -5,7 +5,7 @@
 .select-field > select { width: 100%; min-width: 0; height: 34px; padding: 0 8px; border: 1px solid var(--line); border-radius: var(--workbench-control-radius,7px); background: var(--surface); color: var(--text); font-size: 11px; }
 .select-trigger { display: flex; align-items: center; gap: 7px; width: 100%; min-width: 0; height: 34px; padding: 0 9px; border: 1px solid var(--line); border-radius: var(--workbench-control-radius,7px); background: var(--surface); color: var(--text); font-size: 11px; text-align: left; transition: border-color var(--motion-fast,120ms) ease, background-color var(--motion-fast,120ms) ease, color var(--motion-fast,120ms) ease; }
 .select-trigger:hover { border-color: var(--accent-line,#b7c8d0); background: var(--surface); }
-.select-field.is-open .select-trigger { border-color: var(--accent-line-strong,#8faebf); background: var(--surface); }
+.select-field.is-open .select-trigger { border-color: var(--accent-line,var(--accent)); background: var(--accent-soft); }
 .select-field.has-filter .select-trigger { color: var(--accent); border-color: var(--accent-line,#c2d8e5); background: var(--accent-soft); }
 .select-leading, .select-chevron { display: inline-flex; align-items: center; justify-content: center; flex: none; color: var(--muted); }
 .select-leading .ui-icon { width: 15px; height: 15px; }
@@ -24,10 +24,12 @@
 .select-option-text { min-width: 0; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .select-option-check { visibility: hidden; color: var(--accent); }
 .select-option[aria-selected="true"] .select-option-check { visibility: visible; }
-@keyframes select-pop-in { from { opacity: 0; transform: translateY(-4px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes select-pop-in { from { opacity: 0; transform: translateY(var(--select-enter-offset,-4px)) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
 @media(prefers-reduced-motion:reduce) {
   .select-trigger, .select-chevron, .select-option { transition: none; }
   .select-popover { animation: none; }
 }
 
-.select-popover[data-placement="top"] { top:auto; bottom:calc(100% + 5px); transform-origin:bottom right; }
+.select-popover[data-placement="top"] { top:auto; bottom:calc(100% + 5px); transform-origin:bottom right; --select-enter-offset:4px; }
+
+.select-option[aria-selected=true] .select-option-icon{color:var(--accent)}

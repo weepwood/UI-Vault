@@ -685,7 +685,8 @@ body.settings-body { min-height:100vh;min-height:100dvh;background:var(--canvas)
 }
 .app-shell.is-settings .settings-view .settings-select.is-open .select-trigger { border-color:var(--accent); }
 .app-shell.is-settings .settings-view .settings-select .select-popover {
-  width:max(100%,190px);max-width:min(280px,calc(100vw - 30px));max-height:280px;
+  position:fixed;left:var(--select-fixed-left,12px);right:auto;top:var(--select-fixed-top,12px);bottom:auto;
+  width:var(--select-fixed-width,190px);max-width:min(280px,calc(100vw - 30px));max-height:min(280px,43dvh,var(--select-available-height,280px));
   border-color:var(--line);border-radius:9px;z-index:20;
 }
 .settings-visual-preview {
@@ -1537,8 +1538,6 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 .parameter-group-header .parameter-group-reset{margin:0;min-height:26px}
 /* 主站控件统一语义焦点与展开状态，保留既有布局尺寸和下拉交互。 */
 :is(.directory-filter-toggle,.select-trigger,.directory-facet-field select,.parameter-field input,.parameter-field select,.search-field input,.parameter-presets input,.parameter-presets select):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
-.select-field.is-open .select-trigger{border-color:var(--accent-line,var(--accent));background:var(--accent-soft)}
-.select-popover{border-color:var(--line);background:var(--surface);color:var(--text)}
 
 /* 窄屏检查器：保持完整无障碍名称，缩短可视文案；关键操作不再被横向截断。 */
 .parameter-action-short{display:none}
@@ -1578,8 +1577,6 @@ html[data-theme="dark"] #parameter-dock :is(.parameter-field,.material-stop-edit
 /* 保留完整拖动热区，将键盘焦点集中在实际手柄，统一双主题控件状态。 */
 .parameter-dock-resize:focus-visible{outline:none}
 .parameter-dock-resize:focus-visible span{outline:2px solid var(--focus);outline-offset:3px}
-.select-option[aria-selected=true] .select-option-icon{color:var(--accent)}
-.select-option:focus-visible{outline-offset:-2px}
 #parameter-dock .parameter-section-nav button[aria-current=location]{border-color:var(--accent-line,var(--accent));color:var(--accent);background:var(--accent-soft)}
 #parameter-dock .parameter-main-actions button:disabled{cursor:not-allowed}
 /* Height-aware dock: keep the close/resize header available, but let actions and

@@ -2056,6 +2056,71 @@ def verify_project_health_and_grouping(browser, origin):
         context.close()
     print(f"Project 分组与健康回归通过：{expected_groups} 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
 
+def verify_settings_popover_boundaries(browser, origin):
+    """设置页菜单必须超越滚动容器裁剪，同时保留键盘与真实命中。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(390,400,"light"),(667,300,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?view=settings",wait_until="domcontentloaded")
+            page.locator('[data-settings-section="typography"]').click()
+            field=page.locator("#settings-fontSize").locator("xpath=..")
+            trigger=field.locator(".select-trigger")
+            popup=field.locator(".select-popover")
+            trigger.click()
+            page.keyboard.press("End")
+            expect(field.locator('[role="option"]').last).to_be_focused()
+            page.wait_for_function("""() => {
+              const p=document.querySelector('#settings-fontSize').parentElement.querySelector('.select-popover');
+              const r=p.getBoundingClientRect(),last=p.lastElementChild,l=last.getBoundingClientRect();
+              return r.left>=11&&r.right<=innerWidth-11&&r.top>=11&&r.bottom<=innerHeight-11
+                &&l.top>=r.top-1&&l.bottom<=r.bottom+1
+                &&last.contains(document.elementFromPoint(l.x+l.width/2,l.y+l.height/2));
+            }""")
+            page.screenshot(path=str(OUTPUT/f"settings-popover-{width}x{height}-{theme}.png"))
+            page.keyboard.press("Home")
+            expect(field.locator('[role="option"]').first).to_be_focused()
+            page.wait_for_function("""() => {
+              const first=document.querySelector('#settings-fontSize').parentElement.querySelector('[role="option"]');
+              const r=first.getBoundingClientRect();
+              return first.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));
+            }""")
+            page.keyboard.press("Escape")
+            expect(trigger).to_be_focused()
+            expect(popup).to_be_hidden()
+            if height==400:
+                trigger.click()
+                page.locator(".settings-scroll").evaluate("e=>e.scrollTop=0")
+                expect(popup).to_be_hidden()
+                expect(trigger).to_be_focused()
+        finally:
+            context.close()
+
+
+def verify_control_reduced_motion(browser, origin):
+    for motion,preference in (("reduce","system"),("no-preference","reduced")):
+        context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion=motion,locale="zh-CN")
+        try:
+            page=context.new_page()
+            settings=json.dumps({"motion":preference})
+            page.add_init_script("localStorage.setItem('ui-vault:preferences:v1',"+json.dumps(settings)+")")
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached")
+            for button_id in ("preview-favorite","preview-info"):
+                button=page.locator("#"+button_id)
+                button.hover()
+                page.mouse.down()
+                assert button.evaluate("""e=>{const t=getComputedStyle(e).transform;
+                  return t==='none'||new DOMMatrix(t).isIdentity;}""")
+                page.mouse.up()
+                if button_id=="preview-info":page.keyboard.press("Escape")
+            assert page.locator("#preview-favorite .ui-icon").evaluate("""e=>{
+              e.classList.add('is-pulsing');return getComputedStyle(e).animationName;
+            }""")=="none"
+        finally:
+            context.close()
+
+
 def verify_project_operations(browser, origin):
     """独立状态管理页的真实筛选、资产跳转、移动导航与未知态回归。"""
     context = browser.new_context(viewport={"width": 1440, "height": 900},
@@ -2447,6 +2512,8 @@ def main():
                     verify_project_health_and_grouping,
                     verify_landfolio_version_switch,
                     verify_project_operations,
+                    verify_settings_popover_boundaries,
+                    verify_control_reduced_motion,
                     verify_sidebar_collapse,
                     verify_sidebar_transition_no_reflow,
                     verify_compact_search_and_fixed_icons,
