@@ -36,7 +36,8 @@
     "demo.jsx 由 npm run react:build 打包为 assets/showcase/workbench-system.js（经典 IIFE 脚本），以便在 sandbox iframe 中加载",
     "通用设计基础、跨框架 Token 继续由 subprojects/ui-foundation-kit 维护",
     "多文件演示禁止一键复制为单文件组件；组件分级、无障碍规范及抽取计划参见 docs/COMPONENT-SYSTEM.md",
-    "真实 SearchField 与 WorkbenchSelect 及其显式依赖已在源码区登记；REUSE.md 说明 React、样式变量、路径和图标依赖。不是独立 npm 包；通用独立组件优先使用 Foundation Registry。"
+    "真实 SearchField 与 WorkbenchSelect 及其显式依赖已在源码区登记；REUSE.md 说明 React、样式变量、路径和图标依赖。不是独立 npm 包；通用独立组件优先使用 Foundation Registry。",
+    "提供可选局部双主题适配 reuse-theme.css，保留原始组件与共享样式；不引入主站全局页面布局。"
   ],
   "sourceFiles": [
     {
@@ -82,6 +83,10 @@
     {
       "path": "assets/icons/lucide.svg",
       "label": "lucide.svg · 原始图标精灵"
+    },
+    {
+      "path": "demos/components/workbench-system/reuse-theme.css",
+      "label": "reuse-theme.css · 局部双主题适配"
     }
   ],
   "projectId": "ui-vault"

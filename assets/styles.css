@@ -1663,3 +1663,9 @@ html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-p
 .material-combination-presets button[aria-pressed=true]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
 .material-transfer-actions{display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:100%;padding-top:6px;border-top:1px solid var(--line-soft)}
 .material-transfer-actions small{flex-basis:100%;line-height:1.5}
+
+.material-custom-presets{width:100%;min-width:0;border-top:1px solid var(--line-soft);padding-top:6px}
+.material-custom-presets summary{cursor:pointer;font-size:11px;font-weight:600;color:var(--text)}
+.material-custom-presets .material-transfer-actions{border:0}
+.material-custom-presets label{display:flex;align-items:center;gap:6px;min-width:0;font-size:11px;color:var(--muted)}
+.material-custom-presets :is(select,input){min-width:0;max-width:160px;width:120px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);padding:5px 6px}

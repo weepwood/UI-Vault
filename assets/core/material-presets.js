@@ -1,4 +1,4 @@
-import {WARM_LAYOUT_FIELDS,normalizeParameters} from './demo-parameters.js';
+import {WARM_LAYOUT_FIELDS,normalizeParameters,warmLayoutCssValues} from './demo-parameters.js';
 const groups=['布局基础','表面渐变','阴影','动效曲线'];
 export function resetMaterialGroup(group){
  if(!groups.includes(group))throw TypeError('未知材质分组');
@@ -23,4 +23,29 @@ export function importMaterialSnapshot(raw){
  const data=JSON.parse(raw);
  if(!data||Object.keys(data).length!==4||data.format!=='ui-vault-material'||data.version!==1||data.assetId!=='warm-workbench'||!Object.hasOwn(data,'values'))throw Error('材质文件格式无效');
  return normalizeParameters(MATERIAL_FIELDS,data.values,{complete:true});
+}
+
+export function exportMaterialCss(values){
+ const css=warmLayoutCssValues(values);
+ return '/* UI-Vault material: add class ui-vault-material to your element. */\n.ui-vault-material {\n  background-color: '+css['--warm-surface']+';\n  background-image: '+css['--warm-card-gradient']+';\n  box-shadow: '+css['--warm-card-shadow']+';\n}\n';
+}
+const MATERIAL_STORAGE='ui-vault:material-presets:v1';
+function validateMaterialPresets(items){
+ if(!Array.isArray(items)||items.length>8)throw Error('材质预设数量无效');
+ const names=new Set();
+ return items.map(item=>{
+  if(!item||Object.keys(item).length!==2||typeof item.name!=='string'||!item.name.trim()||item.name.length>40||names.has(item.name)||item.name!==item.name.trim())throw Error('材质预设名称无效');
+  names.add(item.name);
+  return {name:item.name,values:normalizeParameters(MATERIAL_FIELDS,item.values,{complete:true})};
+ });
+}
+export function readMaterialPresets(storage){
+ try{return validateMaterialPresets(JSON.parse((storage??globalThis.localStorage).getItem(MATERIAL_STORAGE)||'[]'));}catch{return [];}
+}
+export function saveMaterialPresets(items,storage){
+ try{(storage??globalThis.localStorage).setItem(MATERIAL_STORAGE,JSON.stringify(validateMaterialPresets(items)));return true;}catch{return false;}
+}
+export function addMaterialPreset(items,name,values){
+ name=typeof name==='string'?name.trim():'';
+ return validateMaterialPresets([...items,{name,values:importMaterialSnapshot(exportMaterialSnapshot(values))}]);
 }

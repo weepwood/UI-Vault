@@ -1,0 +1,28 @@
+/* Opt-in theme adapter for the original Workbench controls; no page-level reset. */
+.wb-reuse-theme {
+  color-scheme: light;
+  --surface:#fff; --canvas:#f5f6f5; --ink:#20282d; --text:#40494d;
+  --muted:#637074; --subtle:#5f6e74; --line:#dfe4e5; --line-soft:#ebeeee;
+  --accent:#315e80; --accent-soft:#e7eff4; --accent-line:#c9dbe6; --accent-line-strong:#8caabb;
+  --focus:#285f88; --parameter-error:#a43d34; --hover:#eef1f1; --hover-strong:#e5eaea;
+  --motion-fast:120ms; --motion-base:160ms; --motion-slow:220ms;
+  --ease-out:cubic-bezier(.2,.8,.2,1); --workbench-control-radius:7px;
+  color:var(--ink); background:var(--canvas); font:13px/1.52 system-ui,sans-serif;
+}
+.wb-reuse-theme[data-theme="dark"] {
+  color-scheme:dark;
+  --surface:#1d242a; --canvas:#151b20; --ink:#f1f4f6; --text:#d7dfe4;
+  --muted:#b1bdc7; --subtle:#a1b0ba; --line:#39444c; --line-soft:#313a42;
+  --accent:#90c6ec; --accent-soft:#253a4a; --accent-line:#3d5b71; --accent-line-strong:#5f89a8;
+  --focus:#a6d4f6; --parameter-error:#ffaaa0; --hover:#29343c; --hover-strong:#313d46;
+}
+.wb-reuse-theme,.wb-reuse-theme *{box-sizing:border-box}
+.wb-reuse-theme :is(button,input,select){font:inherit}
+.wb-reuse-theme button{cursor:pointer}
+.wb-reuse-theme button:disabled{cursor:not-allowed;opacity:.48}
+.wb-reuse-theme :is(button,input,select):focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+.wb-reuse-theme .search-field input:focus-visible{outline:none;box-shadow:none}
+.wb-reuse-theme [hidden]{display:none!important}
+.wb-reuse-theme .ui-icon{width:16px;height:16px;display:inline-block;flex:none;vertical-align:-.18em}
+.wb-reuse-theme[data-motion="reduced"] :is(.search-field,.search-clear,.select-trigger,.select-chevron,.select-option){transition:none}
+.wb-reuse-theme[data-motion="reduced"] .select-popover{animation:none}

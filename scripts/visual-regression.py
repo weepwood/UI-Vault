@@ -1760,6 +1760,72 @@ def verify_notion_storage_fallback(browser, origin):
             context.close()
 
 
+def verify_material_library(browser, origin):
+    """独立 CSS 真正可用，材质预设跨刷新恢复且不覆盖布局/动效。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            dock=page.locator("#parameter-dock")
+            frame=page.frame_locator("#preview-stage iframe")
+            def button(name):return dock.get_by_role("button",name=name,exact=True)
+            def field(name):return dock.get_by_role("spinbutton",name=name,exact=True)
+            def sync():expect(dock.get_by_text("已连接 · 参数已同步",exact=True)).to_be_visible()
+            def open_dock():
+                page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+                page.locator("#preview-parameters").click()
+                button("读取当前参数").click()
+                sync()
+                dock.locator(".material-custom-presets summary").click()
+            def current_css():
+                return frame.locator("html").evaluate("e=>['--warm-surface','--warm-card-gradient','--warm-card-shadow'].map(k=>getComputedStyle(e).getPropertyValue(k).trim())")
+            open_dock()
+            button("双层柔光").click()
+            sync()
+            expected=current_css()
+            with page.expect_download() as info:
+                button("导出材质 CSS").click()
+            css=info.value.path().read_text("utf-8")
+            assert ".ui-vault-material" in css and all(value in css for value in expected)
+            assert not any(key in css for key in ("border-radius","padding:","transition:","--warm-"))
+            independent=context.new_page()
+            try:
+                independent.set_content('<style>'+css+'</style><div class="ui-vault-material" style="border-radius:29px;padding:15px">sample</div>')
+                assert independent.locator(".ui-vault-material").evaluate("e=>getComputedStyle(e).backgroundImage.includes('linear-gradient')&&getComputedStyle(e).boxShadow!=='none'&&getComputedStyle(e).borderRadius==='29px'")
+            finally:
+                independent.close()
+            name=dock.get_by_label("材质预设名称",exact=True)
+            name.fill("验收柔光")
+            button("保存当前材质").click()
+            expect(dock.get_by_text("材质预设已保存",exact=True)).to_be_visible()
+            name.fill("验收柔光")
+            button("保存当前材质").click()
+            expect(dock.get_by_text("材质预设名称重复、无效或已达 8 项上限",exact=True)).to_be_visible()
+            open_dock()
+            choice=dock.get_by_label("自定义材质预设",exact=True)
+            choice.select_option("验收柔光")
+            field("卡片圆角").fill("29")
+            sync()
+            field("悬停动效时长").fill("200")
+            sync()
+            button("平面纯色").click()
+            sync()
+            button("应用材质预设").click()
+            sync()
+            expect(field("卡片圆角")).to_have_value("29")
+            expect(field("悬停动效时长")).to_have_value("200")
+            assert current_css()==expected
+            dock.locator(".material-custom-presets").scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"material-library-{width}-{theme}.png"))
+            button("删除材质预设").click()
+            expect(dock.get_by_text("材质预设已删除",exact=True)).to_be_visible()
+            expect(choice.locator("option")).to_have_count(1)
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_material_snapshot_and_reuse(browser, origin):
     """仅恢复材质组，验证实际 CSS、非法文件保护及真实源码内容。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
@@ -3295,6 +3361,7 @@ def main():
                     verify_notion_storage_fallback,
                     verify_notion_header_quality,
                     verify_material_snapshot_and_reuse,
+                    verify_material_library,
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,
