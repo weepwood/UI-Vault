@@ -28,7 +28,8 @@
   --radius-sm: 5px;
   --radius-md: 9px;
   --radius-lg: 12px;
-  --directory-width: 330px;
+  --navigation-width: 208px;
+  --directory-width: 292px;
   /* 交互状态色：跟随主题与强调色（深色和 teal / violet 的取值见文件末尾）。 */
   --hover: #eef1f1;
   --hover-strong: #e5eaea;
@@ -123,7 +124,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   .info-action{width:34px;padding:0}
 }
 @media(max-width:1000px){
-  :root{--directory-width:296px}
   .sidebar{padding-left:10px;padding-right:10px}
   .topbar{padding:6px 12px;gap:8px}
 }
@@ -175,7 +175,12 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
 /* v0.8 三栏：导航（左）/项目列表（中）/实时预览（右）
  * 两个目录栏共享一个 Library Rail，移动端作为一个整体展开。
  */
-:root { --navigation-width: 208px; --directory-width: 292px; }
+/* Wide displays can expose longer asset titles without sacrificing the preview.
+   The user-selected narrow layout below retains its explicit width. */
+@media(min-width:1600px){
+ :root{--navigation-width:216px;--directory-width:clamp(310px,18vw,360px)}
+}
+
 .app-shell {
   grid-template-columns: calc(var(--navigation-width) + var(--directory-width)) minmax(0,1fr);
 }
@@ -235,7 +240,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   min-width: 0;
   min-height: 0;
   height: 100%;
-  background: #fcfdfc;
+  background: var(--workbench-directory-surface);
 }
 .project-panel .list-controls {
   padding: 15px 13px 11px;
@@ -271,8 +276,6 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,su
   height: 30px;
   flex-basis: 30px;
 }
-.project-panel .project-row-title { font-size: 12px; }
-.project-panel .project-row-subtitle { font-size: 10px; }
 @media(max-width:1250px) and (min-width:761px) {
   :root { --navigation-width: 190px; --directory-width: 252px; }
   .library-rail .sidebar { padding-right: 9px; padding-left: 9px; }
@@ -378,7 +381,6 @@ html[data-theme="dark"] {
 }
 html[data-theme="dark"][data-accent="teal"] { --accent:#7ee1c8; --accent-soft:#1e423e; --focus:#8ce8d1; }
 html[data-theme="dark"][data-accent="violet"] { --accent:#c6a2fb; --accent-soft:#39304d; --focus:#d5b8ff; }
-html[data-theme="dark"] .project-panel { background:var(--surface); }
 html[data-theme="dark"] :is(.filter-button,.nav-button,.project-item):hover { background:var(--hover); }
 html[data-theme="dark"] .filter-button.is-active,
 html[data-theme="dark"] .nav-button.is-active,
@@ -406,11 +408,9 @@ html[data-density="compact"] .library-rail :is(.quick-filters,.library-search) {
 @media(min-width:1251px) { html[data-sidebar="narrow"] { --navigation-width:190px; --directory-width:270px; } }
 @media(min-width:931px) and (max-width:1250px) { html[data-sidebar="narrow"] { --navigation-width:170px; --directory-width:236px; } }
 @media(min-width:761px) and (max-width:930px) { html[data-sidebar="narrow"] { --navigation-width:160px; --directory-width:216px; } }
-html[data-font-size] .project-panel .project-row-title,
 html[data-font-size] .project-panel .section-row,
 html[data-font-size] .library-rail .filter-button,
 html[data-font-size] .library-rail .nav-button { font-size:calc(12px + var(--font-step)); }
-html[data-font-size] .project-panel .project-row-subtitle,
 html[data-font-size] .library-rail .search-field input,
 html[data-font-size] .select-trigger,
 html[data-font-size] .select-option { font-size:calc(11px + var(--font-step)); }
@@ -1477,10 +1477,6 @@ html[data-theme="dark"] .source-view :is(.syntax-number,.syntax-boolean,.syntax-
 #sidebar .nav-button{border-radius:6px;font-weight:500}
 #sidebar .nav-button.is-active{font-weight:650}
 #sidebar .nav-index .ui-icon{stroke-width:1.85}
-.project-panel .project-row-title{font-weight:640;line-height:1.35}
-.project-panel .project-row-subtitle{line-height:1.4}
-.project-panel .project-controls-label{letter-spacing:.015em}
-.project-panel .result-count{border-radius:4px;font-variant-numeric:tabular-nums}
 
 /* #111 真实截图显示材质预览占满停靠首屏：布局数值优先，图形编辑器归入各自分组。 */
 .parameter-section-nav{display:flex;flex-wrap:wrap;gap:4px;min-width:0;padding:4px 0 6px;border-bottom:1px solid var(--line-soft)}
@@ -1617,9 +1613,5 @@ html[data-theme=dark]{--workbench-popover-shadow:0 10px 28px #0006,0 2px 6px #00
 /* 工作台三栏共享视觉语义，保持虚拟列表行高和折叠坐标不变。 */
 :root{--workbench-directory-surface:#fcfdfc;--workbench-preview-surface:#edf0f1;--workbench-control-radius:7px}
 html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-preview-surface:#10161c}
-.project-panel{background:var(--workbench-directory-surface)}
 .preview-stage:not([data-size]),.preview-stage[data-size=auto]{background:var(--workbench-preview-surface)}
 .library-rail .sidebar-footer{border-color:var(--line-soft)}
-.project-panel .project-controls-label{font-weight:650;letter-spacing:0}
-.project-panel .project-row-title{font-weight:650}
-.project-panel .project-row-subtitle{color:var(--muted)}

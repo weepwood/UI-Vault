@@ -1735,6 +1735,48 @@ def verify_release_keyboard_and_performance(browser, origin):
     print("键盘、焦点恢复、参数命名与手机溢出专项通过。",flush=True)
 
 
+def verify_directory_visual_density(browser, origin):
+    """宽屏标准/窄栏、双主题和大字号紧凑模式的真实布局。"""
+    for width,height,theme,density,font_size,sidebar in (
+        (1440,900,"light","comfortable","13","standard"),
+        (1440,900,"dark","comfortable","13","standard"),
+        (1920,1080,"light","comfortable","13","standard"),
+        (1920,1080,"dark","compact","15","standard"),
+        (1920,1080,"light","comfortable","13","narrow"),
+        (820,844,"dark","compact","15","standard"),
+        (390,844,"light","comfortable","13","standard"),
+    ):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            settings=json.dumps({"theme":theme,"density":density,"fontSize":font_size,"sidebar":sidebar})
+            page.add_init_script("localStorage.setItem('ui-vault:preferences:v1',"+json.dumps(settings)+")")
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached")
+            if width<761:page.locator("#menu-toggle").click()
+            page.locator(".project-row").first.wait_for()
+            geometry=page.evaluate("""() => {
+                const $=s=>document.querySelector(s),r=s=>$(s).getBoundingClientRect();
+                const row=$('.project-row'),copy=$('.project-row-copy'),title=$('.project-item.is-selected .project-row-title');
+                const root=getComputedStyle(document.documentElement),style=getComputedStyle(title);
+                const probe=document.createElement('span');probe.style.color='var(--accent)';title.append(probe);
+                const accent=getComputedStyle(probe).color;probe.remove();
+                return {directory:r('#project-panel').width,preview:r('#preview-stage').width,
+                  title:parseFloat(style.fontSize),selected:style.color===accent,
+                  row:row.clientHeight,copy:copy.getBoundingClientRect().height,
+                  document:document.documentElement.scrollWidth,alignment:Math.abs(r('.list-controls').height-r('.topbar').height)};
+            }""")
+            assert geometry["document"]<=width+1 and geometry["alignment"]<=1
+            assert geometry["selected"] and geometry["copy"]<=geometry["row"]
+            assert geometry["title"]==(14 if density=="compact" else 13)
+            if width==1920:
+                assert geometry["directory"]>=340 if sidebar=="standard" else abs(geometry["directory"]-270)<=1
+            if width>=761:assert geometry["preview"]>0
+            page.screenshot(path=str(OUTPUT/f"directory-visual-{width}-{theme}-{density}-{sidebar}.png"))
+        finally:
+            context.close()
+
+
 def verify_topbar_alignment(browser, origin):
     """项目目录的底部分隔线必须与预览 Topbar 对齐，包括内容撑高后的响应式状态。"""
     for width in (1440, 1024, 820, 590, 390):
@@ -2409,6 +2451,7 @@ def main():
                     verify_sidebar_transition_no_reflow,
                     verify_compact_search_and_fixed_icons,
                     verify_search_experience,
+                    verify_directory_visual_density,
                     verify_topbar_alignment,
                     verify_directory_facets,
                     verify_directory_workspace,
