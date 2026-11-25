@@ -37,7 +37,7 @@ const TAG_OPTIONS=[
 ];
 const labelOf=(options,value)=>(options.find(option=>option.value===value)||options[0]).label;
 
-const FORM_DEFAULTS={query:'',placeholder:'搜索示例资源',label:'示例选项',icon:'bookmark',value:'compact',range:16,step:1};
+const FORM_DEFAULTS={query:'',placeholder:'搜索示例资源',label:'示例选项',icon:'bookmark',value:'compact',range:16,step:1,mode:'normal'};
 const FORM_OPTIONS=[{value:'compact',label:'紧凑'},{value:'standard',label:'标准'},{value:'comfortable',label:'舒展'}];
 function FormPlayground(){
   const [config,setConfig]=useState(FORM_DEFAULTS);
@@ -47,23 +47,27 @@ function FormPlayground(){
     window.addEventListener('wb-reset-demo',reset);
     return ()=>window.removeEventListener('wb-reset-demo',reset);
   },[]);
-  const settings={SearchField:{value:config.query,placeholder:config.placeholder,label:'搜索实验'},WorkbenchSelect:{label:config.label||'示例选项',value:config.value,icon:config.icon,options:FORM_OPTIONS},range:{min:0,max:40,step:config.step,value:config.range}};
+  const locked=['disabled','loading'].includes(config.mode),invalid=config.mode==='error';
+  const settings={SearchField:{value:config.query,placeholder:config.placeholder,label:'搜索实验',disabled:locked,invalid,describedBy:'wb-search-hint'},WorkbenchSelect:{label:config.label||'示例选项',value:config.value,icon:config.icon,options:FORM_OPTIONS,disabled:locked,invalid,describedBy:'wb-select-hint'},range:{min:0,max:40,step:config.step,value:config.range,disabled:locked},state:config.mode};
   return <div className="wb-playground">
-    <div className="wb-playground-stage wb-form-stage">
-      <SearchField id="wb-play-search" controls="wb-play-result" shortcuts={null} value={config.query} placeholder={config.placeholder} label="搜索实验" onChange={value=>change('query',value)}/>
-      <WorkbenchSelect id="wb-play-select" label={config.label||'示例选项'} value={config.value} options={FORM_OPTIONS} icon={config.icon} onChange={value=>change('value',value)}/>
-      <label className="wb-range-line"><span>间距 <output>{config.range}px</output></span><input id="wb-play-range" type="range" min={0} max={40} step={config.step} value={config.range} onChange={event=>change('range',Number(event.target.value))}/></label>
+    <div className="wb-playground-stage wb-form-stage" aria-busy={config.mode==='loading'||undefined}>
+      <SearchField id="wb-play-search" controls="wb-play-result" shortcuts={null} value={config.query} placeholder={config.placeholder} label="搜索实验" disabled={locked} invalid={invalid} describedBy="wb-search-hint" onChange={value=>change('query',value)}/>
+      <p id="wb-search-hint" className={invalid?'wb-state-hint is-error':'wb-state-hint'}>{invalid?'示例错误：请输入有效关键词。':'可输入关键词，Escape 或清除按钮复位。'}</p>
+      <WorkbenchSelect id="wb-play-select" label={config.label||'示例选项'} value={config.value} options={FORM_OPTIONS} icon={config.icon} disabled={locked} invalid={invalid} describedBy="wb-select-hint" onChange={value=>change('value',value)}/>
+      <p id="wb-select-hint" className={invalid?'wb-state-hint is-error':'wb-state-hint'}>{invalid?'示例错误：请重新选择密度。':'支持方向键、Enter 与 Escape。'}</p>
+      <label className="wb-range-line"><span>间距 <output>{config.range}px</output></span><input id="wb-play-range" type="range" min={0} max={40} step={config.step} value={config.range} disabled={locked} onChange={event=>change('range',Number(event.target.value))}/></label>
       <div className="wb-gap-preview" style={{gap:config.range}} aria-hidden="true"><i/><i/><i/></div>
-      <p id="wb-play-result" className="wb-component-hint" role="status">{config.query||'未输入'} · {labelOf(FORM_OPTIONS,config.value)} · {config.range}px</p>
+      <p id="wb-play-result" className="wb-component-hint" role="status">{config.mode==='loading'?'加载状态演示 · ':config.mode==='disabled'?'控件已禁用 · ':''}{config.query||'未输入'} · {labelOf(FORM_OPTIONS,config.value)} · {config.range}px</p>
     </div>
     <div className="wb-playground-fields">
+      <label>交互状态<select id="wb-play-state" value={config.mode} onChange={event=>change('mode',event.target.value)}><option value="normal">正常</option><option value="error">错误</option><option value="disabled">禁用</option><option value="loading">加载中（演示）</option></select></label>
       <label>输入提示<input id="wb-play-placeholder" value={config.placeholder} maxLength={36} onChange={event=>change('placeholder',event.target.value)}/></label>
       <label>下拉名称<input id="wb-play-select-label" value={config.label} maxLength={24} onChange={event=>change('label',event.target.value)}/></label>
       <label>下拉图标<select id="wb-play-icon" value={config.icon} onChange={event=>change('icon',event.target.value)}><option value="bookmark">书签</option><option value="layers">图层</option><option value="component">组件</option></select></label>
       <label>滑块步长<select id="wb-play-step" value={config.step} onChange={event=>{const step=Number(event.target.value);setConfig(old=>({...old,step,range:Math.round(old.range/step)*step}));}}><option value="1">1px</option><option value="2">2px</option><option value="5">5px</option></select></label>
     </div>
     <pre className="wb-live-code" id="wb-form-code" tabIndex={0} aria-label="当前组件配置 JSON">{JSON.stringify(settings,null,2)}</pre>
-    <p className="wb-component-hint">配置与上方实际控件同步；SearchField / WorkbenchSelect 复用主站实现，Slider 使用浏览器原生 range。JSON 为接入参数，不是独立安装包。</p>
+    <p className="wb-component-hint">状态与实际控件同步；错误为状态示例，加载不发起网络请求。JSON 为接入参数，不是独立安装包。</p>
   </div>;
 }
 

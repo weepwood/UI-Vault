@@ -1721,6 +1721,59 @@ def verify_compact_source_reader(browser, origin):
             context.close()
 
 
+def verify_showcase_form_states(browser, origin):
+    """真实共享控件的错误、禁用、加载、键盘与焦点恢复。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+"?asset=workbench-components",wait_until="domcontentloaded")
+            frame=page.frame_locator("#preview-stage iframe")
+            frame.locator("#story-tab-forms").click()
+            search=frame.locator("#wb-play-search")
+            trigger=frame.locator("#wb-form-playground .select-trigger")
+            mode=frame.locator("#wb-play-state")
+            slider=frame.locator("#wb-play-range")
+            search.fill("玻璃")
+            mode.select_option("error")
+            expect(search).to_have_attribute("aria-invalid","true")
+            expect(trigger).to_have_attribute("aria-invalid","true")
+            expect(search).to_have_attribute("aria-describedby","wb-search-hint")
+            expect(frame.locator("#wb-search-hint")).to_contain_text("示例错误")
+            search.focus()
+            expect(search).to_be_focused()
+            frame.locator("#wb-form-playground").scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"showcase-error-{width}-{theme}.png"))
+            mode.select_option("disabled")
+            for element in (search,trigger,slider,frame.locator("#wb-form-playground .search-clear")):
+                expect(element).to_be_disabled()
+            trigger.evaluate("e=>e.click()")
+            expect(frame.locator("#wb-play-select-listbox")).to_be_hidden()
+            expect(search).to_have_value("玻璃")
+            mode.select_option("loading")
+            expect(frame.locator(".wb-form-stage")).to_have_attribute("aria-busy","true")
+            expect(search).to_be_disabled()
+            assert json.loads(frame.locator("#wb-form-code").inner_text())["state"]=="loading"
+            page.screenshot(path=str(OUTPUT/f"showcase-loading-{width}-{theme}.png"))
+            mode.select_option("normal")
+            expect(trigger).to_be_enabled()
+            trigger.press("ArrowDown")
+            expect(frame.locator("#wb-play-select-listbox")).to_be_visible()
+            page.keyboard.press("End")
+            page.keyboard.press("Enter")
+            expect(frame.locator("#wb-play-select")).to_have_value("comfortable")
+            expect(trigger).to_be_focused()
+            frame.locator("#wb-form-playground .search-clear").click()
+            expect(search).to_have_value("")
+            frame.locator("#wb-reset-story").click()
+            expect(mode).to_have_value("normal")
+            expect(search).to_be_enabled()
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_showcase_discovery(browser, origin):
     """主站直达真实组件、沙箱内图标及操作反馈，不运行外部代码。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -3107,6 +3160,7 @@ def main():
                     verify_expanded_workbench_screenshots,
                     verify_compact_source_reader,
                     verify_showcase_discovery,
+                    verify_showcase_form_states,
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,

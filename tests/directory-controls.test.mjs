@@ -47,5 +47,5 @@ test('项目控件紧凑显示、下拉可用且适配深色和小屏幕',()=>{
   assert.doesNotMatch(css,/[.]search-field kbd/);
   // 排序不是默认值、或选了标签时，下拉显示“已筛选”状态。
   assert.match(dropdown,/value&&\(id==='sort'\?value!=='featured':id==='tag-filter'\)\?' has-filter'/);
-  assert.match(dropdown,/onChange=\{event=>onChange\(event[.]target[.]value\)\}/);
+  assert.match(dropdown,/onChange=\{event=>\{if\(!disabled\)onChange\(event[.]target[.]value\);\}\}/);
 });
