@@ -48,10 +48,10 @@ test('Foundation 工程交付仅匹配明确本地资产及入口，外站/同�
 });
 
 test('Notion 演示与独立源项目的存储修复保持一致',()=>{
-  for(const name of ['script.js','library.js']){
+  for(const name of ['script.js','library.js','styles.css']){
     const demo=readFileSync(new URL('../demos/experiments/notion-design-demo/'+name,import.meta.url),'utf8');
     const source=readFileSync(new URL('../subprojects/notion-design-demo/'+name,import.meta.url),'utf8');
     assert.equal(demo,source);
-    assert.match(demo,/try\{(?:return )?window\.localStorage\./);
+    if(name.endsWith('.js'))assert.match(demo,/try\{(?:return )?window\.localStorage\./);
   }
 });

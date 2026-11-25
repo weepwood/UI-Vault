@@ -3,6 +3,7 @@
 import {readFile,realpath,lstat,mkdir,writeFile} from 'node:fs/promises';
 import {resolve,sep,dirname} from 'node:path';
 import {createHash} from 'node:crypto';
+import {safeSourcePath} from '../../assets/core/source-files.js';
 import {assetReuseManifest} from '../../assets/core/reuse-manifest.js';
 import {getFoundationProjectPath} from '../../assets/core/project-delivery.js';
 import {selectAssetVersion} from '../../assets/core/asset-versions.js';
@@ -18,8 +19,8 @@ const group=(rows,key)=>{
 const https=value=>{try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:null;}catch{return null;}};
 export async function buildKnowledgeIndex(root,assets){
  const base=await realpath(root),cache=new Map();
- async function evidence(path){
-  if(typeof path!=='string'||!/^(demos|subprojects)\/[a-zA-Z0-9_./-]+$/.test(path)||path.split('/').some(x=>!x||x.startsWith('.')))throw Error('知识索引路径越界：'+path);
+ async function evidence(path,sourceAssetId){
+  if(!safeSourcePath(path,sourceAssetId))throw Error('知识索引路径越界：'+path);
   if(!cache.has(path))cache.set(path,(async()=>{
    const file=resolve(base,path),stat=await lstat(file);
    if(!stat.isFile()||!file.startsWith(base+sep)||!(await realpath(file)).startsWith(base+sep))throw Error('知识索引文件不安全：'+path);
@@ -37,7 +38,7 @@ export async function buildKnowledgeIndex(root,assets){
    const review=version==='original'?reviewed.get(asset.id):null;
    const guideKind=!guide?'none':guide.path.startsWith('demos/experiments/landfolio/designs/')?'archive-summary':'upstream-guide';
    const preview=selected.source==='local'?await evidence(selected.preview):null;
-   const sourceFiles=await Promise.all(manifest.sourceFiles.map(async file=>({...file,...await evidence(file.path)})));
+   const sourceFiles=await Promise.all(manifest.sourceFiles.map(async file=>({...file,...await evidence(file.path,selected.id)})));
    const provenance=selected.originRepo?'upstream-reference':selected.source==='external'?'external-reference':selected.sourceUrl?'registered-source':'local-repository';
    rows.push({key:asset.id+'/'+version,id:asset.id,version,title:selected.title,description:selected.description,type:asset.type,projectId:selected.projectId,
     provenance:{kind:provenance,repository:https(selected.originRepo||selected.url),sourceUrl:https(selected.sourceUrl),originDemoUrl:https(selected.originDemoUrl),siteUrl:version==='original'?https(selected.siteUrl):null,license:manifest.license,licenseStatus:'declared-not-legal-audit'},

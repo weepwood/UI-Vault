@@ -11,3 +11,16 @@ const presets=[
  ['平面纯色',{}]
 ];
 export const MATERIAL_PRESETS=Object.freeze(presets.map(([label,patch])=>Object.freeze({label,patch:Object.freeze(normalizeParameters(WARM_LAYOUT_FIELDS,{...materialDefaults,...patch}))})));
+
+const MATERIAL_FIELDS=WARM_LAYOUT_FIELDS.filter(f=>f.key==='surface'||['表面渐变','阴影'].includes(f.group));
+export function matchesMaterialPreset(values,preset){return Object.entries(preset.patch).every(([key,value])=>values[key]===value);}
+export function exportMaterialSnapshot(values){
+ const normalized=normalizeParameters(WARM_LAYOUT_FIELDS,values,{complete:true});
+ return JSON.stringify({format:'ui-vault-material',version:1,assetId:'warm-workbench',values:Object.fromEntries(MATERIAL_FIELDS.map(f=>[f.key,normalized[f.key]]))},null,2)+'\n';
+}
+export function importMaterialSnapshot(raw){
+ if(typeof raw!=='string'||raw.length>8192)throw Error('材质文件大小无效');
+ const data=JSON.parse(raw);
+ if(!data||Object.keys(data).length!==4||data.format!=='ui-vault-material'||data.version!==1||data.assetId!=='warm-workbench'||!Object.hasOwn(data,'values'))throw Error('材质文件格式无效');
+ return normalizeParameters(MATERIAL_FIELDS,data.values,{complete:true});
+}

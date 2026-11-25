@@ -23805,7 +23805,8 @@
       "检索、排序与缩放复用 assets/core/catalog.js 的 filterAssets() 和 assets/core/preview.js 的 applyPreviewLayout()；示例项目为演示数据",
       "demo.jsx 由 npm run react:build 打包为 assets/showcase/workbench-system.js（经典 IIFE 脚本），以便在 sandbox iframe 中加载",
       "通用设计基础、跨框架 Token 继续由 subprojects/ui-foundation-kit 维护",
-      "多文件演示禁止一键复制为单文件组件；组件分级、无障碍规范及抽取计划参见 docs/COMPONENT-SYSTEM.md"
+      "多文件演示禁止一键复制为单文件组件；组件分级、无障碍规范及抽取计划参见 docs/COMPONENT-SYSTEM.md",
+      "真实 SearchField 与 WorkbenchSelect 及其显式依赖已在源码区登记；REUSE.md 说明 React、样式变量、路径和图标依赖。不是独立 npm 包；通用独立组件优先使用 Foundation Registry。"
     ],
     "sourceFiles": [
       {
@@ -23819,6 +23820,38 @@
       {
         "path": "demos/components/workbench-system/demo.jsx",
         "label": "demo.jsx · React 入口"
+      },
+      {
+        "path": "demos/components/workbench-system/REUSE.md",
+        "label": "REUSE.md · 实际接入说明"
+      },
+      {
+        "path": "src/components/SearchField.jsx",
+        "label": "SearchField.jsx · 真实输入框"
+      },
+      {
+        "path": "src/components/WorkbenchSelect.jsx",
+        "label": "WorkbenchSelect.jsx · 真实下拉"
+      },
+      {
+        "path": "src/components/Icon.jsx",
+        "label": "Icon.jsx · 图标"
+      },
+      {
+        "path": "assets/core/dropdown.js",
+        "label": "dropdown.js · 下拉协调"
+      },
+      {
+        "path": "assets/ui/controls.css",
+        "label": "controls.css · 基础控件"
+      },
+      {
+        "path": "assets/ui/dropdown.css",
+        "label": "dropdown.css · 下拉样式"
+      },
+      {
+        "path": "assets/icons/lucide.svg",
+        "label": "lucide.svg · 原始图标精灵"
       }
     ],
     "projectId": "ui-vault"

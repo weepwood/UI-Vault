@@ -144,3 +144,7 @@ demos/components/workbench-system/
 ## 可见体验：展厅检查器与快捷入口
 
 主站精选工作台提供组件展厅与设计实验室两个真实链接。展厅六组原组件增加接入示例、真实源码定位、选中代码、操作反馈与恢复演示状态；不是独立组件安装包。主站组件仍使用原外部 Lucide sprite，展厅在构建时嵌入同一可信 sprite 并通过 IconSpriteContext 渲染，保留许可证与原不透明 iframe 沙箱。窄屏展厅内恢复按钮文本，不改变主站工具栏。
+
+## v0.9 真实共享表单接入
+
+SearchField、WorkbenchSelect、Icon 和四份显式依赖已在组件展厅源码目录登记。参见 [REUSE.md](../demos/components/workbench-system/REUSE.md)。只为该资产允许七个固定公开路径，目录校验、源码阅读器和知识证据一致；未开放任意 src 或 assets 路径。独立临时工程从七份文件构建文档示例，真实 Chromium 搜索清除、键盘选择与焦点恢复通过。组件仍依赖 React 和主站语义样式，不能将这份源码清单视为 npm 独立安装包。通用独立组件交付继续使用 Foundation Registry。

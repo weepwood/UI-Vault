@@ -1760,6 +1760,98 @@ def verify_notion_storage_fallback(browser, origin):
             context.close()
 
 
+def verify_material_snapshot_and_reuse(browser, origin):
+    """仅恢复材质组，验证实际 CSS、非法文件保护及真实源码内容。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator("#preview-parameters").click()
+            dock=page.locator("#parameter-dock")
+            frame=page.frame_locator("#preview-stage iframe")
+            def button(name):return dock.get_by_role("button",name=name,exact=True)
+            def field(name):return dock.get_by_role("spinbutton",name=name,exact=True)
+            def sync():expect(dock.get_by_text("已连接 · 参数已同步",exact=True)).to_be_visible()
+            button("读取当前参数").click()
+            sync()
+            button("双层柔光").click()
+            sync()
+            expect(button("双层柔光")).to_have_attribute("aria-pressed","true")
+            with page.expect_download() as info:
+                button("导出材质 JSON").click()
+            data=json.loads(info.value.path().read_text("utf-8"))
+            assert data["format"]=="ui-vault-material" and data["values"]["gradient"]
+            assert not {"radius","motionDuration"}.intersection(data["values"])
+            field("卡片圆角").fill("29")
+            sync()
+            field("悬停动效时长").fill("200")
+            sync()
+            button("平面纯色").click()
+            sync()
+            expect(button("平面纯色")).to_have_attribute("aria-pressed","true")
+            before=frame.locator("html").evaluate("e=>getComputedStyle(e).getPropertyValue('--warm-card-gradient').trim()")
+            assert before=="none"
+            upload=dock.get_by_label("导入材质 JSON",exact=True)
+            invalid={**data,"values":{**data["values"],"radius":4}}
+            upload.set_input_files({"name":"material.json","mimeType":"application/json","buffer":json.dumps(invalid).encode()})
+            expect(dock.get_by_text("材质文件无效，当前参数未改变",exact=True)).to_be_visible()
+            expect(field("卡片圆角")).to_have_value("29")
+            upload.set_input_files({"name":"material.json","mimeType":"application/json","buffer":json.dumps(data).encode()})
+            expect(dock.get_by_text("材质已导入 · 布局与动效保留 · 尚未应用",exact=True)).to_be_visible()
+            expect(field("卡片圆角")).to_have_value("29")
+            expect(field("悬停动效时长")).to_have_value("200")
+            assert frame.locator("html").evaluate("e=>getComputedStyle(e).getPropertyValue('--warm-card-gradient').trim()")==before
+            button("应用参数").click()
+            sync()
+            css=frame.locator("html").evaluate("e=>[getComputedStyle(e).getPropertyValue('--warm-card-gradient'),getComputedStyle(e).getPropertyValue('--warm-card-shadow')]")
+            assert "linear-gradient" in css[0] and "rgba" in css[1]
+            button("布局基础").click()
+            page.screenshot(path=str(OUTPUT/f"material-snapshot-{width}-{theme}.png"))
+            page.goto(origin+"?asset=workbench-components",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            page.locator("#tab-source").click()
+            page.locator(".source-file-browser summary").click()
+            page.locator(".source-file-browser").get_by_role("button",name="SearchField.jsx",exact=False).click()
+            expect(page.locator("#source-code")).to_contain_text("export function SearchField")
+            assert page.locator("#source-code").text_content()==(ROOT/"src/components/SearchField.jsx").read_text("utf-8")
+            expect(page.locator("#source-download")).to_be_enabled()
+            page.locator(".source-file-browser").get_by_role("button",name="REUSE.md",exact=False).click()
+            expect(page.locator("#source-code")).to_contain_text("React 工程")
+            page.screenshot(path=str(OUTPUT/f"workbench-reuse-source-{width}-{theme}.png"))
+            assert not errors,errors
+        finally:
+            context.close()
+
+
+def verify_notion_header_quality(browser, origin):
+    """内部实际视口宽度，而非外层主站宽度决定演示导航。"""
+    for width in (1440,1100,940,820,390,320):
+        context=browser.new_context(viewport={"width":width,"height":900},reduced_motion="reduce")
+        page=context.new_page()
+        try:
+            page.goto(origin+"demos/experiments/notion-design-demo/index.html",wait_until="domcontentloaded")
+            assert page.locator(".site-header").evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            if width>900:
+                expect(page.locator(".desktop-nav")).to_be_visible()
+                assert page.locator(".desktop-nav a").evaluate_all("links=>links.every(e=>getComputedStyle(e).whiteSpace==='nowrap'&&e.getBoundingClientRect().height<42)")
+            else:
+                toggle=page.locator(".mobile-toggle")
+                toggle.click()
+                expect(page.locator("#mobile-nav")).to_be_visible()
+                page.keyboard.press("Escape")
+                expect(page.locator("#mobile-nav")).to_be_hidden()
+                expect(toggle).to_be_focused()
+            page.locator('[data-page="notes"]').click()
+            expect(page.locator('[data-page="notes"]')).to_have_attribute("aria-current","page")
+            assert page.locator('[data-page="home"]').get_attribute("aria-current") is None
+            if width in (940,390):
+                page.screenshot(path=str(OUTPUT/f"notion-header-quality-{width}.png"))
+        finally:
+            context.close()
+
+
 def verify_showcase_form_states(browser, origin):
     """真实共享控件的错误、禁用、加载、键盘与焦点恢复。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -3201,6 +3293,8 @@ def main():
                     verify_showcase_discovery,
                     verify_showcase_form_states,
                     verify_notion_storage_fallback,
+                    verify_notion_header_quality,
+                    verify_material_snapshot_and_reuse,
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,
