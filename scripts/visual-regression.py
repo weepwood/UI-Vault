@@ -371,6 +371,52 @@ def verify_react_interactions(browser, origin):
 
 
 
+def verify_liquid_orb_fallback(browser, origin):
+    """显式禁用 GPU，验证简化预览不是伪造的 WebGPU 首帧。"""
+    for width,height,theme,embed in ((1440,900,"light",True),(390,844,"dark",False),(320,640,"light",True)):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        context.add_init_script("Object.defineProperty(navigator,'gpu',{configurable:true,value:undefined})")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+("?asset=liquid-orb" if embed else "demos/components/liquid-orb/index.html"),wait_until="domcontentloaded")
+            target=page.frame_locator("#preview-stage iframe") if embed else page
+            orb=target.locator("#orb-fallback")
+            expect(orb).to_be_visible()
+            expect(target.locator("#engine")).to_have_text("CSS 简化预览")
+            expect(target.locator("#orb")).to_have_css("opacity","0")
+            expect(orb.locator(".orb-fallback-flow")).to_have_css("animation-name","none")
+            assert orb.locator(".orb-fallback-sphere").evaluate("e=>{const r=e.getBoundingClientRect();return r.width>0&&Math.abs(r.width-r.height)<1&&getComputedStyle(e).backgroundImage.includes('radial-gradient')}")
+            target.locator('[data-state="idle"]').click()
+            expect(orb).to_have_attribute("data-state","idle")
+            target.locator("#glass-toggle").click()
+            expect(orb).to_have_attribute("data-glass","false")
+            orb.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"liquid-orb-fallback-{width}-{theme}.png"))
+            target.locator("#tab-dialog").click()
+            expect(orb).to_be_visible()
+            target.locator("#dialog-open").click()
+            expect(target.locator("#thinking-modal #orb-fallback")).to_be_visible()
+            page.keyboard.press("Escape")
+            expect(target.locator("#thinking-modal")).to_be_hidden()
+            expect(target.locator("#demo-viewport #orb-fallback")).to_be_visible()
+            assert not errors, errors
+        finally:
+            context.close()
+    # Adapter initialization is pending, not failed: the fallback must stay hidden.
+    context=browser.new_context(reduced_motion="reduce")
+    context.add_init_script("Object.defineProperty(navigator,'gpu',{configurable:true,value:{requestAdapter:()=>new Promise(resolve=>{window.__finishAdapter=resolve})}})")
+    page=context.new_page()
+    try:
+        page.goto(origin+"demos/components/liquid-orb/index.html",wait_until="domcontentloaded")
+        page.wait_for_function("typeof window.__finishAdapter==='function'")
+        expect(page.locator("#orb-fallback")).to_be_hidden()
+        page.evaluate("window.__finishAdapter(null)")
+        expect(page.locator("#orb-fallback")).to_be_visible()
+    finally:
+        context.close()
+
+
 def verify_liquid_orb_unified(browser, origin):
     """独立场景烟测：单页切换、可见尺寸、模态关闭和旧深链接兼容。"""
     for name, width, height in [("desktop", 1280, 800), ("mobile", 390, 844)]:
@@ -2810,6 +2856,7 @@ def main():
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,
                     verify_liquid_orb_unified,
+                    verify_liquid_orb_fallback,
                     verify_glass_materials,
                     verify_rare_interactions,
                     verify_background_lab,

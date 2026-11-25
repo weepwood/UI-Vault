@@ -6789,7 +6789,7 @@
     "id": "liquid-orb",
     "title": "液态玻璃组件演示",
     "subtitle": "Liquid Orb · Thinking Dialog",
-    "description": "在同一个页面中切换 WebGPU 液态玻璃球和 Siri 配色的 Thinking 胶囊对话框，支持实时渲染、尺寸调节、文字编辑与弹出预览。",
+    "description": "在同一个页面中切换 WebGPU 液态玻璃球和 Siri 配色的 Thinking 胶囊对话框，支持实时渲染、尺寸调节、文字编辑与弹出预览。 WebGPU 初始化失败时提供明确标识的 CSS 简化预览。",
     "type": "component",
     "source": "local",
     "tags": [
@@ -6815,7 +6815,8 @@
       "原版项目：LerSent001/orb（MIT）。本页面保留原版 WebGPU/WGSL 玻璃球渲染效果，并改编为 UI-Vault 组件演示，不包含原版完整编辑器。",
       "统一单文件演示集成玻璃球与思考胶囊；两种模式共用一个 WebGPU Canvas，避免重复 GPU 设备。",
       "思考对话框支持紧凑、标准、大尺寸和文字修改，手机上自动缩放。",
-      "可通过 ?embed=1 独立复用玻璃球渲染器，加载阶段不显示静态假球体。"
+      "可通过 ?embed=1 独立复用玻璃球渲染器，加载阶段不显示静态假球体。",
+      "仅在 WebGPU 初始化或运行失败后显示 CSS 简化预览；支持状态、玻璃开关、播放和速度的有限反馈，不等同 WGSL 渲染，不伪造 GPU ready。"
     ],
     "originRepo": "https://github.com/LerSent001/orb",
     "originName": "LerSent001 / Liquid Orb Editor",
