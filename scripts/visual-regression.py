@@ -2365,6 +2365,12 @@ def verify_design_recipe_lab(browser, origin):
             frame=page.frame_locator("#preview-stage iframe")
             buttons=frame.locator("#recipe-nav button")
             expect(buttons).to_have_count(6)
+            if width<=430:
+                assert buttons.first.bounding_box()["height"]>=44
+                assert frame.locator(".hero h1").evaluate("e=>parseFloat(getComputedStyle(e).fontSize)")>=25
+                assert frame.locator(".canvas").bounding_box()["y"]<640
+            assert buttons.first.evaluate("e=>getComputedStyle(e).transitionDuration")=="0s"
+
             expect(page.locator(".topbar #preview-title")).to_have_text("设计配方实验室")
             frame.locator(".lab-directory summary").click()
             expect(frame.locator(".lab-links a")).to_have_count(5)
@@ -2630,7 +2636,14 @@ def verify_knowledge_delivery(browser, origin):
                 registry_doc=json.loads(registry_download.value.path().read_text("utf-8"))
                 assert registry_doc["profile"]==profile and registry_doc["design"]==spec
                 registry_report=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(registry_download.value.path()),"--root",str(DIST)],encoding="utf-8"))
-                assert registry_report["verified"] and len(registry_report["registry"]["modules"])==count
+                assert registry_report["verified"] and registry_report["locked"] and len(registry_report["registry"]["modules"])==count
+                assert registry_doc["version"]==2 and len(registry_doc["files"])==len(registry_report["registry"]["files"])
+                if width==1440:
+                    handoffs=OUTPUT/"design-registry-runtime";handoffs.mkdir(exist_ok=True)
+                    registry_download.value.save_as(str(handoffs/(profile+".json")))
+                    with page.expect_download() as foundation_css:
+                        delivery.get_by_role("button",name="下载 Foundation 规范 CSS").click()
+                    foundation_css.value.save_as(str(handoffs/"light.css"))
             delivery.scroll_into_view_if_needed()
             page.screenshot(path=str(OUTPUT/f"design-registry-delivery-{width}-{theme}.png"))
             delivery.locator("summary").click()
@@ -2655,6 +2668,27 @@ def verify_knowledge_delivery(browser, origin):
             expect(material.get_by_text("材质文件无效，未应用",exact=True)).to_be_visible()
             expect(swatch).to_be_visible()
             expect(spacing).to_have_value("20")
+            # Save an actual material-bearing revision and independently verify its JSON.
+            spacing.fill("22")
+            plan.get_by_role("button",name="保存新版本",exact=True).click()
+            expect(plan.get_by_text("历史版本已保存",exact=True)).to_be_visible()
+            with page.expect_download() as attached:
+                plan.get_by_role("button",name="下载设计规范 JSON",exact=True).click()
+            attached_doc=json.loads(attached.value.path().read_text("utf-8"))
+            assert attached_doc["version"]==2 and attached_doc["materialAttachment"]
+            assert json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(attached.value.path()),"--root",str(DIST)],encoding="utf-8"))["verified"]
+            plan.get_by_label("方案历史版本").select_option("0")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(spacing).to_have_value("20")
+            expect(swatch).to_have_count(0)
+            plan.get_by_label("方案历史版本").select_option("current")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(spacing).to_have_value("22")
+            expect(swatch).to_be_visible()
+            plan.get_by_role("button",name="检查基准迁移").click()
+            expect(plan.get_by_text("迁移待确认，保留原绝对目标值",exact=True)).to_be_visible()
+            plan.get_by_role("button",name="确认迁移规范").click()
+            expect(spacing).to_have_value("22")
             swatch.scroll_into_view_if_needed()
             page.screenshot(path=str(OUTPUT/f"design-material-delivery-{width}-{theme}.png"))
             material.get_by_role("button",name="移除规范材质").click()
@@ -2668,6 +2702,12 @@ def verify_knowledge_delivery(browser, origin):
             plan=composition.locator(".design-plan")
             plan.locator(":scope > summary").click()
             plan.get_by_label("已保存设计方案",exact=True).select_option("验收组合")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(plan.get_by_label("规范基础间距",exact=True)).to_have_value("22")
+            plan.locator(".design-material-delivery > summary").click()
+            expect(plan.locator(".plan-material-surface")).to_be_visible()
+            plan.locator(".design-material-delivery > summary").click()
+            plan.get_by_label("方案历史版本").select_option("0")
             plan.get_by_role("button",name="恢复设计方案",exact=True).click()
             expect(plan.get_by_text("设计方案已恢复；未应用到预览",exact=True)).to_be_visible()
             expect(plan.get_by_label("规范基础间距",exact=True)).to_have_value("20")
@@ -2692,6 +2732,17 @@ def verify_knowledge_delivery(browser, origin):
             with page.expect_download() as dark_css:
                 preview_details.get_by_role("button",name="下载局部规范 CSS",exact=True).click()
             assert '[data-theme="dark"]' in dark_css.value.path().read_text("utf-8")
+            if width==1440:
+                delivery=plan.locator(".design-registry-delivery")
+                delivery.locator("summary").click()
+                with page.expect_download() as foundation_dark:
+                    delivery.get_by_role("button",name="下载 Foundation 规范 CSS").click()
+                foundation_dark.value.save_as(str(OUTPUT/"design-registry-runtime"/"dark.css"))
+                with page.expect_download() as dark_doc:
+                    plan.get_by_role("button",name="下载设计规范 JSON",exact=True).click()
+                dark_doc.value.save_as(str(OUTPUT/"design-registry-runtime"/"dark.json"))
+                delivery.locator("summary").click()
+
             page.screenshot(path=str(OUTPUT/f"design-plan-components-dark-{width}-{theme}.png"))
             preview_details.locator("summary").click()
 

@@ -260,3 +260,10 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
 .design-plan-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,130px),1fr));gap:7px}
 .design-plan input{width:100%;min-width:0;box-sizing:border-box;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);padding:6px 8px;font:inherit}
 .design-plan .registry-module-info{flex-wrap:wrap}
+
+.design-plan :is(.design-registry-delivery,.design-material-delivery){min-width:0;overflow-wrap:anywhere}
+.design-plan :is(.design-registry-delivery,.design-material-delivery) summary{line-height:1.55}
+.design-plan .design-registry-delivery ul{padding-inline-start:18px}
+.design-plan .registry-commands code{white-space:pre-wrap;overflow-wrap:anywhere}
+.design-plan input[type=file]{max-width:100%;min-width:0}
+.design-plan .plan-material-surface{margin:12px 8px;box-sizing:border-box}

@@ -84,15 +84,17 @@ export async function verifyDesignPlan(doc,root){
 }
 export async function verifyDesignRegistryDelivery(doc,root){
  const base=await realpath(root);
- if(doc?.format!=='ui-vault-design-registry-delivery'||doc.version!==1)throw Error('Registry 交付协议无效');
+ if(doc?.format!=='ui-vault-design-registry-delivery'||![1,2].includes(doc.version))throw Error('Registry 交付协议无效');
  const raw=JSON.parse(await registeredFile(base,'registry/index.json',256*1024));
- const expected=designRegistryDelivery(doc.design,readRegistryIndex(raw),doc.profile);
+ const parsed=readRegistryIndex(raw);
+ const expected=designRegistryDelivery(doc.design,doc.version===1?{...parsed,items:parsed.items.map(m=>({...m,files:undefined}))}:parsed,doc.profile);
  if(!isDeepStrictEqual(doc,expected))throw Error('Registry 交付与登记数据不一致');
  const registry=await readLocalRegistry(resolve(base,'registry'));
  const plan=planRegistryInstall(registry,expected.requested);
  if(!isDeepStrictEqual(plan.modules.map(m=>m.id),expected.modules.map(m=>m.id))||!isDeepStrictEqual(plan.runtime,expected.runtime))throw Error('安装计划与浏览器依赖不一致');
+ if(doc.version===2&&!isDeepStrictEqual(expected.files,plan.files.map(({path,sha256})=>({path,sha256}))))throw Error("Registry 文件锁漂移");
  const design=await verifyDesignPlan(doc.design,base);
- return {format:'ui-vault-design-registry-verification',version:1,verified:design.verified,design,registry:{version:plan.registryVersion,modules:plan.modules,runtime:plan.runtime,files:plan.files.map(({path,sha256})=>({path,sha256}))},notice:'实际安装器离线预检；未安装、执行或认证目标项目。'};
+ return {format:'ui-vault-design-registry-verification',version:1,verified:design.verified,locked:doc.version===2,design,registry:{version:plan.registryVersion,modules:plan.modules,runtime:plan.runtime,files:plan.files.map(({path,sha256})=>({path,sha256}))},notice:'实际安装器离线预检；未安装、执行或认证目标项目。'};
 }
 export async function main(args){
  if(args.length!==4||args[0]!=='--handoff'||args[2]!=='--root')throw Error('用法：--handoff <JSON> --root <可信本地静态产物目录>');

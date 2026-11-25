@@ -29,6 +29,24 @@ main{max-width:1260px;margin:auto;padding:clamp(18px,4vw,48px)}header{display:fl
 .material-fields{display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px}.material-fields[hidden]{display:none}#material-json{margin:0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:7px;font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap;color:var(--muted)}
 #study-fields{display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px}#study-fields[hidden]{display:none}#study-extra-controls{display:grid;gap:8px}#study-json{margin:0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:7px;font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap;color:var(--muted)}.study-control{display:grid;gap:4px;min-width:0}.actions button[aria-pressed=true]{background:var(--soft);border-color:var(--accent);color:var(--accent)}
 .recipe-transfer{min-width:0;border-top:1px solid var(--line);padding-top:10px}.recipe-transfer summary{cursor:pointer;font-size:13px;font-weight:650}.transfer-body{display:grid;gap:8px;padding-top:10px;min-width:0}.recipe-transfer p,.recipe-transfer label{font-size:12px;color:var(--muted)}.recipe-transfer textarea{display:block;width:100%;min-width:0;resize:vertical;min-height:100px;max-height:320px;padding:10px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);font:12px/1.6 ui-monospace,monospace}.recipe-transfer :is(summary,textarea):focus-visible{outline:2px solid var(--accent);outline-offset:2px}.recipe-transfer input[type=file]{width:100%;min-width:0;font-size:12px;color:var(--muted)}.recipe-transfer input[type=file]::file-selector-button{margin-right:8px;padding:6px 9px;border:1px solid var(--line);border-radius:6px;color:var(--ink);background:var(--surface);font:inherit;cursor:pointer}.recipe-transfer textarea[aria-invalid=true]{border-color:var(--accent)}#recipe-transfer-feedback{overflow-wrap:anywhere;min-height:1.5em}
+/* Compact mobile hierarchy: preserve 44px touch targets and keep the study above the fold. */
+.recipe-nav button{transition:background-color 140ms ease,border-color 140ms ease}
+.recipe-nav button:hover:not([aria-pressed=true]){border-color:var(--accent)}
+.recipe-nav button:focus-visible,.lab-directory summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.edition,#study-number,.control-line output{font-variant-numeric:tabular-nums}
+@media(max-width:430px){
+ main{padding:12px}
+ header{padding-bottom:10px;gap:8px}
+ .hero{margin:16px 0 12px}
+ .hero h1{font-size:clamp(25px,7vw,30px);letter-spacing:-.035em;line-height:1.24}
+ .hero p{font-size:13px;line-height:1.55;margin-top:8px}
+ .lab-directory{margin-bottom:12px}
+ .lab-directory summary{padding:9px 0;min-height:44px}
+ .lab-directory summary span{margin-top:2px}
+ .recipe-nav{gap:6px;margin-bottom:12px}
+ .recipe-nav button{padding:8px 10px;gap:2px;min-height:48px;line-height:1.35}
+ .recipe-nav b{line-height:1.4}
+}
 </style>
 </head>
 <body>

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {foundationBaseline,baselineIdentity,compareDesignTokens,normalizeDesignTokens,normalizePlans,readDesignPlans,writeDesignPlans,updateDesignPlans,restoreDesignPlan} from '../assets/core/design-plan.js';
+import {foundationBaseline,baselineIdentity,compareDesignTokens,normalizeDesignTokens,normalizePlans,readDesignPlans,writeDesignPlans,updateDesignPlans,restoreDesignPlan,reviseDesignPlan,planSnapshot,planVersionDiff,migrateDesignPlan} from '../assets/core/design-plan.js';
 const files=await Promise.all(['tokens/foundation.json','tokens/themes.json'].map(async path=>{const content=await readFile(new URL('../subprojects/ui-foundation-kit/'+path,import.meta.url),'utf8');return {path,content,sha256:createHash('sha256').update(content).digest('hex')};}));
 const item={id:'foundation-tokens',version:'test',files},light=foundationBaseline(item,'light'),dark=foundationBaseline(item,'dark');
 const proposal={...light.tokens,spacing:20,radius:14,duration:0,material:'frosted'};
@@ -67,4 +67,20 @@ test('规范材质复用严格快照与原材质生成器，不接收任意 CSS'
  const bad=JSON.parse(raw);bad.values.gradientEnd='red;bad';
  assert.throws(()=>designMaterial(JSON.stringify(bad)));
  assert.throws(()=>designMaterial(JSON.stringify({...JSON.parse(raw),version:2})));
+});
+
+test('历史有界、附件随版本保留、显式基准迁移保持绝对值',()=>{
+ const raw=exportMaterialSnapshot(Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default])));
+ const next={...plan,baselineTokens:light.tokens,materialAttachment:raw,tokens:{...proposal,radius:22}};
+ const revised=reviseDesignPlan(plan,next);
+ assert.equal(revised.history.length,1);assert.deepEqual(revised.history[0],planSnapshot(plan));
+ assert.equal(planVersionDiff(plan,revised).materialChanged,true);
+ assert.equal(planVersionDiff(plan,revised).tokens[0].proposed,22);
+ const target={catalogSha256:'b'.repeat(64),context:plan.context,entries:plan.keys.map(key=>({handoff:{assetId:key.split('/')[0],assetVersion:key.split('/')[1]}}))};
+ const migrated=migrateDesignPlan(revised,target,{...light,version:'new'});
+ assert.equal(migrated.catalogSha256,target.catalogSha256);assert.deepEqual(migrated.tokens,next.tokens);
+ assert.equal(migrated.materialAttachment,revised.materialAttachment);
+ assert.throws(()=>migrateDesignPlan(revised,{...target,entries:target.entries.slice(1)},light));
+ let current=revised;for(let i=0;i<3;i++)current=reviseDesignPlan(current,next);
+ assert.throws(()=>reviseDesignPlan(current,next),/历史已满/);
 });

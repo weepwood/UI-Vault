@@ -60,3 +60,12 @@ export function designPlanCSS(values,theme){
  return '/* UI-Vault: opt-in Workbench adapter. Load after shared controls CSS. Material intent is not rendered. */\n'+
  '.wb-reuse-theme.wb-design-plan[data-theme="'+theme+'"] {\n'+declarations+'\n}\n'+DESIGN_PLAN_RULES;
 }
+
+// Framework-neutral mapping for actual Foundation recipes; portal content outside
+// this opt-in container remains under the host theme.
+export function foundationPlanCSS(values,theme){
+ const t=normalizeDesignTokens(values);
+ if(!['light','dark'].includes(theme))throw Error('主题无效');
+ const vars={'--ui-surface':t.surface,'--ui-canvas':t.surface,'--ui-text':t.text,'--ui-muted':t.text,'--ui-subtle':t.text,'--ui-border':t.border,'--ui-border-strong':t.border,'--ui-type-base':t.fontSize+'px','--ui-type-sm':t.fontSize+'px','--ui-radius-md':t.radius+'px','--ui-radius-lg':t.radius+'px','--ui-space-3':t.spacing+'px','--ui-motion-fast':t.duration+'ms','--ui-motion-normal':t.duration+'ms'};
+ return '.ui-design-plan[data-theme="'+theme+'"] {\n'+Object.entries(vars).map(([k,v])=>'  '+k+': '+v+';').join('\n')+'\n  color:var(--ui-text);background:var(--ui-surface);font:var(--ui-type-base)/1.5 var(--ui-font-sans);color-scheme:'+theme+';\n  display:grid;gap:var(--ui-space-3);padding:var(--ui-space-3);min-width:0;\n}\n.ui-design-plan .ui-input {font-size:var(--ui-type-base);min-width:0}\n';
+}

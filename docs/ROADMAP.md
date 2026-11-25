@@ -210,3 +210,6 @@ CI 45397408636 已通过 9/9 Chromium 截图、20/20 交互、Firefox 与 WebKit
 - V0.10 真实控件规范映射：复用 Workbench SearchField/WorkbenchSelect、局部 CSS 交付和独立 React 接入验证。Foundation Registry 工程安装与真实材质联动仍为独立后续工作，不将两套交付混同。
 
 - V0.10 Registry 工程交付及材质联动：复用现有 CSS/React/Vue profile 与安装器，结构化规范清单和真实本地预检；支持独立真实材质附件及 CSS 下载。后续推进方案版本、附件持久化与 Registry 控件的目标样式映射，避免混淆 Workbench 与 Foundation 两套交付。
+
+
+- V0.10 六专项集中推进：具名方案历史、显式基准迁移、材质附件 v2、Registry 逐文件锁 v2、Foundation 局部 CSS 映射及实际交付文件的 React/Vue 独立运行验收。设计配方实验室窄屏字体与密度精修，保留既有三栏与沙箱。下一阶段关注累计远端验收、更多精选资产、完整状态/门户主题及跨浏览器验证；不绕过正式发布阻塞。

@@ -17,8 +17,10 @@ export function readRegistryIndex(index){
     if(row.runtime!==undefined&&(!row.runtime||typeof row.runtime!=='object'||Array.isArray(row.runtime)))throw Error('Registry 运行时无效');
     const runtime=Object.entries(row.runtime??{});
     if(runtime.length>10||runtime.some(([name,value])=>!/^[a-z][a-z0-9-]{0,60}$/.test(name)||typeof value!=='string'||value.length>80))throw Error('Registry 运行时无效');
+    const files=row.files;
+    if(files!==undefined&&(!Array.isArray(files)||files.length!==row.fileCount||new Set(files.map(f=>f?.path)).size!==files.length||files.some(f=>!f||typeof f.path!=='string'||!f.path.split('/').every(part=>/^[a-zA-Z0-9_-][a-zA-Z0-9_.-]*$/.test(part)&&!part.endsWith('.'))||!(/^[a-f0-9]{64}$/).test(f.sha256))))throw Error('Registry 文件摘要无效');
     seen.add(row.id);
-    return {id:row.id,title:row.title,kind:row.kind,framework,runtime,dependencies:[...row.dependencies],fileCount:row.fileCount,path:row.path};
+    return {id:row.id,title:row.title,kind:row.kind,framework,runtime,dependencies:[...row.dependencies],fileCount:row.fileCount,path:row.path,...(files?{files:files.map(({path,sha256})=>({path,sha256}))}:{})};
   });
   const result={version:index.version,items};
   for(const item of items)registryDependencyList(result,item.id);

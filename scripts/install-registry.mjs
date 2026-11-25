@@ -22,6 +22,7 @@ export async function readLocalRegistry(directory){
   if(typeof row.id!=='string'||!/^[a-z0-9-]+$/.test(row.id)||seen.has(row.id)||row.path!=='items/'+row.id+'.json')throw Error('Registry 索引路径无效');
   seen.add(row.id);const item=await read(row.path);
   if(item.id!==row.id||item.kind!==row.kind||JSON.stringify(item.dependencies)!==JSON.stringify(row.dependencies)||item.files?.length!==row.fileCount||item.framework!==row.framework||!isDeepStrictEqual(item.runtime,row.runtime))throw Error('Registry 索引与模块不一致');
+  if(row.files!==undefined&&!isDeepStrictEqual(row.files,item.files.map(({path,sha256})=>({path,sha256}))))throw Error("Registry 索引文件摘要不一致");
   items.push(item);
  }
  return {index,items};

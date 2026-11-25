@@ -9,3 +9,8 @@ export function designMaterialCSS(raw){
  const material=designMaterial(raw);
  return '/* Opt-in material sample; does not override component surfaces or design-plan layout. */\n.wb-design-plan .plan-material-surface {\n  background-color: '+material.surface+';\n  background-image: '+material.gradient+';\n  box-shadow: '+material.shadow+';\n}\n';
 }
+
+export function normalizeMaterialAttachment(raw){
+ if(raw==null)return null;
+ return JSON.stringify({format:'ui-vault-material',version:1,assetId:'warm-workbench',values:importMaterialSnapshot(raw)});
+}

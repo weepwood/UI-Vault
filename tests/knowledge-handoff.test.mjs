@@ -142,9 +142,37 @@ test('规范 Registry 交付三种技术栈真实预检、安装复验与篡改�
    await assert.rejects(verifyDesignRegistryDelivery({...bundle,commands:{...bundle.commands,install:'unsafe'}},root),/不一致/);
   }
   const bundle=designRegistryDelivery(doc,rIndex,'react');
+  assert.equal(bundle.version,2);assert.ok(bundle.files.length>0);
+  const drift=structuredClone(registry);
+  const input=drift.items.find(i=>i.id==='foundation-react-input'),f=input.files[0];f.content+=' ';f.sha256=createHash('sha256').update(f.content).digest('hex');
+  const row=drift.index.items.find(i=>i.id===input.id);row.files[0].sha256=f.sha256;
+  const indexPath=join(root,'registry/index.json'),itemPath=join(root,'registry/items/foundation-react-input.json');
+  await writeFile(indexPath,JSON.stringify(drift.index));await writeFile(itemPath,JSON.stringify(input));
+  await assert.rejects(verifyDesignRegistryDelivery(bundle,root),/不一致|漂移/);
+  await writeFile(indexPath,JSON.stringify(registry.index));await writeFile(itemPath,JSON.stringify(registry.items.find(i=>i.id===input.id)));
+
   const target=join(root,'registry/items/foundation-react-input.json');
   const poisoned=JSON.parse(await readFile(target,'utf8'));poisoned.files[0].content+=' ';
   await writeFile(target,JSON.stringify(poisoned));
   await assert.rejects(verifyDesignRegistryDelivery(bundle,root),/哈希/);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+import {WARM_LAYOUT_FIELDS} from '../assets/core/demo-parameters.js';
+import {exportMaterialSnapshot} from '../assets/core/material-presets.js';
+
+test('真实材质附件 v2 规范严格往返，v1 兼容且拒绝注入',async()=>{
+ const {root}=await fixture('workbench-components');
+ try{
+  await writeRegistry(REGISTRY_ROOT,join(root,'registry'));
+  const registry=await readLocalRegistry(join(root,'registry')),item=registry.items.find(i=>i.id==='foundation-tokens');
+  const baseline=foundationBaseline(item,'light'),composition=composeKnowledge(index,items,['workbench-components/original']);
+  const raw=exportMaterialSnapshot({...Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default])),gradient:true});
+  const doc=createDesignPlan(composition,baseline,baseline.tokens,raw);
+  assert.equal(doc.version,2);assert.equal((await verifyDesignPlan(doc,root)).verified,true);
+  assert.equal((await verifyDesignRegistryDelivery(designRegistryDelivery(doc,readRegistryIndex(registry.index),'react'),root)).locked,true);
+  const bad=JSON.parse(doc.materialAttachment);bad.values.surface='red;bad';
+  assert.throws(()=>validateDesignPlan({...doc,materialAttachment:JSON.stringify(bad)},index,items,item));
+  assert.throws(()=>validateDesignPlan({...doc,version:1},index,items,item));
  }finally{await rm(root,{recursive:true,force:true});}
 });

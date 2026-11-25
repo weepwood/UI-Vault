@@ -70,7 +70,7 @@ node scripts/verify-knowledge-handoff.mjs --handoff /path/to/ai-composition.json
 
 组合区域的「设计规范与保存方案」读取实际 Registry 的 foundation-tokens 项，使用登记的 foundation.json 与 themes.json 生成浅/深基准。八项显式规范涵盖表面、正文、边框颜色、正文字号、间距、圆角、过渡时长和材质意图。颜色只允许六位十六进制，数字为有界整数；对比结果显示实际变化及像素/毫秒差值，正文对比按不透明背景计算，玻璃和渐变需独立验收。材质意图不等同于真实 shader 或 CSS 参数。切换基准主题会重置当前未保存提议值。
 
-设计规范 JSON（ui-vault-design-plan v1）包含原组合、登记基准源摘要、显式提议及差异。它是实施任务说明，不自动生成或覆盖项目样式，不是已经认证的运行产物。同一对象生成规范 DESIGN.md（包含组合、八项基准与目标值、摘要及复核清单）。完整性 CLI 也直接支持设计规范 JSON，无需提取 composition：
+设计规范 JSON（ui-vault-design-plan v1；含材质附件时为 v2）包含原组合、登记基准源摘要、显式提议及差异。v1 无附件仍可导入，v2 通过原材质协议完整校验。它是实施任务说明，不自动生成或覆盖项目样式，不是已经认证的运行产物。同一对象生成规范 DESIGN.md（包含组合、八项基准与目标值、摘要及复核清单）。完整性 CLI 也直接支持设计规范 JSON，无需提取 composition：
 
 ```bash
 node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-plan.json --root dist
@@ -78,7 +78,7 @@ node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-plan.json --
 
 基于调用方信任的本地目录重建组合、基准、提议差异和正文对比，另外核对 Registry 中两份内嵌 Token 源的 UTF-8 字节 SHA-256；任何不一致不算通过。浏览器允许选择不超过 1 MiB 的规范 JSON，严格重建并比较当前目录与基准，主资产必须匹配，用户明确确认后才恢复组合、主题和提议。导入不自动保存或应用预览，不执行文件内内容；失败保留现有编辑。浏览器比较登记数据，不替代离线字节校验；两者均不认证实际样式、外部资源、安装、许可或索引签名。
 
-本浏览器最多保存八份具名方案，按主资产筛选恢复与删除，保存组合版本、场景、主题、规范与基准标识。拒绝同名、目录漂移或 Token 源摘要/版本变化后的静默恢复；损坏/不可用存储不覆盖，不虚报持久化成功。不是跨设备同步或多标签页事务存储。基准登记哈希来自 Registry 项，正式构建既有 Registry 校验仍保留。未经登记的资产样式不做推断。
+本浏览器最多保存八份具名方案，每份最多四个历史快照（另含当前版本），按主资产筛选恢复与删除，保存组合版本、场景、主题、规范、基准标识及附件。新增版本前保留上一快照；历史已满时拒绝继续覆盖，可另存新方案。旧版记录无需强制迁移。可选择历史恢复、比较 Token 与材质差异，或显式检查基准迁移：仅当原资产版本仍在目录且组合/主题/场景一致时，按当前可信目录重建，保留原绝对目标值而非猜测相对设计意图，展示基准变化，确认后只更新当前编辑，不覆盖历史。旧版本未记录原基准值时明确提示。拒绝同名、目录漂移或 Token 源摘要/版本变化后的静默恢复；损坏/不可用存储不覆盖，不虚报持久化成功。不是跨设备同步或多标签页事务存储。基准登记哈希来自 Registry 项，正式构建既有 Registry 校验仍保留。未经登记的资产样式不做推断。
 
 ### 真实控件与局部规范 CSS
 
@@ -96,8 +96,21 @@ node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-plan.json --
 node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-registry-delivery.json --root dist
 ```
 
-校验重建交付清单，核验设计规范、当前可信 Registry 及真实安装器的依赖、文件哈希和冲突预检。输出实际去重文件摘要；下载的清单不是逐文件版本锁，不能证明不同构建的同版本 Registry 文件不曾改变。实际安装和目标目录复验仍需使用生成的安装命令；./my-project 替换为已存在的目标父目录。安装器不覆盖目标，不执行源码或安装运行时。运行时依赖安装、目标工程编译、无障碍和视觉验收独立进行。
+校验重建交付清单，核验设计规范、当前可信 Registry 及真实安装器的依赖、文件哈希和冲突预检。输出实际去重文件摘要。新 Registry 索引携带各模块登记文件摘要，新交付清单 v2 锁定去重路径与 SHA-256，CLI 核对索引、模块内容及安装计划，拒绝同版本文件漂移。旧 v1 清单仍可按现有登记数据预检，但报告 locked=false，不具备逐文件锁定保证。实际安装和目标目录复验仍需使用生成的安装命令；./my-project 替换为已存在的目标父目录。安装器不覆盖目标，不执行源码或安装运行时。运行时依赖安装、目标工程编译、无障碍和视觉验收独立进行。
 
 ### 规范与真实材质附件
 
-「真实材质联动」接收 Warm Workbench 导出的 ui-vault-material v1 JSON，文件限 8 KiB，复用原有严格参数校验、渐变色标与双层阴影生成器。用户明确确认后才显示实际独立材质表面。失败保留当前材质及规范。下载 design-plan-material.css，作用于 wb-design-plan 容器内的 plan-material-surface 元素。只输出背景色、渐变及阴影，尺寸、圆角和布局由宿主决定，不伪造玻璃或滤镜，不覆盖控件的正文色或表面色。附件仅当前面板会话保存，暂不进入规范 JSON、Registry 清单或持久化方案，需单独保留原始快照。
+「真实材质联动」接收 Warm Workbench 导出的 ui-vault-material v1 JSON，文件限 8 KiB，复用原有严格参数校验、渐变色标与双层阴影生成器。用户明确确认后才显示实际独立材质表面。失败保留当前材质及规范。下载 design-plan-material.css，作用于 wb-design-plan 容器内的 plan-material-surface 元素。只输出背景色、渐变及阴影，尺寸、圆角和布局由宿主决定，不伪造玻璃或滤镜，不覆盖控件的正文色或表面色。确认后的附件作为规范数据随当前方案及历史快照保存、恢复、JSON 导入导出及 Registry 交付；使用严格材质字段重新校验，不执行任意 CSS。材质仍为独立表面，规范中的磨砂字段仍只是意图，不自动推导玻璃滤镜。
+
+### Foundation 实际组件规范映射与独立工程
+
+从「Foundation Registry 工程交付」下载 foundation-design-plan.css，在实际 Registry theme.css、base.css、components.css 之后加载，在宿主容器添加 ui-design-plan 及对应 data-theme。映射七项有界规范至局部 Foundation Token 和控件，保持真实 React/Vue 实现及 Radix/Reka 键盘逻辑；强调色、门户浮层与未映射的 Token 仍使用宿主主题，不等于完整主题覆盖。材质附件另行导出独立 CSS，不能将任意上传文本作为可执行样式。
+
+独立验收脚本可选接收浏览器实际下载文件的目录：react.json、vue.json（浅色 Registry 清单）、light.css、dark.css、dark.json（深色设计规范）。先构建 dist，并将 tests/registry-runtime/package.json 与锁文件复制至新的隔离目录，按锁文件安装测试工具链，再运行：
+
+```bash
+node scripts/verify-registry-frameworks.mjs /path/to/isolated-runtime /path/to/downloads
+python scripts/verify-registry-runtime.py /path/to/isolated-runtime
+```
+
+脚本验证真实清单与当前发布产物，逐字比较导出 CSS 与可信生成器，使用已校验的本地 Registry 安装真实源码、编译两个框架并运行浏览器验收。默认不传第二个参数时保留原有 CI 测试模式。此次独立工程 React/Vue 各 16 个登记文件复验通过；三个视口的实际字号、圆角、间距、背景色、输入状态及原有原语交互通过。该流程是本地交付消费验证，并非外部 AI Agent 自主执行认证，也不是任意宿主项目的完整无障碍/视觉认证。

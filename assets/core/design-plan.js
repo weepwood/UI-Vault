@@ -1,3 +1,4 @@
+import {normalizeMaterialAttachment} from './design-material.js';
 import {composeKnowledge,compositionMarkdown} from './knowledge-composition.js';
 // Saved plans hold explicit user proposals, not inferred styles or executable CSS.
 export const PLAN_FIELDS=Object.freeze([
@@ -38,19 +39,52 @@ export function compareDesignTokens(baseline,proposal){
 }
 export const baselineIdentity=baseline=>JSON.stringify([baseline.version,...baseline.sourceFiles.map(f=>f.sha256)]);
 const STORE='ui-vault:design-plans:v1';
+const SNAPSHOT_KEYS=['catalogSha256','keys','context','theme','baselineId','tokens'];
+function normalizeSnapshot(p){
+ const optional=['materialAttachment','baselineTokens'];
+ if(!p||Object.keys(p).some(k=>![...SNAPSHOT_KEYS,...optional].includes(k))||!SNAPSHOT_KEYS.every(k=>Object.hasOwn(p,k))||!(/^[a-f0-9]{64}$/).test(p.catalogSha256)||!Array.isArray(p.keys)||p.keys.length<1||p.keys.length>6||new Set(p.keys).size!==p.keys.length||!p.keys.every(k=>typeof k==='string'&&/^[a-z0-9-]+\/[a-z0-9-]+$/.test(k))||!['general','dense-workbench','reading','presentation'].includes(p.context)||!['light','dark'].includes(p.theme)||typeof p.baselineId!=='string'||p.baselineId.length>512||!p.baselineId)throw Error('方案快照无效');
+ return {...p,keys:[...p.keys],tokens:normalizeDesignTokens(p.tokens),...(Object.hasOwn(p,'materialAttachment')?{materialAttachment:normalizeMaterialAttachment(p.materialAttachment)}:{}),...(Object.hasOwn(p,'baselineTokens')?{baselineTokens:normalizeDesignTokens(p.baselineTokens)}:{})};
+}
+export function planSnapshot(plan){
+ const snapshot=Object.fromEntries(Object.entries(plan).filter(([key])=>key!=='name'&&key!=='history'));
+ return normalizeSnapshot(snapshot);
+}
 export function normalizePlans(items){
  if(!Array.isArray(items)||items.length>8)throw Error('最多8份方案');
  const names=new Set();
  return items.map(p=>{
-  if(!exact(p,['name','catalogSha256','keys','context','theme','baselineId','tokens'])||typeof p.name!=='string'||!p.name.trim()||p.name!==p.name.trim()||p.name.length>40||names.has(p.name)||!(/^[a-f0-9]{64}$/).test(p.catalogSha256)||!Array.isArray(p.keys)||p.keys.length<1||p.keys.length>6||new Set(p.keys).size!==p.keys.length||!p.keys.every(k=>typeof k==='string'&&/^[a-z0-9-]+\/[a-z0-9-]+$/.test(k))||!['general','dense-workbench','reading','presentation'].includes(p.context)||!['light','dark'].includes(p.theme)||typeof p.baselineId!=='string'||p.baselineId.length>512||!p.baselineId)throw Error('方案无效或同名');
-  names.add(p.name);return {...p,keys:[...p.keys],tokens:normalizeDesignTokens(p.tokens)};
+  if(!p||typeof p.name!=='string'||!p.name.trim()||p.name!==p.name.trim()||p.name.length>40||names.has(p.name))throw Error('方案无效或同名');
+  const snapshot=planSnapshot(p);
+  names.add(p.name);
+  if(!Object.hasOwn(p,'history'))return {name:p.name,...snapshot};
+  if(!Array.isArray(p.history)||p.history.length>4)throw Error('最多4份历史快照');
+  const history=p.history.map(normalizeSnapshot);
+  if(history.some(h=>h.keys[0]!==snapshot.keys[0]))throw Error('历史主资产不一致');
+  return {name:p.name,...snapshot,history};
  });
+}
+export function reviseDesignPlan(previous,next){
+ const old=normalizePlans([previous])[0],now=normalizePlans([next])[0];
+ if(old.name!==now.name||old.keys[0]!==now.keys[0])throw Error('版本身份不一致');
+ if((old.history||[]).length>=4)throw Error('历史已满，请另存新方案');
+ return normalizePlans([{...now,history:[...(old.history||[]),planSnapshot(old)]}])[0];
+}
+export function planVersionDiff(previous,next){
+ const a=planSnapshot(previous),b=planSnapshot(next);
+ return {tokens:compareDesignTokens(a.tokens,b.tokens).changes,materialChanged:(a.materialAttachment??null)!==(b.materialAttachment??null),catalogChanged:a.catalogSha256!==b.catalogSha256,baselineChanged:a.baselineId!==b.baselineId,themeChanged:a.theme!==b.theme,contextChanged:a.context!==b.context,assetsChanged:JSON.stringify(a.keys)!==JSON.stringify(b.keys)};
+}
+// Migration preserves explicit absolute values; it never guesses relative intent.
+export function migrateDesignPlan(previous,composition,baseline){
+ const p=planSnapshot(previous);
+ const keys=composition.entries.map(e=>e.handoff.assetId+'/'+e.handoff.assetVersion);
+ if(JSON.stringify(keys)!==JSON.stringify(p.keys)||composition.context!==p.context||baseline.theme!==p.theme)throw Error('迁移目标不一致');
+ return {...p,catalogSha256:composition.catalogSha256,baselineId:baselineIdentity(baseline),baselineTokens:baseline.tokens};
 }
 export function readDesignPlans(storage){
  try{const raw=(storage??globalThis.localStorage).getItem(STORE);if(raw&&raw.length>65536)throw Error('过大');return {items:normalizePlans(JSON.parse(raw||'[]')),available:true};}catch{return {items:[],available:false};}
 }
 export function writeDesignPlans(items,storage){
- try{const target=storage??globalThis.localStorage;if(!readDesignPlans(target).available)return false;target.setItem(STORE,JSON.stringify(normalizePlans(items)));return true;}catch{return false;}
+ try{const target=storage??globalThis.localStorage;if(!readDesignPlans(target).available)return false;const raw=JSON.stringify(normalizePlans(items));if(raw.length>65536)return false;target.setItem(STORE,raw);return true;}catch{return false;}
 }
 // Once persistence fails, keep this session authoritative; never overwrite a
 // recovered store with a divergent session snapshot.
@@ -75,12 +109,13 @@ function sameJSON(actual,expected){
  if(Array.isArray(expected))return Array.isArray(actual)&&actual.length===expected.length&&expected.every((v,i)=>sameJSON(actual[i],v));
  return exact(actual,Object.keys(expected))&&Object.keys(expected).every(k=>sameJSON(actual[k],expected[k]));
 }
-export function createDesignPlan(composition,baseline,values){
+export function createDesignPlan(composition,baseline,values,attachment=null){
  const proposal=normalizeDesignTokens(values);
- return {format:'ui-vault-design-plan',version:1,composition,baseline,proposal,difference:compareDesignTokens(baseline.tokens,proposal),notice:PLAN_NOTICE};
+ const materialAttachment=normalizeMaterialAttachment(attachment);
+ return {format:'ui-vault-design-plan',version:materialAttachment?2:1,composition,baseline,proposal,difference:compareDesignTokens(baseline.tokens,proposal),notice:PLAN_NOTICE,...(materialAttachment?{materialAttachment}:{})};
 }
 export function validateDesignPlan(doc,index,assets,item,primary){
- if(!exact(doc,['format','version','composition','baseline','proposal','difference','notice'])||doc.format!=='ui-vault-design-plan'||doc.version!==1)throw Error('规范协议无效');
+ if(!exact(doc,['format','version','composition','baseline','proposal','difference','notice',...(doc?.version===2?['materialAttachment']:[])])||doc.format!=='ui-vault-design-plan'||![1,2].includes(doc.version))throw Error('规范协议无效');
  const entries=doc.composition?.entries;
  if(!Array.isArray(entries)||entries.length<1||entries.length>6)throw Error('组合数量无效');
  const keys=entries.map(e=>{
@@ -91,7 +126,7 @@ export function validateDesignPlan(doc,index,assets,item,primary){
  if(primary&&keys[0]!==primary)throw Error('主资产不匹配');
  const composition=composeKnowledge(index,assets,keys,doc.composition.context);
  const baseline=foundationBaseline(item,doc.baseline?.theme);
- const expected=createDesignPlan(composition,baseline,doc.proposal);
+ const expected=createDesignPlan(composition,baseline,doc.proposal,doc.materialAttachment);
  if(!sameJSON(doc,expected))throw Error('组合、基准或差异与当前登记数据不一致');
  return {document:expected,keys};
 }
@@ -106,7 +141,8 @@ export function designPlanMarkdown(doc){
   ...PLAN_FIELDS.map(f=>'| '+f.label+' | '+baseline.tokens[f.key]+(f.unit||'')+' | '+proposal[f.key]+(f.unit||'')+' |'),
   '', '- 正文对比：'+difference.contrast.toFixed(2)+':1（'+(difference.contrastPass?'达到4.5:1':'需复核')+'）',
   '- '+difference.notice,
-  '- 材质仅为意图，不自动生成 CSS 或覆盖宿主样式。',
+  '- 磨砂仅为意图，不自动生成滤镜或覆盖宿主样式。',
+  ...(doc.materialAttachment?['- 含真实 Warm Workbench 材质附件，独立表面使用；保留原规范 JSON。']:[]),
   '- [ ] 核对规范 JSON、基准证据及实际目标项目效果。',''
  ].join('\n');
 }
