@@ -9,7 +9,8 @@ import {buildKnowledgeIndex} from '../scripts/lib/knowledge-index.mjs';
 import {selectKnowledgeRecord,knowledgeDelivery} from '../assets/core/knowledge-record.js';
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {designHandoffMarkdown} from '../assets/core/knowledge-template.js';
-import {verifyHandoff} from '../scripts/verify-knowledge-handoff.mjs';
+import {composeKnowledge,compositionMarkdown} from '../assets/core/knowledge-composition.js';
+import {verifyHandoff,verifyComposition} from '../scripts/verify-knowledge-handoff.mjs';
 const {items}=await inspectCatalog(),index=await buildKnowledgeIndex(ROOT,items);
 async function fixture(id,version='original'){
  const root=await mkdtemp(join(tmpdir(),'ui-vault-handoff-'));
@@ -55,4 +56,39 @@ test('衍生版本独立证据，外部资产无文件不算通过',async()=>{
  const ext=await fixture('aesthetic-frontend-skills');
  try{const r=await verifyHandoff(ext.handoff,ext.root);assert.equal(r.verified,false);assert.equal(r.checked,0);}
  finally{await rm(ext.root,{recursive:true,force:true});}
+});
+
+test('多资产组合保留主资产、去重文件、按明确场景提示且拒绝摘要冲突',()=>{
+ const keys=['workbench-components/original','design-recipe-lab/original','website-style-bauhaus/original'];
+ const b=composeKnowledge(index,items,keys,'dense-workbench');
+ assert.deepEqual(b.entries.map(e=>e.role),['primary','reference','reference']);
+ assert.equal(b.entries[0].handoff.assetId,'workbench-components');
+ assert.equal(new Set(b.files.map(f=>f.path)).size,b.files.length);
+ assert.equal(b.recipes.length,6);
+ assert.ok(b.warnings.some(w=>w.code==='context-frosted-overlay'));
+ assert.ok(!composeKnowledge(index,items,keys,'general').warnings.some(w=>w.code.startsWith('context-')));
+ assert.match(compositionMarkdown(b),/主资产与参考资产/);
+ const variants=composeKnowledge(index,items,['landfolio-style-arctic/original','landfolio-style-arctic/landfolio-polar-night']);
+ assert.ok(variants.warnings.some(w=>w.code==='multiple-versions'));
+ assert.throws(()=>composeKnowledge(index,items,[keys[0],keys[0]]),/不同资产/);
+ assert.throws(()=>composeKnowledge(index,items,['unknown/original']),/未登记/);
+ const poisoned=structuredClone(index),row=poisoned.records.find(r=>r.key===keys[0]);
+ row.delivery.sourceFiles.find(f=>f.path===row.preview.path).sha256='a'.repeat(64);
+ assert.throws(()=>composeKnowledge(poisoned,items,keys),/同路径证据冲突/);
+});
+test('组合完整性验证拒绝篡改并保持逐资产证据边界',async()=>{
+ const keys=['workbench-components/original','design-recipe-lab/original','website-style-bauhaus/original'];
+ const bundle=composeKnowledge(index,items,keys,'dense-workbench'),root=await mkdtemp(join(tmpdir(),'ui-vault-composition-'));
+ try{
+  await mkdir(join(root,'content'),{recursive:true});
+  await writeFile(join(root,'content/assets.json'),JSON.stringify(items));
+  await writeFile(join(root,'content/knowledge-index.json'),JSON.stringify(index));
+  for(const f of bundle.files){await mkdir(dirname(join(root,f.path)),{recursive:true});await writeFile(join(root,f.path),await readFile(join(ROOT,f.path)));}
+  const report=await verifyComposition(bundle,root);
+  assert.equal(report.verified,true);assert.equal(report.assets,3);assert.equal(report.uniqueRegisteredFiles,bundle.files.length);
+  const changed=structuredClone(bundle);changed.entries[1].role='primary';
+  await assert.rejects(verifyComposition(changed,root),/不一致/);
+  await writeFile(join(root,bundle.files[0].path),'changed');
+  assert.equal((await verifyComposition(bundle,root)).verified,false);
+ }finally{await rm(root,{recursive:true,force:true});}
 });

@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {composeKnowledge,compositionMarkdown} from '../../assets/core/knowledge-composition.js';
 import {designHandoffMarkdown} from '../../assets/core/knowledge-template.js';
 import {searchKnowledge} from '../../assets/core/knowledge-search.js';
 import {selectKnowledgeRecord,knowledgeDelivery} from '../../assets/core/knowledge-record.js';
@@ -9,17 +10,30 @@ const provenanceLabels={'upstream-reference':'上游来源登记','external-refe
 const deliveryLabels={'standalone-zip':'独立 ZIP','single-html':'单文件 HTML','source-reference':'源码参考','external-reference':'外部项目参考'};
 export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,onOpenGuide,onOpenRegistry}){
  const [result,setResult]=useState(null),[attempt,setAttempt]=useState(0);
+ const [selection,setSelection]=useState([asset.id+'/'+version]),[context,setContext]=useState('general');
  const [query,setQuery]=useState(''),[recipeFilter,setRecipeFilter]=useState(''),[deliveryFilter,setDeliveryFilter]=useState('');
  useEffect(()=>{
   const controller=new AbortController();
-  fetch(resolveAsset('content/knowledge-index.json'),{signal:controller.signal,cache:'no-cache'})
-   .then(async response=>{if(!response.ok)throw Error('HTTP '+response.status);const body=await response.text();if(body.length>8*1024*1024)throw Error('知识索引过大');const index=JSON.parse(body);return {value:selectKnowledgeRecord(index,asset,version),index};})
+  async function read(path){
+   const response=await fetch(resolveAsset(path),{signal:controller.signal,cache:'no-cache'});
+   if(!response.ok)throw Error('HTTP '+response.status);
+   const body=await response.text();if(body.length>8*1024*1024)throw Error('知识数据过大');
+   return JSON.parse(body);
+  }
+  Promise.all([read('content/knowledge-index.json'),read('content/assets.json')])
+   .then(([index,assets])=>{if(!Array.isArray(assets))throw Error('资产目录无效');return {value:selectKnowledgeRecord(index,asset,version),index,assets};})
    .then(data=>{if(!controller.signal.aborted)setResult(data);})
    .catch(()=>{if(!controller.signal.aborted)setResult({error:true});});
   return ()=>controller.abort();
  },[asset,version,attempt]);
  const value=result?.value,row=value?.record;
  const hits=result?.index&&(query.trim()||recipeFilter||deliveryFilter)?searchKnowledge(result.index,{query,recipe:recipeFilter,delivery:deliveryFilter,limit:8}):null;
+ let composition=null,compositionError=false;
+ if(result?.index)try{composition=composeKnowledge(result.index,result.assets,selection,context);}catch{compositionError=true;}
+ function downloadComposition(markdown){
+  if(!composition)return;
+  try{downloadSourceText(markdown?compositionMarkdown(composition):JSON.stringify(composition,null,2)+'\n',markdown?'composition-DESIGN.md':'ai-composition.json');notify('组合交付已下载');}catch{notify('组合交付下载失败');}
+ }
  const json=()=>JSON.stringify(value,null,2)+'\n';
  const handoff=()=>JSON.stringify(knowledgeDelivery(value,asset),null,2)+'\n';
  const evidenceFile=(file,label,action)=><li key={label+file.path}><strong>{label}</strong><code>{file.path}</code><small>{file.bytes.toLocaleString()} B · SHA-256</small><code className="knowledge-digest">{file.sha256}</code>{action&&<button type="button" onClick={action}>查看{label}</button>}</li>;
@@ -49,7 +63,13 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
     <label>关键词<input aria-label="知识检索关键词" maxLength={256} value={query} onChange={event=>setQuery(event.target.value)} placeholder="例如 SearchField.jsx"/></label>
     <label>配方<select aria-label="知识检索配方" value={recipeFilter} onChange={event=>setRecipeFilter(event.target.value)}><option value="">全部配方</option>{result.index.recipes.map(recipe=><option key={recipe.id} value={recipe.id}>{recipe.title}</option>)}</select></label>
     <label>交付<select aria-label="知识检索交付方式" value={deliveryFilter} onChange={event=>setDeliveryFilter(event.target.value)}><option value="">全部交付</option>{Object.entries(deliveryLabels).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
-    {hits&&<><p role="status">匹配 {hits.total} 项{hits.total>hits.limit?' · 展示前 '+hits.limit+' 项':''}</p><ul className="knowledge-search-results">{hits.results.map(({record})=><li key={record.key}><a href={resolveAsset('?asset='+encodeURIComponent(record.id)+(record.version==='original'?'':'&variant='+encodeURIComponent(record.version)))} target="_blank" rel="noopener noreferrer">{record.title} · {record.version}</a><small>{deliveryLabels[record.delivery.mode]} · {record.style.scope==='parent-asset-not-version-review'?'继承父资产标签':'原始资产'}</small></li>)}</ul></>}
+    {hits&&<><p role="status">匹配 {hits.total} 项{hits.total>hits.limit?' · 展示前 '+hits.limit+' 项':''}</p><ul className="knowledge-search-results">{hits.results.map(({record})=><li key={record.key}><a href={resolveAsset('?asset='+encodeURIComponent(record.id)+(record.version==='original'?'':'&variant='+encodeURIComponent(record.version)))} target="_blank" rel="noopener noreferrer">{record.title} · {record.version}</a><button type="button" disabled={selection.includes(record.key)||selection.length>=6} onClick={()=>setSelection(old=>old.includes(record.key)||old.length>=6?old:[...old,record.key])}>{selection.includes(record.key)?'已选入组合':'加入交付组合'}</button><small>{deliveryLabels[record.delivery.mode]} · {record.style.scope==='parent-asset-not-version-review'?'继承父资产标签':'原始资产'}</small></li>)}</ul></>}
+   </details>
+   <details className="knowledge-composition"><summary>多资产交付组合 · {selection.length}/6</summary>
+    <p>通过上方反向检索加入参考资产；当前资产为主资产，组合仅在本面板会话保留。</p>
+    <label>设计场景<select aria-label="组合设计场景" value={context} onChange={event=>setContext(event.target.value)}><option value="general">通用</option><option value="dense-workbench">高密度工作台</option><option value="reading">阅读</option><option value="presentation">展示</option></select></label>
+    <ul className="knowledge-search-results">{selection.map((key,i)=><li key={key}><strong>{i===0?'主资产':'参考资产'}</strong><span>{key}</span>{i>0&&<button type="button" aria-label={'移除 '+key} onClick={()=>setSelection(old=>old.filter(x=>x!==key))}>移除</button>}</li>)}</ul>
+    {compositionError?<p role="status">组合证据不一致，无法交付。</p>:composition&&<><p role="status">{composition.files.length} 个去重登记文件 · {composition.recipes.length} 个配方 · {composition.warnings.length} 项人工复核提示</p><ul>{composition.warnings.map((w,i)=><li key={w.code+i}>{w.message}</li>)}</ul><p>无警告不代表兼容；组合不是安装包。</p><div className="registry-module-info"><button type="button" onClick={()=>downloadComposition(false)}>下载组合 JSON</button><button type="button" onClick={()=>downloadComposition(true)}>下载组合 DESIGN.md</button></div></>}
    </details>
    <div className="registry-module-info"><button type="button" onClick={()=>onCopyText(json(),'当前版本知识 JSON 已复制')}>复制知识 JSON</button><button type="button" onClick={()=>{try{downloadSourceText(json(),asset.id+'-'+version+'-knowledge.json');notify('知识记录已下载');}catch{notify('知识记录下载失败');}}}>下载当前记录</button></div>
   </>}

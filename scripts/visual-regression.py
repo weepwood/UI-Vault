@@ -2498,7 +2498,7 @@ def verify_knowledge_delivery(browser, origin):
             knowledge.locator(".knowledge-search summary").click()
             query=knowledge.get_by_label("知识检索关键词",exact=True)
             query.fill("SearchField.jsx")
-            results=knowledge.locator(".knowledge-search-results")
+            results=knowledge.locator(".knowledge-search .knowledge-search-results")
             expect(results.locator("li")).to_have_count(1)
             assert "asset=workbench-components" in results.locator("a").get_attribute("href")
             query.fill("")
@@ -2516,6 +2516,33 @@ def verify_knowledge_delivery(browser, origin):
             expect(knowledge.get_by_text("匹配 0 项",exact=True)).to_be_visible()
             assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
             page.screenshot(path=str(OUTPUT/f"knowledge-search-{width}-{theme}.png"))
+            knowledge=open_record("workbench-components")
+            knowledge.locator(".knowledge-search summary").click()
+            search=knowledge.get_by_label("知识检索关键词",exact=True)
+            hits=knowledge.locator(".knowledge-search .knowledge-search-results")
+            for asset_id in ("design-recipe-lab","website-style-bauhaus"):
+                search.fill(asset_id)
+                hits.locator("li").filter(has=page.locator(f'a[href$="asset={asset_id}"]')).get_by_role("button",name="加入交付组合",exact=True).click()
+            composition=knowledge.locator(".knowledge-composition")
+            composition.locator("summary").click()
+            knowledge.get_by_label("组合设计场景",exact=True).select_option("dense-workbench")
+            expect(composition.get_by_text("适用范围需复核",exact=False).first).to_be_visible()
+            with page.expect_download() as combination:
+                composition.get_by_role("button",name="下载组合 JSON",exact=True).click()
+            bundle=json.loads(combination.value.path().read_text("utf-8"))
+            assert [(e["role"],e["handoff"]["assetId"]) for e in bundle["entries"]]==[("primary","workbench-components"),("reference","design-recipe-lab"),("reference","website-style-bauhaus")]
+            assert len({f["path"] for f in bundle["files"]})==len(bundle["files"])
+            assert len(bundle["recipes"])==6
+            report=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(combination.value.path()),"--root",str(DIST)],encoding="utf-8"))
+            assert report["verified"] and report["assets"]==3 and report["uniqueRegisteredFiles"]==len(bundle["files"])
+            with page.expect_download() as template:
+                composition.get_by_role("button",name="下载组合 DESIGN.md",exact=True).click()
+            assert "主资产与参考资产" in template.value.path().read_text("utf-8")
+            composition.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"knowledge-composition-{width}-{theme}.png"))
+            composition.get_by_role("button",name="移除 website-style-bauhaus/original",exact=True).click()
+            expect(composition.locator("summary")).to_contain_text("2/6")
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
             assert not errors,errors
         finally:
             context.close()
