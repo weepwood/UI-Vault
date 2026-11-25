@@ -1273,6 +1273,17 @@ def verify_live_parameter_dock(browser, origin):
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
         radius.fill("999")
         expect(radius).to_have_attribute("aria-invalid","true")
+        # The error state must override focus-visible, including after CSS transitions settle.
+        page.wait_for_function("""() => {
+          const e=document.querySelector('#parameter-dock input[aria-label="卡片圆角"]');
+          const p=e.closest('.demo-parameter-panel'),style=getComputedStyle(e);
+          const status=getComputedStyle(p.querySelector('.parameter-status'));
+          const probe=document.createElement('span');probe.style.color='var(--parameter-error)';
+          p.append(probe);const expected=getComputedStyle(probe).color;probe.remove();
+          return e.matches('[aria-invalid=true]')&&style.outlineStyle==='solid'&&
+            style.outlineColor===expected&&style.borderTopColor===expected&&status.color===expected;
+        }""")
+        page.screenshot(path=str(OUTPUT/"parameter-invalid-desktop.png"))
         expect(dock.get_by_role("button",name="应用参数")).to_be_disabled()
         radius.press("Escape")
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
@@ -1572,6 +1583,42 @@ def verify_expanded_workbench_screenshots(browser, origin):
             context.close()
 
 
+def verify_compact_source_reader(browser, origin):
+    """窄屏/短屏优先阅读源码，完整交付工具仍可展开，外框稳定。"""
+    for width,height,theme in ((320,640,"dark"),(667,300,"light"),(390,280,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+            trigger=page.locator("#preview-info")
+            trigger.click()
+            dialog=page.locator(".project-dialog")
+            before=dialog.bounding_box()["height"]
+            page.locator("#tab-source").click()
+            code=page.locator(".source-view")
+            expect(code).to_be_visible()
+            page.wait_for_function("""() => {
+              const p=document.querySelector('.dialog-source-pane'),s=document.querySelector('.source-view');
+              const r=s.getBoundingClientRect(),b=p.getBoundingClientRect();
+              return s.clientHeight>=80&&s.clientHeight<=innerHeight&&
+                Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top)>=80;
+            }""")
+            assert abs(dialog.bounding_box()["height"]-before)<=2
+            page.screenshot(path=str(OUTPUT/f"source-compact-{width}x{height}-{theme}.png"))
+            page.get_by_role("button",name="交付与阅读工具").click()
+            expect(page.locator("#source-reuse-manifest")).to_be_visible()
+            expect(page.locator("#source-foundation-project")).to_be_visible()
+            page.get_by_role("button",name="收起交付工具").click()
+            expect(page.locator("#source-reuse-manifest")).to_be_hidden()
+            code.focus()
+            expect(code).to_be_focused()
+            page.keyboard.press("Escape")
+            expect(dialog).to_be_hidden()
+            expect(trigger).to_be_focused()
+        finally:
+            context.close()
+
+
 def verify_registry_browser(browser, origin):
     """真实发布 Registry 索引，按需读取、失败重试、跨主题浏览及复制命令。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -1588,6 +1635,7 @@ def verify_registry_browser(browser, origin):
             page.locator("#preview-info").click()
             page.locator("#tab-source").click()
             assert not reads
+            if width<=360:page.get_by_role("button",name="交付与阅读工具").click()
             page.get_by_role("button",name="浏览 Foundation Registry").click()
             page.get_by_text("无法读取 Registry。",exact=False).wait_for()
             page.get_by_role("button",name="重试",exact=True).click()
@@ -1733,6 +1781,48 @@ def verify_release_keyboard_and_performance(browser, origin):
     finally:
         mobile.close()
     print("键盘、焦点恢复、参数命名与手机溢出专项通过。",flush=True)
+
+
+def verify_directory_visual_density(browser, origin):
+    """宽屏标准/窄栏、双主题和大字号紧凑模式的真实布局。"""
+    for width,height,theme,density,font_size,sidebar in (
+        (1440,900,"light","comfortable","13","standard"),
+        (1440,900,"dark","comfortable","13","standard"),
+        (1920,1080,"light","comfortable","13","standard"),
+        (1920,1080,"dark","compact","15","standard"),
+        (1920,1080,"light","comfortable","13","narrow"),
+        (820,844,"dark","compact","15","standard"),
+        (390,844,"light","comfortable","13","standard"),
+    ):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            settings=json.dumps({"theme":theme,"density":density,"fontSize":font_size,"sidebar":sidebar})
+            page.add_init_script("localStorage.setItem('ui-vault:preferences:v1',"+json.dumps(settings)+")")
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached")
+            if width<761:page.locator("#menu-toggle").click()
+            page.locator(".project-row").first.wait_for()
+            geometry=page.evaluate("""() => {
+                const $=s=>document.querySelector(s),r=s=>$(s).getBoundingClientRect();
+                const row=$('.project-row'),copy=$('.project-row-copy'),title=$('.project-item.is-selected .project-row-title');
+                const root=getComputedStyle(document.documentElement),style=getComputedStyle(title);
+                const probe=document.createElement('span');probe.style.color='var(--accent)';title.append(probe);
+                const accent=getComputedStyle(probe).color;probe.remove();
+                return {directory:r('#project-panel').width,preview:r('#preview-stage').width,
+                  title:parseFloat(style.fontSize),selected:style.color===accent,
+                  row:row.clientHeight,copy:copy.getBoundingClientRect().height,
+                  document:document.documentElement.scrollWidth,alignment:Math.abs(r('.list-controls').height-r('.topbar').height)};
+            }""")
+            assert geometry["document"]<=width+1 and geometry["alignment"]<=1
+            assert geometry["selected"] and geometry["copy"]<=geometry["row"]
+            assert geometry["title"]==(14 if density=="compact" else 13)
+            if width==1920:
+                assert geometry["directory"]>=340 if sidebar=="standard" else abs(geometry["directory"]-270)<=1
+            if width>=761:assert geometry["preview"]>0
+            page.screenshot(path=str(OUTPUT/f"directory-visual-{width}-{theme}-{density}-{sidebar}.png"))
+        finally:
+            context.close()
 
 
 def verify_topbar_alignment(browser, origin):
@@ -2013,6 +2103,71 @@ def verify_project_health_and_grouping(browser, origin):
     finally:
         context.close()
     print(f"Project 分组与健康回归通过：{expected_groups} 个来源、57 条 Atlas 资产、离线降级和 iframe 稳定性。")
+
+def verify_settings_popover_boundaries(browser, origin):
+    """设置页菜单必须超越滚动容器裁剪，同时保留键盘与真实命中。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(390,400,"light"),(667,300,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?view=settings",wait_until="domcontentloaded")
+            page.locator('[data-settings-section="typography"]').click()
+            field=page.locator("#settings-fontSize").locator("xpath=..")
+            trigger=field.locator(".select-trigger")
+            popup=field.locator(".select-popover")
+            trigger.click()
+            page.keyboard.press("End")
+            expect(field.locator('[role="option"]').last).to_be_focused()
+            page.wait_for_function("""() => {
+              const p=document.querySelector('#settings-fontSize').parentElement.querySelector('.select-popover');
+              const r=p.getBoundingClientRect(),last=p.lastElementChild,l=last.getBoundingClientRect();
+              return r.left>=11&&r.right<=innerWidth-11&&r.top>=11&&r.bottom<=innerHeight-11
+                &&l.top>=r.top-1&&l.bottom<=r.bottom+1
+                &&last.contains(document.elementFromPoint(l.x+l.width/2,l.y+l.height/2));
+            }""")
+            page.screenshot(path=str(OUTPUT/f"settings-popover-{width}x{height}-{theme}.png"))
+            page.keyboard.press("Home")
+            expect(field.locator('[role="option"]').first).to_be_focused()
+            page.wait_for_function("""() => {
+              const first=document.querySelector('#settings-fontSize').parentElement.querySelector('[role="option"]');
+              const r=first.getBoundingClientRect();
+              return first.contains(document.elementFromPoint(r.x+r.width/2,r.y+r.height/2));
+            }""")
+            page.keyboard.press("Escape")
+            expect(trigger).to_be_focused()
+            expect(popup).to_be_hidden()
+            if height==400:
+                trigger.click()
+                page.locator(".settings-scroll").evaluate("e=>e.scrollTop=0")
+                expect(popup).to_be_hidden()
+                expect(trigger).to_be_focused()
+        finally:
+            context.close()
+
+
+def verify_control_reduced_motion(browser, origin):
+    for motion,preference in (("reduce","system"),("no-preference","reduced")):
+        context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion=motion,locale="zh-CN")
+        try:
+            page=context.new_page()
+            settings=json.dumps({"motion":preference})
+            page.add_init_script("localStorage.setItem('ui-vault:preferences:v1',"+json.dumps(settings)+")")
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached")
+            for button_id in ("preview-favorite","preview-info"):
+                button=page.locator("#"+button_id)
+                button.hover()
+                page.mouse.down()
+                assert button.evaluate("""e=>{const t=getComputedStyle(e).transform;
+                  return t==='none'||new DOMMatrix(t).isIdentity;}""")
+                page.mouse.up()
+                if button_id=="preview-info":page.keyboard.press("Escape")
+            assert page.locator("#preview-favorite .ui-icon").evaluate("""e=>{
+              e.classList.add('is-pulsing');return getComputedStyle(e).animationName;
+            }""")=="none"
+        finally:
+            context.close()
+
 
 def verify_project_operations(browser, origin):
     """独立状态管理页的真实筛选、资产跳转、移动导航与未知态回归。"""
@@ -2405,10 +2560,13 @@ def main():
                     verify_project_health_and_grouping,
                     verify_landfolio_version_switch,
                     verify_project_operations,
+                    verify_settings_popover_boundaries,
+                    verify_control_reduced_motion,
                     verify_sidebar_collapse,
                     verify_sidebar_transition_no_reflow,
                     verify_compact_search_and_fixed_icons,
                     verify_search_experience,
+                    verify_directory_visual_density,
                     verify_topbar_alignment,
                     verify_directory_facets,
                     verify_directory_workspace,
@@ -2423,6 +2581,7 @@ def main():
                     verify_warm_layout_parameters,
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
+                    verify_compact_source_reader,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,

@@ -158,10 +158,11 @@
 .demo-parameter-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:6px 12px;}
 .parameter-field{min-width:0;display:flex;align-items:center;justify-content:space-between;gap:8px;min-height:34px;color:var(--text);}
 .parameter-field span{min-width:0;overflow-wrap:anywhere;}
-.demo-parameter-panel :is(input:not([type=checkbox]),select,button){min-width:0;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;min-height:32px;padding:5px 8px;transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease;}
+.demo-parameter-panel :is(input:not([type=checkbox]),select,button){min-width:0;border:1px solid var(--line);border-radius:var(--workbench-control-radius,7px);background:var(--surface);color:var(--ink);font:inherit;min-height:32px;padding:5px 8px;transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease;}
 .demo-parameter-panel :is(button,select):hover:not(:disabled){background:var(--hover);}
 .demo-parameter-panel :is(button,select,input):focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
-.demo-parameter-panel input[aria-invalid=true]{border-color:#c65e53;}
+.demo-parameter-panel input[aria-invalid=true],.demo-parameter-panel input[aria-invalid=true]:focus-visible{border-color:var(--parameter-error);outline:2px solid var(--parameter-error);outline-offset:1px;}
+.demo-parameter-panel:has(input[aria-invalid=true]) .parameter-status{color:var(--parameter-error);}
 .parameter-number input{width:76px;font-variant-numeric:tabular-nums;}
 .parameter-color input{width:48px;padding:3px;}
 .parameter-enum select{width:55%;max-width:180px;text-overflow:ellipsis;}
@@ -185,7 +186,7 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
 
 /* Registry is a subview of the existing source pane, not a second modal. */
 .dialog-source-pane.registry-source-pane{overflow-y:auto;overscroll-behavior:contain}
-.registry-source-pane>.source-manifest-actions{position:sticky;top:0;z-index:2;background:var(--surface);padding-block:4px 8px;margin-top:-4px;border-bottom:1px solid var(--line-soft)}
+.registry-source-pane .source-manifest-actions{position:sticky;top:0;z-index:2;background:var(--surface);padding-block:4px 8px;margin-top:-4px;border-bottom:1px solid var(--line-soft)}
 .registry-browser{display:grid;gap:12px;flex:none;min-width:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--canvas);color:var(--text);font-size:12px}
 .registry-browser p{margin:0;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
 .registry-browser a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
@@ -203,3 +204,27 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
 .registry-commands{display:grid;gap:6px}
 .registry-commands>div{min-width:0;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
 .registry-commands code{display:block;margin-top:4px;color:var(--text)}
+
+
+/* Source tools are kept in the DOM, but narrow/short viewports prioritize code.
+   Normal desktop and mobile layouts retain the original delivery toolbar. */
+.source-delivery-tools{display:contents}
+.source-compact-toggle{display:none}
+.source-view:focus-visible{outline:2px solid var(--focus);outline-offset:-3px}
+@media(max-width:360px),(max-height:440px){
+  .dialog-source-pane{overflow-y:auto;gap:6px}
+  .source-compact-toggle{display:flex;flex:none;align-items:center;justify-content:space-between;min-height:28px;padding:4px 8px;border:1px solid var(--line);border-radius:var(--workbench-control-radius,7px);background:var(--surface);color:var(--text);font:inherit;font-size:11px}
+  .source-compact-toggle[aria-expanded=true] .ui-icon{transform:rotate(180deg)}
+  .source-delivery-tools[data-expanded=false]{display:none}
+  .source-delivery-tools[data-expanded=true]{display:flex;flex:none;flex-direction:column;gap:8px;min-width:0}
+  .dialog-source-pane .source-reader-layout{flex:1 0 120px;min-height:120px}
+  .dialog-source-pane .source-view{flex:1 1 88px;max-height:max(88px,calc(84dvh - 132px))}
+}
+@media(max-height:440px){
+  .project-dialog .dialog-header{padding:8px 12px 6px;gap:8px}
+  .project-dialog .dialog-heading h2{font-size:15px;margin:1px 0 0}
+  .project-dialog .dialog-tabs{padding:0 10px;gap:0;overflow-x:auto;scrollbar-width:thin}
+  .project-dialog .dialog-tabs button{flex:none;padding:6px 8px}
+  .project-dialog .dialog-pane{padding:8px 10px}
+  .project-dialog .source-view{padding:8px}
+}

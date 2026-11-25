@@ -6,6 +6,12 @@
 .project-item::before { content: ""; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); opacity: 0; transform: scaleY(.3); transition: transform var(--motion-slow,220ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)), opacity var(--motion-fast,120ms) ease; pointer-events: none; }
 .project-item.is-selected::before { opacity: 1; transform: scaleY(1); }
 .project-item.is-selected { background: var(--accent-soft); }
+.project-item.is-selected .project-row-title{color:var(--accent)}
+.project-item.is-selected .search-match{background:var(--surface);color:var(--accent)}
+/* Compact mode retains the established 48px row pitch, including larger fonts. */
+html[data-density="compact"] .project-row-title{font-size:calc(12px + var(--font-step,0px))}
+html[data-density="compact"] .project-row-copy{gap:0}
+html[data-density="compact"] .project-row-copy>span{line-height:1.3}
 .project-row { display: flex; flex: 1; min-width: 0; align-items: center; gap: 10px; text-align: left; border: 0; border-radius: 8px; background: transparent; padding: 11px 10px; color: var(--ink); transition: background-color var(--motion-fast,120ms) ease; }
 .project-row:active { background: var(--hover-strong,#e5eaea); }
 /* 列表在滚动容器内，焦点框向内收，避免被容器边缘裁掉。 */
@@ -14,8 +20,8 @@
 .project-item.is-selected .project-row-icon { border-color: var(--accent-line,#bdd2dd); color: var(--accent); background: var(--surface); }
 .project-row-icon .ui-icon { width: 17px; height: 17px; }
 .project-row-copy { min-width: 0; display: grid; gap: 2px; }
-.project-row-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; font-weight: 620; }
-.project-row-subtitle { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); font-size: 10px; }
+.project-row-title { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: calc(13px + var(--font-step,0px)); font-weight: 650; line-height:1.35; }
+.project-row-subtitle { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--muted); font-size: calc(11px + var(--font-step,0px)); line-height:1.4; }
 /* 搜索词高亮只作用于真实命中的文本，不新增无意义标签或卡片高度。 */
 .project-row .search-match { background:var(--accent-soft);color:var(--accent);font-weight:750;border-radius:2px; }
 .project-row .search-match-label { color:var(--accent);font-weight:650; }

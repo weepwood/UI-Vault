@@ -8,7 +8,7 @@ export {Icon};
 export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='',dataSetting }){
   const [open,setOpen]=useState(false);
   const host=useRef(null),trigger=useRef(null),optionRefs=useRef([]),menu=useRef(null);
-  const initialFocus=useRef(0);
+  const initialFocus=useRef(0),anchorRect=useRef(null);
   const generated=useId();
   const menuId=(id||generated)+'-listbox';
   const selected=options.find(option=>option.value===value)||options[0];
@@ -25,12 +25,22 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     document.addEventListener('pointerdown',dismiss);
     document.addEventListener('focusin',dismiss);
     window.addEventListener('resize',close);
+    // Fixed settings popovers escape the scroll container; dismiss when its anchor moves.
+    const scrollParent=dataSetting?host.current?.closest('.settings-scroll'):null;
+    const onScroll=()=>{
+      const before=anchorRect.current,now=trigger.current?.getBoundingClientRect();
+      if(!before||!now||Math.abs(now.top-before.top)<1&&Math.abs(now.left-before.left)<1)return;
+      if(menu.current?.contains(document.activeElement))trigger.current?.focus({preventScroll:true});
+      close();
+    };
+    scrollParent?.addEventListener('scroll',onScroll,{passive:true});
     return ()=>{
       document.removeEventListener('pointerdown',dismiss);
       document.removeEventListener('focusin',dismiss);
       window.removeEventListener('resize',close);
+      scrollParent?.removeEventListener('scroll',onScroll);
     };
-  },[open]);
+  },[open,dataSetting]);
   // 选项较多（例如标签筛选）时，键盘移动焦点要同时把选项滚动到可见范围。
   const focusOption=useCallback(index=>{
     const item=optionRefs.current[index],popup=menu.current;
@@ -52,6 +62,8 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     popup.style.removeProperty('--select-available-height');
     popup.style.removeProperty('--select-offset-x');
     const rect=button.getBoundingClientRect();
+    anchorRect.current=rect;
+    if(dataSetting)popup.style.setProperty('--select-fixed-width',Math.min(280,window.innerWidth-30,Math.max(190,rect.width))+'px');
     const below=window.innerHeight-rect.bottom-12-5,above=rect.top-12-5;
     const desired=Math.min(popup.scrollHeight+2,306,window.innerHeight*.43);
     const upward=below<desired&&above>below;
@@ -60,8 +72,17 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     const right=rect.right,left=right-popup.offsetWidth;
     const offset=Math.max(0,12-left)-Math.max(0,right-window.innerWidth+12);
     popup.style.setProperty('--select-offset-x',offset+'px');
+    if(dataSetting){
+      // Settings uses a scrollable, clipped content pane. Keep its menu in the
+      // viewport, anchored to the trigger without expanding the scroll extent.
+      const width=popup.offsetWidth;
+      const left=Math.max(12,Math.min(rect.left,window.innerWidth-12-width));
+      popup.style.setProperty('--select-fixed-width',width+'px');
+      popup.style.setProperty('--select-fixed-left',left+'px');
+      popup.style.setProperty('--select-fixed-top',(upward?rect.top-5-popup.offsetHeight:rect.bottom+5)+'px');
+    }
     focusOption(initialFocus.current);
-  },[open,focusOption]);
+  },[open,focusOption,dataSetting]);
   function reveal(index){
     closeDropdowns();
     initialFocus.current=index;
