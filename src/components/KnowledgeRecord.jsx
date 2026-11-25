@@ -1,4 +1,5 @@
 import {useEffect,useState} from 'react';
+import {DesignPlan} from './DesignPlan.jsx';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {composeKnowledge,compositionMarkdown} from '../../assets/core/knowledge-composition.js';
@@ -66,10 +67,10 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
     {hits&&<><p role="status">匹配 {hits.total} 项{hits.total>hits.limit?' · 展示前 '+hits.limit+' 项':''}</p><ul className="knowledge-search-results">{hits.results.map(({record})=><li key={record.key}><a href={resolveAsset('?asset='+encodeURIComponent(record.id)+(record.version==='original'?'':'&variant='+encodeURIComponent(record.version)))} target="_blank" rel="noopener noreferrer">{record.title} · {record.version}</a><button type="button" disabled={selection.includes(record.key)||selection.length>=6} onClick={()=>setSelection(old=>old.includes(record.key)||old.length>=6?old:[...old,record.key])}>{selection.includes(record.key)?'已选入组合':'加入交付组合'}</button><small>{deliveryLabels[record.delivery.mode]} · {record.style.scope==='parent-asset-not-version-review'?'继承父资产标签':'原始资产'}</small></li>)}</ul></>}
    </details>
    <details className="knowledge-composition"><summary>多资产交付组合 · {selection.length}/6</summary>
-    <p>通过上方反向检索加入参考资产；当前资产为主资产，组合仅在本面板会话保留。</p>
+    <p>通过上方反向检索加入参考资产；当前资产为主资产，未保存的组合仅在本面板会话保留。</p>
     <label>设计场景<select aria-label="组合设计场景" value={context} onChange={event=>setContext(event.target.value)}><option value="general">通用</option><option value="dense-workbench">高密度工作台</option><option value="reading">阅读</option><option value="presentation">展示</option></select></label>
     <ul className="knowledge-search-results">{selection.map((key,i)=><li key={key}><strong>{i===0?'主资产':'参考资产'}</strong><span>{key}</span>{i>0&&<button type="button" aria-label={'移除 '+key} onClick={()=>setSelection(old=>old.filter(x=>x!==key))}>移除</button>}</li>)}</ul>
-    {compositionError?<p role="status">组合证据不一致，无法交付。</p>:composition&&<><p role="status">{composition.files.length} 个去重登记文件 · {composition.recipes.length} 个配方 · {composition.warnings.length} 项人工复核提示</p><ul>{composition.warnings.map((w,i)=><li key={w.code+i}>{w.message}</li>)}</ul><p>无警告不代表兼容；组合不是安装包。</p><div className="registry-module-info"><button type="button" onClick={()=>downloadComposition(false)}>下载组合 JSON</button><button type="button" onClick={()=>downloadComposition(true)}>下载组合 DESIGN.md</button></div></>}
+    {compositionError?<p role="status">组合证据不一致，无法交付。</p>:composition&&<><p role="status">{composition.files.length} 个去重登记文件 · {composition.recipes.length} 个配方 · {composition.warnings.length} 项人工复核提示</p><ul>{composition.warnings.map((w,i)=><li key={w.code+i}>{w.message}</li>)}</ul><p>无警告不代表兼容；组合不是安装包。</p><div className="registry-module-info"><button type="button" onClick={()=>downloadComposition(false)}>下载组合 JSON</button><button type="button" onClick={()=>downloadComposition(true)}>下载组合 DESIGN.md</button></div><DesignPlan composition={composition} index={result.index} assets={result.assets} onRestore={(keys,scene)=>{setSelection(keys);setContext(scene);}} notify={notify}/></>}
    </details>
    <div className="registry-module-info"><button type="button" onClick={()=>onCopyText(json(),'当前版本知识 JSON 已复制')}>复制知识 JSON</button><button type="button" onClick={()=>{try{downloadSourceText(json(),asset.id+'-'+version+'-knowledge.json');notify('知识记录已下载');}catch{notify('知识记录下载失败');}}}>下载当前记录</button></div>
   </>}
