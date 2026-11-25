@@ -7,6 +7,7 @@ import {isDeepStrictEqual} from 'node:util';
 import {createHash} from 'node:crypto';
 import {selectAssetVersion,resolveVersionId} from '../assets/core/asset-versions.js';
 import {selectKnowledgeRecord,knowledgeDelivery} from '../assets/core/knowledge-record.js';
+import {validateDesignPlan} from '../assets/core/design-plan.js';
 import {composeKnowledge} from '../assets/core/knowledge-composition.js';
 import {getSourceFiles,safeSourcePath} from '../assets/core/source-files.js';
 const sha=bytes=>createHash('sha256').update(bytes).digest('hex');
@@ -63,11 +64,25 @@ export async function verifyComposition(bundle,root){
  for(const entry of expected.entries)results.push(await verifyHandoff(entry.handoff,base));
  return {format:'ui-vault-composition-verification',version:1,verified:results.every(r=>r.verified),assets:results.length,uniqueRegisteredFiles:expected.files.length,results,notice:'逐资产直接登记证据校验；无本地证据不算通过，人工复核提示仍须处理。'};
 }
+export async function verifyDesignPlan(doc,root){
+ const base=await realpath(root);
+ const assets=JSON.parse(await registeredFile(base,'content/assets.json',8*1024*1024));
+ const index=JSON.parse(await registeredFile(base,'content/knowledge-index.json',8*1024*1024));
+ const item=JSON.parse(await registeredFile(base,'registry/items/foundation-tokens.json',1024*1024));
+ const {document}=validateDesignPlan(doc,index,assets,item);
+ const baselineFiles=document.baseline.sourceFiles.map(f=>{
+  const embedded=item.files.find(x=>x.path===f.path);
+  const actualSha256=sha(Buffer.from(embedded.content,'utf8'));
+  return {path:f.path,expectedSha256:f.sha256,actualSha256,status:actualSha256===f.sha256?'match':'mismatch'};
+ });
+ const composition=await verifyComposition(document.composition,base);
+ return {format:'ui-vault-design-plan-verification',version:1,verified:composition.verified&&baselineFiles.every(f=>f.status==='match'),baselineFiles,composition,notice:'校验可信本地目录、直接登记证据及 Registry 内嵌基准源字节，重算提议差异；不认证实际样式、外部文件、安装、许可或索引签名。'};
+}
 export async function main(args){
  if(args.length!==4||args[0]!=='--handoff'||args[2]!=='--root')throw Error('用法：--handoff <JSON> --root <可信本地静态产物目录>');
  const info=await lstat(args[1]);if(!info.isFile()||info.size>1024*1024)throw Error('清单文件无效或超过1MiB');
  const doc=JSON.parse(await readFile(args[1],'utf8'));
- const result=await (doc.format==='ui-vault-ai-composition'?verifyComposition(doc,args[3]):verifyHandoff(doc,args[3]));
+ const result=await (doc.format==='ui-vault-design-plan'?verifyDesignPlan(doc,args[3]):doc.format==='ui-vault-ai-composition'?verifyComposition(doc,args[3]):verifyHandoff(doc,args[3]));
  console.log(JSON.stringify(result,null,2));
  if(!result.verified)process.exitCode=1;
 }

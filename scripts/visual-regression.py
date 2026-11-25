@@ -2565,6 +2565,23 @@ def verify_knowledge_delivery(browser, origin):
             assert spec["baseline"]["tokens"]["spacing"]==12 and spec["proposal"]["spacing"]==20
             assert next(c for c in spec["difference"]["changes"] if c["key"]=="spacing")["delta"]==8
             assert len(spec["baseline"]["sourceFiles"])==2
+            checked=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(spec_download.value.path()),"--root",str(DIST)],encoding="utf-8"))
+            assert checked["verified"] and len(checked["baselineFiles"])==2
+            with page.expect_download() as spec_md:
+                plan.get_by_role("button",name="下载规范 DESIGN.md",exact=True).click()
+            assert "基础间距 | 12px | 20px" in spec_md.value.path().read_text("utf-8")
+            spacing.fill("25")
+            plan.get_by_label("导入规范 JSON",exact=True).set_input_files({"name":"plan.json","mimeType":"application/json","buffer":json.dumps(spec).encode()})
+            expect(plan.get_by_text("规范已检查，等待明确恢复",exact=True)).to_be_visible()
+            expect(spacing).to_have_value("25")
+            plan.get_by_role("button",name="确认恢复导入规范",exact=True).click()
+            expect(spacing).to_have_value("20")
+            expect(plan.get_by_text("导入规范已恢复；未应用到预览",exact=True)).to_be_visible()
+            bad={**spec,"difference":{**spec["difference"],"contrast":100}}
+            plan.get_by_label("导入规范 JSON",exact=True).set_input_files({"name":"bad.json","mimeType":"application/json","buffer":json.dumps(bad).encode()})
+            expect(plan.get_by_text("规范文件无效或与当前登记数据不匹配，未恢复",exact=True)).to_be_visible()
+            expect(spacing).to_have_value("20")
+
             plan.scroll_into_view_if_needed()
             page.screenshot(path=str(OUTPUT/f"design-plan-{width}-{theme}.png"))
             knowledge=open_record("workbench-components")

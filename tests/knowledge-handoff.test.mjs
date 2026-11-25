@@ -10,7 +10,8 @@ import {selectKnowledgeRecord,knowledgeDelivery} from '../assets/core/knowledge-
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {designHandoffMarkdown} from '../assets/core/knowledge-template.js';
 import {composeKnowledge,compositionMarkdown} from '../assets/core/knowledge-composition.js';
-import {verifyHandoff,verifyComposition} from '../scripts/verify-knowledge-handoff.mjs';
+import {verifyHandoff,verifyComposition,verifyDesignPlan} from '../scripts/verify-knowledge-handoff.mjs';
+import {foundationBaseline,createDesignPlan,validateDesignPlan,designPlanMarkdown} from '../assets/core/design-plan.js';
 const {items}=await inspectCatalog(),index=await buildKnowledgeIndex(ROOT,items);
 async function fixture(id,version='original'){
  const root=await mkdtemp(join(tmpdir(),'ui-vault-handoff-'));
@@ -90,5 +91,29 @@ test('组合完整性验证拒绝篡改并保持逐资产证据边界',async()=>
   await assert.rejects(verifyComposition(changed,root),/不一致/);
   await writeFile(join(root,bundle.files[0].path),'changed');
   assert.equal((await verifyComposition(bundle,root)).verified,false);
+ }finally{await rm(root,{recursive:true,force:true});}
+});
+
+test('完整设计规范重建、Markdown 同源、拒绝篡改与基准字节校验',async()=>{
+ const {root,handoff}=await fixture('workbench-components');
+ try{
+  const files=await Promise.all(['tokens/foundation.json','tokens/themes.json'].map(async path=>{const content=await readFile(join(ROOT,'subprojects/ui-foundation-kit',path),'utf8');return {path,content,sha256:createHash('sha256').update(content).digest('hex')};}));
+  const item={id:'foundation-tokens',version:'1.0.0',files};
+  const path=join(root,'registry/items/foundation-tokens.json');
+  await mkdir(dirname(path),{recursive:true});await writeFile(path,JSON.stringify(item));
+  const composition=composeKnowledge(index,items,[handoff.assetId+'/'+handoff.assetVersion]);
+  const baseline=foundationBaseline(item,'dark');
+  const doc=createDesignPlan(composition,baseline,{...baseline.tokens,spacing:20,material:'frosted'});
+  assert.deepEqual(validateDesignPlan(doc,index,items,item,'workbench-components/original').document,doc);
+  assert.deepEqual(validateDesignPlan(Object.fromEntries(Object.entries(doc).reverse()),index,items,item).document,doc);
+  assert.match(designPlanMarkdown(doc),/基础间距 \| 12px \| 20px/);
+  const report=await verifyDesignPlan(doc,root);assert.equal(report.verified,true);assert.equal(report.baselineFiles.length,2);
+  for(const bad of [{...doc,version:2},{...doc,difference:{...doc.difference,contrast:100}},{...doc,proposal:{...doc.proposal,radius:99}},{...doc,baseline:{...baseline,version:'old'}},{...doc,composition:{...composition,catalogSha256:'b'.repeat(64)}},{...doc,extra:true}]){
+   assert.throws(()=>validateDesignPlan(bad,index,items,item));
+  }
+  assert.throws(()=>validateDesignPlan(doc,index,items,item,'other/original'),/主资产/);
+  item.files[0].content+=' ';
+  await writeFile(path,JSON.stringify(item));
+  const changed=await verifyDesignPlan(doc,root);assert.equal(changed.verified,false);assert.equal(changed.baselineFiles[0].status,'mismatch');
  }finally{await rm(root,{recursive:true,force:true});}
 });

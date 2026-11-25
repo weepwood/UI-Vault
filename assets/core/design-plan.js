@@ -1,3 +1,4 @@
+import {composeKnowledge,compositionMarkdown} from './knowledge-composition.js';
 // Saved plans hold explicit user proposals, not inferred styles or executable CSS.
 export const PLAN_FIELDS=Object.freeze([
  {key:'surface',label:'表面颜色',type:'color'},
@@ -64,4 +65,48 @@ export function restoreDesignPlan(plan,composition,primary,baseline){
  if(plan.catalogSha256!==composition.catalogSha256)throw Error('目录已变化，请重新建立方案');
  if(plan.baselineId!==baselineIdentity(baseline))throw Error('Token 基准已变化');
  return normalizePlans([plan])[0];
+}
+
+export const DESIGN_PLAN_MAX_BYTES=1024*1024;
+const PLAN_NOTICE='显式目标规范，未应用到任何资产。基准源摘要为登记值，需独立核对。';
+// Equality is independent of JSON object property order; traverse only the trusted shape.
+function sameJSON(actual,expected){
+ if(expected===null||typeof expected!=='object')return actual===expected;
+ if(Array.isArray(expected))return Array.isArray(actual)&&actual.length===expected.length&&expected.every((v,i)=>sameJSON(actual[i],v));
+ return exact(actual,Object.keys(expected))&&Object.keys(expected).every(k=>sameJSON(actual[k],expected[k]));
+}
+export function createDesignPlan(composition,baseline,values){
+ const proposal=normalizeDesignTokens(values);
+ return {format:'ui-vault-design-plan',version:1,composition,baseline,proposal,difference:compareDesignTokens(baseline.tokens,proposal),notice:PLAN_NOTICE};
+}
+export function validateDesignPlan(doc,index,assets,item,primary){
+ if(!exact(doc,['format','version','composition','baseline','proposal','difference','notice'])||doc.format!=='ui-vault-design-plan'||doc.version!==1)throw Error('规范协议无效');
+ const entries=doc.composition?.entries;
+ if(!Array.isArray(entries)||entries.length<1||entries.length>6)throw Error('组合数量无效');
+ const keys=entries.map(e=>{
+  const h=e?.handoff;
+  if(typeof h?.assetId!=='string'||typeof h.assetVersion!=='string')throw Error('资产版本无效');
+  return h.assetId+'/'+h.assetVersion;
+ });
+ if(primary&&keys[0]!==primary)throw Error('主资产不匹配');
+ const composition=composeKnowledge(index,assets,keys,doc.composition.context);
+ const baseline=foundationBaseline(item,doc.baseline?.theme);
+ const expected=createDesignPlan(composition,baseline,doc.proposal);
+ if(!sameJSON(doc,expected))throw Error('组合、基准或差异与当前登记数据不一致');
+ return {document:expected,keys};
+}
+export function designPlanMarkdown(doc){
+ const {baseline,proposal,difference}=doc;
+ return compositionMarkdown(doc.composition)+[
+  '## 显式目标设计规范','',
+  '- 基准主题：'+baseline.theme,
+  '- Foundation 版本：'+baseline.version,
+  ...baseline.sourceFiles.map(f=>'- '+f.path+' · SHA-256 '+f.sha256),
+  '', '| 规范 | 基准 | 目标 |','| --- | --- | --- |',
+  ...PLAN_FIELDS.map(f=>'| '+f.label+' | '+baseline.tokens[f.key]+(f.unit||'')+' | '+proposal[f.key]+(f.unit||'')+' |'),
+  '', '- 正文对比：'+difference.contrast.toFixed(2)+':1（'+(difference.contrastPass?'达到4.5:1':'需复核')+'）',
+  '- '+difference.notice,
+  '- 材质仅为意图，不自动生成 CSS 或覆盖宿主样式。',
+  '- [ ] 核对规范 JSON、基准证据及实际目标项目效果。',''
+ ].join('\n');
 }
