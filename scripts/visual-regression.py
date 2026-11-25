@@ -1870,6 +1870,11 @@ def verify_project_operations(browser, origin):
         page.locator(".ops-reset").click()
         chooser = page.locator("#operations-code").locator("xpath=..")
         chooser.locator(".select-trigger").click()
+        page.keyboard.press("End")
+        assert chooser.locator('[role="option"]').last.evaluate("(el) => el === document.activeElement")
+        page.keyboard.press("Escape")
+        assert chooser.locator(".select-trigger").evaluate("(el) => el === document.activeElement")
+        chooser.locator(".select-trigger").click()
         chooser.locator('[data-value="failure"]').click()
         assert page.locator(".ops-project").count() == 0, "代码检查失败筛选未生效"
         assert f"显示 0 / {expected}" in page.locator(".ops-result-header").inner_text()

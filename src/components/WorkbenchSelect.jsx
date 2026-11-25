@@ -7,7 +7,7 @@ import {Icon} from './Icon.jsx';
 export {Icon};
 export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark',icons={},className='',dataSetting }){
   const [open,setOpen]=useState(false);
-  const host=useRef(null),trigger=useRef(null),optionRefs=useRef([]);
+  const host=useRef(null),trigger=useRef(null),optionRefs=useRef([]),menu=useRef(null);
   const generated=useId();
   const menuId=(id||generated)+'-listbox';
   const selected=options.find(option=>option.value===value)||options[0];
@@ -37,10 +37,19 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
     item.focus({preventScroll:true});
     item.scrollIntoView?.({block:'nearest'});
   }
+  function positionMenu(){
+    const popup=menu.current,button=trigger.current;
+    if(!popup||!button)return;
+    const rect=button.getBoundingClientRect();
+    const below=window.innerHeight-rect.bottom-12,above=rect.top-12;
+    const upward=below<Math.min(popup.scrollHeight,306)&&above>below;
+    popup.dataset.placement=upward?'top':'bottom';
+    popup.style.setProperty('--select-available-height',Math.max(0,(upward?above:below)-5)+'px');
+  }
   function reveal(index){
     closeDropdowns();
     setOpen(true);
-    requestAnimationFrame(()=>focusOption(index));
+    requestAnimationFrame(()=>{positionMenu();focusOption(index);});
   }
   function choose(next){
     if(next!==value)onChange(next);
@@ -52,7 +61,7 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
       event.preventDefault();event.stopPropagation();setOpen(false);trigger.current?.focus();
       return;
     }
-    if(event.key==='Tab'){setOpen(false);return;}
+    if(event.key==='Tab'){trigger.current?.focus({preventScroll:true});setOpen(false);return;}
     if(event.key==='Enter'||event.key===' '){
       if(event.currentTarget.dataset.value!==undefined){event.preventDefault();choose(event.currentTarget.dataset.value);}
       return;
@@ -82,7 +91,7 @@ export function WorkbenchSelect({id,label,value,onChange,options,icon='bookmark'
       <span className="select-value">{selected?.label||''}</span>
       <span className="select-chevron" aria-hidden="true"><Icon name="chevron-down"/></span>
     </button>
-    <div id={menuId} className="select-popover" role="listbox" aria-label={label} hidden={!open}>
+    <div ref={menu} id={menuId} className="select-popover" role="listbox" aria-label={label} hidden={!open}>
       {options.map((option,i)=><div key={option.value} role="option" className="select-option"
         ref={el=>{optionRefs.current[i]=el;}} tabIndex={-1} data-value={option.value}
         aria-selected={String(option.value===value)}

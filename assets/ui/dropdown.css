@@ -14,7 +14,7 @@
 .select-chevron { margin-left: auto; transition: transform var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
 .select-chevron .ui-icon { width: 14px; height: 14px; }
 .select-field.is-open .select-chevron { transform: rotate(180deg); }
-.select-popover { position: absolute; right: 0; top: calc(100% + 5px); z-index: 10; width: max(100%, 188px); max-width: min(300px, calc(100vw - 24px)); max-height: min(306px, 43dvh); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); box-shadow: var(--workbench-popover-shadow,0 12px 28px #1e34411c, 0 2px 8px #1e34410b); transform-origin: top right; animation: select-pop-in var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
+.select-popover { position: absolute; right: 0; top: calc(100% + 5px); z-index: 10; width: max(100%, 188px); max-width: min(300px, calc(100vw - 24px)); max-height: min(306px, 43dvh, var(--select-available-height,306px)); overflow-y: auto; overscroll-behavior: contain; padding: 5px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); box-shadow: var(--workbench-popover-shadow,0 12px 28px #1e34411c, 0 2px 8px #1e34410b); transform-origin: top right; animation: select-pop-in var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)); }
 .select-option { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 7px 9px; border-radius: 5px; outline-offset: -2px; color: var(--text); cursor: pointer; font-size: 11px; transition: background-color var(--motion-fast,120ms) ease, color var(--motion-fast,120ms) ease; }
 .select-option:hover { color: var(--ink); background: var(--canvas); }
 .select-option:focus-visible { color: var(--ink); background: var(--canvas); outline: 2px solid var(--focus); }
@@ -29,3 +29,5 @@
   .select-trigger, .select-chevron, .select-option { transition: none; }
   .select-popover { animation: none; }
 }
+
+.select-popover[data-placement="top"] { top:auto; bottom:calc(100% + 5px); transform-origin:bottom right; }
