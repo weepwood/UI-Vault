@@ -33,10 +33,11 @@ export function registryDependencyList(index,id){
     active.add(key);for(const dependency of item.dependencies)visit(dependency);
     active.delete(key);done.add(key);result.push(item);
   }
-  visit(id);return result;
+  for(const key of Array.isArray(id)?id:[id])visit(key);return result;
 }
 export function registryCommands(id){
-  if(!validId(id))throw Error('Registry 模块 ID 无效');
-  const args='dist/registry ./my-project '+id;
+  const ids=Array.isArray(id)?id:[id];
+  if(!ids.length||ids.length>100||!ids.every(validId))throw Error('Registry 模块 ID 无效');
+  const args='dist/registry ./my-project '+ids.join(' ');
   return ['--plan','','--verify'].map(mode=>'node scripts/install-registry.mjs '+(mode?mode+' ':'')+args);
 }

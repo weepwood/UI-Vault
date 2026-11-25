@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "recipes": [
+    {
+      "id": "functional-grid",
+      "title": "功能优先的模块化网格",
+      "references": ["website-style-bauhaus", "website-style-bento-grid"],
+      "principle": "使用模块与阅读顺序表达功能层级，面积应与内容重要性相称，不是每个模块都需要卡片。",
+      "mechanism": "以 CSS Grid 定义明确列数与跨列规则；使用统一间距、最小尺寸和语义标题，窄屏按内容顺序降为单列。",
+      "useWhen": "仪表盘、功能集合、信息概览",
+      "avoidWhen": "长篇连续阅读或所有条目必须严格等权的列表",
+      "agentInstruction": "先写内容结构和真实状态，再选择网格；避免为填满空格制造无意义卡片。",
+      "checks": ["长标题与空状态", "键盘顺序与视觉顺序一致", "320px 无横向溢出"]
+    },
+    {
+      "id": "frosted-overlay",
+      "title": "有界玻璃材质",
+      "references": ["website-style-glassmorphism", "website-style-liquid-glass"],
+      "principle": "半透明与背景过滤表达前后关系，不能牺牲内容可读性；折射是不同于普通模糊的效果。",
+      "mechanism": "在有限面积的浮层使用 backdrop-filter 与语义边框；无支持或降低视觉效果时回退为不透明表面。真实折射需另外验证 shader 或图像采样，不称普通 CSS 模糊为 Liquid Glass。",
+      "useWhen": "浮层、导航、少量层叠面板",
+      "avoidWhen": "密集数据正文、大面积叠加滤镜和低性能设备",
+      "agentInstruction": "复用成熟浮层组件的焦点及定位逻辑；材质仅负责表面，不实现第二套交互。",
+      "checks": ["浅深背景文字对比", "浮层碰撞与焦点", "无滤镜回退"]
+    },
+    {
+      "id": "atmospheric-color",
+      "title": "柔和空间色场",
+      "references": ["website-style-aurora-gradient", "website-style-gradient-mesh"],
+      "principle": "通过多色控制点建立氛围与视觉焦点，正文层级不依赖颜色噪声。",
+      "mechanism": "少量 radial-gradient 叠加可实现静态近似；必要时才用 Canvas/WebGL 多点混色，降低动态效果时保留静态图。",
+      "useWhen": "品牌封面、背景实验、低密度展示",
+      "avoidWhen": "密集编辑工作台正文与需要精确色彩判断的视图",
+      "agentInstruction": "限定色板、空间位置与透明度，明确近似实现和真正网格插值的区别。",
+      "checks": ["渐变边缘无突兀断层", "文字对比", "静态降级与连续渲染性能"]
+    },
+    {
+      "id": "technical-interface",
+      "title": "工程信息与命令界面",
+      "references": ["website-style-blueprint-technical", "website-style-terminal-cli-aesthetic"],
+      "principle": "网格、字符对齐和明确状态提示服务测量、诊断与操作，不以装饰性终端拟态代替真实功能。",
+      "mechanism": "正文使用易读字体，代码、数值与路径使用等宽字和 tabular-nums；语义颜色和文本同时标识状态。",
+      "useWhen": "日志、网络诊断、命令面板、参数检查器",
+      "avoidWhen": "长篇自然语言阅读或需要亲和感的大众服务入口",
+      "agentInstruction": "使用真实命令、真实字段与可操作反馈，禁止生成无意义日志。",
+      "checks": ["错误与成功非仅颜色区分", "可复制文本", "长路径换行或滚动"]
+    },
+    {
+      "id": "restrained-reading",
+      "title": "克制的阅读界面",
+      "references": ["website-style-minimalism", "website-style-analog-warmth"],
+      "principle": "留白、色温和文本层级支撑阅读节奏，而非单纯减少元素或降低对比。",
+      "mechanism": "限制正文行长，以语义字号、行高和间距构建层次；暖色与颗粒仅作可选背景，不覆盖正文。",
+      "useWhen": "文档、设计指南、知识库和阅读器",
+      "avoidWhen": "高密度操作区需要快速并列比较大量字段时",
+      "agentInstruction": "删除无用容器和装饰，但保留导航、错误、操作状态及键盘焦点。",
+      "checks": ["中文长文本", "字号放大", "浅深主题正文对比"]
+    },
+    {
+      "id": "spatial-motion",
+      "title": "可降级的空间与文字动效",
+      "references": ["website-style-3d-immersive", "website-style-kinetic-typography"],
+      "principle": "空间或文字运动应表达状态、叙事或反馈，不应阻止阅读和操作。",
+      "mechanism": "先实现静态语义结构，简单过渡采用 transform/opacity；真正三维场景才使用经验证的渲染库，限制重绘并提供静态回退。",
+      "useWhen": "沉浸式作品、演示和必要状态过渡",
+      "avoidWhen": "持续输入、关键表单和高频操作路径",
+      "agentInstruction": "保留可中断交互、键盘导航和 prefers-reduced-motion；不要为视觉演示强制接管滚动。",
+      "checks": ["减少动效", "快速反向交互", "帧间隔与低性能降级"]
+    }
+  ]
+}
