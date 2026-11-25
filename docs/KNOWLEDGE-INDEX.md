@@ -33,3 +33,7 @@
 ## 离线知识检索 CLI
 
 完成构建后运行 `node scripts/search-knowledge.mjs --query "Bauhaus" --type design-style --limit 5`；或者 `node scripts/search-knowledge.mjs --query "极夜" --version landfolio-polar-night`。支持 --index 指定可信本地索引、--tag、--type、--version、--delivery 精确筛选，多词全部匹配，标题/键优先、描述/标签/审查证据其次、关联配方再次；相同分数按版本键排序。返回 JSON，含总匹配数、最多100条记录、来源指纹与配方，供 Agent 上下文提取。只读离线，不执行源码，不联网；索引限制8MiB。配方按父资产关联，不是衍生版本独立认证。当前归档审查30/201（含4个衍生版本）。
+
+## 可视设计配方实验室
+
+主站精选资源“设计配方实验室”（\`?asset=design-recipe-lab\`）将六种已登记配方转为原创、独立运行的 CSS 实验。可切换模块网格、玻璃、空间色场、工程信息、阅读排版与动效，实时调节实际 CSS 属性，恢复默认值、选中 CSS 片段并用系统复制快捷键。页面内嵌配方 JSON 与 canonical catalog/design-recipes.json 必须通过一致性单测；变更配方时同步 HTML 中 application/json 数据及对应实验。来源链接打开实际资产，不引入网络运行时；示例为原创教学实验，不声称上游完整复刻或认证。
