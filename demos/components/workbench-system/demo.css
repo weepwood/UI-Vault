@@ -141,3 +141,14 @@
 .wb-playground-check input{accent-color:var(--accent)}
 #wb-live-code{margin:0;background:var(--canvas);border:1px solid var(--line-soft);border-radius:7px;padding:11px;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.6 ui-monospace,monospace;color:var(--ink)}
 @media(max-width:360px){.wb-playground-fields{grid-template-columns:1fr}}
+
+/* Attribute experiments reuse the current component styles without changing the navigation. */
+.wb-form-stage{grid-template-columns:minmax(0,1fr);justify-items:stretch;gap:12px}
+.wb-range-line{display:grid;gap:8px;font-size:12px;color:var(--text)}
+.wb-range-line span{display:flex;justify-content:space-between;gap:8px}
+.wb-range-line input{width:100%;min-width:0;accent-color:var(--accent)}
+.wb-gap-preview{display:flex;justify-content:center;align-items:center;min-height:48px;padding:8px}
+.wb-gap-preview i{height:32px;max-width:44px;flex:1;border:1px solid var(--line);background:var(--accent-soft);border-radius:6px}
+.wb-live-code{max-height:220px;overflow:auto;margin:0;background:var(--canvas);border:1px solid var(--line-soft);border-radius:7px;padding:11px;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.6 ui-monospace,monospace;color:var(--ink)}
+.wb-playground-fields input:not([type=checkbox]){min-width:0;width:100%;min-height:34px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);padding:5px 8px}
+.wb-form-stage .wb-component-hint{margin:0}

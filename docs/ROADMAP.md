@@ -141,3 +141,10 @@ CI 45397408636 已通过 9/9 Chromium 截图、20/20 交互、Firefox 与 WebKit
 ## 下一轮集中实施（2026-11-24）
 
 #96 已完整验收合并，#97 同步后快速 CI 通过并合并。新一轮源码改动见 [NEXT-ITERATION.md](NEXT-ITERATION.md)，新增双语短语、超大多组统一窗口、预览显式超时恢复、ZIP 哈希清单和 React/Vue 按钮源码 Registry。完整 CI 与部署仍需实际验证，不声明 Vue 已运行或第三方已授权。
+
+## v0.8 第一批开发候选
+
+- 保留用户确认的主站三栏、展厅内导航及既有布局，不新增专注模式。
+- 扩展真实 SearchField、WorkbenchSelect 属性与配置 JSON，原生 Slider 步长和实际间距，Dialog 标题、确认文案与遮罩策略；现有 Button 保留。
+- 玻璃配方三参数（模糊、不透明度、圆角）、三个预设、CSS/JSON、完整恢复；其余五配方不改变。
+- 补齐真实展厅/配方、Icon、KnowledgeRecord、RegistryBrowser 的风险路径。候选三种实际视口通过，正式 CI 与生产验收待收口。
