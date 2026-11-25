@@ -1,9 +1,12 @@
 import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
 import {readFile,stat} from 'node:fs/promises';
 import {join,resolve} from 'node:path';
 import {ROOT,inspectCatalog} from './lib/catalog.mjs';
 import {runPythonOrThrow} from './lib/python.mjs';
 import {buildRegistry,REGISTRY_ROOT} from './lib/reuse-registry.mjs';
+import {buildKnowledgeIndex} from './lib/knowledge-index.mjs';
+import {buildRegistryProfiles} from './lib/registry-profiles.mjs';
 const out=resolve(ROOT,'dist');
 const {errors,items}=await inspectCatalog();
 if(errors.length)throw Error(errors.join('\n'));
@@ -19,6 +22,13 @@ assert.deepEqual(JSON.parse(await readFile(join(out,'registry/index.json'),'utf8
 for(const item of expectedRegistry.items){
   assert.deepEqual(JSON.parse(await readFile(join(out,'registry/items',item.id+'.json'),'utf8')),item,'Registry 文件内容、版本或哈希不一致：'+item.id);
 }
+assert.deepEqual(JSON.parse(await readFile(join(out,'registry/profiles.json'),'utf8')),buildRegistryProfiles(expectedRegistry),'组合安装计划与真实 Registry 不一致');
+const knowledge=JSON.parse(await readFile(join(out,'content/knowledge-index.json'),'utf8'));
+assert.deepEqual(knowledge,await buildKnowledgeIndex(ROOT,items),'知识索引与登记资产不一致');
+const knowledgeFiles=new Map();
+for(const row of knowledge.records)for(const file of [row.preview,row.guide,...row.delivery.sourceFiles].filter(Boolean))knowledgeFiles.set(file.path,file.sha256);
+for(const [path,sha256] of knowledgeFiles)assert.equal(createHash('sha256').update(await readFile(join(out,path))).digest('hex'),sha256,'知识证据发布文件哈希不一致：'+path);
+console.log('知识索引证据校验通过：'+knowledgeFiles.size+' 个实际发布文件。');
 const publishedHealth=JSON.parse(await readFile(join(out,'content/project-health.json'),'utf8'));
 const registeredProjects=JSON.parse(await readFile(join(out,'content/projects.json'),'utf8'));
 assert.equal(publishedHealth.version,1,'项目健康快照协议版本不正确');

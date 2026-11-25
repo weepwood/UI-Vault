@@ -1,271 +1,119 @@
-# UI Vault · AI Agent 协作约定
-
-UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用原创 Demo 与外部 UI 设计参考。
-**保持可扩展性和向后兼容，不要因为新增一个 Demo 而重写整个网站。**
-
-产品范围：优先资源展示、检索、真实预览、源码交付、设计 Token 与组件复用。不建设个人资产研究工作台（评分、研究状态、笔记、智能收藏夹等）或双预览设计对比工作台；保留既有基础收藏及筛选方案。
-
-## 开始之前
-
-- 涉及 UI 或页面改版：先读 [DESIGN.md](DESIGN.md)（当前有效的设计规范）。
-- 涉及新增资产：先读 [docs/EXTENDING.md](docs/EXTENDING.md) 和 [docs/ADDING-DEMO.md](docs/ADDING-DEMO.md)。
-- 需要了解某条规则为什么存在、以前是什么样：查 [docs/DESIGN-HISTORY.md](docs/DESIGN-HISTORY.md)。**不要**按历史记录里已被替代的规则执行。
-- 文档和代码不一致时：以代码和测试为准，并在回复中指出不一致的地方。
-
----
-
-## 任务路由
-
-| 用户要求 | 做法 |
-| --- | --- |
-| 新增 UI / Demo | `npm run new:demo -- <components\|effects\|layouts\|experiments> <slug> <中文标题>`，实现独立演示并补全元数据 |
-| 收藏网址 / GitHub 项目 | `npm run new:reference -- <slug> <HTTPS URL> <中文标题>`，补充设计解读、作者和许可证信息 |
-| 精调某个外部 UI | 在 `demos/curated/<id>/` 手工实现，见下文「手工精选实验」 |
-| 增加 UI 类别 | 修改 `content/categories.json`，不需要改页面导航代码 |
-| 统一设计规范 / 新增主题 | 在 `content/tokens/` 添加 Token 并关联到资产 JSON；不要写死进全站 CSS |
-| 修改工作台功能 | 改 `src/components/`、`src/useWorkbench.js`、`src/react-workbench.jsx` 及对应测试 |
-| 修改设计规则 | 改 `DESIGN.md` 对应章节，并在 `docs/DESIGN-HISTORY.md` 追加记录 |
-
----
-
-## 硬性约束
-
-### 数据
-
-1. **Project / Asset 双层数据源**：来源项目维护在 `catalog/projects/<id>.json`，独立资产维护在 `catalog/assets/<id>.json`，新资产需要已注册的 `projectId`。修改后运行 `npm run catalog:sync`。**不要**直接编辑生成的 `content/assets.json` 和 `content/projects.json`。新增字段同步更新 `catalog/asset.schema.json`、`scripts/lib/catalog.mjs` 和对应测试。
-2. **向后兼容**：已有的资产 ID、预览路径（`demos/.../index.html`）、URL 参数、收藏和设置的存储键不能随意改名。
-3. 新增 `originRepo` 资产时，必须能通过跨仓筛选找到，并且有真实可访问的主要源码链接和具体的复用说明。
-
-### Demo 与复制
-
-4. **独立 Demo**：每个 Demo 有自己的入口，尽量不依赖主站就能打开；内部资源一律用相对路径，兼容 `/UI-Vault/` 子路径。
-5. **复制规则**：只有完整自包含的单文件 Demo 可以标记 `copyable: true`。多文件独立 ZIP 只能在人工核实可再分发的运行文件后登记 `bundleFiles`，必须使用同一个 Demo 目录、显式发布白名单；`sourceFiles` 仅表示源码浏览能力，不是完整工程。详见 `docs/MULTI-FRAMEWORK.md`。
-
-### 来源与发布
-
-6. **内容来源**：第三方项目先保留原站链接和来源说明。不得无许可镜像代码、字体、截图或商标；确实需要引用时，先核实授权边界。
-7. **静态发布**：`scripts/build.mjs` 按白名单复制，不能把整个仓库部署到 Pages。不得把密钥、隐私信息和未授权素材放进公开目录。`copyable:true` 只允许不依赖独立发布文件的单文件 HTML；涉及第三方素材的演示须核实授权。
-8. 不自动安装第三方设计 Skills 或组件库。如果决定使用，先检查版本、依赖和许可证。
-
-### 架构边界
-
-9. 主站唯一的状态协调点是 `src/useWorkbench.js`（React Hooks + `useReducer`）；组件入口是 `src/react-workbench.jsx`；界面按职责拆分在 `src/components/`。
-10. `assets/app.js` 只负责静态页面版本校验和 `mountWorkbench()`。**禁止**在这里恢复项目筛选、路由、设置或 iframe 的原生 DOM 控制逻辑。
-11. React 单根通过 Portals 挂载到 `index.html` 原有的三栏容器。保留旧 DOM 锚点和 CSS class；修改壳层结构时，必须同时更新快照和兼容测试。
-12. `PreviewFrame` 必须保持 iframe 节点稳定：收藏、筛选、调整字体、切换设置、改变窗口大小都不应触发重新加载。
-13. `demos/`、`subprojects/` 和页面镜像不需要使用 React，也不加入主站构建，继续按白名单发布各自的静态文件。不同 Demo 禁止运行时跨目录 import，独立跨仓项目不能依赖 UI-Vault 的业务 Bundle。iframe 新权限只能在资产 `previewCapabilities` 声明，并经 schema 和运行时白名单校验；不得引入 `allow-same-origin`。
-14. `assets/core/` 放可测试的纯函数（检索、状态、路由、存储协议、预览计算），继续被 React 层复用。
-
-存储可靠性：读取 `localStorage` / `sessionStorage` 对象本身也可能抛出异常，必须放在 `try` 内；不可用时保持会话可操作，写入失败不得报告已持久化。见 [docs/SETTINGS.md](docs/SETTINGS.md) 与 `tests/storage-resilience.test.mjs`。
-
-### 布局不变式
-
-15. 桌面端固定为 **导航 / 目录 / 预览** 三栏（`aside#sidebar`、`section#project-panel`、`main#main`），前两栏包在 `div#library-rail` 中。不得合并导航和目录，不得退回卡片画廊。
-16. **网页预览永远不放进弹窗、抽屉或侧边框**。手机上只能临时覆盖**目录**。
-17. 唯一允许的项目级弹窗是 Topbar「项目说明 / 源码」打开的居中原生 `<dialog>`。
-
-### 图标
-
-18. 主站图标只用 Lucide SVG 子集（`assets/icons/lucide.svg`、`assets/core/icons.js`），规则见 [DESIGN.md §6](DESIGN.md#6-图标) 和 [docs/ICONOGRAPHY.md](docs/ICONOGRAPHY.md)。
-
-### 验证与提交
-
-19. **日常迭代快速检查，高风险改动专项验证，正式发布完整验收。** 日常 PR 优先 `npm ci`（依赖未变且已安装时无需重复安装）与 `npm run check:fast`；核心交互、iframe 权限、构建、CI 或跨平台改动按风险执行专项验证；正式发布运行 `npm run check`、Chromium 回归与 Windows CI。无法运行时明确说明未验证项，禁止将跳过视为通过。main 合并后只执行资产协议校验、构建与发布目录检查，不重复常规 PR 测试。
-20. 没有看过真实浏览器渲染（截图或 Chromium 视觉回归），不能声称「视觉已验收」，只能说「构建与测试通过」。
-21. 所有 Git commit 信息使用中文。
-
----
-
-## 手工精选实验（优先于批量导入）
-
-用户要求跨仓 UI 一个一个精调，因此：
-
-- **不要**使用自动抓取仓库、批量生成、自动更新镜像的方案。
-- 人工阅读源仓库的具体文件，然后在 `demos/curated/<id>/` 独立实现一个可交互的样例；每次只处理一个范围明确的 UI。
-- 每个实验在 CSS 顶部写 `TUNING` 注释，说明主题 Token、布局阈值和可调的交互，并保留来源文档。
-- 只有经过人工审查的本地 Demo 才能设置 `curated: true`，并填写 `curationStage`、`tuningPoints`、`tuningGuide`。
-- `draft` → `refining` → `stable` 只能在用户实际评审后修改，**不能**由自动构建或 Agent 自行升级。
-- 一次只改一个实验，避免全站或其他实验跟着变化。
-
-详见 [docs/CURATED-LABS.md](docs/CURATED-LABS.md)。
-
----
-
-## UI 改动自查清单
-
-提交任何影响主站的前端改动前，逐项确认：
-
-- [ ] 符合 [DESIGN.md](DESIGN.md) 当前规范（三栏、Topbar、弹窗范围、设计变量）
-- [ ] 没有引入 [DESIGN.md §8](DESIGN.md#8-禁止的模板化装饰) 中禁止的模板化装饰
-- [ ] 保留了 Demo 原有的艺术风格（只收敛主站，不删除实验）
-- [ ] 桌面 / 平板 / 手机布局都检查过
-- [ ] 键盘导航、可见焦点、长文本、空状态、`prefers-reduced-motion` 都检查过
-- [ ] 动态文本用 `textContent` 或经过审查的转义函数输出
-- [ ] 按 [docs/OPEN-SOURCE-DESIGN-WORKFLOW.md](docs/OPEN-SOURCE-DESIGN-WORKFLOW.md) 的顺序审查过
-- [ ] 通过对应风险等级的检查（日常 `npm run check:fast`，高风险专项，正式发布完整）；如有截图，注明视口和主题
-
----
-
-## 常用命令
-
-```bash
-npm install
-npm run dev                  # http://localhost:4173
-npm run new:demo -- components gradient-button 渐变按钮
-npm run new:reference -- ui-project https://github.com/example/repo 参考项目
-npm run catalog:sync
-npm run design:audit
-npm run visual:test          # Chromium 视觉回归
-npm run check:fast           # 日常迭代
-npm run check                # 正式发布或构建专项检查
-```
-
-架构细节：[docs/REACT-MIGRATION.md](docs/REACT-MIGRATION.md)、[docs/TWO-PANE-WORKBENCH.md](docs/TWO-PANE-WORKBENCH.md)、[docs/COMPONENT-SYSTEM.md](docs/COMPONENT-SYSTEM.md)。
-
-### 集中收口检查
-
-共享主站 CSS、目录行/虚拟窗口及 Demo 参数组件均视为视觉风险；正式发布必须保留完整 Chromium 与 Windows 验收，禁止自动接受新基线。待核实第三方许可不得通过根 MIT 推定。
-
-正式发布增加 `scripts/release-browser-audit.py`：axe JSON 报告、明确语义缺陷门禁、Firefox/WebKit 冒烟。报告中的非门禁缺陷不得视为通过；需要逐项复审。独立运行使用浏览器 context.route 拒绝外部网络，不放宽截图夹具守卫。
-
-Frame Lab 的 12 项资产依赖主站共享 reference-shell CSS/JS，不得标记为独立单文件，除非完成实际依赖闭包和独立运行验收。来源许可不明确的资产不能仅凭同属个人 GitHub 账户推定再分发许可。
-
-完整发布验收：独立 Chromium 场景应收集全部失败并在末尾统一报错，不因第一个场景失败而隐藏其余问题。axe 与跨浏览器报告不依赖 Chromium 交互成功，但构建、环境安装必须成功；任何验收失败仍阻断发布。涉及浏览器布局的断言等待真实几何收敛，不降低原阈值或使用固定 sleep。
-
-响应式图标按钮必须拥有独立于可能隐藏的可见文字的可访问名称，并同时检查首屏静态 HTML 与 React 渲染；移动端 axe 报告不能通过隐藏、排除节点或降低规则门禁规避。
-
-### 下一轮目录、预览与复用交接
-
-见 [docs/NEXT-ITERATION.md](docs/NEXT-ITERATION.md)。大型多组窗口不得改变真实资产 ID、筛选语义或常规原生分组；不将 iframe load/timeout 视为外站可交互证明；Registry 框架源码快照不是安装包。5000 项测试必须使用隔离的合成夹具，不污染真实目录。
-
-正式发布：仅提高根 package.json / package-lock.json 的正式版本并提交对应 docs/releases/vX.Y.Z.md 后，main push 才触发完整验收及 Release；生产文件哈希不匹配、CI 失败、同名不同提交标签均不得发布或覆盖。见 scripts/release-plan.mjs 与 scripts/verify-release.py。
-
-下一轮交接见 [docs/CATALOG-QUALITY-NEXT.md](docs/CATALOG-QUALITY-NEXT.md)：只对明确命名/来源可证实的风格添加标签；虚拟滚动恢复使用首行 ID；Registry 安装必须校验依赖、哈希与路径且禁止覆盖；新增单文件 ZIP 必须保留 HTML 复制入口、许可证及隔离运行测试。
-
-预览 ready 不等于全面功能验收；仅明确登记的本地 Foundation 接入 challenge/response，校验当前 iframe、opaque origin、资产 ID、协议及一次性 nonce。外部 HTTP/响应头证据不得提升为已交互；不得放宽 sandbox。
-
-Registry 框架适配器改动必须通过独立 registry-runtime 工作流（真实复制、编译、Chromium 交互），不能以源码存在或 React 单测替代 Vue 验收。
-
-见 [docs/GUIDE-CLASSIFICATION-NEXT.md](docs/GUIDE-CLASSIFICATION-NEXT.md)：分类按原始指南逐条记录；跨刷新锚点只在当前标签页、匹配资产 ID 时恢复；参数导入只接受白名单 JSON 且不得自动执行或应用；Registry 原生表单保留浏览器行为。
-
-暖色布局参数：固定白名单 CSS 变量、默认视觉等价、响应式断点保留，独立 HTML 内嵌协议核心必须与主站完全一致；新增参数必须实测应用和重置，不能把快照当完整代码。
-
-下一轮：分类依据存放 catalog/style-guide-reviews.json，执行 node scripts/audit-style-guides.mjs 获取真实文件哈希及缺口。复杂交互仅在独立 Registry 复用 Radix/Reka 原语，主站不新增运行时依赖；独立浏览器验收通过后才可合并。
-
-实时参数候选：只在已登记资产上提供可关闭的停靠编辑区，保持原三栏及 iframe 节点；禁止并行编辑器，不自动应用导入文件。实时应用仅在显式编辑时防抖发送白名单值，支持有限历史撤销、按资产持久化预设。筛选密度入口不改变默认视觉基线。
-
-下一候选：新增原始指南审计 14 项；参数工具栏快捷入口、滑块、撤销/重做、预设文件同资产导入导出（同名保留且不自动应用）。新增展开筛选、搜索、参数区桌面/移动真实截图与布局断言，原基线不自动更新。
-
-后续专项：参数消息 transport 使用单在途+最新值槽位（50ms 节流，3s 超时），拒绝旧响应覆盖编辑值，异常停止自动应用并保留编辑；真实锁文件纳入 tests/registry-runtime，CI npm ci，新增边缘浮层、非受控 Select。按真实 #104 截图治理数字标签/滑块与文件入口，新增连续拖动回归。
-
-#105 原提交完整 CI 已通过（337 单测、9 截图、26 交互、Firefox/WebKit 基础交互、8 个 axe 场景零违规），隔离 npm ci 与真实碰撞通过。后续验收需记录实际拖动 rAF、输入至最终确认延迟、响应丢失与手动恢复；预设放在字段之后，保证移动端编辑优先，不扩展研究工作台。
-
-#106 收口：先同步与 #105 完全等价的 main 树；异常注入监听器必须在应用启动前安装，真实响应丢失期间检查请求仍在途，超时后检查空闲和手动恢复。失败保留诊断状态，不降低 3 秒运行时超时或原测试阈值。新提交待 CI，不宣称恢复已通过。
-
-下一候选：#106 后逐篇审查 Flat Design 至 Gen Z Maximalism 共 12 项，审计累计 100 项，剩余 190 项无显式标签；继续按原始指南证据补齐，不自动提升精选等级。必须通过 #106 后才能合并后续候选。
-
-Registry 正式化候选：--plan 只读预检、模块版本及运行时依赖清单进入 lock，拒绝冲突与文件/目录同名；不自动覆盖目标、不自动安装依赖、不承诺跨版本升级。待独立验收。
-
-源码阅读候选：保留原选择器、复制和下载入口；新增已登记文件目录与换行切换，参数停靠区展示颜色十六进制、CSS Token 名称与数值单位。只使用原生控件，不扩大 iframe 消息权限。新截图和 Notion 多文件真实浏览器断言待 CI；暂不自研语法高亮，不将源码清单误认为完整工程。
-
-#106 第二次 CI 45418094017 与 #107 45418831039 均在故障注入等待处失败，独立 Registry 45418831182 已通过。Playwright add_init_script 接受脚本而非回调，原箭头函数没有执行；改为立即执行函数且仅在顶层安装，导航后明确断言注入成功，2 秒内必须捕获第一条响应（早于 3 秒传输超时）。保留异常恢复与旧消息断言；待新 CI。
-
-源码高亮候选：仅用 PrismJS tokenize，隔离 Worker、输入/输出限制和超时退回纯文本；不使用 innerHTML，不启用插件、不发外网请求。保留原始复制/下载值、白名单及默认纯文本；依赖锁和许可证随构建交付。未通过 CI 不合并。
-
-源码高亮 UI 默认关闭，支持 HTML/SVG/CSS/JavaScript（其他语言保留纯文本）；48k 字符、6000 片段、2 秒 Worker 上限，切换文件/关闭即终止，验证字符完整性后才渲染 React span；新增单测和实际浏览器复制文本一致性检查。未验收。
-
-高级参数候选只在 warm-workbench 注册 13 项安全字段，CSS 由受控数据生成；旧七项存储预设迁移到默认高级值，协议消息仍严格完整。尊重 reduced-motion；不得将任意 CSS、动画脚本通过消息发送。四份单文件内嵌核心保持一致，新增实际浏览器渐变/阴影/重置测试及截图；待 CI。
-
-高级参数分支追加逐篇审查 Generative Pattern、Geo-Boho、GeoCities、Geometric Modernism、Glitch Art、Global Village Coffeehouse 六项原始指南，累计 106 项审计记录、剩余 184 项无显式标签；保留受控词表和原始许可。
-
-材质编辑二期：仅 warm-workbench，最多四个固定色标及两层阴影；旧 7/20 项完整存储格式显式迁移，消息仍严格完整。曲线使用 SVG 指针捕获、坐标变换与整数夹取，一次拖动记录一次撤销，数值输入可键盘操作。四个独立 Demo 内嵌协议一致，待新 CI；不宣称已验收。
-
-Foundation 工程交付候选新增独立固定白名单 ZIP，包含构建与检查脚本、Token 源及生成文件、适配器、静态示例与许可；校验阶段从临时解包目录离线构建、核对文件内容。禁止将任意 sourceFiles 或整仓目录打包；Vue 示例仍需自行安装依赖，非锁定完整运行环境。待 CI。
-
-#107 CI 45420564179 真实产物 14934670663 已下载审查（35 文件）。源码目录展开截图明确显示代码区被挤出；候选改为桌面并排目录/代码、移动目录限高、源码区保留最小可读高度；展开筛选压缩间距，不改变虚拟列表行高和默认三栏。新增并排尺寸断言，未修改视觉基线，待新 CI。
-
-材质编辑与交付候选追加六项原始指南（Goblincore、Googie、Gorpcore、Gothic、Graffiti Pop、Grain and Grit），分类审计累计 112 项，未标记 178 项；双语别名与原始指南证据同步，不提升精选状态。待 CI。
-
-#107 已合并 de35249；#108 复验两套 CI 通过后合并 1b4a19f，树与候选一致。#109 CI 45422897553 Linux/Windows 均在 tests/demo-parameters.test.mjs:77 双重转义正则语法错误失败（333/334，未进入 Chromium）；改用字面字符串前缀/后缀断言，保留语义校验，不降低门槛。同步已合并 #108 树，待新 CI。
-
-#109 CI 45424106670（341 单测/26 Chromium）通过，合并 2dd548a，树等价。#110 45424168943（344 单测/26 Chromium/Windows/工程 ZIP 离线重建）与 Registry 45424169003 通过；下载 14935698532、14935513829 各 37 文件，检查实际源码并排、高亮、桌面/移动参数及双主题目录。#110 同步 main 后 023af83 待复验。新候选在原 32 字段上增加色标拖动/方向键、阴影启停、曲线预设及停靠区紧凑布局，不改变消息协议与旧预设；新截图及浏览器回归待 CI。
-
-三栏候选视觉：保留原布局宽度和行高，精修导航选中权重、列表文字行高/计数与宽屏 Topbar 分类信息；不自动更新像素基线。Foundation Vue 使用 Registry 已验收的 Vue 3.5.24 / Reka 2.10.1，独立 Actions 在实际工程 ZIP 解包目录生成候选锁（若缺失）并 npm ci、构建和浏览器冒烟。真实锁文件必须下载审查后提交并重新验收；缺锁候选不能合并。
-
-追加六项原始指南证据：Grandmillennial、Grocery Girl Fall、Grotesk Display、Grunge Revival、Gustavian、Hand Drawn。累计 118，剩余 172；保留原始许可与精选状态，候选待 CI。
-
-#110 同步后 45425575734 / 45425575830 全部通过（344 单测、26 Chromium、Windows、Registry、ZIP 重建），真实视觉产物 14934954291 共 37 文件复审后合并 8da05a5，树一致。#111 原候选三套 CI 45426165182 / 45426164924 / 45426165318 全部通过，视觉产物 14937725340 共 46 文件复审。Vue 真实锁 Artifact 14936578027，59,108 字节、lockfileVersion 3、121 依赖项、官方 npm Registry 与完整 integrity；SHA-256 e834886e4a3f197ca3d2471c7f12ec6701b6945615f0540d4994feabdbf9097c，Git blob 23ddb57c50d1517b2e1edcd4d724877c19b36a46。只读临时工作流 45427130703 验证字节后已移除；原始锁进入 ZIP 白名单，禁止缺锁回退，严格比较解包锁与提交锁，npm ci 后再次比对及 vue-tsc/Vite、Chromium 验收，待新 CI。
-
-#111 实际 1440/390 参数截图仍被所有材质示意挤占首屏。下一候选改为布局字段优先、渐变/阴影/曲线各自分组的原位编辑与焦点跳转，保留数字输入和协议。中间色标增删复用布尔字段，方向键/Home/End，阴影重新启用恢复本次会话关闭前不透明度（无历史默认15%）。不增加第四栏或弹窗，不修改像素基线；新增分组跳转、色标增删与阴影恢复浏览器断言，待 CI。
-
-追加六项指南证据 Hands Up、Heroic Realism、Hipness Purgatory、Hollywood Regency、Holographic UI、Honeycore；累计 124，剩余 166，保留原始许可与精选状态。待 CI。
-
-#112 自审发现分拆 MaterialActions 时 JSX 容器收尾错误，合并前修正；补充 CI 路由将 MaterialActions/BezierEditor 单独改动也视为视觉风险。阴影示意文字使用固定可读标签，避免自定义深色表面导致低对比。等待实际完整 CI。
-
-追加 6 项原始指南审计：Human Scribble、Hygge、Indie Sleaze、Industrial Gothic、Ink Wash、International Typographic Style；累计 130，剩余 160 项。每项保留原始指南证据、标签、双语检索；候选待验收。
-
-追加 6 项原始指南审计：Iridescent、Isometric Design、Italo Disco、Japandi、Jiggy Era、Kid Science；累计 136，剩余 154 项。每项保留原始指南证据、标签、双语检索；候选待验收。
-
-#111 最终正式锁定版 42e80c4：45427408663（344 单测、26 Chromium、Firefox/WebKit 基础冒烟、8 个 axe 场景零违规、Windows）、45427408764 Registry、45427408694 Foundation ZIP 解包严格 npm ci（71 安装包）、Vite 7.3.8 与 Chromium 全部通过；实际产物 14938111293 共 46 文件已复审。#111 已 squash 合并 1f5e3dc，树 25928e99 与验收候选相同。#110 main 45427043654 Pages 部署实际日志成功。#112 继承 #111 精确文件树，新增 18 项原始指南分类（累计 136，剩余 154），分组编辑器、色标增删、阴影恢复及风险识别须待最新 CI、真实截图复审后合并；#111 main 部署待复查。禁止提前合并。
-
-#112 最终提交 a0fffa1，CI 45429115346 全部通过（26 Chromium、Firefox/WebKit、8 个 axe 场景零违规、Windows）。下载真实产物 14938892549 共 48 文件，桌面/移动分组、深色目录抽查；参数拖动 P95 16.7ms、最终确认 17.8ms。squash 合并 6eaccec，树 30033473 与候选一致。#111 main 45428987542 与 #112 main 45430454987 的 Pages 发布均成功。独立线上 Chromium 检查已部署的分组界面，圆角实际应用 24px、恢复 14px、无 pageerror；未覆盖全部交互。
-
-后续候选在独立 worktree 深化分组导航固定、统一停靠区控件和阴影真实排序。排序仅新增一个严格布尔字段 shadowReversed，保留两层各自颜色、透明度、偏移、扩展和模糊；旧完整 7/20/32 字段存储迁移，不允许不完整消息。四个自包含 Demo 内嵌核心同步。保持三栏、iframe 沙箱、默认视觉与原基线；增加 CSS 实际顺序、撤销、桌面/移动分组定位专项回归。追加 6 项原始指南证据 Kidcore、Kinfolk、Laser Grid、Light Academia、Light Skeuomorphism、Ligne Claire；审计累计 142，未标记 148，候选待完整 CI。
-
-本地新候选严格 npm ci、345 单测、设计审计、ESLint、完整静态构建与产物检查成功；Mac Python 默认缺 fontTools，使用既有 venv 与系统 CA 正常生成字体，不关闭 TLS。复用本机 Playwright/Chromium 做独立 1440/390 实测：分组导航顶部与固定标题底部一致（567/545.4px）；阴影由 25% 前、23% 后变为 23% 前、25% 后，其他值不变；两张真实截图已抽查，CI 新截图等待选中态更新后捕获。尚未执行该候选完整跨浏览器与 CI，不得先合并。
-
-#113 b798661 的 CI 45431363943 成功（26 Chromium、风险分级 Windows 跳过）；下载 14939725867 共41文件，复审桌面/移动阴影、移动渐变及桌面筛选截图。P95 16.7ms，最终确认 19ms。squash 917f3fa，树 8a3cd8f9 与候选一致。main 45432499298 待发布结果。
-
-下一候选：操作工具栏、状态、分组入口合并成同一个 sticky 区，按真实高度定位标题，窄屏水平滚动操作按钮。新增色标选择与颜色联动、快速开关、三种渐变/阴影组合及单组复位；组合保留布局基础（含起始色）与动效，复位和组合均单次撤销，不扩展 33 字段协议或用户预设格式。新增主站焦点/展开态语义样式，不替换成熟控件交互。重复本地 lint 暴露未跟踪的 esbuild Worker 被误检查，仅排除该确切生成路径，src Worker 仍 lint。346 单测、严格 npm ci、构建及产物检查通过；本地 1440/390 Chromium 验证固定工具栏几何、颜色联动、复位/撤销、快速渐变开关，实际截图已复审；移动操作条可横向滚动，仍需进一步评估高度与双主题。追加 8 项逐篇原始指南审计，累计 150，未标记 140，缺显式风格词表 210（两种指标不混用）。完整 CI 待验收，勿提前合并。
-
-#114 3f7fa62 CI 45432932390 成功（26 Chromium，Windows/正式跨浏览器按分级跳过）；下载 14939946647 共43文件，抽查桌面/移动色标、阴影和搜索截图。帧间隔 P95 16.8ms、最终确认 54.2ms（上轮19ms，需观察但本次通过门禁）。squash 616fde4，文件树 257cd70d 与候选一致。#113 线上真实 Chromium 阴影交换及重置通过、无 pageerror；首次读取超时，待 iframe 内容就绪后成功。#114 main push 45434042108 被同提交 schedule 45434048998 取代，后者构建成功、Pages 状态需复查。
-
-下一候选：复用 PreviewFrame 的 data-preview-status，通过 useSyncExternalStore 与 MutationObserver 在 pending 时禁用读取、应用、重置，发送端二次检查；不扩大沙箱，不把 load 当作业务握手，超时仍保留恢复入口。窄屏操作栏缩短视觉文案但完整 aria-label 不变，双主题材质边框和焦点语义精修。346 单测、严格 npm ci、完整构建和静态产物检查通过；实际 Chromium 1440浅色/390深色拦截 iframe 请求，验证加载前禁用、放行后读取及材质全流程，390 操作栏 clientWidth=scrollWidth=370，固定区由107.7px至93.7px。双截图已复审；新增 CI 延迟加载及移动深色场景，尚待 CI。8 项原始指南分类增至158、未标记132、无显式视觉风格202。保留三栏及原测试预算。
-
-#115 f1eaeea 的 CI 45434583531 成功，下载真实产物 14939848611，抽查桌面色标、移动深色参数、移动阴影与设备浮层；拖动 P95 16.8ms、最终确认 52.6ms。squash 合并 e99d8c5，树 2843a9fe 与候选一致；main 45444428351 Pages 成功。下一候选在独立 worktree 实现参数面板高度调整（30–70dvh、键盘及指针、存储容错、恢复默认），不重建 iframe、不更改默认高度；新增尺寸单测、浏览器高度及预览保留断言，CI 风险识别覆盖新模块。逐篇审查 Metro Design、Microinteraction Design、Mid-Century Modern、Mission School、Mixed Media、Mob Wife 六项，累计 164 项审计、126 项无标签、196 项无显式风格标签。真实浏览器新功能及后续材质交互仍待验收，不得提前合并。
-
-#116 3a4a8c0 实际 CI 45447829302 成功（348 单测、Windows、Chromium、Firefox/WebKit 基础冒烟、8 个 axe 场景零违规），下载 14946472623 共55文件，复审桌面/移动扩展面板与移动深色；P95 16.8ms，最终确认18.2ms。squash 合并 ef67aca，树 59f0c7bc 与验收候选一致；main 45451879462 待发布确认。下一候选增加渐变 HEX 编辑、阴影颜色识别、移动触控热区及手柄焦点精修，保持既有协议和基线；新增 HEX 联动及取消的浏览器断言、通信队列取消和拒绝恢复单测。六项原始指南审计 Modernisme 至 Nature Distilled，累计170，剩余120项无标签、190项无显式风格标签。完整新 CI 与截图待复审。
-
-#117 b295891 CI 45452018803 成功；真实产物14947338757已下载，复审1440/390色标HEX、移动阴影及手柄焦点，P95 16.8ms、最终确认17.9ms。squash合并3a5bbd4，树743e4515与候选一致；#116 main 45451879462 Pages成功，#117 main 45454258245待确认。下一候选实现滚动分组同步（rAF合并、ResizeObserver、选中项横向可见）、色标位置精确输入、移动分组热区，保留iframe与消息协议；新增浏览器回归。原始指南新增Nautical至Neon Ooze八项，累计178，剩余112项无标签、182项无显式风格标签。本地350单测及lint通过；本地Python环境缺Playwright，真实浏览器以候选CI为准，不提前合并。
-
-#118 d482864 CI 45454463446 成功，真实产物14951435177（46文件）已复审，P95 16.8ms、最终确认18.6ms；合并620111e，main 45457306881 Pages成功。新候选增加渐变方向快捷按钮及阴影层独立颜色/数值编辑，复用既有参数协议；新增真实浏览器角度与第二层模糊联动断言。新增 Neumorphism 至 Nordic Noir 六项指南分类，累计184项，剩余106项无标签、176项无显式风格标签。350单测、lint、设计审计通过；新候选真实截图仍待CI，历史worktree未强制清理。
-
-#119 f941cf1 CI 45459337763 成功，已下载真实产物14952407083并复审桌面渐变方向与移动第二层阴影编辑截图。下一候选将目录控件样式迁入独立CSS模块，折叠低频筛选方案管理，统一双主题浮层令牌，拆分颜色输入与阴影层编辑组件，保留现有接口及验收门禁。350项单测、ESLint及设计审计通过；新候选真实浏览器验收待CI。剩余106项无标签资产未改变，历史worktree未清理。
-
-本轮完成12项原始指南分类（Old Money 至 Plakatstil），累计196项，剩余94项无标签、164项无显式风格标签；修复PC-98检索归一化匹配，优化桌面筛选布局及双主题表面令牌，跳过无变化材质参数提交。350单测、设计审计及lint通过；真实浏览器验收待PR。#119 main 45470436437 Pages成功。
-
-#121 ebea249 已通过 CI 45472102446 和真实截图复审，合并3a9c432；顶栏沙箱说明已删除，保留原站入口及沙箱权限。旧worktree均已清理，后续固定使用../UI-Vault-dev，最多一个活跃开发worktree。新候选清除废弃previewEvidence传参，增加1440/390真实浏览器本地与外站顶栏高度差≤1px断言，统一原生筛选焦点反馈；新增 Pointillism 至 Raw Industrial 共13项指南分类，累计209项，剩余81项无标签、151项无显式风格标签。350项单测、设计审计、lint、Foundation Token 独立构建检查通过；Registry完整独立安装及新视觉回归仍待验收，不提前合并。
-
-#122 首轮 CI 45478173866 唯一失败为 verify_glass_materials 在移动端等待按设计隐藏的标题可见；改为等待正确标题挂载和 Topbar 可见，保留桌面/移动高度差≤1px、沙箱及原站入口断言。其他参数通信异常恢复、拖动及独立 Demo 浏览器检查通过（P95 16.7ms、确认18.5ms）。新增 Raygun Gothic 至 Scandi Boho 16项指南分类，累计225、无标签65、缺显式风格135。Registry 在 npm 11.20.0 独立目录严格安装发现锁文件根节点缺 name，补齐后115包严格安装、锁文件cmp及React/Vue独立构建通过；实际浏览器Registry交互尚待验证。保持唯一开发worktree，不提前合并。
-
-集中交付原则：同一功能批次集中实现并提交到一个PR；除重大产品取舍、破坏性操作或授权缺失外自主推进，不按小功能要求用户确认。#122 a332d2f 的主站CI 45479142141 与Registry CI 45479142000成功；本轮完成剩余63项指南及2项跨仓库资产分类，528项资产无空标签，288项指南审计，70项缺显式视觉风格标签（非无标签）。统一目录、预览及下拉控件圆角与浮层阴影，材质颜色/阴影输入按焦点合并撤销，补充实际浏览器连续输入撤销重做验证。新候选必须重新通过CI与截图复审。
-
-#122 fd3a721 已通过候选 CI 45480123608 / 45480123642，合并 aa1188a，main 45501482779 成功。新批次基于该主分支，公共下拉菜单根据上下可用视口空间调整方向及最大高度，Tab 从触发器恢复正常焦点顺序，补充 End/Escape 浏览器回归。待完整候选验收。
-
-#123 原提交 0f77b71 的 CI 45528999814 唯一失败：项目状态页打开公共下拉后立即 End 未聚焦最后一项。将首次定位与聚焦改为提交后的 useLayoutEffect，消除 requestAnimationFrame 竞态；限制菜单纵向和横向边界、只滚动菜单本身，保留 Tab/Shift+Tab 正常焦点顺序与原有样式基线。补齐真实 Chromium 即时 End/Home、Escape、正反向 Tab、选择、390×844 与 390×400 向上展开/内部滚动断言。严格 npm ci、350 单测、设计审计、ESLint、React 构建通过；Mac 本地 1440×900、390×844、390×400 真实 Chromium 源码环境专项通过，字体上游 TLS 失败，未完成本地正式静态构建及视觉基线验收；完整候选 CI 与截图复审仍为合并前提。不得放宽门禁。
-
-#123 同批次检索深化：按最长已登记别名识别三词及以上风格短语（如 Arts and Crafts、Editorial Magazine Layout），保留原 AND、排序及筛选语义。全局搜索分批展开后恢复输入焦点、选中首条新增结果、保持可视；Ctrl/Meta+Home/End 跳转列表边界且不劫持普通 Home/End；新查询归零滚动，320px 保留搜索上限提示。保持既有60/240上限及原视觉基线。351 单测、设计审计、lint、React 构建通过，1440×900/390×844/320×640 真实 Chromium 源码环境实测连续展开、焦点、上限提示与别名检索通过；320截图已复审。正式静态构建和全部CI须重新核实，不提前合并。
-
-#123 4f8aed5 的 CI 45540695354 唯一失败：正常动画下 390×400 短视口向上菜单的末项可视几何断言超时；搜索分批回归通过。下拉聚焦滚动改为不受动画缩放影响的 offsetTop/offsetHeight，横向边界使用未变换宽度；原断言保持，失败时记录真实几何与截图。参数数字控件统一使用 schema、共享草稿和焦点级撤销：基础字段、色标位置、阴影快捷值一致；无效值阻止应用并可 Esc 恢复，恢复至相同有效值仍能重新调度，保留33字段协议与 iframe 沙箱。真实本地 Chromium 1440×900、390×844 验证连续输入撤销重做、清空及负数逐字符输入、无效值恢复、色标同步，390截图复审；390×400 正常动画与减少动画各重复四次通过。351单测、设计审计、lint、React构建通过；本地完整静态构建仍未验收，GitHub网络曾出现TLS/EOF。最终候选必须重新通过CI与截图复审才可合并，不放宽门禁。
-
-#123 同批次 Registry/发布工程治理：新增只读 --verify，可信 Registry 依赖闭包与实际字节哈希共同校验安装文件及 REGISTRY-LOCK.json，报告缺失/改写/符号链接/锁不符，不自动修复、不扫描额外文件、不执行依赖。预检拒绝 Windows 保留名、锁文件目录及大小写路径冲突，索引核对 framework/runtime；独立框架验收在安装后执行复验。发布带指纹 CSS 入口的七个本地组件/字体样式 @import 使用同一查询指纹，旧入口保留，实际视觉规则不变；check-dist 验证全部依赖。354 单测、设计审计及 lint 通过；独立临时目录 npm ci --offline --ignore-scripts 严格安装115包、锁文件逐字节一致、React/Vue 构建及22/22文件复验通过（npm11 的 --prefix 调用失败，改为在真实目标目录执行 npm ci，不修改锁）。新候选未完成正式静态构建、独立浏览器全验收及截图复审，不提前合并；不机械移动大段 CSS 以免改变级联。
-
-#123 正式收口：036ff80 主站 CI 45541808964、Registry CI 45541808826 均成功，Linux/Windows、354 单测、27 Chromium 交互、9 视觉基线、22/22 Registry 文件及 React/Vue 独立浏览器通过。截图 Artifact 14989372863（48 PNG/3 JSON），SHA256 af6b8af15d2ee910c13cf7b63340d08558ac2683eaa63dc5d98d87fd6a151dfb 核对一致，48 张缩略总览复审无本轮新增发布阻塞；已 squash 合并 8b04848623ee4cbf7af4140cc4aa56e03dc9bbb1。main CI 45542592195 尚在执行。独立 worktree 切换 release/v0.6.0，以已合并代码为基线仅整理版本、CHANGELOG、Release 说明；不扩大范围，不提前发布；main 部署和完整发布门禁通过后方可建立正式版本。
-
-v0.6.0 已正式发布：Tag 精确指向 68fc55533920cdb6ac3f174aa136d72a971b6cd6，完整发布 CI 45542952498 成功，Linux/Windows、354 单测、9 视觉基线、27 Chromium 交互、axe/Firefox/WebKit、Pages 与4项生产哈希通过，Release 2026-11-25 03:57:41 UTC。#123 部署 45542592195 的10项线上文件亦经系统 curl 与真实产物逐字节哈希比对通过（本地 Python 证书链错误，未关闭 TLS）。新分支 feat/v0.7-workbench-refinement 从正式 Tag 创建。首批全局搜索精修：匹配描述按查询/结果集 memo，标题高亮 memo，键盘选择不重复读取匹配字段；低高度视口压缩输入与底栏，保持列表、分页和键盘导航。相同 Chromium/同页面替换 v0.6.0 CSS 对照：667×300 列表 80→128px，390×280 84→118px，1440×900、390×844、320×640 布局尺寸不变。355 单测、设计审计、lint、React 构建及两种短视口连续分页至240项真实浏览器验证通过。保持原基线；新分支 CI 与正式视觉截图待验收，不提前合并。下一批继续三栏与参数检查器视觉深化、CSS 级联治理和首屏性能，不改变 v0.6.0 Tag。
-
-#125 参数检查器低高度布局专项：真实 Chromium 复现 667×300、390×400、390×280 下 sticky 标题和操作区总高134px 超过实际119/119/111px停靠区；改为 ResizeObserver 根据实际停靠区与固定控件高度判断剩余编辑空间，低于72px切换紧凑滚动模式，固定关闭/调整高度标题保留，操作/分组栏随内容滚动，分组跳转与滚动选中计算同步适配。短视口编辑可视区由 -15/-15/-23px 理论剩余量恢复为81/81/73px；1440×900与390×844的30%停靠高度仍保持原 sticky 布局。删除已被覆盖的分组 sticky/scroll-margin CSS，保留正常布局及原视觉基线。五种窗口真实本地 Chromium 的焦点、圆角编辑及三种短屏分组跳转通过；390×280 实际截图复审。355单测、设计审计、lint、React构建通过；新增 CI 短视口及恢复正常布局断言。继续同一 PR，待完整候选 CI 与截图复审，不修改正式 v0.6.0 Tag。
-
-#125 首屏和工作台边界专项：c61590b 候选 CI 45545932884 成功。原 app-shell 最小高度450/360px使 1024×400、667×300、390×280 实际页面高度450/360/360px，预览超出窗口；移除历史硬编码最小高度，保持三栏与内部独立滚动。核心 assets/categories/projects 仍并行，project-health/preview-health 可选请求延后到目录加载成功；失败时保留未核实。命令面板关闭时使用稳定空数组，不运行全目录搜索排序。356单测、设计审计、lint、React构建通过；独立端口真实 Chromium 拦截 assets.json 证明两份健康快照在核心目录完成前未请求，释放后正常加载；1440×900、1024×400、667×300、390×280 页面高度与视口一致，预览高度844/344/244/224px，四种视口实际搜索正常。390×280 截图复审，前批五种参数检查器尺寸回归通过。初次临时脚本搜索等待超时，独立受控脚本复验通过，不将失败样本记为通过。新增 CI 核心请求优先级及四视口断言；最新候选完整 CI 与截图复审待核实。没有测量首屏耗时百分比，不声称量化加速。v0.6.0 Tag 保持不变。
-
-#125 Registry 复用入口专项：前批 d3aeeb7 的 CI 45546650299 成功。Foundation 源码标签增加浏览 Registry 子视图（非新页面/弹窗），按需读取真实静态索引，基础/React/Vue 三组11模块选择、依赖链、运行时及模块 JSON 下载；预检/安装/复验命令可复制，明确目标父目录、源码快照与 CLI 权威边界。浏览器不执行安装、不宣称文件哈希已核验；索引校验协议、模块 ID/相对路径、重复/缺失/循环依赖及运行时结构，拒绝命令注入 ID，读取失败可重试。使用共享 dialog.css 语义令牌，复用子视图隐藏重复源码交付工具，返回按钮 sticky，保留原三栏与 iframe。358 单测（所有11模块依赖顺序与实际 CLI 一致、异常索引拒绝）、设计审计、lint、React构建通过。本地真实 Chromium 使用 buildRegistry/writeRegistry 生成的索引，经同源拦截提供给源码站点：1440×900 浅色、390×844 深色、320×640 浅色全部验证惰性请求、503 重试、模块切换、依赖链、实际剪贴板与返回源码；390 深色最终截图复审。新增正式 dist 浏览器回归，尚未运行该提交的远端完整 CI/正式截图，不改 v0.6.0 Tag、原视觉基线或安装器，不引入依赖。后续优先收口 #125 最终 CI/截图与部署，再决定是否继续视觉改版，避免候选反复扩张。
-
-#125 质量收口：3edcb71 CI 45547204534 成功，358单测、29 Chromium、60截图复审，Artifact 14992885343 SHA256 c0152eaa7f09df5edca858aea4da7385841c141179f622ef292a9bc773757c70。squash 合并 539e0018b0012f30cc6c31f52de19489cd438ce9；main CI 45548708958 Pages 成功，真实静态 ZIP 14992952058 SHA256 e00ece6197059d00fa40444c352cb16c584ed6b7101f99809238448462c83e8d 核对，线上9项关键文件与产物一致。新独立分支 feat/v0.7-visual-polish 从最新 main 创建。首批宽屏目录与双主题层级：1600px以上标准导航216px、目录 clamp(310px,18vw,360px)，窄栏偏好不变；常规13px标题、紧凑12px、次级11px随字体设置，选中强调色；删除重复字重/背景/圆角与失效断点规则，归入现有 CSS 组件文件。相同本地 Chromium 替换旧 CSS 对照七组尺寸/主题/密度：1920目录291→344.6px，预览1420→1358.4px；1440原尺寸不变；窄栏269px不变；大字号紧凑文字块39.1→35.1px，虚拟可视行57/47px、行距60/48px保持；全部无页面横溢出且顶栏对齐，复审1440深色、1920浅色、820紧凑深色。358单测、lint、设计审计通过；新增正式浏览器回归，保持旧视觉基线，正式CI待验收。未完成整体控件/动效改版，不修改v0.6.0 Tag。
-
-#126 公共控件/浮层专项：a5db542 CI 45549395353 成功。实测设置字体下拉在390×400与667×300被 settings-scroll 裁切，改为设置专用视口内 fixed 定位并尊重可用高度，锚点实际移动后关闭且恢复焦点；普通菜单协议与原滚动行为不变。首次实现误关闭（点击触发的滚动事件），修正为比较锚点实际坐标。向上菜单从触发器方向进入；公共按钮 hover/pressed 边界语义化，圆角共用令牌，系统/应用减少动效均取消按压缩放及收藏弹跳；删除重复下拉声明。358单测、设计审计、lint、React构建通过；真实 Chromium 1440×900、390×844、390×400、667×300 双主题菜单边界、首末项命中、Esc、滚动恢复焦点通过，667×300深色实际截图复审；两种减少动效模式及运维390×400原短视口专项通过。新增正式CI场景，旧视觉基线不变，最新远端CI待验收。继续同一PR，未完成全部视觉重构及正式v0.7发布。
-
-#126 最终视觉范围收尾：adc9aae CI 45550190634 成功。源码弹窗真实 Chromium 320×640 / 667×300 / 390×280 原代码可见10.7/0/0px，改为窄宽或短高时默认折叠交付与阅读工具（可展开原入口），短屏压缩标题/标签，代码独立有界滚动及键盘焦点；最终可见352.7/118.2/102.9px，1440×900与390×844原布局不变。初版代码区随长文件撑高，已修复；本地临时首次脚本有一项等待预览按钮超时，随后独立复验5组完成（含展开/收起、Esc与焦点恢复）。667×300浅色截图复审。参数错误使用双主题错误色而非焦点色，清理被覆盖的网格规则；新增CI短屏源码及错误色断言，更新320px Registry测试适配显式展开。358单测、lint、设计审计及React构建通过，最新完整CI、正式截图与错误色真实浏览器回归待验证。不更新旧基线；冻结#126功能范围，下一步仅修复真实失败、复审合并、生产验证，再推进v0.7.0正式发布。
-
-#126 冻结收口：dd2735f 的 CI 45552085133 单测358、静态构建、视觉基线及32项 Chromium 通过；唯一失败 verify_live_parameter_dock 错误轮廓断言。真实本地复现后确认后加载的通用 focus-visible 同级规则覆盖错误轮廓，另有动态样式更新时序；在组件 CSS 显式增加 invalid:focus-visible 优先级，CI 等待轮廓、边框与状态文字均等于实际错误令牌（保留并加强断言），新增错误状态截图。1440×900浅色/390×844深色真实 Chromium 校验错误色一致、禁止应用、Esc恢复24及正常焦点色均通过。仅修复真实失败，不更新基线、不扩展功能；最新CI与截图待复审。
-
-#126 最终收口：19d9a1d CI 45553510770 成功，358单测、33 Chromium交互、9视觉基线；Artifact 14994733611 SHA256 ef6d5e156b71639e36c153ef4fd181a246b4593035c0e29d7f28d8150016e5a9 一致，75 PNG总览及参数错误状态原尺寸复审，无新增发布阻塞。性能采样参数P95 16.8ms、末次确认18.9ms；5000项模拟目录20行、P95 16.9ms。已 squash 合并 33039958154ed1419cf3470dd9640fb00f221da0；main CI 45554993936 排队，生产仍待核验。独立 release/v0.7.0 分支仅更新根版本、锁文件根版本、CHANGELOG、Release 文档，纠正v0.6.0已正式发布的历史状态。继续冻结功能；先完成main生产核验，再合并发布候选，由既有完整发布门禁创建正式Tag/Release，不提前发布。
+import assert from 'node:assert/strict';
+import {createHash} from 'node:crypto';
+import {readFile,stat} from 'node:fs/promises';
+import {join,resolve} from 'node:path';
+import {ROOT,inspectCatalog} from './lib/catalog.mjs';
+import {runPythonOrThrow} from './lib/python.mjs';
+import {buildRegistry,REGISTRY_ROOT} from './lib/reuse-registry.mjs';
+import {buildKnowledgeIndex} from './lib/knowledge-index.mjs';
+import {buildRegistryProfiles} from './lib/registry-profiles.mjs';
+const out=resolve(ROOT,'dist');
+const {errors,items}=await inspectCatalog();
+if(errors.length)throw Error(errors.join('\n'));
+const paths=['index.html','settings.html','favicon.svg','assets/app.js','assets/styles.css','assets/core/catalog.js','assets/core/render.js','assets/core/favorites.js','assets/core/dropdown.js','assets/react-workbench.js','assets/source-highlight-worker.js','assets/vendor/Prism-LICENSE.txt','assets/showcase/workbench-system.js','assets/core/workbench-state.js','assets/core/workbench-router.js','assets/ui/controls.css','assets/ui/dropdown.css','assets/ui/project-row.css','assets/ui/dialog.css','assets/ui/preview-toolbar.css','content/assets.json','content/projects.json','content/project-health.json','content/preview-health.json','content/categories.json'];
+for(const a of items){
+  if(a.source==='local'){paths.push(a.preview);if(a.copyable!==false)paths.push(a.code);if(a.publish)paths.push(...a.publish);if(a.sourceFiles)paths.push(...a.sourceFiles.map(file=>file.path));if(a.designGuidePath)paths.push(a.designGuidePath);for(const version of a.versions||[]){paths.push(version.preview,version.code,version.designGuidePath);}}
+  if(a.coverImage)paths.push(a.coverImage);
+}
+for(const p of new Set(paths))assert.ok((await stat(join(out,p))).isFile(),'缺失发布文件：'+p);
+
+const expectedRegistry=await buildRegistry(resolve(ROOT,REGISTRY_ROOT));
+assert.deepEqual(JSON.parse(await readFile(join(out,'registry/index.json'),'utf8')),expectedRegistry.index,'Registry 索引与当前 Foundation 不一致');
+for(const item of expectedRegistry.items){
+  assert.deepEqual(JSON.parse(await readFile(join(out,'registry/items',item.id+'.json'),'utf8')),item,'Registry 文件内容、版本或哈希不一致：'+item.id);
+}
+assert.deepEqual(JSON.parse(await readFile(join(out,'registry/profiles.json'),'utf8')),buildRegistryProfiles(expectedRegistry),'组合安装计划与真实 Registry 不一致');
+const knowledge=JSON.parse(await readFile(join(out,'content/knowledge-index.json'),'utf8'));
+assert.deepEqual(knowledge,await buildKnowledgeIndex(ROOT,items),'知识索引与登记资产不一致');
+const knowledgeFiles=new Map();
+for(const row of knowledge.records)for(const file of [row.preview,row.guide,...row.delivery.sourceFiles].filter(Boolean))knowledgeFiles.set(file.path,file.sha256);
+for(const [path,sha256] of knowledgeFiles)assert.equal(createHash('sha256').update(await readFile(join(out,path))).digest('hex'),sha256,'知识证据发布文件哈希不一致：'+path);
+console.log('知识索引证据校验通过：'+knowledgeFiles.size+' 个实际发布文件。');
+const publishedHealth=JSON.parse(await readFile(join(out,'content/project-health.json'),'utf8'));
+const registeredProjects=JSON.parse(await readFile(join(out,'content/projects.json'),'utf8'));
+assert.equal(publishedHealth.version,1,'项目健康快照协议版本不正确');
+assert.equal(publishedHealth.checkedAt,null,'普通静态构建不得伪造实时检查状态');
+assert.deepEqual(Object.keys(publishedHealth.projects).sort(),registeredProjects.map(p=>p.id).sort(),
+  '项目健康快照未覆盖所有已登记 Project');
+for(const row of Object.values(publishedHealth.projects)){
+  assert.equal(row.repositoryStatus,'unverified','离线构建不应声称仓库可访问');
+  assert.equal(row.actionsStatus,'unknown','离线构建不应声称 Actions 已成功');
+}
+const previewHealth=JSON.parse(await readFile(join(out,'content/preview-health.json'),'utf8'));
+assert.equal(previewHealth.version,1,'预览快照协议版本不正确');
+assert.equal(previewHealth.checkedAt,null,'静态构建不得伪造站点探测结果');
+assert.deepEqual(Object.keys(previewHealth.assets).sort(),items.map(a=>a.id).sort(),
+  '预览快照没有覆盖全部资产');
+for(const entry of Object.values(previewHealth.assets)){
+ assert.equal(entry.http,'unverified','离线构建不应伪造网页可达性');
+ assert.equal(entry.framePolicy,'unverified','离线构建不应宣称 iframe 可用');
+}
+const publishedHTML=await readFile(join(out,'index.html'),'utf8');
+const cssFingerprint=publishedHTML.match(/href="\.\/assets\/styles\.([a-f0-9]{16})\.css"/)?.[1];
+const jsFingerprint=publishedHTML.match(/src="\.\/assets\/app\.([a-f0-9]{16})\.js"/)?.[1];
+assert.ok(cssFingerprint&&jsFingerprint,'入口未绑定带指纹的 JS/CSS，请勿发布无版本静态文件');
+assert.equal(cssFingerprint,jsFingerprint,'HTML 的 JS 与 CSS 版本标记不一致');
+for(const file of [`assets/styles.${cssFingerprint}.css`,`assets/app.${jsFingerprint}.js`]){
+  assert.ok((await stat(join(out,file))).isFile(),'缺失本次构建的版本化文件：'+file);
+}
+// 设置与预览使用同一入口，旧 settings.html 只保留书签重定向。
+const legacySettings=await readFile(join(out,'settings.html'),'utf8');
+assert.ok(legacySettings.includes('url=./?view=settings'),'旧设置页应指向工作台内设置视图');
+assert.ok(publishedHTML.includes('id="settings-view"'),'工作台缺少嵌入式设置区域');
+assert.ok(publishedHTML.includes('data-settings-page'),'工作台设置控件未挂载');
+assert.ok(publishedHTML.includes('href="./?view=settings"'),'左侧设置入口没有指向工作台内设置');
+assert.ok(!publishedHTML.includes('id="settings-dialog"'),'首页不应再保留设置弹窗');
+const entry=await readFile(join(out,`assets/app.${jsFingerprint}.js`),'utf8');
+assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'主站未加载同版本 React 组件');
+const reactBundle=await readFile(join(out,'assets/react-workbench.js'),'utf8');
+assert.ok(reactBundle.length>30_000,'React 组件 bundle 缺失或异常短');
+assert.ok(!/from ['"]react(?:-dom)?(?:\/[^'"]+)?['"]/.test(reactBundle),'React 运行时不应依赖浏览器裸模块导入');
+// 组件展厅在 sandbox iframe 中以经典脚本加载，必须是不含 import/export 的自包含 bundle。
+const showcaseBundle=await readFile(join(out,'assets/showcase/workbench-system.js'),'utf8');
+assert.ok(showcaseBundle.length>30_000,'组件展厅 bundle 缺失或异常短');
+assert.ok(!/^\s*(?:import|export)\s/m.test(showcaseBundle),'组件展厅 bundle 不能是 ES module');
+
+assert.ok(entry.includes("mountWorkbench"),'主入口必须启动 React 工作台');
+assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'React 组件版本必须与 HTML 一致');
+const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
+assert.match(core,new RegExp('from [\\\x27"][.]/icons[.]js[?]v='+jsFingerprint),'子模块没有使用同一版本标记');
+const versionedCSS=await readFile(join(out,`assets/styles.${cssFingerprint}.css`),'utf8');
+for(const componentPath of ['./fonts/975-yuan.css','./ui/controls.css','./ui/dropdown.css','./ui/project-row.css','./ui/dialog.css','./ui/preview-toolbar.css','./ui/directory-controls.css']){
+  assert.ok(versionedCSS.includes('@import url("'+componentPath+'?v='+cssFingerprint+'")'),'主站 CSS 依赖版本不一致：'+componentPath);
+  assert.ok((await stat(resolve(out,'assets',componentPath))).isFile(),'缺少 CSS 依赖：'+componentPath);
+}
+// 模块化业务代码通过 esbuild 收纳进一个 React bundle，页面不再请求旧控制器。
+assert.ok(!entry.includes('core/workbench-state.js'),'旧业务状态不应从主入口重复加载');
+const workbenchState=await readFile(join(out,'assets/core/workbench-state.js'),'utf8');
+assert.ok(workbenchState.includes('./preview.js?v='+jsFingerprint),'状态模块依赖未版本化');
+assert.ok(!publishedHTML.includes('src="./assets/app.js"'),'入口还引用未版本化脚本');
+// 已删除的原生控制器不应再出现在发布产物中。
+for(const p of ['assets/ui/viewport-switcher.js','assets/ui/project-dialog.js','assets/ui/mobile-navigation.js','README.md','catalog/assets/warm-workbench.json','scripts/new-demo.mjs','tests/catalog.test.mjs','.github/workflows/deploy.yml']){
+  try{await stat(join(out,p));throw Error('非站点文件被误发布：'+p);}
+  catch(e){if(e.code!=='ENOENT')throw e;}
+}
+// 自托管网页字体必须完整，避免 GitHub Pages 上出现字体 404 或回退到 45MB 外链 TTF。
+const fontDir=join(out,'assets/fonts');
+const fontManifest=JSON.parse(await readFile(join(fontDir,'manifest.json'),'utf8'));
+assert.equal(fontManifest.fonts.length,9,'应生成三种字重 × 三组 WOFF2 子集');
+const fontStyles=await readFile(join(fontDir,'975-yuan.css'),'utf8');
+let totalFontBytes=0;
+for(const font of fontManifest.fonts){
+  assert.match(font.file,/^975yuan-(400|500|700)-(latin|ui|common)[.]woff2$/);
+  const file=join(fontDir,font.file);
+  const bytes=await readFile(file);
+  assert.equal(bytes.subarray(0,4).toString('ascii'),'wOF2','必须使用有效的 WOFF2 文件：'+font.file);
+  assert.equal(bytes.length,font.bytes,'字体大小与构建清单不一致：'+font.file);
+  assert.ok(font.bytes>1000&&font.bytes<3_000_000,'子集体积异常：'+font.file);
+  assert.ok(fontStyles.includes(font.file),'字体 CSS 未引用：'+font.file);
+  totalFontBytes+=bytes.length;
+}
+assert.ok(totalFontBytes<12_000_000,'所有子集总体积超过预算');
+assert.match(await readFile(join(fontDir,'OFL.txt'),'utf8'),/SIL OPEN FONT LICENSE/i,'缺少字体授权条款');
+const entryCSS=await readFile(join(out,'assets/styles.css'),'utf8');
+assert.ok(entryCSS.includes('fonts/975-yuan.css'),'主样式未引用 WOFF2 子集 CSS');
+assert.ok(!entryCSS.includes('raw.githubusercontent.com/lxgw/975Yuan'),'不应继续引用外链 TTF');
+// ZIP 只允许包含资产清单声明的文件，内容与独立入口必须一致。
+runPythonOrThrow(['scripts/build-bundles.py','--verify'],{cwd:ROOT});
+runPythonOrThrow(['scripts/build-foundation-project.py','--verify'],{cwd:ROOT});
+console.log('静态产物完整性检查成功；网页字体总计 '+(totalFontBytes/1024/1024).toFixed(2)+' MiB（按字符范围加载）。');
