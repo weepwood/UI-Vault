@@ -2563,6 +2563,7 @@ def verify_compact_search_and_fixed_icons(browser, origin):
             js="""() => {
                const selectors=['#preview-search .ui-icon',
                  '.quick-filters .filter-button .ui-icon',
+                 '#shortcut-components .ui-icon','#shortcut-recipe-lab .ui-icon',
                  '.category-nav .nav-index .ui-icon','.sidebar-footer .sidebar-settings .ui-icon'];
                return selectors.map(selector=>{const el=document.querySelector(selector);
                  const r=el.getBoundingClientRect();return {selector,width:r.width,height:r.height,x:r.x,y:r.y};});

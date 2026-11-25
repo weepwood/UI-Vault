@@ -1624,10 +1624,17 @@ html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-p
 .workbench-shortcut:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
 .workbench-shortcut span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(min-width:761px){
-  .app-shell.is-nav-collapsed .workbench-shortcuts{justify-items:center;padding:0}
-  .app-shell.is-nav-collapsed .workbench-shortcuts .section-row,.app-shell.is-nav-collapsed .workbench-shortcut span{display:none}
-  .app-shell.is-nav-collapsed .workbench-shortcut{justify-content:center;width:40px;height:38px;padding:0}
+  /* Keep identical vertical slots and icon alignment in both rail states. */
+  .workbench-shortcuts{justify-items:start}
+  .workbench-shortcuts .section-row{height:30px;min-height:30px;white-space:nowrap}
+  .workbench-shortcut{width:100%;height:34px;min-height:34px;padding:6px 10px}
+  .app-shell.is-nav-collapsed .workbench-shortcuts .section-row{visibility:hidden;opacity:0;pointer-events:none}
+  .app-shell.is-nav-collapsed .workbench-shortcut span{display:none}
+  .app-shell.is-nav-collapsed .workbench-shortcut{justify-content:flex-start;width:40px;height:34px;padding:6px 10px;gap:8px}
   .app-shell.is-nav-revealing .workbench-shortcut span,.app-shell.is-nav-revealing .workbench-shortcuts .section-row{opacity:0;pointer-events:none}
+}
+@media(min-width:761px) and (max-width:1250px){
+  .workbench-shortcut,.app-shell.is-nav-collapsed .workbench-shortcut{padding-inline:7px}
 }
 @media(max-width:480px){.workbench-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:5px;gap:2px}.workbench-shortcuts .section-row{grid-column:1/-1;min-height:22px}.workbench-shortcut{min-height:30px;padding:5px 8px;font-size:11px}}
 
