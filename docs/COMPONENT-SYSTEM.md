@@ -140,3 +140,7 @@ demos/components/workbench-system/
 - React 架构与迁移约束：[REACT-MIGRATION.md](REACT-MIGRATION.md)
 - 原生 JS 阶段的模块边界（历史记录）：[WORKBENCH-MODULES.md](WORKBENCH-MODULES.md)
 - ProjectRow / Dialog / PreviewToolbar 的 CSS 来源、页面级覆盖与 Chromium 截图回归：[CSS-MODULES-VISUAL.md](CSS-MODULES-VISUAL.md)
+
+## 可见体验：展厅检查器与快捷入口
+
+主站精选工作台提供组件展厅与设计实验室两个真实链接。展厅六组原组件增加接入示例、真实源码定位、选中代码、操作反馈与恢复演示状态；不是独立组件安装包。主站组件仍使用原外部 Lucide sprite，展厅在构建时嵌入同一可信 sprite 并通过 IconSpriteContext 渲染，保留许可证与原不透明 iframe 沙箱。窄屏展厅内恢复按钮文本，不改变主站工具栏。

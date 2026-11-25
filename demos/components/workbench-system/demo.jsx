@@ -10,6 +10,8 @@ import {SearchField} from '../../../src/components/SearchField.jsx';
 import {CategoryNavigation} from '../../../src/components/CategoryNavigation.jsx';
 import {ProjectList} from '../../../src/components/ProjectList.jsx';
 import {ViewportSwitcher} from '../../../src/components/PreviewToolbar.jsx';
+import {IconSpriteContext} from '../../../src/components/Icon.jsx';
+import lucideSprite from '../../../assets/icons/lucide.svg';
 import {filterAssets} from '../../../assets/core/catalog.js';
 import {applyPreviewLayout,PREVIEW_WIDTHS} from '../../../assets/core/preview.js';
 
@@ -99,7 +101,24 @@ function Showcase({nodes}){
   </>;
 }
 
-function mountShowcase(){
+function installLocalSprite(){
+  // Build-time trusted repository sprite, not arbitrary fetched markup.
+  // Inline SVG definitions keep the opaque-origin sandbox unchanged.
+  const svg=new DOMParser().parseFromString(lucideSprite,'image/svg+xml').documentElement;
+  if(svg.localName!=='svg')throw Error('Lucide sprite 无效');
+  const local=document.importNode(svg,true);
+  local.setAttribute('aria-hidden','true');local.setAttribute('focusable','false');
+  local.style.cssText='position:absolute;width:0;height:0;overflow:hidden;pointer-events:none';
+  document.body.prepend(local);
+  const base=location.href.split('#')[0];
+  for(const use of document.querySelectorAll('.ui-icon use')){
+    const href=use.getAttribute('href');
+    if(href?.startsWith('./assets/icons/lucide.svg#'))use.setAttribute('href',base+'#'+href.split('#')[1]);
+  }
+  return base;
+}
+
+function mountShowcase(sprite){
   const $=selector=>document.querySelector(selector);
   const nodes={
     search:$('#wb-search-mount'),sort:$('#wb-sort-mount'),tag:$('#wb-tag-mount'),
@@ -117,7 +136,7 @@ function mountShowcase(){
   host.id='wb-react-root';
   host.hidden=true;
   document.body.append(host);
-  createRoot(host).render(<Showcase nodes={nodes}/>);
+  createRoot(host).render(<IconSpriteContext.Provider value={sprite}><Showcase nodes={nodes}/></IconSpriteContext.Provider>);
 }
 
 // ---------- 展厅外壳（演示页自身的布局与原生模式，不属于主站组件） ----------
@@ -262,7 +281,7 @@ function initShell(){
 
 function init(){
   initShell();
-  try{mountShowcase();}
+  try{mountShowcase(installLocalSprite());}
   catch(error){
     console.error('组件展厅初始化失败：',error);
     const status=$('#wb-list-status');

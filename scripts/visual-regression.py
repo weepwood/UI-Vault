@@ -1622,6 +1622,60 @@ def verify_compact_source_reader(browser, origin):
             context.close()
 
 
+def verify_showcase_discovery(browser, origin):
+    """主站直达真实组件、沙箱内图标及操作反馈，不运行外部代码。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached")
+            if width<=760:page.locator("#menu-toggle").click()
+            page.locator("#shortcut-components").click()
+            page.wait_for_url("**/?asset=workbench-components")
+            frame=page.frame_locator("#preview-stage iframe")
+            expect(frame.locator("html")).to_have_attribute("data-theme",theme)
+            expect(page.locator("#shortcut-components")).to_have_attribute("aria-current","page")
+            assert frame.locator(".wb-brand-icon svg use").evaluate("e=>e.getBBox().width>0&&e.getBBox().height>0")
+            frame.locator("#wb-source-toggle").click()
+            expect(frame.locator("#wb-source-code")).to_contain_text("open-action")
+            expect(frame.locator("#wb-source-address")).to_be_visible()
+            expect(frame.locator("#wb-source-link")).to_be_hidden()
+            frame.locator("#wb-source-toggle").click()
+            frame.get_by_role("button",name="主要操作",exact=True).click()
+            expect(frame.locator("#wb-interaction-status")).to_contain_text("主要操作")
+            frame.locator("#story-tab-forms").click()
+            frame.locator("#wb-demo-search").fill("玻璃")
+            assert frame.locator("#wb-search-mount svg use").first.evaluate("e=>e.getBBox().width>0")
+            expect(frame.locator("#wb-interaction-status")).to_contain_text("玻璃")
+            frame.locator("#wb-source-toggle").click()
+            expect(frame.locator("#wb-source-code")).to_contain_text("WorkbenchSelect")
+            frame.locator("#wb-select-source").click()
+            assert "SearchField" in frame.locator("#wb-source-code").evaluate("e=>window.getSelection().toString()")
+            frame.locator("#story-tab-navigation").click()
+            expect(frame.locator("#wb-project-list .project-row")).to_have_count(1)
+            frame.locator("#wb-reset-story").click()
+            expect(frame.locator("#wb-project-list .project-row")).to_have_count(4)
+            frame.locator("#story-tab-feedback").click()
+            frame.locator("#wb-open-dialog").click()
+            expect(frame.locator("#wb-dialog")).to_be_visible()
+            page.keyboard.press("Escape")
+            expect(frame.locator("#wb-dialog")).to_be_hidden()
+            expect(frame.locator("#wb-interaction-status")).to_have_text("对话框已关闭")
+            frame.locator("#story-tab-viewport").press("End")
+            expect(frame.locator("#story-tab-tokens")).to_have_attribute("aria-selected","true")
+            assert frame.locator("body").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            frame.locator("#story-tab-foundation").click()
+            frame.locator("#wb-source-toggle").click()
+            page.screenshot(path=str(OUTPUT/f"showcase-discovery-{width}-{theme}.png"))
+            if width<=760:page.locator("#menu-toggle").click()
+            page.locator("#shortcut-recipe-lab").click()
+            page.wait_for_url("**/?asset=design-recipe-lab")
+            expect(page.frame_locator("#preview-stage iframe").locator("#recipe-nav button")).to_have_count(6)
+        finally:
+            context.close()
+
+
 def verify_design_recipe_lab(browser, origin):
     """真实沙箱中运行六个配方，验证参数、代码及恢复行为。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -2673,6 +2727,7 @@ def main():
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
                     verify_compact_source_reader,
+                    verify_showcase_discovery,
                     verify_design_recipe_lab,
                     verify_knowledge_record,
                     verify_registry_browser,
