@@ -1630,3 +1630,14 @@ html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-p
   .app-shell.is-nav-revealing .workbench-shortcut span,.app-shell.is-nav-revealing .workbench-shortcuts .section-row{opacity:0;pointer-events:none}
 }
 @media(max-width:480px){.workbench-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:5px;gap:2px}.workbench-shortcuts .section-row{grid-column:1/-1;min-height:22px}.workbench-shortcut{min-height:30px;padding:5px 8px;font-size:11px}}
+
+/* Visible workbench refinement: preserve existing dimensions and virtual row geometry. */
+.app-shell .sidebar .workbench-shortcuts{padding-top:8px;border-top:1px solid var(--line-soft)}
+.app-shell .sidebar .workbench-shortcuts .section-row{letter-spacing:.04em}
+.app-shell .sidebar .workbench-shortcut{font-weight:550;transition:background-color var(--motion-fast) ease,color var(--motion-fast) ease,border-color var(--motion-fast) ease}
+.app-shell .sidebar .workbench-shortcut[aria-current=page]{font-weight:650}
+.app-shell .project-panel .project-row-title{letter-spacing:-.012em}
+.app-shell .project-panel .project-row-subtitle{letter-spacing:.005em}
+.app-shell .topbar .project-identity h1{letter-spacing:-.025em}
+.app-shell .topbar .topbar-actions :is(.open-action,.info-action,.square-action){border-radius:var(--workbench-control-radius)}
+@media(prefers-reduced-motion:reduce){.app-shell .sidebar .workbench-shortcut{transition:none}}

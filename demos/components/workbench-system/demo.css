@@ -129,3 +129,15 @@
 /* Main topbar has icon-only breakpoints; actual component specimens keep their labels. */
 .wb-story-body :is(.wb-example-row,.wb-inspector-actions,.wb-inspector-source,.wb-dialog-actions) :is(.open-action,.info-action){width:auto;min-width:0;height:34px;padding:0 11px}
 .wb-story-body :is(.wb-example-row,.wb-inspector-actions,.wb-inspector-source,.wb-dialog-actions) :is(.open-action,.info-action)>span{display:inline}
+
+.wb-playground{display:grid;gap:12px;margin-top:20px;border-top:1px solid var(--line);padding-top:16px}
+.wb-playground-stage{display:grid;place-items:center;min-height:132px;padding:18px;background:var(--canvas);border:1px solid var(--line-soft);border-radius:10px}
+.wb-playground-stage :is(.open-action,.info-action){width:auto;min-width:0;max-width:100%;height:36px;padding:0 14px}
+.wb-playground-stage :is(.open-action,.info-action)>span{display:inline;overflow:hidden;text-overflow:ellipsis}
+.wb-playground-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wb-playground-fields label{display:grid;gap:5px;font-size:12px;color:var(--text);min-width:0}
+.wb-playground-fields :is(select,input[type=text]){min-width:0;width:100%;min-height:34px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);padding:5px 8px}
+.wb-playground-fields .wb-playground-check{display:flex;align-items:center;gap:8px}
+.wb-playground-check input{accent-color:var(--accent)}
+#wb-live-code{margin:0;background:var(--canvas);border:1px solid var(--line-soft);border-radius:7px;padding:11px;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.6 ui-monospace,monospace;color:var(--ink)}
+@media(max-width:360px){.wb-playground-fields{grid-template-columns:1fr}}

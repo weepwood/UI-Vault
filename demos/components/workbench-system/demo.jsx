@@ -156,7 +156,7 @@ const storySources={
  forms:{name:'搜索 / 选择',path:'src/components/WorkbenchSelect.jsx',snippet:'<SearchField id="search" value={query} onChange={setQuery} />\n<WorkbenchSelect id="sort" label="排序" value={sort}\n  options={options} onChange={setSort} />'},
  navigation:{name:'分类 / 列表',path:'src/components/ProjectList.jsx',snippet:'<CategoryNavigation categories={categories} current={category}\n  onChange={setCategory} />\n<ProjectList items={items} labels={labels} selectedId={selectedId}\n  onSelect={setSelectedId} query={query} />'},
  feedback:{name:'原生对话框 / 通知',path:'assets/ui/dialog.css',snippet:'<dialog class="project-dialog" aria-labelledby="dialog-title">\n  <h2 id="dialog-title">操作确认</h2>\n  <button type="button" class="info-action">关闭</button>\n</dialog>\n// 使用 dialog.showModal() / dialog.close()'},
- viewport:{name:'设备模式 / 缩放',path:'src/components/ViewportSwitcher.jsx',snippet:'<ViewportSwitcher mode={mode} customWidth={customWidth}\n  onChange={setMode} onCustomWidth={setCustomWidth}\n  stageElement={stage} visible />\n// applyPreviewLayout(stage, frame, mode, customWidth)'},
+ viewport:{name:'设备模式 / 缩放',path:'src/components/PreviewToolbar.jsx',snippet:'<ViewportSwitcher mode={mode} customWidth={customWidth}\n  onChange={setMode} onCustomWidth={setCustomWidth}\n  stageElement={stage} visible />\n// applyPreviewLayout(stage, frame, mode, customWidth)'},
  tokens:{name:'语义颜色 / 尺寸',path:'assets/styles.css',snippet:'.panel {\n  background: var(--surface);\n  color: var(--ink);\n  border: 1px solid var(--line);\n  border-radius: var(--workbench-control-radius, 7px);\n}'}
 };
 
@@ -164,6 +164,19 @@ function initShell(){
   const tabs=$$('[data-story]');
   const panels=$$('[data-story-panel]');
   const sourceToggle=$('#wb-source-toggle'),sourcePanel=$('#wb-source-panel');
+  const live=$('#wb-live-button'),variant=$('#wb-live-variant'),label=$('#wb-live-label'),disabled=$('#wb-live-disabled'),loading=$('#wb-live-loading');
+  function updateButton(){
+    const busy=loading.checked;
+    live.className=variant.value==='info-action'?'info-action':'open-action';
+    live.disabled=disabled.checked||busy;
+    if(busy)live.setAttribute('aria-busy','true');else live.removeAttribute('aria-busy');
+    live.querySelector('span').textContent=busy?'处理中…':label.value.trim()||'确认操作';
+    const example=live.cloneNode(true);example.removeAttribute('id');example.removeAttribute('data-demo-toast');
+    $('#wb-live-code').textContent=example.outerHTML;
+  }
+  for(const field of [variant,label,disabled,loading])field.addEventListener('input',updateButton);
+  updateButton();
+
   const report=message=>{$('#wb-interaction-status').textContent=message;};
   const showSource=open=>{sourcePanel.hidden=!open;sourceToggle.setAttribute('aria-expanded',String(open));sourceToggle.textContent=open?'收起实现':'查看实现';};
   sourceToggle.addEventListener('click',()=>showSource(sourcePanel.hidden));
@@ -174,6 +187,7 @@ function initShell(){
   });
   $('#wb-reset-story').addEventListener('click',()=>{
     window.dispatchEvent(new Event('wb-reset-demo'));
+    variant.value='open-action';label.value='确认操作';disabled.checked=false;loading.checked=false;updateButton();
     $$('[data-demo-toggle]').forEach((button,index)=>{button.setAttribute('aria-pressed',String(index===0));button.classList.toggle('is-active',index===0);});
     report('已恢复所有演示控件的默认状态。');
   });

@@ -63,6 +63,16 @@
             <button type="button" class="square-action" data-demo-toast="图标操作已触发" aria-label="图标操作" title="图标操作"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#copy"></use></svg></button>
             <button type="button" class="info-action" disabled><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#book-open"></use></svg><span>已禁用</span></button>
           </div>
+          <div class="wb-playground" aria-label="按钮属性实验">
+            <div class="wb-playground-stage"><button id="wb-live-button" type="button" class="open-action" data-demo-toast="实验按钮已触发"><span>确认操作</span></button></div>
+            <div class="wb-playground-fields">
+              <label>样式<select id="wb-live-variant"><option value="open-action">主要操作</option><option value="info-action">次要操作</option></select></label>
+              <label>文字<input id="wb-live-label" type="text" value="确认操作" maxlength="24"></label>
+              <label class="wb-playground-check"><input id="wb-live-disabled" type="checkbox">禁用状态</label>
+              <label class="wb-playground-check"><input id="wb-live-loading" type="checkbox">忙碌状态</label>
+            </div>
+            <pre id="wb-live-code" tabindex="0" aria-label="当前按钮的 HTML"></pre>
+          </div>
           <p class="wb-component-hint">点击可查看反馈。纯图标按钮必须提供可访问名称，禁用按钮不能响应点击。</p>
         </div>
         <div class="wb-section-head"><h2>状态与信息</h2><p>使用简短的文字表达状态，不让颜色承担全部信息。</p></div>

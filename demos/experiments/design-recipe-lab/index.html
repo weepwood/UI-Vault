@@ -17,12 +17,27 @@ main{max-width:1260px;margin:auto;padding:clamp(18px,4vw,48px)}header{display:fl
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}.motion-tile.is-raised{transform:none;outline:3px solid #82ad90}}
 @media(max-width:850px){.recipe-nav{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{grid-template-columns:1fr}.canvas{min-height:260px}}
 @media(max-width:430px){main{padding:15px}.hero{display:block;margin:22px 0 16px}.edition{display:none}.recipe-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.recipe-nav button{padding:9px}.card-head{padding:11px 12px}.notes{padding:15px}.canvas{padding:13px}.grid-study{padding:9px;grid-template-columns:1fr}.grid-study .hero-tile{grid-row:auto;min-height:125px}.grid-study>div{padding:10px}.scenarios{grid-template-columns:1fr}.brand{font-size:12px}.eyebrow{font-size:10px}}
+
+.lab-directory{margin:0 0 16px;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:0 12px}
+.lab-directory summary{padding:12px 0;cursor:pointer;font-weight:650;font-size:13px}
+.lab-directory summary span{float:right;color:var(--muted);font-size:11px;font-weight:400}
+.lab-links{display:grid;grid-template-columns:repeat(auto-fit,minmax(126px,1fr));gap:8px;padding-bottom:12px}
+.lab-links a{display:grid;gap:4px;text-decoration:none;border:1px solid var(--line);border-radius:8px;padding:10px;color:var(--ink);min-width:0}
+.lab-links a:hover{border-color:var(--accent);background:var(--soft)}
+.lab-links a small,.lab-links a span{font-size:11px;color:var(--muted)}.lab-links a strong{font-size:13px}
+@media(max-width:430px){.lab-directory summary span{float:none;display:block;margin-top:4px}}
 </style>
 </head>
 <body>
 <main>
 <header><div class="brand"><span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span> UI Vault / Design Lab</div><span class="eyebrow">Practice · 01</span></header>
 <section class="hero"><div><div class="kicker">Visual recipes / 设计方法</div><h1>让设计原理可操作。</h1><p>从真实设计指南提炼六种方法，在同一实验室中观察布局、材质、色彩与运动的变化。</p></div><div class="edition">06 RECIPES<br>INTERACTIVE CSS STUDIES</div></section>
+<details class="lab-directory"><summary>全部设计实验 <span>5 个方向 · 现有实验直达</span></summary><div class="lab-links">
+<a href="../../../?asset=aurora-field" target="_blank" rel="noopener"><small>01 / BACKGROUND</small><strong>背景与色彩</strong><span>渐变、极光、纹理</span></a>
+<a href="../../../?asset=glass-panel" target="_blank" rel="noopener"><small>02 / MATERIAL</small><strong>玻璃与材质</strong><span>柔光、磨砂、折射</span></a>
+<a href="#recipe-nav" data-local-recipe="4"><small>03 / TYPE</small><strong>字体与排版</strong><span>阅读行宽实验</span></a>
+<a href="../../../?asset=frame-design-lab" target="_blank" rel="noopener"><small>04 / LAYOUT</small><strong>布局与构图</strong><span>结构、密度、组件状态</span></a>
+<a href="#recipe-nav" data-local-recipe="5"><small>05 / MOTION</small><strong>空间与动效</strong><span>状态过渡实验</span></a></div></details>
 <nav class="recipe-nav" aria-label="选择设计配方" id="recipe-nav"></nav>
 <div class="workspace">
 <section class="card"><div class="card-head"><strong>实时实验</strong><span id="study-number">01 / 06</span></div><div class="canvas" id="canvas"><div class="sample" id="sample"></div></div>
@@ -46,6 +61,7 @@ const $=id=>document.getElementById(id),nav=$('recipe-nav'),range=$('value');let
 function update(){const s=studies[active],v=Number(range.value);$('sample').style.setProperty('--value',v+s.unit);$('output').textContent=v+s.unit;$('snippet').textContent=s.css(v);$('feedback').textContent='';}
 function choose(index){active=index;const r=recipes[index],s=studies[index];for(const [i,b] of [...nav.children].entries())b.setAttribute('aria-pressed',String(i===index));$('study-number').textContent=String(index+1).padStart(2,'0')+' / 06';$('recipe-kind').textContent=String(index+1).padStart(2,'0')+' / '+s.kind;$('recipe-title').textContent=r.title;$('principle').textContent=r.principle;$('mechanism').textContent=r.mechanism;$('use-when').textContent=r.useWhen;$('avoid-when').textContent=r.avoidWhen;$('agent').textContent=r.agentInstruction;$('checks').replaceChildren(...r.checks.map(text=>{const li=document.createElement('li');li.textContent=text;return li}));$('references').replaceChildren(...r.references.map(id=>{const a=document.createElement('a');a.href='../../../?asset='+encodeURIComponent(id);a.target='_blank';a.rel='noopener noreferrer';a.textContent=id.replace('website-style-','');return a}));$('sample').innerHTML=s.markup;$('control-label').textContent=s.control;range.min=s.min;range.max=s.max;range.step=s.unit==='ms'?10:1;range.value=s.initial;const motion=$('motion-toggle');if(motion)motion.addEventListener('click',()=>{const raised=motion.closest('.motion-tile').classList.toggle('is-raised');motion.setAttribute('aria-pressed',String(raised))});update();}
 for(const [i,s] of studies.entries()){const b=document.createElement('button');b.type='button';b.innerHTML='<small>'+String(i+1).padStart(2,'0')+' / '+s.kind+'</small><b>'+s.label+'</b>';b.setAttribute('aria-pressed','false');b.addEventListener('click',()=>choose(i));nav.append(b);}
+document.querySelectorAll('[data-local-recipe]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();choose(Number(link.dataset.localRecipe));nav.children[active].focus();}));
 range.addEventListener('input',update);$('reset').addEventListener('click',()=>{range.value=studies[active].initial;update();$('feedback').textContent='已恢复默认参数。'});
 $('select-code').addEventListener('click',()=>{const selection=window.getSelection(),r=document.createRange();r.selectNodeContents($('snippet'));selection.removeAllRanges();selection.addRange(r);$('snippet').focus({preventScroll:true});$('snippet').scrollIntoView({block:'nearest'});$('feedback').textContent='已选中 CSS，可使用系统复制快捷键。';});
 choose(0);
