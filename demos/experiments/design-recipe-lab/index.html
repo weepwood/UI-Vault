@@ -28,7 +28,7 @@ main{max-width:1260px;margin:auto;padding:clamp(18px,4vw,48px)}header{display:fl
 @media(max-width:430px){.lab-directory summary span{float:none;display:block;margin-top:4px}}
 .material-fields{display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px}.material-fields[hidden]{display:none}#material-json{margin:0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:7px;font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap;color:var(--muted)}
 #study-fields{display:grid;gap:10px;border-top:1px solid var(--line);padding-top:12px}#study-fields[hidden]{display:none}#study-extra-controls{display:grid;gap:8px}#study-json{margin:0;padding:10px;background:var(--paper);border:1px solid var(--line);border-radius:7px;font:11px/1.5 ui-monospace,monospace;white-space:pre-wrap;color:var(--muted)}.study-control{display:grid;gap:4px;min-width:0}.actions button[aria-pressed=true]{background:var(--soft);border-color:var(--accent);color:var(--accent)}
-.recipe-transfer{min-width:0;border-top:1px solid var(--line);padding-top:10px}.recipe-transfer summary{cursor:pointer;font-size:13px;font-weight:650}.recipe-transfer[open]{display:grid;gap:8px}.recipe-transfer p,.recipe-transfer label{font-size:12px;color:var(--muted)}.recipe-transfer textarea{display:block;width:100%;min-width:0;resize:vertical;min-height:100px;max-height:320px;padding:10px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);font:12px/1.6 ui-monospace,monospace}.recipe-transfer :is(summary,textarea):focus-visible{outline:2px solid var(--accent);outline-offset:2px}.recipe-transfer textarea[aria-invalid=true]{border-color:var(--accent)}#recipe-transfer-feedback{overflow-wrap:anywhere;min-height:1.5em}
+.recipe-transfer{min-width:0;border-top:1px solid var(--line);padding-top:10px}.recipe-transfer summary{cursor:pointer;font-size:13px;font-weight:650}.transfer-body{display:grid;gap:8px;padding-top:10px;min-width:0}.recipe-transfer p,.recipe-transfer label{font-size:12px;color:var(--muted)}.recipe-transfer textarea{display:block;width:100%;min-width:0;resize:vertical;min-height:100px;max-height:320px;padding:10px;border:1px solid var(--line);border-radius:7px;background:var(--paper);color:var(--ink);font:12px/1.6 ui-monospace,monospace}.recipe-transfer :is(summary,textarea):focus-visible{outline:2px solid var(--accent);outline-offset:2px}.recipe-transfer input[type=file]{width:100%;min-width:0;font-size:12px;color:var(--muted)}.recipe-transfer input[type=file]::file-selector-button{margin-right:8px;padding:6px 9px;border:1px solid var(--line);border-radius:6px;color:var(--ink);background:var(--surface);font:inherit;cursor:pointer}.recipe-transfer textarea[aria-invalid=true]{border-color:var(--accent)}#recipe-transfer-feedback{overflow-wrap:anywhere;min-height:1.5em}
 </style>
 </head>
 <body>
@@ -49,7 +49,7 @@ main{max-width:1260px;margin:auto;padding:clamp(18px,4vw,48px)}header{display:fl
 <div class="control-line"><label for="material-radius">材质圆角</label><output id="material-radius-out" for="material-radius">15px</output></div><input type="range" id="material-radius" min="0" max="36" value="15">
 <div class="actions" aria-label="材质预设"><button type="button" data-material-preset="clear">通透</button><button type="button" data-material-preset="frosted">磨砂</button><button type="button" data-material-preset="solid">厚重</button><button type="button" id="select-material-json">选中参数 JSON</button></div>
 <pre id="material-json" tabindex="0" aria-label="当前材质参数 JSON"></pre>
-</div><div id="study-fields" hidden><div id="study-extra-controls"></div><div id="study-presets" class="actions" aria-label="实验预设"></div><div class="actions"><button type="button" id="select-study-json">选中参数 JSON</button></div><pre id="study-json" tabindex="0" aria-label="当前实验参数 JSON"></pre></div><div class="actions"><button type="button" id="reset">恢复默认</button><button type="button" id="select-code" class="primary">选中实现代码</button></div><details class="recipe-transfer" id="recipe-transfer"><summary>保存与导入实验参数</summary><p>保存包含配方标识的 JSON，可跨设备重放；也支持当前配方的旧版三参数 JSON。</p><div class="actions"><button type="button" id="export-recipe">生成可重放 JSON</button><button type="button" id="select-recipe-transfer">选中 JSON</button></div><label for="recipe-transfer-json">实验配置 JSON</label><textarea id="recipe-transfer-json" rows="6" maxlength="8192" spellcheck="false" autocomplete="off" placeholder="粘贴已保存的实验配置"></textarea><div class="actions"><button type="button" class="primary" id="import-recipe">校验并应用</button><button type="button" id="clear-recipe-transfer">清空</button></div><p id="recipe-transfer-feedback" role="status" aria-live="polite"></p></details><p class="feedback" role="status" id="feedback"></p></div></section>
+</div><div id="study-fields" hidden><div id="study-extra-controls"></div><div id="study-presets" class="actions" aria-label="实验预设"></div><div class="actions"><button type="button" id="select-study-json">选中参数 JSON</button></div><pre id="study-json" tabindex="0" aria-label="当前实验参数 JSON"></pre></div><div class="actions"><button type="button" id="reset">恢复默认</button><button type="button" id="select-code" class="primary">选中实现代码</button></div><details class="recipe-transfer" id="recipe-transfer"><summary>保存与导入实验参数</summary><div class="transfer-body"><p>保存包含配方标识的 JSON，可跨设备重放；也支持当前配方的旧版三参数 JSON。</p><div class="actions"><button type="button" id="export-recipe">生成可重放 JSON</button><button type="button" id="select-recipe-transfer">选中 JSON</button></div><label for="recipe-transfer-file">读取本地 JSON 文件（可选）</label><input id="recipe-transfer-file" type="file" accept=".json,application/json" aria-describedby="recipe-file-hint"><p id="recipe-file-hint">最多 8 KiB，仅填入编辑框，不会自动应用。也可直接粘贴 JSON。</p><label for="recipe-transfer-json">实验配置 JSON</label><textarea id="recipe-transfer-json" rows="6" maxlength="8192" spellcheck="false" autocomplete="off" placeholder="粘贴已保存的实验配置"></textarea><div class="actions"><button type="button" class="primary" id="import-recipe">校验并应用</button><button type="button" id="clear-recipe-transfer">清空</button></div><p id="recipe-transfer-feedback" role="status" aria-live="polite"></p></div></details><p class="feedback" role="status" id="feedback"></p></div></section>
 <section class="card notes" aria-labelledby="recipe-title"><div><div class="kicker" id="recipe-kind">01 / Layout</div><h2 id="recipe-title"></h2></div><p id="principle"></p><div class="note-block"><h3>实现机制</h3><p id="mechanism"></p></div><div class="scenarios"><div class="scenario"><b>适用场景</b><p id="use-when"></p></div><div class="scenario"><b>不适用场景</b><p id="avoid-when"></p></div></div><div class="note-block"><h3>AI 实施指令</h3><p id="agent"></p></div><div class="note-block"><h3>验收清单</h3><ul id="checks"></ul></div><div class="note-block"><h3>来源案例</h3><div class="source-links" id="references"></div><p>示例为本仓原创 CSS 实验，不是上游页面的完整复刻或认证。</p></div></section>
 </div>
 <section class="card snippet"><div class="card-head"><strong>当前参数的 CSS 片段</strong><span>可选择并复制</span></div><pre id="snippet" tabindex="0" aria-label="当前实现代码"></pre></section>
@@ -167,15 +167,31 @@ function validateRecipeTransfer(raw){
  return {index,values};
 }
 const transfer=$('recipe-transfer-json'),transferFeedback=$('recipe-transfer-feedback');
+let fileReadGeneration=0;
 function transferStatus(message,error=false){transferFeedback.textContent=message;transfer.setAttribute('aria-invalid',String(error));}
 $('export-recipe').addEventListener('click',()=>{
+ fileReadGeneration++;
  transfer.value=JSON.stringify({version:1,recipe:recipes[active].id,values:currentParameters()},null,2);
  transferStatus('已生成可重放 JSON；可选中后复制保存。');
 });
 $('select-recipe-transfer').addEventListener('click',()=>{transfer.focus();transfer.select();transferStatus('已选中 JSON，可使用系统复制快捷键。');});
-$('clear-recipe-transfer').addEventListener('click',()=>{transfer.value='';transferStatus('已清空输入；当前实验未改变。');});
-transfer.addEventListener('input',()=>transferStatus(''));
+$('clear-recipe-transfer').addEventListener('click',()=>{fileReadGeneration++;transfer.value='';transferStatus('已清空输入；当前实验未改变。');});
+transfer.addEventListener('input',()=>{fileReadGeneration++;transferStatus('');});
+$('recipe-transfer-file').addEventListener('change',async event=>{
+ const file=event.target.files[0];event.target.value='';
+ if(!file)return;
+ const generation=++fileReadGeneration;
+ if(file.size>8192){transferStatus('文件超过 8 KiB 限制，原配置未改变。',true);return;}
+ try{
+  const raw=await file.text();
+  if(generation!==fileReadGeneration)return;
+  if(raw.length>8192){transferStatus('JSON 超过 8192 字符限制。',true);return;}
+  transfer.value=raw.replace(/^\uFEFF/,'');
+  transferStatus('已读取文件，检查后点击“校验并应用”。');
+ }catch{if(generation===fileReadGeneration)transferStatus('无法读取文件，原配置未改变。',true);}
+});
 $('import-recipe').addEventListener('click',()=>{
+ fileReadGeneration++;
  let parsed;
  try{parsed=validateRecipeTransfer(transfer.value);}catch(error){transferStatus(error.message,true);return;}
  const {index,values}=parsed;

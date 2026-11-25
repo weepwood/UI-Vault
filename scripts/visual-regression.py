@@ -1874,6 +1874,50 @@ def verify_recipe_replay(browser, origin):
             context.close()
 
 
+def verify_recipe_file_replay(browser, origin):
+    """新会话读取本地文件，必须显式应用；超限、字段/类型/步长错误不改变样品。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+"?asset=design-recipe-lab",wait_until="domcontentloaded")
+            frame=page.frame_locator("#preview-stage iframe")
+            tabs=frame.locator("#recipe-nav button")
+            expect(tabs).to_have_count(6)
+            frame.locator("#recipe-transfer summary").click()
+            transfer=frame.locator("#recipe-transfer-json")
+            file=frame.locator("#recipe-transfer-file")
+            values={"lineWidth":44,"fontSize":17,"lineHeight":2.1}
+            raw=json.dumps({"version":1,"recipe":"restrained-reading","values":values})
+            file.set_input_files({"name":"recipe.json","mimeType":"application/json","buffer":("\ufeff"+raw).encode("utf-8")})
+            expect(transfer).to_have_value(raw)
+            expect(tabs.first).to_have_attribute("aria-pressed","true")
+            frame.locator("#import-recipe").click()
+            expect(tabs.nth(4)).to_have_attribute("aria-pressed","true")
+            expect(frame.locator(".reading-study p")).to_have_css("font-size","17px")
+            css=frame.locator("#snippet").inner_text()
+            file.set_input_files({"name":"oversize.json","mimeType":"application/json","buffer":b" "*8193})
+            expect(frame.locator("#recipe-transfer-feedback")).to_contain_text("文件超过 8 KiB")
+            expect(transfer).to_have_value(raw)
+            expect(frame.locator("#snippet")).to_have_text(css)
+            for invalid in ({**values,"lineHeight":2.11},{**values,"lineWidth":"44"},{**values,"lineHeight":None},{"lineWidth":44,"fontSize":17}):
+                transfer.fill(json.dumps({"version":1,"recipe":"restrained-reading","values":invalid}))
+                frame.locator("#import-recipe").click()
+                expect(transfer).to_have_attribute("aria-invalid","true")
+                expect(frame.locator("#snippet")).to_have_text(css)
+            transfer.fill(raw)
+            frame.locator("#import-recipe").click()
+            frame.locator("#export-recipe").click()
+            assert json.loads(transfer.input_value())["values"]==values
+            assert frame.locator("body").evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            frame.locator("#recipe-transfer").scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"recipe-file-replay-{width}-{theme}.png"))
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_recipe_parameter_contract(browser, origin):
     """五类新增参数实验：预设必须改变真实 CSS，JSON 与默认值保持一致。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -3066,6 +3110,7 @@ def main():
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,
+                    verify_recipe_file_replay,
                     verify_knowledge_record,
                     verify_registry_browser,
                     verify_standalone_delivery,
