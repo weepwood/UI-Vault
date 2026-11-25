@@ -33,6 +33,11 @@
       <button type="button" class="filter-button" data-favorites="toggle" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#heart"></use></svg><span>我的收藏</span><span class="filter-count" id="favorite-count">0</span></button>
       <button type="button" class="filter-button" data-imported="toggle" aria-pressed="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#git-branch"></use></svg><span>跨仓资源</span><span class="filter-count" id="imported-count">—</span></button>
     </nav>
+    <nav class="workbench-shortcuts" aria-label="精选工作台">
+      <div class="section-row"><span>精选工作台</span></div>
+      <a class="workbench-shortcut" id="shortcut-components" href="./?asset=workbench-components" title="组件展厅" aria-label="打开组件展厅"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="./assets/icons/lucide.svg#component"></use></svg><span>组件展厅</span></a>
+      <a class="workbench-shortcut" id="shortcut-recipe-lab" href="./?asset=design-recipe-lab" title="设计配方实验室" aria-label="打开设计配方实验室"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="./assets/icons/lucide.svg#sliders-horizontal"></use></svg><span>设计实验室</span></a>
+    </nav>
     <div class="category-section"><div class="section-row"><span>项目分类</span><button type="button" class="text-reset" id="reset-filters" hidden>重置筛选</button></div><nav id="category-nav" class="category-nav" aria-label="项目分类"></nav></div>
     <div class="sidebar-footer">
       <a id="settings-open" class="sidebar-settings" href="./?view=settings" aria-label="打开工作台设置" title="设置" aria-current="false"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#settings"></use></svg><span>设置</span></a>
