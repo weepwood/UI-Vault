@@ -182,3 +182,24 @@ html[data-motion="reduced"] .demo-parameter-panel :is(button,select,input){trans
 
 @media(prefers-reduced-motion:reduce){.source-manifest-actions :is(button,a){transition:none;}}
 html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:none;}
+
+/* Registry is a subview of the existing source pane, not a second modal. */
+.dialog-source-pane.registry-source-pane{overflow-y:auto;overscroll-behavior:contain}
+.registry-source-pane>.source-manifest-actions{position:sticky;top:0;z-index:2;background:var(--surface);padding-block:4px 8px;margin-top:-4px;border-bottom:1px solid var(--line-soft)}
+.registry-browser{display:grid;gap:12px;flex:none;min-width:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--canvas);color:var(--text);font-size:12px}
+.registry-browser p{margin:0;color:var(--muted);line-height:1.6;overflow-wrap:anywhere}
+.registry-browser a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.registry-heading,.registry-module-info,.registry-commands>div>div{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 12px;min-width:0}
+.registry-heading>div{display:grid;gap:2px}
+.registry-heading strong{color:var(--ink);font-size:14px}
+.registry-heading span,.registry-dependencies small{color:var(--muted);font-size:11px}
+.registry-module-select{display:grid;gap:5px;color:var(--muted)}
+.registry-browser :is(select,button){min-height:32px;min-width:0;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;padding:5px 8px}
+.registry-module-select select{width:100%;text-overflow:ellipsis}
+.registry-browser button:hover{background:var(--hover)}
+.registry-module-info code,.registry-commands code{overflow-wrap:anywhere;font:11px/1.6 ui-monospace,SFMono-Regular,Consolas,monospace}
+.registry-dependencies ol{margin:6px 0 0;padding-inline-start:20px;display:grid;gap:5px}
+.registry-dependencies li span,.registry-dependencies li small{display:block}
+.registry-commands{display:grid;gap:6px}
+.registry-commands>div{min-width:0;padding:8px;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.registry-commands code{display:block;margin-top:4px;color:var(--text)}
