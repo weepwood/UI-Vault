@@ -2460,6 +2460,13 @@ def verify_knowledge_delivery(browser, origin):
             actual=(DIST/file["path"]).read_bytes()
             assert file["sha256"]==hashlib.sha256(actual).hexdigest() and file["bytes"]==len(actual)
             assert doc["relatedRegistry"]["scope"]=="general-foundation-not-workbench-package"
+            import subprocess
+            verified=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(info.value.path()),"--root",str(DIST)],encoding="utf-8"))
+            assert verified["verified"] and verified["checked"]>0
+            with page.expect_download() as template:
+                knowledge.get_by_role("button",name="下载 DESIGN.md",exact=True).click()
+            markdown=template.value.path().read_text("utf-8")
+            assert "# DESIGN.md" in markdown and file["path"] in markdown and file["sha256"] in markdown and "非法律审查" in markdown
             assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
             knowledge.locator(".knowledge-evidence").scroll_into_view_if_needed()
             page.screenshot(path=str(OUTPUT/f"knowledge-delivery-{width}-{theme}.png"))

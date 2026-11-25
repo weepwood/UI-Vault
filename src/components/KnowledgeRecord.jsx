@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {designHandoffMarkdown} from '../../assets/core/knowledge-template.js';
 import {searchKnowledge} from '../../assets/core/knowledge-search.js';
 import {selectKnowledgeRecord,knowledgeDelivery} from '../../assets/core/knowledge-record.js';
 
@@ -41,6 +42,7 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
    {knowledgeDelivery(value,asset).delivery.sourceFiles.map(file=>evidenceFile(file,file.name,onOpenSource?()=>onOpenSource(file.path):null))}
    </ul>{!row.preview&&!row.guide&&!row.delivery.sourceFiles.length&&<p>未登记本地文件证据。</p>}</details>
    <div className="registry-module-info">{onOpenRegistry&&<button type="button" onClick={onOpenRegistry}>浏览通用 Foundation Registry</button>}<button type="button" onClick={()=>onCopyText(handoff(),'AI 接入清单已复制')}>复制 AI 接入清单</button><button type="button" onClick={()=>{try{downloadSourceText(handoff(),asset.id+'-'+version+'-ai-handoff.json');notify('AI 接入清单已下载');}catch{notify('AI 接入清单下载失败');}}}>下载 AI 接入清单</button></div>
+   <div className="registry-module-info"><button type="button" onClick={()=>onCopyText(designHandoffMarkdown(knowledgeDelivery(value,asset)),'设计交付模板已复制')}>复制 DESIGN.md</button><button type="button" onClick={()=>{try{downloadSourceText(designHandoffMarkdown(knowledgeDelivery(value,asset)),asset.id+'-'+version+'-DESIGN.md');notify('设计交付模板已下载');}catch{notify('设计交付模板下载失败');}}}>下载 DESIGN.md</button></div>
    {value.recipes.map(recipe=><details className="knowledge-recipe" key={recipe.id}><summary>{recipe.title}</summary><p>{recipe.principle}</p><p>机制：{recipe.mechanism}</p><p>适用：{recipe.useWhen}；避免：{recipe.avoidWhen}</p><p>AI：{recipe.agentInstruction}</p>{recipe.implementation?.assetId==='design-recipe-lab'&&<p>对应实验：<a href={resolveAsset('?asset=design-recipe-lab')} target="_blank" rel="noopener noreferrer">设计配方实验室（新标签页）</a> · {recipe.title}。<a href={resolveAsset('demos/experiments/design-recipe-lab/index.html?recipe='+encodeURIComponent(recipe.implementation.experimentId))} target="_blank" rel="noopener noreferrer">打开对应实验（独立页）</a>。交互示例不代表运行认证。</p>}<ul>{recipe.checks.map(check=><li key={check}>{check}</li>)}</ul></details>)}
    <details className="knowledge-search"><summary>反向检索设计知识</summary>
     <p>按名称、设计方法或登记源码检索已收录版本；结果不代表已验收。</p>
