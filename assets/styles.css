@@ -840,7 +840,7 @@ html[data-theme="dark"][data-accent="violet"] { --accent-line:#56497a; --accent-
 
 /* 深色主题下“单独打开”和来源链接原本没有悬停反馈（深色规则优先级更高）。 */
 .menu-toggle:active { background:var(--hover-strong); }
-html[data-theme="dark"] .open-action:hover,
+html[data-theme="dark"] .open-action:hover:not(:disabled),
 html[data-theme="dark"] .preview-placeholder a:hover { background:#c9d5dd;border-color:#c9d5dd; }
 html[data-theme="dark"] .preview-placeholder a { background:#e2e9ee;color:#15232b; }
 
