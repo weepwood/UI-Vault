@@ -2213,6 +2213,35 @@
     "projectId": "ui-vault"
   },
   {
+    "id": "design-recipe-lab",
+    "title": "设计配方实验室",
+    "subtitle": "六种可交互设计方法",
+    "description": "将模块网格、玻璃、空间色场、工程界面、阅读排版和空间动效转化为可调节的实际 CSS 实验，并提供设计原则、案例与 AI 实施指令。",
+    "type": "resource",
+    "source": "local",
+    "tags": [
+      "指南",
+      "文档",
+      "设计实验"
+    ],
+    "technologies": [
+      "HTML",
+      "CSS",
+      "JavaScript"
+    ],
+    "preview": "demos/experiments/design-recipe-lab/index.html",
+    "code": "demos/experiments/design-recipe-lab/index.html",
+    "copyable": true,
+    "license": "本仓原创实验与说明；来源案例授权以原站为准",
+    "cover": "native",
+    "featured": true,
+    "created": "2026-11-25",
+    "previewCapabilities": [
+      "popups"
+    ],
+    "projectId": "ui-vault"
+  },
+  {
     "type": "resource",
     "source": "local",
     "technologies": [
@@ -2394,7 +2423,7 @@
     "id": "endfield-nav-tab",
     "title": "终末地导航标签",
     "subtitle": "斜纹遮罩与圆角交叠的竖排标签 / 交互研究",
-    "description": "参考《明日方舟：终末地》版本导览页导航标签的几何与交互：激活态斜纹条两端 mask 渐隐、右端多伸 8px、标题白光晕与左侧竖条拉伸。使用系统字体与独立 CSS 渐变替代未核实素材，保留 7 项键盘切换及舞台缩放，不再宣称素材级 1:1 还原。",
+    "description": "参考《明日方舟：终末地》版本导览页导航标签的几何与交互：激活态斜纹条两端 mask 渐隐、右端多伸 8px、标题白光晕与左侧竖条拉伸。使用系统字体、历史原插画 Base64 内嵌与 CSS 渐变兜底，保留 7 项键盘切换及舞台缩放，不再宣称素材级 1:1 还原。",
     "type": "component",
     "source": "local",
     "tags": [
@@ -2411,7 +2440,7 @@
     ],
     "preview": "demos/components/endfield-nav-tab/index.html",
     "code": "demos/components/endfield-nav-tab/index.html",
-    "license": "本仓独立演示代码；参考原站公开几何与交互，不再分发原站字体及插画。原作品名称、商标和 UI 权利归各权利人；不授予额外商业复用许可。",
+    "license": "本仓演示代码；原站插画用于个人学习与设计研究展示，素材许可待核实。原作品名称、商标、插画和 UI 权利归各权利人；不授予额外复用或再分发许可。",
     "cover": "style",
     "featured": false,
     "created": "2026-11-21",
@@ -2422,7 +2451,7 @@
       "复用 .tab-wrap::before 的 background-size + 45° linear-gradient + mask-image 三段渐隐实现斜纹装饰条",
       "复用右端多伸 8px（--overlap）钻入按钮圆角的设计，避免斜纹与按钮交接出现硬直角",
       "复用标题四层白光晕变量与父容器状态类驱动的激活逻辑（对应原站 P26xDN）",
-      "使用系统字体栈和原创 CSS 渐变替代未核实的原站字体和插画；不追求素材级一致。",
+      "历史激活插画来自 12bfcf2，以 Base64 内嵌；保留系统字体与渐变兜底。插画许可待核实，不纳入可再分发组件交付。",
       "全部可调参数集中在 CSS 顶部 TUNING 注释的 :root 变量中"
     ],
     "projectId": "ui-vault"

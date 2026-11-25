@@ -47,6 +47,12 @@
       </div>
     </header>
     <div class="wb-story-content">
+      <div class="wb-inspector" aria-label="当前组件演示信息">
+        <div class="wb-inspector-meta"><span class="wb-inspector-kicker">LIVE COMPONENT / <span id="wb-story-number">01</span></span><strong id="wb-inspector-title">真实组件与样式</strong><p id="wb-inspector-description">直接复用当前工作台的组件与设计变量。</p></div>
+        <div class="wb-inspector-actions"><button type="button" class="info-action" id="wb-source-toggle" aria-expanded="false" aria-controls="wb-source-panel">查看实现</button><button type="button" class="info-action" id="wb-reset-story">重置演示</button></div>
+        <div class="wb-inspector-source" id="wb-source-panel" hidden><div class="wb-component-caption"><strong>接入示例</strong><a id="wb-source-link" href="https://github.com/weepwood/UI-Vault/blob/main/assets/ui/controls.css" target="_blank" rel="noopener noreferrer">查看真实源码</a></div><p class="wb-source-address" id="wb-source-address" hidden></p><pre id="wb-source-code" tabindex="0" aria-label="组件接入示例"></pre><button type="button" class="info-action" id="wb-select-source">选中代码</button><p class="wb-component-hint">接入片段用于说明现有组件 API，并非完整独立工程；在沙箱内选中后使用系统复制快捷键。</p></div>
+        <div class="wb-inspector-feedback"><span class="wb-status-dot" aria-hidden="true"></span><span id="wb-interaction-status" role="status">等待操作</span></div>
+      </div>
       <section id="story-foundation" class="wb-story-panel" role="tabpanel" aria-labelledby="story-tab-foundation" data-story-panel="foundation">
         <div class="wb-section-head"><h2>按钮和操作</h2><p>按钮通过明确的主次等级、状态和动作文案建立信息层次。</p></div>
         <div class="wb-surface">
@@ -56,6 +62,16 @@
             <button type="button" class="info-action" data-demo-toast="次要操作已触发"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#book-open"></use></svg><span>次要操作</span></button>
             <button type="button" class="square-action" data-demo-toast="图标操作已触发" aria-label="图标操作" title="图标操作"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#copy"></use></svg></button>
             <button type="button" class="info-action" disabled><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><use href="./assets/icons/lucide.svg#book-open"></use></svg><span>已禁用</span></button>
+          </div>
+          <div class="wb-playground" aria-label="按钮属性实验">
+            <div class="wb-playground-stage"><button id="wb-live-button" type="button" class="open-action" data-demo-toast="实验按钮已触发"><span>确认操作</span></button></div>
+            <div class="wb-playground-fields">
+              <label>样式<select id="wb-live-variant"><option value="open-action">主要操作</option><option value="info-action">次要操作</option></select></label>
+              <label>文字<input id="wb-live-label" type="text" value="确认操作" maxlength="24"></label>
+              <label class="wb-playground-check"><input id="wb-live-disabled" type="checkbox">禁用状态</label>
+              <label class="wb-playground-check"><input id="wb-live-loading" type="checkbox">忙碌状态</label>
+            </div>
+            <pre id="wb-live-code" tabindex="0" aria-label="当前按钮的 HTML"></pre>
           </div>
           <p class="wb-component-hint">点击可查看反馈。纯图标按钮必须提供可访问名称，禁用按钮不能响应点击。</p>
         </div>

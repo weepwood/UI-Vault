@@ -109,3 +109,15 @@ test('展厅用主站 token、适配窄屏，不替换原来的全局组件样�
   assert.match(doc,/P3（已完成）｜消除双实现/);
   assert.match(doc,/P5｜自动化视觉验收/);
 });
+
+test('主站直达真实展厅与配方实验室，展厅保留沙箱权限和原图标',async()=>{
+ const [html,demo,icon,builder]=await Promise.all(['index.html',base+'demo.jsx','src/components/Icon.jsx','scripts/build-react.mjs'].map(read));
+ assert.match(html,/id="shortcut-components" href="[.]\/\?asset=workbench-components"/);
+ assert.match(html,/id="shortcut-recipe-lab" href="[.]\/\?asset=design-recipe-lab"/);
+ assert.match(demo,/import lucideSprite from /);
+ assert.match(demo,/IconSpriteContext.Provider value=\{sprite\}/);
+ assert.match(icon,/createContext\('[.]\/assets\/icons\/lucide[.]svg'\)/);
+ assert.match(builder,/loader:\{'[.]svg':'text'\}/);
+ assert.match(demo,/wb-reset-demo/);
+ assert.match(demo,/window.self!==window.top/);
+});

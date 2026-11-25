@@ -107,3 +107,37 @@
 @media(prefers-reduced-motion:reduce){
   .wb-theme-controls button,.wb-nav-item{transition:none}
 }
+
+/* Interactive inspector: use shared workbench action controls, not a second component kit. */
+.wb-story-content{padding-top:22px}
+.wb-inspector{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:14px;align-items:center;padding:16px;margin-bottom:24px;border:1px solid var(--line);border-radius:10px;background:var(--canvas);min-width:0}
+.wb-inspector-meta{display:grid;gap:4px;min-width:0}
+.wb-inspector-kicker{font-size:10px;font-weight:650;letter-spacing:.1em;color:var(--accent)}
+.wb-inspector-meta strong{font-size:15px;color:var(--ink)}
+.wb-inspector-meta p{margin:0;color:var(--muted);font-size:11px;overflow-wrap:anywhere}
+.wb-inspector-actions{display:flex;gap:6px;flex-wrap:wrap}
+.wb-inspector-source{grid-column:1/-1;min-width:0;background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px}
+.wb-inspector-source[hidden]{display:none}
+.wb-inspector-source pre{white-space:pre-wrap;overflow-wrap:anywhere;font:12px/1.65 ui-monospace,SFMono-Regular,Consolas,monospace;margin:0 0 12px;color:var(--ink)}
+.wb-inspector-source a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.wb-inspector-feedback{grid-column:1/-1;display:flex;gap:7px;align-items:center;border-top:1px solid var(--line);padding-top:10px;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.wb-inspector-feedback .wb-status-dot{flex:none}
+.wb-section-head h2{font-size:17px}.wb-section-head p,.wb-component-hint{font-size:12px}.wb-heading>p:last-child{font-size:12px}
+@media(max-width:480px){.wb-inspector{grid-template-columns:1fr;gap:10px;padding:12px;margin-bottom:18px}.wb-inspector-actions .info-action{flex:1}.wb-story-topbar{padding:16px}.wb-story-content{padding-top:14px}}
+
+.wb-source-address{overflow-wrap:anywhere;font:11px/1.5 ui-monospace,monospace;user-select:text;color:var(--muted);margin:0 0 12px}
+/* Main topbar has icon-only breakpoints; actual component specimens keep their labels. */
+.wb-story-body :is(.wb-example-row,.wb-inspector-actions,.wb-inspector-source,.wb-dialog-actions) :is(.open-action,.info-action){width:auto;min-width:0;height:34px;padding:0 11px}
+.wb-story-body :is(.wb-example-row,.wb-inspector-actions,.wb-inspector-source,.wb-dialog-actions) :is(.open-action,.info-action)>span{display:inline}
+
+.wb-playground{display:grid;gap:12px;margin-top:20px;border-top:1px solid var(--line);padding-top:16px}
+.wb-playground-stage{display:grid;place-items:center;min-height:132px;padding:18px;background:var(--canvas);border:1px solid var(--line-soft);border-radius:10px}
+.wb-playground-stage :is(.open-action,.info-action){width:auto;min-width:0;max-width:100%;height:36px;padding:0 14px}
+.wb-playground-stage :is(.open-action,.info-action)>span{display:inline;overflow:hidden;text-overflow:ellipsis}
+.wb-playground-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.wb-playground-fields label{display:grid;gap:5px;font-size:12px;color:var(--text);min-width:0}
+.wb-playground-fields :is(select,input[type=text]){min-width:0;width:100%;min-height:34px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);padding:5px 8px}
+.wb-playground-fields .wb-playground-check{display:flex;align-items:center;gap:8px}
+.wb-playground-check input{accent-color:var(--accent)}
+#wb-live-code{margin:0;background:var(--canvas);border:1px solid var(--line-soft);border-radius:7px;padding:11px;white-space:pre-wrap;overflow-wrap:anywhere;font:11px/1.6 ui-monospace,monospace;color:var(--ink)}
+@media(max-width:360px){.wb-playground-fields{grid-template-columns:1fr}}

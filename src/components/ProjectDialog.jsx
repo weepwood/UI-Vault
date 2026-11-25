@@ -10,6 +10,7 @@ import {ProjectHealthPanel} from './ProjectHealthPanel.jsx';
 import {DesignGuide} from './DesignGuide.jsx';
 import {SourceCode} from './SourceCode.jsx';
 import {RegistryBrowser} from './RegistryBrowser.jsx';
+import {KnowledgeRecord} from './KnowledgeRecord.jsx';
 import {DemoParameterPanel} from './DemoParameterPanel.jsx';
 import {parameterSchemaFor} from '../../assets/core/demo-parameters.js';
 
@@ -63,13 +64,14 @@ function PageInfoPanel({info,asset}){
  * ProjectDialog 的标签页、异步源码、焦点、Escape 和复制逻辑全由 React 管理。
  * 保留 <dialog id="project-dialog"> 原生顶层语义，状态切换不触碰 iframe。
  */
-export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify,onEditParameters}){
+export function ProjectDialog({root,asset,versionId="original",labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify,onEditParameters}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
   const [wrapSource,setWrapSource]=useState(false);
   const [highlightSource,setHighlightSource]=useState(false);
   const [registryOpen,setRegistryOpen]=useState(false);
   const [sourceToolsOpen,setSourceToolsOpen]=useState(false);
+  const [knowledgeOpen,setKnowledgeOpen]=useState(false);
   // 只保存“真正取回（或失败）的源码”；加载占位与未打开时的提示由下面的 source 在渲染期派生。
   const [loadedSource,setSource]=useState({id:null,path:null,text:'',status:'',ready:false});
   const [pageInfo,setPageInfo]=useState({id:null,info:null});
@@ -94,7 +96,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   // 切换资产必须同步丢弃上一次的标签页、源码与页面信息：若改成渲染期派生，
   // 再次打开同一资产时会命中旧内容而不再重新请求源码（现有测试也锁定了这个 effect 形态）。
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(()=>{setTab('overview');setRegistryOpen(false);setSourceToolsOpen(false);setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
+  useEffect(()=>{setTab('overview');setRegistryOpen(false);setKnowledgeOpen(false);setSourceToolsOpen(false);setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
   useEffect(()=>{
     if(!root)return;
     if(open&&assetId){
@@ -316,6 +318,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&onEditParameters&&<button className="parameter-dock-launch" type="button" onClick={onEditParameters}><Icon name="sliders-horizontal"/> 在预览旁实时编辑</button>}
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&<DemoParameterPanel key={asset.id+':'+asset.preview} asset={asset} notify={notify}/>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
+      {asset&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='page-info'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}/>}</div>}
     </section>
     {asset?.designGuidePath&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"
       aria-labelledby="tab-design-guide" tabIndex={0} hidden={tab!=='design-guide'}>

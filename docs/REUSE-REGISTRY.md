@@ -64,3 +64,11 @@ node scripts/install-registry.mjs --verify dist/registry /path/to/project founda
 ## 工作台模块浏览入口
 
 打开 UI Foundation Kit → 项目说明 / 源码 → 源代码 → 浏览 Foundation Registry。仅此时读取正式静态索引，按基础 CSS、React、Vue 分类选择模块，查看安装顺序、声明的运行时依赖和模块 JSON。复制预检、安装及复验命令前，将 ./my-project 替换成已存在的目标父目录；在可信仓库根目录先运行 npm run build。浏览器只展示元数据，不运行安装、不验证实际文件哈希；CLI 仍是最终权威。开发源站未生成 Registry 时给出重试与构建提示，其他资产仍保持原有交付方式。
+
+## 组合交付方案
+
+构建生成 registry/profiles.json：css、react、vue 三种组合。每种由原有 planRegistryInstall 解析真实模块及依赖、文件哈希、运行时和预检/安装/复验命令。React 复用已锁定 Radix 原语，Vue 复用已锁定 Reka UI；不增加运行时，不承诺 GPUI 适配器可安装。组合仅安装源码快照，不包含 node_modules 或完整宿主工程；需要完整独立工程请使用 Foundation 源码工程 ZIP。目标父目录必须存在，不覆盖既有 ui-foundation，使用同一 requested 列表复验。
+
+组合方案也可在 Foundation 源码 → 浏览 Registry → 交付组合 中直接选择；浏览器和构建共享固定请求模块列表，依据已读取的 Registry 索引展开去重依赖并生成命令，完整哈希和真实文件仍以 CLI 为准。
+
+独立运行验收脚本按共享 React/Vue 组合分别安装至各自 ui-foundation 目录，再独立编译页面和执行浏览器操作。宿主测试依赖仍来自同一锁定测试环境，并非各框架各自独立的 npm 锁文件；不将这一验证称为完整独立宿主工程交付。

@@ -45,6 +45,7 @@ await Promise.all([
     // sandbox="allow-scripts" iframe，与上面两个图鉴一样使用经典 IIFE 脚本。
     // 输出到 assets/ 下，由 build.mjs 的 copyTree('assets') 统一发布和指纹化。
     format:'iife',
+    loader:{'.svg':'text'},
     entryPoints:[resolve(ROOT,'demos/components/workbench-system/demo.jsx')],
     outfile:resolve(ROOT,'assets/showcase/workbench-system.js')
   })

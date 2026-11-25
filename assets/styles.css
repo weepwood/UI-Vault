@@ -1614,3 +1614,30 @@ html[data-theme=dark]{--workbench-popover-shadow:0 10px 28px #0006,0 2px 6px #00
 html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-preview-surface:#10161c}
 .preview-stage:not([data-size]),.preview-stage[data-size=auto]{background:var(--workbench-preview-surface)}
 .library-rail .sidebar-footer{border-color:var(--line-soft)}
+
+/* Direct entry to the two interactive resources; retain the existing category filters. */
+.workbench-shortcuts{display:grid;gap:3px;padding:0 3px;margin:0 0 12px;flex:none}
+.workbench-shortcuts .section-row{padding-inline:4px}
+.workbench-shortcut{display:flex;align-items:center;gap:9px;min-height:34px;padding:6px 9px;border:1px solid transparent;border-radius:var(--workbench-control-radius,7px);color:var(--text);font-size:12px;text-decoration:none;min-width:0}
+.workbench-shortcut>.ui-icon{width:17px;height:17px;flex:none;color:var(--accent)}
+.workbench-shortcut:hover,.workbench-shortcut[aria-current=page]{background:var(--accent-soft);border-color:var(--accent-line);color:var(--accent)}
+.workbench-shortcut:focus-visible{outline:2px solid var(--focus);outline-offset:1px}
+.workbench-shortcut span{min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(min-width:761px){
+  .app-shell.is-nav-collapsed .workbench-shortcuts{justify-items:center;padding:0}
+  .app-shell.is-nav-collapsed .workbench-shortcuts .section-row,.app-shell.is-nav-collapsed .workbench-shortcut span{display:none}
+  .app-shell.is-nav-collapsed .workbench-shortcut{justify-content:center;width:40px;height:38px;padding:0}
+  .app-shell.is-nav-revealing .workbench-shortcut span,.app-shell.is-nav-revealing .workbench-shortcuts .section-row{opacity:0;pointer-events:none}
+}
+@media(max-width:480px){.workbench-shortcuts{grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:5px;gap:2px}.workbench-shortcuts .section-row{grid-column:1/-1;min-height:22px}.workbench-shortcut{min-height:30px;padding:5px 8px;font-size:11px}}
+
+/* Visible workbench refinement: preserve existing dimensions and virtual row geometry. */
+.app-shell .sidebar .workbench-shortcuts{padding-top:8px;border-top:1px solid var(--line-soft)}
+.app-shell .sidebar .workbench-shortcuts .section-row{letter-spacing:.04em}
+.app-shell .sidebar .workbench-shortcut{font-weight:550;transition:background-color var(--motion-fast) ease,color var(--motion-fast) ease,border-color var(--motion-fast) ease}
+.app-shell .sidebar .workbench-shortcut[aria-current=page]{font-weight:650}
+.app-shell .project-panel .project-row-title{letter-spacing:-.012em}
+.app-shell .project-panel .project-row-subtitle{letter-spacing:.005em}
+.app-shell .topbar .project-identity h1{letter-spacing:-.025em}
+.app-shell .topbar .topbar-actions :is(.open-action,.info-action,.square-action){border-radius:var(--workbench-control-radius)}
+@media(prefers-reduced-motion:reduce){.app-shell .sidebar .workbench-shortcut{transition:none}}

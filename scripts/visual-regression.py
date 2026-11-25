@@ -141,7 +141,10 @@ def capture(page, mode, theme):
         return target.screenshot(animations="disabled")
     if mode in ("dialog", "mobile-dialog"):
         if mode == "mobile-dialog":
-            page.locator(".project-row").first.click()
+            # This baseline was recorded against aurora-field. New featured
+            # assets may reorder the list; compare the same dialog specimen.
+            page.locator('.project-item[data-id="aurora-field"] .project-row').click()
+            expect(page.locator(".topbar #preview-title")).to_have_text("背景效果实验室")
         page.locator("#preview-info").click()
         dialog = page.locator("#project-dialog")
         dialog.wait_for(state="visible")
@@ -1619,6 +1622,169 @@ def verify_compact_source_reader(browser, origin):
             context.close()
 
 
+def verify_showcase_discovery(browser, origin):
+    """主站直达真实组件、沙箱内图标及操作反馈，不运行外部代码。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator(".project-row").first.wait_for(state="attached")
+            if width<=760:page.locator("#menu-toggle").click()
+            page.locator("#shortcut-components").click()
+            page.wait_for_url("**/?asset=workbench-components")
+            frame=page.frame_locator("#preview-stage iframe")
+            expect(frame.locator("html")).to_have_attribute("data-theme",theme)
+            expect(page.locator("#shortcut-components")).to_have_attribute("aria-current","page")
+            assert frame.locator(".wb-brand-icon svg use").evaluate("e=>e.getBBox().width>0&&e.getBBox().height>0")
+            frame.locator("#wb-source-toggle").click()
+            expect(frame.locator("#wb-source-code")).to_contain_text("open-action")
+            expect(frame.locator("#wb-source-address")).to_be_visible()
+            expect(frame.locator("#wb-source-link")).to_be_hidden()
+            frame.locator("#wb-source-toggle").click()
+            frame.get_by_role("button",name="主要操作",exact=True).click()
+            expect(frame.locator("#wb-interaction-status")).to_contain_text("主要操作")
+            frame.locator("#wb-live-variant").select_option("info-action")
+            frame.locator("#wb-live-label").fill("提交表单")
+            live=frame.locator("#wb-live-button")
+            expect(live).to_have_text("提交表单")
+            expect(live).to_have_class("info-action")
+            frame.locator("#wb-live-disabled").check()
+            expect(live).to_be_disabled()
+            expect(frame.locator("#wb-live-code")).to_contain_text('disabled')
+            frame.locator("#wb-live-disabled").uncheck()
+            frame.locator("#wb-live-loading").check()
+            expect(live).to_have_attribute("aria-busy","true")
+            expect(live).to_be_disabled()
+            expect(live).to_have_text("处理中…")
+            frame.locator("#wb-reset-story").click()
+            expect(live).to_be_enabled()
+            expect(live).to_have_text("确认操作")
+            expect(live).to_have_class("open-action")
+            frame.locator("#story-tab-forms").click()
+            frame.locator("#wb-demo-search").fill("玻璃")
+            assert frame.locator("#wb-search-mount svg use").first.evaluate("e=>e.getBBox().width>0")
+            expect(frame.locator("#wb-interaction-status")).to_contain_text("玻璃")
+            frame.locator("#wb-source-toggle").click()
+            expect(frame.locator("#wb-source-code")).to_contain_text("WorkbenchSelect")
+            frame.locator("#wb-select-source").click()
+            assert "SearchField" in frame.locator("#wb-source-code").evaluate("e=>window.getSelection().toString()")
+            frame.locator("#story-tab-navigation").click()
+            expect(frame.locator("#wb-project-list .project-row")).to_have_count(1)
+            frame.locator("#wb-reset-story").click()
+            expect(frame.locator("#wb-project-list .project-row")).to_have_count(4)
+            frame.locator("#story-tab-feedback").click()
+            frame.locator("#wb-open-dialog").click()
+            expect(frame.locator("#wb-dialog")).to_be_visible()
+            page.keyboard.press("Escape")
+            expect(frame.locator("#wb-dialog")).to_be_hidden()
+            expect(frame.locator("#wb-interaction-status")).to_have_text("对话框已关闭")
+            frame.locator("#story-tab-viewport").press("End")
+            expect(frame.locator("#story-tab-tokens")).to_have_attribute("aria-selected","true")
+            assert frame.locator("body").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            frame.locator("#story-tab-foundation").click()
+            frame.locator("#wb-source-toggle").click()
+            page.screenshot(path=str(OUTPUT/f"showcase-discovery-{width}-{theme}.png"))
+            if width<=760:page.locator("#menu-toggle").click()
+            page.locator("#shortcut-recipe-lab").click()
+            page.wait_for_url("**/?asset=design-recipe-lab")
+            expect(page.frame_locator("#preview-stage iframe").locator("#recipe-nav button")).to_have_count(6)
+        finally:
+            context.close()
+
+
+def verify_design_recipe_lab(browser, origin):
+    """真实沙箱中运行六个配方，验证参数、代码及恢复行为。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=design-recipe-lab",wait_until="domcontentloaded")
+            frame=page.frame_locator("#preview-stage iframe")
+            buttons=frame.locator("#recipe-nav button")
+            expect(buttons).to_have_count(6)
+            expect(page.locator(".topbar #preview-title")).to_have_text("设计配方实验室")
+            frame.locator(".lab-directory summary").click()
+            expect(frame.locator(".lab-links a")).to_have_count(5)
+            frame.locator('[data-local-recipe="4"]').click()
+            expect(buttons.nth(4)).to_have_attribute("aria-pressed","true")
+            frame.locator('[data-local-recipe="5"]').click()
+            expect(buttons.nth(5)).to_have_attribute("aria-pressed","true")
+            for asset in ("aurora-field","glass-panel","frame-design-lab"):
+                expect(frame.locator(f'.lab-links a[href="../../../?asset={asset}"]')).to_have_count(1)
+            frame.locator(".lab-directory summary").click()
+            for i,(selector,prop,value,expected,default) in enumerate((
+                (".grid-study","gap","24","24px","12"),
+                (".glass-sheet","backdropFilter","24","blur(24px)","14"),
+                (".mesh-study","backgroundImage","75","75% 30%","28"),
+                (".terminal-study","fontSize","16","16px","13"),
+                (".reading-study article","maxWidth","44",None,"34"),
+                (".motion-tile","transitionDuration","400","0s","220"),
+            )):
+                buttons.nth(i).click()
+                control=frame.locator("#value")
+                expect(control).to_have_value(default)
+                before=frame.locator(selector).evaluate("(el,p)=>getComputedStyle(el)[p]",prop)
+                control.evaluate("(el,v)=>{el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}));}",value)
+                rendered=frame.locator(selector).evaluate("(el,p)=>getComputedStyle(el)[p]",prop)
+                if expected is not None:
+                    assert expected in rendered, (selector,rendered)
+                elif width>=761:
+                    assert rendered!=before
+                expect(frame.locator("#snippet")).to_contain_text(value)
+                assert frame.locator("body").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+                expect(frame.locator("#recipe-nav button[aria-pressed=true]")).to_have_count(1)
+                if i==5:
+                    motion=frame.locator("#motion-toggle")
+                    motion.click()
+                    expect(motion).to_have_attribute("aria-pressed","true")
+                    assert frame.locator(".motion-tile").evaluate("el=>getComputedStyle(el).transform")=="none"
+                frame.locator("#reset").click()
+                expect(control).to_have_value(default)
+                expect(frame.locator("#feedback")).to_contain_text("恢复")
+            buttons.first.click()
+            expect(frame.locator("#value")).to_have_value("12")
+            if width<=430:
+                assert len(frame.locator(".grid-study").evaluate("el=>getComputedStyle(el).gridTemplateColumns").split())==1
+            buttons.nth(0 if width>=761 else 1).click()
+            page.screenshot(path=str(OUTPUT/f"design-recipe-lab-{width}-{theme}.png"))
+        finally:
+            context.close()
+
+
+def verify_knowledge_record(browser, origin):
+    """按需读取真实发布知识索引，保留版本与证据边界。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN",permissions=["clipboard-read","clipboard-write"])
+        reads=[]
+        try:
+            def route_index(route):
+                reads.append(route.request.url)
+                if len(reads)==1:route.fulfill(status=503,body="temporary unavailable")
+                else:route.continue_()
+            context.route("**/content/knowledge-index.json",route_index)
+            page=context.new_page()
+            page.goto(origin+"?asset=website-style-bauhaus",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            assert not reads
+            page.locator("#tab-page-info").click()
+            assert not reads
+            page.get_by_role("button",name="查看 AI 复用证据").click()
+            page.get_by_text("知识索引暂不可用或版本不一致。",exact=False).wait_for()
+            page.get_by_role("button",name="重试",exact=True).click()
+            page.get_by_role("button",name="复制知识 JSON").click()
+            record=json.loads(page.evaluate("()=>navigator.clipboard.readText()"))
+            assert record["record"]["key"]=="website-style-bauhaus/original"
+            assert any(recipe["id"]=="functional-grid" for recipe in record["recipes"])
+            assert len(reads)==2
+            assert page.locator(".knowledge-record").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            page.screenshot(path=str(OUTPUT/f"knowledge-record-{theme}-{width}.png"))
+            page.keyboard.press("Escape")
+            expect(page.locator("#preview-info")).to_be_focused()
+        finally:
+            context.close()
+
+
 def verify_registry_browser(browser, origin):
     """真实发布 Registry 索引，按需读取、失败重试、跨主题浏览及复制命令。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -1649,6 +1815,11 @@ def verify_registry_browser(browser, origin):
             page.get_by_role("button",name="复制预检命令").click()
             assert page.evaluate("()=>navigator.clipboard.readText()")=="node scripts/install-registry.mjs --plan dist/registry ./my-project foundation-vue-primitives"
             assert page.locator(".registry-browser").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            page.get_by_role("combobox",name="选择 Registry 交付组合").select_option("vue")
+            expect(page.locator(".registry-dependencies li")).to_have_count(7)
+            page.get_by_role("button",name="复制预检命令").click()
+            assert page.evaluate("()=>navigator.clipboard.readText()")=="node scripts/install-registry.mjs --plan dist/registry ./my-project foundation-vue-button foundation-vue-input foundation-vue-switch foundation-vue-primitives"
+            page.screenshot(path=str(OUTPUT/f"registry-profile-{theme}-{width}.png"))
             page.get_by_role("button",name="返回源码").click()
             expect(page.locator(".registry-browser")).to_have_count(0)
             expect(page.locator(".source-view")).to_be_visible()
@@ -2582,6 +2753,9 @@ def main():
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
                     verify_compact_source_reader,
+                    verify_showcase_discovery,
+                    verify_design_recipe_lab,
+                    verify_knowledge_record,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,
