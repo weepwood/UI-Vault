@@ -161,7 +161,7 @@
 .demo-parameter-panel :is(input:not([type=checkbox]),select,button){min-width:0;border:1px solid var(--line);border-radius:var(--workbench-control-radius,7px);background:var(--surface);color:var(--ink);font:inherit;min-height:32px;padding:5px 8px;transition:background-color var(--motion-fast) ease,border-color var(--motion-fast) ease;}
 .demo-parameter-panel :is(button,select):hover:not(:disabled){background:var(--hover);}
 .demo-parameter-panel :is(button,select,input):focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
-.demo-parameter-panel input[aria-invalid=true]{border-color:var(--parameter-error);outline:2px solid var(--parameter-error);outline-offset:1px;}
+.demo-parameter-panel input[aria-invalid=true],.demo-parameter-panel input[aria-invalid=true]:focus-visible{border-color:var(--parameter-error);outline:2px solid var(--parameter-error);outline-offset:1px;}
 .demo-parameter-panel:has(input[aria-invalid=true]) .parameter-status{color:var(--parameter-error);}
 .parameter-number input{width:76px;font-variant-numeric:tabular-nums;}
 .parameter-color input{width:48px;padding:3px;}

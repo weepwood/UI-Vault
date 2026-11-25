@@ -1273,8 +1273,17 @@ def verify_live_parameter_dock(browser, origin):
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
         radius.fill("999")
         expect(radius).to_have_attribute("aria-invalid","true")
-        assert radius.evaluate("""e=>{const p=e.closest('.demo-parameter-panel');
-          return getComputedStyle(e).outlineColor===getComputedStyle(p.querySelector('.parameter-status')).color;}""")
+        # The error state must override focus-visible, including after CSS transitions settle.
+        page.wait_for_function("""() => {
+          const e=document.querySelector('#parameter-dock input[aria-label="卡片圆角"]');
+          const p=e.closest('.demo-parameter-panel'),style=getComputedStyle(e);
+          const status=getComputedStyle(p.querySelector('.parameter-status'));
+          const probe=document.createElement('span');probe.style.color='var(--parameter-error)';
+          p.append(probe);const expected=getComputedStyle(probe).color;probe.remove();
+          return e.matches('[aria-invalid=true]')&&style.outlineStyle==='solid'&&
+            style.outlineColor===expected&&style.borderTopColor===expected&&status.color===expected;
+        }""")
+        page.screenshot(path=str(OUTPUT/"parameter-invalid-desktop.png"))
         expect(dock.get_by_role("button",name="应用参数")).to_be_disabled()
         radius.press("Escape")
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
