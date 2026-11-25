@@ -33,6 +33,6 @@ test('Project 清单完整、唯一，且与每条 Asset 一一关联',async()=>
   assert.ok(c.items.every(x=>ids.has(x.projectId)));
   assert.equal(c.items.filter(x=>x.projectId==='style-atlas').length,57);
   assert.equal(c.items.filter(x=>x.projectId==='page-mirror').length,24);
-  assert.equal(c.items.filter(x=>x.projectId==='ui-vault').length,11);
+  assert.equal(c.items.filter(x=>x.projectId==='ui-vault').length,12);
   assert.equal(formatProjectManifest(result.projects.slice().reverse()),result.manifest);
 });

@@ -141,7 +141,10 @@ def capture(page, mode, theme):
         return target.screenshot(animations="disabled")
     if mode in ("dialog", "mobile-dialog"):
         if mode == "mobile-dialog":
-            page.locator(".project-row").first.click()
+            # This baseline was recorded against aurora-field. New featured
+            # assets may reorder the list; compare the same dialog specimen.
+            page.locator('.project-item[data-id="aurora-field"] .project-row').click()
+            expect(page.locator(".topbar #preview-title")).to_have_text("背景效果实验室")
         page.locator("#preview-info").click()
         dialog = page.locator("#project-dialog")
         dialog.wait_for(state="visible")
@@ -1619,6 +1622,56 @@ def verify_compact_source_reader(browser, origin):
             context.close()
 
 
+def verify_design_recipe_lab(browser, origin):
+    """真实沙箱中运行六个配方，验证参数、代码及恢复行为。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=design-recipe-lab",wait_until="domcontentloaded")
+            frame=page.frame_locator("#preview-stage iframe")
+            buttons=frame.locator("#recipe-nav button")
+            expect(buttons).to_have_count(6)
+            expect(page.locator(".topbar #preview-title")).to_have_text("设计配方实验室")
+            for i,(selector,prop,value,expected,default) in enumerate((
+                (".grid-study","gap","24","24px","12"),
+                (".glass-sheet","backdropFilter","24","blur(24px)","14"),
+                (".mesh-study","backgroundImage","75","75% 30%","28"),
+                (".terminal-study","fontSize","16","16px","13"),
+                (".reading-study article","maxWidth","44",None,"34"),
+                (".motion-tile","transitionDuration","400","0s","220"),
+            )):
+                buttons.nth(i).click()
+                control=frame.locator("#value")
+                expect(control).to_have_value(default)
+                before=frame.locator(selector).evaluate("(el,p)=>getComputedStyle(el)[p]",prop)
+                control.evaluate("(el,v)=>{el.value=v;el.dispatchEvent(new Event('input',{bubbles:true}));}",value)
+                rendered=frame.locator(selector).evaluate("(el,p)=>getComputedStyle(el)[p]",prop)
+                if expected is not None:
+                    assert expected in rendered, (selector,rendered)
+                elif width>=761:
+                    assert rendered!=before
+                expect(frame.locator("#snippet")).to_contain_text(value)
+                assert frame.locator("body").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+                expect(frame.locator("#recipe-nav button[aria-pressed=true]")).to_have_count(1)
+                if i==5:
+                    motion=frame.locator("#motion-toggle")
+                    motion.click()
+                    expect(motion).to_have_attribute("aria-pressed","true")
+                    assert frame.locator(".motion-tile").evaluate("el=>getComputedStyle(el).transform")=="none"
+                frame.locator("#reset").click()
+                expect(control).to_have_value(default)
+                expect(frame.locator("#feedback")).to_contain_text("恢复")
+            buttons.first.click()
+            expect(frame.locator("#value")).to_have_value("12")
+            if width<=430:
+                assert len(frame.locator(".grid-study").evaluate("el=>getComputedStyle(el).gridTemplateColumns").split())==1
+            buttons.nth(0 if width>=761 else 1).click()
+            page.screenshot(path=str(OUTPUT/f"design-recipe-lab-{width}-{theme}.png"))
+        finally:
+            context.close()
+
+
 def verify_knowledge_record(browser, origin):
     """按需读取真实发布知识索引，保留版本与证据边界。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -2620,6 +2673,7 @@ def main():
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
                     verify_compact_source_reader,
+                    verify_design_recipe_lab,
                     verify_knowledge_record,
                     verify_registry_browser,
                     verify_standalone_delivery,
