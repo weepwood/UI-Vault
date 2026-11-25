@@ -4,15 +4,16 @@ import {projectEmoji} from '../../assets/core/workbench.js';
 import {highlightSearchText,searchMatchDetail} from '../../assets/core/catalog.js';
 
 const MAX_RESULTS=60;
-function MatchTitle({title,query}){
+const EMPTY_RECENT=Object.freeze([]);
+const MatchTitle=React.memo(function MatchTitle({title,query}){
   return <>{highlightSearchText(title,query).map((part,index)=>part.matched
     ?<mark key={index} className="command-palette-match">{part.text}</mark>
     :<React.Fragment key={index}>{part.text}</React.Fragment>)}</>;
-}
+});
 
 // 按参考 Command Palette 的设计独立实现：中央面板、渐变光晕、固定高度结果、键盘高亮。
 // 搜索状态由弹窗局部参数提供，输入不会修改第二栏 ProjectList。
-export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=[],onChoose,onClose}){
+export function CompactSearchPanel({inputRef,value,onChange,items,loading,recentIds=EMPTY_RECENT,onChoose,onClose}){
   // 每次查询变化都丢弃旧高亮，不能在 A→B→A 时恢复 A 的旧行号。
   const [selection,setSelection]=useState({query:value,index:0});
   if(selection.query!==value)setSelection({query:value,index:0});
@@ -33,6 +34,12 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
     ];
   },[items,value,recentIds,limit]);
   const flat=useMemo(()=>groups.flatMap(group=>group.items),[groups]);
+  // Matching descriptions depend on the query/result set, not pointer or keyboard focus.
+  const details=useMemo(()=>flat.map(item=>{
+    const matched=value.trim()?searchMatchDetail(item,value):null;
+    return matched?(matched.label+' · '+matched.text):
+      (item.subtitle||item.description||item.projectId||'UI Vault');
+  }),[flat,value]);
   // 异步目录更新导致结果缩短时也不能留下越界的 aria-activedescendant。
   const active=selection.query===value&&selection.index<flat.length?selection.index:0;
   useLayoutEffect(()=>{
@@ -127,9 +134,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
               <div className="command-palette-group-label">{group.label}</div>
               {group.items.map(item=>{
                 const index=++rowIndex;
-                const matched=value.trim()?searchMatchDetail(item,value):null;
-                const detail=matched?(matched.label+' · '+matched.text):
-                  (item.subtitle||item.description||item.projectId||'UI Vault');
+                const detail=details[index];
                 return <button type="button" key={item.id} id={'command-result-'+index}
                   className={'command-palette-item compact-search-result'+(active===index?' is-active':'')}
                   data-command-index={index} role="option" aria-selected={active===index} tabIndex={-1}

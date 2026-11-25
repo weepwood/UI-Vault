@@ -1237,6 +1237,18 @@ html[data-theme="dark"] .command-palette-footer{background:rgba(18,24,29,.38)}
  .command-palette-footer kbd{min-width:17px;height:18px;font-size:9px}
 }
 @media(max-width:360px){.command-palette-footer:not(.command-palette-pagination)>span:last-child{display:none}.command-palette-pagination{flex-wrap:wrap}.command-palette-pagination>span{white-space:normal}}
+/* Landscape and short windows: preserve the input, pagination and keyboard help;
+   only the result viewport shrinks. No nested page scroll or clipped footer. */
+@media(max-height:440px){
+ .command-palette-panel{gap:6px;padding:7px}
+ .command-palette-field{min-height:42px;padding:7px 10px}
+ .command-palette-body{flex:1 1 auto;min-height:0}
+ .command-palette-list{flex:1 1 auto;height:min(480px,calc(100dvh - 150px));min-height:0;padding-block:4px}
+ .command-palette-footer{flex:none;padding:6px 10px;gap:6px}
+ .command-palette-footer:not(.command-palette-pagination)>span:last-child{display:none}
+ .command-palette-empty{min-height:0;padding:10px}
+}
+
 @media(prefers-reduced-motion:reduce){
  .command-palette-overlay,.command-palette-panel{animation:none}
  .command-palette-item{transition:none}

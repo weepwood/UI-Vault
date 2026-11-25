@@ -913,6 +913,21 @@ def verify_directory_session_and_search_limit(browser, origin):
         expect(page.get_by_text("请缩小关键词范围")).to_be_visible()
         assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2")
         page.screenshot(path=str(OUTPUT / "command-search-cap-mobile.png"))
+        for width,height in ((667,300),(390,280)):
+            page.set_viewport_size({"width":width,"height":height})
+            field.press("Control+Home")
+            field.press("Control+End")
+            expect(field).to_have_attribute("aria-activedescendant","command-result-239")
+            page.wait_for_function("""() => {
+              const list=document.querySelector('.command-palette-list').getBoundingClientRect();
+              const row=document.getElementById('command-result-239').getBoundingClientRect();
+              const panel=document.querySelector('.command-palette-panel').getBoundingClientRect();
+              const footer=document.querySelector('.command-palette-footer:last-child').getBoundingClientRect();
+              return panel.top>=0&&panel.bottom<=innerHeight&&footer.bottom<=panel.bottom
+                &&list.height>=row.height&&row.top>=list.top-1&&row.bottom<=list.bottom+1;
+            }""")
+            page.screenshot(path=str(OUTPUT / f"command-search-short-{width}x{height}.png"))
+        page.set_viewport_size({"width":320,"height":640})
         field.fill("bauhaus")
         page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length<60")
         expect(field).to_have_attribute("aria-activedescendant", "command-result-0")

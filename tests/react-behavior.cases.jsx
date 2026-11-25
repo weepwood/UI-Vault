@@ -177,6 +177,26 @@ test('全局搜索往返查询不恢复旧高亮，Enter 选择当前第一项',
   }finally{unmount();}
 });
 
+test('全局搜索键盘移动不重复扫描结果字段，变更查询仍重新匹配', () => {
+  let reads=0;
+  const items=Array.from({length:60},(_,i)=>({...asset,id:'result-'+i,
+    get tags(){reads++;return ['按钮'];}
+  }));
+  const inputRef={current:null},panel=value=><CompactSearchPanel inputRef={inputRef} value={value}
+    items={items} loading={false} onChange={()=>{}} onClose={()=>{}} onChoose={()=>{}}/>;
+  const {container,rerender,unmount}=render(panel('按钮'));
+  try{
+    const before=reads;
+    assert.ok(before>=60);
+    for(let i=0;i<10;i++)fire($(container,'[role="combobox"]'),'keydown',{key:'ArrowDown'});
+    assert.equal($(container,'[role="combobox"]').getAttribute('aria-activedescendant'),'command-result-10');
+    assert.equal(reads,before,'仅高亮变化不应重新读取匹配字段');
+    rerender(panel('HTML'));
+    assert.ok(reads>before);
+    assert.match($(container,'.command-palette-item-detail').textContent,/技术/);
+  }finally{unmount();}
+});
+
 test('目录筛选缓存不受预览、菜单或主题影响，筛选变更仍然生效', () => {
   const other={...asset,id:'other',title:'示例风格',subtitle:'Style sample',description:'视觉风格',type:'style',tags:['风格']};
   const state={assets:[asset,other],labels,favorites:new Set(),category:'all',
