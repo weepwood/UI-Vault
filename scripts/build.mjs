@@ -6,6 +6,7 @@ import { ROOT, inspectCatalog, safeRelativePath } from './lib/catalog.mjs';
 import {runPythonOrThrow} from './lib/python.mjs';
 import {SOURCE_EXTENSIONS} from '../assets/core/source-files.js';
 import {writeRegistry,REGISTRY_ROOT} from './lib/reuse-registry.mjs';
+import {versionCssImports} from './lib/css-revision.mjs';
 
 const {errors,items}=await inspectCatalog();
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
@@ -91,7 +92,8 @@ if(!html.includes('href="./assets/styles.css"')||!html.includes('src="./assets/a
 html=html.replace('href="./assets/styles.css"',`href="./assets/styles.${assetRevision}.css"`);
 html=html.replace('src="./assets/app.js"',`src="./assets/app.${assetRevision}.js"`);
 await writeFile(htmlPath,html,'utf8');
-await copyFile(resolve(out,'assets/styles.css'),resolve(out,`assets/styles.${assetRevision}.css`));
+const entryStyles=await readFile(resolve(out,'assets/styles.css'),'utf8');
+await writeFile(resolve(out,`assets/styles.${assetRevision}.css`),versionCssImports(entryStyles,assetRevision),'utf8');
 
 // 保持依赖图中的所有 JS 模块使用本次构建的相同指纹；源仓库代码保持原样。
 function withRevision(importSource){

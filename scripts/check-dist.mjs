@@ -68,8 +68,9 @@ assert.ok(entry.includes("./react-workbench.js?v="+jsFingerprint),'React 组件�
 const core=await readFile(join(out,'assets/core/workbench.js'),'utf8');
 assert.match(core,new RegExp('from [\\\x27"][.]/icons[.]js[?]v='+jsFingerprint),'子模块没有使用同一版本标记');
 const versionedCSS=await readFile(join(out,`assets/styles.${cssFingerprint}.css`),'utf8');
-for(const componentPath of ['./ui/controls.css','./ui/dropdown.css','./ui/project-row.css','./ui/dialog.css','./ui/preview-toolbar.css']){
-  assert.ok(versionedCSS.includes('@import url("'+componentPath+'")'),'主站 CSS 缺少共享组件引用：'+componentPath);
+for(const componentPath of ['./fonts/975-yuan.css','./ui/controls.css','./ui/dropdown.css','./ui/project-row.css','./ui/dialog.css','./ui/preview-toolbar.css','./ui/directory-controls.css']){
+  assert.ok(versionedCSS.includes('@import url("'+componentPath+'?v='+cssFingerprint+'")'),'主站 CSS 依赖版本不一致：'+componentPath);
+  assert.ok((await stat(resolve(out,'assets',componentPath))).isFile(),'缺少 CSS 依赖：'+componentPath);
 }
 // 模块化业务代码通过 esbuild 收纳进一个 React bundle，页面不再请求旧控制器。
 assert.ok(!entry.includes('core/workbench-state.js'),'旧业务状态不应从主入口重复加载');
