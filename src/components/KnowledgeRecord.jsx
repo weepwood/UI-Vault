@@ -1,21 +1,24 @@
 import {useEffect,useState} from 'react';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
+import {searchKnowledge} from '../../assets/core/knowledge-search.js';
 import {selectKnowledgeRecord,knowledgeDelivery} from '../../assets/core/knowledge-record.js';
 
 const provenanceLabels={'upstream-reference':'上游来源登记','external-reference':'外部项目','registered-source':'登记源码','local-repository':'本地仓库'};
 const deliveryLabels={'standalone-zip':'独立 ZIP','single-html':'单文件 HTML','source-reference':'源码参考','external-reference':'外部项目参考'};
 export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,onOpenGuide,onOpenRegistry}){
  const [result,setResult]=useState(null),[attempt,setAttempt]=useState(0);
+ const [query,setQuery]=useState(''),[recipeFilter,setRecipeFilter]=useState(''),[deliveryFilter,setDeliveryFilter]=useState('');
  useEffect(()=>{
   const controller=new AbortController();
   fetch(resolveAsset('content/knowledge-index.json'),{signal:controller.signal,cache:'no-cache'})
-   .then(async response=>{if(!response.ok)throw Error('HTTP '+response.status);const body=await response.text();if(body.length>8*1024*1024)throw Error('知识索引过大');return selectKnowledgeRecord(JSON.parse(body),asset,version);})
-   .then(value=>{if(!controller.signal.aborted)setResult({value});})
+   .then(async response=>{if(!response.ok)throw Error('HTTP '+response.status);const body=await response.text();if(body.length>8*1024*1024)throw Error('知识索引过大');const index=JSON.parse(body);return {value:selectKnowledgeRecord(index,asset,version),index};})
+   .then(data=>{if(!controller.signal.aborted)setResult(data);})
    .catch(()=>{if(!controller.signal.aborted)setResult({error:true});});
   return ()=>controller.abort();
  },[asset,version,attempt]);
  const value=result?.value,row=value?.record;
+ const hits=result?.index&&(query.trim()||recipeFilter||deliveryFilter)?searchKnowledge(result.index,{query,recipe:recipeFilter,delivery:deliveryFilter,limit:8}):null;
  const json=()=>JSON.stringify(value,null,2)+'\n';
  const handoff=()=>JSON.stringify(knowledgeDelivery(value,asset),null,2)+'\n';
  const evidenceFile=(file,label,action)=><li key={label+file.path}><strong>{label}</strong><code>{file.path}</code><small>{file.bytes.toLocaleString()} B · SHA-256</small><code className="knowledge-digest">{file.sha256}</code>{action&&<button type="button" onClick={action}>查看{label}</button>}</li>;
@@ -38,7 +41,14 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
    {knowledgeDelivery(value,asset).delivery.sourceFiles.map(file=>evidenceFile(file,file.name,onOpenSource?()=>onOpenSource(file.path):null))}
    </ul>{!row.preview&&!row.guide&&!row.delivery.sourceFiles.length&&<p>未登记本地文件证据。</p>}</details>
    <div className="registry-module-info">{onOpenRegistry&&<button type="button" onClick={onOpenRegistry}>浏览通用 Foundation Registry</button>}<button type="button" onClick={()=>onCopyText(handoff(),'AI 接入清单已复制')}>复制 AI 接入清单</button><button type="button" onClick={()=>{try{downloadSourceText(handoff(),asset.id+'-'+version+'-ai-handoff.json');notify('AI 接入清单已下载');}catch{notify('AI 接入清单下载失败');}}}>下载 AI 接入清单</button></div>
-   {value.recipes.map(recipe=><details key={recipe.id}><summary>{recipe.title}</summary><p>{recipe.principle}</p><p>机制：{recipe.mechanism}</p><p>适用：{recipe.useWhen}；避免：{recipe.avoidWhen}</p><p>AI：{recipe.agentInstruction}</p>{recipe.implementation?.assetId==='design-recipe-lab'&&<p>对应实验：<a href={resolveAsset('?asset=design-recipe-lab')} target="_blank" rel="noopener noreferrer">设计配方实验室（新标签页）</a> · {recipe.title}。<a href={resolveAsset('demos/experiments/design-recipe-lab/index.html?recipe='+encodeURIComponent(recipe.implementation.experimentId))} target="_blank" rel="noopener noreferrer">打开对应实验（独立页）</a>。交互示例不代表运行认证。</p>}<ul>{recipe.checks.map(check=><li key={check}>{check}</li>)}</ul></details>)}
+   {value.recipes.map(recipe=><details className="knowledge-recipe" key={recipe.id}><summary>{recipe.title}</summary><p>{recipe.principle}</p><p>机制：{recipe.mechanism}</p><p>适用：{recipe.useWhen}；避免：{recipe.avoidWhen}</p><p>AI：{recipe.agentInstruction}</p>{recipe.implementation?.assetId==='design-recipe-lab'&&<p>对应实验：<a href={resolveAsset('?asset=design-recipe-lab')} target="_blank" rel="noopener noreferrer">设计配方实验室（新标签页）</a> · {recipe.title}。<a href={resolveAsset('demos/experiments/design-recipe-lab/index.html?recipe='+encodeURIComponent(recipe.implementation.experimentId))} target="_blank" rel="noopener noreferrer">打开对应实验（独立页）</a>。交互示例不代表运行认证。</p>}<ul>{recipe.checks.map(check=><li key={check}>{check}</li>)}</ul></details>)}
+   <details className="knowledge-search"><summary>反向检索设计知识</summary>
+    <p>按名称、设计方法或登记源码检索已收录版本；结果不代表已验收。</p>
+    <label>关键词<input aria-label="知识检索关键词" maxLength={256} value={query} onChange={event=>setQuery(event.target.value)} placeholder="例如 SearchField.jsx"/></label>
+    <label>配方<select aria-label="知识检索配方" value={recipeFilter} onChange={event=>setRecipeFilter(event.target.value)}><option value="">全部配方</option>{result.index.recipes.map(recipe=><option key={recipe.id} value={recipe.id}>{recipe.title}</option>)}</select></label>
+    <label>交付<select aria-label="知识检索交付方式" value={deliveryFilter} onChange={event=>setDeliveryFilter(event.target.value)}><option value="">全部交付</option>{Object.entries(deliveryLabels).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label>
+    {hits&&<><p role="status">匹配 {hits.total} 项{hits.total>hits.limit?' · 展示前 '+hits.limit+' 项':''}</p><ul className="knowledge-search-results">{hits.results.map(({record})=><li key={record.key}><a href={resolveAsset('?asset='+encodeURIComponent(record.id)+(record.version==='original'?'':'&variant='+encodeURIComponent(record.version)))} target="_blank" rel="noopener noreferrer">{record.title} · {record.version}</a><small>{deliveryLabels[record.delivery.mode]} · {record.style.scope==='parent-asset-not-version-review'?'继承父资产标签':'原始资产'}</small></li>)}</ul></>}
+   </details>
    <div className="registry-module-info"><button type="button" onClick={()=>onCopyText(json(),'当前版本知识 JSON 已复制')}>复制知识 JSON</button><button type="button" onClick={()=>{try{downloadSourceText(json(),asset.id+'-'+version+'-knowledge.json');notify('知识记录已下载');}catch{notify('知识记录下载失败');}}}>下载当前记录</button></div>
   </>}
  </section>;

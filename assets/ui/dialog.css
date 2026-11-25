@@ -245,3 +245,9 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
 .knowledge-evidence small{color:var(--muted)}
 .knowledge-evidence button{justify-self:start}
 .knowledge-record .registry-module-info{flex-wrap:wrap}
+
+.knowledge-search label{display:grid;gap:4px;margin-top:8px;color:var(--muted);min-width:0}
+.knowledge-search :is(input,select){width:100%;min-width:0;padding:6px 8px;border:1px solid var(--line);border-radius:7px;background:var(--surface);color:var(--ink);font:inherit}
+.knowledge-search-results{list-style:none;padding:0;display:grid;gap:6px}
+.knowledge-search-results li{display:grid;gap:3px;border:1px solid var(--line);padding:8px;border-radius:7px;overflow-wrap:anywhere}
+.knowledge-search-results small{color:var(--muted)}
