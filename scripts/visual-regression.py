@@ -1822,6 +1822,74 @@ def verify_showcase_discovery(browser, origin):
             context.close()
 
 
+def verify_recipe_parameter_contract(browser, origin):
+    """五类新增参数实验：预设必须改变真实 CSS，JSON 与默认值保持一致。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+"?asset=design-recipe-lab",wait_until="domcontentloaded")
+            frame=page.frame_locator("#preview-stage iframe")
+            buttons=frame.locator("#recipe-nav button")
+            expect(buttons).to_have_count(6)
+            cases=(
+                (0,{"gap":24,"padding":24,"radius":16},((".grid-study","gap","24px"),(".grid-study>div","borderRadius","16px"),(".grid-study>div","paddingTop","10px" if width<=430 else "24px")),{"gap":12,"padding":16,"radius":7},"border-radius: 16px","padding",6),
+                (2,{"x":68,"y":65,"spread":80},((".mesh-study","backgroundImage","68% 65%"),(".mesh-study","backgroundImage","80%")),{"x":28,"y":30,"spread":55},"transparent 80%","y",0),
+                (3,{"fontSize":16,"lineHeight":2.1,"gap":16},((".terminal-study","fontSize","16px"),(".terminal-study","lineHeight","33.6px"),(".terminal-study .row","gap","16px")),{"fontSize":13,"lineHeight":1.7,"gap":8},"16px/2.1","lineHeight",1.2),
+                (4,{"lineWidth":44,"fontSize":17,"lineHeight":2.1},((".reading-study p","fontSize","17px"),(".reading-study p","lineHeight","35.7px")),{"lineWidth":34,"fontSize":13,"lineHeight":1.85},"font-size: 17px; line-height: 2.1","fontSize",12),
+                (5,{"duration":420,"lift":36,"tilt":14},((".motion-tile","transitionDuration","0s"),),{"duration":220,"lift":22,"tilt":7},"translateY(-36px) rotateY(-14deg)","lift",0),
+            )
+            for index,values,styles,defaults,fragment,key,minimum in cases:
+                buttons.nth(index).click()
+                assert json.loads(frame.locator("#study-json").inner_text())==defaults
+                preset=frame.locator('[data-study-preset="2"]')
+                preset.click()
+                expect(preset).to_have_attribute("aria-pressed","true")
+                assert json.loads(frame.locator("#study-json").inner_text())==values
+                for selector,prop,value in styles:
+                    actual=frame.locator(selector).first.evaluate("(el,p)=>getComputedStyle(el)[p]",prop)
+                    assert value in actual,(width,index,prop,actual,value)
+                expect(frame.locator("#snippet")).to_contain_text(fragment)
+                frame.locator("#select-study-json").click()
+                assert json.loads(frame.locator("#study-json").evaluate("e=>window.getSelection().toString()"))==values
+                if index==5:
+                    frame.locator("#motion-toggle").click()
+                    expect(frame.locator(".motion-tile")).to_have_css("transform","none")
+                if index==4:
+                    frame.locator("#study-fields").scroll_into_view_if_needed()
+                    page.screenshot(path=str(OUTPUT/f"recipe-reading-properties-{width}-{theme}.png"))
+                frame.locator("#study-"+key).press("Home")
+                assert json.loads(frame.locator("#study-json").inner_text())[key]==minimum
+                expect(preset).to_have_attribute("aria-pressed","false")
+                frame.locator("#reset").click()
+                assert json.loads(frame.locator("#study-json").inner_text())==defaults
+                assert frame.locator("body").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            buttons.nth(1).click()
+            expect(frame.locator("#study-fields")).to_be_hidden()
+            frame.locator('[data-material-preset="frosted"]').click()
+            expect(frame.locator('[data-material-preset="frosted"]')).to_have_attribute("aria-pressed","true")
+            assert not errors,errors
+        finally:
+            context.close()
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="no-preference")
+    page=context.new_page()
+    try:
+        page.goto(origin+"?asset=design-recipe-lab",wait_until="domcontentloaded")
+        frame=page.frame_locator("#preview-stage iframe")
+        frame.locator("#recipe-nav button").nth(5).click()
+        frame.locator('[data-study-preset="2"]').click()
+        frame.locator("#motion-toggle").click()
+        frame.locator(".motion-tile").evaluate("""async e=>{
+            for(let i=0;i<90;i++){const m=new DOMMatrix(getComputedStyle(e).transform);
+                if(Math.abs(m.m42+36)<.2&&Math.abs(m.m13)>.2)return;
+                await new Promise(r=>requestAnimationFrame(r));}
+            throw Error('motion not applied '+getComputedStyle(e).transform);
+        }""")
+    finally:
+        context.close()
+
+
 def verify_design_recipe_lab(browser, origin):
     """真实沙箱中运行六个配方，验证参数、代码及恢复行为。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -2904,6 +2972,7 @@ def main():
                     verify_compact_source_reader,
                     verify_showcase_discovery,
                     verify_design_recipe_lab,
+                    verify_recipe_parameter_contract,
                     verify_knowledge_record,
                     verify_registry_browser,
                     verify_standalone_delivery,
