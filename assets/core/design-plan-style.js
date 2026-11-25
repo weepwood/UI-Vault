@@ -1,5 +1,5 @@
 // Only bounded design tokens enter CSS; material is intentionally not synthesized.
-import {normalizeDesignTokens} from './design-plan.js';
+import {normalizeDesignTokens,contrastRatio} from './design-plan.js';
 
 export function designPlanStyle(values,theme){
  const t=normalizeDesignTokens(values);
@@ -61,11 +61,21 @@ export function designPlanCSS(values,theme){
  '.wb-reuse-theme.wb-design-plan[data-theme="'+theme+'"] {\n'+declarations+'\n}\n'+DESIGN_PLAN_RULES;
 }
 
-// Framework-neutral mapping for actual Foundation recipes; portal content outside
-// this opt-in container remains under the host theme.
-export function foundationPlanCSS(values,theme){
+// Contrast-aware state colors, independent of saved proposal protocol.
+export function foundationPlanStates(values,theme){
  const t=normalizeDesignTokens(values);
  if(!['light','dark'].includes(theme))throw Error('主题无效');
- const vars={'--ui-surface':t.surface,'--ui-canvas':t.surface,'--ui-text':t.text,'--ui-muted':t.text,'--ui-subtle':t.text,'--ui-border':t.border,'--ui-border-strong':t.border,'--ui-type-base':t.fontSize+'px','--ui-type-sm':t.fontSize+'px','--ui-radius-md':t.radius+'px','--ui-radius-lg':t.radius+'px','--ui-space-3':t.spacing+'px','--ui-motion-fast':t.duration+'ms','--ui-motion-normal':t.duration+'ms'};
- return '.ui-design-plan[data-theme="'+theme+'"] {\n'+Object.entries(vars).map(([k,v])=>'  '+k+': '+v+';').join('\n')+'\n  color:var(--ui-text);background:var(--ui-surface);font:var(--ui-type-base)/1.5 var(--ui-font-sans);color-scheme:'+theme+';\n  display:grid;gap:var(--ui-space-3);padding:var(--ui-space-3);min-width:0;\n}\n.ui-design-plan .ui-input {font-size:var(--ui-type-base);min-width:0}\n';
+ const fallback=contrastRatio('#000000',t.surface)>=contrastRatio('#ffffff',t.surface)?'#000000':'#ffffff';
+ const pick=color=>contrastRatio(color,t.surface)>=4.5?color:fallback;
+ const palette=theme==='light'?{accent:'#4355cb',success:'#0c766d',danger:'#b42337'}:{accent:'#a6b0ff',success:'#72d9c3',danger:'#ff9aa7'};
+ const accent=pick(palette.accent);
+ const on=contrastRatio('#000000',accent)>=contrastRatio('#ffffff',accent)?'#000000':'#ffffff';
+ return {accent,on,success:pick(palette.success),danger:pick(palette.danger),focus:accent,borderContrast:contrastRatio(t.border,t.surface)};
+}
+// Framework-neutral mapping; the portal host explicitly opts into the same variables.
+export function foundationPlanCSS(values,theme){
+ const t=normalizeDesignTokens(values),state=foundationPlanStates(t,theme);
+ const vars={'--ui-surface':t.surface,'--ui-canvas':t.surface,'--ui-text':t.text,'--ui-muted':t.text,'--ui-subtle':t.text,'--ui-border':t.border,'--ui-border-strong':t.border,'--ui-type-base':t.fontSize+'px','--ui-type-sm':t.fontSize+'px','--ui-radius-md':t.radius+'px','--ui-radius-lg':t.radius+'px','--ui-space-3':t.spacing+'px','--ui-motion-fast':t.duration+'ms','--ui-motion-normal':t.duration+'ms','--ui-accent':state.accent,'--ui-accent-on':state.on,'--ui-accent-hover':state.accent,'--ui-accent-soft':t.surface,'--ui-success':state.success,'--ui-danger':state.danger,'--ui-hover':t.surface};
+ const scope='.ui-design-plan[data-theme="'+theme+'"]',portal='.ui-design-plan-portal[data-theme="'+theme+'"]';
+ return scope+', '+portal+' {\n'+Object.entries(vars).map(([k,v])=>'  '+k+': '+v+';').join('\n')+'\n  color:var(--ui-text);font:var(--ui-type-base)/1.5 var(--ui-font-sans);color-scheme:'+theme+';\n}\n'+scope+' {background:var(--ui-surface);display:grid;gap:var(--ui-space-3);padding:var(--ui-space-3);min-width:0;}\n.ui-design-plan .ui-input {font-size:var(--ui-type-base);min-width:0}\n:is(.ui-design-plan,.ui-design-plan-portal) :is(.ui-button,.ui-input,.ui-primitive-trigger,.ui-switch):focus-visible {outline:2px solid var(--ui-accent);outline-offset:2px}\n:is(.ui-design-plan,.ui-design-plan-portal) .ui-primitive-option[data-highlighted] {outline:2px solid var(--ui-accent);outline-offset:-2px}\n';
 }

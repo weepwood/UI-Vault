@@ -1,4 +1,4 @@
-import {useEffect,useRef,useState} from 'react';
+import {useEffect,useMemo,useRef,useState} from 'react';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
 import {normalizeMaterialAttachment} from '../../assets/core/design-material.js';
@@ -10,17 +10,24 @@ import {composeKnowledge} from '../../assets/core/knowledge-composition.js';
 import {PLAN_FIELDS,baselineIdentity,foundationBaseline,normalizeDesignTokens,compareDesignTokens,readDesignPlans,updateDesignPlans,restoreDesignPlan,planSnapshot,planVersionDiff,reviseDesignPlan,migrateDesignPlan,createDesignPlan,validateDesignPlan,designPlanMarkdown,DESIGN_PLAN_MAX_BYTES} from '../../assets/core/design-plan.js';
 
 export function DesignPlan({composition,index,assets,onRestore,notify}){
- const [item,setItem]=useState(null),[failed,setFailed]=useState(false),[theme,setTheme]=useState('light'),[draft,setDraft]=useState(null);
+ const [item,setItem]=useState(null),[failed,setFailed]=useState(false),[theme,setTheme]=useState('light'),[drafts,setDrafts]=useState({}),[opened,setOpened]=useState(false),[requested,setRequested]=useState(false),[attempt,setAttempt]=useState(0);
  const [saved,setSaved]=useState(()=>{const stored=readDesignPlans();return {items:stored.items,sessionOnly:!stored.available};}),[name,setName]=useState(''),[selected,setSelected]=useState(''),[status,setStatus]=useState('');
  const [pending,setPending]=useState(null),[attachment,setAttachment]=useState(null),[revision,setRevision]=useState("current"),[migration,setMigration]=useState(null);
- const readId=useRef({id:0});
+ const readId=useRef({id:0}),root=useRef(null);
+ const draft=drafts[theme]??null;
+ function setDraft(value){setDrafts(old=>({...old,[theme]:value}));}
+ function switchTheme(value){setTheme(value);}
+ function jump(selector){const node=root.current?.querySelector(selector);if(!node)return;if(node.tagName==="DETAILS")node.open=true;const focus=node.querySelector("summary,input,button");focus?.focus({preventScroll:true});node.scrollIntoView({block:"nearest"});}
  useEffect(()=>{
+  if(!requested)return;
   const controller=new AbortController(),reads=readId.current;
   fetch(resolveAsset('registry/items/foundation-tokens.json'),{signal:controller.signal,cache:'no-cache'}).then(async r=>{if(!r.ok)throw Error('HTTP');const text=await r.text();if(text.length>1048576)throw Error('过大');return JSON.parse(text);}).then(data=>{foundationBaseline(data,'light');foundationBaseline(data,'dark');if(!controller.signal.aborted)setItem(data);}).catch(()=>{if(!controller.signal.aborted)setFailed(true);});
   return ()=>{controller.abort();reads.id++;};
- },[]);
- if(!item)return <p role="status">{failed?'Foundation 基准不可用，暂不生成规范。':'正在读取 Foundation 规范基准…'}</p>;
- const baseline=foundationBaseline(item,theme),values=draft||baseline.tokens;
+ },[requested,attempt]);
+ const baseline=useMemo(()=>item?foundationBaseline(item,theme):null,[item,theme]);
+ const values=draft||baseline?.tokens;
+ function toggle(e){if(e.target!==e.currentTarget)return;setOpened(e.currentTarget.open);if(e.currentTarget.open)setRequested(true);}
+ if(!item)return <details className="design-plan" open={opened} onToggle={toggle}><summary>设计规范与保存方案</summary>{requested&&<p role="status">{failed?'Foundation 基准不可用，暂不生成规范。':'正在读取 Foundation 规范基准…'}</p>}{failed&&<button type="button" onClick={()=>{setFailed(false);setAttempt(n=>n+1);}}>重试读取规范基准</button>}</details>;
  let proposal=null,difference=null;
  try{proposal=normalizeDesignTokens(values);difference=compareDesignTokens(baseline.tokens,proposal);}catch{/* Invalid draft may be corrected before export. */}
  const primary=composition.entries[0].handoff.assetId+'/'+composition.entries[0].handoff.assetVersion;
@@ -34,10 +41,10 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
   try{
    const next=updateDesignPlans(saved,current=>[...current,currentSnapshot(name.trim())]);
    setSaved(next);setSelected(name.trim());setRevision('current');setName('');setStatus(next.sessionOnly?'保存仅保留当前会话':'设计方案已保存');
-  }catch{setStatus('名称重复、无效或已达8项上限');}
+  }catch(error){setStatus(error.message.includes("容量")?error.message:'名称重复、无效或已达8项上限');}
  }
  function applySnapshot(p){
-  composeKnowledge(index,assets,p.keys,p.context);onRestore(p.keys,p.context);setTheme(p.theme);setDraft(p.tokens);setAttachment(p.materialAttachment??null);
+  composeKnowledge(index,assets,p.keys,p.context);onRestore(p.keys,p.context);setTheme(p.theme);setDrafts(old=>({...old,[p.theme]:p.tokens}));setAttachment(p.materialAttachment??null);
  }
  function restore(){
   try{const p=restoreDesignPlan({...planSnapshot(candidate),name:chosen.name},composition,primary,foundationBaseline(item,candidate.theme));applySnapshot(p);setMigration(null);setStatus('设计方案已恢复；未应用到预览');}
@@ -46,9 +53,9 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  function saveRevision(){
   try{
    if(!chosen||!proposal)throw Error('无效');
-   const next=updateDesignPlans(saved,current=>current.map(p=>p.name===chosen.name?reviseDesignPlan(p,currentSnapshot(p.name)):p));
+   const next=updateDesignPlans(saved,current=>{const latest=current.find(p=>p.name===chosen.name);if(!latest||JSON.stringify(latest)!==JSON.stringify(chosen))throw Error("方案已变化，请重新打开");return current.map(p=>p.name===chosen.name?reviseDesignPlan(p,currentSnapshot(p.name)):p);});
    setSaved(next);setRevision('current');setStatus(next.sessionOnly?'版本仅保留当前会话':'历史版本已保存');
-  }catch{setStatus('版本保存失败：历史已满或方案不匹配');}
+  }catch(error){setStatus(error.message.includes("容量")||error.message.includes("已变化")?error.message:'版本保存失败：历史已满或方案不匹配');}
  }
  function prepareMigration(){
   try{
@@ -64,7 +71,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
    applySnapshot(p);setMigration(null);setStatus('已迁移到当前基准；原历史保留，请另存或保存新版本');
   }catch{setMigration(null);setStatus('迁移失败');}
  }
- function remove(){const next=updateDesignPlans(saved,current=>current.filter(p=>p.name!==selected));setSaved(next);setSelected('');setRevision('current');setMigration(null);setStatus(next.sessionOnly?'删除仅在当前会话生效':'设计方案已删除');}
+ function remove(){try{const next=updateDesignPlans(saved,current=>current.filter(p=>p.name!==selected));setSaved(next);setSelected('');setRevision('current');setMigration(null);setStatus(next.sessionOnly?'删除仅在当前会话生效':'设计方案已删除');}catch{setStatus('删除失败，原方案保留');}}
  function download(markdown=false){
   if(!proposal)return;
   try{const doc=createDesignPlan(composition,baseline,proposal,attachment);downloadSourceText(markdown?designPlanMarkdown(doc):JSON.stringify(doc,null,2)+'\n',markdown?'DESIGN.md':'design-plan.json');notify('设计方案已下载');}catch{notify('下载失败');}
@@ -84,13 +91,15 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  function applyImport(){
   try{
    const {document,keys}=validateDesignPlan(pending,index,assets,item,primary);
-   onRestore(keys,document.composition.context);setTheme(document.baseline.theme);setDraft(document.proposal);setAttachment(document.materialAttachment??null);setPending(null);setStatus('导入规范已恢复；未应用到预览');
+   onRestore(keys,document.composition.context);setTheme(document.baseline.theme);setDrafts(old=>({...old,[document.baseline.theme]:document.proposal}));setAttachment(document.materialAttachment??null);setPending(null);setStatus('导入规范已恢复；未应用到预览');
   }catch{setPending(null);setStatus('规范已失效，未恢复');}
  }
- return <details className="design-plan"><summary>设计规范与保存方案</summary>
+ return <details className="design-plan" ref={root} open={opened} onToggle={toggle}><summary>设计规范与保存方案</summary>
   <p>基准来自 Foundation Token 登记文件；以下是手动提议值，不推断资产原始样式，也不会修改当前预览。</p>
-  <label>基准主题<select aria-label="规范基准主题" value={theme} onChange={e=>{setTheme(e.target.value);setDraft(null);}}><option value="light">浅色</option><option value="dark">深色</option></select></label>
-  <div className="design-plan-fields">{PLAN_FIELDS.map(f=><label key={f.key}>{f.label} · 基准 {baseline.tokens[f.key]}{f.unit||''}{f.type==='choice'?<select aria-label={'规范'+f.label} value={values[f.key]} onChange={e=>setDraft({...values,[f.key]:e.target.value})}>{f.options.map(v=><option key={v} value={v}>{v==='solid'?'不透明':'磨砂（目标意图）'}</option>)}</select>:<input aria-label={'规范'+f.label} type={f.type==='number'?'number':'text'} min={f.min} max={f.max} step={f.type==='number'?1:undefined} maxLength={f.type==='color'?7:undefined} value={values[f.key]} onChange={e=>setDraft({...values,[f.key]:f.type==='number'?(e.target.value===''?'':Number(e.target.value)):e.target.value})}/>}</label>)}</div>
+  <nav className="design-plan-steps" aria-label="设计工作流">{[["规范编辑",".design-plan-fields"],["控件预览",".design-plan-preview"],["材质附件",".design-material-delivery"],["工程交付",".design-registry-delivery"],["保存恢复",".design-plan-storage"]].map(([label,selector])=><button type="button" key={selector} onClick={()=>jump(selector)}>{label}</button>)}</nav>
+  <label>基准主题<select aria-label="规范基准主题" value={theme} onChange={e=>switchTheme(e.target.value)}><option value="light">浅色</option><option value="dark">深色</option></select></label>
+  <p>浅深主题分别保留本次编辑；保存与导出只包含当前主题，材质附件为共用。<button type="button" disabled={!proposal} onClick={()=>{const other=theme==="light"?"dark":"light",target=drafts[other]||foundationBaseline(item,other).tokens;setDrafts(old=>({...old,[other]:{...target,...Object.fromEntries(PLAN_FIELDS.filter(f=>f.type==="number").map(f=>[f.key,proposal[f.key]]))}}));setStatus("已同步字号、间距、圆角和时长，未修改另一主题颜色");}}>同步尺寸至另一主题</button></p>
+  <div className="design-plan-fields">{PLAN_FIELDS.map(f=><div className="design-plan-field" key={f.key}><span>{f.label} · 基准 {baseline.tokens[f.key]}{f.unit||''}</span>{f.type==='choice'?<select aria-label={'规范'+f.label} value={values[f.key]} onChange={e=>setDraft({...values,[f.key]:e.target.value})}>{f.options.map(v=><option key={v} value={v}>{v==='solid'?'不透明':'磨砂（目标意图）'}</option>)}</select>:<input aria-label={'规范'+f.label} type={f.type==='number'?'number':'text'} min={f.min} max={f.max} step={f.type==='number'?1:undefined} maxLength={f.type==='color'?7:undefined} value={values[f.key]} aria-invalid={f.type==='color'?!/^#[0-9a-f]{6}$/i.test(values[f.key]):!Number.isInteger(values[f.key])||values[f.key]<f.min||values[f.key]>f.max} onChange={e=>setDraft({...values,[f.key]:f.type==='number'?(e.target.value===''?'':Number(e.target.value)):e.target.value})}/>}{f.type==='color'&&<input type="color" aria-label={'选择'+f.label} value={/^#[0-9a-f]{6}$/i.test(values[f.key])?values[f.key]:baseline.tokens[f.key]} onChange={e=>setDraft({...values,[f.key]:e.target.value})}/>}</div>)}</div>
   {difference?<><p role="status">{difference.changes.length} 项规范差异 · 正文对比 {difference.contrast.toFixed(2)}:1 · {difference.contrastPass?'达到4.5:1':'需复核'}</p><ul>{difference.changes.map(c=><li key={c.key}>{PLAN_FIELDS.find(f=>f.key===c.key).label}：{c.baseline} → {c.proposed}{c.unit||''}{c.delta!==null?'（变化 '+(c.delta>0?'+':'')+c.delta+c.unit+'）':''}</li>)}</ul>{proposal.material==='frosted'&&<p>磨砂透明背景的实际对比需单独检查。</p>}</>:<p role="status">规范值无效，请修正后保存或下载。</p>}
   <div className="registry-module-info"><button type="button" onClick={()=>setDraft(null)}>重置规范</button><button type="button" disabled={!proposal} onClick={()=>download()}>下载设计规范 JSON</button><button type="button" disabled={!proposal} onClick={()=>download(true)}>下载规范 DESIGN.md</button></div>
   <details className="design-plan-preview"><summary>真实控件预览与 CSS 复用</summary>
@@ -101,7 +110,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
   </details>
   <DesignMaterialDelivery key={primary} notify={notify} attachment={attachment} onChange={raw=>setAttachment(normalizeMaterialAttachment(raw))}/>
   <DesignRegistryDelivery document={proposal?createDesignPlan(composition,baseline,proposal,attachment):null} notify={notify}/>
-  <label>导入规范 JSON<input aria-label="导入规范 JSON" type="file" accept=".json,application/json" onChange={selectFile}/></label>
+  <div className="design-plan-storage"><label>导入规范 JSON<input aria-label="导入规范 JSON" type="file" accept=".json,application/json" onChange={selectFile}/></label>
   {pending&&<><p role="status">待恢复：{pending.composition.entries.length} 项资产 · {pending.baseline.theme} · {pending.difference.changes.length} 项差异；不会自动保存或应用预览。</p><div className="registry-module-info"><button type="button" onClick={applyImport}>确认恢复导入规范</button><button type="button" onClick={()=>{readId.current.id++;setPending(null);setStatus('已取消导入');}}>取消导入</button></div></>}
   <label>方案名称<input aria-label="设计方案名称" maxLength={40} value={name} onChange={e=>setName(e.target.value)}/></label>
   <div className="registry-module-info"><button type="button" disabled={!proposal||!name.trim()} onClick={save}>保存设计方案</button></div>
@@ -112,6 +121,6 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
    <div className="registry-module-info"><button type="button" disabled={!proposal} onClick={saveRevision}>保存新版本</button><button type="button" onClick={prepareMigration}>检查基准迁移</button></div>
    {migration&&<><p>目录：{migration.source.catalogSha256===migration.snapshot.catalogSha256?"不变":"已变化"}；基准：{migration.source.baselineId===migration.snapshot.baselineId?"不变":"已变化"}。{migration.source.baselineTokens?compareDesignTokens(migration.source.baselineTokens,migration.base.tokens).changes.map(c=>c.key+" "+c.baseline+" → "+c.proposed).join("；"):"旧版本没有基准值记录"}。保留原提议，不自动保存。</p><div className="registry-module-info"><button type="button" onClick={confirmMigration}>确认迁移规范</button><button type="button" onClick={()=>setMigration(null)}>取消迁移</button></div></>}
   </>}
-  <p>本浏览器最多8份；每份最多4个历史快照；目录或Token基准变化后拒绝静默恢复。规范不自动覆盖宿主代码。{saved.sessionOnly&&' 存储不可用，本次面板会话内的改动不会写回。'}</p><p role="status">{status}</p>
+  <p>本浏览器最多8份；每份最多4个历史快照；目录或Token基准变化后拒绝静默恢复。规范不自动覆盖宿主代码。{saved.sessionOnly&&' 存储不可用，本次面板会话内的改动不会写回。'}</p><p role="status">{status}</p></div>
  </details>;
 }

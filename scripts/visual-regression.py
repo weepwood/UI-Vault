@@ -2757,6 +2757,67 @@ def verify_knowledge_delivery(browser, origin):
             context.close()
 
 
+def verify_design_workflow(browser, origin):
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        baseline_reads=[]
+        registry_reads=[]
+        def baseline_route(route):
+            baseline_reads.append(route.request.url)
+            if len(baseline_reads)==1:route.fulfill(status=503,body="temporary")
+            else:route.continue_()
+        def registry_route(route):
+            registry_reads.append(route.request.url)
+            route.continue_()
+        context.route("**/registry/items/foundation-tokens.json",baseline_route)
+        context.route("**/registry/index.json",registry_route)
+        try:
+            page.goto(origin+"?asset=workbench-components",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            page.locator("#tab-page-info").click()
+            page.get_by_role("button",name="查看 AI 复用证据").click()
+            composition=page.locator(".knowledge-composition")
+            composition.locator(":scope > summary").click()
+            plan=composition.locator(".design-plan")
+            expect(plan.locator(":scope > summary")).to_be_visible()
+            assert not baseline_reads and not registry_reads
+            plan.locator(":scope > summary").click()
+            plan.get_by_role("button",name="重试读取规范基准").click()
+            color=plan.get_by_label("规范表面颜色",exact=True)
+            expect(color).to_have_value("#ffffff")
+            assert len(baseline_reads)==2 and not registry_reads
+            spacing=plan.get_by_label("规范基础间距")
+            spacing.fill("22")
+            color.fill("bad")
+            expect(color).to_have_attribute("aria-invalid","true")
+            expect(plan.get_by_role("button",name="下载设计规范 JSON")).to_be_disabled()
+            plan.get_by_label("选择表面颜色",exact=True).fill("#e3e5eb")
+            expect(color).to_have_value("#e3e5eb")
+            plan.get_by_role("button",name="同步尺寸至另一主题").click()
+            themes=plan.get_by_label("规范基准主题")
+            themes.select_option("dark")
+            expect(spacing).to_have_value("22")
+            expect(color).to_have_value("#191e27")
+            color.fill("#243345")
+            themes.select_option("light")
+            expect(color).to_have_value("#e3e5eb")
+            expect(spacing).to_have_value("22")
+            nav=plan.get_by_role("navigation",name="设计工作流")
+            nav.get_by_role("button",name="工程交付",exact=True).click()
+            delivery=plan.locator(".design-registry-delivery")
+            expect(delivery.get_by_label("规范 Registry 组合")).to_be_visible()
+            assert len(registry_reads)==1
+            expect(delivery.get_by_text("状态色 · 对比适配",exact=False)).to_be_visible()
+            nav.get_by_role("button",name="保存恢复",exact=True).click()
+            expect(plan.locator(".design-plan-storage input").first).to_be_focused()
+            assert page.locator(".knowledge-record").evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            page.screenshot(path=str(OUTPUT/f"design-workflow-{width}-{theme}.png"))
+            assert not errors,errors
+        finally:context.close()
+
+
 def verify_knowledge_record(browser, origin):
     """按需读取真实发布知识索引，保留版本与证据边界。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -3813,6 +3874,7 @@ def main():
                     verify_recipe_file_replay,
                     verify_knowledge_record,
                     verify_knowledge_delivery,
+                    verify_design_workflow,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,

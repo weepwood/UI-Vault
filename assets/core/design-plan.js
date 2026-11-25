@@ -39,6 +39,7 @@ export function compareDesignTokens(baseline,proposal){
 }
 export const baselineIdentity=baseline=>JSON.stringify([baseline.version,...baseline.sourceFiles.map(f=>f.sha256)]);
 const STORE='ui-vault:design-plans:v1';
+export const PLAN_STORAGE_MAX=65536;
 const SNAPSHOT_KEYS=['catalogSha256','keys','context','theme','baselineId','tokens'];
 function normalizeSnapshot(p){
  const optional=['materialAttachment','baselineTokens'];
@@ -81,16 +82,17 @@ export function migrateDesignPlan(previous,composition,baseline){
  return {...p,catalogSha256:composition.catalogSha256,baselineId:baselineIdentity(baseline),baselineTokens:baseline.tokens};
 }
 export function readDesignPlans(storage){
- try{const raw=(storage??globalThis.localStorage).getItem(STORE);if(raw&&raw.length>65536)throw Error('过大');return {items:normalizePlans(JSON.parse(raw||'[]')),available:true};}catch{return {items:[],available:false};}
+ try{const raw=(storage??globalThis.localStorage).getItem(STORE);if(raw&&raw.length>PLAN_STORAGE_MAX)throw Error('过大');return {items:normalizePlans(JSON.parse(raw||'[]')),available:true};}catch{return {items:[],available:false};}
 }
 export function writeDesignPlans(items,storage){
- try{const target=storage??globalThis.localStorage;if(!readDesignPlans(target).available)return false;const raw=JSON.stringify(normalizePlans(items));if(raw.length>65536)return false;target.setItem(STORE,raw);return true;}catch{return false;}
+ try{const target=storage??globalThis.localStorage;if(!readDesignPlans(target).available)return false;const raw=JSON.stringify(normalizePlans(items));if(raw.length>PLAN_STORAGE_MAX)return false;target.setItem(STORE,raw);return true;}catch{return false;}
 }
 // Once persistence fails, keep this session authoritative; never overwrite a
 // recovered store with a divergent session snapshot.
 export function updateDesignPlans(state,change,storage){
  const stored=state.sessionOnly?null:readDesignPlans(storage);
  const items=normalizePlans(change(stored?.available?stored.items:state.items));
+ if(JSON.stringify(items).length>PLAN_STORAGE_MAX)throw Error("方案存储容量已满，请导出旧方案或另行清理");
  const persisted=!state.sessionOnly&&stored?.available===true&&writeDesignPlans(items,storage);
  return {items,sessionOnly:!persisted};
 }

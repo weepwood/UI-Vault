@@ -34,7 +34,8 @@ test('UI Foundation Kit: 复制快照独立于 UI-Vault，并记录可核验的�
     execFileSync(process.execPath,['scripts/install.mjs',target],{cwd:root,stdio:'pipe'});
     const manifest=JSON.parse(readFileSync(resolve(target,'ui-foundation/INSTALL-MANIFEST.json'),'utf8'));
     assert.equal(manifest.strategy,'vendored-snapshot');
-    assert.equal(manifest.version,'1.0.0');
+    assert.equal(manifest.version,'1.1.0');
+    assert.equal(manifest.version,JSON.parse(read('package.json')).version);
     assert.ok(manifest.files.length>4);
     for(const item of manifest.files){
       const sha=createHash('sha256').update(readFileSync(resolve(target,'ui-foundation',item.path))).digest('hex');

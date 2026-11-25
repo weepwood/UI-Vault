@@ -267,3 +267,21 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
 .design-plan .registry-commands code{white-space:pre-wrap;overflow-wrap:anywhere}
 .design-plan input[type=file]{max-width:100%;min-width:0}
 .design-plan .plan-material-surface{margin:12px 8px;box-sizing:border-box}
+
+/* Local delivery editor: keep controls legible and bounded in narrow dialogs. */
+.design-plan-steps{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0}
+.design-plan-steps button{min-height:32px}
+.design-plan-field{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px;align-items:center;min-width:0}
+.design-plan-field>span{grid-column:1/-1;color:var(--muted);font-size:12px;overflow-wrap:anywhere}
+.design-plan-field>select{grid-column:1/-1}
+.design-plan-field input:not([type=color]){min-height:32px}
+.design-plan-field input[type=color]{width:32px;height:32px;padding:3px;cursor:pointer}
+.design-plan-field input[aria-invalid=true]{border-color:var(--parameter-error,#b42337);outline:1px solid var(--parameter-error,#b42337)}
+.design-plan-storage{display:grid;gap:7px;min-width:0;border-top:1px solid var(--line);padding-top:8px}
+.design-plan :is(button,input,select):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.knowledge-record{min-width:0;overflow-wrap:anywhere}
+@media(max-width:430px){.design-plan-steps button{min-height:40px}.design-plan-field input[type=color]{width:40px;height:40px}}
+
+.design-state-colors{display:flex;gap:6px;flex-wrap:wrap}
+.design-state-colors span{display:flex;align-items:center;gap:5px;font:11px/1.5 ui-monospace,monospace;color:var(--ink);border:1px solid var(--line);border-radius:6px;padding:4px}
+.design-state-colors i{width:14px;height:14px;border-radius:3px;border:1px solid var(--line)}

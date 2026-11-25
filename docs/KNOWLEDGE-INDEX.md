@@ -68,7 +68,7 @@ node scripts/verify-knowledge-handoff.mjs --handoff /path/to/ai-composition.json
 
 ### 结构化设计规范与保存方案
 
-组合区域的「设计规范与保存方案」读取实际 Registry 的 foundation-tokens 项，使用登记的 foundation.json 与 themes.json 生成浅/深基准。八项显式规范涵盖表面、正文、边框颜色、正文字号、间距、圆角、过渡时长和材质意图。颜色只允许六位十六进制，数字为有界整数；对比结果显示实际变化及像素/毫秒差值，正文对比按不透明背景计算，玻璃和渐变需独立验收。材质意图不等同于真实 shader 或 CSS 参数。切换基准主题会重置当前未保存提议值。
+组合区域的「设计规范与保存方案」读取实际 Registry 的 foundation-tokens 项，使用登记的 foundation.json 与 themes.json 生成浅/深基准。八项显式规范涵盖表面、正文、边框颜色、正文字号、间距、圆角、过渡时长和材质意图。颜色只允许六位十六进制，数字为有界整数；对比结果显示实际变化及像素/毫秒差值，正文对比按不透明背景计算，玻璃和渐变需独立验收。材质意图不等同于真实 shader 或 CSS 参数。浅深主题在本次面板会话内分别保留草稿。可显式同步字号、间距、圆角及动效时长，不复制颜色或材质意图。保存与规范导出仍只包含当前主题，材质附件共用。
 
 设计规范 JSON（ui-vault-design-plan v1；含材质附件时为 v2）包含原组合、登记基准源摘要、显式提议及差异。v1 无附件仍可导入，v2 通过原材质协议完整校验。它是实施任务说明，不自动生成或覆盖项目样式，不是已经认证的运行产物。同一对象生成规范 DESIGN.md（包含组合、八项基准与目标值、摘要及复核清单）。完整性 CLI 也直接支持设计规范 JSON，无需提取 composition：
 
@@ -104,7 +104,7 @@ node scripts/verify-knowledge-handoff.mjs --handoff /path/to/design-registry-del
 
 ### Foundation 实际组件规范映射与独立工程
 
-从「Foundation Registry 工程交付」下载 foundation-design-plan.css，在实际 Registry theme.css、base.css、components.css 之后加载，在宿主容器添加 ui-design-plan 及对应 data-theme。映射七项有界规范至局部 Foundation Token 和控件，保持真实 React/Vue 实现及 Radix/Reka 键盘逻辑；强调色、门户浮层与未映射的 Token 仍使用宿主主题，不等于完整主题覆盖。材质附件另行导出独立 CSS，不能将任意上传文本作为可执行样式。
+从「Foundation Registry 工程交付」下载 foundation-design-plan.css，在实际 Registry theme.css、base.css、components.css 之后加载，在宿主容器添加 ui-design-plan 及对应 data-theme。映射七项有界规范至局部 Foundation Token 和控件，保持真实 React/Vue 实现及 Radix/Reka 键盘逻辑；Foundation 1.1.0 支持显式门户宿主：在宿主页面的独立元素添加 ui-design-plan-portal 与对应 data-theme，并通过 React/Vue 的 portalContainer 参数传入实际元素；未传入保持原默认门户行为。强调、成功、错误与焦点色由浅深预设及不透明表面对比生成，必要时使用黑白回退，主色按钮文字与强调色对比至少4.5:1。其余 Token 保持宿主主题，不等于完整主题覆盖，也不代表任意自定义正文或控件边界符合 WCAG。材质附件另行导出独立 CSS，不能将任意上传文本作为可执行样式。
 
 独立验收脚本可选接收浏览器实际下载文件的目录：react.json、vue.json（浅色 Registry 清单）、light.css、dark.css、dark.json（深色设计规范）。先构建 dist，并将 tests/registry-runtime/package.json 与锁文件复制至新的隔离目录，按锁文件安装测试工具链，再运行：
 
@@ -114,3 +114,9 @@ python scripts/verify-registry-runtime.py /path/to/isolated-runtime
 ```
 
 脚本验证真实清单与当前发布产物，逐字比较导出 CSS 与可信生成器，使用已校验的本地 Registry 安装真实源码、编译两个框架并运行浏览器验收。默认不传第二个参数时保留原有 CI 测试模式。此次独立工程 React/Vue 各 16 个登记文件复验通过；三个视口的实际字号、圆角、间距、背景色、输入状态及原有原语交互通过。该流程是本地交付消费验证，并非外部 AI Agent 自主执行认证，也不是任意宿主项目的完整无障碍/视觉认证。
+
+### 工作流编辑与可靠性
+
+规范区提供五个可键盘操作的快捷入口，首次展开才读取 Foundation 基准，Registry 同样按需读取；失败显式重试。组合计算以实际目录、选中资产及场景为依赖进行缓存。颜色输入同时支持 HEX 和原生取色控件，非法值不允许保存或交付。主题草稿独立；保存、版本及迁移仍针对当前主题。64KiB 本地序列化容量超限会拒绝保存，不悄悄进入易失会话；已知并发变化时拒绝覆盖已有方案版本，不承诺跨标签页原子事务。
+
+Foundation 1.1.0 的 portalContainer 是兼容新增接口，旧版本基准标识需要按现有显式迁移流程更新。真实独立 React/Vue 工程验证了同一规范作用于门户内容，保留 Radix/Reka 交互、回焦和定位。无外部运行时依赖请求。颜色回退仅保证声明的几个实色对比，边框及任意用户正文仍需复核，渐变和玻璃不适用该保证。

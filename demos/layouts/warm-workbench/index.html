@@ -72,6 +72,22 @@ SOFTWARE.
 .stat{transition:translate var(--warm-motion-duration,0ms) var(--warm-motion-curve,ease)}
 @media(hover:hover) and (prefers-reduced-motion:no-preference){.stat:hover{translate:0 var(--warm-motion-lift,0px)}}
 @media(prefers-reduced-motion:reduce){.stat{transition:none}}
+/* Refine hierarchy without changing the registered material/layout variables. */
+:root{line-height:1.5;-webkit-font-smoothing:antialiased}
+.eyebrow,.top,.lead,.stat small,.task small,.muted{color:#6f645a}
+.trend{color:#3d7159;font-weight:550}
+.nav.active{color:#874b2d}
+.nav.active .lucide-demo-icon{color:inherit}
+.pill{color:#805337;white-space:normal}
+.nav{transition:background-color 140ms ease,color 140ms ease}
+.nav:focus-visible{outline:2px solid #874b2d;outline-offset:2px}
+.nav:hover:not(.active){background:#f0e9e1;color:#51453a}
+.stat strong{font-variant-numeric:tabular-nums;line-height:1.15;letter-spacing:-.035em}
+h1{letter-spacing:-.035em;line-height:1.22}
+.panel,.stat,.task{min-width:0;overflow-wrap:anywhere}
+.task small{flex-shrink:0}
+@media(max-width:430px){.main{padding:16px}.top{align-items:flex-start}.lead{margin-bottom:20px}h1{margin-top:24px}.stat{min-height:116px}.stat strong{font-size:26px;margin:12px 0 6px}.task{gap:7px}}
+@media(prefers-reduced-motion:reduce){.nav{transition:none}}
 </style></head>
 <body><div class="shell"><aside class="side"><div class="brand"><span class="brand-mark">W</span> warmday</div><div class="eyebrow">工作空间</div><a href="#" class="nav active"><svg class="lucide-demo-icon" aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="7" x="3" y="3" rx="1" />
   <rect width="7" height="7" x="14" y="3" rx="1" />

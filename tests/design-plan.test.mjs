@@ -84,3 +84,27 @@ test('历史有界、附件随版本保留、显式基准迁移保持绝对值',
  let current=revised;for(let i=0;i<3;i++)current=reviseDesignPlan(current,next);
  assert.throws(()=>reviseDesignPlan(current,next),/历史已满/);
 });
+
+import {foundationPlanStates,foundationPlanCSS} from '../assets/core/design-plan-style.js';
+import {contrastRatio} from '../assets/core/design-plan.js';
+
+test('Foundation 状态色在浅深与极端自定义背景上保持可读、门户范围明确',()=>{
+ for(const theme of ['light','dark'])for(const surface of ['#ffffff','#000000','#777777','#4355cb','#a6b0ff']){
+  const values={...proposal,surface},state=foundationPlanStates(values,theme);
+  for(const key of ['accent','success','danger','focus'])assert.ok(contrastRatio(state[key],surface)>=4.5);
+  assert.ok(contrastRatio(state.accent,state.on)>=4.5);
+  const css=foundationPlanCSS(values,theme);
+  assert.ok(css.includes('.ui-design-plan-portal[data-theme="'+theme+'"]'));
+  assert.ok(!css.includes(':root'));assert.ok(!css.includes('backdrop-filter'));
+ }
+});
+test('方案容量超过64KiB时拒绝写入而不是悄悄进入易失会话',()=>{
+ const bigName='x'.repeat(40);
+ const raw=exportMaterialSnapshot({...Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default])),gradient:true,shadowOpacity:20});
+ const candidate={...plan,name:bigName,materialAttachment:raw,baselineTokens:light.tokens,keys:Array.from({length:6},(_,i)=>'x'.repeat(200)+i+'/original')};
+ const history=Array.from({length:4},()=>planSnapshot(candidate));
+ const items=Array.from({length:8},(_,i)=>({...candidate,name:String(i),history}));
+ let savedRaw='[]';const storage={getItem:()=>savedRaw,setItem:(_,v)=>{savedRaw=v;}};
+ assert.throws(()=>updateDesignPlans({items:[],sessionOnly:false},()=>items,storage),/容量/);
+ assert.equal(savedRaw,'[]');
+});

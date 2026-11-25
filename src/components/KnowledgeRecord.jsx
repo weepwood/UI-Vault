@@ -1,4 +1,4 @@
-import {useEffect,useState} from 'react';
+import {useEffect,useMemo,useState} from 'react';
 import {DesignPlan} from './DesignPlan.jsx';
 import {resolveAsset} from '../../assets/core/render.js';
 import {downloadSourceText} from '../../assets/core/source-files.js';
@@ -29,8 +29,11 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
  },[asset,version,attempt]);
  const value=result?.value,row=value?.record;
  const hits=result?.index&&(query.trim()||recipeFilter||deliveryFilter)?searchKnowledge(result.index,{query,recipe:recipeFilter,delivery:deliveryFilter,limit:8}):null;
- let composition=null,compositionError=false;
- if(result?.index)try{composition=composeKnowledge(result.index,result.assets,selection,context);}catch{compositionError=true;}
+ const {composition,compositionError}=useMemo(()=>{
+  if(!result?.index)return {composition:null,compositionError:false};
+  try{return {composition:composeKnowledge(result.index,result.assets,selection,context),compositionError:false};}
+  catch{return {composition:null,compositionError:true};}
+ },[result,selection,context]);
  function downloadComposition(markdown){
   if(!composition)return;
   try{downloadSourceText(markdown?compositionMarkdown(composition):JSON.stringify(composition,null,2)+'\n',markdown?'composition-DESIGN.md':'ai-composition.json');notify('组合交付已下载');}catch{notify('组合交付下载失败');}
