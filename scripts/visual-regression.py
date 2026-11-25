@@ -937,6 +937,42 @@ def verify_directory_session_and_search_limit(browser, origin):
         context.close()
 
 
+def verify_startup_and_short_shell(browser, origin):
+    """核心目录未返回时不请求健康快照；短窗口保持工作台内部滚动。"""
+    context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
+    held=[]
+    requests=[]
+    try:
+        context.route("**/content/assets.json*",lambda route:held.append(route))
+        page=context.new_page()
+        page.on("request",lambda request:requests.append(request.url))
+        page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+        page.locator(".project-skeleton").first.wait_for(state="attached")
+        page.wait_for_function("""() => ['categories.json','projects.json'].every(name => performance.getEntriesByType('resource').some(entry=>entry.name.includes('/content/'+name)))""")
+        assert held
+        assert not any("/content/project-health.json" in url or "/content/preview-health.json" in url for url in requests)
+        held.pop().continue_()
+        page.locator("#preview-stage iframe").wait_for(state="attached")
+        # wait_for_function uses the browser resource timing buffer, so no missed event race.
+        page.wait_for_function("""() => ['project-health.json','preview-health.json'].every(name =>
+          performance.getEntriesByType('resource').some(entry=>entry.name.includes('/content/'+name)))""")
+        for width,height in ((1440,900),(1024,400),(667,300),(390,280)):
+            page.set_viewport_size({"width":width,"height":height})
+            page.wait_for_function("""() => {
+              const shell=document.querySelector('.app-shell').getBoundingClientRect();
+              const stage=document.querySelector('#preview-stage').getBoundingClientRect();
+              return Math.abs(shell.height-innerHeight)<=1&&document.documentElement.scrollHeight<=innerHeight+1
+                &&stage.height>0&&stage.bottom<=innerHeight+1;
+            }""")
+            page.screenshot(path=str(OUTPUT/f"workbench-shell-{width}x{height}.png"))
+        print("核心目录优先与四种工作台视口边界通过",flush=True)
+    finally:
+        for route in held:
+            try: route.abort()
+            except Exception: pass
+        context.close()
+
+
 def verify_preview_timeout_ready(browser, origin):
     """真实浏览器阻塞首次 iframe 请求，确认超时、重试、初始化握手与节点不被普通操作重建。"""
     context=browser.new_context(viewport={"width":1440,"height":900},reduced_motion="reduce",locale="zh-CN")
@@ -2342,6 +2378,7 @@ def main():
                     verify_large_directory_groups,
                     verify_synthetic_grouped_directory,
                     verify_directory_session_and_search_limit,
+                    verify_startup_and_short_shell,
                     verify_preview_timeout_ready,
                     verify_parameter_readiness,
                     verify_foundation_parameters,

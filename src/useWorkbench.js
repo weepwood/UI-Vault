@@ -151,20 +151,22 @@ export function useWorkbench(){
   },[]);
   // 项目健康信息可选加载，与主目录生命周期隔离：失败时不阻断搜索和 iframe。
   useEffect(()=>{
+    if(state.loading||state.error)return;
     const controller=new AbortController();
     fetchJSON('content/project-health.json',controller.signal)
       .then(data=>{if(data?.version===1&&data.projects&&typeof data.projects==='object')setProjectHealthSnapshot(data);})
       .catch(()=>{}); // 网络失败保留“未核实”，不是“没有项目”
     return ()=>controller.abort();
-  },[]);
+  },[state.loading,state.error]);
   // 预览响应头与 Project 代码/部署状态独立采样；失败不阻断工作台运行。
   useEffect(()=>{
+    if(state.loading||state.error)return;
     const controller=new AbortController();
     fetchJSON('content/preview-health.json',controller.signal)
       .then(data=>{if(data?.version===1&&data.assets&&typeof data.assets==='object')setPreviewHealthSnapshot(data);})
       .catch(()=>{});
     return ()=>controller.abort();
-  },[]);
+  },[state.loading,state.error]);
   useEffect(()=>router.subscribe(route=>dispatch({type:'navigate',...route})),[]);
   useEffect(()=>{
     // versionId 也必须进依赖：router.navigate 在 href 相同时直接返回 false，
