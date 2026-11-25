@@ -14,8 +14,9 @@
 }
 .topbar-search-action:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 .topbar-search-action:active{transform:scale(.96)}
-@media(prefers-reduced-motion:reduce){.topbar-search-action{transition:none}}
+@media(prefers-reduced-motion:reduce){.topbar-search-action{transition:none}.topbar-search-action:active{transform:none}}
 html[data-motion="reduced"] .topbar-search-action{transition:none}
+html[data-motion="reduced"] .topbar-search-action:active{transform:none}
 
 .project-identity{display:flex;flex-direction:column;justify-content:center;min-width:0}
 .topbar-kind{display:none}

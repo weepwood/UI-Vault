@@ -40,11 +40,11 @@
 @media(prefers-reduced-motion:reduce){#preview-favorite:active{transform:none}}
 html[data-motion="reduced"] #preview-favorite:active{transform:none}
 .info-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;color:var(--text);background:var(--surface);border:1px solid var(--line);border-radius:var(--workbench-control-radius,7px);font-size:11px;transition:background-color var(--motion-fast,120ms) ease,color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
-.info-action:hover{background:var(--canvas);color:var(--accent);border-color:var(--accent-line,var(--line))}
-.info-action:active:not(:disabled),.open-action:active{transform:scale(.97)}
+.info-action:hover:not(:disabled){background:var(--canvas);color:var(--accent);border-color:var(--accent-line,var(--line))}
+.info-action:active:not(:disabled),.open-action:active:not(:disabled){transform:scale(.97)}
 .info-action .ui-icon{width:15px;height:15px}
 .open-action{display:inline-flex;align-items:center;justify-content:center;gap:7px;white-space:nowrap;height:34px;padding:0 11px;border-radius:7px;border:1px solid var(--ink);background:var(--ink);color:#fff;font-size:11px;font-weight:600;transition:background-color var(--motion-fast,120ms) ease,border-color var(--motion-fast,120ms) ease,transform var(--motion-fast,120ms) var(--ease-out,cubic-bezier(.2,.8,.2,1))}
-.open-action:hover{background:#33434b}
+.open-action:hover:not(:disabled){background:#33434b}
 .open-action .ui-icon{width:15px;height:15px}
 .toast{position:fixed;z-index:100;bottom:18px;right:24px;max-width:min(420px,calc(100vw - 36px));padding:10px 14px;background:var(--ink);color:#fff;border-radius:7px;font-size:12px;opacity:0;transform:translateY(8px);transition:opacity var(--motion-base,160ms) var(--ease-out,cubic-bezier(.2,.8,.2,1)),transform var(--motion-slow,220ms) var(--ease-out,cubic-bezier(.2,.8,.2,1));pointer-events:none;box-shadow:0 8px 26px #15283228}
 .toast.show{opacity:1;transform:translateY(0)}
