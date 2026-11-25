@@ -1375,6 +1375,12 @@ ${JSON.stringify(c, null, 2)}
         budgetDpr / scale) * scale);
     }
     function updateQualityStatus() {
+      if (document.body.classList.contains("fallback")) {
+        const selected = qualityMode.current === "auto" ? "自动 · 推荐" : qualityLabels[qualityMode.current];
+        qualityStatus.textContent = selected + " · CSS 简化预览（GPU 画质未生效）";
+        qualityStatus.title = "仅状态、外壳、播放和流速生效；配色、音频、GPU 画质仅用于原渲染器。";
+        return;
+      }
       const label = (qualityMode.current === "auto" ? "自动 · " : "") + qualityLabels[quality] +
         " · " + targetFps + " FPS / " + renderDpr().toFixed(2) + "×";
       const highStatus = quality === "high"
@@ -1628,7 +1634,7 @@ ${JSON.stringify(c, null, 2)}
         fallback.dataset.glass=String(glassEnabled);
         fallback.dataset.playing=String(playing&&!reducedMotion.matches&&!document.hidden);
         fallback.style.setProperty("--fallback-duration",(14/speedFactor)+"s");
-        qualityStatus.textContent="CSS 简化预览：仅状态、外壳、播放和流速生效；配色、音频、GPU 画质仅用于原渲染器。";
+        updateQualityStatus();
       };
       document.addEventListener("visibilitychange",requestDraw);
       reducedMotion.addEventListener?.("change",requestDraw);
