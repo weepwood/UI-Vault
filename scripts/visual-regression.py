@@ -1273,6 +1273,8 @@ def verify_live_parameter_dock(browser, origin):
         assert frame.locator(".stat").first.evaluate("(el)=>getComputedStyle(el).borderRadius")=="24px"
         radius.fill("999")
         expect(radius).to_have_attribute("aria-invalid","true")
+        assert radius.evaluate("""e=>{const p=e.closest('.demo-parameter-panel');
+          return getComputedStyle(e).outlineColor===getComputedStyle(p.querySelector('.parameter-status')).color;}""")
         expect(dock.get_by_role("button",name="应用参数")).to_be_disabled()
         radius.press("Escape")
         dock.get_by_text("已连接 · 参数已同步",exact=True).wait_for()
@@ -1572,6 +1574,42 @@ def verify_expanded_workbench_screenshots(browser, origin):
             context.close()
 
 
+def verify_compact_source_reader(browser, origin):
+    """窄屏/短屏优先阅读源码，完整交付工具仍可展开，外框稳定。"""
+    for width,height,theme in ((320,640,"dark"),(667,300,"light"),(390,280,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN")
+        try:
+            page=context.new_page()
+            page.goto(origin+"?asset=ui-foundation-kit",wait_until="domcontentloaded")
+            trigger=page.locator("#preview-info")
+            trigger.click()
+            dialog=page.locator(".project-dialog")
+            before=dialog.bounding_box()["height"]
+            page.locator("#tab-source").click()
+            code=page.locator(".source-view")
+            expect(code).to_be_visible()
+            page.wait_for_function("""() => {
+              const p=document.querySelector('.dialog-source-pane'),s=document.querySelector('.source-view');
+              const r=s.getBoundingClientRect(),b=p.getBoundingClientRect();
+              return s.clientHeight>=80&&s.clientHeight<=innerHeight&&
+                Math.min(r.bottom,b.bottom)-Math.max(r.top,b.top)>=80;
+            }""")
+            assert abs(dialog.bounding_box()["height"]-before)<=2
+            page.screenshot(path=str(OUTPUT/f"source-compact-{width}x{height}-{theme}.png"))
+            page.get_by_role("button",name="交付与阅读工具").click()
+            expect(page.locator("#source-reuse-manifest")).to_be_visible()
+            expect(page.locator("#source-foundation-project")).to_be_visible()
+            page.get_by_role("button",name="收起交付工具").click()
+            expect(page.locator("#source-reuse-manifest")).to_be_hidden()
+            code.focus()
+            expect(code).to_be_focused()
+            page.keyboard.press("Escape")
+            expect(dialog).to_be_hidden()
+            expect(trigger).to_be_focused()
+        finally:
+            context.close()
+
+
 def verify_registry_browser(browser, origin):
     """真实发布 Registry 索引，按需读取、失败重试、跨主题浏览及复制命令。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -1588,6 +1626,7 @@ def verify_registry_browser(browser, origin):
             page.locator("#preview-info").click()
             page.locator("#tab-source").click()
             assert not reads
+            if width<=360:page.get_by_role("button",name="交付与阅读工具").click()
             page.get_by_role("button",name="浏览 Foundation Registry").click()
             page.get_by_text("无法读取 Registry。",exact=False).wait_for()
             page.get_by_role("button",name="重试",exact=True).click()
@@ -2533,6 +2572,7 @@ def main():
                     verify_warm_layout_parameters,
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
+                    verify_compact_source_reader,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,

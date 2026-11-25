@@ -69,6 +69,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   const [wrapSource,setWrapSource]=useState(false);
   const [highlightSource,setHighlightSource]=useState(false);
   const [registryOpen,setRegistryOpen]=useState(false);
+  const [sourceToolsOpen,setSourceToolsOpen]=useState(false);
   // 只保存“真正取回（或失败）的源码”；加载占位与未打开时的提示由下面的 source 在渲染期派生。
   const [loadedSource,setSource]=useState({id:null,path:null,text:'',status:'',ready:false});
   const [pageInfo,setPageInfo]=useState({id:null,info:null});
@@ -93,7 +94,7 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
   // 切换资产必须同步丢弃上一次的标签页、源码与页面信息：若改成渲染期派生，
   // 再次打开同一资产时会命中旧内容而不再重新请求源码（现有测试也锁定了这个 effect 形态）。
   // eslint-disable-next-line react-hooks/set-state-in-effect
-  useEffect(()=>{setTab('overview');setRegistryOpen(false);setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
+  useEffect(()=>{setTab('overview');setRegistryOpen(false);setSourceToolsOpen(false);setFilePath('');setSource({id:null,path:null,text:'',status:'',ready:false});setPageInfo({id:null,info:null});},[assetId,assetPreview]);
   useEffect(()=>{
     if(!root)return;
     if(open&&assetId){
@@ -247,6 +248,8 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
     </section>
     <section id="dialog-source" className={'dialog-pane dialog-source-pane'+(registryActive?' registry-source-pane':'')} role="tabpanel"
       aria-labelledby="tab-source" tabIndex={0} hidden={tab!=='source'}>
+      {!registryActive&&<button type="button" className="source-compact-toggle" aria-expanded={sourceToolsOpen} aria-controls="source-delivery-tools" onClick={()=>setSourceToolsOpen(value=>!value)}>{sourceToolsOpen?'收起交付工具':'交付与阅读工具'}<Icon name="chevron-down"/></button>}
+      <div id="source-delivery-tools" className="source-delivery-tools" data-expanded={sourceToolsOpen||registryActive}>
       <div className="source-actions" hidden={registryActive}>
         <div className="source-file-controls">
           {files.length>1
@@ -290,11 +293,12 @@ export function ProjectDialog({root,asset,labels,project=null,projectAssetCount=
               :'当前项目尚未登记可独立交付的完整文件包。请通过 GitHub 查阅依赖和构建方式，避免仅复制 HTML 导致功能缺失。'}
       </p>
       <div className="source-delivery-note source-manifest-actions"><button type="button" id="source-reuse-manifest" hidden={registryActive} onClick={downloadReuseManifest} disabled={!asset}>导出复用清单 JSON</button>{asset?.id==='ui-foundation-kit'&&<button type="button" aria-expanded={registryOpen} onClick={event=>{event.currentTarget.closest('.dialog-source-pane').scrollTop=0;setRegistryOpen(value=>!value);}}>{registryOpen?'返回源码':'浏览 Foundation Registry'}</button>}</div>
+      {!registryActive&&selectedFile&&<div className="source-reader-tools"><span className="source-current-path" title={selectedFile.path}>{selectedFile.path}</span><label className="source-wrap-toggle"><input type="checkbox" checked={wrapSource} onChange={event=>setWrapSource(event.target.checked)}/> 自动换行</label><label className="source-wrap-toggle"><input type="checkbox" checked={highlightSource} onChange={event=>setHighlightSource(event.target.checked)}/> 语法高亮</label></div>}
+      </div>
       {registryActive?open&&tab==='source'&&<RegistryBrowser onCopyText={onCopyText}/>:<>
-      {selectedFile&&<div className="source-reader-tools"><span className="source-current-path" title={selectedFile.path}>{selectedFile.path}</span><label className="source-wrap-toggle"><input type="checkbox" checked={wrapSource} onChange={event=>setWrapSource(event.target.checked)}/> 自动换行</label><label className="source-wrap-toggle"><input type="checkbox" checked={highlightSource} onChange={event=>setHighlightSource(event.target.checked)}/> 语法高亮</label></div>}
       <div className="source-reader-layout">
       {files.length>1&&<details className="source-file-browser" key={asset?.id+':'+asset?.preview}><summary>源码文件目录 · {files.length} 项</summary><ul aria-label="已登记源码文件">{files.map(file=><li key={file.path}><button type="button" onClick={()=>setFilePath(file.path)} aria-pressed={file.path===selectedFile?.path}><Icon name="file-code"/><span>{file.name}</span><small>{file.path.slice(0,file.path.lastIndexOf('/'))}</small></button></li>)}</ul></details>}
-      <pre className={'source-view'+(wrapSource?' source-view-wrap':'')}><SourceCode text={isCurrent?source.text:'选择“源代码”查看项目实现。'} language={selectedFile?.language} enabled={Boolean(highlightSource&&open&&tab==='source'&&isCurrent&&source.ready)}/></pre>
+      <pre tabIndex={0} aria-label="源码阅读区" className={'source-view'+(wrapSource?' source-view-wrap':'')}><SourceCode text={isCurrent?source.text:'选择“源代码”查看项目实现。'} language={selectedFile?.language} enabled={Boolean(highlightSource&&open&&tab==='source'&&isCurrent&&source.ready)}/></pre>
       </div></>}
     </section>
     <section id="dialog-page-info" className="dialog-pane page-info-pane" role="tabpanel"
