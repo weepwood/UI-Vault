@@ -1760,6 +1760,69 @@ def verify_notion_storage_fallback(browser, origin):
             context.close()
 
 
+def verify_material_import_order(browser, origin):
+    """受控文件读取顺序：旧文件不覆盖新选择、编辑或主动读取。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.add_init_script("""()=>{const original=File.prototype.text;window.testReads={};
+                File.prototype.text=function(){if(!this.name.startsWith('hold-'))return original.call(this);
+                return new Promise((resolve,reject)=>{window.testReads[this.name]=()=>original.call(this).then(resolve,reject)})}}""")
+            page.goto(origin+"?asset=warm-workbench",wait_until="domcontentloaded")
+            page.locator("#preview-parameters").click()
+            dock=page.locator("#parameter-dock")
+            frame=page.frame_locator("#preview-stage iframe")
+            def button(name):return dock.get_by_role("button",name=name,exact=True)
+            def sync():expect(dock.get_by_text("已连接 · 参数已同步",exact=True)).to_be_visible()
+            def surface():return frame.locator("html").evaluate("e=>getComputedStyle(e).getPropertyValue('--warm-surface').trim()")
+            button("读取当前参数").click()
+            sync()
+            button("双层柔光").click()
+            sync()
+            with page.expect_download() as info:button("导出材质 JSON").click()
+            base=json.loads(info.value.path().read_text("utf-8"))
+            upload=dock.get_by_label("导入材质 JSON",exact=True)
+            def queue(name,color):
+                doc={**base,"values":{**base["values"],"surface":color}}
+                upload.set_input_files({"name":name,"mimeType":"application/json","buffer":json.dumps(doc).encode()})
+                page.wait_for_function("n=>typeof window.testReads[n]==='function'",arg=name)
+            def release(name):
+                page.evaluate("n=>{window.testReads[n]();delete window.testReads[n]}",name)
+                page.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
+            initial=surface()
+            queue("hold-old.json","#112233")
+            queue("hold-new.json","#445566")
+            release("hold-old.json")
+            assert surface()==initial
+            expect(dock.get_by_text("材质已导入 · 布局与动效保留 · 尚未应用",exact=True)).to_be_hidden()
+            release("hold-new.json")
+            expect(dock.get_by_text("材质已导入 · 布局与动效保留 · 尚未应用",exact=True)).to_be_visible()
+            assert surface()==initial
+            button("应用参数").click()
+            sync()
+            assert surface()=="#445566"
+            queue("hold-edit.json","#aa9988")
+            radius=dock.get_by_role("spinbutton",name="卡片圆角",exact=True)
+            radius.fill("29")
+            sync()
+            release("hold-edit.json")
+            expect(dock.get_by_text("读取期间参数已变化，请重新导入",exact=True)).to_be_visible()
+            assert surface()=="#445566"
+            expect(radius).to_have_value("29")
+            queue("hold-read.json","#abcdef")
+            button("读取当前参数").click()
+            sync()
+            release("hold-read.json")
+            button("应用参数").click()
+            sync()
+            assert surface()=="#445566"
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_material_tokens_and_registry_link(browser, origin):
     """解析后的材质 Token 与真实渲染一致，通用 Registry 和原始源码之间可往返。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark")):
@@ -3419,6 +3482,7 @@ def main():
                     verify_material_snapshot_and_reuse,
                     verify_material_library,
                     verify_material_tokens_and_registry_link,
+                    verify_material_import_order,
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,
