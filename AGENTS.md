@@ -7,6 +7,8 @@ UI Vault 是长期维护的个人 UI 资产库，用于收藏、预览和复用�
 
 ## 开始之前
 
+- 涉及 AI UI 设计 Skills 选型、设计系统提取及视觉验收：参考 [AI UI Skills 使用手册](docs/UI-SKILLS-HANDBOOK.md)；网页和 Markdown 同步维护，标注来源、类型、适用边界及核对日期，不安装未审计的第三方 Skill，不替代 DESIGN.md 或真实验收。
+
 - 涉及 UI 或页面改版：先读 [DESIGN.md](DESIGN.md)（当前有效的设计规范）。
 - 涉及新增资产：先读 [docs/EXTENDING.md](docs/EXTENDING.md) 和 [docs/ADDING-DEMO.md](docs/ADDING-DEMO.md)。
 - 需要了解某条规则为什么存在、以前是什么样：查 [docs/DESIGN-HISTORY.md](docs/DESIGN-HISTORY.md)。**不要**按历史记录里已被替代的规则执行。

@@ -50,8 +50,28 @@ test('技能手册仅展示指令而不主动执行第三方脚本',async()=>{
   assert.ok(html.includes('npx skills@latest add emilkowalski/skills'));
   assert.ok(html.includes('npx skills add jakubkrehel/skills'));
   assert.ok(html.includes('web-design-guidelines'));
-  assert.ok(html.includes('prefers-reduced-motion')&&html.includes('aria-label')===false);
-  assert.ok(!/<script[^>]+src="https:\/\//.test(html));
+  assert.ok(html.includes('prefers-reduced-motion'));
+  assert.match(html,/<nav\b[^>]*aria-label="[^"]+"/);
+  for(const region of html.matchAll(/<div\b[^>]*role="region"[^>]*>/g)){
+    assert.match(region[0],/aria-label="[^"]+"/);
+    assert.match(region[0],/tabindex="0"/);
+  }
+  assert.doesNotMatch(html,/<script\b[^>]*\bsrc\s*=/i);
+  const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
+  assert.equal(scripts.length,1);
+  const commands=[...html.matchAll(/data-command="([^"]+)"/g)].map(m=>m[1]);
+  const copied=[];
+  const handlers=[];
+  const buttons=commands.map(command=>({dataset:{command},textContent:'复制命令',addEventListener(type,fn){assert.equal(type,'click');handlers.push(fn);}}));
+  vm.runInNewContext(scripts[0][1],{
+    document:{querySelectorAll(selector){assert.equal(selector,'[data-command]');return buttons;}},
+    navigator:{clipboard:{async writeText(value){copied.push(value);}}},
+    setTimeout(){},
+  },{timeout:1000});
+  assert.equal(copied.length,0,'页面加载不得自动复制或执行命令');
+  assert.equal(handlers.length,commands.length);
+  for(const handler of handlers)await handler();
+  assert.deepEqual(copied,commands,'用户点击仅复制已展示的命令');
 });
 
 
