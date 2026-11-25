@@ -38,7 +38,7 @@ test('知识索引包含登记资产、所有版本与来源证据，不混淆�
  assert.equal(byKey.get('landfolio-style-academic/original').guide.kind,'archive-summary');
  assert.ok(index.records.every(row=>row.provenance.licenseStatus==='declared-not-legal-audit'));
  assert.ok(index.duplicateCandidates.sharedExternalPreview.some(row=>row.keys.includes('atlas-academia/original')));
- assert.equal(index.summary.archiveReviews,8);
+ assert.ok(index.summary.archiveReviews>=30);
  assert.equal(byKey.get('landfolio-style-academic/original').archiveReview.status,'summary-and-source-excerpt-reviewed');
  const original=items.find(x=>x.versions?.length);
  const variant=selectAssetVersion(original,original.versions[0].id);

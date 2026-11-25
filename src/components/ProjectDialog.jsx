@@ -247,7 +247,6 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
       aria-labelledby="tab-overview" tabIndex={0} hidden={tab!=='overview'}>
       <div id="project-info" className="project-info" onClick={infoClick}
         dangerouslySetInnerHTML={{__html:asset?projectInfoMarkup(asset,labels):''}}/>
-      {asset&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='overview'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}/>}</div>}
     </section>
     <section id="dialog-source" className={'dialog-pane dialog-source-pane'+(registryActive?' registry-source-pane':'')} role="tabpanel"
       aria-labelledby="tab-source" tabIndex={0} hidden={tab!=='source'}>
@@ -319,6 +318,7 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&onEditParameters&&<button className="parameter-dock-launch" type="button" onClick={onEditParameters}><Icon name="sliders-horizontal"/> 在预览旁实时编辑</button>}
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&<DemoParameterPanel key={asset.id+':'+asset.preview} asset={asset} notify={notify}/>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
+      {asset&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='page-info'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}/>}</div>}
     </section>
     {asset?.designGuidePath&&<section id="dialog-design-guide" className="dialog-pane design-guide-pane" role="tabpanel"
       aria-labelledby="tab-design-guide" tabIndex={0} hidden={tab!=='design-guide'}>

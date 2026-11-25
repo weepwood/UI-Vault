@@ -28,4 +28,8 @@
 
 ## 工作台按需读取
 
-项目说明中选择“查看 AI 复用证据”，按当前资产和选定版本读取正式索引，提供许可/来源/指南与审查边界、相关配方、复制 JSON 和下载单条记录。只有显式打开后才请求索引；失败可重试，版本或路径不一致拒绝显示。Landfolio 的 catalog/archive-reviews.json 单独记录摘要及 HTML/CSS 源码片段人工审查，构建校验锚点与版本路径、附当前哈希；首批 8 项，不计入314原始指南，不声称完整视觉验收。
+项目说明 → 页面信息中选择“查看 AI 复用证据”，按当前资产和选定版本读取正式索引，提供许可/来源/指南与审查边界、相关配方、复制 JSON 和下载单条记录。只有显式打开后才请求索引；失败可重试，版本或路径不一致拒绝显示。Landfolio 的 catalog/archive-reviews.json 单独记录摘要及 HTML/CSS 源码片段人工审查，构建校验锚点与版本路径、附当前哈希；首批 8 项，不计入314原始指南，不声称完整视觉验收。
+
+## 离线知识检索 CLI
+
+完成构建后运行 `node scripts/search-knowledge.mjs --query "Bauhaus" --type design-style --limit 5`；或者 `node scripts/search-knowledge.mjs --query "极夜" --version landfolio-polar-night`。支持 --index 指定可信本地索引、--tag、--type、--version、--delivery 精确筛选，多词全部匹配，标题/键优先、描述/标签/审查证据其次、关联配方再次；相同分数按版本键排序。返回 JSON，含总匹配数、最多100条记录、来源指纹与配方，供 Agent 上下文提取。只读离线，不执行源码，不联网；索引限制8MiB。配方按父资产关联，不是衍生版本独立认证。当前归档审查30/201（含4个衍生版本）。

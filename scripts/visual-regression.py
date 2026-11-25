@@ -1634,6 +1634,8 @@ def verify_knowledge_record(browser, origin):
             page.goto(origin+"?asset=website-style-bauhaus",wait_until="domcontentloaded")
             page.locator("#preview-info").click()
             assert not reads
+            page.locator("#tab-page-info").click()
+            assert not reads
             page.get_by_role("button",name="查看 AI 复用证据").click()
             page.get_by_text("知识索引暂不可用或版本不一致。",exact=False).wait_for()
             page.get_by_role("button",name="重试",exact=True).click()
