@@ -26,3 +26,14 @@ test('限制查询结果并拒绝非法参数及索引',()=>{
  assert.throws(()=>parseKnowledgeArgs(['--query']),/参数/);
  assert.deepEqual(parseKnowledgeArgs(['--query','暗色 科技感','--limit','3']),{index:'dist/content/knowledge-index.json',query:'暗色 科技感',limit:3});
 });
+
+test('浏览器与CLI共享反向检索：配方实现、源码路径、交付筛选与版本',()=>{
+ const grid=searchKnowledge(index,{recipe:'functional-grid'});
+ assert.ok(grid.results.some(x=>x.record.id==='design-recipe-lab'));
+ assert.ok(grid.results.some(x=>x.record.id==='website-style-bauhaus'));
+ const source=searchKnowledge(index,{query:'SearchField.jsx',delivery:'source-reference'});
+ assert.equal(source.total,1);assert.equal(source.results[0].record.id,'workbench-components');
+ assert.equal(searchKnowledge(index,{recipe:'not-registered'}).total,0);
+ assert.throws(()=>searchKnowledge(index,{query:'a'.repeat(257)}),/query/);
+ assert.equal(parseKnowledgeArgs(['--recipe','functional-grid']).recipe,'functional-grid');
+});

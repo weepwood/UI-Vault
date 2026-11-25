@@ -2365,6 +2365,12 @@ def verify_design_recipe_lab(browser, origin):
             frame=page.frame_locator("#preview-stage iframe")
             buttons=frame.locator("#recipe-nav button")
             expect(buttons).to_have_count(6)
+            if width<=430:
+                assert buttons.first.bounding_box()["height"]>=44
+                assert frame.locator(".hero h1").evaluate("e=>parseFloat(getComputedStyle(e).fontSize)")>=25
+                assert frame.locator(".canvas").bounding_box()["y"]<640
+            assert buttons.first.evaluate("e=>getComputedStyle(e).transitionDuration")=="0s"
+
             expect(page.locator(".topbar #preview-title")).to_have_text("设计配方实验室")
             frame.locator(".lab-directory summary").click()
             expect(frame.locator(".lab-links a")).to_have_count(5)
@@ -2431,6 +2437,389 @@ def verify_design_recipe_lab(browser, origin):
             page.screenshot(path=str(OUTPUT/f"design-recipe-lab-{width}-{theme}.png"))
         finally:
             context.close()
+
+
+def verify_knowledge_delivery(browser, origin):
+    """版本级证据与真实交付文件匹配；源码、指南、Registry 及配方关联。"""
+    import hashlib
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            def open_record(asset_id):
+                page.goto(origin+"?asset="+asset_id,wait_until="domcontentloaded")
+                page.locator("#preview-info").click()
+                page.locator("#tab-page-info").click()
+                page.get_by_role("button",name="查看 AI 复用证据").click()
+                expect(page.get_by_role("button",name="下载 AI 接入清单")).to_be_visible()
+                return page.locator(".knowledge-record")
+            knowledge=open_record("workbench-components")
+            knowledge.locator(".knowledge-evidence summary").click()
+            source=knowledge.get_by_role("button",name="查看SearchField.jsx",exact=True)
+            expect(source).to_be_visible()
+            with page.expect_download() as info:
+                knowledge.get_by_role("button",name="下载 AI 接入清单").click()
+            doc=json.loads(info.value.path().read_text("utf-8"))
+            assert doc["format"]=="ui-vault-ai-handoff" and doc["assetVersion"]=="original"
+            file=next(f for f in doc["delivery"]["sourceFiles"] if f["path"]=="src/components/SearchField.jsx")
+            actual=(DIST/file["path"]).read_bytes()
+            assert file["sha256"]==hashlib.sha256(actual).hexdigest() and file["bytes"]==len(actual)
+            assert doc["relatedRegistry"]["scope"]=="general-foundation-not-workbench-package"
+            import subprocess
+            verified=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(info.value.path()),"--root",str(DIST)],encoding="utf-8"))
+            assert verified["verified"] and verified["checked"]>0
+            with page.expect_download() as template:
+                knowledge.get_by_role("button",name="下载 DESIGN.md",exact=True).click()
+            markdown=template.value.path().read_text("utf-8")
+            assert "# DESIGN.md" in markdown and file["path"] in markdown and file["sha256"] in markdown and "非法律审查" in markdown
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            knowledge.locator(".knowledge-evidence").scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"knowledge-delivery-{width}-{theme}.png"))
+            source.click()
+            expect(page.locator("#source-code")).to_contain_text("export function SearchField")
+            expect(page.locator("#tab-source")).to_be_focused()
+            page.locator("#tab-page-info").click()
+            page.locator(".knowledge-record").get_by_role("button",name="浏览通用 Foundation Registry").click()
+            expect(page.get_by_role("combobox",name="选择 Registry 模块")).to_be_visible()
+            page.get_by_role("button",name="返回源码",exact=True).click()
+            expect(page.locator("#source-code")).to_contain_text("export function SearchField")
+            knowledge=open_record("website-style-bauhaus")
+            knowledge.locator(".knowledge-recipe summary").filter(has_text="功能优先的模块化网格").click()
+            assert "asset=design-recipe-lab" in knowledge.get_by_role("link",name="设计配方实验室（新标签页）").get_attribute("href")
+            href=knowledge.get_by_role("link",name="打开对应实验（独立页）").get_attribute("href")
+            independent=context.new_page()
+            try:
+                independent.goto(href,wait_until="domcontentloaded")
+                expect(independent.locator("#recipe-nav button").first).to_have_attribute("aria-pressed","true")
+                independent.goto(origin+"demos/experiments/design-recipe-lab/index.html?recipe=restrained-reading")
+                expect(independent.locator("#recipe-nav button").nth(4)).to_have_attribute("aria-pressed","true")
+            finally:
+                independent.close()
+            knowledge.locator(".knowledge-evidence summary").click()
+            knowledge.get_by_role("button",name="查看设计指南",exact=True).click()
+            expect(page.locator("#tab-design-guide")).to_have_attribute("aria-selected","true")
+            knowledge=open_record("design-recipe-lab")
+            expect(knowledge.locator(".knowledge-recipe")).to_have_count(6)
+            knowledge.locator(".knowledge-search summary").click()
+            query=knowledge.get_by_label("知识检索关键词",exact=True)
+            query.fill("SearchField.jsx")
+            results=knowledge.locator(".knowledge-search .knowledge-search-results")
+            expect(results.locator("li")).to_have_count(1)
+            assert "asset=workbench-components" in results.locator("a").get_attribute("href")
+            query.fill("")
+            knowledge.get_by_label("知识检索配方",exact=True).select_option("functional-grid")
+            expect(results.locator("a[href*='asset=design-recipe-lab']")).to_be_visible()
+            expect(results.locator("a[href$='asset=website-style-bauhaus']")).to_be_visible()
+            knowledge.get_by_label("知识检索交付方式",exact=True).select_option("single-html")
+            expect(results.locator("a[href*='asset=design-recipe-lab']")).to_be_visible()
+            assert all("单文件 HTML" in t for t in results.locator("small").all_text_contents())
+            knowledge.get_by_label("知识检索配方",exact=True).select_option("")
+            knowledge.get_by_label("知识检索交付方式",exact=True).select_option("")
+            query.fill("极夜")
+            expect(results.locator("a[href*='variant=landfolio-polar-night']")).to_be_visible()
+            query.fill("not-a-real-asset-zzzz")
+            expect(knowledge.get_by_text("匹配 0 项",exact=True)).to_be_visible()
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            page.screenshot(path=str(OUTPUT/f"knowledge-search-{width}-{theme}.png"))
+            knowledge=open_record("workbench-components")
+            knowledge.locator(".knowledge-search summary").click()
+            search=knowledge.get_by_label("知识检索关键词",exact=True)
+            hits=knowledge.locator(".knowledge-search .knowledge-search-results")
+            for asset_id in ("design-recipe-lab","website-style-bauhaus"):
+                search.fill(asset_id)
+                hits.locator("li").filter(has=page.locator(f'a[href$="asset={asset_id}"]')).get_by_role("button",name="加入交付组合",exact=True).click()
+            composition=knowledge.locator(".knowledge-composition")
+            composition.locator(":scope > summary").click()
+            knowledge.get_by_label("组合设计场景",exact=True).select_option("dense-workbench")
+            expect(composition.get_by_text("适用范围需复核",exact=False).first).to_be_visible()
+            with page.expect_download() as combination:
+                composition.get_by_role("button",name="下载组合 JSON",exact=True).click()
+            bundle=json.loads(combination.value.path().read_text("utf-8"))
+            assert [(e["role"],e["handoff"]["assetId"]) for e in bundle["entries"]]==[("primary","workbench-components"),("reference","design-recipe-lab"),("reference","website-style-bauhaus")]
+            assert len({f["path"] for f in bundle["files"]})==len(bundle["files"])
+            assert len(bundle["recipes"])==6
+            report=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(combination.value.path()),"--root",str(DIST)],encoding="utf-8"))
+            assert report["verified"] and report["assets"]==3 and report["uniqueRegisteredFiles"]==len(bundle["files"])
+            with page.expect_download() as template:
+                composition.get_by_role("button",name="下载组合 DESIGN.md",exact=True).click()
+            assert "主资产与参考资产" in template.value.path().read_text("utf-8")
+            composition.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"knowledge-composition-{width}-{theme}.png"))
+            plan=composition.locator(".design-plan")
+            plan.locator(":scope > summary").click()
+            spacing=plan.get_by_label("规范基础间距",exact=True)
+            radius=plan.get_by_label("规范圆角",exact=True)
+            spacing.fill("20")
+            radius.fill("14")
+            plan.get_by_label("规范表面材质",exact=True).select_option("frosted")
+            expect(plan.get_by_text("3 项规范差异",exact=False)).to_be_visible()
+            plan.get_by_label("规范正文颜色",exact=True).fill("#ffffff")
+            expect(plan.get_by_role("status").filter(has_text="正文对比 1.00:1 · 需复核")).to_be_visible()
+            plan.get_by_label("规范正文颜色",exact=True).fill("#17212f")
+            radius.fill("49")
+            expect(plan.get_by_role("button",name="下载设计规范 JSON",exact=True)).to_be_disabled()
+            radius.fill("14")
+            plan.get_by_label("设计方案名称",exact=True).fill("验收组合")
+            plan.get_by_role("button",name="保存设计方案",exact=True).click()
+            expect(plan.get_by_text("设计方案已保存",exact=True)).to_be_visible()
+            with page.expect_download() as spec_download:
+                plan.get_by_role("button",name="下载设计规范 JSON",exact=True).click()
+            spec=json.loads(spec_download.value.path().read_text("utf-8"))
+            assert spec["format"]=="ui-vault-design-plan"
+            assert len(spec["composition"]["entries"])==3
+            assert spec["baseline"]["tokens"]["spacing"]==12 and spec["proposal"]["spacing"]==20
+            assert next(c for c in spec["difference"]["changes"] if c["key"]=="spacing")["delta"]==8
+            assert len(spec["baseline"]["sourceFiles"])==2
+            checked=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(spec_download.value.path()),"--root",str(DIST)],encoding="utf-8"))
+            assert checked["verified"] and len(checked["baselineFiles"])==2
+            with page.expect_download() as spec_md:
+                plan.get_by_role("button",name="下载规范 DESIGN.md",exact=True).click()
+            assert "基础间距 | 12px | 20px" in spec_md.value.path().read_text("utf-8")
+            spacing.fill("25")
+            plan.get_by_label("导入规范 JSON",exact=True).set_input_files({"name":"plan.json","mimeType":"application/json","buffer":json.dumps(spec).encode()})
+            expect(plan.get_by_text("规范已检查，等待明确恢复",exact=True)).to_be_visible()
+            expect(spacing).to_have_value("25")
+            plan.get_by_role("button",name="确认恢复导入规范",exact=True).click()
+            expect(spacing).to_have_value("20")
+            expect(plan.get_by_text("导入规范已恢复；未应用到预览",exact=True)).to_be_visible()
+            bad={**spec,"difference":{**spec["difference"],"contrast":100}}
+            plan.get_by_label("导入规范 JSON",exact=True).set_input_files({"name":"bad.json","mimeType":"application/json","buffer":json.dumps(bad).encode()})
+            expect(plan.get_by_text("规范文件无效或与当前登记数据不匹配，未恢复",exact=True)).to_be_visible()
+            expect(spacing).to_have_value("20")
+
+            preview_details=plan.locator(".design-plan-preview")
+            preview_details.locator("summary").click()
+            sample=preview_details.get_by_role("region",name="真实组件规范预览")
+            search=sample.get_by_role("searchbox",name="规范预览搜索")
+            expect(search).to_be_visible()
+            expect(sample).to_have_css("gap","20px")
+            expect(sample.locator(".search-field")).to_have_css("border-radius","14px")
+            expect(sample.locator(".search-field")).to_have_css("background-color","rgb(255, 255, 255)")
+            search.fill("设计")
+            expect(sample.locator("output")).to_contain_text("设计")
+            sample.get_by_role("button",name="清除搜索内容").click()
+            expect(search).to_be_focused()
+            trigger=sample.get_by_role("button",name="规范预览密度：紧凑")
+            trigger.focus()
+            trigger.press("ArrowDown")
+            sample.get_by_role("option",name="紧凑").press("End")
+            sample.get_by_role("option",name="舒展").press("Enter")
+            expect(sample.locator("output")).to_contain_text("舒展")
+            expect(sample.get_by_role("button",name="规范预览密度：舒展")).to_be_focused()
+            with page.expect_download() as css_download:
+                preview_details.get_by_role("button",name="下载局部规范 CSS",exact=True).click()
+            css=css_download.value.path().read_text("utf-8")
+            assert "--plan-space:20px;" in css and "--plan-radius:14px;" in css
+            assert "backdrop-filter:" not in css
+            # Actual downloaded CSS applies to a separate opt-in host, not to the surrounding dialog.
+            metrics=sample.evaluate("""(e,css)=>{
+                const copy=e.cloneNode(true);
+                copy.removeAttribute('style');copy.hidden=true;
+                const sheet=document.createElement('style');sheet.textContent=css;
+                e.parentNode.append(sheet,copy);copy.hidden=false;
+                const result=[getComputedStyle(copy).gap,getComputedStyle(copy.querySelector('.search-field')).borderRadius,getComputedStyle(copy.querySelector('input')).fontSize];
+                copy.remove();sheet.remove();return result;
+            }""",css)
+            assert metrics==["20px","14px","14px"],metrics
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            sample.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"design-plan-components-{width}-{theme}.png"))
+            preview_details.locator("summary").click()
+            delivery=plan.locator(".design-registry-delivery")
+            delivery.locator("summary").click()
+            for profile,count in (("css",3),("react",7),("vue",7)):
+                delivery.get_by_label("规范 Registry 组合").select_option(profile)
+                expect(delivery.get_by_role("status")).to_contain_text(f"{count} 个依赖模块")
+                with page.expect_download() as registry_download:
+                    delivery.get_by_role("button",name="下载 Registry 设计交付 JSON").click()
+                registry_doc=json.loads(registry_download.value.path().read_text("utf-8"))
+                assert registry_doc["profile"]==profile and registry_doc["design"]==spec
+                registry_report=json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(registry_download.value.path()),"--root",str(DIST)],encoding="utf-8"))
+                assert registry_report["verified"] and registry_report["locked"] and len(registry_report["registry"]["modules"])==count
+                assert registry_doc["version"]==2 and len(registry_doc["files"])==len(registry_report["registry"]["files"])
+                if width==1440:
+                    handoffs=OUTPUT/"design-registry-runtime";handoffs.mkdir(exist_ok=True)
+                    registry_download.value.save_as(str(handoffs/(profile+".json")))
+                    with page.expect_download() as foundation_css:
+                        delivery.get_by_role("button",name="下载 Foundation 规范 CSS").click()
+                    foundation_css.value.save_as(str(handoffs/"light.css"))
+            delivery.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"design-registry-delivery-{width}-{theme}.png"))
+            delivery.locator("summary").click()
+            material=plan.locator(".design-material-delivery")
+            material.locator("summary").click()
+            # Produce a genuine v1 snapshot via the existing Warm Workbench exporter.
+            raw=subprocess.check_output(["node","--input-type=module","-e","import {WARM_LAYOUT_FIELDS as f} from './assets/core/demo-parameters.js';import {exportMaterialSnapshot as exp} from './assets/core/material-presets.js';console.log(exp({...Object.fromEntries(f.map(x=>[x.key,x.default])),gradient:true,gradientAngle:90,shadowOpacity:25}));"],cwd=ROOT,encoding="utf-8")
+            field=material.get_by_label("规范材质快照",exact=True)
+            field.set_input_files({"name":"material.json","mimeType":"application/json","buffer":raw.encode()})
+            expect(material.get_by_text("材质已检查，等待明确应用",exact=True)).to_be_visible()
+            expect(material.locator(".plan-material-surface")).to_have_count(0)
+            material.get_by_role("button",name="确认应用材质",exact=True).click()
+            swatch=material.locator(".plan-material-surface")
+            expect(swatch).to_be_visible()
+            assert "linear-gradient(90deg" in swatch.evaluate("e=>getComputedStyle(e).backgroundImage")
+            assert "0.25" in swatch.evaluate("e=>getComputedStyle(e).boxShadow")
+            with page.expect_download() as material_css:
+                material.get_by_role("button",name="下载规范材质 CSS").click()
+            css=material_css.value.path().read_text("utf-8")
+            assert "linear-gradient(90deg" in css and "0.25" in css and "backdrop-filter:" not in css
+            field.set_input_files({"name":"bad.json","mimeType":"application/json","buffer":b'{"version":2}'})
+            expect(material.get_by_text("材质文件无效，未应用",exact=True)).to_be_visible()
+            expect(swatch).to_be_visible()
+            expect(spacing).to_have_value("20")
+            # Save an actual material-bearing revision and independently verify its JSON.
+            spacing.fill("22")
+            plan.get_by_role("button",name="保存新版本",exact=True).click()
+            expect(plan.get_by_text("历史版本已保存",exact=True)).to_be_visible()
+            with page.expect_download() as attached:
+                plan.get_by_role("button",name="下载设计规范 JSON",exact=True).click()
+            attached_doc=json.loads(attached.value.path().read_text("utf-8"))
+            assert attached_doc["version"]==2 and attached_doc["materialAttachment"]
+            assert json.loads(subprocess.check_output(["node",str(ROOT/"scripts/verify-knowledge-handoff.mjs"),"--handoff",str(attached.value.path()),"--root",str(DIST)],encoding="utf-8"))["verified"]
+            # Restoring a saved revision must invalidate a previously staged material.
+            field.set_input_files({"name":"stale.json","mimeType":"application/json","buffer":raw.encode()})
+            expect(material.get_by_role("button",name="确认应用材质",exact=True)).to_be_visible()
+            plan.get_by_label("方案历史版本").select_option("0")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(spacing).to_have_value("20")
+            expect(material.get_by_role("button",name="确认应用材质",exact=True)).to_have_count(0)
+            expect(swatch).to_have_count(0)
+            plan.get_by_label("方案历史版本").select_option("current")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(spacing).to_have_value("22")
+            expect(swatch).to_be_visible()
+            plan.get_by_role("button",name="检查基准迁移").click()
+            expect(plan.get_by_text("迁移待确认，保留原绝对目标值",exact=True)).to_be_visible()
+            plan.get_by_role("button",name="确认迁移规范").click()
+            expect(spacing).to_have_value("22")
+            swatch.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"design-material-delivery-{width}-{theme}.png"))
+            material.get_by_role("button",name="移除规范材质").click()
+            expect(swatch).to_have_count(0)
+            material.locator("summary").click()
+            plan.scroll_into_view_if_needed()
+            page.screenshot(path=str(OUTPUT/f"design-plan-{width}-{theme}.png"))
+            knowledge=open_record("workbench-components")
+            composition=knowledge.locator(".knowledge-composition")
+            composition.locator(":scope > summary").click()
+            plan=composition.locator(".design-plan")
+            plan.locator(":scope > summary").click()
+            plan.get_by_label("已保存设计方案",exact=True).select_option("验收组合")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(plan.get_by_label("规范基础间距",exact=True)).to_have_value("22")
+            plan.locator(".design-material-delivery > summary").click()
+            expect(plan.locator(".plan-material-surface")).to_be_visible()
+            plan.locator(".design-material-delivery > summary").click()
+            plan.get_by_label("方案历史版本").select_option("0")
+            plan.get_by_role("button",name="恢复设计方案",exact=True).click()
+            expect(plan.get_by_text("设计方案已恢复；未应用到预览",exact=True)).to_be_visible()
+            expect(plan.get_by_label("规范基础间距",exact=True)).to_have_value("20")
+            expect(plan.get_by_label("规范圆角",exact=True)).to_have_value("14")
+            expect(composition.locator(":scope > summary")).to_contain_text("3/6")
+            expect(knowledge.get_by_label("组合设计场景",exact=True)).to_have_value("dense-workbench")
+            plan.get_by_label("规范基准主题",exact=True).select_option("dark")
+            expect(plan.get_by_label("规范表面颜色",exact=True)).to_have_value("#191e27")
+            preview_details=plan.locator(".design-plan-preview")
+            preview_details.locator("summary").click()
+            sample=preview_details.get_by_role("region",name="真实组件规范预览")
+            expect(sample).to_have_css("background-color","rgb(25, 30, 39)")
+            expect(sample).to_have_css("gap","12px")
+            expect(sample.locator(".search-field")).to_have_css("border-radius","10px")
+            expect(sample.locator("input[type=search]")).to_have_css("font-size","14px")
+            host=knowledge.evaluate("e=>getComputedStyle(e).getPropertyValue('--surface').trim()")
+            plan.get_by_label("规范表面颜色",exact=True).fill("#243345")
+            expect(sample.locator(".search-field")).to_have_css("background-color","rgb(36, 51, 69)")
+            assert knowledge.evaluate("e=>getComputedStyle(e).getPropertyValue('--surface').trim()")==host
+            # The host intentionally enforces .01ms !important to preserve transitionend.
+            assert sample.locator(".select-trigger").evaluate("e=>getComputedStyle(e).transitionDuration.split(',').every(v=>parseFloat(v)<=0.00001)")
+            with page.expect_download() as dark_css:
+                preview_details.get_by_role("button",name="下载局部规范 CSS",exact=True).click()
+            assert '[data-theme="dark"]' in dark_css.value.path().read_text("utf-8")
+            if width==1440:
+                delivery=plan.locator(".design-registry-delivery")
+                delivery.locator("summary").click()
+                with page.expect_download() as foundation_dark:
+                    delivery.get_by_role("button",name="下载 Foundation 规范 CSS").click()
+                foundation_dark.value.save_as(str(OUTPUT/"design-registry-runtime"/"dark.css"))
+                with page.expect_download() as dark_doc:
+                    plan.get_by_role("button",name="下载设计规范 JSON",exact=True).click()
+                dark_doc.value.save_as(str(OUTPUT/"design-registry-runtime"/"dark.json"))
+                delivery.locator("summary").click()
+
+            page.screenshot(path=str(OUTPUT/f"design-plan-components-dark-{width}-{theme}.png"))
+            preview_details.locator("summary").click()
+
+            plan.get_by_role("button",name="删除设计方案",exact=True).click()
+            expect(plan.get_by_text("设计方案已删除",exact=True)).to_be_visible()
+            expect(plan.get_by_label("已保存设计方案",exact=True).locator("option")).to_have_count(1)
+            composition.get_by_role("button",name="移除 website-style-bauhaus/original",exact=True).click()
+            expect(composition.locator(":scope > summary")).to_contain_text("2/6")
+            assert knowledge.evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            assert not errors,errors
+        finally:
+            context.close()
+
+
+def verify_design_workflow(browser, origin):
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",accept_downloads=True)
+        page=context.new_page()
+        errors=track_page_errors(page)
+        baseline_reads=[]
+        registry_reads=[]
+        def baseline_route(route):
+            baseline_reads.append(route.request.url)
+            if len(baseline_reads)==1:route.fulfill(status=503,body="temporary")
+            else:route.continue_()
+        def registry_route(route):
+            registry_reads.append(route.request.url)
+            route.continue_()
+        context.route("**/registry/items/foundation-tokens.json",baseline_route)
+        context.route("**/registry/index.json",registry_route)
+        try:
+            page.goto(origin+"?asset=workbench-components",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            page.locator("#tab-page-info").click()
+            page.get_by_role("button",name="查看 AI 复用证据").click()
+            composition=page.locator(".knowledge-composition")
+            composition.locator(":scope > summary").click()
+            plan=composition.locator(".design-plan")
+            expect(plan.locator(":scope > summary")).to_be_visible()
+            assert not baseline_reads and not registry_reads
+            plan.locator(":scope > summary").click()
+            plan.get_by_role("button",name="重试读取规范基准").click()
+            color=plan.get_by_label("规范表面颜色",exact=True)
+            expect(color).to_have_value("#ffffff")
+            assert len(baseline_reads)==2 and not registry_reads
+            spacing=plan.get_by_label("规范基础间距")
+            spacing.fill("22")
+            color.fill("bad")
+            expect(color).to_have_attribute("aria-invalid","true")
+            expect(plan.get_by_role("button",name="下载设计规范 JSON")).to_be_disabled()
+            plan.get_by_label("选择表面颜色",exact=True).fill("#e3e5eb")
+            expect(color).to_have_value("#e3e5eb")
+            plan.get_by_role("button",name="同步尺寸至另一主题").click()
+            themes=plan.get_by_label("规范基准主题")
+            themes.select_option("dark")
+            expect(spacing).to_have_value("22")
+            expect(color).to_have_value("#191e27")
+            color.fill("#243345")
+            themes.select_option("light")
+            expect(color).to_have_value("#e3e5eb")
+            expect(spacing).to_have_value("22")
+            nav=plan.get_by_role("navigation",name="设计工作流")
+            nav.get_by_role("button",name="工程交付",exact=True).click()
+            delivery=plan.locator(".design-registry-delivery")
+            expect(delivery.get_by_label("规范 Registry 组合")).to_be_visible()
+            assert len(registry_reads)==1
+            expect(delivery.get_by_text("状态色 · 对比适配",exact=False)).to_be_visible()
+            nav.get_by_role("button",name="保存恢复",exact=True).click()
+            expect(plan.locator(".design-plan-storage input").first).to_be_focused()
+            assert page.locator(".knowledge-record").evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+            page.screenshot(path=str(OUTPUT/f"design-workflow-{width}-{theme}.png"))
+            assert not errors,errors
+        finally:context.close()
 
 
 def verify_knowledge_record(browser, origin):
@@ -3488,6 +3877,8 @@ def main():
                     verify_recipe_replay,
                     verify_recipe_file_replay,
                     verify_knowledge_record,
+                    verify_knowledge_delivery,
+                    verify_design_workflow,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,

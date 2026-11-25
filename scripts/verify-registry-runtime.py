@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """真正运行从 Registry 安装、编译的两个独立框架页面；禁止外部运行时依赖。"""
 import sys
+import json
 import threading
 from functools import partial
 from pathlib import Path
@@ -90,6 +91,48 @@ def main():
                 expect(edge).to_be_focused()
                 assert not errors, errors
                 assert not external, external
+                if (directory.parent / "design-light.json").is_file():
+                    for width, height, theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+                        page.set_viewport_size({"width":width,"height":height})
+                        page.emulate_media(color_scheme=theme,reduced_motion="reduce")
+                        page.goto(origin+framework+"/?theme="+theme)
+                        proposal=json.loads((directory.parent/("design-"+theme+".json")).read_text())["proposal"]
+                        host=page.locator(".ui-design-plan")
+                        field=page.get_by_role("textbox",name="名称")
+                        expect(host).to_have_css("gap",str(proposal["spacing"])+"px")
+                        expect(field).to_have_css("font-size",str(proposal["fontSize"])+"px")
+                        expect(field).to_have_css("border-radius",str(proposal["radius"])+"px")
+                        rgb="rgb("+", ".join(str(int(proposal["surface"][i:i+2],16)) for i in (1,3,5))+")"
+                        expect(field).to_have_css("background-color",rgb)
+                        assert page.evaluate("document.documentElement.scrollWidth<=innerWidth+1")
+                        field.fill("规范接入")
+                        expect(page.locator("#form-state")).to_have_text("规范接入|false")
+                        trigger=page.get_by_role("button",name="打开对话框")
+                        trigger.click()
+                        dialog=page.get_by_role("dialog",name="示例对话框")
+                        expect(dialog).to_be_visible()
+                        expect(dialog).to_have_css("background-color",rgb)
+                        assert dialog.evaluate("e=>!!e.closest('#plan-portals')")
+                        page.keyboard.press("Escape")
+                        expect(trigger).to_be_focused()
+                        select=page.get_by_role("combobox",name="选择选项")
+                        select.click()
+                        option=page.get_by_role("option",name="乙")
+                        expect(option).to_be_visible()
+                        assert option.evaluate("e=>!!e.closest('#plan-portals')")
+                        option.click()
+                        expect(select).to_contain_text("乙")
+                        popover=page.get_by_role("button",name="打开浮层")
+                        popover.click()
+                        content=page.get_by_test_id("popover-content")
+                        expect(content).to_be_visible()
+                        assert content.evaluate("e=>!!e.closest('#plan-portals')")
+                        page.keyboard.press("Escape")
+                        expect(popover).to_be_focused()
+
+                        assert not errors and not external,(errors,external)
+                        page.screenshot(path=str(directory.parent/f"foundation-{framework}-{width}-{theme}.png"))
+                        print(framework+" 规范 CSS 实际映射通过 "+str(width)+" "+theme,flush=True)
                 page.close()
                 print(framework + " Registry 独立运行、点击、键盘、禁用与加载态通过", flush=True)
             context.close()

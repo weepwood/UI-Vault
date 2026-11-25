@@ -7,7 +7,7 @@ import {execFileSync} from 'node:child_process';
 import {inspectCatalog,ROOT} from '../scripts/lib/catalog.mjs';
 import {buildKnowledgeIndex,writeKnowledgeIndex} from '../scripts/lib/knowledge-index.mjs';
 import {buildRegistry,REGISTRY_ROOT} from '../scripts/lib/reuse-registry.mjs';
-import {selectKnowledgeRecord} from '../assets/core/knowledge-record.js';
+import {selectKnowledgeRecord,knowledgeDelivery} from '../assets/core/knowledge-record.js';
 import {registryCommands,registryDependencyList,readRegistryIndex} from '../assets/core/registry-browser.js';
 import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {buildRegistryProfiles} from '../scripts/lib/registry-profiles.mjs';
@@ -45,6 +45,18 @@ test('知识索引包含登记资产、所有版本与来源证据，不混淆�
  assert.equal(selectKnowledgeRecord(index,variant,original.versions[0].id).record.preview.path,variant.preview);
  assert.throws(()=>selectKnowledgeRecord(index,variant,'original'),/不一致/);
  assert.ok(index.recipes.length>=6&&index.recipes.every(row=>row.evidence.length&&row.checks.length));
+ const lab=items.find(x=>x.id==='design-recipe-lab');
+ const labRecord=selectKnowledgeRecord(index,lab);
+ assert.equal(labRecord.recipes.length,6);
+ assert.ok(labRecord.recipes.every(r=>r.implementation.assetId===lab.id&&r.implementation.preview.sha256===labRecord.record.preview.sha256));
+ const workbench=items.find(x=>x.id==='workbench-components'),record=selectKnowledgeRecord(index,workbench);
+ const handoff=knowledgeDelivery(record,workbench);
+ assert.equal(handoff.format,'ui-vault-ai-handoff');
+ assert.equal(handoff.assetVersion,'original');
+ assert.equal(handoff.relatedRegistry.scope,'general-foundation-not-workbench-package');
+ assert.ok(handoff.delivery.sourceFiles.some(f=>f.path==='src/components/SearchField.jsx'));
+ const poisoned={...record,record:{...record.record,delivery:{...record.record.delivery,sourceFiles:[...record.record.delivery.sourceFiles,{path:'src/secret.js',sha256:'a'.repeat(64),bytes:5}]}}};
+ assert.ok(!knowledgeDelivery(poisoned,workbench).delivery.sourceFiles.some(f=>f.path==='src/secret.js'));
  const out=await mkdtemp(join(tmpdir(),'ui-vault-knowledge-'));
  try{await writeKnowledgeIndex(ROOT,items,out);assert.deepEqual(JSON.parse(await readFile(join(out,'content/knowledge-index.json'),'utf8')),index);}
  finally{await rm(out,{recursive:true,force:true});}

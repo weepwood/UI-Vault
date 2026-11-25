@@ -69,7 +69,9 @@ export async function buildKnowledgeIndex(root,assets){
     !Array.isArray(recipe.references)||!recipe.references.length||!recipe.references.every(id=>byId.get(id)?.guide)||
     !Array.isArray(recipe.checks)||!recipe.checks.length||recipe.checks.some(x=>typeof x!=='string'||!x.trim()))throw Error('设计配方无效：'+recipe.id);
   recipeKeys.add(recipe.id);
-  return {...recipe,evidence:recipe.references.map(id=>({id,guide:byId.get(id).guide})),status:'derived-guidance-not-runtime-certification'};
+  const lab=byId.get('design-recipe-lab');
+  if(!lab?.preview||lab.provenance.kind==='external-reference')throw Error('缺少实际配方实验室');
+  return {...recipe,implementation:{assetId:lab.id,version:'original',experimentId:recipe.id,preview:lab.preview,scope:'interactive-css-example-not-certified'} ,evidence:recipe.references.map(id=>({id,guide:byId.get(id).guide})),status:'derived-guidance-not-runtime-certification'};
  });
  return {format:'ui-vault-knowledge-index',version:1,catalogSha256:digest(JSON.stringify(assets)),summary:{assets:assets.length,variants:rows.length-assets.length,records:rows.length,guideRecords:rows.filter(x=>x.guide).length,reviewedGuides:originals.filter(x=>x.style.review==='guide-review-recorded').length,withoutStyle:originals.filter(x=>!x.style.tags.length).length,archiveSummaryRecords:rows.filter(x=>x.guide?.kind==='archive-summary').length,archiveReviews:archiveKeys.size},
   duplicateCandidates:{identicalLocalPreview:group(rows,row=>row.preview?.sha256),sharedExternalPreview:group(originals,row=>row.provenance.siteUrl),sharedSource:group(originals,row=>row.provenance.sourceUrl),notice:'同哈希为候选，不自动删除；共享外部站点、同源项目和版本关系不等于重复资产。'},

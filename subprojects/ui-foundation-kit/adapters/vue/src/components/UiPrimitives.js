@@ -12,11 +12,11 @@ export const UiTabs=defineComponent({
  }
 });
 export const UiDialog=defineComponent({
- name:'UiDialog',props:['trigger','title','description','open'],emits:['update:open'],
+ name:'UiDialog',props:['trigger','title','description','open','portalContainer'],emits:['update:open'],
  setup(p,{emit,slots}){
   return ()=>node(DialogRoot,{open:p.open,'onUpdate:open':v=>emit('update:open',v)},()=>[
    node(DialogTrigger,{class:'ui-button ui-button--outline'},p.trigger),
-   node(DialogPortal,null,()=>[
+   node(DialogPortal,{to:p.portalContainer},()=>[
     h(DialogOverlay,{class:'ui-primitive-overlay'}),
     node(DialogContent,{class:'ui-primitive-dialog'},()=>[
      node(DialogTitle,{class:'ui-dialog__title'},p.title),
@@ -29,7 +29,7 @@ export const UiDialog=defineComponent({
  }
 });
 export const UiSelect=defineComponent({
- name:'UiSelect',props:['items','label','placeholder','modelValue','defaultValue'],emits:['update:modelValue'],
+ name:'UiSelect',props:['items','label','placeholder','modelValue','defaultValue','portalContainer'],emits:['update:modelValue'],
  setup(p,{emit}){
   const options=()=>p.items.map(item=>node(SelectItem,{key:item.value,value:item.value,disabled:item.disabled,class:'ui-primitive-option'},()=>[
    node(SelectItemText,null,item.label),node(SelectItemIndicator,null,'✓')
@@ -39,16 +39,16 @@ export const UiSelect=defineComponent({
    node(SelectTrigger,{class:'ui-primitive-trigger','aria-label':p.label},()=>[
     h(SelectValue,{placeholder:p.placeholder||'请选择'}),node(SelectIcon,null,'⌄')
    ]),
-   node(SelectPortal,null,content)
+   node(SelectPortal,{to:p.portalContainer},content)
   ]);
  }
 });
 export const UiPopover=defineComponent({
- name:'UiPopover',props:['trigger','open'],emits:['update:open'],
+ name:'UiPopover',props:['trigger','open','portalContainer'],emits:['update:open'],
  setup(p,{emit,slots}){
   return ()=>node(PopoverRoot,{open:p.open,'onUpdate:open':v=>emit('update:open',v)},()=>[
    node(PopoverTrigger,{class:'ui-button ui-button--outline'},p.trigger),
-   node(PopoverPortal,null,()=>node(PopoverContent,{class:'ui-primitive-popover',sideOffset:6},()=>[
+   node(PopoverPortal,{to:p.portalContainer},()=>node(PopoverContent,{class:'ui-primitive-popover',sideOffset:6},()=>[
     slots.default?.(),node(PopoverClose,{class:'ui-button ui-button--quiet'},'关闭浮层')
    ]))
   ]);

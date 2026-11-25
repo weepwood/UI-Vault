@@ -35,7 +35,7 @@ export async function buildRegistry(root){
       ...(entry.framework?{framework:entry.framework,runtime:entry.runtime}:{}),
       notice:entry.framework?'控件源码适配器，不包含框架及原语运行时；请按 runtime 安装依赖；复制后按目标工程构建并保留 LICENSE。':'CSS recipes 不提供框架交互原语；复制后在自己的项目中维护，须同时安装依赖项与保留 LICENSE。'});
   }
-  const index={format:REGISTRY_FORMAT,protocolVersion:1,version,items:items.map(({id,title,kind,dependencies,files,framework,runtime})=>({id,title,kind,dependencies,...(framework?{framework,runtime}:{}),path:'items/'+id+'.json',fileCount:files.length}))};
+  const index={format:REGISTRY_FORMAT,protocolVersion:1,version,items:items.map(({id,title,kind,dependencies,files,framework,runtime})=>({id,title,kind,dependencies,...(framework?{framework,runtime}:{}),path:'items/'+id+'.json',fileCount:files.length,files:files.map(({path,sha256})=>({path,sha256}))}))};
   return {index,items};
 }
 export async function writeRegistry(root,out){
