@@ -1,9 +1,10 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {mkdtemp,mkdir,writeFile,readFile,rm,symlink} from 'node:fs/promises';
+import {mkdtemp,mkdir,writeFile,readFile,rm,symlink,cp} from 'node:fs/promises';
 import {join,dirname} from 'node:path';
 import {tmpdir} from 'node:os';
 import {createHash} from 'node:crypto';
+import {execFileSync} from 'node:child_process';
 import {inspectCatalog,ROOT} from '../scripts/lib/catalog.mjs';
 import {buildKnowledgeIndex} from '../scripts/lib/knowledge-index.mjs';
 import {selectKnowledgeRecord,knowledgeDelivery} from '../assets/core/knowledge-record.js';
@@ -18,6 +19,17 @@ import {designRegistryDelivery} from '../assets/core/design-registry-delivery.js
 import {readLocalRegistry} from '../scripts/install-registry.mjs';
 import {installRegistrySnapshot,verifyRegistrySnapshot} from '../scripts/lib/registry-install.mjs';
 const {items}=await inspectCatalog(),index=await buildKnowledgeIndex(ROOT,items);
+// Build the registry from sources in each fixture; never consume another test's
+// generated dist directory, or depend on test order/runner platform.
+async function fixtureRegistry(root){
+ const kit=join(root,'foundation-source');
+ for(const path of ['package.json','LICENSE','INTEGRATION.md','tokens','styles','scripts/build-tokens.mjs','adapters/react','adapters/vue/src/components','adapters/vue/README.md','adapters/vue/PRIMITIVES.md']){
+  const target=join(kit,path);await mkdir(dirname(target),{recursive:true});
+  await cp(join(ROOT,REGISTRY_ROOT,path),target,{recursive:true});
+ }
+ execFileSync(process.execPath,[join(kit,'scripts/build-tokens.mjs')],{stdio:'pipe'});
+ await writeRegistry(kit,join(root,'registry'));
+}
 async function fixture(id,version='original'){
  const root=await mkdtemp(join(tmpdir(),'ui-vault-handoff-'));
  const asset=selectAssetVersion(items.find(a=>a.id===id),version);
@@ -126,7 +138,7 @@ test('完整设计规范重建、Markdown 同源、拒绝篡改与基准字节�
 test('规范 Registry 交付三种技术栈真实预检、安装复验与篡改保护',async()=>{
  const {root}=await fixture('workbench-components');
  try{
-  await writeRegistry(REGISTRY_ROOT,join(root,'registry'));
+  await fixtureRegistry(root);
   const registry=await readLocalRegistry(join(root,'registry')),rIndex=readRegistryIndex(registry.index);
   const baseline=foundationBaseline(registry.items.find(i=>i.id==='foundation-tokens'),'light');
   const doc=createDesignPlan(composeKnowledge(index,items,['workbench-components/original']),baseline,baseline.tokens);
@@ -164,7 +176,7 @@ import {exportMaterialSnapshot} from '../assets/core/material-presets.js';
 test('真实材质附件 v2 规范严格往返，v1 兼容且拒绝注入',async()=>{
  const {root}=await fixture('workbench-components');
  try{
-  await writeRegistry(REGISTRY_ROOT,join(root,'registry'));
+  await fixtureRegistry(root);
   const registry=await readLocalRegistry(join(root,'registry')),item=registry.items.find(i=>i.id==='foundation-tokens');
   const baseline=foundationBaseline(item,'light'),composition=composeKnowledge(index,items,['workbench-components/original']);
   const raw=exportMaterialSnapshot({...Object.fromEntries(WARM_LAYOUT_FIELDS.map(f=>[f.key,f.default])),gradient:true});

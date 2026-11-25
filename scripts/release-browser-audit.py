@@ -6,7 +6,7 @@ from http.server import ThreadingHTTPServer,SimpleHTTPRequestHandler
 from functools import partial
 from contextlib import closing
 from threading import Thread
-from playwright.sync_api import sync_playwright
+from playwright.sync_api import sync_playwright,expect
 
 ROOT=Path(__file__).resolve().parents[1]
 DIST=ROOT/"dist"
@@ -44,6 +44,36 @@ def open_parameters(page):
     panel.get_by_label("基础圆角",exact=True).wait_for(state="visible",timeout=10000)
     return panel
 
+def design_workflow(page,origin):
+    """Release smoke of the new actual knowledge-to-delivery UI, not a mock."""
+    page.goto(origin+"?asset=workbench-components",wait_until="domcontentloaded")
+    page.locator("#preview-info").click()
+    page.locator("#tab-page-info").click()
+    page.get_by_role("button",name="查看 AI 复用证据").click()
+    page.locator(".knowledge-composition > summary").click()
+    plan=page.locator(".design-plan")
+    plan.locator(":scope > summary").click()
+    spacing=plan.get_by_label("规范基础间距",exact=True)
+    expect(spacing).to_have_value("12")
+    spacing.fill("22")
+    plan.get_by_label("规范表面颜色",exact=True).fill("#e3e5eb")
+    plan.get_by_role("button",name="同步尺寸至另一主题").click()
+    theme=plan.get_by_label("规范基准主题")
+    theme.select_option("dark")
+    expect(spacing).to_have_value("22")
+    expect(plan.get_by_label("规范表面颜色",exact=True)).to_have_value("#191e27")
+    theme.select_option("light")
+    expect(plan.get_by_label("规范表面颜色",exact=True)).to_have_value("#e3e5eb")
+    plan.get_by_role("button",name="工程交付",exact=True).click()
+    delivery=plan.locator(".design-registry-delivery")
+    delivery.get_by_label("规范 Registry 组合").select_option("react")
+    expect(delivery.get_by_text("已锁定",exact=False)).to_be_visible()
+    with page.expect_download() as download:
+        delivery.get_by_role("button",name="下载 Registry 设计交付 JSON",exact=True).click()
+    doc=json.loads(download.value.path().read_text("utf-8"))
+    assert doc["version"]==2 and doc["profile"]=="react" and doc["design"]["proposal"]["spacing"]==22 and len(doc["files"])==16
+    assert page.locator(".knowledge-record").evaluate("e=>e.scrollWidth<=e.clientWidth+1")
+
 def main():
     OUTPUT.mkdir(exist_ok=True)
     server=ThreadingHTTPServer(("127.0.0.1",0),partial(QuietHandler,directory=str(DIST)))
@@ -63,6 +93,8 @@ def main():
                             blockers+=scan(page,f"{scheme}-{width}-workbench")
                             open_parameters(page)
                             blockers+=scan(page,f"{scheme}-{width}-parameters")
+                            design_workflow(page,origin)
+                            blockers+=scan(page,f"{scheme}-{width}-design-workflow")
                         finally:
                             context.close()
             for name in ("firefox","webkit"):
@@ -82,7 +114,8 @@ def main():
                             page.keyboard.press("Escape")
                             page.locator("#project-dialog").wait_for(state="hidden")
                             assert page.evaluate("() => window.__smokeFrame===document.querySelector('#preview-stage iframe')")
-                            smoke.append({"browser":name,"passed":True})
+                            design_workflow(page,origin)
+                            smoke.append({"browser":name,"passed":True,"designWorkflow":True})
                         finally:
                             context.close()
                 except Exception as exc:

@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {foundationBaseline,baselineIdentity,compareDesignTokens,normalizeDesignTokens,normalizePlans,readDesignPlans,writeDesignPlans,updateDesignPlans,restoreDesignPlan,reviseDesignPlan,planSnapshot,planVersionDiff,migrateDesignPlan} from '../assets/core/design-plan.js';
+import {foundationBaseline,baselineIdentity,compareDesignTokens,normalizeDesignTokens,normalizePlans,readDesignPlans,writeDesignPlans,updateDesignPlans,restoreDesignPlan,reviseDesignPlan,requireCurrentDesignPlan,planSnapshot,planVersionDiff,migrateDesignPlan} from '../assets/core/design-plan.js';
 const files=await Promise.all(['tokens/foundation.json','tokens/themes.json'].map(async path=>{const content=await readFile(new URL('../subprojects/ui-foundation-kit/'+path,import.meta.url),'utf8');return {path,content,sha256:createHash('sha256').update(content).digest('hex')};}));
 const item={id:'foundation-tokens',version:'test',files},light=foundationBaseline(item,'light'),dark=foundationBaseline(item,'dark');
 const proposal={...light.tokens,spacing:20,radius:14,duration:0,material:'frosted'};
@@ -107,4 +107,15 @@ test('方案容量超过64KiB时拒绝写入而不是悄悄进入易失会话',(
  let savedRaw='[]';const storage={getItem:()=>savedRaw,setItem:(_,v)=>{savedRaw=v;}};
  assert.throws(()=>updateDesignPlans({items:[],sessionOnly:false},()=>items,storage),/容量/);
  assert.equal(savedRaw,'[]');
+});
+
+test('并发修改或删除的旧版本不允许覆盖当前存储，属性顺序不影响比较',()=>{
+ const reordered=Object.fromEntries(Object.entries(plan).reverse());
+ assert.deepEqual(requireCurrentDesignPlan([reordered],plan),reordered);
+ const revised=reviseDesignPlan(plan,{...plan,tokens:{...plan.tokens,spacing:24}});
+ let raw=JSON.stringify([revised]),writes=0;
+ const storage={getItem:()=>raw,setItem:(_,value)=>{writes++;raw=value;}};
+ assert.throws(()=>updateDesignPlans({items:[plan],sessionOnly:false},current=>{requireCurrentDesignPlan(current,plan);return [];},storage),/已变化/);
+ assert.throws(()=>requireCurrentDesignPlan([],plan),/已变化/);
+ assert.equal(writes,0);assert.deepEqual(JSON.parse(raw),[revised]);
 });

@@ -70,6 +70,12 @@ export function reviseDesignPlan(previous,next){
  if((old.history||[]).length>=4)throw Error('历史已满，请另存新方案');
  return normalizePlans([{...now,history:[...(old.history||[]),planSnapshot(old)]}])[0];
 }
+// Reject stale edits/deletes using the normalized snapshot, not object key order.
+export function requireCurrentDesignPlan(items,expected){
+ const latest=items.find(p=>p.name===expected?.name);
+ if(!latest||!sameJSON(normalizePlans([latest])[0],normalizePlans([expected])[0]))throw Error('方案已变化，请重新打开');
+ return latest;
+}
 export function planVersionDiff(previous,next){
  const a=planSnapshot(previous),b=planSnapshot(next);
  return {tokens:compareDesignTokens(a.tokens,b.tokens).changes,materialChanged:(a.materialAttachment??null)!==(b.materialAttachment??null),catalogChanged:a.catalogSha256!==b.catalogSha256,baselineChanged:a.baselineId!==b.baselineId,themeChanged:a.theme!==b.theme,contextChanged:a.context!==b.context,assetsChanged:JSON.stringify(a.keys)!==JSON.stringify(b.keys)};

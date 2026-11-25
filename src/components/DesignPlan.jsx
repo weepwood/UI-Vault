@@ -7,7 +7,7 @@ import {DesignRegistryDelivery} from './DesignRegistryDelivery.jsx';
 import {DesignPlanPreview} from './DesignPlanPreview.jsx';
 import {designPlanCSS} from '../../assets/core/design-plan-style.js';
 import {composeKnowledge} from '../../assets/core/knowledge-composition.js';
-import {PLAN_FIELDS,baselineIdentity,foundationBaseline,normalizeDesignTokens,compareDesignTokens,readDesignPlans,updateDesignPlans,restoreDesignPlan,planSnapshot,planVersionDiff,reviseDesignPlan,migrateDesignPlan,createDesignPlan,validateDesignPlan,designPlanMarkdown,DESIGN_PLAN_MAX_BYTES} from '../../assets/core/design-plan.js';
+import {PLAN_FIELDS,baselineIdentity,foundationBaseline,normalizeDesignTokens,compareDesignTokens,readDesignPlans,updateDesignPlans,restoreDesignPlan,planSnapshot,planVersionDiff,reviseDesignPlan,requireCurrentDesignPlan,migrateDesignPlan,createDesignPlan,validateDesignPlan,designPlanMarkdown,DESIGN_PLAN_MAX_BYTES} from '../../assets/core/design-plan.js';
 
 export function DesignPlan({composition,index,assets,onRestore,notify}){
  const [item,setItem]=useState(null),[failed,setFailed]=useState(false),[theme,setTheme]=useState('light'),[drafts,setDrafts]=useState({}),[opened,setOpened]=useState(false),[requested,setRequested]=useState(false),[attempt,setAttempt]=useState(0);
@@ -53,7 +53,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  function saveRevision(){
   try{
    if(!chosen||!proposal)throw Error('无效');
-   const next=updateDesignPlans(saved,current=>{const latest=current.find(p=>p.name===chosen.name);if(!latest||JSON.stringify(latest)!==JSON.stringify(chosen))throw Error("方案已变化，请重新打开");return current.map(p=>p.name===chosen.name?reviseDesignPlan(p,currentSnapshot(p.name)):p);});
+   const next=updateDesignPlans(saved,current=>{requireCurrentDesignPlan(current,chosen);return current.map(p=>p.name===chosen.name?reviseDesignPlan(p,currentSnapshot(p.name)):p);});
    setSaved(next);setRevision('current');setStatus(next.sessionOnly?'版本仅保留当前会话':'历史版本已保存');
   }catch(error){setStatus(error.message.includes("容量")||error.message.includes("已变化")?error.message:'版本保存失败：历史已满或方案不匹配');}
  }
@@ -71,7 +71,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
    applySnapshot(p);setMigration(null);setStatus('已迁移到当前基准；原历史保留，请另存或保存新版本');
   }catch{setMigration(null);setStatus('迁移失败');}
  }
- function remove(){try{const next=updateDesignPlans(saved,current=>current.filter(p=>p.name!==selected));setSaved(next);setSelected('');setRevision('current');setMigration(null);setStatus(next.sessionOnly?'删除仅在当前会话生效':'设计方案已删除');}catch{setStatus('删除失败，原方案保留');}}
+ function remove(){try{const next=updateDesignPlans(saved,current=>{requireCurrentDesignPlan(current,chosen);return current.filter(p=>p.name!==selected);});setSaved(next);setSelected('');setRevision('current');setMigration(null);setStatus(next.sessionOnly?'删除仅在当前会话生效':'设计方案已删除');}catch(error){setStatus(error.message.includes('已变化')?error.message:'删除失败，原方案保留');}}
  function download(markdown=false){
   if(!proposal)return;
   try{const doc=createDesignPlan(composition,baseline,proposal,attachment);downloadSourceText(markdown?designPlanMarkdown(doc):JSON.stringify(doc,null,2)+'\n',markdown?'DESIGN.md':'design-plan.json');notify('设计方案已下载');}catch{notify('下载失败');}
