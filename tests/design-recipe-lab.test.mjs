@@ -1,0 +1,23 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {join} from 'node:path';
+import {ROOT,inspectCatalog} from '../scripts/lib/catalog.mjs';
+test('可视设计配方实验室与正式配方及登记一致',async()=>{
+ const source=JSON.parse(await readFile(join(ROOT,'catalog/design-recipes.json'),'utf8'));
+ const path='demos/experiments/design-recipe-lab/index.html';
+ const html=await readFile(join(ROOT,path),'utf8');
+ const embedded=html.match(/<script type="application\/json" id="recipes">([^]*?)<\/script>/);
+ assert.ok(embedded);
+ assert.deepEqual(JSON.parse(embedded[1]),source.recipes);
+ const {errors,items}=await inspectCatalog();
+ assert.deepEqual(errors,[]);
+ const item=items.find(a=>a.id==='design-recipe-lab');
+ assert.equal(item.preview,path);
+ assert.equal(item.code,path);
+ assert.equal(item.copyable,true);
+ assert.equal(item.type,'resource');
+ assert.equal(item.featured,true);
+ assert.equal(source.recipes.length,6);
+ for(const recipe of source.recipes)for(const id of recipe.references)assert.ok(items.some(a=>a.id===id));
+});
