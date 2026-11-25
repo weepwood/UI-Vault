@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
-import {foundationBaseline,baselineIdentity,compareDesignTokens,normalizeDesignTokens,normalizePlans,readDesignPlans,writeDesignPlans,restoreDesignPlan} from '../assets/core/design-plan.js';
+import {foundationBaseline,baselineIdentity,compareDesignTokens,normalizeDesignTokens,normalizePlans,readDesignPlans,writeDesignPlans,updateDesignPlans,restoreDesignPlan} from '../assets/core/design-plan.js';
 const files=await Promise.all(['tokens/foundation.json','tokens/themes.json'].map(async path=>{const content=await readFile(new URL('../subprojects/ui-foundation-kit/'+path,import.meta.url),'utf8');return {path,content,sha256:createHash('sha256').update(content).digest('hex')};}));
 const item={id:'foundation-tokens',version:'test',files},light=foundationBaseline(item,'light'),dark=foundationBaseline(item,'dark');
 const proposal={...light.tokens,spacing:20,radius:14,duration:0,material:'frosted'};
@@ -25,4 +25,18 @@ test('方案保存恢复、目录和基准漂移拒绝、容量及损坏存储�
  assert.equal(writeDesignPlans([],store),true);assert.deepEqual(readDesignPlans(store).items,[]);
  raw='invalid';assert.equal(readDesignPlans(store).available,false);assert.equal(writeDesignPlans([plan],store),false);assert.equal(raw,'invalid');
  assert.equal(writeDesignPlans([plan],{getItem:()=>null,setItem(){throw Error('blocked');}}),false);
+});
+
+test('可读但不可写的存储保留连续会话操作，恢复后也不覆盖原持久数据',()=>{
+ let raw=JSON.stringify([plan]),writable=false,writes=0;
+ const storage={getItem:()=>raw,setItem:(k,v)=>{writes++;if(!writable)throw Error('quota');raw=v;}};
+ let state={items:[plan],sessionOnly:false};
+ state=updateDesignPlans(state,items=>[...items,{...plan,name:'第二份'}],storage);
+ assert.equal(state.sessionOnly,true);assert.equal(state.items.length,2);
+ writable=true;
+ state=updateDesignPlans(state,items=>[...items,{...plan,name:'第三份'}],storage);
+ assert.equal(state.items.length,3);
+ state=updateDesignPlans(state,items=>items.filter(p=>p.name!==plan.name),storage);
+ assert.deepEqual(state.items.map(p=>p.name),['第二份','第三份']);
+ assert.equal(writes,1);assert.deepEqual(JSON.parse(raw),[plan]);
 });

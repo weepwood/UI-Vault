@@ -44,3 +44,8 @@ test('共享图标、知识复用和真实展厅/实验室独立改动触发视�
  for(const path of ['src/components/Icon.jsx','src/components/KnowledgeRecord.jsx','src/components/RegistryBrowser.jsx','demos/components/workbench-system/index.html','demos/components/workbench-system/demo.css','demos/components/workbench-system/demo.jsx','demos/experiments/design-recipe-lab/index.html','demos/components/liquid-orb/index.html','demos/components/endfield-nav-tab/index.html','demos/experiments/notion-design-demo/script.js','demos/experiments/notion-design-demo/library.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
  assert.deepEqual(pr(['demos/components/ordinary/index.html','docs/ROADMAP.md']),fast);
 });
+
+test('知识交付与设计规范单独修改仍触发真实浏览器验收',()=>{
+ for(const path of ['src/components/DesignPlan.jsx','assets/core/design-plan.js','assets/core/knowledge-composition.js','assets/core/knowledge-record.js','assets/core/knowledge-search.js','assets/core/knowledge-template.js'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
+ assert.deepEqual(pr(['assets/core/knowledge-experimental.js','docs/KNOWLEDGE-INDEX.md']),fast);
+});

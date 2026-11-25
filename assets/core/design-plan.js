@@ -51,6 +51,14 @@ export function readDesignPlans(storage){
 export function writeDesignPlans(items,storage){
  try{const target=storage??globalThis.localStorage;if(!readDesignPlans(target).available)return false;target.setItem(STORE,JSON.stringify(normalizePlans(items)));return true;}catch{return false;}
 }
+// Once persistence fails, keep this session authoritative; never overwrite a
+// recovered store with a divergent session snapshot.
+export function updateDesignPlans(state,change,storage){
+ const stored=state.sessionOnly?null:readDesignPlans(storage);
+ const items=normalizePlans(change(stored?.available?stored.items:state.items));
+ const persisted=!state.sessionOnly&&stored?.available===true&&writeDesignPlans(items,storage);
+ return {items,sessionOnly:!persisted};
+}
 export function restoreDesignPlan(plan,composition,primary,baseline){
  if(!plan||plan.keys[0]!==primary)throw Error('主资产不匹配');
  if(plan.catalogSha256!==composition.catalogSha256)throw Error('目录已变化，请重新建立方案');
