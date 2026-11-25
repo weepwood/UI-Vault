@@ -125,3 +125,15 @@ test('标签子集保持完整目录在各排序模式下的结果顺序',()=>{
     }
   }
 });
+
+test('三词以上的登记别名优先完整短语并支持双语组合搜索',()=>{
+  assert.deepEqual(tokenizeSearch('ARTS and CRAFTS React'),['arts and crafts','react']);
+  assert.deepEqual(tokenizeSearch('Editorial Magazine Layout + Vue3'),['editorial magazine layout','vue3']);
+  assert.deepEqual(tokenizeSearch('Gen Z Maximalism'),['gen z maximalism']);
+  const a=make('editorial','杂志排版',{technologies:['Vue 3']});
+  const b=make('craft','工艺美术',{technologies:['React']});
+  const c=make('genz','Z世代极繁主义');
+  assert.deepEqual(filterAssets([a,b,c],{query:'editorial magazine layout vue3'}),[a]);
+  assert.deepEqual(filterAssets([a,b,c],{query:'arts and crafts react'}),[b]);
+  assert.deepEqual(filterAssets([a,b,c],{query:'gen z maximalism'}),[c]);
+});

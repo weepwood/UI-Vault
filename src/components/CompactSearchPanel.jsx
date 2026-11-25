@@ -21,6 +21,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
   const limit=limitState.query===value?limitState.limit:MAX_RESULTS;
   if(limitState.query!==value)setLimitState({query:value,limit:MAX_RESULTS});
   const listRef=useRef(null);
+  const nextPageFocus=useRef(null);
   const groups=useMemo(()=>{
     if(value.trim())return [{label:'搜索结果',items:items.slice(0,limit)}];
     const recent=new Set(recentIds);
@@ -38,12 +39,31 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
     inputRef.current?.focus({preventScroll:true});
     inputRef.current?.select();
   },[inputRef]);
+  useLayoutEffect(()=>{
+    listRef.current?.scrollTo({top:0});
+  },[value]);
+  useLayoutEffect(()=>{
+    const target=nextPageFocus.current;
+    if(!target)return;
+    nextPageFocus.current=null;
+    if(target.query!==value)return;
+    inputRef.current?.focus({preventScroll:true});
+    listRef.current?.querySelector('[data-command-index="'+target.index+'"]')?.scrollIntoView({block:'nearest'});
+  },[value,limit,inputRef]);
+  const moveTo=index=>{
+    listRef.current?.querySelector('[data-command-index="'+index+'"]')?.scrollIntoView({block:'nearest'});
+    setActive(index);
+  };
   const move=(offset)=>{
     if(loading||!flat.length)return;
-    const next=(active+offset%flat.length+flat.length)%flat.length;
-    const row=listRef.current?.querySelector('[data-command-index="'+next+'"]');
-    row?.scrollIntoView({block:'nearest'});
-    setActive(next);
+    moveTo((active+offset%flat.length+flat.length)%flat.length);
+  };
+  const showMore=()=>{
+    if(loading||limit>=240||flat.length>=items.length)return;
+    const index=flat.length;
+    nextPageFocus.current={query:value,index};
+    setActive(index);
+    setLimitState({query:value,limit:Math.min(240,limit+MAX_RESULTS)});
   };
   const choose=(index)=>{
     const item=loading?null:flat[index];
@@ -63,6 +83,8 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
       event.preventDefault();move(event.key==='ArrowDown'?1:-1);
     }else if(event.key==='PageDown'||event.key==='PageUp'){
       event.preventDefault();move(event.key==='PageDown'?5:-5);
+    }else if((event.ctrlKey||event.metaKey)&&(event.key==='Home'||event.key==='End')&&!loading&&flat.length){
+      event.preventDefault();moveTo(event.key==='Home'?0:flat.length-1);
     }else if(event.key==='Enter'){
       event.preventDefault();choose(active);
     }else if(event.key==='Tab'){
@@ -125,7 +147,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
           </div>
           {value.trim()&&items.length>shownCount&&<div className="command-palette-footer command-palette-pagination" role="status">
             <span>显示 {shownCount} / {items.length} 项</span>
-            {limit<240?<button type="button" className="command-palette-more" onClick={()=>setLimitState({query:value,limit:Math.min(240,limit+MAX_RESULTS)})}>显示更多</button>:<span>请缩小关键词范围</span>}
+            {limit<240?<button type="button" className="command-palette-more" onClick={showMore}>显示更多</button>:<span>请缩小关键词范围</span>}
           </div>}
           <div className="command-palette-footer">
             <span><kbd>↑</kbd><kbd>↓</kbd> 导航　<kbd>↵</kbd> 选择</span>

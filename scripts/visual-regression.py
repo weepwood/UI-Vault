@@ -894,8 +894,29 @@ def verify_directory_session_and_search_limit(browser, origin):
         more.focus()
         page.keyboard.press("Enter")
         page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length===120")
+        expect(field).to_be_focused()
+        expect(field).to_have_attribute("aria-activedescendant", "command-result-60")
+        page.wait_for_function("""() => {
+          const row = document.getElementById('command-result-60').getBoundingClientRect();
+          const list = document.querySelector('.command-palette-list').getBoundingClientRect();
+          return row.top >= list.top - 1 && row.bottom <= list.bottom + 1;
+        }""")
+        field.press("Control+End")
+        expect(field).to_have_attribute("aria-activedescendant", "command-result-119")
+        page.set_viewport_size({"width": 320, "height": 640})
+        for count in (180, 240):
+            more.focus()
+            page.keyboard.press("Enter")
+            expect(page.locator(".compact-search-result")).to_have_count(count)
+            expect(field).to_be_focused()
+            expect(field).to_have_attribute("aria-activedescendant", f"command-result-{count-60}")
+        expect(page.get_by_text("请缩小关键词范围")).to_be_visible()
+        assert page.evaluate("document.documentElement.scrollWidth <= innerWidth + 2")
+        page.screenshot(path=str(OUTPUT / "command-search-cap-mobile.png"))
         field.fill("bauhaus")
         page.wait_for_function("() => document.querySelectorAll('.compact-search-result').length<60")
+        expect(field).to_have_attribute("aria-activedescendant", "command-result-0")
+        assert page.locator('.command-palette-list').evaluate("(el)=>el.scrollTop") == 0
         print("同标签页目录刷新恢复及搜索分批展开通过",flush=True)
     finally:
         context.close()

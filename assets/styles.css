@@ -1236,7 +1236,7 @@ html[data-theme="dark"] .command-palette-footer{background:rgba(18,24,29,.38)}
  .command-palette-footer{padding:10px;gap:6px;font-size:10px}
  .command-palette-footer kbd{min-width:17px;height:18px;font-size:9px}
 }
-@media(max-width:360px){.command-palette-footer>span:last-child{display:none}}
+@media(max-width:360px){.command-palette-footer:not(.command-palette-pagination)>span:last-child{display:none}.command-palette-pagination{flex-wrap:wrap}.command-palette-pagination>span{white-space:normal}}
 @media(prefers-reduced-motion:reduce){
  .command-palette-overlay,.command-palette-panel{animation:none}
  .command-palette-item{transition:none}
