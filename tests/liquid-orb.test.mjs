@@ -54,3 +54,11 @@ test('首帧完成前不展示图形，并提供真实加载阶段及独立嵌�
   assert.match(html, /sendHost\("ready", \{ state \}\)/);
   assert.match(html, /event\.source !== window\.parent/);
 });
+
+test('仅真实 GPU 失败后展示明确标识的简化预览，不伪造 GPU ready',()=>{
+  assert.match(html,/id="orb-fallback"[^>]+hidden>/);
+  assert.match(html,/function stopWithError\(error\)[\s\S]*?showFallback\(\)/);
+  assert.match(html,/sendHost\("error", \{ label: "WebGPU 不可用，已使用 CSS 简化预览" \}\)/);
+  assert.equal((html.match(/sendHost\("ready", \{ state \}\)/g)||[]).length,1);
+  assert.match(html,/fallback\.dataset\.playing=String\(playing&&!reducedMotion\.matches&&!document\.hidden\)/);
+});

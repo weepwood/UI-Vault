@@ -263,6 +263,27 @@ body.orb-swapping .stage canvas{opacity:0!important;transition:none!important}
 .fallback .orb-track,.fallback .orb-progress-caption{display:none}
 .fallback .orb-retry{display:block}
 .ready .orb-loading{display:none}
+/* Only shown after a real renderer failure; never substitute for GPU startup. */
+.orb-fallback[hidden]{display:none!important}
+.orb-fallback{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;isolation:isolate}
+.orb-fallback-sphere{position:relative;overflow:hidden;width:74%;aspect-ratio:1;border-radius:50%;isolation:isolate;background:radial-gradient(circle at 32% 22%,#f5f7ff 0%,#a2b8fb 16%,transparent 42%),radial-gradient(circle at 78% 66%,#a568d7 0%,transparent 45%),radial-gradient(circle at 24% 76%,#7ad7ce 0%,transparent 45%),#384a86;box-shadow:inset 0 0 1px 1px #ffffff80,inset 12px 16px 35px #ffffff40,inset -18px -20px 35px #0a14387a,0 12px 28px #121b4430}
+.orb-fallback-flow{position:absolute;inset:-22%;border-radius:50%;background:conic-gradient(from 25deg,transparent,#eea6db80,transparent,#83e3d9c0,#9ea8fc80,transparent);filter:blur(16px);animation:orbFallbackFlow var(--fallback-duration,14s) linear infinite;animation-play-state:paused}
+.orb-fallback[data-playing=true] .orb-fallback-flow{animation-play-state:running}
+.orb-fallback[data-state=idle] .orb-fallback-flow{opacity:.45}
+.orb-fallback[data-glass=false] .orb-fallback-sphere{box-shadow:none}
+.orb-fallback-sphere::after{content:"";position:absolute;inset:0;border-radius:inherit;background:radial-gradient(ellipse at 30% 16%,#ffffffd0,transparent 25%),radial-gradient(ellipse at 68% 94%,#ffffff80,transparent 35%);opacity:.75}
+.orb-fallback[data-glass=false] .orb-fallback-sphere::after{opacity:0}
+.orb-fallback-label{position:absolute;bottom:18%;padding:3px 7px;border-radius:5px;background:#202438d9;color:#fff;font:10px/1.4 system-ui,sans-serif}
+.fallback .orb-loading{inset:auto 0 3px;padding:3px;gap:4px;z-index:2;pointer-events:none}
+.fallback .orb-loading .orb-retry{pointer-events:auto}
+.fallback .orb-loading-label{display:none}
+.fallback #status{max-width:calc(100% - 24px);font-size:10px;bottom:40px}
+.dialog-mode .orb-fallback-sphere,.embed .orb-fallback-sphere{width:min(90%,100cqh)}
+.dialog-mode .orb-fallback-label,.embed .orb-fallback-label{bottom:8%}
+.dialog-mode.fallback .orb-loading{display:none}
+@keyframes orbFallbackFlow{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.orb-fallback-flow{animation:none!important}}
+
 
 /* Dialog pill (geometry preserved) */
 .dialog-caption{display:none;font-weight:600;letter-spacing:-.045em;line-height:1.1;white-space:nowrap;min-width:0;text-overflow:ellipsis;overflow:hidden;font-size:var(--pill-text);color:var(--pill-ink);font-family:-apple-system,"SF Pro Display",BlinkMacSystemFont,"PingFang SC",sans-serif}
@@ -538,7 +559,7 @@ body.embed{background:transparent!important}
           <div class="row dialog-actions dialog-only"><button class="btn dialog-retry" id="dialog-retry" type="button">重试渲染</button><button class="btn primary dialog-open" id="dialog-open" type="button">弹出对话框</button></div>
         </div>
       </section>
-      <p class="side-foot">基于 Liquid Orb Editor（MIT）改编。单一 WebGPU 画布服务两种视图。</p>
+      <p class="side-foot">基于 Liquid Orb Editor（MIT）改编。单一 WebGPU 画布服务两种视图；设备不支持时提供 CSS 简化预览。</p>
     </div>
   </aside>
 
@@ -557,6 +578,10 @@ body.embed{background:transparent!important}
             <button type="button" id="orb-retry" class="btn orb-retry">重新尝试</button>
           </div>
           <canvas id="orb" role="img" aria-label="液态玻璃球动画"></canvas>
+          <div id="orb-fallback" class="orb-fallback" role="img" aria-label="CSS 简化液态玻璃预览（非 WebGPU 渲染）" hidden>
+            <div class="orb-fallback-sphere" aria-hidden="true"><div class="orb-fallback-flow"></div></div>
+            <span class="orb-fallback-label" aria-hidden="true">CSS 预览</span>
+          </div>
           <div id="status" role="status" hidden=""></div>
         </section>
         <span class="dialog-caption" id="dialog-caption">Thinking...</span>
@@ -1350,6 +1375,12 @@ ${JSON.stringify(c, null, 2)}
         budgetDpr / scale) * scale);
     }
     function updateQualityStatus() {
+      if (document.body.classList.contains("fallback")) {
+        const selected = qualityMode.current === "auto" ? "自动 · 推荐" : qualityLabels[qualityMode.current];
+        qualityStatus.textContent = selected + " · CSS 简化预览（GPU 画质未生效）";
+        qualityStatus.title = "仅状态、外壳、播放和流速生效；配色、音频、GPU 画质仅用于原渲染器。";
+        return;
+      }
       const label = (qualityMode.current === "auto" ? "自动 · " : "") + qualityLabels[quality] +
         " · " + targetFps + " FPS / " + renderDpr().toFixed(2) + "×";
       const highStatus = quality === "high"
@@ -1595,6 +1626,22 @@ ${JSON.stringify(c, null, 2)}
       }),
     });
 
+    function showFallback(){
+      const fallback=document.querySelector("#orb-fallback");
+      fallback.hidden=false;
+      requestDraw=()=>{
+        fallback.dataset.state=state;
+        fallback.dataset.glass=String(glassEnabled);
+        fallback.dataset.playing=String(playing&&!reducedMotion.matches&&!document.hidden);
+        fallback.style.setProperty("--fallback-duration",(14/speedFactor)+"s");
+        updateQualityStatus();
+      };
+      document.addEventListener("visibilitychange",requestDraw);
+      reducedMotion.addEventListener?.("change",requestDraw);
+      window.addEventListener("pagehide",()=>{document.removeEventListener("visibilitychange",requestDraw);reducedMotion.removeEventListener?.("change",requestDraw);},{once:true});
+      requestDraw();
+    }
+
     function stopWithError(error) {
       if (stopped) return;
       stopped = true;
@@ -1603,13 +1650,15 @@ ${JSON.stringify(c, null, 2)}
       stageResizeObserver?.disconnect();
       ribbonTarget?.destroy();
       device?.destroy();
+      document.body.classList.remove("ready");
       document.body.classList.add("fallback");
-      document.querySelector("#engine").textContent = "渲染不可用";
+      showFallback();
+      document.querySelector("#engine").textContent = "CSS 简化预览";
       loadingLabel.textContent = "WebGPU 不可用";
       loadingTrack.removeAttribute("aria-valuenow");
       status.hidden = false;
-      status.textContent = "浏览器或图形设备不支持此效果，请尝试更新浏览器。";
-      sendHost("error", { label: "WebGPU 不可用" });
+      status.textContent = "WebGPU 不可用 · CSS 简化预览";
+      sendHost("error", { label: "WebGPU 不可用，已使用 CSS 简化预览" });
       status.title = error instanceof Error ? error.message : String(error);
       console.warn("[Liquid Orb]", error);
     }

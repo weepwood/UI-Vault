@@ -41,6 +41,6 @@ test('明确版本升级的 main push 触发完整验收，普通 main push 保�
 });
 
 test('共享图标、知识复用和真实展厅/实验室独立改动触发视觉验收',()=>{
- for(const path of ['src/components/Icon.jsx','src/components/KnowledgeRecord.jsx','src/components/RegistryBrowser.jsx','demos/components/workbench-system/index.html','demos/components/workbench-system/demo.css','demos/components/workbench-system/demo.jsx','demos/experiments/design-recipe-lab/index.html'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
+ for(const path of ['src/components/Icon.jsx','src/components/KnowledgeRecord.jsx','src/components/RegistryBrowser.jsx','demos/components/workbench-system/index.html','demos/components/workbench-system/demo.css','demos/components/workbench-system/demo.jsx','demos/experiments/design-recipe-lab/index.html','demos/components/liquid-orb/index.html'])assert.deepEqual(pr([path]),{...fast,build:true,visual:true});
  assert.deepEqual(pr(['demos/components/ordinary/index.html','docs/ROADMAP.md']),fast);
 });
