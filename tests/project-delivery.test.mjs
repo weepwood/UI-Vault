@@ -46,3 +46,12 @@ test('Foundation 工程交付仅匹配明确本地资产及入口，外站/同�
  const asset=assets.find(x=>x.id==='ui-foundation-kit');assert.equal(getFoundationProjectPath(asset),'downloads/ui-foundation-kit-project.zip');
  assert.equal(getFoundationProjectPath({...asset,source:'external'}),null);assert.equal(getFoundationProjectPath({...asset,preview:'demos/other/index.html'}),null);assert.equal(getFoundationProjectPath(notion),null);
 });
+
+test('Notion 演示与独立源项目的存储修复保持一致',()=>{
+  for(const name of ['script.js','library.js']){
+    const demo=readFileSync(new URL('../demos/experiments/notion-design-demo/'+name,import.meta.url),'utf8');
+    const source=readFileSync(new URL('../subprojects/notion-design-demo/'+name,import.meta.url),'utf8');
+    assert.equal(demo,source);
+    assert.match(demo,/try\{(?:return )?window\.localStorage\./);
+  }
+});

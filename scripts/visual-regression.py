@@ -1721,6 +1721,45 @@ def verify_compact_source_reader(browser, origin):
             context.close()
 
 
+def verify_notion_storage_fallback(browser, origin):
+    """受限 iframe 不读取受禁止的存储，独立页仍能保存真实内容。"""
+    for width,height,embed in ((1440,900,True),(390,844,True),(1440,900,False)):
+        context=browser.new_context(viewport={"width":width,"height":height},reduced_motion="reduce")
+        page=context.new_page()
+        errors=track_page_errors(page)
+        try:
+            page.goto(origin+("?asset=notion-design-demo" if embed else "demos/experiments/notion-design-demo/index.html"),wait_until="domcontentloaded")
+            target=page.frame_locator("#preview-stage iframe") if embed else page
+            note=target.locator('[data-page="notes"]')
+            note.click()
+            field=target.locator("#note-input")
+            field.fill("存储兼容验收")
+            expect(target.locator("#note-status")).to_contain_text("仅保留会话" if embed else "已保存到浏览器")
+            target.locator('[data-page="home"]').click()
+            note.click()
+            expect(field).to_have_value("存储兼容验收")
+            if not embed:
+                page.reload()
+                note.click()
+                expect(field).to_have_value("存储兼容验收")
+                field.fill("")
+                page.reload()
+                note.click()
+                expect(field).to_have_value("")
+            page.screenshot(path=str(OUTPUT/f"notion-storage-{width}-{'sandbox' if embed else 'standalone'}.png"))
+            target.locator('a[href="patterns.html"]').first.evaluate("e=>e.click()")
+            switch=target.locator('[data-preference="sounds"]')
+            switch.click()
+            expect(switch).to_have_attribute("aria-checked","true")
+            expect(target.locator("#toast")).to_contain_text("仅当前会话" if embed else "偏好已保存")
+            task=target.locator('[data-task-index]').first
+            task.uncheck()
+            expect(task).not_to_be_checked()
+            assert not errors,errors
+        finally:
+            context.close()
+
+
 def verify_showcase_form_states(browser, origin):
     """真实共享控件的错误、禁用、加载、键盘与焦点恢复。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -3161,6 +3200,7 @@ def main():
                     verify_compact_source_reader,
                     verify_showcase_discovery,
                     verify_showcase_form_states,
+                    verify_notion_storage_fallback,
                     verify_design_recipe_lab,
                     verify_recipe_parameter_contract,
                     verify_recipe_replay,
