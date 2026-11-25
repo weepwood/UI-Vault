@@ -7,6 +7,9 @@ import {execFileSync} from 'node:child_process';
 import {inspectCatalog,ROOT} from '../scripts/lib/catalog.mjs';
 import {buildKnowledgeIndex,writeKnowledgeIndex} from '../scripts/lib/knowledge-index.mjs';
 import {buildRegistry,REGISTRY_ROOT} from '../scripts/lib/reuse-registry.mjs';
+import {selectKnowledgeRecord} from '../assets/core/knowledge-record.js';
+import {registryCommands,registryDependencyList,readRegistryIndex} from '../assets/core/registry-browser.js';
+import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {buildRegistryProfiles} from '../scripts/lib/registry-profiles.mjs';
 import {installRegistrySnapshot,verifyRegistrySnapshot} from '../scripts/lib/registry-install.mjs';
 
@@ -35,6 +38,12 @@ test('知识索引包含登记资产、所有版本与来源证据，不混淆�
  assert.equal(byKey.get('landfolio-style-academic/original').guide.kind,'archive-summary');
  assert.ok(index.records.every(row=>row.provenance.licenseStatus==='declared-not-legal-audit'));
  assert.ok(index.duplicateCandidates.sharedExternalPreview.some(row=>row.keys.includes('atlas-academia/original')));
+ assert.equal(index.summary.archiveReviews,8);
+ assert.equal(byKey.get('landfolio-style-academic/original').archiveReview.status,'summary-and-source-excerpt-reviewed');
+ const original=items.find(x=>x.versions?.length);
+ const variant=selectAssetVersion(original,original.versions[0].id);
+ assert.equal(selectKnowledgeRecord(index,variant,original.versions[0].id).record.preview.path,variant.preview);
+ assert.throws(()=>selectKnowledgeRecord(index,variant,'original'),/不一致/);
  assert.ok(index.recipes.length>=6&&index.recipes.every(row=>row.evidence.length&&row.checks.length));
  const out=await mkdtemp(join(tmpdir(),'ui-vault-knowledge-'));
  try{await writeKnowledgeIndex(ROOT,items,out);assert.deepEqual(JSON.parse(await readFile(join(out,'content/knowledge-index.json'),'utf8')),index);}
@@ -51,6 +60,8 @@ test('三个 Registry 组合真实安装与完整性复验，包括修改文件�
  const registry=await buildRegistry(resolve(REGISTRY_ROOT)),profiles=buildRegistryProfiles(registry);
  assert.deepEqual(profiles.profiles.map(p=>p.id),['css','react','vue']);
  for(const profile of profiles.profiles){
+  assert.deepEqual(registryDependencyList(readRegistryIndex(registry.index),profile.requested).map(x=>x.id),profile.modules.map(x=>x.id));
+  assert.deepEqual(registryCommands(profile.requested),Object.values(profile.commands));
   const out=await mkdtemp(join(tmpdir(),'ui-vault-profile-'));
   try{
    const result=await installRegistrySnapshot(registry,profile.requested,out);

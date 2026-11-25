@@ -1619,6 +1619,37 @@ def verify_compact_source_reader(browser, origin):
             context.close()
 
 
+def verify_knowledge_record(browser, origin):
+    """按需读取真实发布知识索引，保留版本与证据边界。"""
+    for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
+        context=browser.new_context(viewport={"width":width,"height":height},color_scheme=theme,reduced_motion="reduce",locale="zh-CN",permissions=["clipboard-read","clipboard-write"])
+        reads=[]
+        try:
+            def route_index(route):
+                reads.append(route.request.url)
+                if len(reads)==1:route.fulfill(status=503,body="temporary unavailable")
+                else:route.continue_()
+            context.route("**/content/knowledge-index.json",route_index)
+            page=context.new_page()
+            page.goto(origin+"?asset=website-style-bauhaus",wait_until="domcontentloaded")
+            page.locator("#preview-info").click()
+            assert not reads
+            page.get_by_role("button",name="查看 AI 复用证据").click()
+            page.get_by_text("知识索引暂不可用或版本不一致。",exact=False).wait_for()
+            page.get_by_role("button",name="重试",exact=True).click()
+            page.get_by_role("button",name="复制知识 JSON").click()
+            record=json.loads(page.evaluate("()=>navigator.clipboard.readText()"))
+            assert record["record"]["key"]=="website-style-bauhaus/original"
+            assert any(recipe["id"]=="functional-grid" for recipe in record["recipes"])
+            assert len(reads)==2
+            assert page.locator(".knowledge-record").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            page.screenshot(path=str(OUTPUT/f"knowledge-record-{theme}-{width}.png"))
+            page.keyboard.press("Escape")
+            expect(page.locator("#preview-info")).to_be_focused()
+        finally:
+            context.close()
+
+
 def verify_registry_browser(browser, origin):
     """真实发布 Registry 索引，按需读取、失败重试、跨主题浏览及复制命令。"""
     for width,height,theme in ((1440,900,"light"),(390,844,"dark"),(320,640,"light")):
@@ -1649,6 +1680,11 @@ def verify_registry_browser(browser, origin):
             page.get_by_role("button",name="复制预检命令").click()
             assert page.evaluate("()=>navigator.clipboard.readText()")=="node scripts/install-registry.mjs --plan dist/registry ./my-project foundation-vue-primitives"
             assert page.locator(".registry-browser").evaluate("el=>el.scrollWidth<=el.clientWidth+1")
+            page.get_by_role("combobox",name="选择 Registry 交付组合").select_option("vue")
+            expect(page.locator(".registry-dependencies li")).to_have_count(7)
+            page.get_by_role("button",name="复制预检命令").click()
+            assert page.evaluate("()=>navigator.clipboard.readText()")=="node scripts/install-registry.mjs --plan dist/registry ./my-project foundation-vue-button foundation-vue-input foundation-vue-switch foundation-vue-primitives"
+            page.screenshot(path=str(OUTPUT/f"registry-profile-{theme}-{width}.png"))
             page.get_by_role("button",name="返回源码").click()
             expect(page.locator(".registry-browser")).to_have_count(0)
             expect(page.locator(".source-view")).to_be_visible()
@@ -2582,6 +2618,7 @@ def main():
                     verify_live_parameter_dock,
                     verify_expanded_workbench_screenshots,
                     verify_compact_source_reader,
+                    verify_knowledge_record,
                     verify_registry_browser,
                     verify_standalone_delivery,
                     verify_release_keyboard_and_performance,

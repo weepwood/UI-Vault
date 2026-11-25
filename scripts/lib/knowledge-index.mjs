@@ -46,6 +46,17 @@ export async function buildKnowledgeIndex(root,assets){
     usageNotice:'先核对来源和许可，阅读指南与登记源码；标签是目录描述而非逐像素验收。外部链接及源码不等于可直接安装组件。'});
   }
  }
+ const archive=JSON.parse(await readFile(resolve(base,'catalog/archive-reviews.json'),'utf8'));
+ if(archive.version!==1||!Array.isArray(archive.reviews))throw Error('归档审查协议无效');
+ const archiveKeys=new Set(),recordMap=new Map(rows.map(row=>[row.key,row]));
+ for(const review of archive.reviews){
+  const row=recordMap.get(review.key);
+  if(!row||archiveKeys.has(review.key)||row.guide?.kind!=='archive-summary'||row.guide.path!==review.guide||row.preview?.path!==review.source||
+   typeof review.anchor!=='string'||!review.anchor.trim()||typeof review.observation!=='string'||!review.observation.trim()||
+   !(await readFile(resolve(base,row.preview.path),'utf8')).includes(review.anchor))throw Error('归档证据不一致：'+review.key);
+  archiveKeys.add(review.key);
+  row.archiveReview={status:'summary-and-source-excerpt-reviewed',observation:review.observation,anchor:review.anchor,source:row.preview,guide:row.guide};
+ }
  const keys=new Set(rows.map(x=>x.key));if(keys.size!==rows.length)throw Error('知识索引版本键重复');
  const originals=rows.filter(row=>row.version==='original');
  const recipeSource=JSON.parse(await readFile(resolve(base,'catalog/design-recipes.json'),'utf8'));
@@ -59,7 +70,7 @@ export async function buildKnowledgeIndex(root,assets){
   recipeKeys.add(recipe.id);
   return {...recipe,evidence:recipe.references.map(id=>({id,guide:byId.get(id).guide})),status:'derived-guidance-not-runtime-certification'};
  });
- return {format:'ui-vault-knowledge-index',version:1,catalogSha256:digest(JSON.stringify(assets)),summary:{assets:assets.length,variants:rows.length-assets.length,records:rows.length,guideRecords:rows.filter(x=>x.guide).length,reviewedGuides:originals.filter(x=>x.style.review==='guide-review-recorded').length,withoutStyle:originals.filter(x=>!x.style.tags.length).length,archiveSummaryRecords:rows.filter(x=>x.guide?.kind==='archive-summary').length},
+ return {format:'ui-vault-knowledge-index',version:1,catalogSha256:digest(JSON.stringify(assets)),summary:{assets:assets.length,variants:rows.length-assets.length,records:rows.length,guideRecords:rows.filter(x=>x.guide).length,reviewedGuides:originals.filter(x=>x.style.review==='guide-review-recorded').length,withoutStyle:originals.filter(x=>!x.style.tags.length).length,archiveSummaryRecords:rows.filter(x=>x.guide?.kind==='archive-summary').length,archiveReviews:archiveKeys.size},
   duplicateCandidates:{identicalLocalPreview:group(rows,row=>row.preview?.sha256),sharedExternalPreview:group(originals,row=>row.provenance.siteUrl),sharedSource:group(originals,row=>row.provenance.sourceUrl),notice:'同哈希为候选，不自动删除；共享外部站点、同源项目和版本关系不等于重复资产。'},
   recipes,records:rows};
 }

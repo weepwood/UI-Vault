@@ -228,3 +228,13 @@ html[data-motion="reduced"] .source-manifest-actions :is(button,a){transition:no
   .project-dialog .dialog-pane{padding:8px 10px}
   .project-dialog .source-view{padding:8px}
 }
+
+.knowledge-entry{display:grid;gap:8px;margin-top:12px;min-width:0}
+.knowledge-entry>button{justify-self:start;min-height:32px;padding:5px 10px;border:1px solid var(--line);border-radius:var(--workbench-control-radius,7px);background:var(--surface);color:var(--ink);font:inherit;font-size:12px}
+.knowledge-facts{display:grid;gap:8px;margin:0}
+.knowledge-facts>div{display:grid;grid-template-columns:minmax(68px,25%) minmax(0,1fr);gap:8px}
+.knowledge-facts dt{color:var(--muted)}
+.knowledge-facts dd{margin:0;overflow-wrap:anywhere}
+.knowledge-record details{border-top:1px solid var(--line);padding-top:8px}
+.knowledge-record summary{cursor:pointer;font-weight:600}
+.knowledge-record details p{margin-top:6px}

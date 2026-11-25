@@ -117,3 +117,5 @@ assert.ok(!entryCSS.includes('raw.githubusercontent.com/lxgw/975Yuan'),'不应�
 runPythonOrThrow(['scripts/build-bundles.py','--verify'],{cwd:ROOT});
 runPythonOrThrow(['scripts/build-foundation-project.py','--verify'],{cwd:ROOT});
 console.log('静态产物完整性检查成功；网页字体总计 '+(totalFontBytes/1024/1024).toFixed(2)+' MiB（按字符范围加载）。');
+
+#128 下一批：6cadb16 CI 45561531798 成功。Remote Desktop Commander 新连接账户在线设备10031aa1-e7f8-4082-8342-0615031b0285，原独立worktree无未提交改动。项目说明内按需显示AI复用证据：仅显式打开请求完整知识索引，按实际versionId及当前预览/指南路径、许可声明校验，复制/下载单条JSON及关联配方；503重试，关闭取消，不执行源码。Registry 组合选择复用与构建共享的固定组合定义及依赖排序/命令生成，不增加依赖；保留单模块选择和CLI权威。新增Landfolio 8主资产摘要+CSS片段审查台账（academic至bohemian），源码锚点/指南/版本/当前哈希校验，独立于314原指南审计，未完成全部201归档审查及70项视觉适用性。361单测、lint、设计审计、React构建与实际静态构建成功；真实dist Chromium 1440×900浅色、390×844深色、320×640浅色按需请求/503重试/真实剪贴板/配方/Vue七模块组合与命令均通过，390深色截图复审。新增正式CI场景及跨版本拒绝单测。最新人类可读标签微调、正式远端完整构建及截图待复验；不更新旧基线/Tag。

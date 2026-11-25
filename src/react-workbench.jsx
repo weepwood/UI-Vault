@@ -538,7 +538,7 @@ function WorkbenchPortals({nodes}){
       <UIIcon name="settings"/><span>设置</span>
     </a></>,nodes.settingsLink)}
     {createPortal(notice,nodes.toast)}
-    <ProjectDialog root={nodes.dialog} asset={effectiveAsset} labels={state.labels}
+    <ProjectDialog root={nodes.dialog} asset={effectiveAsset} versionId={state.versionId} labels={state.labels}
       project={state.projects.find(p=>p.id===effectiveAsset?.projectId)||null}
       projectAssetCount={state.assets.filter(a=>a.projectId===effectiveAsset?.projectId).length}
       projectHealthSnapshot={projectHealthSnapshot}
