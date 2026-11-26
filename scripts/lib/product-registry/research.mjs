@@ -12,15 +12,19 @@ const families={
  'smart-select':{label:'选择器',refs:['workbench-components','atlas-client-material','react-ui-atlas']},
  'date-picker':{label:'日期控件',refs:['weepwood-ui','react-ui-atlas']},
  'entity-dialog':{label:'弹窗',refs:['workbench-components','weepwood-ui','atlas-client-material']},
+ dialog:{label:'弹窗',refs:['workbench-components','weepwood-ui','atlas-client-material']},
+ 'filter-action':{label:'筛选与工具栏',refs:['workbench-components','gr8r-studio-ui']},
+ 'time-control':{label:'日期控件',refs:['weepwood-ui','react-ui-atlas']},
+ 'color-control':{label:'颜色控件',refs:['workbench-components','atlas-client-material']},
  tokens:{label:'设计令牌',refs:['ui-foundation-kit','gr8r-studio-ui','atlas-client-material']},
  design:{label:'设计规范',refs:['ui-foundation-kit','workbench-components']}
 };
 export function relatedAssets(record,assets){
  const group=families[record.assetId];
  if(!group)return [];
- return assets.filter(a=>a.id!==record.asset.id&&(group.refs.includes(a.id)||a.privateSnapshot&&a.id.endsWith('-'+record.assetId))).map(a=>({id:a.id,title:a.title,relationship:a.privateSnapshot?'同类项目资产':'设计参考候选',family:group.label}));
+ return assets.filter(a=>a.id!==record.asset.id&&(group.refs.includes(a.id)||a.privateSnapshot&&Object.keys(families).some(key=>families[key].label===group.label&&a.id.endsWith('-'+key)))).map(a=>({id:a.id,title:a.title,relationship:a.privateSnapshot?'同类项目资产':'设计参考候选',family:group.label}));
 }
-const componentNames={pagination:'MrrCursorPagination','data-table':'MrrDataTablePanel','filter-bar':'MrrFilterBar','smart-select':'SmartSelect','date-picker':'DatePicker','entity-dialog':'EntityDialog'};
+const componentNames={pagination:'MrrCursorPagination','data-table':'MrrDataTablePanel','filter-bar':'MrrFilterBar','smart-select':'SmartSelect','date-picker':'DatePicker','entity-dialog':'EntityDialog',dialog:'MrrDialog','filter-action':'MrrFilterActionButton','time-control':'TimeControl','color-control':'ColorControl'};
 export function findUses(record){
  const component=componentNames[record.assetId], latest=record.versions.at(-1);
  if(!component)return [];
@@ -45,7 +49,7 @@ export function searchPrivate(catalog,query){
 export function designProfiles(catalog){
  return [...catalog.records.values()].filter(r=>r.assetId==='tokens').map(r=>{
    const s=r.versions.at(-1),a=s.assets.find(a=>a.id==='tokens'),file=a.files.find(f=>f.path===r.declared.tokenPath);
-   return {project:s.project,commit:s.commit,framework:s.framework,platform:s.platform,semanticDeclarations:extractDeclarations(blobText(r.store,file.sha256),r.declared.mapping),assetIds:[...catalog.records.values()].filter(x=>x.versions.at(-1).project===s.project).map(x=>x.asset.id),scope:'project-owned; semantic mapping only; not an installation plan'};
+   return {project:s.project,commit:s.commit,framework:s.framework,platform:s.platform,semanticDeclarations:extractDeclarations(blobText(r.store,file.sha256),r.declared.mapping),assetIds:[...catalog.records.values()].filter(x=>x.versions.at(-1).project===s.project).map(x=>x.asset.id),composition:(s.project==='mrr'?[['result-table','data-table'],['query','filter-bar'],['query-action','filter-action'],['navigation','pagination'],['overlay','dialog']]:[['choice','smart-select'],['date','date-picker'],['time','time-control'],['color','color-control'],['overlay','entity-dialog']]).filter(([,id])=>s.assets.some(a=>a.id===id)).map(([slot,id])=>({slot,asset:'private-'+s.project+'-'+id,snapshot:s.key,revision:s.assets.find(a=>a.id===id).revision})),scope:'project-owned; semantic mapping and composition recipe only; not an installation plan'};
  });
 }
 

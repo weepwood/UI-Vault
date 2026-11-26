@@ -63,3 +63,43 @@ npm run registry:local -- source <asset-id> <snapshot-hash> <registered-file-pat
 历史截图采用 Chromium、1100×900、DPR 1、固定时间、浅色、减少动效，比较固定首屏像素；MRR 367763 / 990000，TODO 0 / 990000。不推断全页面或全状态无变化，不以像素比例评价设计质量。截图、差异及宿主证据在本地私有目录保存并校验哈希。
 
 AI-Development 可直接使用上述只读本地 CLI（从任意 cwd 以绝对脚本路径调用）；优先查询已有公共 Foundation/Registry，再查询私有项目证据；source 只允许确切的资产/快照/登记文件。不得把私有输出上传外部服务或自动写入其他仓库，仍需用户许可、宿主依赖检查和隔离验证。既有 ui-vault-component-handoff Skill 记录入口；没有新增中央服务或自动注册工具。
+
+## 第三批：独立组件、交付候选与更新预检
+
+2026-11-26，本地固定快照追加 MRR b0205fa9、TODO 64d6b33；保留既有四份项目历史快照的身份与字节，新增资产范围只作用于新快照，拒绝重排/截断历史。原 10 项扩展为 14 项逻辑资产、6 份项目快照、34 条实际存在的资产版本（不计尚未登记的早期版本）。新增 MrrDialog、MrrFilterActionButton、TimeControl、ColorControl。
+
+### 独立预览与研究
+
+复用同一三栏和 Topbar 的版本切换。每个新快照组件使用真实 Git 源码和当前可用宿主依赖构建独立夹具；既有 12 条展厅运行绑定保留，新增 10 条独立预览绑定。独立夹具不是产品页面或自行重画的组件；表格仍使用原 DataExamples。各入口提供实际组件支持的属性/主题/容器尺寸、禁用、加载、错误或确认回调（不是所有组件都支持全部状态）。原始组件和主题样式保持独立，夹具外壳窄屏使用 minmax(0,1fr) 及必要的局部横向滚动；未修改来源代码。
+
+档案首屏章节导航、版本快捷定位、历史源码、同类实际截图对比、引用与复用/交付候选分区。选择器、日期/时间、弹窗、筛选工具栏、表格/分页按真实用途研究；例如 MRR 通用弹窗与 TODO 实体编辑弹窗可对比固定截图但业务语义不同。公开参考继续链接已有 Catalog ID；不是所有资产都有同类真实截图。比较新独立夹具时不将其与旧整套展厅算作视觉回归。历史截图记录实际浏览器与状态验收。
+
+\`\`\`sh
+export UI_VAULT_DATA=/absolute/path/to/private-data
+export MRR_NODE_MODULES=/absolute/path/to/mrr/node_modules
+export TODO_NODE_MODULES=/absolute/path/to/todo/node_modules
+python3 scripts/build-component-previews.py
+python3 scripts/verify-component-previews.py
+npm run registry:local -- compare private-mrr-dialog
+npm run registry:local -- profiles
+\`\`\`
+
+旧的 build-private-previews.py / verify-private-previews.py 仅复现原首两份展厅历史；不会用新资产清单重写旧快照。新独立构建内容寻址，验证索引仅在全批测试通过后更新；失败留下私有候选，不认定已通过。统一 profiles 给出项目独立语义 Token 与实际组合槽位的资产 ID、快照及修订，不等于安装计划或组合编辑器。尚无严格历史依赖重建、全量 API/动态引用分析。
+
+### SmartSelect 私有交付候选
+
+在来源快照、运行证据、固定白名单闭包一致时才提供交付。三份原样源码 + TypeScript 声明，运行时依赖声明、主题/门户样式适配契约、源修订和逐文件 SHA-256 统一写入 UI-ASSET-LOCK.json。不是公开 Foundation Registry 项目，不宣称 MIT、通用资产正式发布或兼容所有宿主。现有公开 Foundation 安装器保持不变，不新增中央服务。
+
+\`\`\`sh
+npm run registry:local -- inspect private-todo-smart-select
+# 使用 inspect 的完整 snapshot key，不能用 Git 短 SHA
+npm run registry:local -- lock private-todo-smart-select <snapshot>
+npm run registry:local -- deliver private-todo-smart-select <snapshot> <new-name>
+npm run registry:local -- preflight private-todo-smart-select <target-snapshot> <existing-name>
+\`\`\`
+
+deliver 仅在私有数据目录 deliveries 中排他创建新目录，绝不覆盖宿主。preflight 从可信历史重建旧/新版本锁，对目标文件逐项比对历史、目标和当前哈希；检查依赖声明变化、缺失/本地改动、符号链接、额外文件与篡改锁。冲突退出码 2；不写入文件、不自动升级或回滚、不安装依赖。当前 SmartSelect 6d73408 → 64d6b33 三份源码及依赖声明相同；实际预检零冲突。隔离目录人为修改一份文件后真实预检拒绝。新增自动化夹具另验证真实变更、拒绝覆盖和锁篡改。
+
+本批使用 Book3D-Studio 5f83ddc 固定源导出副本进行第二次宿主版本试验：实际从新交付目录读取锁定 SmartSelect 与类型声明；额外从 TODO 固定源码提取 SearchField，保持原宿主业务状态、样式、React/Radix 版本与接口。TypeScript/Vite 构建、视口方向/书脊形状、合成图片批量导入、素材搜索与清除通过。此前 863a81e 试验保留，两次均为同一产品不同宿主版本，并非两种不同产品的适配。SearchField 是额外源码试验，不是 SmartSelect 交付闭包，也未登记为独立资产。试验不修改原项目。分页/日期/弹窗尚无跨产品实际宿主验证；不因隔离夹具通过就自动宣称通用。FrameSlice 仍未找到本机工作区，不用 Caption-Studio 替代。
+
+AI-Development 继续使用既有 handoff Skill：先检索公共 Registry 和私有资产，再 compare/inspect/profiles，确认真实依赖和源版本，明确授权后 deliver，preflight，再隔离宿主运行并回收可核实证据。禁止自动发出私有源码或写原工作区；不注册独立 Agent 服务。

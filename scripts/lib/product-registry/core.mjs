@@ -94,3 +94,14 @@ export function diffSnapshots(a,b){
   });
 }
 export function blobText(root,key){insist(sha(key),'无效 blob');const b=readFileSync(checkedPath(root,['blobs',key]));insist(hash(b)===key,'blob 哈希错误');return b.toString('utf8');}
+
+// Append-only project history: a changed asset whitelist applies only to newly
+// appended commits. Previously captured identity and file bytes stay immutable.
+export function appendProjectHistory(root,repo,refs,spec,old=[]){
+ const commits=refs.map(ref=>resolveCommit(repo,ref));
+ insist(new Set(commits).size===commits.length&&old.every((v,i)=>v.commit===commits[i]),'历史提交必须按原顺序保留，仅允许追加');
+ return commits.map((commit,i)=>{
+  if(i<old.length){const s=loadSnapshot(root,spec.id,old[i].key);insist(s.commit===commit,'历史快照不一致');return old[i];}
+  const s=capture(root,repo,commit,spec);return {key:s.key,commit:s.commit};
+ });
+}

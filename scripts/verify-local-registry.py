@@ -40,6 +40,12 @@ if live_index.exists():
     hashes.update(r["sha256"] for r in json.loads((DATA/"runtime-v2/differences.json").read_text()))
     trial=DATA/"reuse-trial/index.json"
     if trial.exists(): hashes.update(r["sha256"] for r in json.loads(trial.read_text()))
+deliveries=DATA/"deliveries"
+if deliveries.exists():
+    for p in deliveries.iterdir():
+        if p.is_dir() and (p/"UI-ASSET-LOCK.json").is_file():
+            lock=json.loads((p/"UI-ASSET-LOCK.json").read_text())
+            hashes.update(f["sha256"] for f in lock["files"] if f["path"].endswith((".jsx",".js")))
 for path in DIST.rglob("*"):
     if path.is_file():
         assert path.name not in hashes
@@ -59,7 +65,7 @@ try:
     else:
         raise RuntimeError("server not ready")
     private = [a for a in assets if a.get("privateSnapshot")]
-    assert len(assets) == len(public) + len(private) and len(private) == 10
+    assert len(assets) == len(public) + len(private) and len(private) == len({(p["project"],a["id"]) for p in json.loads((DATA/"workspace/pilot-index.json").read_text()) for v in p["versions"] for a in json.loads((DATA/"workspace/snapshots"/p["project"]/(v["key"]+".json")).read_text())["assets"]})
     assert all(not a["copyable"] for a in private)
     assert all(a in assets for a in public)
     route = "/demos/private-registry/private-mrr-data-table/index.html"
@@ -77,7 +83,7 @@ try:
             expect(page.locator(selector)).to_be_visible()
         frame = page.frame_locator("iframe.live-frame")
         expect(frame.get_by_role("heading", name="MRR · 数据表格")).to_be_visible(timeout=10000)
-        expect(frame.get_by_text("历史修订 · 2 份项目快照")).to_be_visible()
+        expect(frame.get_by_text(__import__("re").compile(r"历史修订 · \d+ 份项目快照"))).to_be_visible()
         expect(frame.get_by_text("未验证完整依赖与交付；本页不是实时组件运行预览。", exact=False)).to_be_visible()
         expect(page.locator("#preview-github")).to_be_hidden()
         expect(page.locator("iframe.live-frame")).not_to_have_attribute("sandbox", __import__("re").compile("allow-same-origin"))
@@ -123,6 +129,20 @@ try:
             expect(page.get_by_role("heading",name="同类设计研究")).to_be_visible()
             page.get_by_role("button",name="Workbench UI 组件展厅 · 设计参考候选").click()
             expect(page.locator("h1#preview-title")).to_have_text("Workbench UI 组件展厅")
+        if live_index.exists() and any(r["kind"]=="isolated-live-component" for r in live_rows):
+            page.goto(base+"/?asset=private-mrr-dialog",wait_until="domcontentloaded")
+            frame=page.frame_locator("iframe.live-frame")
+            expect(frame.get_by_role("heading",name="同类组件视觉研究")).to_be_visible()
+            expect(frame.get_by_alt_text("同类资产固定版本截图").first).to_be_visible()
+            frame.get_by_role("link",name="同类比较",exact=True).click()
+            expect(frame.get_by_role("heading",name="同类组件视觉研究")).to_be_in_viewport()
+            page.screenshot(path=str(DATA/"third-comparison-preview.png"))
+            page.goto(base+"/?asset=private-todo-smart-select",wait_until="domcontentloaded")
+            frame=page.frame_locator("iframe.live-frame")
+            expect(frame.get_by_role("heading",name="私有源码交付候选")).to_be_visible()
+            frame.get_by_role("link",name="交付与预检").click()
+            expect(frame.get_by_text("版本锁与文件清单")).to_be_visible()
+            page.screenshot(path=str(DATA/"third-delivery-preview.png"))
         page.goto(base+"/?asset=ui-foundation-kit",wait_until="domcontentloaded")
         expect(page.locator("h1#preview-title")).not_to_have_text("TODO · 日期选择器")
         expect(page.locator("iframe.live-frame")).to_be_visible(timeout=15000)

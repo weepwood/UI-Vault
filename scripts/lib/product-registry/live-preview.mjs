@@ -14,6 +14,7 @@ export function verifiedLivePreviews(root,records,{candidate=false}={}){
    return readFileSync(p);
  };
  const rows=JSON.parse(read('runtime-v2/'+(candidate?'candidates.json':'verified.json')));
+ if(candidate&&existsSync(join(root,'runtime-v2/component-candidates.json')))rows.push(...JSON.parse(read('runtime-v2/component-candidates.json')));
  if(!Array.isArray(rows)||rows.length>100)throw Error('运行预览清单无效');
  const result=new Map();
  const readImage=(relative,expected)=>{const bytes=read(relative);if(!sha(expected)||hash(bytes)!==expected||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('历史视觉证据完整性错误');return bytes.toString('base64');};

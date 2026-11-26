@@ -104,3 +104,39 @@ test('同类研究仅返回确实存在的目录资产，私有检索保留源�
  assert.equal(searchPrivate({records:new Map([[a.id,r]]),assets:[a,...publicAssets]},'todo 选择器')[0].commit,'abc');
  assert.equal(searchPrivate({records:new Map([[a.id,r]]),assets:[a,...publicAssets]},'vue').length,0);
 });
+
+test('追加项目资产范围不重写既有快照并拒绝历史重排',async t=>{
+ const {appendProjectHistory}=await import('../scripts/lib/product-registry/core.mjs');
+ const f=fixture(t),old=appendProjectHistory(f.store,f.repo,[f.old],f.spec);
+ writeFileSync(join(f.repo,'other.css'),'div{}');f.git('add','other.css');f.git('commit','-m','expand');const next=f.git('rev-parse','HEAD');
+ const spec={...f.spec,assets:[...f.spec.assets,{id:'other',kind:'component',paths:['other.css']}]};
+ const history=appendProjectHistory(f.store,f.repo,[f.old,next],spec,old);
+ assert.deepEqual(history[0],old[0]);assert.equal(loadSnapshot(f.store,'test',old[0].key).assets.length,1);
+ assert.equal(loadSnapshot(f.store,'test',history[1].key).assets.length,2);
+ assert.throws(()=>appendProjectHistory(f.store,f.repo,[next,f.old],spec,history));
+ assert.throws(()=>appendProjectHistory(f.store,f.repo,[f.old],spec,history));
+});
+
+test('私有交付使用可信源码闭包、拒绝覆盖、预检局部修改和锁篡改',async t=>{
+ const {createDelivery,installDelivery,preflightDelivery}=await import('../scripts/lib/product-registry/delivery.mjs');
+ const {hash}=await import('../scripts/lib/product-registry/core.mjs');
+ const f=fixture(t),paths=['src/components/SmartSelect.jsx','src/design-system/FieldFeedback.jsx','src/design-system/popover.js'];
+ for(const path of paths){mkdirSync(join(f.repo,path.split('/').slice(0,-1).join('/')),{recursive:true});writeFileSync(join(f.repo,path),'// '+path);}
+ writeFileSync(join(f.repo,'package.json'),JSON.stringify({dependencies:{react:'19','react-dom':'19','@radix-ui/react-select':'2.2.6','lucide-react':'0.5'}}));
+ f.git('add','.');f.git('commit','-m','source');const commit=f.git('rev-parse','HEAD');
+ const spec={id:'todo',framework:'react',platform:['web'],assets:[{id:'smart-select',kind:'component',paths:[paths[0]]}]};
+ const a=capture(f.store,f.repo,commit,spec);
+ writeFileSync(join(f.repo,paths[0]),'// changed');f.git('add','.');f.git('commit','-m','new');const b=capture(f.store,f.repo,f.git('rev-parse','HEAD'),spec);
+ const record={asset:{id:'private-todo-smart-select'},assetId:'smart-select',versions:[a,b],declared:{repo:f.repo}};
+ const live=new Map([a,b].map(s=>[record.asset.id+'/'+s.key,{row:{validation:{status:'passed'},files:Object.fromEntries(paths.map(p=>[p.slice(4),hash(execFileSync('git',['-C',f.repo,'show',s.commit+':'+p]))]))}}]));
+ const delivery=createDelivery(record,a.key,live);
+ const {target}=installDelivery(f.store,'trial',delivery);
+ assert.throws(()=>installDelivery(f.store,'trial',delivery));
+ assert.throws(()=>installDelivery(f.store,'../escape',delivery));
+ const plan=preflightDelivery(f.store,'trial',record,b.key,live);
+ assert.equal(plan.readyForReview,true);assert.equal(plan.changes.filter(x=>x.status==='changed').length,1);assert.equal(plan.writePerformed,false);
+ writeFileSync(join(target,paths[0]),'local modification');
+ assert.equal(preflightDelivery(f.store,'trial',record,b.key,live).readyForReview,false);
+ writeFileSync(join(target,'UI-ASSET-LOCK.json'),JSON.stringify({...delivery.lock,commit:b.commit}));
+ assert.throws(()=>preflightDelivery(f.store,'trial',record,b.key,live));
+});

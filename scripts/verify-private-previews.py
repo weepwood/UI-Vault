@@ -93,7 +93,10 @@ try:
         diffpath=P/project/("diff-"+hashlib.sha256(payload).hexdigest()+".png")
         if not diffpath.exists():diffpath.write_bytes(payload)
         differences.append({"project":project,"from":a[1],"to":b[1],"changedPixels":changed,"pixels":im1.width*im1.height,"image":str(diffpath.relative_to(DATA)),"sha256":hashlib.sha256(diffpath.read_bytes()).hexdigest()})
-    (P/"verified.tmp").write_text(json.dumps(rows,ensure_ascii=False,indent=2)+"\n")
+    previous=json.loads((P/"verified.json").read_text()) if (P/"verified.json").exists() else []
+    keys={(r["project"],r["asset"],r["snapshot"]) for r in rows}
+    verified=[r for r in previous if (r["project"],r["asset"],r["snapshot"]) not in keys]+rows
+    (P/"verified.tmp").write_text(json.dumps(verified,ensure_ascii=False,indent=2)+"\n")
     (P/"verified.tmp").replace(P/"verified.json")
     (P/"differences.json").write_text(json.dumps(differences,ensure_ascii=False,indent=2)+"\n")
     print(json.dumps({"validatedBindings":len(rows),"browserRuns":len(captures),"diffs":differences},ensure_ascii=False))

@@ -28,3 +28,5 @@ license: MIT
 ## UI-Vault 本地真实资产检索（可选）
 
 若用户明确授权本地私有资产，设置 UI_VAULT_DATA 后使用 UI-Vault 仓库的 scripts/product-registry.mjs（Node，绝对路径可从 AI-Development 任意工作目录运行）。先执行 search <query>，再 inspect <asset-id> 获取固定提交、静态引用、运行证据及复用候选；profiles 获取项目语义 Token。只有确有源码需求且授权时，使用 source <asset-id> <snapshot-hash> <registered-file-path>。不批量导出、不发送私有内容到第三方服务、不自动安装或覆盖宿主。参考 docs/PRODUCT-ASSET-REGISTRY.md；隔离组件或单个宿主验证不等于正式公共资产。
+
+第三批：使用 compare <asset-id> 查看同类候选和实际引用，profiles 获取项目组合的资产/快照/修订。仅 SmartSelect 当前有明确的私有交付闭包；lock <asset-id> <snapshot> 读取可信版本锁；经用户授权后 deliver <asset-id> <snapshot> <new-name> 仅新建私有交付目录；preflight <asset-id> <target-snapshot> <existing-name> 必须先验证锁与本地变更，冲突退出 2。不要以隔离运行预览替代真实宿主验收，不要覆盖宿主、擅自安装运行时或将候选晋升为公共资产。试验结果留在私有证据目录并绑定来源版本和宿主提交；复用成果另经确认登记。

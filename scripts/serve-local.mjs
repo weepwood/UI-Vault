@@ -5,6 +5,7 @@ import {ROOT} from './lib/catalog.mjs';
 import {privateDataRoot} from './product-registry.mjs';
 import {readPrivateCatalog,renderPrivateRecord,PRIVATE_PREFIX} from './lib/product-registry/local-catalog.mjs';
 import {relatedAssets,findUses,reuseTrialSummary} from './lib/product-registry/research.mjs';
+import {createDelivery} from './lib/product-registry/delivery.mjs';
 import {verifiedLivePreviews,readVisualDifferences} from './lib/product-registry/live-preview.mjs';
 const dist=await realpath(resolve(ROOT,'dist')), dataRoot=privateDataRoot();
 const readJSON=async p=>JSON.parse(await readFile(resolve(dist,p),'utf8'));
@@ -17,11 +18,17 @@ for(const [key,entry] of live){
  const view={id:snapshot,label:entry.row.commit.slice(0,8)+' · '+(entry.row.kind==='isolated-live-gallery'?'项目展厅':'组件预览'),preview:PRIVATE_PREFIX+id+'/live/'+snapshot+'.html'};
  (record.asset.privateViews??=[]).push(view);
  (record.liveRows??=[]).push(entry.row);
- if(entry.image)(record.historical??=[]).push({commit:entry.row.commit,image:entry.image,validation:entry.row.validation});
+ if(entry.image)(record.historical??=[]).push({commit:entry.row.commit,image:entry.image,validation:entry.row.validation,kind:entry.row.kind});
 }
 for(const record of catalog.records.values()){
  record.asset.relatedAssets=relatedAssets(record,catalog.assets);
+ record.asset.privateViews?.sort((a,b)=>record.versions.findIndex(v=>v.key===b.id)-record.versions.findIndex(v=>v.key===a.id));
+ if(record.liveRows?.length){record.asset.subtitle='真实项目 · 已验收隔离预览';record.asset.description='固定 Git 提交的真实项目资产，具有源码、历史和已验收运行证据；未自动晋升为公共资产。';record.asset.reuseNotes=['隔离预览使用合成数据及现有依赖','项目专属资产，交付须经宿主适配及验证'];}
+ record.comparison=record.asset.relatedAssets.filter(a=>a.relationship==='同类项目资产').map(a=>{const related=catalog.records.get(a.id),v=related?.historical?.at(-1);return v?{title:a.title,...v}:null;}).filter(Boolean);
  record.reuseTrials=reuseTrialSummary(dataRoot,record);
+ if(!candidateMode&&record.asset.id==='private-todo-smart-select'){
+  try{record.delivery=createDelivery(record,record.versions.at(-1).key,live).lock;}catch{record.delivery=null;}
+ }
  if(record.historical?.length)record.visualDiffs=diffs.filter(d=>d.project===record.versions.at(-1).project);
  try{record.uses=findUses(record);}catch{record.uses=null;}
 }
