@@ -189,3 +189,9 @@ html[data-motion="reduced"] .viewport-controls .viewport-options{animation:none}
  .topbar .project-identity h1{font-size:16px;line-height:1.4}
  .topbar .topbar-tools{gap:8px}
 }
+
+/* The private version menu covers an opaque iframe. During this short menu
+   interaction keep pointer hit testing in the workbench, including Edge's
+   native iframe surface. Outside clicks dismiss the menu; focus and iframe
+   permissions are unchanged. */
+.main:has(.topbar #private-view-listbox:not([hidden])) .preview-stage iframe{pointer-events:none}

@@ -40,6 +40,9 @@ test('预览适配器使用定位和 transform，不强制触发布局重排动�
  assert.equal(iframe.style.width,'768px');
  assert.match(iframe.style.transform,/scale\(/);
  assert.equal(iframe.style.height,Math.ceil(300/(480/768))+'px');
+ applyPreviewLayout(area,iframe,'fluid');
+ assert.equal(iframe.style.transform,'none');
+ assert.equal(iframe.style.width,'480px');
 });
 test('只有本地 Demo 展示视口切换，外部参考保持来源',()=>{
  // 渲染模板在浏览器使用 document.baseURI，测试中提供同等的 Pages 子路径。

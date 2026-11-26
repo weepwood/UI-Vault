@@ -23,7 +23,7 @@ try:
             aid=r["asset"];asset="private-frameslice-"+aid
             context=browser.new_context(viewport={"width":1440,"height":960},device_scale_factor=1,reduced_motion="reduce",locale="zh-CN")
             context.route("**/*",lambda route:route.continue_() if route.request.url.startswith(base+"/") else route.abort())
-            page=context.new_page();errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
+            page=context.new_page();page.set_default_timeout(10000);errors=[];page.on("pageerror",lambda e:errors.append(str(e)))
             page.goto(base+"/?asset="+asset,wait_until="domcontentloaded")
             page.get_by_role("button",name="选择资产预览：历史与源码").click()
             page.locator("#private-view-listbox").get_by_role("option").filter(has_text=r["commit"][:8]).click()
@@ -34,6 +34,12 @@ try:
                 raise
             frame.get_by_label("主题",exact=True).select_option("dark")
             expect(frame.locator("html")).to_have_attribute("data-fs-theme","dark")
+            if aid=="caption-timeline":
+                dark_surface=frame.locator(".timeline").evaluate("(e)=>getComputedStyle(e).backgroundColor")
+                frame.get_by_label("主题",exact=True).select_option("light")
+                light_surface=frame.locator(".timeline").evaluate("(e)=>getComputedStyle(e).backgroundColor")
+                assert dark_surface!=light_surface,(dark_surface,light_surface)
+                frame.get_by_label("主题",exact=True).select_option("dark")
             checks=["原组件真实渲染","主题切换","受限 iframe"]
             if aid=="caption-timeline":
                 expect(frame.get_by_role("group",name="字幕波形时间轴")).to_be_visible()
@@ -45,7 +51,7 @@ try:
                 checks+=["波形","缩放","键盘定位","字幕起点修改"]
             elif aid=="player-controls":
                 expect(frame.locator("media-controller")).to_be_visible()
-                frame.locator("video").evaluate("v=>new Promise((resolve,reject)=>{if(v.readyState>=1)resolve();else{v.addEventListener('loadedmetadata',resolve,{once:true});v.addEventListener('error',reject,{once:true})}})")
+                frame.locator("video").evaluate("v=>new Promise((resolve,reject)=>{if(v.readyState>=1)resolve();else{const t=setTimeout(()=>reject(Error('media metadata timeout')),8000);v.addEventListener('loadedmetadata',()=>{clearTimeout(t);resolve()},{once:true});v.addEventListener('error',()=>{clearTimeout(t);reject(Error('media error'))},{once:true})}})")
                 assert frame.locator("video").evaluate("v=>Math.abs(v.duration-12)<.1")
                 frame.locator("media-play-button").click()
                 assert frame.locator("video").evaluate("v=>!v.paused")

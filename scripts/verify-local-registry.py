@@ -13,6 +13,9 @@ from playwright.sync_api import sync_playwright, expect
 ROOT = Path(__file__).resolve().parent.parent
 DATA = Path(os.environ["UI_VAULT_DATA"]).resolve()
 DIST = ROOT / "dist"
+OUTPUT = Path(os.environ.get("UI_VAULT_AUDIT_OUTPUT",str(DATA))).resolve()
+assert OUTPUT==DATA or DATA in OUTPUT.parents
+OUTPUT.mkdir(exist_ok=True,parents=True)
 with socket.socket() as sock:
     sock.bind(("127.0.0.1", 0))
     port = sock.getsockname()[1]
@@ -76,10 +79,16 @@ try:
     rejected("/demos/private-registry/unknown/index.html", expected=404)
     with sync_playwright() as pw:
         engine=os.environ.get("UI_VAULT_BROWSER","chromium")
-        browser = (pw.chromium.launch(channel="msedge") if engine=="edge" else getattr(pw,engine).launch())
-        page = browser.new_page(viewport={"width": 1440, "height": 960})
+        print("Launching browser:",engine,flush=True)
+        browser = (pw.chromium.launch(channel="msedge",timeout=15000) if engine=="edge" else getattr(pw,engine).launch(timeout=15000))
+        print("Browser ready:",browser.version,flush=True)
+        page = browser.new_page(viewport={"width": 1440, "height": 960},reduced_motion="reduce")
+        page.set_default_timeout(10000)
+        page.set_default_navigation_timeout(15000)
+        page.context.route("**/*",lambda route:route.continue_() if route.request.url.startswith(base+"/") else route.abort())
         page.goto(base + "/?asset=private-mrr-data-table", wait_until="domcontentloaded")
         expect(page.locator("h1#preview-title")).to_have_text("MRR · 数据表格", timeout=15000)
+        assert page.locator("#preview-title").count()==1
         for selector in ("#sidebar", "#project-panel", "#main"):
             expect(page.locator(selector)).to_be_visible()
         frame = page.frame_locator("iframe.live-frame")
@@ -88,7 +97,7 @@ try:
         expect(frame.get_by_text("未验证完整依赖与交付；本页不是实时组件运行预览。", exact=False)).to_be_visible()
         expect(page.locator("#preview-github")).to_be_hidden()
         expect(page.locator("iframe.live-frame")).not_to_have_attribute("sandbox", __import__("re").compile("allow-same-origin"))
-        page.screenshot(path=str(DATA / "mrr-archive-preview.png"))
+        page.screenshot(path=str(OUTPUT / "mrr-archive-preview.png"))
         page.locator("#preview-search").click()
         page.locator("#compact-search-input").fill("TODO 日期选择器")
         result = page.get_by_role("option").filter(has_text="TODO · 日期选择器")
@@ -100,7 +109,7 @@ try:
         expect(page.locator("h1#preview-title")).to_have_text("TODO · 日期选择器")
         frame = page.frame_locator("iframe.live-frame")
         expect(frame.get_by_role("heading", name="TODO · 日期选择器")).to_be_visible()
-        page.screenshot(path=str(DATA / "todo-archive-preview.png"))
+        page.screenshot(path=str(OUTPUT / "todo-archive-preview.png"))
         if (evidence / "index.json").is_file():
             for asset in ("private-mrr-pagination", "private-todo-smart-select"):
                 page.goto(base + "/?asset=" + asset, wait_until="domcontentloaded")
@@ -110,6 +119,7 @@ try:
                 expect(image).to_be_visible()
                 assert image.evaluate("(img) => img.complete && img.naturalWidth > 0")
         if live_index.exists():
+            print("history and preview switching",flush=True)
             page.goto(base+"/?asset=private-todo-smart-select",wait_until="domcontentloaded")
             frame=page.frame_locator("iframe.live-frame")
             expect(frame.get_by_role("heading",name="固定环境历史视觉证据")).to_be_visible()
@@ -137,24 +147,36 @@ try:
             expect(frame.get_by_alt_text("同类资产固定版本截图").first).to_be_visible()
             frame.get_by_role("link",name="同类比较",exact=True).click()
             expect(frame.get_by_role("heading",name="同类组件视觉研究")).to_be_in_viewport()
-            page.screenshot(path=str(DATA/("fifth-third-comparison-preview-"+engine+".png")))
+            page.screenshot(path=str(OUTPUT/("fifth-third-comparison-preview-"+engine+".png")))
             page.goto(base+"/?asset=private-todo-smart-select",wait_until="domcontentloaded")
             frame=page.frame_locator("iframe.live-frame")
             expect(frame.get_by_role("heading",name="私有源码交付候选")).to_be_visible()
             frame.get_by_role("link",name="交付与预检").click()
             expect(frame.get_by_text("版本锁与文件清单")).to_be_visible()
-            page.screenshot(path=str(DATA/("fifth-third-delivery-preview-"+engine+".png")))
+            page.screenshot(path=str(OUTPUT/("fifth-third-delivery-preview-"+engine+".png")))
         if len(private)>=18:
             page.goto(base+"/?asset=private-mrr-dialog",wait_until="domcontentloaded")
             page.get_by_role("button",name="选择资产预览：历史与源码").click()
+            expect(page.locator("#preview-stage iframe")).to_have_css("pointer-events","none")
             page.locator("#private-view-listbox").get_by_role("option",name="并排运行比较").click()
             try:
                 expect(page.locator(".private-study-header strong")).to_have_text("同类组件运行比较",timeout=10000)
             except Exception:
-                page.screenshot(path=str(DATA/("fourth-comparison-failed-"+engine+".png")))
-                print("comparison diagnostic",page.locator("#private-view").get_attribute("value"),page.locator("#preview-title").inner_text(),page.locator("#preview-stage").inner_text()[:500],flush=True)
+                page.screenshot(path=str(OUTPUT/("fourth-comparison-failed-"+engine+".png")))
+                print("comparison diagnostic",page.locator("#private-view").get_attribute("value"),page.locator("h1#preview-title").inner_text(),page.locator("#preview-stage").inner_text()[:500],flush=True)
                 raise
             expect(page.locator(".private-study-frame iframe")).to_have_count(2)
+            expect(page.locator(".private-study-frame iframe").first).not_to_have_css("pointer-events","none")
+            original=page.locator(".private-study-frame iframe").evaluate_all("els=>els.map(e=>e.getAttribute('data-preview-url'))")
+            page.get_by_role("button",name="交换左右").click()
+            expect(page.locator(".private-study-frame iframe").first).to_have_attribute("data-preview-url",original[1])
+            page.get_by_role("button",name="交换左右").click()
+            expect(page.locator(".private-study-frame iframe").first).to_have_attribute("data-preview-url",original[0])
+            page.get_by_role("button",name="纵向布局").click()
+            expect(page.locator(".private-study-grid")).to_have_class(__import__("re").compile("is-stacked"))
+            page.get_by_role("button",name="并排布局").click()
+            expect(page.locator(".private-study-grid")).not_to_have_class(__import__("re").compile("is-stacked"))
+
             expect(page.locator(".private-study-frame iframe").first).not_to_have_attribute("sandbox", __import__("re").compile("allow-same-origin"))
             for i in range(2):
                 frame=page.frame_locator(".private-study-frame iframe").nth(i)
@@ -167,7 +189,7 @@ try:
                     frame.get_by_role("dialog").locator("input").fill("合成分组")
                     frame.get_by_role("button",name="保存").click()
                     expect(frame.locator("#state")).to_have_text("合成分组")
-            page.screenshot(path=str(DATA/("fifth-fourth-live-comparison-"+engine+".png")))
+            page.screenshot(path=str(OUTPUT/("fifth-fourth-live-comparison-"+engine+".png")))
             page.get_by_role("button",name="选择资产预览：并排运行比较").click()
             page.locator("#private-view-listbox").get_by_role("option",name="项目资产组合").click()
             expect(page.locator(".private-study-header strong")).to_have_text("项目资产组合")
@@ -176,7 +198,7 @@ try:
                 page.get_by_role("button",name="下载组合 JSON").click()
             profile=json.loads(open(download.value.path()).read())
             assert profile["project"]=="mrr" and len(profile["composition"])==6 and all(len(s["snapshot"])==64 for s in profile["composition"])
-            page.screenshot(path=str(DATA/("fifth-fourth-composition-"+engine+".png")))
+            page.screenshot(path=str(OUTPUT/("fifth-fourth-composition-"+engine+".png")))
             page.set_viewport_size({"width":390,"height":844})
             expect(page.locator(".private-study-header strong")).to_have_text("项目资产组合")
             assert page.locator(".private-study").evaluate("(e)=>e.scrollWidth===e.clientWidth")
@@ -194,7 +216,7 @@ try:
             expect(frame.get_by_role("group",name="交互时间轴")).to_be_visible()
             frame.get_by_role("button",name="放大时间轴").click()
             expect(frame.get_by_text("2×",exact=True)).to_be_visible()
-            page.screenshot(path=str(DATA/("fifth-fourth-frameslice-timeline-"+engine+".png")))
+            page.screenshot(path=str(OUTPUT/("fifth-fourth-frameslice-timeline-"+engine+".png")))
             page.goto(base+"/?asset=private-frameslice-caption-workspace",wait_until="domcontentloaded")
             expect(page.frame_locator("iframe.live-frame").get_by_role("heading",name="FRAMESLICE · 字幕工作台")).to_be_visible()
             if next(a for a in private if a["id"]=="private-frameslice-caption-workspace").get("privateViews"):
@@ -202,6 +224,7 @@ try:
                 page.locator("#private-view-listbox").get_by_role("option").filter(has_text="a12cee0").click()
                 expect(page.frame_locator("iframe.live-frame").get_by_role("toolbar",name="字幕工作台操作")).to_be_visible(timeout=15000)
             else:assert not next(a for a in private if a["id"]=="private-frameslice-caption-workspace").get("privateViews")
+        print("navigation, version preflight and recipe",flush=True)
         # Local navigation, existing recipe integration and GET-only version preflight.
         page.goto(base+"/?asset=private-todo-smart-select",wait_until="domcontentloaded")
         page.get_by_role("button",name="筛选真实项目 TODO · 本地项目").click()
@@ -219,11 +242,18 @@ try:
         page.get_by_role("textbox",name="新候选目录名").fill("fifth-ui-review-only")
         expect(page.get_by_role("button",name="复制隔离候选命令")).to_be_enabled()
         assert not (DATA/"deliveries/fifth-ui-review-only").exists()
-        page.screenshot(path=str(DATA/("fifth-version-"+engine+".png")))
+        page.screenshot(path=str(OUTPUT/("fifth-version-"+engine+".png")))
         page.get_by_role("textbox",name="已交付目录名").fill("smart-select-third-conflict")
         page.get_by_role("button",name="检查更新影响").click()
         expect(page.get_by_role("status").filter(has_text="存在冲突")).to_be_visible(timeout=10000)
         assert page.get_by_role("button",name="复制隔离候选命令").count()==0
+        page.get_by_role("textbox",name="已交付目录名").fill("rc-nonexistent-delivery")
+        page.get_by_role("button",name="检查更新影响").click()
+        expect(page.get_by_role("alert").filter(has_text="交付不存在")).to_be_visible()
+        page.get_by_role("textbox",name="已交付目录名").fill("fourth-smart-select")
+        expect(page.get_by_role("alert")).to_have_count(0)
+        page.get_by_role("button",name="检查更新影响").click()
+        expect(page.get_by_role("status").filter(has_text="文件预检通过")).to_be_visible()
         snapshot=next(a for a in private if a["id"]=="private-todo-smart-select")["privateDeliveryVersions"][-1]["snapshot"]
         url="/demos/private-registry/private-todo-smart-select/preflight.json?name=fourth-smart-select&snapshot="+snapshot
         rejected(url,{"Sec-Fetch-Site":"cross-site"})
@@ -250,7 +280,7 @@ try:
         page.get_by_role("textbox",name="设计方案名称").fill("private-test")
         expect(page.get_by_role("button",name="保存设计方案",exact=True)).to_be_disabled()
         assert "private-frameslice" not in page.evaluate("localStorage.getItem('ui-vault:design-plans:v1')||''")
-        page.screenshot(path=str(DATA/("fifth-recipe-"+engine+".png")))
+        page.screenshot(path=str(OUTPUT/("fifth-recipe-"+engine+".png")))
         page.goto(base+"/?asset=ui-foundation-kit",wait_until="domcontentloaded")
         expect(page.locator("h1#preview-title")).not_to_have_text("TODO · 日期选择器")
         expect(page.locator("iframe.live-frame")).to_be_visible(timeout=15000)

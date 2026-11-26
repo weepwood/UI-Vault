@@ -38,8 +38,8 @@ function Field({field,settings,onChange}){
   </div>;
 }
 function Section({id,active,children}){
-  return <section id={id} className="settings-section" aria-labelledby={id+'-title'} hidden={!active}>
-    <div className="settings-section-heading"><h2 id={id+'-title'}>{pages.find(p=>p.id===id).title}</h2><p>{captions[id]}</p></div>
+  return <section id={id} className="settings-section" aria-labelledby={'settings-section-'+id+'-title'} hidden={!active}>
+    <div className="settings-section-heading"><h2 id={'settings-section-'+id+'-title'}>{pages.find(p=>p.id===id).title}</h2><p>{captions[id]}</p></div>
     {children}
   </section>;
 }
