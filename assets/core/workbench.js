@@ -20,11 +20,12 @@ export function projectEmoji(id) {
 // React 的 ProjectRow 渲染它；纯函数便于在 Node 测试中直接验证。
 export function projectRowSubtitle(asset,labels={}) {
   const kind=asset.curated ? '手工精选 · '+(stageLabels[asset.curationStage]||'待精调') : labels[asset.type]||asset.type;
-  const status=asset.source==='local'?'可运行网页':asset.siteUrl?'在线预览':'外部项目';
+  const status=asset.privateSnapshot?'源码档案':asset.source==='local'?'可运行网页':asset.siteUrl?'在线预览':'外部项目';
   return kind+' · '+status;
 }
 
 export function projectInfoMarkup(asset,labels) {
+  if(asset.privateSnapshot)return '<p>'+safe(asset.description)+'</p><p>仅本地 · 版本与文件证据请在主预览区查看。不得视为可安装组件。</p>';
   const local=asset.source==='local',copyable=local&&asset.copyable!==false;
   const repoUrl=local?'https://github.com/weepwood/UI-Vault/blob/main/'+asset.code.split('/').map(encodeURIComponent).join('/'):asset.url;
   const hasOriginCredit=Boolean(asset.originRepo&&asset.originName&&asset.originDemoUrl);

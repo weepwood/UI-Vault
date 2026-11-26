@@ -197,7 +197,7 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
   const registryAvailable=['ui-foundation-kit','workbench-components'].includes(asset?.id);
   const registryActive=registryOpen&&registryAvailable;
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
-    (asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
+    (asset.privateSnapshot?'本地源码档案':asset.source==='local'?'本地 Demo':asset.siteUrl?'在线预览':'外部项目'):'项目资料';
   const isCurrent=source.id===asset?.id&&source.path===selectedFile?.path;
   // 独立交付文件通过静态白名单生成；外部仓库由 GitHub 提供整仓快照。
   const standaloneBundle=getStandaloneBundlePath(asset);
@@ -281,13 +281,13 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
             title="GitHub 仓库快照；若当前资源属于仓库子目录，压缩包将包含完整仓库">
             <Icon name="download"/><span>下载完整仓库 ZIP</span>
           </a>}
-          <a id="source-repo" className="source-upstream-action" href={sourceLink(asset,selectedFile)} target="_blank" rel="noopener noreferrer">
+          <a id="source-repo" hidden={asset?.privateSnapshot} className="source-upstream-action" href={sourceLink(asset,selectedFile)} target="_blank" rel="noopener noreferrer">
             <Icon name="external-link"/><span>GitHub 源码</span>
           </a>
         </div>
       </div>
       <p className="source-delivery-note" role="note" hidden={registryActive}>
-        {foundationProject?'Foundation 源码工程包含可离线构建的 Token/CSS、静态演示与 React/Vue/GPUI 适配源码及说明。Vue 示例包含 npm 锁文件，使用 npm ci 安装；本包不含 node_modules。':asset?.source==='external'
+        {asset?.privateSnapshot?'历史源码、版本哈希及变更证据位于主预览区。没有独立交付包。':foundationProject?'Foundation 源码工程包含可离线构建的 Token/CSS、静态演示与 React/Vue/GPUI 适配源码及说明。Vue 示例包含 npm 锁文件，使用 npm ci 安装；本包不含 node_modules。':asset?.source==='external'
           ?'外部项目仍在原仓库独立维护。仓库 ZIP 是完整源码快照，不保证仅包含当前演示，也不代表已获得商业复用许可。'
           :standaloneBundle
             ?'独立演示 ZIP 只包含该页面需要的已登记静态文件，可脱离 UI-Vault 工作台使用。'
@@ -313,14 +313,14 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
           <strong>{project.name}</strong>
           <span>{projectAssetCount} 条资产</span>
         </div>
-        <a href={project.repository} target="_blank" rel="noopener noreferrer"
+        <a hidden={project.privateSnapshot} href={project.repository} target="_blank" rel="noopener noreferrer"
           title="打开完整来源仓库，不改变当前预览"><Icon name="external-link"/>查看仓库</a>
       </section>}
       <ProjectHealthPanel project={project} snapshot={projectHealthSnapshot}/>
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&onEditParameters&&<button className="parameter-dock-launch" type="button" onClick={onEditParameters}><Icon name="sliders-horizontal"/> 在预览旁实时编辑</button>}
       {open&&tab==='page-info'&&parameterSchemaFor(asset)&&<DemoParameterPanel key={asset.id+':'+asset.preview} asset={asset} notify={notify}/>}
       <PageInfoPanel info={pageInfo.id===asset?.id?pageInfo.info:null} asset={asset}/>
-      {asset&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='page-info'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}
+      {asset&&!asset.privateSnapshot&&<div className="knowledge-entry"><button type="button" aria-expanded={knowledgeOpen} onClick={()=>setKnowledgeOpen(value=>!value)}>{knowledgeOpen?'收起 AI 复用证据':'查看 AI 复用证据'}</button>{open&&tab==='page-info'&&knowledgeOpen&&<KnowledgeRecord key={asset.id+':'+versionId} asset={asset} version={versionId} notify={notify} onCopyText={onCopyText}
         onOpenSource={path=>{if(!files.some(file=>file.path===path))return;setFilePath(path);setRegistryOpen(false);setTab('source');sourceTab.current?.focus();}}
         onOpenGuide={asset.designGuidePath?()=>{setTab('design-guide');root.querySelector('#tab-design-guide')?.focus();}:undefined}
         onOpenRegistry={registryAvailable?()=>{setRegistryOpen(true);setTab('source');sourceTab.current?.focus();}:undefined}/>}</div>}

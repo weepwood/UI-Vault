@@ -386,6 +386,7 @@ export const REUSE_LEVELS=Object.freeze([
   {id:'reference',label:'外部项目'}
 ]);
 export function reuseLevelOf(asset){
+  if(asset.privateSnapshot)return 'reference';
   if(asset.curated&&asset.curationStage==='stable')return 'verified';
   if(Array.isArray(asset.bundleFiles)&&asset.bundleFiles.length)return 'installable';
   if(asset.copyable===true)return 'copyable';

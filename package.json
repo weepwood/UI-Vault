@@ -21,7 +21,9 @@
     "react:build": "node scripts/build-react.mjs",
     "link:check": "node scripts/check-links.mjs",
     "lint": "eslint .",
-    "check:fast": "node scripts/validate.mjs && node --test --import ./tests/helpers/jsx-register.mjs tests/*.test.mjs && node scripts/design-audit.mjs && npm run lint"
+    "check:fast": "node scripts/validate.mjs && node --test --import ./tests/helpers/jsx-register.mjs tests/*.test.mjs && node scripts/design-audit.mjs && npm run lint",
+    "registry:local": "node scripts/product-registry.mjs",
+    "dev:local": "node scripts/serve-local.mjs"
   },
   "engines": {
     "node": ">=22.12"

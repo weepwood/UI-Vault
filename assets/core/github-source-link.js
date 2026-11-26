@@ -11,7 +11,7 @@ function githubRepositoryRoot(value){
 }
 
 export function githubSourceLink(asset){
-  if(!asset)return null;
+  if(!asset||asset.privateSnapshot)return null;
   if(asset.source==='local'){
     if(typeof asset.code!=='string'||!asset.code)return UI_VAULT_REPOSITORY;
     const path=asset.code.split('/').map(part=>encodeURIComponent(part)).join('/');

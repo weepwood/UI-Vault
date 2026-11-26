@@ -8,7 +8,7 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,cu
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
   const kind=asset?(labels[asset.type]||asset.type)+' · '+
-    (asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源'):'项目目录';
+    (asset.privateSnapshot?'本地源码档案':asset.source==='local'?'本站 Demo':asset.siteUrl?'在线站点':'外部资源'):'项目目录';
   const openUrl=effectiveAsset&&(effectiveAsset.source==='local'?
     new URL(effectiveAsset.preview,document.baseURI).href:effectiveAsset.siteUrl||effectiveAsset.url||effectiveAsset.originRepo);
   const sourceUrl=githubSourceLink(effectiveAsset);

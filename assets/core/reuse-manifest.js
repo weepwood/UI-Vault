@@ -9,11 +9,11 @@ const https=value=>{
 export function assetReuseManifest(asset){
   if(!asset||typeof asset.id!=='string')throw new TypeError('缺少资产');
   const local=asset.source==='local',bundle=getStandaloneBundlePath(asset);
-  const mode=local?(bundle?'standalone-zip':asset.copyable===true&&localPath(asset.code)?'single-html':'source-reference'):'external-reference';
+  const mode=asset.privateSnapshot?'private-source-evidence':local?(bundle?'standalone-zip':asset.copyable===true&&localPath(asset.code)?'single-html':'source-reference'):'external-reference';
   return {format:'ui-vault-asset-reuse',version:1,id:asset.id,title:asset.title,projectId:asset.projectId||null,
     technologies:Array.isArray(asset.technologies)?[...asset.technologies]:[],license:asset.license||'未核实',
     reuseLevel:reuseLevelOf(asset),mode,
-    preview:local?localPath(asset.preview):https(asset.siteUrl),
+    preview:asset.privateSnapshot?null:local?localPath(asset.preview):https(asset.siteUrl),
     sourceFiles:getSourceFiles(asset).map(({path,name,language})=>({path,name,language})),
     singleFile:local&&asset.copyable===true?localPath(asset.code):null,
     standaloneZip:bundle,repository:local?https(asset.sourceUrl):https(asset.originRepo||asset.url),
