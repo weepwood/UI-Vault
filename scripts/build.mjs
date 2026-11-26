@@ -12,6 +12,7 @@ import {versionCssImports} from './lib/css-revision.mjs';
 
 const {errors,items}=await inspectCatalog();
 if(errors.length){console.error(errors.join('\n'));process.exit(1);}
+if(items.some(a=>a.privateSnapshot||a.id.startsWith('private-')||a.preview?.startsWith('demos/private-registry/')))throw Error('公开构建拒绝私有资产');
 const out=resolve(ROOT,'dist');
 const allowed=new Set(['.html','.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.woff','.ttf','.otf','.wasm','.webm','.mp4','.txt','.md']);
 const webAssets=new Set(['.js','.mjs','.css','.json','.svg','.png','.jpg','.jpeg','.webp','.avif','.gif','.woff2','.wasm','.txt']);

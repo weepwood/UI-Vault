@@ -40,6 +40,9 @@ test('预览适配器使用定位和 transform，不强制触发布局重排动�
  assert.equal(iframe.style.width,'768px');
  assert.match(iframe.style.transform,/scale\(/);
  assert.equal(iframe.style.height,Math.ceil(300/(480/768))+'px');
+ applyPreviewLayout(area,iframe,'fluid');
+ assert.equal(iframe.style.transform,'none');
+ assert.equal(iframe.style.width,'480px');
 });
 test('只有本地 Demo 展示视口切换，外部参考保持来源',()=>{
  // 渲染模板在浏览器使用 document.baseURI，测试中提供同等的 Pages 子路径。
@@ -63,7 +66,7 @@ test('React 收藏、筛选与设置不重建真实预览 iframe',async()=>{
  const [react,preview,hooks]=await Promise.all([
    'src/react-workbench.jsx','src/components/PreviewFrame.jsx','src/useWorkbench.js'
  ].map(p=>readFile(join(ROOT,p),'utf8')));
- assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
+ assert.match(react,/<PreviewFrame asset={previewAsset}/);
  assert.match(preview,/export const PreviewFrame=memo\(/);
  assert.match(preview,/before.asset\?\.id===after.asset\?\.id/);
  assert.match(preview,/referrerPolicy="no-referrer"/);

@@ -37,7 +37,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  const candidate=chosen&&(revision==="current"?chosen:chosen.history?.[Number(revision)]);
  function currentSnapshot(title){return {name:title,catalogSha256:composition.catalogSha256,keys:composition.entries.map(e=>e.handoff.assetId+"/"+e.handoff.assetVersion),context:composition.context,theme,baselineId:baselineIdentity(baseline),baselineTokens:baseline.tokens,tokens:proposal,materialAttachment:attachment};}
  function save(){
-  if(!proposal)return;
+  if(!proposal||composition.privateReferences?.length)return;
   try{
    const next=updateDesignPlans(saved,current=>[...current,currentSnapshot(name.trim())]);
    setSaved(next);setSelected(name.trim());setRevision('current');setName('');setStatus(next.sessionOnly?'保存仅保留当前会话':'设计方案已保存');
@@ -53,7 +53,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  }
  function saveRevision(){
   try{
-   if(!chosen||!proposal)throw Error('无效');
+   if(!chosen||!proposal||composition.privateReferences?.length)throw Error('无效');
    const next=updateDesignPlans(saved,current=>{requireCurrentDesignPlan(current,chosen);return current.map(p=>p.name===chosen.name?reviseDesignPlan(p,currentSnapshot(p.name)):p);});
    setSaved(next);setRevision('current');setStatus(next.sessionOnly?'版本仅保留当前会话':'历史版本已保存');
   }catch(error){setStatus(error.message.includes("容量")||error.message.includes("已变化")?error.message:'版本保存失败：历史已满或方案不匹配');}
@@ -92,7 +92,7 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
  function applyImport(){
   try{
    const {document,keys}=validateDesignPlan(pending,index,assets,item,primary);
-   invalidatePendingRestore();onRestore(keys,document.composition.context);setTheme(document.baseline.theme);setDrafts(old=>({...old,[document.baseline.theme]:document.proposal}));setAttachment(document.materialAttachment??null);setPending(null);setStatus('导入规范已恢复；未应用到预览');
+   invalidatePendingRestore();onRestore(keys,document.composition.context,document.composition.privateReferences||[]);setTheme(document.baseline.theme);setDrafts(old=>({...old,[document.baseline.theme]:document.proposal}));setAttachment(document.materialAttachment??null);setPending(null);setStatus('导入规范已恢复；未应用到预览');
   }catch{setPending(null);setStatus('规范已失效，未恢复');}
  }
  return <details className="design-plan" ref={root} open={opened} onToggle={toggle}><summary>设计规范与保存方案</summary>
@@ -113,13 +113,13 @@ export function DesignPlan({composition,index,assets,onRestore,notify}){
   <DesignRegistryDelivery document={proposal?createDesignPlan(composition,baseline,proposal,attachment):null} notify={notify}/>
   <div className="design-plan-storage"><label>导入规范 JSON<input aria-label="导入规范 JSON" type="file" accept=".json,application/json" onChange={selectFile}/></label>
   {pending&&<><p role="status">待恢复：{pending.composition.entries.length} 项资产 · {pending.baseline.theme} · {pending.difference.changes.length} 项差异；不会自动保存或应用预览。</p><div className="registry-module-info"><button type="button" onClick={applyImport}>确认恢复导入规范</button><button type="button" onClick={()=>{readId.current.id++;setPending(null);setStatus('已取消导入');}}>取消导入</button></div></>}
-  <label>方案名称<input aria-label="设计方案名称" maxLength={40} value={name} onChange={e=>setName(e.target.value)}/></label>
-  <div className="registry-module-info"><button type="button" disabled={!proposal||!name.trim()} onClick={save}>保存设计方案</button></div>
+  {composition.privateReferences?.length>0&&<p role="status">含私有参考的方案仅在当前会话编辑；请下载 JSON / DESIGN.md 至私有目录，不写入浏览器方案存储。</p>}<label>方案名称<input aria-label="设计方案名称" maxLength={40} value={name} onChange={e=>setName(e.target.value)}/></label>
+  <div className="registry-module-info"><button type="button" disabled={!proposal||!name.trim()||!!composition.privateReferences?.length} onClick={save}>保存设计方案</button></div>
   <label>已保存（当前主资产）<select aria-label="已保存设计方案" value={selected} onChange={e=>{setSelected(e.target.value);setRevision("current");setMigration(null);}}><option value="">选择方案</option>{planOptions.map(p=><option key={p.name}>{p.name}</option>)}</select></label>
   <div className="registry-module-info"><button type="button" disabled={!selected} onClick={restore}>恢复设计方案</button><button type="button" disabled={!selected} onClick={remove}>删除设计方案</button></div>
   {chosen&&<><label>历史快照<select aria-label="方案历史版本" value={revision} onChange={e=>{setRevision(e.target.value);setMigration(null);}}><option value="current">当前版本</option>{(chosen.history||[]).map((_,i)=><option key={i} value={String(i)}>历史版本 {i+1}</option>)}</select></label>
    {proposal&&candidate&&<p>与当前编辑相比：{planVersionDiff(candidate,currentSnapshot(chosen.name)).tokens.map(c=>PLAN_FIELDS.find(f=>f.key===c.key).label+" "+c.baseline+" → "+c.proposed).join("；")||"Token 无差异"}{planVersionDiff(candidate,currentSnapshot(chosen.name)).materialChanged?"；材质不同":""}</p>}
-   <div className="registry-module-info"><button type="button" disabled={!proposal} onClick={saveRevision}>保存新版本</button><button type="button" onClick={prepareMigration}>检查基准迁移</button></div>
+   <div className="registry-module-info"><button type="button" disabled={!proposal||!!composition.privateReferences?.length} onClick={saveRevision}>保存新版本</button><button type="button" onClick={prepareMigration}>检查基准迁移</button></div>
    {migration&&<><p>目录：{migration.source.catalogSha256===migration.snapshot.catalogSha256?"不变":"已变化"}；基准：{migration.source.baselineId===migration.snapshot.baselineId?"不变":"已变化"}。{migration.source.baselineTokens?compareDesignTokens(migration.source.baselineTokens,migration.base.tokens).changes.map(c=>c.key+" "+c.baseline+" → "+c.proposed).join("；"):"旧版本没有基准值记录"}。保留原提议，不自动保存。</p><div className="registry-module-info"><button type="button" onClick={confirmMigration}>确认迁移规范</button><button type="button" onClick={()=>setMigration(null)}>取消迁移</button></div></>}
   </>}
   <p>本浏览器最多8份；每份最多4个历史快照；目录或Token基准变化后拒绝静默恢复。规范不自动覆盖宿主代码。{saved.sessionOnly&&' 存储不可用，本次面板会话内的改动不会写回。'}</p><p role="status">{status}</p></div>

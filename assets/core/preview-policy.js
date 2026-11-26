@@ -4,7 +4,7 @@ export function getPreviewPolicy(asset){
   const external=asset?.source==='external';
   const caps=new Set(Array.isArray(asset?.previewCapabilities)?asset.previewCapabilities:[]);
   const sandbox=['allow-scripts'];
-  if(external)sandbox.push('allow-forms');
+  if(external||asset?.privateSnapshot===true&&asset.privateLive===true)sandbox.push('allow-forms');
   if(caps.has('downloads'))sandbox.push('allow-downloads');
   if(caps.has('popups'))sandbox.push('allow-popups','allow-popups-to-escape-sandbox');
   const allow=['webgpu','fullscreen'].filter(item=>caps.has(item)).join('; ')||undefined;

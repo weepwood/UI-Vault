@@ -34,6 +34,7 @@ export function applyPreviewLayout(container,iframe,mode='fluid',customWidth=DEF
   iframe.style.width = result.width+'px';
   iframe.style.height = result.height+'px';
   iframe.style.left = result.left+'px';
-  iframe.style.transform = 'scale('+result.scale+')';
+  // At native size avoid a needless transformed iframe hit-test surface.
+  iframe.style.transform = result.scale===1?'none':'scale('+result.scale+')';
   return result;
 }

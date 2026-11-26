@@ -132,7 +132,7 @@ export function validateDesignPlan(doc,index,assets,item,primary){
   return h.assetId+'/'+h.assetVersion;
  });
  if(primary&&keys[0]!==primary)throw Error('主资产不匹配');
- const composition=composeKnowledge(index,assets,keys,doc.composition.context);
+ const composition=composeKnowledge(index,assets,keys,doc.composition.context,doc.composition.privateReferences||[]);
  const baseline=foundationBaseline(item,doc.baseline?.theme);
  const expected=createDesignPlan(composition,baseline,doc.proposal,doc.materialAttachment);
  if(!sameJSON(doc,expected))throw Error('组合、基准或差异与当前登记数据不一致');

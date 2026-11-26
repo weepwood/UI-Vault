@@ -1,4 +1,4 @@
-import React,{useLayoutEffect,useMemo,useRef,useState} from 'react';
+import React,{useCallback,useLayoutEffect,useMemo,useRef,useState} from 'react';
 import {Icon} from './Icon.jsx';
 import {projectEmoji} from '../../assets/core/workbench.js';
 import {highlightSearchText,searchMatchDetail} from '../../assets/core/catalog.js';
@@ -23,6 +23,7 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
   if(limitState.query!==value)setLimitState({query:value,limit:MAX_RESULTS});
   const listRef=useRef(null);
   const nextPageFocus=useRef(null);
+  const revealFrame=useRef(0);
   const groups=useMemo(()=>{
     if(value.trim())return [{label:'搜索结果',items:items.slice(0,limit)}];
     const recent=new Set(recentIds);
@@ -48,17 +49,35 @@ export function CompactSearchPanel({inputRef,value,onChange,items,loading,recent
   },[inputRef]);
   useLayoutEffect(()=>{
     listRef.current?.scrollTo({top:0});
+    return ()=>cancelAnimationFrame(revealFrame.current);
   },[value]);
+  // Only move the list, not its ancestors. A short-viewport resize can commit
+  // another flex layout after the key event; recheck the intended row once
+  // before paint instead of relying on scrollIntoView's scroll anchoring.
+  const revealRow=useCallback(index=>{
+    cancelAnimationFrame(revealFrame.current);
+    const align=()=>{
+      const list=listRef.current;
+      const row=list?.querySelector('[data-command-index="'+index+'"]');
+      if(!list||!row)return;
+      const bounds=list.getBoundingClientRect(),item=row.getBoundingClientRect();
+      const top=bounds.top+list.clientTop,bottom=top+list.clientHeight;
+      if(item.top<top)list.scrollTop+=item.top-top;
+      else if(item.bottom>bottom)list.scrollTop+=Math.ceil(item.bottom-bottom);
+    };
+    align();
+    revealFrame.current=requestAnimationFrame(align);
+  },[]);
   useLayoutEffect(()=>{
     const target=nextPageFocus.current;
     if(!target)return;
     nextPageFocus.current=null;
     if(target.query!==value)return;
     inputRef.current?.focus({preventScroll:true});
-    listRef.current?.querySelector('[data-command-index="'+target.index+'"]')?.scrollIntoView({block:'nearest'});
-  },[value,limit,inputRef]);
+    revealRow(target.index);
+  },[value,limit,inputRef,revealRow]);
   const moveTo=index=>{
-    listRef.current?.querySelector('[data-command-index="'+index+'"]')?.scrollIntoView({block:'nearest'});
+    revealRow(index);
     setActive(index);
   };
   const move=(offset)=>{

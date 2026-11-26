@@ -12,6 +12,7 @@ const deliveryLabels={'standalone-zip':'独立 ZIP','single-html':'单文件 HTM
 export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,onOpenGuide,onOpenRegistry}){
  const [result,setResult]=useState(null),[attempt,setAttempt]=useState(0);
  const [selection,setSelection]=useState([asset.id+'/'+version]),[context,setContext]=useState('general');
+ const [privateRefs,setPrivateRefs]=useState([]);
  const [query,setQuery]=useState(''),[recipeFilter,setRecipeFilter]=useState(''),[deliveryFilter,setDeliveryFilter]=useState('');
  useEffect(()=>{
   const controller=new AbortController();
@@ -31,9 +32,9 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
  const hits=result?.index&&(query.trim()||recipeFilter||deliveryFilter)?searchKnowledge(result.index,{query,recipe:recipeFilter,delivery:deliveryFilter,limit:8}):null;
  const {composition,compositionError}=useMemo(()=>{
   if(!result?.index)return {composition:null,compositionError:false};
-  try{return {composition:composeKnowledge(result.index,result.assets,selection,context),compositionError:false};}
+  try{return {composition:composeKnowledge(result.index,result.assets,selection,context,privateRefs),compositionError:false};}
   catch{return {composition:null,compositionError:true};}
- },[result,selection,context]);
+ },[result,selection,context,privateRefs]);
  function downloadComposition(markdown){
   if(!composition)return;
   try{downloadSourceText(markdown?compositionMarkdown(composition):JSON.stringify(composition,null,2)+'\n',markdown?'composition-DESIGN.md':'ai-composition.json');notify('组合交付已下载');}catch{notify('组合交付下载失败');}
@@ -73,7 +74,13 @@ export function KnowledgeRecord({asset,version,notify,onCopyText,onOpenSource,on
     <p>通过上方反向检索加入参考资产；当前资产为主资产，未保存的组合仅在本面板会话保留。</p>
     <label>设计场景<select aria-label="组合设计场景" value={context} onChange={event=>setContext(event.target.value)}><option value="general">通用</option><option value="dense-workbench">高密度工作台</option><option value="reading">阅读</option><option value="presentation">展示</option></select></label>
     <ul className="knowledge-search-results">{selection.map((key,i)=><li key={key}><strong>{i===0?'主资产':'参考资产'}</strong><span>{key}</span>{i>0&&<button type="button" aria-label={'移除 '+key} onClick={()=>setSelection(old=>old.filter(x=>x!==key))}>移除</button>}</li>)}</ul>
-    {compositionError?<p role="status">组合证据不一致，无法交付。</p>:composition&&<><p role="status">{composition.files.length} 个去重登记文件 · {composition.recipes.length} 个配方 · {composition.warnings.length} 项人工复核提示</p><ul>{composition.warnings.map((w,i)=><li key={w.code+i}>{w.message}</li>)}</ul><p>无警告不代表兼容；组合不是安装包。</p><div className="registry-module-info"><button type="button" onClick={()=>downloadComposition(false)}>下载组合 JSON</button><button type="button" onClick={()=>downloadComposition(true)}>下载组合 DESIGN.md</button></div><DesignPlan composition={composition} index={result.index} assets={result.assets} onRestore={(keys,scene)=>{setSelection(keys);setContext(scene);}} notify={notify}/></>}
+    {result.assets.some(a=>a.privateSnapshot&&a.privateProfile)&&<div className="private-recipe-refs">
+      <strong>真实项目参考 · 仅本地</strong>
+      <p>选择项目的固定组合槽位；与当前设计配方一并导出，不复制私有源码或写入浏览器方案存储。</p>
+      <div className="registry-module-info">{[...new Map(result.assets.filter(a=>a.privateSnapshot&&a.privateProfile).map(a=>[a.privateProfile.project,a.privateProfile])).values()].map(profile=><button type="button" key={profile.project} onClick={()=>setPrivateRefs(profile.composition)}>引用 {profile.project.toUpperCase()} 组合</button>)}<button type="button" disabled={!privateRefs.length} onClick={()=>setPrivateRefs([])}>清除私有参考</button></div>
+      <ul>{privateRefs.map(r=><li key={r.asset}>{result.assets.find(a=>a.id===r.asset)?.title||r.asset} · {r.slot} <button type="button" aria-label={'移除私有参考 '+r.asset} onClick={()=>setPrivateRefs(old=>old.filter(x=>x.asset!==r.asset))}>移除</button></li>)}</ul>
+    </div>}
+    {compositionError?<p role="status">组合证据不一致，无法交付。</p>:composition&&<><p role="status">{composition.files.length} 个去重登记文件 · {composition.recipes.length} 个配方 · {composition.warnings.length} 项人工复核提示</p><ul>{composition.warnings.map((w,i)=><li key={w.code+i}>{w.message}</li>)}</ul><p>无警告不代表兼容；组合不是安装包。</p><div className="registry-module-info"><button type="button" onClick={()=>downloadComposition(false)}>下载组合 JSON</button><button type="button" onClick={()=>downloadComposition(true)}>下载组合 DESIGN.md</button></div><DesignPlan composition={composition} index={result.index} assets={result.assets} onRestore={(keys,scene,refs=[])=>{setSelection(keys);setContext(scene);setPrivateRefs(refs);}} notify={notify}/></>}
    </details>
    <div className="registry-module-info"><button type="button" onClick={()=>onCopyText(json(),'当前版本知识 JSON 已复制')}>复制知识 JSON</button><button type="button" onClick={()=>{try{downloadSourceText(json(),asset.id+'-'+version+'-knowledge.json');notify('知识记录已下载');}catch{notify('知识记录下载失败');}}}>下载当前记录</button></div>
   </>}

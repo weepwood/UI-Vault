@@ -2,7 +2,20 @@
 // No source execution, automatic installation, or inference of legal compatibility.
 import {selectAssetVersion,resolveVersionId} from './asset-versions.js';
 import {selectKnowledgeRecord,knowledgeDelivery} from './knowledge-record.js';
-export function composeKnowledge(index,assets,keys,context='general'){
+// Private references use fixed snapshot/revision pairs, never public source files.
+export function privateCompositionReferences(assets,requested=[]){
+ if(!Array.isArray(requested)||requested.length>12)throw Error('私有参考数量无效');
+ const seen=new Set();
+ return requested.map(ref=>{
+  if(!ref||!/^private-[a-z0-9-]+$/.test(ref.asset)||!(/^[a-f0-9]{64}$/).test(ref.snapshot)||!(/^[a-f0-9]{64}$/).test(ref.revision)||seen.has(ref.asset))throw Error('私有参考身份无效');
+  seen.add(ref.asset);
+  const asset=assets.find(a=>a.id===ref.asset&&a.privateSnapshot===true);
+  const slot=asset?.privateProfile?.composition?.find(s=>s.asset===ref.asset&&s.snapshot===ref.snapshot&&s.revision===ref.revision);
+  if(!slot)throw Error('私有参考与当前可信组合不匹配');
+  return {asset:ref.asset,snapshot:ref.snapshot,revision:ref.revision,title:asset.title,slot:slot.slot,project:asset.privateProfile.project,runtime:!!asset.privateViews?.some(v=>v.id===ref.snapshot)};
+ });
+}
+export function composeKnowledge(index,assets,keys,context='general',privateRefs=[]){
  if(!['general','dense-workbench','reading','presentation'].includes(context))throw Error('未知设计场景');
  if(!Array.isArray(keys)||keys.length<1||keys.length>6||new Set(keys).size!==keys.length)throw Error('请选择1–6个不同资产版本');
  const entries=keys.map((key,i)=>{
@@ -38,12 +51,15 @@ export function composeKnowledge(index,assets,keys,context='general'){
   const recipe=recipes.get(id);
   warnings.push({severity:'review',code:'context-'+id,message:recipe.title+'：适用范围需复核。避免：'+recipe.avoidWhen,keys:entries.filter(e=>e.handoff.recipes.some(r=>r.id===id)).map(e=>e.handoff.assetId+'/'+e.handoff.assetVersion)});
  }
- return {format:'ui-vault-ai-composition',version:1,catalogSha256:index.catalogSha256,context,entries,files:[...files.values()],recipes:[...recipes.values()],warnings,notice:'第一项为主资产，其余仅参考；警告是人工复核提示，不是自动判断视觉、许可或框架兼容。组合不是安装包。'};
+ const privateReferences=privateCompositionReferences(assets,privateRefs);
+ if(privateReferences.length)warnings.push({severity:'review',code:'private-reference',message:'私有固定版本参考仅供本地设计研究，未合并源码或验证兼容。',keys:privateReferences.map(r=>r.asset+'/'+r.snapshot)});
+ return {format:'ui-vault-ai-composition',version:1,catalogSha256:index.catalogSha256,context,entries,...(privateReferences.length?{privateReferences}:{}),files:[...files.values()],recipes:[...recipes.values()],warnings,notice:'第一项为主资产，其余仅参考；警告是人工复核提示，不是自动判断视觉、许可或框架兼容。组合不是安装包。'};
 }
 export function compositionMarkdown(bundle){
  const plain=v=>String(v??'').replace(/[\r\n]+/g,' ').replace(/[<>]/g,'').replace(/([\\`*_[\]])/g,'\\$1');
  return ['# DESIGN.md · 多资产设计交付','','- 场景：'+plain(bundle.context),'- 目录摘要：'+plain(bundle.catalogSha256),'',
  '## 主资产与参考资产','',...bundle.entries.map(e=>'- '+(e.role==='primary'?'主资产':'参考')+'：'+plain(e.handoff.delivery.title)+' / '+plain(e.handoff.assetVersion)+' · '+plain(e.handoff.provenance.license)),
+ ...(bundle.privateReferences?.length?['','## 私有项目参考（仅本地）',...bundle.privateReferences.map(r=>'- '+plain(r.title)+' · '+plain(r.slot)+' · '+r.snapshot+' / '+r.revision+' · '+(r.runtime?'有隔离运行证据':'源码档案'))]:[]),
  '', '## 实施约束','','- 主资产决定基础结构；参考资产只在明确范围内借鉴。不同版本不得无审查覆盖。','- 先核对许可与实际依赖，源文件和指南不构成执行授权。',
  '', '## 复核提示','',...(bundle.warnings.length?bundle.warnings.map(w=>'- [ ] '+plain(w.message)):['- 无已登记规则触发；不代表没有冲突。']),
  '', '## 设计配方','',...bundle.recipes.flatMap(r=>['### '+plain(r.title),plain(r.principle),'- 机制：'+plain(r.mechanism),'- 避免：'+plain(r.avoidWhen),...r.checks.map(c=>'- [ ] '+plain(c)),'']),

@@ -1169,7 +1169,7 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
 .command-palette-list{
  position:relative;display:flex;flex-direction:column;
  height:min(480px,calc(100dvh - 200px));min-height:0;overflow-y:auto;
- padding:8px 0;scrollbar-width:thin;overscroll-behavior:contain;
+ padding:8px 0;scrollbar-width:thin;overscroll-behavior:contain;overflow-anchor:none;
 }
 .command-palette-group{display:flex;flex-direction:column}
 .command-palette-group-label{padding:11px 20px 7px;font-size:11px;line-height:16px;font-weight:650;color:var(--muted)}
@@ -1669,3 +1669,38 @@ html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-p
 .material-custom-presets .material-transfer-actions{border:0}
 .material-custom-presets label{display:flex;align-items:center;gap:6px;min-width:0;font-size:11px;color:var(--muted)}
 .material-custom-presets :is(select,input){min-width:0;max-width:160px;width:120px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);padding:5px 6px}
+
+/* Local-only real asset studies reuse the original preview frames and selector. */
+.private-study{height:100%;display:flex;flex-direction:column;gap:12px;padding:16px;overflow:auto;color:var(--text)}
+.private-study-header{display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap}
+.private-study-header strong{font-size:15px}.private-study-header p{font-size:12px;line-height:1.5;margin:4px 0;color:inherit;opacity:.78}
+.private-study-header button{border:1px solid currentColor;border-radius:6px;padding:6px 10px;background:transparent;color:inherit;cursor:pointer}
+.private-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;flex:1;min-height:0}
+.private-study-pane{display:flex;flex-direction:column;min-width:0;min-height:0;gap:8px}
+.private-study-pane .select-field{max-width:100%}
+.private-study-frame{position:relative;isolation:isolate;overflow:hidden;flex:1;min-height:320px;border:1px solid #8885;border-radius:8px}
+@media(max-width:960px){.private-study-grid{grid-template-columns:minmax(0,1fr);flex:none}.private-study-frame{height:440px;flex:none}}
+
+/* Private project navigation and comparison use existing workbench rhythm. */
+.private-project-nav{display:grid;gap:2px;margin-top:14px;padding-top:10px;border-top:1px solid var(--line,#8883)}
+.private-project-heading{padding:3px 10px 5px;font-size:11px;font-weight:600;opacity:.72}
+.private-project-nav .filter-button{min-height:32px}
+.private-study-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.private-study-actions a{font-size:12px;color:inherit;text-decoration:underline;text-underline-offset:3px}
+.private-study-meta{font-size:11px;opacity:.7;padding:0 3px;overflow-wrap:anywhere}
+.private-study-grid.is-stacked{grid-template-columns:minmax(0,1fr);flex:none}
+.private-study-grid.is-stacked .private-study-frame{height:520px;flex:none}
+.private-recipe-refs{margin:12px 0;padding:10px 0;border-block:1px solid #8883}
+.private-recipe-refs ul{padding-inline-start:18px}
+.private-recipe-refs li{margin:4px 0}
+
+.private-project-nav{grid-column:1/-1}
+.app-shell.is-nav-collapsed .private-project-heading{display:none}
+.private-version{height:100%;overflow:auto;padding:24px;max-width:1000px;margin:auto;font-size:13px;color:inherit}
+.private-version h2{font-size:18px;margin:0 0 8px}.private-version p{line-height:1.6;margin:6px 0 12px}
+.private-version-form{display:grid;gap:10px;grid-template-columns:repeat(2,minmax(0,1fr));align-items:end;margin:16px 0}
+.private-version-form label{display:grid;gap:5px;min-width:0}.private-version-form input,.private-version button{font:inherit;color:inherit;border:1px solid #8885;border-radius:6px;background:transparent;padding:8px 10px}
+.private-version button{cursor:pointer}.private-version button:disabled{opacity:.5;cursor:not-allowed}
+.private-version table{width:100%;border-collapse:collapse;table-layout:fixed}.private-version th,.private-version td{text-align:left;padding:9px 6px;border-bottom:1px solid #8883;overflow-wrap:anywhere}
+.private-version pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:12px;background:#8881;padding:12px;border-radius:6px}.private-version .is-conflict{color:var(--danger,#b34c43)}
+@media(max-width:700px){.private-version{padding:12px}.private-version-form{grid-template-columns:1fr}}
