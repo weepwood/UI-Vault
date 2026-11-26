@@ -78,3 +78,9 @@ node scripts/install-registry.mjs --verify dist/registry /path/to/project founda
 适用：大量固定行高的记录、素材列表和缩略图文字索引。先检查宿主是否已有 [VueUse useVirtualList](https://vueuse.org/core/usevirtuallist/)，优先复用，不重复实现滚动引擎。行高应包含间距；索引使用数据源位置而非可见DOM位置；勾选状态独立于挂载节点。直接定位与滚动窗口同步，迟到的初始化设置不得覆盖用户已作出的选择。
 
 证据：本地Vue应用使用600条合成记录，在Chromium/WebKit检查末项直达、往返定位和跨窗口勾选保持，末项位置渲染行节点少于60。仅证明该固定高度场景，不代表任意动态高度、图片网格或整站性能。网格/多面板另行原型验证。未引入新依赖；此条为通用实践记录，不分发业务源码、不新增Registry模块、不包含业务数据。
+
+### 证据工作台：从概览定位到可操作的明细（2026-11-26）
+
+参考 [Grafana Dashboard links](https://grafana.com/docs/grafana/latest/visualizations/dashboards/build-dashboards/manage-dashboard-links/)，优先将现有专用页面、权限和查询能力连接起来，而非建立重复监控。使用真实容器宽度安排3/2/1列入口；区域跳转移动键盘焦点。来源和事件筛选只统计已加载数据，首次失败、空态、刷新失败保留旧结果应有独立表达。
+
+历史事务的前后值与流程状态必须区分：没有关系证据的流程事件不画成实际状态变化；候选、历史观察和实时状态不能混用。少量固定证据优先语义化对比和成熟时间线；需要编辑节点和边时才评估 Vue Flow，复杂已确认只读关系再评估 ECharts graph。合成浏览器案例已验证规则直达、失败重试、前后值、来源筛选、焦点和专用页导航（Chromium/WebKit）；不分发业务源码或数据，不把页面跳转视作因果分析。
