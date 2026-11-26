@@ -15,6 +15,7 @@ export function verifiedLivePreviews(root,records,{candidate=false}={}){
  };
  const rows=JSON.parse(read('runtime-v2/'+(candidate?'candidates.json':'verified.json')));
  if(candidate&&existsSync(join(root,'runtime-v2/component-candidates.json')))rows.push(...JSON.parse(read('runtime-v2/component-candidates.json')));
+ if(candidate&&existsSync(join(root,'runtime-v2/media-candidates.json')))rows.push(...JSON.parse(read('runtime-v2/media-candidates.json')));
  if(!Array.isArray(rows)||rows.length>100)throw Error('运行预览清单无效');
  const result=new Map();
  const readImage=(relative,expected)=>{const bytes=read(relative);if(!sha(expected)||hash(bytes)!==expected||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('历史视觉证据完整性错误');return bytes.toString('base64');};
@@ -29,7 +30,7 @@ export function verifiedLivePreviews(root,records,{candidate=false}={}){
    if(!script||hash(bytes)!==r.sha256||createHash('sha256').update(script).digest('base64')!==r.scriptHash)throw Error('运行预览完整性错误');
    const key=assetId+'/'+r.snapshot;
    if(result.has(key))throw Error('重复运行预览');
-   const csp="default-src 'none'; script-src 'sha256-"+r.scriptHash+"'; style-src 'unsafe-inline'; img-src data:; font-src data:; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; sandbox allow-scripts allow-forms";
+   const csp="default-src 'none'; script-src 'sha256-"+r.scriptHash+"'; style-src 'unsafe-inline'; img-src data:; font-src data:; "+(r.project==='frameslice'&&['player-controls','caption-workspace'].includes(r.asset)?"media-src data: blob:; ":"")+"connect-src 'none'; worker-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'self'; sandbox allow-scripts allow-forms";
    let image=null;
    if(!candidate){
     const v=r.validation;

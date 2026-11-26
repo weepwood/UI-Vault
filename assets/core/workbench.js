@@ -20,7 +20,7 @@ export function projectEmoji(id) {
 // React 的 ProjectRow 渲染它；纯函数便于在 Node 测试中直接验证。
 export function projectRowSubtitle(asset,labels={}) {
   const kind=asset.curated ? '手工精选 · '+(stageLabels[asset.curationStage]||'待精调') : labels[asset.type]||asset.type;
-  const status=asset.privateSnapshot?'源码档案':asset.source==='local'?'可运行网页':asset.siteUrl?'在线预览':'外部项目';
+  const status=asset.privateSnapshot?(asset.privateViews?.length?'真实运行':'源码档案'):asset.source==='local'?'可运行网页':asset.siteUrl?'在线预览':'外部项目';
   return kind+' · '+status;
 }
 

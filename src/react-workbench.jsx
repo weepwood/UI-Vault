@@ -18,6 +18,7 @@ import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
+import {PrivateVersionPanel} from './components/PrivateVersionPanel.jsx';
 import {PrivateStudyPanel,privateStudyOptions} from './components/PrivateStudyPanel.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
 import {DemoParameterPanel} from './components/DemoParameterPanel.jsx';
@@ -39,10 +40,10 @@ const groupOptions=[
   {value:'style',label:'按主要风格'},{value:'technology',label:'按主要技术栈'},
   {value:'source',label:'按资源形式'},{value:'reuse',label:'按复用程度'}
 ];
-function QuickFilters({state,onFilter}){
+function QuickFilters({state,onFilter,onProject}){
   const options=[
     {key:'category',value:'all',label:'全部资源',icon:'layout-grid',
-      count:state.assets.length,selected:state.category==='all'&&!state.favoritesOnly&&!state.importedOnly&&!state.curatedOnly},
+      count:state.assets.length,selected:state.category==='all'&&!state.favoritesOnly&&!state.importedOnly&&!state.curatedOnly&&!facetSelection(state.projectId).length},
     {key:'curatedOnly',label:'手工精调',icon:'sliders-horizontal',
       count:state.assets.filter(a=>a.curated===true).length,selected:state.curatedOnly},
     {key:'favoritesOnly',label:'我的收藏',icon:'heart',
@@ -60,10 +61,10 @@ function QuickFilters({state,onFilter}){
     {...dataAttrs[item.key]}
     aria-pressed={String(state.view==='library'&&item.selected)}
     aria-label={item.label} title={item.label}
-    onClick={()=>onFilter(item.key,item.value)}>
+    onClick={()=>item.key==='category'&&facetSelection(state.projectId).length?onProject(''):onFilter(item.key,item.value)}>
     <UIIcon name={item.icon}/><span>{item.label}</span>
     <span className="filter-count" id={countIds[item.key]}>{state.loading?'—':item.count}</span>
-  </button>)}</>;
+  </button>)}{state.projects.some(p=>p.privateSnapshot)&&<div className="private-project-nav"><span className="private-project-heading">真实项目</span>{state.projects.filter(p=>p.privateSnapshot).map(p=><button key={p.id} type="button" className={'filter-button'+(facetSelection(state.projectId).includes(p.id)?' is-active':'')} aria-pressed={facetSelection(state.projectId).includes(p.id)} aria-label={'筛选真实项目 '+p.name} title={p.name} onClick={()=>onProject(p.id)}><UIIcon name="folder"/><span>{p.name.replace(' · 本地项目','')}</span><span className="filter-count">{state.assets.filter(a=>a.projectId===p.id).length}</span></button>)}</div>}</>;
 }
 const facetFields=[
   {key:'tag',id:'tag-filter',label:'内容类型',empty:'全部内容'},
@@ -232,7 +233,7 @@ function WorkbenchPortals({nodes}){
   const effectiveAsset=useMemo(()=>selectAssetVersion(selected,state.versionId),[selected,state.versionId]);
   const [privateView,setPrivateView]=useState({assetId:null,id:'archive'});
   const activePrivateView=privateView.assetId===selected?.id?selected?.privateViews?.find(v=>v.id===privateView.id):null;
-  const studyOptions=useMemo(()=>selected?.privateSnapshot?['compare','composition'].filter(mode=>privateStudyOptions(selected,state.assets,mode).length>=2).map(mode=>({value:mode,label:mode==='compare'?'并排运行比较':'项目资产组合'})):[],[selected,state.assets]);
+  const studyOptions=useMemo(()=>selected?.privateSnapshot?['compare','composition'].filter(mode=>privateStudyOptions(selected,state.assets,mode).length>=2).map(mode=>({value:mode,label:mode==='compare'?'并排运行比较':'项目资产组合'})).concat(selected.privateDeliveryVersions?.length?[{value:'delivery',label:'版本交付与预检'}]:[]):[],[selected,state.assets]);
   const studyMode=privateView.assetId===selected?.id&&studyOptions.some(o=>o.value===privateView.id)?privateView.id:null;
   const previewAsset=activePrivateView?{...effectiveAsset,preview:activePrivateView.preview,privateLive:true}:effectiveAsset;
   const settingsActive=state.view==='settings';
@@ -497,7 +498,7 @@ function WorkbenchPortals({nodes}){
           if(state.view!=='library')openView('library');
           onSelect(id);
         }}/>,document.body)}
-    {createPortal(<QuickFilters state={state} onFilter={filter}/>,nodes.quickFilters)}
+    {createPortal(<QuickFilters state={state} onFilter={filter} onProject={id=>{reset();changeFacet("projectId",id);}}/>,nodes.quickFilters)}
     {createPortal(<CategoryNavigation categories={state.categories} current={state.category}
       settingsActive={notLibrary} onChange={id=>filter('category',id)}/>,nodes.categories)}
     {createPortal(<ListControls state={state} facets={facets} onSort={changeSort}
@@ -519,7 +520,7 @@ function WorkbenchPortals({nodes}){
       parametersOpen={dockOpen} onParameters={parameterSchemaFor(effectiveAsset)?()=>{if(dockOpen)closeDock();else{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}:undefined}
       onMenu={onMenuToggle} menuOpen={menuOpen}
       onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
-    {createPortal(studyMode?<PrivateStudyPanel key={selected.id+studyMode} asset={selected} assets={state.assets} mode={studyMode} notify={notify}/>:<PreviewFrame asset={previewAsset} key={previewAsset?.privateSnapshot?previewAsset.preview:undefined} mode={state.previewSize} customWidth={state.customWidth}
+    {createPortal(studyMode==='delivery'?<PrivateVersionPanel key={selected.id} asset={selected} notify={notify}/>:studyMode?<PrivateStudyPanel key={selected.id+studyMode} asset={selected} assets={state.assets} mode={studyMode} notify={notify}/>:<PreviewFrame asset={previewAsset} key={previewAsset?.privateSnapshot?previewAsset.preview:undefined} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(dockOpen&&<div className="parameter-dock-inner">
       <div className="parameter-dock-header"><ParameterDockResize dock={nodes.parameterDock}/><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();(document.getElementById('preview-parameters')||document.getElementById('preview-info'))?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>

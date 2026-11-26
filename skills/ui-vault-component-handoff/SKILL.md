@@ -32,3 +32,5 @@ license: MIT
 第三批：使用 compare <asset-id> 查看同类候选和实际引用，profiles 获取项目组合的资产/快照/修订。仅 SmartSelect 当前有明确的私有交付闭包；lock <asset-id> <snapshot> 读取可信版本锁；经用户授权后 deliver <asset-id> <snapshot> <new-name> 仅新建私有交付目录；preflight <asset-id> <target-snapshot> <existing-name> 必须先验证锁与本地变更，冲突退出 2。不要以隔离运行预览替代真实宿主验收，不要覆盖宿主、擅自安装运行时或将候选晋升为公共资产。试验结果留在私有证据目录并绑定来源版本和宿主提交；复用成果另经确认登记。
 
 第四批：私有交付候选已扩展至 SmartSelect、SearchField、数值表单、分段导航、日期、时间、MRR 分页和公共弹窗。先 compare / inspect / profiles 核对固定来源、运行与不同产品宿主证据；日期/时间的 domain.js 是明确标注的纯函数提炼，不是完整源模块。经明确授权 prepare <asset-id> <target-snapshot> <existing-name> <new-candidate-name> 仅生成并验证新隔离目录，旧目录保留；回滚同样使用指定历史锁新建候选。禁止自动覆盖、发送私有内容、安装运行时或晋升公共资产。FrameSlice 字幕/完整播放器仍是源码档案；不得以已运行的媒体时间轴代替全部媒体功能验收。
+
+第五批补充：FrameSlice 总量分页器是独立交付候选，与 MRR 游标分页不能互换。先核对实际来源、锁、依赖、宿主业务语义和 Token；已有 inftab-mirror 隔离试验不代表原项目已采用。私有配方只传递固定 asset/snapshot/revision 引用及证据状态，不将源码带入公开配方。只读版本预检可生成候选命令，但未经用户明确授权不得执行真实宿主覆盖、升级、回滚、推送或发布。

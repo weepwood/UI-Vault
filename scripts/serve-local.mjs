@@ -5,7 +5,7 @@ import {ROOT} from './lib/catalog.mjs';
 import {privateDataRoot} from './product-registry.mjs';
 import {readPrivateCatalog,renderPrivateRecord,PRIVATE_PREFIX} from './lib/product-registry/local-catalog.mjs';
 import {relatedAssets,findUses,reuseTrialSummary,designProfiles,revisionChanges} from './lib/product-registry/research.mjs';
-import {createDelivery,deliverySupported} from './lib/product-registry/delivery.mjs';
+import {createDelivery,deliverySupported,preflightDelivery} from './lib/product-registry/delivery.mjs';
 import {verifiedLivePreviews,readVisualDifferences} from './lib/product-registry/live-preview.mjs';
 const dist=await realpath(resolve(ROOT,'dist')), dataRoot=privateDataRoot();
 const readJSON=async p=>JSON.parse(await readFile(resolve(dist,p),'utf8'));
@@ -29,6 +29,7 @@ for(const record of catalog.records.values()){
  record.comparison=record.asset.relatedAssets.filter(a=>a.relationship==='同类项目资产').map(a=>{const related=catalog.records.get(a.id),v=related?.historical?.findLast(x=>x.commit===related.versions.at(-1).commit)||related?.historical?.at(-1);return v?{title:a.title,...v}:null;}).filter(Boolean);
  record.reuseTrials=reuseTrialSummary(dataRoot,record);
  if(!candidateMode&&deliverySupported(record.asset.id)){
+  record.asset.privateDeliveryVersions=record.versions.flatMap(v=>{try{const lock=createDelivery(record,v.key,live).lock;return [{snapshot:v.key,commit:v.commit,revision:lock.revision,files:lock.files.length,runtime:lock.runtime}];}catch{return [];}});
   try{record.delivery=createDelivery(record,record.versions.at(-1).key,live).lock;}catch{record.delivery=null;}
  }
  if(record.historical?.length)record.visualDiffs=diffs.filter(d=>d.project===record.versions.at(-1).project);
@@ -53,6 +54,15 @@ createServer(async(req,res)=>{
   if(liveMatch){
     const entry=live.get(liveMatch[1]+'/'+liveMatch[2]);
     return entry?finish(200,entry.bytes,{...headers,'content-type':mime['.html'],'content-security-policy':entry.csp}):finish(404,'Not found',headers);
+  }
+  const preflight=/^demos\/private-registry\/([a-z0-9-]+)\/preflight\.json$/.exec(path);
+  if(preflight){
+   const record=catalog.records.get(preflight[1]),params=new URL(req.url,'http://'+host).searchParams;
+   if(candidateMode||!record||!deliverySupported(record.asset.id))return finish(404,'Not found',headers);
+   const name=params.get('name'),snapshot=params.get('snapshot');
+   if(!name||!(/^[a-z0-9][a-z0-9-]{0,79}$/).test(name)||!snapshot||!(/^[a-f0-9]{64}$/).test(snapshot))return finish(400,JSON.stringify({error:'交付名称或快照无效'}),{...headers,'content-type':mime['.json']});
+   try{return finish(200,JSON.stringify(preflightDelivery(dataRoot,name,record,snapshot,live)),{...headers,'content-type':mime['.json']});}
+   catch{return finish(409,JSON.stringify({error:'交付不存在、锁不可信或版本证据缺失；请通过本地 CLI 核对。'}),{...headers,'content-type':mime['.json']});}
   }
   const match=/^demos\/private-registry\/([a-z0-9-]+)\/index\.html$/.exec(path);
   const record=match&&catalog.records.get(match[1]);

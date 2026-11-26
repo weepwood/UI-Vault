@@ -20,6 +20,7 @@ const react=['react','react-dom','lucide-react'];
 const vueBase='frontend-fantastic-admin/';
 const sharedContract={api:'Controlled host-owned value and callbacks; consult source signatures.',style:'Host owns visual tokens and portal styles; map existing class names. Do not import the source global theme.',scope:'Private candidate, no redistribution or automatic dependency installation. Host adaptation and real browser validation required.'};
 const definitions={
+ 'private-frameslice-pagination':{paths:['src/components/WorkbenchPagination.vue'],packages:['vue','lucide-vue-next'],contract:{...sharedContract,api:'Zero-based page; true total/pages provided by host; change callback; do not use for cursor-only results.'}},
  'private-todo-smart-select':{paths:smartPaths,packages:smartPackages,contract,types:{'src/components/SmartSelect.d.ts':typeDeclaration}},
  'private-todo-search-field':{paths:[controls,feedback],packages:react,types:{'src/design-system/Controls.d.ts':"import type {InputHTMLAttributes,ReactNode} from 'react';\nexport function SearchField(props:InputHTMLAttributes<HTMLInputElement>&{value:string;onValueChange:(value:string)=>void;clearLabel?:string}):ReactNode;\n"}},
  'private-todo-number-control':{paths:[controls,feedback],packages:react},

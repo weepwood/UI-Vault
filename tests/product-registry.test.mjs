@@ -169,3 +169,14 @@ test('私有比较选项仅允许登记且哈希锁定的本地运行入口',asy
  assert.equal(privateStudyOptions(a,[a,b],'compare').length,1);
  assert.deepEqual(privateStudyOptions({id:'public-example'},[a,b],'compare'),[]);
 });
+
+test('私有配方只接受当前可信固定快照，不合并公开源码或伪造运行证据',async()=>{
+ const {privateCompositionReferences}=await import('../assets/core/knowledge-composition.js');
+ const ref={asset:'private-test-one',snapshot:'a'.repeat(64),revision:'b'.repeat(64),slot:'query'};
+ const asset={id:ref.asset,title:'Test',privateSnapshot:true,privateProfile:{project:'test',composition:[ref]},privateViews:[{id:ref.snapshot}]};
+ assert.deepEqual(privateCompositionReferences([asset],[ref]),[{...ref,title:'Test',project:'test',runtime:true}]);
+ assert.throws(()=>privateCompositionReferences([asset],[{...ref,revision:'c'.repeat(64)}]));
+ assert.throws(()=>privateCompositionReferences([asset],[ref,ref]));
+ assert.throws(()=>privateCompositionReferences([{...asset,privateSnapshot:false}],[ref]));
+ assert.equal(privateCompositionReferences([{...asset,privateViews:[]}],[ref])[0].runtime,false);
+});
