@@ -73,3 +73,34 @@ test('统一目录只读叠加、历史版本展示、证据内容转义与碰�
  const safe=readPrivateCatalog(base,[],[]);const escaped=renderPrivateRecord(safe.records.values().next().value);
  assert.ok(escaped.includes('&lt;script&gt;'));assert.ok(!escaped.includes('<script>'));
 });
+
+test('运行预览必须绑定资产、快照、内容哈希和验收证据',async t=>{
+ const {verifiedLivePreviews}=await import('../scripts/lib/product-registry/live-preview.mjs');
+ const {hash}=await import('../scripts/lib/product-registry/core.mjs');
+ const {createHash}=await import('node:crypto');
+ const f=fixture(t),snap=capture(f.store,f.repo,f.old,f.spec),asset=snap.assets[0];
+ const records=new Map([['private-test-button',{versions:[snap]}]]);
+ const root=f.store,folder=join(root,'runtime-v2','test',snap.commit);mkdirSync(folder,{recursive:true});
+ const script='document.body.textContent="ok"',html='<script type="module">'+script+'</script>';
+ const sha256=hash(html),path='runtime-v2/test/'+snap.commit+'/bundle-'+sha256+'.html';
+ writeFileSync(join(root,path),html);
+ const row={project:'test',asset:'button',snapshot:snap.key,commit:snap.commit,revision:asset.revision,path,sha256,scriptHash:createHash('sha256').update(script).digest('base64'),kind:'isolated-live-component'};
+ const manifest=join(root,'runtime-v2','candidates.json');
+ writeFileSync(manifest,JSON.stringify([row]));
+ assert.equal(verifiedLivePreviews(root,records).size,0);
+ const live=verifiedLivePreviews(root,records,{candidate:true});
+ assert.equal(live.size,1);assert.match(live.values().next().value.csp,/connect-src 'none'/);
+ assert.doesNotMatch(live.values().next().value.csp,/allow-same-origin/);
+ writeFileSync(manifest,JSON.stringify([{...row,revision:'0'.repeat(64)}]));assert.throws(()=>verifiedLivePreviews(root,records,{candidate:true}));
+ writeFileSync(manifest,JSON.stringify([row]));writeFileSync(join(root,path),'tampered');assert.throws(()=>verifiedLivePreviews(root,records,{candidate:true}));
+});
+
+test('同类研究仅返回确实存在的目录资产，私有检索保留源版本',async()=>{
+ const {relatedAssets,searchPrivate}=await import('../scripts/lib/product-registry/research.mjs');
+ const a={id:'private-todo-smart-select',title:'TODO 公共选择器',tags:['选择器'],technologies:['react'],privateSnapshot:true};
+ const r={asset:a,assetId:'smart-select',versions:[{project:'todo',commit:'abc',assets:[{id:'smart-select',files:[]}]}]};
+ const publicAssets=[{id:'workbench-components',title:'Workbench'},{id:'unrelated',title:'Other'}];
+ assert.deepEqual(relatedAssets(r,[a,...publicAssets]).map(x=>x.id),['workbench-components']);
+ assert.equal(searchPrivate({records:new Map([[a.id,r]]),assets:[a,...publicAssets]},'todo 选择器')[0].commit,'abc');
+ assert.equal(searchPrivate({records:new Map([[a.id,r]]),assets:[a,...publicAssets]},'vue').length,0);
+});

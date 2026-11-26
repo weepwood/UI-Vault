@@ -185,7 +185,7 @@ function PreviewContent({asset,mode,customWidth=800,onCustomWidth,error,loading}
   }
   if(asset.source==='local'){
     return <><iframe ref={frame} className="live-frame" data-preview-frame="local"
-      title={asset.title+(asset.privateSnapshot?' 的源码证据档案':' 的可交互预览')} src={iframeEntrySrc} data-preview-url={src}
+      title={asset.title+(asset.privateLive?' 的隔离运行预览':asset.privateSnapshot?' 的源码证据档案':' 的可交互预览')} src={iframeEntrySrc} data-preview-url={src}
       data-preview-status={status} data-preview-ready={verified?'verified':readySupported?'unverified':undefined}
       onLoad={updateFrameLayout} onError={markError}
       sandbox={sandbox}

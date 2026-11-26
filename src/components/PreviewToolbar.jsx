@@ -3,7 +3,7 @@ import {ViewportSwitcher} from './ViewportSwitcher.jsx';
 export {ViewportSwitcher}; // 兼容工作台组件展厅既有导入路径
 import {Icon,WorkbenchSelect} from './WorkbenchSelect.jsx';
 import {githubSourceLink} from '../../assets/core/github-source-link.js';
-export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,customWidth,onChangePreview,onCustomWidth,stageElement,versionId='original',onChangeVersion,liked,onFavorite,
+export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,customWidth,onChangePreview,onCustomWidth,stageElement,versionId='original',onChangeVersion,privateViewId,onPrivateView,liked,onFavorite,
   onInfo,onMenu,menuOpen,onSearch,searchOpen=false,onParameters,parametersOpen=false}){
   // 每次点击收藏都换一个 key，让心形图标重新挂载并播放一次轻跳；切换项目不会改变它。
   const [favoritePulse,setFavoritePulse]=useState(0);
@@ -30,6 +30,7 @@ export function PreviewToolbar({asset,effectiveAsset=asset,labels,previewMode,cu
     <div className="topbar-tools">
       <ViewportSwitcher mode={previewMode} customWidth={customWidth} onChange={onChangePreview}
         onCustomWidth={onCustomWidth} stageElement={stageElement} visible={asset?.source==='local'}/>
+      {asset?.privateViews?.length>0&&<WorkbenchSelect id="private-view" label="选择资产预览" value={privateViewId||'archive'} onChange={onPrivateView} options={[{value:'archive',label:'历史与源码'},...asset.privateViews.map(v=>({value:v.id,label:v.label}))]} icon="layers" className="select-field--version"/>}
       {versions.length>0&&<WorkbenchSelect id="asset-version" label="切换设计版本" value={versionId}
         onChange={onChangeVersion} options={versionOptions} icon="layers" className="select-field--version"/>}
       <button id="preview-search" className="topbar-search-action" type="button"

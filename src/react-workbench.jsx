@@ -229,6 +229,9 @@ function WorkbenchPortals({nodes}){
   const menuOpen=mobile&&state.menuOpen;
   const selected=state.active;
   const effectiveAsset=useMemo(()=>selectAssetVersion(selected,state.versionId),[selected,state.versionId]);
+  const [privateView,setPrivateView]=useState({assetId:null,id:'archive'});
+  const activePrivateView=privateView.assetId===selected?.id?selected?.privateViews?.find(v=>v.id===privateView.id):null;
+  const previewAsset=activePrivateView?{...effectiveAsset,preview:activePrivateView.preview,privateLive:true}:effectiveAsset;
   const settingsActive=state.view==='settings';
   const operationsActive=state.view==='operations';
   const notLibrary=settingsActive||operationsActive;
@@ -503,16 +506,17 @@ function WorkbenchPortals({nodes}){
       projects={state.projects} groupByProject={state.sort==='project'} groupBy={state.groupBy}
       scrollRoot={nodes.directoryScroll} virtualize={!fullDirectory} density={state.preferences.density}
       loading={state.loading}/>,nodes.gallery)}
-    {createPortal(<PreviewToolbar asset={selected} effectiveAsset={effectiveAsset} labels={state.labels}
+    {createPortal(<PreviewToolbar asset={selected} effectiveAsset={previewAsset} labels={state.labels}
       previewMode={state.previewSize} customWidth={state.customWidth}
       onChangePreview={changePreview} onCustomWidth={changeCustomWidth} stageElement={nodes.stage}
       versionId={state.versionId} onChangeVersion={changeVersion}
+      privateViewId={activePrivateView?.id||'archive'} onPrivateView={id=>setPrivateView({assetId:selected?.id,id})}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>{closeDock();if(selected)setDialogOpen(true);}}
       parametersOpen={dockOpen} onParameters={parameterSchemaFor(effectiveAsset)?()=>{if(dockOpen)closeDock();else{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}:undefined}
       onMenu={onMenuToggle} menuOpen={menuOpen}
       onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
-    {createPortal(<PreviewFrame asset={effectiveAsset} mode={state.previewSize} customWidth={state.customWidth}
+    {createPortal(<PreviewFrame asset={previewAsset} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(dockOpen&&<div className="parameter-dock-inner">
       <div className="parameter-dock-header"><ParameterDockResize dock={nodes.parameterDock}/><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();(document.getElementById('preview-parameters')||document.getElementById('preview-info'))?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>
@@ -549,7 +553,7 @@ function WorkbenchPortals({nodes}){
       projectAssetCount={state.assets.filter(a=>a.projectId===effectiveAsset?.projectId).length}
       projectHealthSnapshot={projectHealthSnapshot}
       open={dialogOpen} onOpenChange={onDialogChange} onCopySource={copySource}
-      onCopyLink={copyLink} onCopyText={copyText} notify={notify} onEditParameters={()=>{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}/>
+      onCopyLink={copyLink} onCopyText={copyText} notify={notify} onRelatedAsset={id=>{setDialogOpen(false);onSelect(id);}} onEditParameters={()=>{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}/>
   </>;
 }
 /**

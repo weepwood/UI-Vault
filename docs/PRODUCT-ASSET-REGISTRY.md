@@ -35,3 +35,31 @@ python3 scripts/verify-local-registry.py  # 需现有 Playwright Chromium 和 UI
 浏览器专项使用独立 loopback 端口，验证项目深链接、原有三栏、历史证据、全局搜索、公共入口、跨站/Host 拒绝与私有对象哈希不进入 dist。截图保存到私有数据目录。源码证据不等于实际产品组件视觉验收。研究范围与复用决策见 OPEN-SOURCE-ASSET-RESEARCH.md。
 
 隔离运行证据：可选 evidence/index.json 与固定 PNG，必须绑定项目、资产、快照、修订及来源 commit，服务端校验 PNG SHA-256，且仅以内嵌图片展示在本地档案。采用固定组件源码、合成数据及本机依赖的隔离测试不代表完整产品运行、依赖闭包或交付资格。
+
+## 第二批：真实交互、研究关系和复用试验
+
+在现有 Topbar 使用「选择资产预览」，可在历史源码档案与通过验证的固定提交运行展厅之间切换。复用原 MRR DataExamples（筛选/数据面板）和真实分页器、原 TODO ComponentGallery（选择、日期、公共弹窗）及 EntityDialog。固定提交、合成数据、隔离构建，既不是整个宿主应用，也不与现有视觉变体版本字段混用。MRR/TODO 组件来源均来自既有快照；FrameSlice 尚无已定位的本地工作区，不以其他仓库代替。历史证据和复用候选仍为私有。
+
+```sh
+# 使用现有宿主依赖，避免重新安装。实际路径在本地设置。
+export UI_VAULT_DATA=/absolute/path/to/private-data
+export MRR_NODE_MODULES=/absolute/path/to/mrr/node_modules
+export TODO_NODE_MODULES=/absolute/path/to/todo/node_modules
+python3 scripts/build-private-previews.py
+python3 scripts/verify-private-previews.py
+npm run registry:local -- search 'TODO 选择器'
+npm run registry:local -- inspect private-todo-smart-select
+npm run registry:local -- profiles
+# 显式读取某一个已登记的快照文件（仅输出到本地 stdout）
+npm run registry:local -- source <asset-id> <snapshot-hash> <registered-file-path>
+```
+
+预览构建使用独立目录、Git 固定提交的静态 import/样式递归采集及已存在的依赖安装。构建候选与验证索引分开；运行包内容寻址、固定资产/快照/修订/内容哈希；不向公开构建写入任何私有内容。运行态使用受限 iframe、精确脚本哈希 CSP、禁止网络连接、禁止表单导航及同源权限；仅通过验收的隔离运行包允许表单事件。验证候选模式仅由本地专项测试显式启用。它不是执行不可信第三方代码的通用沙箱；可信本机单用户限定仍有效。实际依赖是现有本机安装，并非重新从历史锁文件还原；静态 import 边与模板引用是候选证据，不是完整运行调用图。
+
+同类设计研究使用既有 Catalog ID、按控件用途人工建立参考候选，点击在原目录中导航；不创建第二套目录或把参考判为兼容。设计组合通过 profiles 输出实际项目语义 Token、平台、技术栈、资产 ID，保持不同项目外观。成熟度不自动晋升。
+
+复用试验：TODO SmartSelect 三文件原样移植到 Book3D-Studio 固定提交源码导出副本，保留宿主 SelectField API 和原样式，增加 TypeScript 声明和宿主样式类映射；实际宿主 TypeScript/Vite 构建与 Chromium 视口切换、自动厚度模式均通过。仅候选证据，原项目未改动；不构成发布、全状态兼容或正式安装授权。复现脚本 scripts/verify-reuse-host.py，输入 UI_VAULT_REUSE_HOST、UI_VAULT_TODO_REPO、UI_VAULT_REUSE_HOST_COMMIT；每个提交使用新的隔离目标，已存在时拒绝覆盖。
+
+历史截图采用 Chromium、1100×900、DPR 1、固定时间、浅色、减少动效，比较固定首屏像素；MRR 367763 / 990000，TODO 0 / 990000。不推断全页面或全状态无变化，不以像素比例评价设计质量。截图、差异及宿主证据在本地私有目录保存并校验哈希。
+
+AI-Development 可直接使用上述只读本地 CLI（从任意 cwd 以绝对脚本路径调用）；优先查询已有公共 Foundation/Registry，再查询私有项目证据；source 只允许确切的资产/快照/登记文件。不得把私有输出上传外部服务或自动写入其他仓库，仍需用户许可、宿主依赖检查和隔离验证。既有 ui-vault-component-handoff Skill 记录入口；没有新增中央服务或自动注册工具。

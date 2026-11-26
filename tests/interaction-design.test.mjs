@@ -63,7 +63,7 @@ test('React 收藏、筛选与设置不重建真实预览 iframe',async()=>{
  const [react,preview,hooks]=await Promise.all([
    'src/react-workbench.jsx','src/components/PreviewFrame.jsx','src/useWorkbench.js'
  ].map(p=>readFile(join(ROOT,p),'utf8')));
- assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
+ assert.match(react,/<PreviewFrame asset={previewAsset}/);
  assert.match(preview,/export const PreviewFrame=memo\(/);
  assert.match(preview,/before.asset\?\.id===after.asset\?\.id/);
  assert.match(preview,/referrerPolicy="no-referrer"/);

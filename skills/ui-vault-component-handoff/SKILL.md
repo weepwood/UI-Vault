@@ -24,3 +24,7 @@ license: MIT
 输出：来源与许可、组件契约、文件与依赖清单、Token 映射、隔离验收记录。
 
 按风险执行项目已有检查。未获授权的高风险操作单列，不为通过测试放宽真实门禁。
+
+## UI-Vault 本地真实资产检索（可选）
+
+若用户明确授权本地私有资产，设置 UI_VAULT_DATA 后使用 UI-Vault 仓库的 scripts/product-registry.mjs（Node，绝对路径可从 AI-Development 任意工作目录运行）。先执行 search <query>，再 inspect <asset-id> 获取固定提交、静态引用、运行证据及复用候选；profiles 获取项目语义 Token。只有确有源码需求且授权时，使用 source <asset-id> <snapshot-hash> <registered-file-path>。不批量导出、不发送私有内容到第三方服务、不自动安装或覆盖宿主。参考 docs/PRODUCT-ASSET-REGISTRY.md；隔离组件或单个宿主验证不等于正式公共资产。

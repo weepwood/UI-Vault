@@ -5,6 +5,9 @@ import {execFileSync} from 'node:child_process';
 import {ROOT} from './lib/catalog.mjs';
 import {capture} from './lib/product-registry/core.mjs';
 import {readPrivateCatalog} from './lib/product-registry/local-catalog.mjs';
+import {searchPrivate,findUses,designProfiles,reuseTrialSummary} from './lib/product-registry/research.mjs';
+import {verifiedLivePreviews} from './lib/product-registry/live-preview.mjs';
+import {blobText} from './lib/product-registry/core.mjs';
 export function privateDataRoot(path=process.env.UI_VAULT_DATA){
  if(!path)throw Error('请通过 UI_VAULT_DATA 指定独立私有数据目录');
  const root=realpathSync(path), repo=realpathSync(ROOT);
@@ -24,8 +27,17 @@ function main(){
   const index=config.map(p=>({project:p.spec.id,versions:p.refs.map(ref=>{const s=capture(store,p.repo,ref,p.spec);return {key:s.key,commit:s.commit};})}));
   const path=join(store,'pilot-index.json'),tmp=path+'.tmp-'+process.pid;
   writeFileSync(tmp,JSON.stringify(index,null,2)+'\n',{flag:'wx',mode:0o600});renameSync(tmp,path);
- }else if(cmd!=='verify')throw Error('用法：product-registry.mjs verify | capture');
- const data=readPrivateCatalog(root,[],[]);
- console.log(JSON.stringify({projects:data.projects.length,assets:data.records.size,versions:[...data.records.values()].reduce((n,r)=>n+r.versions.length,0)},null,2));
+ }else if(!['verify','search','inspect','source','profiles'].includes(cmd))throw Error('用法：product-registry.mjs verify | capture | search <query> | inspect <id> | source <id> <snapshot> <file> | profiles');
+ const data=readPrivateCatalog(root,JSON.parse(readFileSync(join(ROOT,'content/assets.json'),'utf8')),JSON.parse(readFileSync(join(ROOT,'content/projects.json'),'utf8')));
+ const live=verifiedLivePreviews(root,data.records);
+ const output=value=>console.log(JSON.stringify(value,null,2));
+ if(cmd==='search'){output(searchPrivate(data,process.argv.slice(3).join(' ')).map(r=>({...r,liveVersions:[...live.values()].filter(e=>'private-'+e.row.project+'-'+e.row.asset===r.id).map(e=>({snapshot:e.row.snapshot,validation:e.row.validation}))})));return;}
+ if(cmd==='profiles'){output(designProfiles(data));return;}
+ if(cmd==='inspect'||cmd==='source'){
+  const record=data.records.get(process.argv[3]);if(!record)throw Error('未知资产');
+  if(cmd==='source'){const version=record.versions.find(v=>v.key===process.argv[4]);const file=version?.assets.find(a=>a.id===record.assetId)?.files.find(f=>f.path===process.argv[5]);if(!file)throw Error('文件未在快照中登记');console.log(blobText(store,file.sha256));return;}
+  output({asset:record.asset,versions:record.versions.map(v=>({commit:v.commit,key:v.key,asset:v.assets.find(a=>a.id===record.assetId)})),uses:findUses(record),reuseTrials:reuseTrialSummary(root,record),live:[...live.values()].filter(e=>'private-'+e.row.project+'-'+e.row.asset===record.asset.id).map(e=>e.row)});return;
+ }
+ console.log(JSON.stringify({projects:data.projects.filter(p=>p.privateSnapshot).length,assets:data.records.size,versions:[...data.records.values()].reduce((n,r)=>n+r.versions.length,0)},null,2));
 }
 if(process.argv[1]&&realpathSync(process.argv[1])===fileURLToPath(import.meta.url))main();

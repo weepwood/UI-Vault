@@ -64,7 +64,7 @@ function PageInfoPanel({info,asset}){
  * ProjectDialog 的标签页、异步源码、焦点、Escape 和复制逻辑全由 React 管理。
  * 保留 <dialog id="project-dialog"> 原生顶层语义，状态切换不触碰 iframe。
  */
-export function ProjectDialog({root,asset,versionId="original",labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify,onEditParameters}){
+export function ProjectDialog({root,asset,versionId="original",labels,project=null,projectAssetCount=0,projectHealthSnapshot=null,open,onOpenChange,onCopySource,onCopyLink,onCopyText,notify,onEditParameters,onRelatedAsset}){
   const [tab,setTab]=useState('overview');
   const [filePath,setFilePath]=useState('');
   const [wrapSource,setWrapSource]=useState(false);
@@ -86,7 +86,7 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
   const sourcePlaceholder=assetId&&assetSource!=='local'
     ?{id:assetId,path:null,text:'此项目的源代码保存在原始仓库中，请通过 GitHub 源码链接查看。',status:'外部项目 · 不复制第三方源代码',ready:false}
     :assetId&&!selectedFile
-      ?{id:assetId,path:null,text:'此多文件项目尚未登记可直接查看的源码文件，请在 GitHub 查看完整实现。',status:'尚未登记可下载文件',ready:false}
+      ?{id:assetId,path:null,text:asset?.privateSnapshot?'真实历史源码在主预览区的「历史与源码」中。':'此多文件项目尚未登记可直接查看的源码文件，请在 GitHub 查看完整实现。',status:'尚未登记可下载文件',ready:false}
       :{id:null,path:null,text:'选择“源代码”查看项目实现。',status:'选择源码标签后加载',ready:false};
   const source=sourceFetched?loadedSource:sourceIntended
     ?{id:assetId,path:selectedFile.path,text:'正在加载本地源码…',status:'正在读取 '+selectedFile.name,ready:false}
@@ -248,6 +248,7 @@ export function ProjectDialog({root,asset,versionId="original",labels,project=nu
       aria-labelledby="tab-overview" tabIndex={0} hidden={tab!=='overview'}>
       <div id="project-info" className="project-info" onClick={infoClick}
         dangerouslySetInnerHTML={{__html:asset?projectInfoMarkup(asset,labels):''}}/>
+      {asset?.relatedAssets?.length>0&&<section className="project-info"><h3>同类设计研究</h3><p>参考候选，不表示实现等价或已通过复用验证。</p><div className="project-links">{asset.relatedAssets.map(r=><button key={r.id} type="button" onClick={()=>onRelatedAsset?.(r.id)}>{r.title} · {r.relationship}</button>)}</div></section>}
     </section>
     <section id="dialog-source" className={'dialog-pane dialog-source-pane'+(registryActive?' registry-source-pane':'')} role="tabpanel"
       aria-labelledby="tab-source" tabIndex={0} hidden={tab!=='source'}>

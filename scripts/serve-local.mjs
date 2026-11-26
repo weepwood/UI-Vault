@@ -4,9 +4,27 @@ import {resolve,sep,extname} from 'node:path';
 import {ROOT} from './lib/catalog.mjs';
 import {privateDataRoot} from './product-registry.mjs';
 import {readPrivateCatalog,renderPrivateRecord,PRIVATE_PREFIX} from './lib/product-registry/local-catalog.mjs';
+import {relatedAssets,findUses,reuseTrialSummary} from './lib/product-registry/research.mjs';
+import {verifiedLivePreviews,readVisualDifferences} from './lib/product-registry/live-preview.mjs';
 const dist=await realpath(resolve(ROOT,'dist')), dataRoot=privateDataRoot();
 const readJSON=async p=>JSON.parse(await readFile(resolve(dist,p),'utf8'));
 const catalog=readPrivateCatalog(dataRoot,await readJSON('content/assets.json'),await readJSON('content/projects.json'));
+const candidateMode=process.env.UI_VAULT_TEST_CANDIDATES==='1';
+const live=verifiedLivePreviews(dataRoot,catalog.records,{candidate:candidateMode});
+const diffs=candidateMode?[]:readVisualDifferences(dataRoot,live);
+for(const [key,entry] of live){
+ const [id,snapshot]=key.split('/'),record=catalog.records.get(id);
+ const view={id:snapshot,label:entry.row.commit.slice(0,8)+' · '+(entry.row.kind==='isolated-live-gallery'?'项目展厅':'组件预览'),preview:PRIVATE_PREFIX+id+'/live/'+snapshot+'.html'};
+ (record.asset.privateViews??=[]).push(view);
+ (record.liveRows??=[]).push(entry.row);
+ if(entry.image)(record.historical??=[]).push({commit:entry.row.commit,image:entry.image,validation:entry.row.validation});
+}
+for(const record of catalog.records.values()){
+ record.asset.relatedAssets=relatedAssets(record,catalog.assets);
+ record.reuseTrials=reuseTrialSummary(dataRoot,record);
+ if(record.historical?.length)record.visualDiffs=diffs.filter(d=>d.project===record.versions.at(-1).project);
+ try{record.uses=findUses(record);}catch{record.uses=null;}
+}
 const mime={'.html':'text/html; charset=utf-8','.css':'text/css; charset=utf-8','.js':'text/javascript; charset=utf-8','.mjs':'text/javascript; charset=utf-8','.json':'application/json; charset=utf-8','.svg':'image/svg+xml','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.avif':'image/avif','.gif':'image/gif','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.txt':'text/plain; charset=utf-8','.md':'text/plain; charset=utf-8','.zip':'application/zip','.wasm':'application/wasm','.webm':'video/webm','.mp4':'video/mp4'};
 const port=Number(process.env.PORT||4178);
 if(!Number.isInteger(port)||port<1024||port>65535)throw Error('端口无效');
@@ -22,6 +40,11 @@ createServer(async(req,res)=>{
  if(privateRoute){
   const headers={'cross-origin-resource-policy':'same-origin','content-security-policy':"default-src 'none'; style-src 'unsafe-inline'; img-src data:; frame-ancestors 'self'; base-uri 'none'; form-action 'none'"};
   if(path==='content/assets.json'||path==='content/projects.json')return finish(200,JSON.stringify(path.endsWith('assets.json')?catalog.assets:catalog.projects),{...headers,'content-type':mime['.json']});
+  const liveMatch=/^demos\/private-registry\/([a-z0-9-]+)\/live\/([a-f0-9]{64})\.html$/.exec(path);
+  if(liveMatch){
+    const entry=live.get(liveMatch[1]+'/'+liveMatch[2]);
+    return entry?finish(200,entry.bytes,{...headers,'content-type':mime['.html'],'content-security-policy':entry.csp}):finish(404,'Not found',headers);
+  }
   const match=/^demos\/private-registry\/([a-z0-9-]+)\/index\.html$/.exec(path);
   const record=match&&catalog.records.get(match[1]);
   if(!record)return finish(404,'Not found',headers);

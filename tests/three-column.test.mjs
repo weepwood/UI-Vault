@@ -41,7 +41,7 @@ test('React 列表独立滚动，使用统一过滤器和独立预览',async()=>
  assert.match(hooks,/const \{filtered,tags,facets\}=useCatalogResults\(state\)/);
  assert.match(results,/filterAssets\(assets,filters,favorites\)/);
  assert.match(react,/<ProjectList items={filtered}/);
- assert.match(react,/<PreviewFrame asset={effectiveAsset}/);
+ assert.match(react,/<PreviewFrame asset={previewAsset}/);
  assert.match(list,/key={asset.id}/);
  assert.match(preview,/data-preview-frame="local"/);
 });

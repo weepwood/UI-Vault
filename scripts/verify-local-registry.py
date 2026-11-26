@@ -32,6 +32,14 @@ hashes = {p.name for p in (DATA / "workspace/blobs").iterdir() if p.is_file()}
 evidence = DATA / "evidence"
 if evidence.exists():
     hashes.update(hashlib.sha256(p.read_bytes()).hexdigest() for p in evidence.glob("*.png"))
+live_index=DATA/"runtime-v2/verified.json"
+if live_index.exists():
+    live_rows=json.loads(live_index.read_text())
+    hashes.update(r["sha256"] for r in live_rows)
+    hashes.update(r["validation"]["sha256"] for r in live_rows)
+    hashes.update(r["sha256"] for r in json.loads((DATA/"runtime-v2/differences.json").read_text()))
+    trial=DATA/"reuse-trial/index.json"
+    if trial.exists(): hashes.update(r["sha256"] for r in json.loads(trial.read_text()))
 for path in DIST.rglob("*"):
     if path.is_file():
         assert path.name not in hashes
@@ -94,6 +102,27 @@ try:
                 image = frame.get_by_alt_text("真实组件隔离测试截图")
                 expect(image).to_be_visible()
                 assert image.evaluate("(img) => img.complete && img.naturalWidth > 0")
+        if live_index.exists():
+            page.goto(base+"/?asset=private-todo-smart-select",wait_until="domcontentloaded")
+            frame=page.frame_locator("iframe.live-frame")
+            expect(frame.get_by_role("heading",name="固定环境历史视觉证据")).to_be_visible()
+            expect(frame.get_by_role("heading",name="跨项目复用候选证据")).to_be_visible()
+            page.get_by_role("button",name="选择资产预览：历史与源码").click()
+            page.locator("#private-view-listbox").get_by_role("option").filter(has_text="6d73408").click()
+            expect(frame.get_by_text("公共组件展厅",exact=True)).to_be_visible(timeout=15000)
+            expect(page.locator("iframe.live-frame")).not_to_have_attribute("sandbox", __import__("re").compile("allow-same-origin"))
+            path=page.locator("iframe.live-frame").get_attribute("data-preview-url").removeprefix(base)
+            rejected(path,{"Sec-Fetch-Site":"cross-site"})
+            with urllib.request.urlopen(base+path) as r:
+                csp=r.headers["Content-Security-Policy"]
+                assert "script-src 'sha256-" in csp and "connect-src 'none'" in csp and "form-action 'none'" in csp
+            page.get_by_role("button",name=__import__("re").compile("选择资产预览：6d73408")).click()
+            page.locator("#private-view-listbox").get_by_role("option",name="历史与源码").click()
+            expect(frame.get_by_role("heading",name="固定环境历史视觉证据")).to_be_visible()
+            page.locator("#preview-info").click()
+            expect(page.get_by_role("heading",name="同类设计研究")).to_be_visible()
+            page.get_by_role("button",name="Workbench UI 组件展厅 · 设计参考候选").click()
+            expect(page.locator("h1#preview-title")).to_have_text("Workbench UI 组件展厅")
         page.goto(base+"/?asset=ui-foundation-kit",wait_until="domcontentloaded")
         expect(page.locator("h1#preview-title")).not_to_have_text("TODO · 日期选择器")
         expect(page.locator("iframe.live-frame")).to_be_visible(timeout=15000)
