@@ -1169,7 +1169,7 @@ html[data-theme="dark"] .preview-stage:is([data-size="mobile"],[data-size="table
 .command-palette-list{
  position:relative;display:flex;flex-direction:column;
  height:min(480px,calc(100dvh - 200px));min-height:0;overflow-y:auto;
- padding:8px 0;scrollbar-width:thin;overscroll-behavior:contain;
+ padding:8px 0;scrollbar-width:thin;overscroll-behavior:contain;overflow-anchor:none;
 }
 .command-palette-group{display:flex;flex-direction:column}
 .command-palette-group-label{padding:11px 20px 7px;font-size:11px;line-height:16px;font-weight:650;color:var(--muted)}
