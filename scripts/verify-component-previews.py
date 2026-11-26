@@ -34,12 +34,41 @@ try:
             expect(frame.locator(".fixture-target")).to_have_css("width","240px")
             frame.get_by_label("宽度",exact=True).select_option("360" if r["project"]=="todo" else "560")
             checks=["原组件真实渲染","主题切换","容器宽度切换"]
-            if aid=="smart-select":
+            if r["project"]=="frameslice" and aid=="pagination":
+                frame.get_by_role("button",name="下一页").click();expect(frame.locator("#state")).to_have_text("当前页 2")
+                frame.get_by_role("button",name="上一页").click();expect(frame.get_by_role("button",name="上一页")).to_be_disabled();checks+=["实际分页回调","边界禁用"]
+            elif aid=="media-timeline":
+                frame.get_by_role("button",name="放大时间轴").click();expect(frame.get_by_text("2×",exact=True)).to_be_visible()
+                frame.get_by_role("group",name="交互时间轴").press("ArrowRight");expect(frame.locator("#state")).to_contain_text("10.1")
+                frame.get_by_role("button",name="添加关键帧分割点").click();expect(frame.locator("#state")).to_contain_text("切点 1")
+                frame.get_by_role("button",name="生成缩略图").click();expect(frame.get_by_role("button",name="取消缩略图")).to_be_visible()
+                frame.get_by_role("button",name="取消缩略图").click();checks+=["缩放","键盘定位","切点回调","加载取消"]
+            elif aid=="smart-select":
                 control=frame.get_by_role("combobox",name="测试选项")
                 control.click();expect(frame.get_by_role("option",name="禁用选项")).to_have_attribute("data-disabled","")
                 frame.get_by_role("option",name="选项 B").click();expect(frame.locator("#state")).to_have_text("b")
                 frame.get_by_label("禁用",exact=True).check();expect(control).to_be_disabled()
                 checks+=["选项回调","禁用选项与禁用控件"]
+            elif aid=="search-field":
+                field=frame.get_by_role("textbox",name="测试搜索");field.fill("alpha")
+                expect(frame.locator("#state")).to_have_text("alpha")
+                frame.get_by_role("button",name="清除搜索内容").click();expect(field).to_have_value("")
+                checks+=["搜索输入回调","清除搜索"]
+            elif aid=="number-control":
+                frame.get_by_role("button",name="测试数量增加").click();expect(frame.locator("#state")).to_have_text("6")
+                frame.get_by_role("spinbutton",name="测试数量").fill("10")
+                expect(frame.get_by_role("button",name="测试数量增加")).to_be_disabled()
+                frame.get_by_label("禁用",exact=True).check();expect(frame.get_by_role("spinbutton",name="测试数量")).to_be_disabled()
+                checks+=["数值步进","边界禁用","控件禁用"]
+            elif aid=="segmented":
+                frame.get_by_role("button",name="进行中",exact=True).click();expect(frame.locator("#state")).to_have_text("active")
+                expect(frame.get_by_role("button",name="进行中",exact=True)).to_have_attribute("aria-pressed","true")
+                expect(frame.get_by_role("button",name="禁用",exact=True)).to_be_disabled();checks+=["导航选中状态","禁用项"]
+            elif aid=="status-tag":
+                expect(frame.locator(".mrr-status-tag")).to_have_class(re.compile("mrr-status-tag--live"))
+                frame.get_by_label("状态",exact=True).select_option("failed")
+                expect(frame.locator(".mrr-status-tag")).to_have_class(re.compile("mrr-status-tag--danger"))
+                checks+=["运行状态","失败状态"]
             elif aid=="date-picker":
                 frame.get_by_role("button",name="测试日期",exact=True).click()
                 frame.get_by_role("textbox",name="测试日期直接输入").fill("2026-02-30")

@@ -18,6 +18,7 @@ import {selectAssetVersion} from '../assets/core/asset-versions.js';
 import {WorkbenchSelect,Icon as UIIcon} from './components/WorkbenchSelect.jsx';
 import {PreviewToolbar} from './components/PreviewToolbar.jsx';
 import {PreviewFrame} from './components/PreviewFrame.jsx';
+import {PrivateStudyPanel,privateStudyOptions} from './components/PrivateStudyPanel.jsx';
 import {ProjectDialog} from './components/ProjectDialog.jsx';
 import {DemoParameterPanel} from './components/DemoParameterPanel.jsx';
 import {ParameterDockResize} from './components/ParameterDockResize.jsx';
@@ -231,6 +232,8 @@ function WorkbenchPortals({nodes}){
   const effectiveAsset=useMemo(()=>selectAssetVersion(selected,state.versionId),[selected,state.versionId]);
   const [privateView,setPrivateView]=useState({assetId:null,id:'archive'});
   const activePrivateView=privateView.assetId===selected?.id?selected?.privateViews?.find(v=>v.id===privateView.id):null;
+  const studyOptions=useMemo(()=>selected?.privateSnapshot?['compare','composition'].filter(mode=>privateStudyOptions(selected,state.assets,mode).length>=2).map(mode=>({value:mode,label:mode==='compare'?'并排运行比较':'项目资产组合'})):[],[selected,state.assets]);
+  const studyMode=privateView.assetId===selected?.id&&studyOptions.some(o=>o.value===privateView.id)?privateView.id:null;
   const previewAsset=activePrivateView?{...effectiveAsset,preview:activePrivateView.preview,privateLive:true}:effectiveAsset;
   const settingsActive=state.view==='settings';
   const operationsActive=state.view==='operations';
@@ -510,13 +513,13 @@ function WorkbenchPortals({nodes}){
       previewMode={state.previewSize} customWidth={state.customWidth}
       onChangePreview={changePreview} onCustomWidth={changeCustomWidth} stageElement={nodes.stage}
       versionId={state.versionId} onChangeVersion={changeVersion}
-      privateViewId={activePrivateView?.id||'archive'} onPrivateView={id=>setPrivateView({assetId:selected?.id,id})}
+      privateStudyOptions={studyOptions} privateViewId={studyMode||activePrivateView?.id||'archive'} onPrivateView={id=>setPrivateView({assetId:selected?.id,id})}
       liked={liked} onFavorite={()=>favorite(selected?.id)}
       onInfo={()=>{closeDock();if(selected)setDialogOpen(true);}}
       parametersOpen={dockOpen} onParameters={parameterSchemaFor(effectiveAsset)?()=>{if(dockOpen)closeDock();else{setDialogOpen(false);setDockState({key:dockKey,open:true});requestAnimationFrame(()=>document.getElementById('parameter-dock-title')?.focus({preventScroll:true}));}}:undefined}
       onMenu={onMenuToggle} menuOpen={menuOpen}
       onSearch={openPalette} searchOpen={compactSearchOpen}/>,nodes.topbar)}
-    {createPortal(<PreviewFrame asset={previewAsset} mode={state.previewSize} customWidth={state.customWidth}
+    {createPortal(studyMode?<PrivateStudyPanel key={selected.id+studyMode} asset={selected} assets={state.assets} mode={studyMode} notify={notify}/>:<PreviewFrame asset={previewAsset} key={previewAsset?.privateSnapshot?previewAsset.preview:undefined} mode={state.previewSize} customWidth={state.customWidth}
       onCustomWidth={changeCustomWidth} error={state.error} loading={state.loading}/>,nodes.stage)}
     {createPortal(dockOpen&&<div className="parameter-dock-inner">
       <div className="parameter-dock-header"><ParameterDockResize dock={nodes.parameterDock}/><strong id="parameter-dock-title" tabIndex={-1}>实时参数 · {effectiveAsset.title}</strong><button type="button" aria-label="关闭实时参数" onClick={()=>{closeDock();(document.getElementById('preview-parameters')||document.getElementById('preview-info'))?.focus({preventScroll:true});}}><UIIcon name="x"/></button></div>

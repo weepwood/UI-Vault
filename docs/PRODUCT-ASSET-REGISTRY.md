@@ -74,7 +74,7 @@ AI-Development 可直接使用上述只读本地 CLI（从任意 cwd 以绝对�
 
 档案首屏章节导航、版本快捷定位、历史源码、同类实际截图对比、引用与复用/交付候选分区。选择器、日期/时间、弹窗、筛选工具栏、表格/分页按真实用途研究；例如 MRR 通用弹窗与 TODO 实体编辑弹窗可对比固定截图但业务语义不同。公开参考继续链接已有 Catalog ID；不是所有资产都有同类真实截图。比较新独立夹具时不将其与旧整套展厅算作视觉回归。历史截图记录实际浏览器与状态验收。
 
-\`\`\`sh
+```sh
 export UI_VAULT_DATA=/absolute/path/to/private-data
 export MRR_NODE_MODULES=/absolute/path/to/mrr/node_modules
 export TODO_NODE_MODULES=/absolute/path/to/todo/node_modules
@@ -82,7 +82,7 @@ python3 scripts/build-component-previews.py
 python3 scripts/verify-component-previews.py
 npm run registry:local -- compare private-mrr-dialog
 npm run registry:local -- profiles
-\`\`\`
+```
 
 旧的 build-private-previews.py / verify-private-previews.py 仅复现原首两份展厅历史；不会用新资产清单重写旧快照。新独立构建内容寻址，验证索引仅在全批测试通过后更新；失败留下私有候选，不认定已通过。统一 profiles 给出项目独立语义 Token 与实际组合槽位的资产 ID、快照及修订，不等于安装计划或组合编辑器。尚无严格历史依赖重建、全量 API/动态引用分析。
 
@@ -90,16 +90,50 @@ npm run registry:local -- profiles
 
 在来源快照、运行证据、固定白名单闭包一致时才提供交付。三份原样源码 + TypeScript 声明，运行时依赖声明、主题/门户样式适配契约、源修订和逐文件 SHA-256 统一写入 UI-ASSET-LOCK.json。不是公开 Foundation Registry 项目，不宣称 MIT、通用资产正式发布或兼容所有宿主。现有公开 Foundation 安装器保持不变，不新增中央服务。
 
-\`\`\`sh
+```sh
 npm run registry:local -- inspect private-todo-smart-select
 # 使用 inspect 的完整 snapshot key，不能用 Git 短 SHA
 npm run registry:local -- lock private-todo-smart-select <snapshot>
 npm run registry:local -- deliver private-todo-smart-select <snapshot> <new-name>
 npm run registry:local -- preflight private-todo-smart-select <target-snapshot> <existing-name>
-\`\`\`
+```
 
 deliver 仅在私有数据目录 deliveries 中排他创建新目录，绝不覆盖宿主。preflight 从可信历史重建旧/新版本锁，对目标文件逐项比对历史、目标和当前哈希；检查依赖声明变化、缺失/本地改动、符号链接、额外文件与篡改锁。冲突退出码 2；不写入文件、不自动升级或回滚、不安装依赖。当前 SmartSelect 6d73408 → 64d6b33 三份源码及依赖声明相同；实际预检零冲突。隔离目录人为修改一份文件后真实预检拒绝。新增自动化夹具另验证真实变更、拒绝覆盖和锁篡改。
 
 本批使用 Book3D-Studio 5f83ddc 固定源导出副本进行第二次宿主版本试验：实际从新交付目录读取锁定 SmartSelect 与类型声明；额外从 TODO 固定源码提取 SearchField，保持原宿主业务状态、样式、React/Radix 版本与接口。TypeScript/Vite 构建、视口方向/书脊形状、合成图片批量导入、素材搜索与清除通过。此前 863a81e 试验保留，两次均为同一产品不同宿主版本，并非两种不同产品的适配。SearchField 是额外源码试验，不是 SmartSelect 交付闭包，也未登记为独立资产。试验不修改原项目。分页/日期/弹窗尚无跨产品实际宿主验证；不因隔离夹具通过就自动宣称通用。FrameSlice 仍未找到本机工作区，不用 Caption-Studio 替代。
 
 AI-Development 继续使用既有 handoff Skill：先检索公共 Registry 和私有资产，再 compare/inspect/profiles，确认真实依赖和源版本，明确授权后 deliver，preflight，再隔离宿主运行并回收可核实证据。禁止自动发出私有源码或写原工作区；不注册独立 Agent 服务。
+
+## 第四批：真实项目比较、独立交付及回滚候选
+
+2026-11-26：追加 MRR b60f863b、TODO ccf1ae4 两个固定提交，并在私有数据目录 source-mirrors/FrameSlice 创建远端 a12cee0（V1.2.1）的只读取证浅层镜像，不替换原工作区。三个项目共 9 份项目快照、25 项逻辑资产、59 条实际存在的资产版本。新增 SearchField、DraftNumberField、Segmented、MrrStatusTag；FrameSlice 登记分页、媒体时间轴、字幕时间轴、播放器控制组、字幕工作台、Token 和设计规范。字幕时间轴/完整播放器/字幕工作台尚为源码档案，不冒充运行资产。
+
+### 独立预览与比较
+
+第四批新增 16 条独立运行绑定，累计 38 条（含 12 条早期展厅绑定）。在原 Topbar 的资产预览选择器中增加「并排运行比较」「项目资产组合」：使用既有 WorkbenchSelect、PreviewFrame 与原三栏，最多两侧独立运行，固定到登记版本的路径；用户可以切换对照资产并分别操作。原设计配方实验室和 Foundation Kit 保持不变；当前组合是固定槽位预览与配置交付，并非把任意跨技术栈组件自动编排成统一业务页面，也未完全接入既有可编辑配方模型。组合 JSON 含项目语义 Token、实际资产 ID/快照/修订，不导出源码。私有 iframe 版本切换采用重新挂载独立入口，修复 Edge 旧 opaque origin 导航失效，不改变 CSP、同源隔离或公开资产导航。历史档案新增有 256 KiB / 3 秒预算的固定提交 Git diff，只针对登记文件、禁用外部 diff 驱动；来源不可用时保留文件哈希差异。
+
+FrameSlice 分页与媒体时间轴使用本机 Vue 3.5.45、Reka 2.11.0、Lucide Vue 1.0.0 实际运行，保留原样式及合成时间数据。Lucide 版本与来源声明 ^0.468.0 不同，不称完整历史依赖复现；完整播放器/React 字幕工作台所需依赖尚未复现。验证分页边界、缩放、键盘定位、切点回调、缩略图加载与取消回调；未处理真实媒体或执行转码。可用 MRR 已安装依赖运行隔离构建：
+
+```sh
+export UI_VAULT_DATA=/absolute/path/to/private-data
+export FRAMESLICE_NODE_MODULES=/absolute/path/to/existing/vue/node_modules
+python3 scripts/build-frameslice-previews.py
+python3 scripts/verify-component-previews.py
+```
+
+### 八类私有交付候选
+
+SmartSelect、SearchField、DraftNumberField、Segmented、DatePicker、TimeControl、MRR 分页及 MRR 弹窗。继续使用既有私有交付锁，不另设公开 Registry；旧 SmartSelect 锁兼容。SearchField/数值表单/分段导航共享实际 Controls.jsx 源文件，非三个重写组件。日期/时间仅提取原 domain.js 明确的单行纯辅助函数（锁记录原文件摘要与导出名），不复制整个任务业务内核；需要真实隔离运行验证。日期、时间、分页、弹窗四个实际交付目录已重新构建与浏览器验收；日期/时间夹具移除其余 JS 业务源。弹窗仍需要宿主 Element Plus 和 @ alias，实体弹窗业务专属未通用化；所有候选保留来源项目私有权限及宿主 CSS 契约。独立夹具通过不等于真实不同产品适配。
+
+```sh
+npm run registry:local -- lock <asset-id> <snapshot>
+npm run registry:local -- deliver <asset-id> <snapshot> <new-name>
+npm run registry:local -- preflight <asset-id> <target-snapshot> <existing-name>
+npm run registry:local -- prepare <asset-id> <target-snapshot> <existing-name> <new-candidate-name>
+```
+
+prepare 首先预检旧交付；存在本地修改、篡改锁、路径异常或多余文件则拒绝。只创建新的隔离候选目录，验证候选锁并重新验证原目录。回滚使用同一流程生成历史版本新目录，绝不自动替换业务项目。实际 SmartSelect 第三批→第四批候选→第三批回滚候选，锁逐字一致、旧目录保留；该资产真实源字节未变化，新增测试夹具验证实际变更及冲突拒绝。未自动合并三方代码，也非宿主事务性升级/切换。
+
+新增真正不同产品的试验：background-effects 556221f 固定源码副本，通过锁定 SearchField 交付叠加实际素材检索，保留原类型筛选与宿主视觉 Token；隔离补充 Lucide 0.468.0，React 19.2.6。通过真实 TypeScript/Vite 构建、36 项→1 项、空结果、清除恢复、进入效果 Studio。未合入原产品，未完成 GPU 全性能或双语文案。总计三份宿主试验记录、两个实际产品。原 Book3D 与所有产品原工作区保持不变。
+
+累计 411 项自动化测试、11 组语义色、ESLint、公开 build/check-dist、16 项独立预览、实际交付夹具、Chromium 与 Edge 整合回归通过。Edge 曾出现旧 iframe 返回及一次选择切换异常，修复私有 iframe 入口后最终复验通过，不宣称彻底消除所有偶发情况。Firefox/WebKit 可执行文件缺失，未通过这两个引擎验收。复审并排与组合截图；尚未人工复审所有资产及状态。单次本机服务测量：目录就绪约 1117 ms，三个代表性档案 2–15 ms（仅回环 HTTP，非跨机器性能基准）。38 条绑定中最大运行包约 1.53 MB；仍有大包警告，未扩大缓存/拆包基础设施。公开目录 529 项，私有目录 25 项，110 项私有摘要排除检查通过；源镜像、截图、交付、锁、实际宿主试验均只留私有数据目录。未运行正式远端 CI、未推送合并发布。

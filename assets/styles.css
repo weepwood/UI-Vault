@@ -1669,3 +1669,14 @@ html[data-theme=dark]{--workbench-directory-surface:var(--surface);--workbench-p
 .material-custom-presets .material-transfer-actions{border:0}
 .material-custom-presets label{display:flex;align-items:center;gap:6px;min-width:0;font-size:11px;color:var(--muted)}
 .material-custom-presets :is(select,input){min-width:0;max-width:160px;width:120px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);padding:5px 6px}
+
+/* Local-only real asset studies reuse the original preview frames and selector. */
+.private-study{height:100%;display:flex;flex-direction:column;gap:12px;padding:16px;overflow:auto;color:var(--text)}
+.private-study-header{display:flex;justify-content:space-between;gap:12px;align-items:start;flex-wrap:wrap}
+.private-study-header strong{font-size:15px}.private-study-header p{font-size:12px;line-height:1.5;margin:4px 0;color:inherit;opacity:.78}
+.private-study-header button{border:1px solid currentColor;border-radius:6px;padding:6px 10px;background:transparent;color:inherit;cursor:pointer}
+.private-study-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;flex:1;min-height:0}
+.private-study-pane{display:flex;flex-direction:column;min-width:0;min-height:0;gap:8px}
+.private-study-pane .select-field{max-width:100%}
+.private-study-frame{position:relative;isolation:isolate;overflow:hidden;flex:1;min-height:320px;border:1px solid #8885;border-radius:8px}
+@media(max-width:960px){.private-study-grid{grid-template-columns:minmax(0,1fr);flex:none}.private-study-frame{height:440px;flex:none}}

@@ -118,7 +118,7 @@ test('追加项目资产范围不重写既有快照并拒绝历史重排',async 
 });
 
 test('私有交付使用可信源码闭包、拒绝覆盖、预检局部修改和锁篡改',async t=>{
- const {createDelivery,installDelivery,preflightDelivery}=await import('../scripts/lib/product-registry/delivery.mjs');
+ const {createDelivery,installDelivery,preflightDelivery,prepareMigration}=await import('../scripts/lib/product-registry/delivery.mjs');
  const {hash}=await import('../scripts/lib/product-registry/core.mjs');
  const f=fixture(t),paths=['src/components/SmartSelect.jsx','src/design-system/FieldFeedback.jsx','src/design-system/popover.js'];
  for(const path of paths){mkdirSync(join(f.repo,path.split('/').slice(0,-1).join('/')),{recursive:true});writeFileSync(join(f.repo,path),'// '+path);}
@@ -135,8 +135,37 @@ test('私有交付使用可信源码闭包、拒绝覆盖、预检局部修改�
  assert.throws(()=>installDelivery(f.store,'../escape',delivery));
  const plan=preflightDelivery(f.store,'trial',record,b.key,live);
  assert.equal(plan.readyForReview,true);assert.equal(plan.changes.filter(x=>x.status==='changed').length,1);assert.equal(plan.writePerformed,false);
+ const candidate=prepareMigration(f.store,'trial','new-candidate',record,b.key,live);
+ assert.equal(candidate.verified,true);assert.equal(candidate.sourcePreserved,true);
+ const rollback=prepareMigration(f.store,'new-candidate','old-candidate',record,a.key,live);
+ assert.deepEqual(rollback.candidate.lock,delivery.lock);
+ assert.throws(()=>prepareMigration(f.store,'trial','new-candidate',record,b.key,live));
  writeFileSync(join(target,paths[0]),'local modification');
  assert.equal(preflightDelivery(f.store,'trial',record,b.key,live).readyForReview,false);
+ assert.throws(()=>prepareMigration(f.store,'trial','conflicted-candidate',record,b.key,live));
  writeFileSync(join(target,'UI-ASSET-LOCK.json'),JSON.stringify({...delivery.lock,commit:b.commit}));
  assert.throws(()=>preflightDelivery(f.store,'trial',record,b.key,live));
+});
+
+test('固定版本差异展示只读取登记文件，不受工作树修改影响',async t=>{
+ const {revisionChanges}=await import('../scripts/lib/product-registry/research.mjs');
+ const f=fixture(t),a=capture(f.store,f.repo,f.old,f.spec),b=capture(f.store,f.repo,f.next,f.spec);
+ writeFileSync(join(f.repo,'button.css'),'uncommitted secret');
+ const changes=revisionChanges({versions:[a,b],assetId:'button',declared:{repo:f.repo}});
+ assert.equal(changes.length,1);assert.match(changes[0].patch,/button\{color:red\}/);assert.match(changes[0].patch,/button\{color:blue\}/);
+ assert.doesNotMatch(changes[0].patch,/uncommitted secret/);
+});
+
+test('私有比较选项仅允许登记且哈希锁定的本地运行入口',async()=>{
+ const {privateStudyOptions}=await import('../src/components/PrivateStudyPanel.jsx');
+ const snapshot='a'.repeat(64);
+ const make=id=>({id,title:id,privateSnapshot:true,privateViews:[{id:snapshot,label:'verified',preview:'demos/private-registry/'+id+'/live/'+snapshot+'.html'}]});
+ const a=make('private-test-one'),b=make('private-test-two');
+ a.relatedAssets=[{id:b.id,relationship:'同类项目资产'},{id:'public-example',relationship:'设计参考候选'}];
+ a.privateProfile={composition:[{asset:a.id,snapshot},{asset:b.id,snapshot:'b'.repeat(64)}]};
+ assert.equal(privateStudyOptions(a,[a,b],'compare').length,2);
+ assert.equal(privateStudyOptions(a,[a,b],'composition').length,1);
+ b.privateViews[0].preview='https://example.invalid/';
+ assert.equal(privateStudyOptions(a,[a,b],'compare').length,1);
+ assert.deepEqual(privateStudyOptions({id:'public-example'},[a,b],'compare'),[]);
 });

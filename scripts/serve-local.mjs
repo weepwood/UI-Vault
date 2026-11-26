@@ -4,8 +4,8 @@ import {resolve,sep,extname} from 'node:path';
 import {ROOT} from './lib/catalog.mjs';
 import {privateDataRoot} from './product-registry.mjs';
 import {readPrivateCatalog,renderPrivateRecord,PRIVATE_PREFIX} from './lib/product-registry/local-catalog.mjs';
-import {relatedAssets,findUses,reuseTrialSummary} from './lib/product-registry/research.mjs';
-import {createDelivery} from './lib/product-registry/delivery.mjs';
+import {relatedAssets,findUses,reuseTrialSummary,designProfiles,revisionChanges} from './lib/product-registry/research.mjs';
+import {createDelivery,deliverySupported} from './lib/product-registry/delivery.mjs';
 import {verifiedLivePreviews,readVisualDifferences} from './lib/product-registry/live-preview.mjs';
 const dist=await realpath(resolve(ROOT,'dist')), dataRoot=privateDataRoot();
 const readJSON=async p=>JSON.parse(await readFile(resolve(dist,p),'utf8'));
@@ -20,13 +20,15 @@ for(const [key,entry] of live){
  (record.liveRows??=[]).push(entry.row);
  if(entry.image)(record.historical??=[]).push({commit:entry.row.commit,image:entry.image,validation:entry.row.validation,kind:entry.row.kind});
 }
+const profiles=designProfiles(catalog);
 for(const record of catalog.records.values()){
+ record.asset.privateProfile=profiles.find(p=>p.project===record.versions.at(-1).project);
  record.asset.relatedAssets=relatedAssets(record,catalog.assets);
  record.asset.privateViews?.sort((a,b)=>record.versions.findIndex(v=>v.key===b.id)-record.versions.findIndex(v=>v.key===a.id));
  if(record.liveRows?.length){record.asset.subtitle='真实项目 · 已验收隔离预览';record.asset.description='固定 Git 提交的真实项目资产，具有源码、历史和已验收运行证据；未自动晋升为公共资产。';record.asset.reuseNotes=['隔离预览使用合成数据及现有依赖','项目专属资产，交付须经宿主适配及验证'];}
- record.comparison=record.asset.relatedAssets.filter(a=>a.relationship==='同类项目资产').map(a=>{const related=catalog.records.get(a.id),v=related?.historical?.at(-1);return v?{title:a.title,...v}:null;}).filter(Boolean);
+ record.comparison=record.asset.relatedAssets.filter(a=>a.relationship==='同类项目资产').map(a=>{const related=catalog.records.get(a.id),v=related?.historical?.findLast(x=>x.commit===related.versions.at(-1).commit)||related?.historical?.at(-1);return v?{title:a.title,...v}:null;}).filter(Boolean);
  record.reuseTrials=reuseTrialSummary(dataRoot,record);
- if(!candidateMode&&record.asset.id==='private-todo-smart-select'){
+ if(!candidateMode&&deliverySupported(record.asset.id)){
   try{record.delivery=createDelivery(record,record.versions.at(-1).key,live).lock;}catch{record.delivery=null;}
  }
  if(record.historical?.length)record.visualDiffs=diffs.filter(d=>d.project===record.versions.at(-1).project);
@@ -55,7 +57,7 @@ createServer(async(req,res)=>{
   const match=/^demos\/private-registry\/([a-z0-9-]+)\/index\.html$/.exec(path);
   const record=match&&catalog.records.get(match[1]);
   if(!record)return finish(404,'Not found',headers);
-  try{return finish(200,renderPrivateRecord(record),{...headers,'content-type':mime['.html']});}catch{return finish(500,'Snapshot verification failed',headers);}
+  try{return finish(200,renderPrivateRecord({...record,revisionChanges:revisionChanges(record)}),{...headers,'content-type':mime['.html']});}catch{return finish(500,'Snapshot verification failed',headers);}
  }
  try{
   const target=await realpath(resolve(dist,path.endsWith('/')||!path?path+'index.html':path));

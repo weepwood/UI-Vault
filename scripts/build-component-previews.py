@@ -11,13 +11,16 @@ P=DATA/"runtime-v2"
 config=json.loads((DATA/"config/pilots.json").read_text())
 index=json.loads((DATA/"workspace/pilot-index.json").read_text())
 TODO={
+ "search-field":("Controls","SearchField",'<SearchField aria-label="测试搜索" value={value} onValueChange={setValue} placeholder="搜索资源"/>'),
+ "number-control":("Controls","DraftNumberField",'<DraftNumberField label="测试数量" value={value} onValueChange={setValue} min={1} max={10} unit="项" disabled={disabled}/>'),
+ "segmented":("Controls","Segmented",'<Segmented label="测试导航" value={value} onValueChange={setValue} options={[{value:"all",label:"全部"},{value:"active",label:"进行中"},{value:"locked",label:"禁用",disabled:true}]}/>'),
  "smart-select":("SmartSelect","SmartSelect,SelectOption",'''<SmartSelect aria-label="测试选项" value={value} onValueChange={setValue} disabled={disabled}><SelectOption value="">无</SelectOption><SelectOption value="a">选项 A</SelectOption><SelectOption value="b">选项 B</SelectOption><SelectOption value="c" disabled>禁用选项</SelectOption></SmartSelect>'''),
  "date-picker":("DatePicker","DatePicker",'''<DatePicker label="测试日期" value={value} onChange={setValue} required={required} confirm={confirm}/>'''),
  "time-control":("TimeControl","TimeControl",'''<TimeControl label="测试时间" value={value} onChange={setValue} required={required} commitOnBlur={confirm}/>'''),
  "color-control":("ColorControl","ColorControl",'''<ColorControl label="测试颜色" value={value||'#5276d6'} onChange={setValue}/>'''),
  "entity-dialog":("EntityDialog","EntityDialog",'''<><button className="secondary" onClick={()=>setOpen(true)}>打开编辑弹窗</button>{open&&<EntityDialog dialog={{kind:'section'}} data={{folders:[]}} close={()=>setOpen(false)} save={name=>{setValue(name);setOpen(false)}}/>}</>''')
 }
-MRR={"pagination":"MrrCursorPagination","data-table":"MrrDataTablePanel","filter-bar":"MrrFilterBar","filter-action":"MrrFilterActionButton","dialog":"MrrDialog"}
+MRR={"pagination":"MrrCursorPagination","data-table":"MrrDataTablePanel","filter-bar":"MrrFilterBar","filter-action":"MrrFilterActionButton","dialog":"MrrDialog","status-tag":"MrrStatusTag"}
 todo_shell='''
 function App(){
  const [value,setValue]=useState(INIT),[disabled,setDisabled]=useState(false),[required,setRequired]=useState(false),[confirm,setConfirm]=useState(false),[open,setOpen]=useState(false),[theme,setTheme]=useState('light'),[width,setWidth]=useState(360);
@@ -38,8 +41,8 @@ body{margin:0;background:var(--bg,var(--mrr-card,#f7f8fa))}
 .fixture h1{font-size:22px;line-height:1.3;margin:0 0 18px;letter-spacing:-.25px}
 .fixture-controls{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 0;border-block:1px solid var(--line,var(--mrr-border,#ddd))}
 .fixture-controls label{display:flex;align-items:center;gap:6px;font-size:12px}
-.fixture-controls select{padding:6px 8px;border:1px solid var(--line,var(--mrr-border,#ccc));border-radius:6px;background:var(--bg,var(--mrr-card,#fff));color:inherit}
-.fixture-stage{display:grid;grid-template-columns:minmax(0,1fr);place-items:center;min-height:210px;padding:22px 4px}
+.fixture-controls select{min-height:32px;padding:6px 8px;border:1px solid var(--line,var(--mrr-border,#ccc));border-radius:6px;background:var(--bg,var(--mrr-card,#fff));color:inherit}
+.fixture-stage{border:1px solid var(--line,var(--mrr-border,#ddd));border-radius:8px;margin-top:16px;display:grid;grid-template-columns:minmax(0,1fr);place-items:center;min-height:210px;padding:22px 4px}
 .fixture-target{min-width:0;max-width:100%}.fixture-target:has(.el-pagination),.fixture-target:has(.el-table){overflow-x:auto}
 .fixture [role=status]{overflow-wrap:anywhere}
 '''
@@ -62,14 +65,14 @@ for cfg in config:
    base="src/";name,exports,control=TODO[aid]
    main=git(repo,"show",commit+":src/main.jsx").decode()
    css=re.findall(r"^import ['\"]\./([^'\"]+\.css)['\"]",main,re.M)
-   files,edges=copy_closure(repo,commit,base,src,["components/"+name+".jsx"]+css)
+   files,edges=copy_closure(repo,commit,base,src,[("design-system/" if name=="Controls" else "components/")+name+".jsx"]+css)
    imports="\n".join("import './src/"+f+"';" for f in css)
-   init={"smart-select":"a","date-picker":"2026-11-26","time-control":"09:00","color-control":"#5276d6","entity-dialog":""}[aid]
+   init={"smart-select":"a","date-picker":"2026-11-26","time-control":"09:00","color-control":"#5276d6","entity-dialog":"","search-field":"","number-control":"5","segmented":"all"}[aid]
    controls=[]
-   for state,label in ([("disabled","禁用")] if aid=="smart-select" else [("required","必填"),("confirm","确认后提交")] if aid in ("date-picker","time-control") else []):
+   for state,label in ([("disabled","禁用")] if aid in ("smart-select","number-control") else [("required","必填"),("confirm","确认后提交")] if aid in ("date-picker","time-control") else []):
     controls.append('<label><input type="checkbox" checked={'+state+'} onChange={e=>set'+state.capitalize()+'(e.target.checked)}/>'+label+'</label>')
-   code=todo_shell.replace("INIT",json.dumps(init)).replace("TITLE",name).replace("CONTROLS","".join(controls)).replace("CONTROL",control)
-   save(folder/"main.jsx","import React,{useState} from 'react';import {createRoot} from 'react-dom/client';\nimport {"+exports+"} from './src/components/"+name+".jsx';\n"+imports+"\nimport './fixture.css';\n"+code)
+   code=todo_shell.replace("INIT",json.dumps(init)).replace("TITLE",exports.split(",")[0]).replace("CONTROLS","".join(controls)).replace("CONTROL",control)
+   save(folder/"main.jsx","import React,{useState} from 'react';import {createRoot} from 'react-dom/client';\nimport {"+exports+"} from './src/"+("design-system/" if name=="Controls" else "components/")+name+".jsx';\n"+imports+"\nimport './fixture.css';\n"+code)
    save(folder/"vite.config.mjs","import {defineConfig} from 'vite';import react from '@vitejs/plugin-react';export default defineConfig({plugins:[react()],cacheDir:'.vite-cache',build:{outDir:'dist',assetsInlineLimit:1000000}});")
   else:
    base="frontend-fantastic-admin/src/";name=MRR[aid]
@@ -88,6 +91,7 @@ for cfg in config:
     "data-table":"h(DataExamples,{example:'table'})",
     "filter-bar":"""h(MrrFilterBar,{advancedCount:query.value?1:0},{default:()=>h(ElInput,{modelValue:query.value,'onUpdate:modelValue':v=>query.value=v,placeholder:'合成筛选','aria-label':'测试筛选'}),advanced:()=>h('p','高级条件示例'),actions:()=>h(MrrFilterActionButton,{action:'search',pending:busy.value,feedback:'request',onClick:()=>result.value=query.value},()=> '查询')})""",
     "filter-action":"""h(MrrFilterActionButton,{action:'search',pending:busy.value,busy:disabled.value,feedback:'request',onClick:()=>result.value=String(Number(result.value||0)+1)},()=> '查询')""",
+    "status-tag":"""h('div',[h(MrrStatusTag,{status:query.value||'running'}),h('p',[h('label',['状态 ',h('select',{'aria-label':'状态',value:query.value||'running',onChange:e=>query.value=e.target.value},['running','success','failed','pending'].map(v=>h('option',{value:v},v)))])])])""",
     "dialog":"""h('div',[h('button',{onClick:()=>open.value=true},'打开编辑弹窗'),h(MrrDialog,{modelValue:open.value,'onUpdate:modelValue':v=>open.value=v,title:'测试弹窗',showCancelButton:true,onConfirm:()=>result.value='已确认'},()=>h('p','合成数据 · 不修改业务'))])"""
    }[aid]
    extra={"pagination":"h('label',['页数 ',h('input',{type:'number',min:2,max:100,value:count.value,onInput:e=>{count.value=Math.max(2,Math.min(100,Number(e.target.value)||2));page.value=1}})])","filter-action":"h('label',[h('input',{type:'checkbox',checked:disabled.value,onChange:e=>disabled.value=e.target.checked}),'禁用'])"}.get(aid,"null")
@@ -106,12 +110,14 @@ return()=>h('main',{class:'fixture'},[h('header',[h('p','真实组件 · 固定�
  h('p',{role:'status'},['当前值 ',h('output',{id:'state'},STATE)]),h('p',{class:'fixture-note'},'参数由测试容器提供，非生产数据。')])}};
 const app=createApp(App);app.use(ElementPlus);app.component('FaIcon',FaIcon);
 """+register+"\napp.mount('#app');"
-   code=code.replace("TITLE",name).replace("CONTROL",render).replace("EXTRA",extra).replace("BUSY","h('label',[h('input',{type:'checkbox',checked:busy.value,onChange:e=>busy.value=e.target.checked}),'加载'])" if aid in ("pagination","filter-action","filter-bar") else "null").replace("STATE","'当前页 '+page.value+' · 每页 '+size.value" if aid=="pagination" else "result.value||'（空）'")
+   code=code.replace("TITLE",name).replace("CONTROL",render).replace("EXTRA",extra).replace("BUSY","h('label',[h('input',{type:'checkbox',checked:busy.value,onChange:e=>busy.value=e.target.checked}),'加载'])" if aid in ("pagination","filter-action","filter-bar") else "null").replace("STATE","'当前页 '+page.value+' · 每页 '+size.value" if aid=="pagination" else "query.value||'running'" if aid=="status-tag" else "result.value||'（空）'")
    save(folder/"main.js",code)
    save(folder/"vite.config.mjs","import {defineConfig} from 'vite';import vue from '@vitejs/plugin-vue';import AutoImport from 'unplugin-auto-import/vite';import UnoCSS from 'unocss/vite';import {presetWind3,presetIcons} from 'unocss';import {fileURLToPath} from 'node:url';export default defineConfig({resolve:{alias:{'@':fileURLToPath(new URL('./src',import.meta.url))}},plugins:[vue(),AutoImport({imports:['vue'],dts:false}),UnoCSS({presets:[presetWind3(),presetIcons()],safelist:['i-lucide:eye','i-lucide:pencil','i-lucide:trash-2','i-lucide:ellipsis','i-lucide:search','i-lucide:rotate-ccw','i-lucide:loader-circle','i-lucide:chevron-up','i-lucide:chevron-down']})],cacheDir:'.vite-cache',build:{outDir:'dist',assetsInlineLimit:1000000}});")
   assert all(files.get(f["path"][len(base):])==f["sha256"] for f in asset["files"]),aid
   sealed,bundle_sha,scriptHash=build_bundle(folder,version_dir)
   rows.append({"project":project,"asset":aid,"snapshot":v["key"],"commit":commit,"revision":asset["revision"],"path":str(sealed.relative_to(DATA)),"sha256":bundle_sha,"scriptHash":scriptHash,"files":files,"edges":edges,"kind":"isolated-live-component","environment":{"node":subprocess.check_output(["node","-v"],text=True).strip(),"vite":json.loads((deps/"vite/package.json").read_text())["version"],"lockSha256":digest(git(repo,"show",commit+":"+("frontend-fantastic-admin/pnpm-lock.yaml" if project=="mrr" else "package-lock.json")))}})
   print("built",project,aid,flush=True)
-jsonfile(P/"component-candidates.json",rows)
+path=P/"component-candidates.json"
+previous=json.loads(path.read_text()) if path.exists() else []
+jsonfile(path,[r for r in previous if r["project"] not in ("mrr","todo")]+rows)
 print("Built",len(rows),"independent previews")

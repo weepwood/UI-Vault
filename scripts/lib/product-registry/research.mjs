@@ -1,11 +1,19 @@
 import {execFileSync} from 'node:child_process';
 import {extractDeclarations} from './tokens.mjs';
-import {blobText,hash} from './core.mjs';
+import {blobText,hash,diffSnapshots} from './core.mjs';
 import {existsSync,lstatSync,realpathSync,readFileSync} from 'node:fs';
 import {join,sep} from 'node:path';
 
 // Explicit, reviewed research associations; these are reference directions, not equivalence/compatibility claims.
 const families={
+ 'media-timeline':{label:'媒体时间轴',refs:['react-ui-atlas']},
+ 'caption-timeline':{label:'媒体时间轴',refs:['react-ui-atlas']},
+ 'player-controls':{label:'播放器',refs:[]},
+ 'caption-workspace':{label:'字幕工作台',refs:['workbench-components']},
+ 'search-field':{label:'筛选与工具栏',refs:['workbench-components','gr8r-studio-ui']},
+ 'number-control':{label:'表单控件',refs:['ui-foundation-kit','react-ui-atlas']},
+ segmented:{label:'导航控件',refs:['workbench-components','weepwood-ui']},
+ 'status-tag':{label:'状态反馈',refs:['ui-foundation-kit','react-ui-atlas']},
  pagination:{label:'分页',refs:['weepwood-ui','react-ui-atlas','ui-foundation-kit']},
  'data-table':{label:'表格与数据面板',refs:['weepwood-ui','react-ui-atlas']},
  'filter-bar':{label:'筛选与工具栏',refs:['workbench-components','gr8r-studio-ui']},
@@ -24,11 +32,11 @@ export function relatedAssets(record,assets){
  if(!group)return [];
  return assets.filter(a=>a.id!==record.asset.id&&(group.refs.includes(a.id)||a.privateSnapshot&&Object.keys(families).some(key=>families[key].label===group.label&&a.id.endsWith('-'+key)))).map(a=>({id:a.id,title:a.title,relationship:a.privateSnapshot?'同类项目资产':'设计参考候选',family:group.label}));
 }
-const componentNames={pagination:'MrrCursorPagination','data-table':'MrrDataTablePanel','filter-bar':'MrrFilterBar','smart-select':'SmartSelect','date-picker':'DatePicker','entity-dialog':'EntityDialog',dialog:'MrrDialog','filter-action':'MrrFilterActionButton','time-control':'TimeControl','color-control':'ColorControl'};
+const componentNames={'search-field':'SearchField','number-control':'DraftNumberField',segmented:'Segmented','status-tag':'MrrStatusTag',pagination:'MrrCursorPagination','data-table':'MrrDataTablePanel','filter-bar':'MrrFilterBar','smart-select':'SmartSelect','date-picker':'DatePicker','entity-dialog':'EntityDialog',dialog:'MrrDialog','filter-action':'MrrFilterActionButton','time-control':'TimeControl','color-control':'ColorControl'};
 export function findUses(record){
- const component=componentNames[record.assetId], latest=record.versions.at(-1);
+ const latest=record.versions.at(-1),component=latest.project==='frameslice'?({pagination:'WorkbenchPagination','media-timeline':'MediaTimeline','caption-timeline':'Timeline','caption-workspace':'CaptionWorkspace'}[record.assetId]):componentNames[record.assetId];
  if(!component)return [];
- const base=latest.project==='mrr'?'frontend-fantastic-admin/src':'src';
+ const base=latest.project==='mrr'?'frontend-fantastic-admin/src':latest.project==='frameslice'&&record.assetId==='caption-timeline'?'apps/caption-studio/src':'src';
  let output;
  try{output=execFileSync('git',['-C',record.declared.repo,'grep','-n','-I','-w','-F',component,latest.commit,'--',base],{encoding:'utf8',maxBuffer:8*1024*1024,stdio:['ignore','pipe','pipe']});}catch(e){if(e.status===1)return [];throw e;}
  const result=[];
@@ -49,7 +57,7 @@ export function searchPrivate(catalog,query){
 export function designProfiles(catalog){
  return [...catalog.records.values()].filter(r=>r.assetId==='tokens').map(r=>{
    const s=r.versions.at(-1),a=s.assets.find(a=>a.id==='tokens'),file=a.files.find(f=>f.path===r.declared.tokenPath);
-   return {project:s.project,commit:s.commit,framework:s.framework,platform:s.platform,semanticDeclarations:extractDeclarations(blobText(r.store,file.sha256),r.declared.mapping),assetIds:[...catalog.records.values()].filter(x=>x.versions.at(-1).project===s.project).map(x=>x.asset.id),composition:(s.project==='mrr'?[['result-table','data-table'],['query','filter-bar'],['query-action','filter-action'],['navigation','pagination'],['overlay','dialog']]:[['choice','smart-select'],['date','date-picker'],['time','time-control'],['color','color-control'],['overlay','entity-dialog']]).filter(([,id])=>s.assets.some(a=>a.id===id)).map(([slot,id])=>({slot,asset:'private-'+s.project+'-'+id,snapshot:s.key,revision:s.assets.find(a=>a.id===id).revision})),scope:'project-owned; semantic mapping and composition recipe only; not an installation plan'};
+   return {project:s.project,commit:s.commit,framework:s.framework,platform:s.platform,semanticDeclarations:extractDeclarations(blobText(r.store,file.sha256),r.declared.mapping),assetIds:[...catalog.records.values()].filter(x=>x.versions.at(-1).project===s.project).map(x=>x.asset.id),composition:(s.project==='mrr'?[['result-table','data-table'],['query','filter-bar'],['query-action','filter-action'],['navigation','pagination'],['overlay','dialog'],['status','status-tag']]:s.project==='frameslice'?[['navigation','pagination'],['media','media-timeline'],['caption','caption-timeline'],['player','player-controls'],['workspace','caption-workspace']]:[['choice','smart-select'],['date','date-picker'],['time','time-control'],['color','color-control'],['overlay','entity-dialog'],['search','search-field'],['number','number-control'],['navigation','segmented']]).filter(([,id])=>s.assets.some(a=>a.id===id)).map(([slot,id])=>({slot,asset:'private-'+s.project+'-'+id,snapshot:s.key,revision:s.assets.find(a=>a.id===id).revision})),scope:'project-owned; semantic mapping and composition recipe only; not an installation plan'};
  });
 }
 
@@ -69,5 +77,16 @@ export function reuseTrialSummary(root,record){
   const bytes=readFileSync(file);
   if(hash(bytes)!==r.sha256||bytes.subarray(0,8).toString('hex')!=='89504e470d0a1a0a')throw Error('复用截图完整性错误');
   return r;
+ });
+}
+
+// Read only registered historical paths, with a bounded patch; no external diff driver.
+export function revisionChanges(record){
+ return record.versions.slice(1).map((to,i)=>{
+  const from=record.versions[i],change=diffSnapshots(from,to).find(x=>x.id===record.assetId);
+  if(!change||!change.files.length)return {from:from.key,to:to.key,status:change?.status||'not-registered',files:[],patch:''};
+  let patch=null;
+  try{patch=execFileSync('git',['-C',record.declared.repo,'diff','--no-ext-diff','--no-textconv','--no-color','--unified=3',from.commit,to.commit,'--',...change.files.map(f=>f.path)],{encoding:'utf8',maxBuffer:256*1024,timeout:3000,stdio:['ignore','pipe','pipe']});}catch{/* source unavailable or patch exceeds budget; retain hash diff */}
+  return {from:from.key,to:to.key,status:change.status,files:change.files,patch};
  });
 }

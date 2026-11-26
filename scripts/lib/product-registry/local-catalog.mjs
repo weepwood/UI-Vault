@@ -4,8 +4,8 @@ import {loadSnapshot,diffSnapshots,blobText,hash} from './core.mjs';
 import {extractDeclarations,compareTokens} from './tokens.mjs';
 
 export const PRIVATE_PREFIX='demos/private-registry/';
-const titles={'data-table':'数据表格','filter-bar':'筛选工具栏',pagination:'分页器','date-picker':'日期选择器','entity-dialog':'实体编辑弹窗','smart-select':'公共选择器',dialog:'公共弹窗','filter-action':'筛选操作按钮','time-control':'时间控件','color-control':'颜色控件',tokens:'设计 Token',design:'设计规范'};
-const tags={'data-table':'表格','filter-bar':'筛选','pagination':'分页','date-picker':'日期选择器','entity-dialog':'弹窗','smart-select':'选择器',dialog:'弹窗','filter-action':'筛选','time-control':'时间控件','color-control':'颜色控件',tokens:'设计系统',design:'设计规范'};
+const titles={'media-timeline':'媒体时间轴','caption-timeline':'字幕时间轴','player-controls':'播放器控制组','caption-workspace':'字幕工作台','search-field':'公共搜索','number-control':'数值表单','segmented':'分段导航','status-tag':'状态标签','data-table':'数据表格','filter-bar':'筛选工具栏',pagination:'分页器','date-picker':'日期选择器','entity-dialog':'实体编辑弹窗','smart-select':'公共选择器',dialog:'公共弹窗','filter-action':'筛选操作按钮','time-control':'时间控件','color-control':'颜色控件',tokens:'设计 Token',design:'设计规范'};
+const tags={'media-timeline':'时间轴','caption-timeline':'时间轴','player-controls':'播放器','caption-workspace':'工作台','search-field':'筛选','number-control':'表单','segmented':'导航','status-tag':'状态','data-table':'表格','filter-bar':'筛选','pagination':'分页','date-picker':'日期选择器','entity-dialog':'弹窗','smart-select':'选择器',dialog:'弹窗','filter-action':'筛选','time-control':'时间控件','color-control':'颜色控件',tokens:'设计系统',design:'设计规范'};
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const readJSON=p=>JSON.parse(readFileSync(p,'utf8'));
 const validId=id=>typeof id==='string'&&/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id);
@@ -61,7 +61,7 @@ export function readPrivateCatalog(dataRoot,publicAssets,publicProjects){
    const latest=versions.map(v=>v.assets.find(a=>a.id===assetId)).filter(Boolean).at(-1);
    const title=name+' · '+(titles[assetId]||assetId);
    const preview=PRIVATE_PREFIX+id+'/index.html';
-   const asset={id,projectId,title,subtitle:'真实项目 · 本地源码档案',description:'固定 Git 提交中的项目专属资产，含历史修订和文件证据；尚未验证独立运行及交付。',type:['component','pattern'].includes(latest.kind)?'component':'resource',source:'local',tags:['真实项目资产',tags[assetId]||latest.kind],technologies:[current.framework],license:'项目专属；未授权公开再分发',featured:false,copyable:false,created:'2026-11-26',preview,code:preview,privateSnapshot:true,cover:'editor',reuseNotes:['源码档案，不是可独立运行的组件','请在来源项目中完成依赖和业务解耦验证']};
+   const asset={id,projectId,title,subtitle:'真实项目 · 本地源码档案',description:'固定 Git 提交中的项目专属资产，含历史修订和文件证据；尚未验证独立运行及交付。',type:['component','pattern'].includes(latest.kind)?'component':'resource',source:'local',tags:['真实项目资产',tags[assetId]||latest.kind],technologies:current.framework==='vue-react'?(assetId.startsWith('caption-')?['vue','react']:['vue']):[current.framework],license:'项目专属；未授权公开再分发',featured:false,copyable:false,created:'2026-11-26',preview,code:preview,privateSnapshot:true,cover:'editor',reuseNotes:['源码档案，不是可独立运行的组件','请在来源项目中完成依赖和业务解耦验证']};
    const proof=evidence.filter(e=>e.project===p.project&&e.asset===assetId);
    for(const e of proof){const snap=versions.find(v=>v.key===e.snapshot);if(!snap||snap.commit!==e.commit||snap.assets.find(a=>a.id===assetId)?.revision!==e.revision)throw Error('运行证据与历史修订不一致');}
    assets.push(asset);records.set(id,{asset,assetId,versions,store,declared,proof});
@@ -83,10 +83,12 @@ export function renderPrivateRecord(record){
   const a=s.assets.find(a=>a.id===assetId), prev=versions[i-1];
   const diff=prev?diffSnapshots(prev,s).find(x=>x.id===assetId):null;
   const tokenData=assetId==='tokens'&&a?extractDeclarations(blobText(store,a.files.find(f=>f.path===declared.tokenPath).sha256),declared.mapping):null;
+  const patch=record.revisionChanges?.find(c=>c.to===s.key);
   const before=prev?.assets.find(a=>a.id===assetId);
   const tokenDiff=tokenData&&before?compareTokens(extractDeclarations(blobText(store,before.files.find(f=>f.path===declared.tokenPath).sha256),declared.mapping),tokenData):null;
   return '<section id="revision-'+escape(s.key)+'"><header><h2>'+escape(s.commit.slice(0,12))+'</h2><span>'+escape(diff?.status||(a?'基线':'未登记'))+'</span></header><p class="mono">'+escape(s.commit)+'</p><p>快照 '+escape(s.key)+'</p>'+(a?'<p>资产修订 '+escape(a.revision)+'</p>':'<p>此版本不存在此资产。</p>')+
     (diff?.files.length?'<ul>'+diff.files.map(f=>'<li>'+escape(f.path)+' · '+(f.before&&f.after?'修改':f.before?'删除':'新增')+'</li>').join('')+'</ul>':'')+
+    (patch?.patch?'<details><summary>实际源码差异 · Git diff</summary><pre>'+escape(patch.patch)+'</pre></details>':patch?.patch===null?'<p>源码差异超过预算或来源不可用；文件哈希变化仍保留。</p>':'')+
     (tokenData?'<details open><summary>语义 Token 声明</summary><pre>'+escape(JSON.stringify(tokenData,null,2))+'</pre></details>':'')+
     (tokenDiff?'<p>选定 Token 声明变化：'+tokenDiff.length+' 项</p>':'')+
     (a?.files||[]).map(f=>'<details><summary>'+escape(f.path)+' <small>'+f.bytes+' B</small></summary><p class="mono">SHA-256 '+escape(f.sha256)+'</p><pre>'+escape(blobText(store,f.sha256))+'</pre></details>').join('')+'</section>';
