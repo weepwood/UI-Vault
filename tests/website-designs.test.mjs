@@ -21,7 +21,7 @@ test('314 种设计风格直接列在主项目目录，废弃二级图鉴入口'
   assert.equal(new Set(assets.map(a=>a.id)).size,314);
   assert.ok(categories.some(c=>c.id==='design-style'&&c.label==='设计风格'));
   assert.ok(!manifest.some(a=>a.id==='website-designs-gallery'));
-  assert.equal(manifest.filter(a=>a.type==='design-style').length,400);
+  assert.equal(manifest.filter(a=>a.type==='design-style').length,401);
   assert.equal(manifest.filter(a=>a.id.startsWith('landfolio-style-')).length,86);
   assert.deepEqual(new Set(assets.map(a=>a.id)),new Set(manifest.filter(a=>a.id.startsWith('website-style-')).map(a=>a.id)));
 });

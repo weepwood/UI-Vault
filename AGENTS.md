@@ -455,3 +455,8 @@ V0.10收口复核：PR #146 的 b23dfc3 首轮修复后正式远端45661183471�
 ### V0.11 冻结维护专项
 
 基线 6cbf926。仅修复媒体验收只读语义及证据分类；使用已封存版本，明确断言 opaque origin、全屏禁用及实际请求拒绝，仅指定 WebKit 两媒体资产精确拒绝消息分类为预期诊断，其他异常仍失败。三媒体功能通过，4/7 条拒绝日志保留；不声称零诊断。MRR 筛选栏首次挂载 ResizeObserver 在 1100px 三次复现，390px 三次无；隔离副本下一帧提交宽度测量值后，原版 3/6 与试验版 6/6 零诊断对照成立，试验未登记、未改来源工作区。私有证据 rc-v011/maintenance，封存索引不变。当前仅 Mac 在线，Firefox 环境仍阻塞，不降低权限、不上传私有资产、不重复无关验收。候选继续冻结，详见发布记录；无推送、合并、Tag、发布。
+
+### Designed to Scale 实测修正与交互动效研究
+
+- PR #148 隔离分支，实测原站进度面板为 CSS Grid 0fr/1fr（340ms），透明度 220ms、箭头 300ms；更新独立演示默认 Grid，弹簧保留增强对照；复刻真实浅色实体控件，不影响主站。原始记录仅本地保存；规范见 docs/DESIGNED-TO-SCALE-STUDY.md。
+- 独立构建与 UI-Vault sandbox Chromium 专项：`python scripts/visual-designed-to-scale.py --browser chromium`。Firefox/WebKit 缺锁定浏览器运行时，不计通过；不改全局系统安全设置。未将独立配方推广为 Foundation 公共引擎，不擅自合并或正式发布。
