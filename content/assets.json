@@ -2229,7 +2229,7 @@
     "id": "continuous-progress-panel",
     "title": "进度面板 · 连续开合",
     "subtitle": "Continuous Layout Transition",
-    "description": "底部锚定、真实内容高度、临界阻尼弹簧与速度继承；可切换 CSS 对照、慢动作与锚点，观察高度及速度。",
+    "description": "原站实测 CSS Grid 0fr/1fr 底部锚定、内容裁剪和反向缩短；独立增强弹簧继承速度。支持慢动作、锚点与运动轨迹对照。",
     "type": "effect",
     "tags": [
       "动效",
@@ -2245,9 +2245,9 @@
     "designGuidePath": "demos/effects/continuous-progress-panel/MOTION.md",
     "cover": "motion",
     "reuseNotes": [
-      "真实高度裁剪而非 scaleY，文字和圆角保持自然尺寸。",
-      "临界阻尼精确步进，反向修改目标并继承速度；支持 reduced-motion 与键盘。",
-      "参数来自独立复刻，非原站动画实测；正式业务需停止稳定后的监测循环。"
+      "原站实测 Grid 340ms、透明度 220ms、箭头 300ms；进度条与列表一并裁剪。",
+      "原生 CSS 自动缩短反向过渡；增强弹簧才提供速度继承，二者分开。",
+      "尊重 reduced-motion、键盘与焦点；稳定后停止采样，生产场景不保留曲线。"
     ],
     "sourceFiles": [
       {
@@ -2393,7 +2393,7 @@
     "reuseNotes": [
       "分离语义色、实体控件、图元与场景播放器；复用原站设计思路而非源码。",
       "保留稳定 SVG 节点、同一播放时钟与镜头连续性；数值为独立演示参数。",
-      "原站生产 CSS 与实时动画未取得，详细证据边界见设计指南。"
+      "V2.1 实测原站浅色主按钮/工具按钮与进度面板；其他引擎参数仍为独立设计，详见规范。"
     ],
     "sourceFiles": [
       {

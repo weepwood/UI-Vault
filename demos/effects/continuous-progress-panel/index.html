@@ -1,12 +1,112 @@
 <!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>进度面板 · Motion Study</title><style>
 :root{color-scheme:light;--paper:#efe6da;--panel:#f4ece0;--ink:#211e1a;--muted:#716960;--line:#d8cdbf;--green:#c1dba6;font-family:ui-monospace,SFMono-Regular,Consolas,"PingFang SC","Microsoft YaHei",monospace;color:var(--ink)}*{box-sizing:border-box}body{margin:0;background:var(--paper);min-height:100dvh}button,input,select{font:inherit}button{color:inherit;cursor:pointer}button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid #80643c;outline-offset:4px}.page{max-width:1060px;margin:auto;padding:36px 24px}.eyebrow{font-size:11px;letter-spacing:.12em;color:var(--muted)}h1{font-size:clamp(24px,4vw,36px);letter-spacing:-.05em;margin:12px 0}p{font-size:13px;line-height:1.75;color:var(--muted)}.workspace{display:grid;grid-template-columns:minmax(300px,1fr) minmax(260px,.85fr);gap:24px;margin-top:26px}.stage{position:relative;min-height:450px;padding:18px;background:linear-gradient(135deg,#eee3d5,#f3eade);border:1px solid var(--line);border-radius:16px;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;overflow:hidden}.stage[data-anchor=top]{justify-content:flex-start;padding-top:54px}.stage-tag{position:absolute;top:16px;left:18px;pointer-events:none;font-size:10px;letter-spacing:.1em;color:var(--muted)}.panel{width:min(264px,100%);padding:15px 16px;border:1px solid var(--line);border-radius:12px;background:linear-gradient(145deg,#f7efe4,#f1e8db);box-shadow:inset 0 1px 0 #fff9,0 2px 3px #493a2410;overflow:hidden}.head{width:100%;display:flex;align-items:center;justify-content:space-between;padding:0;border:0;background:none;font-size:14px;line-height:20px;font-weight:650;text-align:left;gap:12px}.head-right{display:flex;align-items:center;gap:10px;white-space:nowrap;font-variant-numeric:tabular-nums}.chevron{width:13px;height:13px;color:var(--muted);transform:rotate(0deg);transform-origin:center}.track{height:13px;border:1px solid #625a50;background:#f8f3eb;border-radius:999px;overflow:hidden;margin-top:12px;position:relative}.fill{height:100%;min-width:4px;width:0%;background:var(--green);border-right:1px solid #817a69;border-radius:999px;transition:width .32s cubic-bezier(.2,.75,.2,1)}.clip{height:0;overflow:hidden;overflow:clip}.natural{padding-top:10px;display:flex;flex-direction:column;gap:1px;transform:translateY(0);will-change:opacity,transform}.lesson{display:flex;align-items:center;gap:12px;min-height:25.5px;font-size:13px;font-weight:550;cursor:pointer}.lesson input{appearance:none;width:15.5px;height:15.5px;border:1px solid #91877a;border-radius:3px;margin:0;background:#f8f3eb;display:grid;place-items:center;flex:none;cursor:pointer}.lesson input:checked{background:var(--green);border-color:#6e8058}.lesson input:checked:after{content:'✓';font-size:11px;line-height:1;color:#37452d}.count{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--muted);font-weight:400}.settings{padding:4px 0}.settings h2{font-size:16px;margin:0 0 14px}.control{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 0;border-bottom:1px solid var(--line);font-size:12px}.control select,.control button,.action{background:#f8f0e5;border:1px solid #c7b9a9;border-radius:6px;padding:7px 9px;font-size:12px}.action{margin-top:15px;width:100%;text-align:left}.action:hover{background:#e9ddca}.metric{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}.metric div{border-top:1px solid var(--line);padding-top:10px}.metric strong{display:block;font-size:22px;font-weight:500;font-variant-numeric:tabular-nums}.metric small{font-size:10px;color:var(--muted)}.plot{width:100%;height:85px;margin-top:12px;background:#f7efe480;border:1px solid var(--line);border-radius:6px}.note{font-size:11px} @media(max-width:690px){.page{padding:24px 14px}.workspace{grid-template-columns:1fr;gap:16px}.stage{min-height:395px}.settings{padding:0}}@media(prefers-reduced-motion:reduce){.fill{transition:none}}
-</style><body><main class="page"><div class="eyebrow">MOTION STUDY / 01</div><h1>连续展开与收起</h1><p>点击进度标题；在动画尚未结束时连续点击，观察面板如何改变方向。勾选分类可更新进度。</p><div class="workspace"><section class="stage" data-anchor="bottom"><span class="stage-tag">LIVE COMPONENT / BOTTOM ANCHOR</span><div class="panel"><button class="head" aria-expanded="true" aria-controls="progress-body"><span>进度</span><span class="head-right"><span id="total">0 / 40</span><svg class="chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 10 4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div class="track" role="progressbar" aria-label="学习进度" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="fill"></div></div><div class="clip" id="progress-body"><div class="natural"></div></div></div></section><aside class="settings"><h2>运动实验</h2><div class="control"><label for="mode">动画模式</label><select id="mode"><option value="spring">临界阻尼弹簧</option><option value="css">CSS 缓动对照</option></select></div><div class="control"><label for="anchor">固定边缘</label><select id="anchor"><option value="bottom">底部固定</option><option value="top">顶部固定</option></select></div><div class="control"><label for="speed">播放速度</label><select id="speed"><option value="1">1×</option><option value="0.5">0.5×</option><option value="0.25">0.25×</option></select></div><button class="action" id="reverse">连续反向测试（开合 5 次）</button><div class="metric"><div><strong id="h">0 px</strong><small>内容实际高度</small></div><div><strong id="v">0 px/s</strong><small>当前速度</small></div></div><svg class="plot" viewBox="0 0 300 85" preserveAspectRatio="none" aria-label="最近高度轨迹"><path d="M0 15H300M0 42.5H300M0 70H300" stroke="#d8cdbf" stroke-dasharray="3 4" fill="none"/><polyline id="trace" fill="none" stroke="#82714e" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg><p class="note">高度曲线为最近 1.5 秒采样。弹簧模式保留反向瞬间的位置与速度；CSS 对照采用 WAAPI 的 Bézier 补间，每次反向从当前高度重新开始。</p></aside></div></main><script>
-const $=s=>document.querySelector(s);const head=$('.head'),clip=$('.clip'),natural=$('.natural'),chev=$('.chevron'),mode=$('#mode'),speed=$('#speed'),reduced=matchMedia('(prefers-reduced-motion: reduce)');const rows=[['基础',3],['扩展',5],['数据与存储',11],['通信',4],['可靠性',4],['架构',4],['安全',3],['交付',2],['完整系统',4]];for(const [name,n] of rows){const el=document.createElement('label');el.className='lesson';el.innerHTML=`<input type="checkbox" data-n="${n}"><span>${name}</span><span class="count">0/${n}</span>`;natural.append(el)}
-let open=true,H=natural.getBoundingClientRect().height,h=H,v=0,target=H,last=performance.now(),anim=null,history=[],timerIds=[];function paint(){clip.style.height=`${Math.max(0,h)}px`;let p=Math.max(0,Math.min(1,h/(H||1)));natural.style.opacity=String(Math.min(1,p*1.9));natural.style.transform=`translateY(${-(1-p)*5}px)`;chev.style.transform=`rotate(${(1-p)*180}deg)`;$('#h').textContent=`${h.toFixed(1)} px`;$('#v').textContent=`${v.toFixed(0)} px/s`}
-// Exact solution of x'' + 2ωx' + ω²(x-target)=0.
-function spring(dt){const w=21;const d=h-target,b=v+w*d,e=Math.exp(-w*dt);h=target+(d+b*dt)*e;v=(v-w*b*dt)*e;if(h<0){h=0;v=0}if(Math.abs(h-target)<.08&&Math.abs(v)<.8){h=target;v=0}}
-function stopWAAPI(){if(anim){h=clip.getBoundingClientRect().height;anim.cancel();anim=null;paint()}}
-function retarget(){stopWAAPI();target=open?H:0;if(reduced.matches){h=target;v=0;paint();return}if(mode.value==='css'){const a=anim=clip.animate([{height:`${h}px`},{height:`${target}px`}],{duration:360/Number(speed.value),easing:'cubic-bezier(.22,1,.36,1)',fill:'forwards'});a.onfinish=()=>{if(anim!==a)return;h=target;v=0;anim=null;a.cancel();paint()}}}
-function toggle(){open=!open;head.setAttribute('aria-expanded',String(open));if(!open&&natural.contains(document.activeElement))head.focus();natural.inert=!open;retarget()}
-head.addEventListener('click',toggle);mode.onchange=()=>retarget();speed.onchange=()=>{if(anim)retarget()};$('#anchor').onchange=e=>{$('.stage').dataset.anchor=e.target.value;$('.stage-tag').textContent=`LIVE COMPONENT / ${e.target.value.toUpperCase()} ANCHOR`};$('#reverse').onclick=()=>{timerIds.forEach(clearTimeout);timerIds=[];for(let i=0;i<5;i++)timerIds.push(setTimeout(toggle,i*105))};natural.addEventListener('change',()=>{let total=0;natural.querySelectorAll('input').forEach(i=>{const n=+i.dataset.n,k=i.checked?n:0;total+=k;i.parentElement.querySelector('.count').textContent=`${k}/${n}`});$('#total').textContent=`${total} / 40`;$('.track').setAttribute('aria-valuenow',total);$('.fill').style.width=`${total/40*100}%`});new ResizeObserver(()=>{let next=natural.getBoundingClientRect().height;if(Math.abs(next-H)>.1){H=next;retarget()}}).observe(natural);reduced.addEventListener('change',retarget);paint();function frame(t){const real=Math.min(.05,Math.max(0,(t-last)/1000));last=t;if(anim){const prev=h;h=clip.getBoundingClientRect().height;v=real?(h-prev)/real:0;paint()}else if(h!==target||v!==0){if(reduced.matches){h=target;v=0}else spring(real*Number(speed.value));paint()}history.push([t,h]);while(history.length&&history[0][0]<t-1500)history.shift();$('#trace').setAttribute('points',history.map(([tm,y])=>`${((tm-t+1500)/5).toFixed(1)},${(76-67*Math.min(1,y/(H||1))).toFixed(1)}`).join(' '));requestAnimationFrame(frame)}requestAnimationFrame(frame);
+
+/* Independent reconstruction of the measured native grid transition. */
+.panel{padding:0 16px;background:#f7efe4;border-color:#ddd3c5;box-shadow:inset 0 1px 0 #fff9,0 1px 0 #503c230f,0 10px 22px -16px #503c2359}
+.head{min-height:46px}.head:focus-visible{outline-offset:-3px;border-radius:4px}
+.fold{display:grid;grid-template-rows:1fr;min-height:0}
+.clip{height:auto;min-height:0;overflow:hidden}
+.natural{padding:0 0 10px;will-change:auto;transform:none}
+.natural .track{margin-top:0;margin-bottom:9px}.lessons{display:flex;flex-direction:column}.lesson{min-height:27px}
+.panel[data-mode=css] .fold{grid-template-rows:0fr;transition:grid-template-rows calc(340ms / var(--speed,1)) cubic-bezier(.2,.7,.2,1)}
+.panel[data-mode=css][data-open=true] .fold{grid-template-rows:1fr}
+.panel[data-mode=css] .clip{opacity:0;transition:opacity calc(220ms / var(--speed,1)) ease}
+.panel[data-mode=css][data-open=true] .clip{opacity:1}
+.panel[data-mode=css] .chevron{transform:rotate(90deg);transition:transform calc(300ms / var(--speed,1)) cubic-bezier(.2,.7,.2,1)}
+.panel[data-mode=css][data-open=true] .chevron{transform:rotate(0)}
+.panel.no-transition *{transition:none!important}
+@media(prefers-reduced-motion:reduce){.panel .fold,.panel .clip,.panel .chevron{transition:none!important}}
+</style><body><main class="page"><div class="eyebrow">MOTION STUDY / 01</div><h1>连续展开与收起</h1><p>点击进度标题；在动画尚未结束时连续点击，观察面板如何改变方向。勾选分类可更新进度。</p><div class="workspace"><section class="stage" data-anchor="bottom"><span class="stage-tag">LIVE COMPONENT / BOTTOM ANCHOR</span><div class="panel" data-mode="css" data-open="true"><button class="head" aria-expanded="true" aria-controls="progress-body"><span>进度</span><span class="head-right"><span id="total">0 / 40</span><svg class="chevron" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m4 10 4-4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></span></button><div class="fold"><div class="clip" id="progress-body"><div class="natural"><div class="track" role="progressbar" aria-label="学习进度" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><div class="fill"></div></div><div class="lessons"></div></div></div></div></div></section><aside class="settings"><h2>运动实验</h2><div class="control"><label for="mode">动画模式</label><select id="mode"><option value="css">原站式 CSS Grid</option><option value="spring">增强型临界阻尼弹簧</option></select></div><div class="control"><label for="anchor">固定边缘</label><select id="anchor"><option value="bottom">底部固定</option><option value="top">顶部固定</option></select></div><div class="control"><label for="speed">播放速度</label><select id="speed"><option value="1">1×</option><option value="0.5">0.5×</option><option value="0.25">0.25×</option></select></div><button class="action" id="reverse">连续反向测试（开合 5 次）</button><div class="metric"><div><strong id="h">0 px</strong><small>内容实际高度</small></div><div><strong id="v">0 px/s</strong><small>当前速度</small></div></div><svg class="plot" viewBox="0 0 300 85" preserveAspectRatio="none" aria-label="最近高度轨迹"><path d="M0 15H300M0 42.5H300M0 70H300" stroke="#d8cdbf" stroke-dasharray="3 4" fill="none"/><polyline id="trace" fill="none" stroke="#82714e" stroke-width="1.5" vector-effect="non-scaling-stroke"/></svg><p class="note">高度曲线为最近 1.5 秒采样。默认模式复现原站实测 CSS Grid 340ms、透明度 220ms、箭头 300ms；浏览器负责反向缩短过渡时间。弹簧为独立增强方案，继承位置和速度。切换模式时先收敛到当前目标。</p></aside></div></main><script>
+const $=s=>document.querySelector(s);
+const panel=$('.panel'),head=$('.head'),fold=$('.fold'),clip=$('.clip'),natural=$('.natural'),chev=$('.chevron'),mode=$('#mode'),speed=$('#speed'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+const rows=[['基础',3],['扩展',5],['数据与存储',11],['通信',4],['可靠性',4],['架构',4],['安全',3],['交付',2],['完整系统',4]];
+for(const [name,n] of rows){
+ const el=document.createElement('label');el.className='lesson';
+ const input=document.createElement('input');input.type='checkbox';input.dataset.n=n;
+ const label=document.createElement('span');label.textContent=name;
+ const count=document.createElement('span');count.className='count';count.textContent='0/'+n;
+ el.append(input,label,count);$('.lessons').append(el);
+}
+let open=true,H=natural.getBoundingClientRect().height,h=H,v=0,target=H,last=0,history=[],timerIds=[],raf=0,traceUntil=0;
+function metrics(){ $('#h').textContent=h.toFixed(1)+' px';$('#v').textContent=v.toFixed(0)+' px/s'; }
+function paintSpring(){
+ fold.style.height=Math.max(0,h)+'px';
+ let p=Math.max(0,Math.min(1,h/(H||1)));
+ clip.style.opacity=String(Math.min(1,p*1.9));
+ natural.style.transform='translateY('+(-(1-p)*5)+'px)';
+ chev.style.transform='rotate('+((1-p)*90)+'deg)';
+ metrics();
+}
+function clearSpring(){
+ fold.style.height='';clip.style.opacity='';natural.style.transform='';chev.style.transform='';
+}
+// Exact critical damping update. Only a real target change interrupts the trajectory.
+function spring(dt){
+ const w=21,d=h-target,b=v+w*d,e=Math.exp(-w*dt);
+ h=target+(d+b*dt)*e;v=(v-w*b*dt)*e;
+ if(h<0){h=0;v=0}
+ if(Math.abs(h-target)<.08&&Math.abs(v)<.8){h=target;v=0}
+}
+function stopSampling(){
+ cancelAnimationFrame(raf);raf=0;last=0;
+}
+function ensureFrame(){
+ if(reduced.matches)return;
+ traceUntil=performance.now()+1500;
+ if(!raf){last=performance.now();raf=requestAnimationFrame(frame)}
+}
+function snap(){
+ stopSampling();
+ panel.classList.add('no-transition');
+ panel.dataset.mode=mode.value;panel.dataset.open=String(open);
+ target=open?H:0;h=target;v=0;
+ if(mode.value==='spring')paintSpring();else clearSpring();
+ // Resolve the final style before allowing later transitions.
+ void fold.offsetHeight;
+ panel.classList.remove('no-transition');
+ metrics();history=[];$('#trace').setAttribute('points','');
+}
+function retarget(){
+ target=open?H:0;
+ panel.dataset.open=String(open);
+ if(reduced.matches){snap();return}
+ ensureFrame();
+}
+function toggle(){
+ open=!open;head.setAttribute('aria-expanded',String(open));
+ if(!open&&natural.contains(document.activeElement))head.focus();
+ natural.inert=!open;retarget();
+}
+head.addEventListener('click',toggle);
+mode.onchange=snap;
+speed.onchange=()=>{panel.style.setProperty('--speed',speed.value);if(!reduced.matches)ensureFrame()};
+$('#anchor').onchange=e=>{$('.stage').dataset.anchor=e.target.value;$('.stage-tag').textContent='LIVE COMPONENT / '+e.target.value.toUpperCase()+' ANCHOR'};
+$('#reverse').onclick=()=>{timerIds.forEach(clearTimeout);timerIds=[];for(let i=0;i<5;i++)timerIds.push(setTimeout(toggle,i*105))};
+natural.addEventListener('change',()=>{
+ let total=0;natural.querySelectorAll('input').forEach(i=>{const n=+i.dataset.n,k=i.checked?n:0;total+=k;i.parentElement.querySelector('.count').textContent=k+'/'+n});
+ $('#total').textContent=total+' / 40';$('.track').setAttribute('aria-valuenow',total);$('.fill').style.width=total/40*100+'%';
+});
+new ResizeObserver(()=>{
+ const next=natural.getBoundingClientRect().height;
+ if(Math.abs(next-H)>.1){H=next;retarget()}
+}).observe(natural);
+reduced.addEventListener('change',snap);
+function frame(t){
+ raf=0;
+ const dt=Math.min(.05,Math.max(0,(t-last)/1000));last=t;
+ if(mode.value==='spring'){
+  if(h!==target||v!==0){spring(dt*Number(speed.value));paintSpring()}
+ }else{
+  const prev=h;h=fold.getBoundingClientRect().height;
+  v=dt?(h-prev)/dt:0;
+  if(Math.abs(h-target)<.1&&Math.abs(v)<.8){h=target;v=0}
+  metrics();
+ }
+ history.push([t,h]);while(history.length&&history[0][0]<t-1500)history.shift();
+ $('#trace').setAttribute('points',history.map(([tm,y])=>((tm-t+1500)/5).toFixed(1)+','+(76-67*Math.min(1,y/(H||1))).toFixed(1)).join(' '));
+ if(h!==target||v!==0){traceUntil=t+1500;raf=requestAnimationFrame(frame)}
+ else if(t<traceUntil)raf=requestAnimationFrame(frame);
+ else last=0;
+}
+snap();
 </script></body></html>
